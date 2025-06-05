@@ -1,0 +1,413 @@
+---
+title: "Course Intro"
+subtitle: "Practical Computing Skills for Omics Data (PLNTPTH 5004)" 
+author: Jelmer Poelstra
+date: 2025-08-26
+institute: "MCIC Wooster, Ohio State University"
+title-slide-attributes:
+  data-background-color: "dimgray"
+format:
+  revealjs:
+    theme: [simple, ../theme_mod.scss]
+    css: ../slides.css
+    smaller: true
+    scrollable: false
+    progress: true
+    incremental: false
+    slide-number: true
+    slide-level: 2
+    highlight-style: pygments
+    embed-resources: true
+    toc: true
+    toc-depth: 1
+    toc-title: Overview
+editor_options: 
+  chunk_output_type: console
+---
+
+# Personal introductions {background-color="dimgray"}
+
+## Introductions: Jelmer (instructor)
+
+-   **Lead of the CFAES Bioinformatics and Microscopy cores**
+    -   Part of what was until recently called the Molecular & Cellular Imaging Center (MCIC)
+    -   We are now grouped under **CFAES Analytical Resources**, core facilities providing services in molecular biology, high-throughput sequencing, bioinformatics, microscopy, and soil analyses.
+
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+-   **What I work on**
+    -   The majority of my time is spent providing research assistance,\
+        working with grad students and postdocs on omics data
+    -   Teaching, such as this course, workshops, Code Club (<https://osu-codeclub.github.io>)
+
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+-   Background in animal evolutionary genomics & speciation
+
+-   In my free time, I enjoy bird watching -- locally & all across the world
+
+## Introductions: TA / co-instructor
+
+TBA
+
+## Introductions: You
+
+-   Name
+
+-   Lab and Department
+
+-   Research interests and/or current research topics
+
+-   Something about you that is *not* work-related, such as a hobby or fun fact
+
+# Course overview {background-color="dimgray"}
+
+## The core goals of this course
+
+Learning skills to:
+
+-   Do your research more **reproducibly** and **efficiently** (e.g. by using **code**)
+
+-   Work with large-scale "**omics**" datasets
+
+<hr style="height:1pt; visibility:hidden;" />
+
+*TBD: explain focus on fundamental computation skills*
+
+## Course background: Reproducibility
+
+Two related ideas:
+
+1.  Getting same results with an independent experiment (*replicable*)
+
+2.  Getting same results given the same data (*reproducible*)
+
+<hr style="height:1pt; visibility:hidden;" />
+
+Our focus is on #2.
+
+------------------------------------------------------------------------
+
+## Course background: Reproducibility (cont.)
+
+> *"The most basic principle for reproducible research is: Do everything via code."*\
+> —Karl Broman
+
+<br>
+
+Additionally, also important for reproducibility are:
+
+-   Project organization and documentation (*week 3*)
+
+-   Sharing your data and code (*for code: Git & GitHub, week 4*)
+
+-   How you code (*covered throughout*)
+
+<br>
+
+::: callout-tip
+##### Another motivator: working reproducibly will benefit future you!
+:::
+
+## Course background: Efficiency and automation
+
+-   Using code enables you to work more efficiently and automatically —\
+    particularly useful when having to:
+
+    -   Do repetitive tasks
+
+    -   Recreate a figure or redo an analysis after adding a sample
+
+    -   Redo a project after uncovering a mistake in the first data processing step.
+
+## Course background: Omics data
+
+-   Omics data is increasingly important in biology, and most notably includes:
+    -   Genomics
+    -   Transcriptomics
+    -   Proteomics
+    -   Metabolomics
+
+::: callout-tip
+#### The next lecture will introduce omics data in a bit more details.
+:::
+
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: callout-warning
+## What this course does and does not focus on 
+
+-   While we'll be using some example omics datasets, this course will *not* comprehensively cover the analysis of omics data --- our focus is more on fundamental computational skills.
+
+-   A highly recommended follow-up course to learn omics data analysis specifics:\
+    Genome Analytics (HCS 7004) by Jonathan Fresnedo-Ramirez
+:::
+
+## What is bioinformatics?
+
+Also: computational biology
+
+TBA
+
+# Course topics {background-color="dimgray"}
+
+## The Unix shell & shell scripts
+
+Being able to work in the Unix shell is a fundamental skill in computational biology.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+-   You'll spend a lot of time with the Unix shell, starting this week, and including in weeks that aren't solely focused on the shell.
+-   We'll also write shell *scripts*, and will use an editor called VS Code for this and other purposes.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::::::: columns
+:::: column
+![](img/bash.png){fig-align="center" width="40%"}
+
+::: legend2
+Bash (shell language)
+:::
+::::
+
+:::: column
+![](img/vscode.png){fig-align="center" width="40%"}
+
+::: legend2
+VS Code
+:::
+::::
+:::::::
+
+## Project organization & documentation {.nostretch}
+
+Good project organization & documentation is a necessary starting point for reproducible research.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+-   You'll learn best practices for project organization, file naming, etc.
+
+-   You'll learn how to manage your data and software
+
+-   To document and report what you are doing, you'll use *Markdown* files.
+
+<br>
+
+![](img/markdown.png){fig-align="center" width="32%"}
+
+::: legend2
+Markdown
+:::
+
+## Version control with Git and GitHub
+
+Using version control, you can more effectively keep track of project progress, collaborate, share code, revisit earlier versions, and undo.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+-   *Git* is the version control software we will use,\
+    and *GitHub* is the website that hosts Git projects (repositories).
+
+-   You'll also use Git + GitHub to hand in your graded assignments.
+
+<br>
+
+::::: columns
+::: {.column width="50%"}
+![](img/git.png){fig-align="center" width="65%"}
+:::
+
+::: {.column width="50%"}
+![](img/github.jpg){fig-align="center"}
+:::
+:::::
+
+## High-performance computing with OSC
+
+Thanks to supercomputer resources, you can work with **very large datasets at speed** --- running up to 100s of analyses in parallel, and using much larger amounts of memory and storage space than a personal computer has.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+. . .
+
+-   We will use OSC throughout the course, and you'll get a brief intro to it today.
+-   In week 5, you'll learn how to manage data and software at OSC.
+-   In week 6, we'll learn to submit shell scripts as OSC "batch jobs" with Slurm.
+
+<br>
+
+:::::: columns
+::: {.column width="40%"}
+![](img/osc.png){fig-align="center" width="100%"}
+:::
+
+::: {.column width="28%"}
+![](img/slurm.png){fig-align="center" width="75%"}
+:::
+
+::: {.column width="31%"}
+![](img/conda.png){fig-align="center" width="95%"}
+:::
+::::::
+
+## Automated workflow management {.nostretch}
+
+Using a workflow written with a workflow manager, you can run and rerun an entire analysis pipeline with a single command, and easily change and rerun parts of it, too.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+-   We'll use the workflow language *Nextflow* to build our pipelines
+-   You will also learn how to use comprehensive, best-practice omics data Nextflow pipelines produced by the *nf-core* initiative
+
+![](img/nextflow.png){fig-align="center" width="50%"}
+
+## R {.nostretch}
+
+-   DETAILS TBA
+
+- Address R vs Python
+
+# Using generative AI to help with coding
+
+-   Details TBA
+
+<br>
+
+# Course practicalities {background-color="dimgray"}
+
+## Zoom
+
+-   Be muted by default, but feel free to unmute yourself to ask questions any time.
+
+-   Questions can also be asked in the chat.
+
+-   Having your camera turned on as much as possible is appreciated!
+
+. . .
+
+-   "Screen real estate" — large/multiple monitors or multiple devices best.
+
+-   Be ready to share your screen.
+
+## Websites & Books
+
+-   Info about CarmenCanvas website...
+
+<hr style="height:1pt; visibility:hidden;" />
+
+-   The GitHub website contains:
+    -   Overviews of each week & readings
+    -   Slide decks and lecture pages
+    -   Exercises
+    -   Final project assignment information
+
+<hr style="height:1pt; visibility:hidden;" />
+
+. . .
+
+-   Books:
+
+    -   Computing Skills for Biologists ("CSB"; Allesina & Wilmes 2019)
+    -   Bioinformatics Data Skills ("Buffalo"; Buffalo 2015)
+
+# Homework and grading {background-color="dimgray"}
+
+## What your grade is made up of
+
+You can earn a total of 100 points across 6 assignments and 4 final project checkpoints.
+
+## Graded assignments
+
+These are due on Mondays and are worth 10 points each:
+
+1.  Shell basics (week 3)
+2.  Markdown & Git (week 5)
+3.  Shell scripting (week 6)
+4.  OSC batch jobs (week 8)
+5.  Nextflow (week 11)
+6.  R (week 14)
+
+## Final project
+
+Plan and implement a small computational project, with the following checkpoints:
+
+-   I: **Proposal** (due week 13 -- 5 points)
+
+-   II: **Draft** (due week 15 -- 5 points)
+
+-   III: **Oral presentations** on Zoom (week 16 -- 10 points)
+
+-   IV: **Final submission** (due Dec 15 -- 20 points)
+
+<br><br>
+
+. . .
+
+::: callout-tip
+#### Data sets for the final project
+
+If you have your own data set & analysis ideas, that is ideal. If not, I can provide you with this.
+
+More information about the final project will follow later in the course.
+:::
+
+## Ungraded homework
+
+-   Weekly readings — somewhat up to you when to do these, ideally before *and* after the lectures!
+
+-   Weekly exercises — I recommend doing these on Fridays
+
+-   Miscellaneous small assignments such as surveys and account setup.
+
+<br><br>
+
+::: callout-note
+### Weekly materials & homework
+
+I will try add the materials for each week on the preceding Friday --- at the least the week's overview and readings.
+
+None of this homework had to be handed in.
+:::
+
+## Weekly recitation on Monday
+
+We will have an optional but highly recommended weekly recitation meeting on Monday in which we go through the exercises for the preceding week.
+
+<br>
+
+::: callout-caution
+## Practice is key!
+
+This course is intended to be highly practical and if you don't practice the skills we will focus on by yourself, you will not get much out of it.
+:::
+
+<br>
+
+Please indicate your availability here: TBA
+
+## Rest of this week
+
+-   Introduction to omics data
+
+<hr style="height:1pt; visibility:hidden;" />
+
+-   Introduction to the Ohio Supercomputer Center (OSC)
+
+<hr style="height:1pt; visibility:hidden;" />
+
+-   **Homework**:
+
+    -   TBA
+
+# Questions? {background-color="dimgray"}
+
+<br><br><br><br>
+
+[(Back to the site)](/index.qmd)
