@@ -1,0 +1,537 @@
+---
+title: "Week 4 exercises"
+pagetitle: "PRACS24: Week 4 exercises"
+author: Jelmer Poelstra
+date: 2024-03-25
+number-sections: false
+editor_options: 
+  chunk_output_type: console
+---
+
+---------
+
+<hr style="height:1pt; visibility:hidden;" />
+
+#### Setting up
+
+Start a VS Code session at OSC in the folder `/fs/ess/PAS2700/users/$USER`.
+In the terminal, move into your dir for this week:
+
+```bash
+cd week04
+```
+
+You'll create two main shell scripts in these exercises,
+a small script to print a line and a script to run TrimGalore:
+save these in the `week04/scripts` dir,
+and open and edit them in the VS Code editor pane.
+
+Let's also create a "runner" script straight away,
+which will have the commands to run the individual scripts:
+
+```bash
+touch run/run_exercises.sh
+# Then open it in the editor pane, e.g. with Ctrl/Cmd-click
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Exercise 1: A shell script that prints a specific line
+
+Write a shell script `scripts/printline.sh` that accepts two arguments,
+a file name and a line number, and prints the requested line from the file to screen.
+Additional notes:
+
+- Since this is a simple utility script, I suggest to make the script not print
+  anything other than the requested line from the file (i.e., no `echo` statements).
+- Don't forget the best-practice shell script header lines we discussed.
+- With an `if` statement, let the script check whether the correct
+  number of arguments were passed to it, and if not, exit the script.
+- Test your script by printing a couple of different lines from
+  `garrigos_data/meta/metadata.tsv`.
+  Also test that your argument-number-check works.
+  (Add the lines of code to run the script various ways in your `run_exercises.sh` runner script.)
+
+<details><summary> Hint 1: an overview of the steps to take _(Click to expand)_</summary>
+- Open a new text file and save it as `scripts/printline.sh`.
+- In the script, start with the _shebang_ and `set` lines.
+- Your script takes two arguments: a file name (`$1`) and a line number (`$2`) .
+- Check the number of arguments in an `if` statement like we did in class.
+- Copy the `$1` and `$2` placeholder variables to descriptively named variables.
+- To print a specific line, think how you might combine `head` and `tail` to do this.
+  If you're at a loss, feel free to check out the next hint.
+</details>
+
+<details><summary> Hint 2: how to print a specific line number _(Click to expand)_</summary>
+For example, to print line 4 of the Garrigos et al. metadata file:
+
+```bash
+head -n 4 garrigos_data/meta/metadata.tsv | tail -n 1
+```
+```bash-out
+ERR10802879     10dpi   cathemerium
+```
+
+How this command works:
+
+- `head -n 4 garrigos_data/meta/metadata.tsv` prints the first 4 lines of that file.
+- Those 4 lines are then piped into the `tail` command.
+- With `-n 1`, `tail` will only print the last line of its input:
+  this will be line 4 of the original input file.
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Exercise 2: A script to run TrimGalore
+
+#### Introduction to TrimGalore
+
+TrimGalore is a tool that can trim and filter FASTQ files, removing:
+
+- Any adapter sequences that are present in the reads^[
+  Adapters are always added to DNA/cDNA fragments of interest prior to Illumina sequencing,
+  and the last bases of a read can "read-through" into the adapter if the fragment
+  is shorter than the read length.].
+- Poor-quality bases at the start and end of the reads.
+- Reads that have become very short after the prior two steps.
+
+TrimGalore takes FASTQ files as input, and outputs filtered FASTQ files.
+When you have paired-end reads (as you do here),
+_a single TrimGalore run should include both the R1 and R2 file for 1 sample_.
+
+::: {.callout-note collapse="true"}
+#### More about TrimGalore _(Click to expand)_
+Several largely equivalent tools exist for this kind of FASTQ preprocessing ---
+Trimmomatic and fastp are two other commonly used ones.
+TrimGalore itself is "just" a wrapper around yet another tool called Cutadapt,
+but it is simpler to use.
+Two advantages of TrimGalore are:
+
+- It will auto-detect the adapters that are present in your reads.
+- It can automatically run FastQC on the trimmed sequences.
+:::
+
+TrimGalore isn't installed at OSC, but you can use a so-called "_Conda_ environment"^[
+We'll talk more about Conda environments next week.]
+that I have created for it:
+
+```bash
+# First load OSC's (mini)Conda module
+module load miniconda3/23.3.1-py310
+# Then load ('activate') the Conda environment with TrimGalore
+conda activate /fs/ess/PAS0471/jelmer/conda/trimgalore
+```
+
+After running those two lines, check that you can run TrimGalore
+and which version you're working with, as follows:
+
+```bash
+# Note: the command is 'trim_galore' with an underscore
+trim_galore --version
+```
+```{.bash-out}
+            Quality-/Adapter-/RRBS-/Speciality-Trimming
+                    [powered by Cutadapt]
+                        version 0.6.10
+```
+
+Then print the help info --- you'll be using this below!
+
+```bash
+trim_galore --help
+```
+```bash-out
+[output not shown]
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+#### Your TrimGalore shell script
+
+Write a shell script `scripts/trimgalore.sh` that runs TrimGalore on paired end-FASTQ
+files as follows:
+
+- The script should only **run TrimGalore once**, i.e. for one sample (two FASTQ files).
+- Your **script should accept and process arguments** that specify the input FASTQ
+  files and the output dir.
+  (For the FASTQ files, I suggest you follow the strategy
+  [used in class](w4_2_cli-tools.html#looping-over-samples-rather-than-files)
+  where the script takes only the R1 file name as an argument^[
+  Alternatively, it could take both R1 and R2 files as arguments.]
+  and infers the name of the corresponding R2 file.)
+
+- For each of the items below, figure out the relevant TrimGalore option,
+  and use that option:
+  - Tell the program that the reads are **paired-end**^[
+    If you don't do this, TrimGalore will process the two FASTQ files independently.].
+  - Set the **output dir**.
+  - Make the program **run FastQC** on the trimmed FASTQ files.
+
+- Check what the default values are for the Phred quality score and read length thresholds.
+  Do you understand what these do?
+  You don't have to change them here, the defaults will work fine for us.
+  
+<details><summary>Hint: See the relevant parts of the TrimGalore help pages _(Click to expand)_</summary>
+<hr style="height:1pt; visibility:hidden;" />
+```bash
+trim_galore --help
+```
+```{.bash-out-solo}
+ USAGE:
+trim_galore [options] <filename(s)>
+
+--paired                This option performs length trimming of quality/adapter/RRBS trimmed reads for
+                        paired-end files.
+
+-o/--output_dir <DIR>   If specified all output will be written to this directory instead of the current
+                        directory. If the directory doesn't exist it will be created for you.
+
+-j/--cores INT          Number of cores to be used for trimming [default: 1].
+
+--fastqc                Run FastQC in the default mode on the FastQ file once trimming is complete.
+
+--fastqc_args "<ARGS>"  Passes extra arguments to FastQC.
+
+-a/--adapter <STRING>   Adapter sequence to be trimmed. If not specified explicitly, Trim Galore will
+                        try to auto-detect whether the Illumina universal, Nextera transposase or Illumina
+                        small RNA adapter sequence was used.
+
+-q/--quality <INT>      Trim low-quality ends from reads in addition to adapter removal. [...]
+                        Default Phred score: 20.
+
+--length <INT>          Discard reads that became shorter than length INT because of either
+                        quality or adapter trimming. A value of '0' effectively disables
+                        this behaviour. Default: 20 bp.
+```
+</details>
+
+::: {.callout-warning collapse="true"}
+#### Warning: Don't use/adjust TrimGalore's `--cores` option here _(Click to expand)_
+Since you're running the program interactively on our single-core VS Code compute job,
+you only have 1 core at your disposal --- and that's TrimGalore's default.
+Next week we'll be submitting our scripts as batch jobs:
+that will give us the opportunity to use multiple cores with programs like this.
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Exercise 3: Run your TrimGalore script once
+
+1. Run your TrimGalore script for just the `ERR10802863` sample in `garrigos_data/fastq`
+   (remember to add the code to run the script in the `run_exercises.sh` runner script).
+
+2. Check if everything went well; also take a look at TrimGalore's output files,
+   which should include new (filtered) FASTQ files as well as FastQC outputs and
+   a text file for each sample.
+   If something went wrong, go back to your `trimgalore.sh` script and try to fix it. 
+
+3. Take a closer look at the output that TrimGalore printed to screen
+   (note that most of that is also saved in the `*_trimming_report.txt` file in the
+   output dir):
+   - In each file (R1 and R2), in what percentage of reads were adapters detected?
+   - In each file (R1 and R2), what percentage of bases were quality trimmed?
+   - What percentage of reads were removed because they were too short?^[
+     Hint: this info is printed at the very end, and for both files at once.]
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Exercise 4: Run your TrimGalore script for all samples
+
+Once your single-sample run works,
+write a `for` loop in your runner script to run your TrimGalore script on all samples
+in the `garrigos_data/fastq` dir, and run that.
+_(Don't forget to take into account that you should loop over samples or R1 FASTQ files,_
+_not over all FASTQ files.)_
+
+::: callout-tip
+#### This will take some time (~20 minutes) to run!
+And note that these FASTQ files are _much_ smaller than regular ones.
+You'll hopefully agree that we need to start using more computing power,
+and have the script run simultaneously rather than consecutively for each sample ---
+we can do all of that by submitting the script as batch jobs, as we'll see next week.
+:::
+
+<br>
+
+## Solutions
+
+### Exercise 1
+
+<details><summary> The script _(Click to expand)_</summary>
+```bash
+#!/bin/bash
+set -euo pipefail
+
+# Check the number of command-line arguments
+if [[ ! "$#" -eq 2 ]]; then
+    echo "Error: wrong number of arguments"
+    echo "You provided $# arguments, while 2 are required."
+    echo "Usage: printline.sh <file> <line-number>"
+    exit 1
+fi
+
+# Copy the command-line arguments
+input_file=$1
+line_nr=$2
+
+# Only print the requested line
+head -n "$line_nr" "$input_file" | tail -n 1
+```
+</details>
+
+<details><summary> Running and testing the script _(Click to expand)_</summary>
+
+- To run the script and make it print the 4^th^ line of the Garrigos et al. metadata file:
+
+  ```bash
+  bash scripts/printline.sh garrigos_data/meta/metadata.tsv 4
+  ```
+  ```{.bash-out}
+  ERR10802879     10dpi   cathemerium
+  ```
+
+- Or the 7^th^ line:
+
+  ```bash
+  bash scripts/printline.sh garrigos_data/meta/metadata.tsv 7
+  ```
+  ```{.bash-out}
+  ERR10802884     10dpi   control
+  ```
+
+- To test that the argument-number-check works:
+
+  ```bash
+  # Only pass 1 argument:
+  bash scripts/printline.sh garrigos_data/meta/metadata.tsv
+  ```
+  ```bash-out
+  Error: wrong number of arguments
+  You provided 1 arguments, while 2 are required
+  Usage printline.sh <file> <line-number>
+  ```
+  
+  ```bash
+  # Pass 3 arguments:
+  bash scripts/printline.sh garrigos_data/meta/metadata.tsv 4 7
+  ```
+  ```bash-out
+  Error: wrong number of arguments
+  You provided 3 arguments, while 2 are required
+  Usage printline.sh <file> <line-number>
+  ```
+
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Exercise 2
+
+<details><summary> The TrimGalore options you were looking for _(Click to expand)_</summary>
+
+- `--paired` to indicate that the FASTQ files are paired-end.
+- `--output_dir` (or equivalently, `-o`) to specify the output directory.
+-  `--fastqc` to run FastQC on the trimmed FASTQ files.
+
+</details>
+
+<details><summary> The TrimGalore shell script _(Click to expand)_</summary>
+
+Save this as e.g. `scripts/trimgalore.sh`:
+
+```bash
+#!/bin/bash
+set -euo pipefail
+
+# Load TrimGalore
+module load miniconda3/23.3.1-py310
+conda activate /fs/ess/PAS0471/jelmer/conda/trimgalore
+
+# Copy the placeholder variables
+R1_in=$1
+outdir=$2
+
+# Infer the R2 FASTQ file name
+R2_in=${R1_in/_R1/_R2}
+
+# Report
+echo "# Starting script trimgalore.sh"
+date
+echo "# Input R1 FASTQ file:      $R1_in"
+echo "# Input R2 FASTQ file:      $R2_in"
+echo "# Output dir:               $outdir"
+echo
+
+# Create the output dir
+mkdir -p "$outdir"
+
+# Run TrimGalore
+trim_galore \
+    --paired \
+    --fastqc \
+    --output_dir "$outdir" \
+    "$R1_in" \
+    "$R2_in"
+
+# Report
+echo
+echo "# Done with script trimgalore.sh"
+date
+```
+</details>
+
+<details><summary> Quality and length threshold options & interpretation _(Click to expand)_</summary>
+
+- The option `-q` (short notation) or `--quality` (long notation) can be used
+  to adjust the base quality score threshold, which has the "Phred" unit.
+  The default threshold is 20, which corresponds to an estimated 0.01 error rate.
+  TrimGalore will trim bases with a lower quality score than this threshold
+  from the **ends** of the reads.
+  It will **not** remove or mask bases with lower quality scores elsewhere in the read.
+
+- The option `-l` (short notation) or `--length` (long notation) can be used
+  to adjust the read length threshold: any reads that are shorter than this after
+  adapter and quality trimming will be removed.
+  The default threshold is 20 bp.
+  (When the input is paired-end, the corresponding second read will also be removed,
+  regardless of its length: paired-end FASTQ files always need to contain both the
+  R1 and R2 for each pair; orphan reads would need to be stored in a separate file.)
+
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Exercise 3
+
+<details><summary> 1 - Run the script _(Click to expand)_</summary>
+  
+```bash
+# Exercise 2
+R1=garrigos_data/fastq/ERR10802863_R1.fastq.gz
+bash scripts/trimgalore.sh "$R1" results/trimgalore
+```
+```bash-out
+# Starting script trimgalore.sh
+Thu Mar 28 10:34:24 EDT 2024
+# Input R1 FASTQ file:      garrigos_data/fastq/ERR10802863_R1.fastq.gz
+# Input R2 FASTQ file:      garrigos_data/fastq/ERR10802863_R2.fastq.gz
+# Output dir:               results/trimgalore
+
+Multicore support not enabled. Proceeding with single-core trimming.
+Path to Cutadapt set as: 'cutadapt' (default)
+Cutadapt seems to be working fine (tested command 'cutadapt --version')
+Cutadapt version: 4.4
+
+# [...output truncated...]
+```
+</details>
+
+<details><summary> 2 - Check the output files _(Click to expand)_</summary>
+
+```bash
+ls -lh results/trimgalore
+```
+```bash-out
+total 42M
+-rw-rw----+ 1 jelmer PAS0471 2.4K Mar 28 10:49 ERR10802863_R1.fastq.gz_trimming_report.txt
+-rw-rw----+ 1 jelmer PAS0471 674K Mar 28 10:49 ERR10802863_R1_val_1_fastqc.html
+-rw-rw----+ 1 jelmer PAS0471 349K Mar 28 10:49 ERR10802863_R1_val_1_fastqc.zip
+-rw-rw----+ 1 jelmer PAS0471  20M Mar 28 10:49 ERR10802863_R1_val_1.fq.gz
+-rw-rw----+ 1 jelmer PAS0471 2.3K Mar 28 10:49 ERR10802863_R2.fastq.gz_trimming_report.txt
+-rw-rw----+ 1 jelmer PAS0471 676K Mar 28 10:50 ERR10802863_R2_val_2_fastqc.html
+-rw-rw----+ 1 jelmer PAS0471 341K Mar 28 10:50 ERR10802863_R2_val_2_fastqc.zip
+-rw-rw----+ 1 jelmer PAS0471  21M Mar 28 10:49 ERR10802863_R2_val_2.fq.gz
+```
+</details>
+
+<details><summary> 3 - Check the trimming results _(Click to expand)_</summary>
+
+- Note that the adapter- and quality trimming results summary for the R1 and R2 files
+  are separated widely among all the output that TrimGalore prints ---
+  they are printed below (first for the R1, then for the R2 file), and the answers are:
+  - 13.0% (R1) and 10.1% (R2) of reads had adapters
+  - 3.6% (R1) and 3.5% (R2) of bases were quality-trimmed
+  
+  ```bash-out-solo
+  === Summary ===
+  
+  Total reads processed:                 500,000
+  Reads with adapters:                    65,070 (13.0%)
+  Reads written (passing filters):       500,000 (100.0%)
+  
+  Total basepairs processed:    35,498,138 bp
+  Quality-trimmed:               1,274,150 bp (3.6%)
+  Total written (filtered):     34,138,461 bp (96.2%)
+  ```
+  
+  ```bash-out-solo
+  === Summary ===
+  
+  Total reads processed:                 500,000
+  Reads with adapters:                    50,357 (10.1%)
+  Reads written (passing filters):       500,000 (100.0%)
+  
+  Total basepairs processed:    36,784,563 bp
+  Quality-trimmed:               1,283,793 bp (3.5%)
+  Total written (filtered):     35,440,230 bp (96.3%)
+  ```
+  
+- Just before the FastQC logs is a line that reports how many reads were removed
+  due to the length filter --- the answer is 6.79%.
+  
+  ```bash-out-solo
+  Number of sequence pairs removed because at least one read was shorter than the length cutoff (20 bp): 33955 (6.79%)
+  ```
+
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Exercise 4
+
+<details><summary> Run the script for all samples _(Click to expand)_</summary>
+
+Add this loop code to your runner script (`run/run_exercises.sh`) and run it:
+
+```bash
+for R1 in garrigos_data/fastq/*_R1.fastq.gz; do
+    bash scripts/trimgalore.sh "$R1" results/trimgalore
+done
+```
+```bash-out
+# (Output not shown, same as earlier but should repeat for each sample)
+```
+</details>
+
+<details><summary> Check the output files _(Click to expand)_</summary>
+
+```bash
+ls -lh results/trimgalore
+```
+```bash-out
+total 949M
+-rw-rw----+ 1 jelmer PAS0471  20M Mar 28 11:18 ERR10802863_R1.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 2.4K Mar 28 11:17 ERR10802863_R1.fastq.gz_trimming_report.txt
+-rw-rw----+ 1 jelmer PAS0471 674K Mar 28 11:18 ERR10802863_R1_val_1_fastqc.html
+-rw-rw----+ 1 jelmer PAS0471 349K Mar 28 11:18 ERR10802863_R1_val_1_fastqc.zip
+-rw-rw----+ 1 jelmer PAS0471  21M Mar 28 11:18 ERR10802863_R2.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 2.3K Mar 28 11:18 ERR10802863_R2.fastq.gz_trimming_report.txt
+-rw-rw----+ 1 jelmer PAS0471 676K Mar 28 11:18 ERR10802863_R2_val_2_fastqc.html
+-rw-rw----+ 1 jelmer PAS0471 341K Mar 28 11:18 ERR10802863_R2_val_2_fastqc.zip
+-rw-rw----+ 1 jelmer PAS0471  21M Mar 28 11:19 ERR10802864_R1.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 2.7K Mar 28 11:18 ERR10802864_R1.fastq.gz_trimming_report.txt
+-rw-rw----+ 1 jelmer PAS0471 675K Mar 28 11:19 ERR10802864_R1_val_1_fastqc.html
+-rw-rw----+ 1 jelmer PAS0471 349K Mar 28 11:19 ERR10802864_R1_val_1_fastqc.zip
+-rw-rw----+ 1 jelmer PAS0471  22M Mar 28 11:19 ERR10802864_R2.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 2.6K Mar 28 11:19 ERR10802864_R2.fastq.gz_trimming_report.txt
+-rw-rw----+ 1 jelmer PAS0471 671K Mar 28 11:19 ERR10802864_R2_val_2_fastqc.html
+-rw-rw----+ 1 jelmer PAS0471 336K Mar 28 11:19 ERR10802864_R2_val_2_fastqc.zip
+-rw-rw----+ 1 jelmer PAS0471  21M Mar 28 11:20 ERR10802865_R1.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 2.6K Mar 28 11:19 ERR10802865_R1.fastq.gz_trimming_report.txt
+-rw-rw----+ 1 jelmer PAS0471 682K Mar 28 11:20 ERR10802865_R1_val_1_fastqc.html
+-rw-rw----+ 1 jelmer PAS0471 361K Mar 28 11:20 ERR10802865_R1_val_1_fastqc.zip
+[...output truncated...]
+```
+</details>
+
+<br>

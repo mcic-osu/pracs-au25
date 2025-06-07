@@ -1,0 +1,544 @@
+---
+title: "Week 7 exercises"
+pagetitle: "PRACS25: week 7 exercises"
+author: Jelmer Poelstra
+date: 2025-10-05
+number-sections: false
+---
+
+-----------
+
+<br>
+
+### Setting up
+
+- Create and move into a dir for the exercises:
+
+  ```bash
+  # You should be in /fs/ess/PAS2700/users/$USER
+  mkdir week05/exercises
+  cd week05/exercises
+  ```
+
+- Create a runner script (in which you'll write the code to submit batch jobs),
+  and then open it:
+
+  ```bash
+  mkdir scripts run
+  touch run/run.sh
+  ```
+
+You'll be using the Garrigos et al. FASTQ files again, which you should have in
+`/fs/ess/PAS2700/users/$USER/garrigos_data/fastq`.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Exercise 0: Lecture page exercises
+
+Do any exercises on the [software](w5_2_software.qmd) and [Slurm batch job](w5_3_slurm.qmd)
+lecture pages that we did not get to in class.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Exercise 1: Create a FastQC Conda environment
+
+The version of FastQC on OSC (0.11.8) is not the latest one (0.12.1).
+Let's assume that you really need the latest version for your analysis:
+
+1. Create a Conda environment for FastQC and install FastQC version 0.12.1 into it.
+2. Activate the environment and check that you have the correct version of FastQC.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Exercise 2: FastQC with multiple cores
+
+As a starting point, copy the FastQC shell script from
+[the last exercise on the Slurm batch job page](w5_3_slurm.qmd#exercise-submit-your-fastqc-script-as-a-batch-job):
+
+```bash
+# After this, your script will be at 'scripts/fastqc.sh'
+cp -v ../class_slurm/scripts/fastqc.sh scripts
+```
+
+<details><summary>If you don't have it, here's the contents of the starting FastQC script _(Click to expand)_</summary>
+
+```bash
+#!/bin/bash
+#SBATCH --account=PAS2700
+#SBATCH --output=slurm-fastqc-%j.out
+#SBATCH --mail-type=END,FAIL
+
+set -euo pipefail
+
+# Load the OSC module for FastQC
+module load fastqc
+
+# Copy the placeholder variables
+fastq_file=$1
+outdir=$2
+
+# Initial reporting
+echo "# Starting script fastqc.ch"
+date
+echo "# Input FASTQ file:   $fastq_file"
+echo "# Output dir:         $outdir"
+echo
+
+# Create the output dir if needed
+mkdir -p "$outdir"
+
+# Run FastQC
+fastqc --outdir="$outdir" "$fastq_file"
+
+# Final reporting
+echo
+echo "# Done with script fastqc.sh"
+date
+```
+</details>
+
+1. Use your brand new Conda FastQC environment in the script instead of OSC's module.
+
+2. Change the `#SBATCH` options in the script so that Slurm only sends you an email
+   if the job fails.
+
+3. Change the `#SBATCH` options in the script so that your batch job will reserve 8 cores.
+
+4. Change the FastQC command in the script so that FastQC will use all 8 reserved cores.
+   (Run `fastqc --help` to find the relevant option.)
+
+5. Submit the script as a batch job with input FASTQ file `ERR10802863_R1.fastq.gz`
+   as before.
+
+6. You'll be running FastQC for _all_ files next,
+   so let's remove this Slurm log file and all FastQC output files.
+   
+<hr style="height:1pt; visibility:hidden;" />
+
+## Exercise 3: FastQC batch jobs in a loop
+
+1. Loop over all Garrigos et al. FASTQ files,
+   submitting your Ex. 2 FastQC script as a batch job for each file.
+
+2. Check the Slurm queue immediately after running the loop, and keep checking
+   it every couple of seconds until all your FastQC jobs have disappeared from the list
+   (i.e., are done).
+
+3. You now arguably have too many Slurm log files to go through, so what to do next?
+   - The Slurm email feature should help:
+     check that you didn't get any emails about failed jobs.
+   - Another quick check is to run the `tail` command with a glob (using `*`)
+     so it will print the last lines of each of the output files.
+     Try this and scroll through the `tail` output:
+     it should be pretty easy to spot any files that don't end the way the should.
+   - Check the FastQC output files as well.
+
+4. It can be good to keep your Slurm log files,
+   but things will soon get very messy if you keep them all in your working dir:
+   create a dir called `logs` in the FastQC output dir,
+   and move all Slurm log files into that dir.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Exercise 4: TrimGalore batch jobs in a loop
+
+As a starting point, take your TrimGalore shell script from
+[last week's exercises](../week4/w4_exercises.qmd),
+and save it as `scripts/trimgalore.sh`.
+
+<details><summary>If you don't have it, here's the contents of the starting TrimGalore script _(Click to expand)_</summary>
+
+```bash
+#!/bin/bash
+set -euo pipefail
+
+# Load TrimGalore
+module load miniconda3/23.3.1-py310
+conda activate /fs/ess/PAS0471/jelmer/conda/trimgalore
+
+# Copy the placeholder variables
+R1_in=$1
+outdir=$2
+
+# Infer the R2 FASTQ file name
+R2_in=${R1_in/_R1/_R2}
+
+# Report
+echo "# Starting script trimgalore.sh"
+date
+echo "# Input R1 FASTQ file:      $R1_in"
+echo "# Input R2 FASTQ file:      $R2_in"
+echo "# Output dir:               $outdir"
+echo
+
+# Create the output dir
+mkdir -p "$outdir"
+
+# Run TrimGalore
+trim_galore \
+    --paired \
+    --fastqc \
+    --output_dir "$outdir" \
+    "$R1_in" \
+    "$R2_in"
+
+# Report
+echo
+echo "# Done with script trimgalore.sh"
+date
+```
+
+</details>
+
+1. The script currently uses one of my Conda environments.
+   Switch to your own that you created in class this week.
+   
+2. Add `#SBATCH` options to the top of the TrimGalore shell script to specify:
+   - The account/project
+   - The number of cores (8)
+   - The Slurm log file name
+   - Something to make Slurm email you upon job failure
+
+3. Use the TrimGalore option `--cores` to make it use all 8 reserved cores.
+
+4. Submit the script as a batch job for sample `ERR10802863`,
+   and check that everything went well. Then remove all outputs (Slurm log
+   files and TrimGalore output files) from this test-run.
+
+5. Run TrimGalore for all FASTQ file pairs from the Garrigos et al. data,
+   and check that everything went well.
+
+6. Move the Slurm log files into a dir `logs` in the TrimGalore output dir.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: callout-note
+#### Saving time
+Compared to running TrimGalore last week, you now saved time in two ways:
+
+- You used 8 cores, decreasing the running time ---
+  for example, for the first sample, from nearly a minute to 17 seconds.
+- You ran TrimGalore simultaneously instead of consecutively for each sample.
+  If Slurm/OSC started these jobs quickly, as is usual, then running TrimGalore
+  on all files should have cost well under a minute instead of over 20 minutes.
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Exercise 5: Create a Nextflow Conda environment
+
+Next week, we'll work with Nextflow and the affiliated community project nf-core.
+Create a single Conda environment with both Nextflow and the nf-core tools.
+
+<br>
+
+## Solutions
+
+### Exercise 1
+
+<details><summary>1 - Create a FastQC Conda environment</summary>
+
+When you don't specify the version, the latest one should be installed ---
+at least when you're using a "fresh" environment (there could be complicating
+factors if you already had other software in the same environment):
+
+```bash
+module load miniconda3/23.3.1-py310
+conda create -y -n fastqc -c bioconda fastqc
+```
+
+But to be more explicit, you could replace the `fastqc` at the end of the line
+with `fastqc=0.12.1`.
+
+</details>
+
+<details><summary>2 - Activate the environment and check the version</summary>
+```bash
+conda activate fastqc
+fastqc --version
+```
+```bash-out
+FastQC v0.12.1
+```
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Exercise 2
+
+<details><summary>1 - Use your Conda environment</summary>
+
+Replace the line `module load fastqc` with:
+
+```bash
+module load miniconda3/23.3.1-py310
+conda activate fastqc
+```
+</details>
+
+<details><summary>2 - Only email upon failure</summary>
+```bash
+#SBATCH --mail-type=FAIL
+```
+</details>
+
+<details><summary>3 - Reserve 8 cores</summary>
+```bash
+#SBATCH --cpus-per-task=8
+```
+</details>
+
+<details><summary>4 - Make FastQC use 8 cores</summary>
+
+The relevant FastQC option is `--threads` (recall to consider the terms threads,
+cores, and CPUs as synonyms in this context):
+
+```bash
+fastqc --threads 8 --outdir "$outdir" "$fastq_file"
+```
+</details>
+
+<details><summary>5 - Submit the script</summary>
+```bash
+fastq_file=../../garrigos_data/fastq/ERR10802863_R1.fastq.gz
+sbatch scripts/fastqc.sh "$fastq_file" results/fastqc
+```
+```bash-out
+Submitted batch job 12431988
+```
+</details>
+
+<details><summary>6 - Clean up</summary>
+```bash
+rm slurm-fastqc*
+rm results/fastqc/*
+```
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Exercise 3
+
+<details><summary>1 - Submit a FastQC batch job for each FASTQ file</summary>
+```bash
+for fastq_file in ../../garrigos_data/fastq/*fastq.gz; do
+   sbatch scripts/fastqc.sh "$fastq_file" results/fastqc
+done
+```
+```bash-out
+Submitted batch job 27902555
+Submitted batch job 27902556
+Submitted batch job 27902557
+Submitted batch job 27902558
+Submitted batch job 27902559
+Submitted batch job 27902560
+Submitted batch job 27902561
+[...output truncated...]
+```
+</details>
+
+<details><summary>2 - Check the Slurm queue</summary>
+```bash
+squeue -u $USER -l
+```
+</details>
+
+<details><summary>3 - Check the output</summary>
+
+Once all jobs have at least started running,
+you should see a lot of Slurm log files in your working dir:
+
+```bash
+ls
+```
+```bash-out
+results                    slurm-fastqc-27902531.out  slurm-fastqc-27902543.out  slurm-fastqc-27902555.out
+run                        slurm-fastqc-27902532.out  slurm-fastqc-27902544.out  slurm-fastqc-27902556.out
+scripts                    slurm-fastqc-27902533.out  slurm-fastqc-27902545.out  slurm-fastqc-27902557.out
+slurm-fastqc-27902522.out  slurm-fastqc-27902534.out  slurm-fastqc-27902546.out  slurm-fastqc-27902558.out
+slurm-fastqc-27902523.out  slurm-fastqc-27902535.out  slurm-fastqc-27902547.out  slurm-fastqc-27902559.out
+slurm-fastqc-27902524.out  slurm-fastqc-27902536.out  slurm-fastqc-27902548.out  slurm-fastqc-27902560.out
+slurm-fastqc-27902525.out  slurm-fastqc-27902537.out  slurm-fastqc-27902549.out  slurm-fastqc-27902561.out
+slurm-fastqc-27902526.out  slurm-fastqc-27902538.out  slurm-fastqc-27902550.out  slurm-fastqc-27902562.out
+slurm-fastqc-27902527.out  slurm-fastqc-27902539.out  slurm-fastqc-27902551.out  slurm-fastqc-27902563.out
+slurm-fastqc-27902528.out  slurm-fastqc-27902540.out  slurm-fastqc-27902552.out  slurm-fastqc-27902564.out
+slurm-fastqc-27902529.out  slurm-fastqc-27902541.out  slurm-fastqc-27902553.out  slurm-fastqc-27902565.out
+slurm-fastqc-27902530.out  slurm-fastqc-27902542.out  slurm-fastqc-27902554.out
+```
+
+Here is how you can see the last lines of each of these files with `tail`:
+
+```bash
+tail slurm-fastqc*
+```
+```bash-out
+==> slurm-fastqc-27902563.out <==
+Approx 80% complete for ERR10802885_R2.fastq.gz
+Approx 85% complete for ERR10802885_R2.fastq.gz
+Approx 90% complete for ERR10802885_R2.fastq.gz
+Approx 95% complete for ERR10802885_R2.fastq.gz
+Approx 100% complete for ERR10802885_R2.fastq.gz
+Analysis complete for ERR10802885_R2.fastq.gz
+
+# Done with script fastqc.sh
+Sun Mar 31 16:30:54 EDT 2024
+
+==> slurm-fastqc-27902564.out <==
+Approx 80% complete for ERR10802886_R1.fastq.gz
+Approx 85% complete for ERR10802886_R1.fastq.gz
+Approx 90% complete for ERR10802886_R1.fastq.gz
+Approx 95% complete for ERR10802886_R1.fastq.gz
+Approx 100% complete for ERR10802886_R1.fastq.gz
+Analysis complete for ERR10802886_R1.fastq.gz
+
+# Done with script fastqc.sh
+Sun Mar 31 16:30:54 EDT 2024
+
+==> slurm-fastqc-27902565.out <==
+Approx 80% complete for ERR10802886_R2.fastq.gz
+Approx 85% complete for ERR10802886_R2.fastq.gz
+Approx 90% complete for ERR10802886_R2.fastq.gz
+Approx 95% complete for ERR10802886_R2.fastq.gz
+Approx 100% complete for ERR10802886_R2.fastq.gz
+Analysis complete for ERR10802886_R2.fastq.gz
+
+# Done with script fastqc.sh
+Sun Mar 31 16:30:54 EDT 2024
+
+# [...output truncated...]
+```
+
+Finally, to check the FastQC output files:
+
+```bash
+ls -lh results/fastqc
+```
+```bash-out
+total 48M
+-rw-rw----+ 1 poelstra PAS0471 718K Mar 31 16:29 ERR10802863_R1_fastqc.html
+-rw-rw----+ 1 poelstra PAS0471 364K Mar 31 16:29 ERR10802863_R1_fastqc.zip
+-rw-rw----+ 1 poelstra PAS0471 688K Mar 31 16:29 ERR10802863_R2_fastqc.html
+-rw-rw----+ 1 poelstra PAS0471 363K Mar 31 16:29 ERR10802863_R2_fastqc.zip
+-rw-rw----+ 1 poelstra PAS0471 714K Mar 31 16:29 ERR10802864_R1_fastqc.html
+-rw-rw----+ 1 poelstra PAS0471 366K Mar 31 16:29 ERR10802864_R1_fastqc.zip
+-rw-rw----+ 1 poelstra PAS0471 695K Mar 31 16:29 ERR10802864_R2_fastqc.html
+-rw-rw----+ 1 poelstra PAS0471 351K Mar 31 16:29 ERR10802864_R2_fastqc.zip
+-rw-rw----+ 1 poelstra PAS0471 713K Mar 31 16:29 ERR10802865_R1_fastqc.html
+-rw-rw----+ 1 poelstra PAS0471 367K Mar 31 16:29 ERR10802865_R1_fastqc.zip
+-rw-rw----+ 1 poelstra PAS0471 698K Mar 31 16:29 ERR10802865_R2_fastqc.html
+-rw-rw----+ 1 poelstra PAS0471 358K Mar 31 16:29 ERR10802865_R2_fastqc.zip
+-rw-rw----+ 1 poelstra PAS0471 718K Mar 31 16:29 ERR10802866_R1_fastqc.html
+# [...output truncated...]
+```
+</details>
+
+<details><summary>4 - Clean the Slurm log files</summary>
+```bash
+mkdir results/fastqc/logs
+mv slurm-fastqc* results/fastqc/logs
+```
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Exercise 4
+
+<details><summary>1 - Switch the Conda environment</summary>
+
+Replace the line `conda activate /fs/ess/PAS0471/jelmer/conda/trimgalore` with:
+
+```bash
+conda activate trim-galore-0.6.10
+```
+</details>
+
+<details><summary>2 - `#SBATCH` options</summary>
+```bash
+#SBATCH --account=PAS2700
+#SBATCH --cpus-per-task=8
+#SBATCH --output=slurm-trimgalore-%j.out
+#SBATCH --mail-type=FAIL
+```
+</details>
+   
+<details><summary>3 - Make TrimGalore use the reserved 8 cores</summary>
+Simply add `--cores 8` to your TrimGalore command.
+</details>
+
+<details><summary>4 - Submit the script once, then clean up</summary>
+
+```bash
+fastq_file=../../garrigos_data/fastq/ERR10802863_R1.fastq.gz
+sbatch scripts/trimgalore.sh "$fastq_file" results/trimgalore
+```
+
+To check that everything went well, look at the Slurm log files and the TrimGalore
+output files in `results/trimgalore`.
+
+To remove the outputs from this test:
+
+```bash
+rm slurm-trimgalore*
+rm results/trimgalore/*
+```
+
+</details>
+
+<details><summary>5 - Submit the script for all samples</summary>
+```bash
+for fastq_R1 in ../../garrigos_data/fastq/*R1.fastq.gz; do
+   sbatch scripts/trimgalore.sh "$fastq_R1" results/trimgalore
+done
+```
+
+To check that everything went well, check your email and look at the TrimGalore
+output files in `results/trimgalore`.
+You can also run `tail slurm-trimgalore*` to check the last lines of each Slurm
+log file.
+</details>
+
+<details><summary>6 - Move the Slurm log files</summary>
+```bash
+mkdir results/trimgalore/logs
+mv slurm-trimgalore* results/trimgalore/logs
+```
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Exercise 5
+
+<details><summary>Create a Nextflow + nf-core Conda environment</summary>
+
+```bash
+module load miniconda3/23.3.1-py310
+conda create -y -n nextflow-23.10 -c bioconda nextflow=23.10.1 nf-core=2.13.1
+```
+
+Check that it works:
+
+```bash
+conda activate nextflow-23.10
+nextflow -v
+```
+```bash-out
+nextflow version 23.10.1.5891
+```
+```bash
+nf-core --version
+```
+```bash-out
+                                          ,--./,-.
+          ___     __   __   __   ___     /,-._.--~\
+    |\ | |__  __ /  ` /  \ |__) |__         }  {
+    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                          `._,._,'
+
+    nf-core/tools version 2.13.1 - https://nf-co.re
+
+nf-core, version 2.13.1
+```
+
+</details>
+
+<br>

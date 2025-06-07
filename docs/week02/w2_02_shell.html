@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jelmer Poelstra">
+<meta name="dcterms.date" content="2025-09-04">
+
+<title>PRACS25: Shell Basics II – PRACS-AU25</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-57476271c5f0467c372e20ff5d25630e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-bdb0de5c748ca9949e0b531c91ee7ebd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">PRACS-AU25</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-week-overviews" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Week overviews</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-week-overviews">    
+        <li>
+    <a class="dropdown-item" href="../week01/w1_overview.html">
+ <span class="dropdown-text">Week 1: Omics data and OSC</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week02/w2_overview.html">
+ <span class="dropdown-text">Week 2: Unix shell basics</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week03/w3_overview.html">
+ <span class="dropdown-text">Week 3: Project organization and Markdown</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week04/w4_overview.html">
+ <span class="dropdown-text">Week 4: Version control with Git and GitHub</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week05/w5_overview.html">
+ <span class="dropdown-text">Week 5: Shell scripts and CLI tools</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week06/w6_overview.html">
+ <span class="dropdown-text">Week 6: Data and software management at OSC</span></a>
+  </li>  
+        <li class="dropdown-header">Week 7: Slurm batch jobs at OSC</li>
+        <li class="dropdown-header">Week 8: Using generative AI when coding</li>
+        <li class="dropdown-header">Week 9: Automated pipelines with Nextflow</li>
+        <li class="dropdown-header">Week 10: Building Nextflow pipelines</li>
+        <li class="dropdown-header">Week 11: R – basics</li>
+        <li class="dropdown-header">Week 12: R – data wrangling and visualization</li>
+        <li class="dropdown-header">Week 13: R – Quarto</li>
+        <li class="dropdown-header">Week 14: R – omics data</li>
+        <li class="dropdown-header">Week 5: Nextflow nf-core pipelines</li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-exercises" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Exercises</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-exercises">    
+        <li>
+    <a class="dropdown-item" href="../week02/w2_exercises.html">
+ <span class="dropdown-text">Week 2: Shell basics</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week03/w3_exercises.html">
+ <span class="dropdown-text">Week 3: Project file organization</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week04/w4_exercises.html">
+ <span class="dropdown-text">Week 4: Version control</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week05/w5_exercises.html">
+ <span class="dropdown-text">Week 5: Shell scripts</span></a>
+  </li>  
+        <li class="dropdown-header">Week 6: OSC</li>
+        <li><hr class="dropdown-divider"></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-assignments" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Assignments</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-assignments">    
+        <li>
+    <a class="dropdown-item" href="../week01/w1_ua_osc-setup.html">
+ <span class="dropdown-text">Week 1: OSC account setup (ungraded)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week03/w3_ua_github-account.html">
+ <span class="dropdown-text">Week 3: GitHub account setup (ungraded)</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-final-project" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Final project</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-final-project">    
+        <li class="dropdown-header">General info</li>
+        <li class="dropdown-header">I: Proposal</li>
+        <li class="dropdown-header">II: Oral presentation</li>
+        <li class="dropdown-header">III: Final submission</li>
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-miscellaneous" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Miscellaneous</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-miscellaneous">    
+        <li>
+    <a class="dropdown-item" href="../about.html">
+ <span class="dropdown-text">About this website</span></a>
+  </li>  
+        <li class="dropdown-header">Course glossary</li>
+        <li class="dropdown-header">Unix shell reference</li>
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://osu.instructure.com/courses/163340"> 
+<span class="menu-text"><i class="fa-solid fa-graduation-cap" aria-label="graduation-cap"></i></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://ondemand.osc.edu"> 
+<span class="menu-text"><i class="fa-solid fa-desktop" aria-label="desktop"></i></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://library.ohio-state.edu/record=b8624007~S7"> 
+<span class="menu-text"><i class="fa-solid fa-book" aria-label="book"></i></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://library.ohio-state.edu/record=b9490023~S7"> 
+<span class="menu-text"><i class="fa-solid fa-book-open" aria-label="book-open"></i></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="https://github.com/mcic-osu/pracs-au25">
+            Source Code
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="https://github.com/mcic-osu/pracs-au25/issues/new">
+            Report an Issue
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#file-browser-type-commands" id="toc-file-browser-type-commands" class="nav-link active" data-scroll-target="#file-browser-type-commands"><span class="header-section-number">1</span> File browser-type commands</a>
+  <ul class="collapse">
+  <li><a href="#ls-to-list-files" id="toc-ls-to-list-files" class="nav-link" data-scroll-target="#ls-to-list-files"><span class="header-section-number">1.1</span> <code>ls</code> to list files</a></li>
+  <li><a href="#touch-to-create-a-new-file" id="toc-touch-to-create-a-new-file" class="nav-link" data-scroll-target="#touch-to-create-a-new-file"><span class="header-section-number">1.2</span> <code>touch</code> to create a new file</a></li>
+  <li><a href="#cp-to-copy-files-and-dirs" id="toc-cp-to-copy-files-and-dirs" class="nav-link" data-scroll-target="#cp-to-copy-files-and-dirs"><span class="header-section-number">1.3</span> <code>cp</code> to copy files and dirs</a></li>
+  <li><a href="#copying-dirs-and-their-contents" id="toc-copying-dirs-and-their-contents" class="nav-link" data-scroll-target="#copying-dirs-and-their-contents"><span class="header-section-number">1.4</span> Copying dirs and their contents</a></li>
+  <li><a href="#mv-to-move-and-rename-files-and-dirs" id="toc-mv-to-move-and-rename-files-and-dirs" class="nav-link" data-scroll-target="#mv-to-move-and-rename-files-and-dirs"><span class="header-section-number">1.5</span> <code>mv</code> to move and rename files and dirs</a></li>
+  <li><a href="#rm-to-remove-files-and-dirs" id="toc-rm-to-remove-files-and-dirs" class="nav-link" data-scroll-target="#rm-to-remove-files-and-dirs"><span class="header-section-number">1.6</span> <code>rm</code> to remove files and dirs</a></li>
+  </ul></li>
+  <li><a href="#viewing-text-files" id="toc-viewing-text-files" class="nav-link" data-scroll-target="#viewing-text-files"><span class="header-section-number">2</span> Viewing text files</a>
+  <ul class="collapse">
+  <li><a href="#plain-text-files" id="toc-plain-text-files" class="nav-link" data-scroll-target="#plain-text-files"><span class="header-section-number">2.1</span> Plain-text files</a></li>
+  <li><a href="#cat" id="toc-cat" class="nav-link" data-scroll-target="#cat"><span class="header-section-number">2.2</span> <code>cat</code></a></li>
+  <li><a href="#head-and-tail" id="toc-head-and-tail" class="nav-link" data-scroll-target="#head-and-tail"><span class="header-section-number">2.3</span> <code>head</code> and <code>tail</code></a></li>
+  <li><a href="#less-a-file-pager" id="toc-less-a-file-pager" class="nav-link" data-scroll-target="#less-a-file-pager"><span class="header-section-number">2.4</span> <code>less</code>: A file pager</a></li>
+  <li><a href="#wc--l" id="toc-wc--l" class="nav-link" data-scroll-target="#wc--l"><span class="header-section-number">2.5</span> <code>wc -l</code></a></li>
+  </ul></li>
+  <li><a href="#redirection-and-pipes" id="toc-redirection-and-pipes" class="nav-link" data-scroll-target="#redirection-and-pipes"><span class="header-section-number">3</span> Redirection and pipes</a>
+  <ul class="collapse">
+  <li><a href="#standard-output-and-redirection" id="toc-standard-output-and-redirection" class="nav-link" data-scroll-target="#standard-output-and-redirection"><span class="header-section-number">3.1</span> Standard output and redirection</a></li>
+  <li><a href="#standard-input-and-pipes" id="toc-standard-input-and-pipes" class="nav-link" data-scroll-target="#standard-input-and-pipes"><span class="header-section-number">3.2</span> Standard input and pipes</a></li>
+  </ul></li>
+  <li><a href="#unix-data-tools" id="toc-unix-data-tools" class="nav-link" data-scroll-target="#unix-data-tools"><span class="header-section-number">4</span> Unix data tools</a>
+  <ul class="collapse">
+  <li><a href="#selecting-columns-using-cut" id="toc-selecting-columns-using-cut" class="nav-link" data-scroll-target="#selecting-columns-using-cut"><span class="header-section-number">4.1</span> Selecting columns using <code>cut</code></a></li>
+  <li><a href="#combining-cut-sort-and-uniq-to-create-a-list" id="toc-combining-cut-sort-and-uniq-to-create-a-list" class="nav-link" data-scroll-target="#combining-cut-sort-and-uniq-to-create-a-list"><span class="header-section-number">4.2</span> Combining <code>cut</code>, <code>sort</code>, and <code>uniq</code> to create a list</a></li>
+  <li><a href="#grep-to-print-lines-matching-a-pattern" id="toc-grep-to-print-lines-matching-a-pattern" class="nav-link" data-scroll-target="#grep-to-print-lines-matching-a-pattern"><span class="header-section-number">4.3</span> <code>grep</code> to print lines matching a pattern</a></li>
+  <li><a href="#substituting-characters-using-tr" id="toc-substituting-characters-using-tr" class="nav-link" data-scroll-target="#substituting-characters-using-tr"><span class="header-section-number">4.4</span> Substituting characters using <code>tr</code></a></li>
+  </ul></li>
+  <li><a href="#wrap-up-the-unix-philosophy" id="toc-wrap-up-the-unix-philosophy" class="nav-link" data-scroll-target="#wrap-up-the-unix-philosophy"><span class="header-section-number">5</span> Wrap-up &amp; the Unix philosophy</a>
+  <ul class="collapse">
+  <li><a href="#covered-in-the-chapter-but-not-in-todays-session" id="toc-covered-in-the-chapter-but-not-in-todays-session" class="nav-link" data-scroll-target="#covered-in-the-chapter-but-not-in-todays-session"><span class="header-section-number">5.1</span> Covered in the chapter but not in today’s session</a></li>
+  <li><a href="#the-unix-philosophy" id="toc-the-unix-philosophy" class="nav-link" data-scroll-target="#the-unix-philosophy"><span class="header-section-number">5.2</span> The Unix philosophy</a></li>
+  <li><a href="#the-unix-shell-in-the-weeks-ahead" id="toc-the-unix-shell-in-the-weeks-ahead" class="nav-link" data-scroll-target="#the-unix-shell-in-the-weeks-ahead"><span class="header-section-number">5.3</span> The Unix shell in the weeks ahead</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Unix Shell Basics - part II</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jelmer Poelstra </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 4, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<hr>
+<p><br></p>
+<p>In this session, we will continue with …</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>While some of these commands may seem to do somewhat trivial tasks, TBA</p>
+<ul>
+<li>Getting more comfortable with working in the shell</li>
+<li>Syntax is consistent, can generalize across commands</li>
+<li>Better to stick with the shell also for these operations instead of going back and forth</li>
+</ul>
+</div>
+</div>
+<p><br></p>
+<section id="file-browser-type-commands" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="file-browser-type-commands"><span class="header-section-number">1</span> File browser-type commands</h2>
+<section id="ls-to-list-files" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="ls-to-list-files"><span class="header-section-number">1.1</span> <code>ls</code> to list files</h3>
+<p>The <code>ls</code> command, short for “list”, will list files and directories — by default those in your current working dir:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (You should be in /fs/ess/PAS2880/users/$USER/CSB/unix/data)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Buzzard2015_about.txt  Gesquiere2011_about.txt  Marra2014_about.txt   miRNA                   Pacifici2013_data.csv  Saavedra2013_about.txt
+Buzzard2015_data.csv   Gesquiere2011_data.csv   Marra2014_data.fasta  Pacifici2013_about.txt  Saavedra2013</code></pre>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<code>ls</code> output colors <em>(click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The <code>ls</code> output above does not show the different colors you should see in your shell — the most common ones are:</p>
+<ul>
+<li>Entries in <span style="color: #0328fc">blue</span> are directories (like <code>miRNA</code> and <code>Saavedra2013</code> above)</li>
+<li>Entries in black are regular files (like all other entries above)</li>
+<li>Entries in <span style="color: #d92118">red</span> are compressed files (we’ll see examples of this later).</li>
+</ul>
+</div>
+</div>
+</div>
+<p>You can use an <em>argument</em> to change the dir (or file) that <code>ls</code> operates on, and you can use <em>options</em> to change how it shows the output.</p>
+<p>Let’s start with options. For example, we can run <code>ls</code> with the <strong>option <code>-l</code></strong> (lowercase L):</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>total 1793
+-rw-rw----+ 1 jelmer PAS0471     562 Feb 24 20:30 Buzzard2015_about.txt
+-rw-rw----+ 1 jelmer PAS0471   39058 Feb 24 20:30 Buzzard2015_data.csv
+-rw-rw----+ 1 jelmer PAS0471     447 Feb 24 20:30 Gesquiere2011_about.txt
+-rw-rw----+ 1 jelmer PAS0471   38025 Feb 24 20:30 Gesquiere2011_data.csv
+-rw-rw----+ 1 jelmer PAS0471     756 Feb 24 20:30 Marra2014_about.txt
+-rw-rw----+ 1 jelmer PAS0471  566026 Feb 24 20:30 Marra2014_data.fasta
+drwxrwx---+ 2 jelmer PAS0471    4096 Feb 24 20:30 miRNA
+-rw-rw----+ 1 jelmer PAS0471     520 Feb 24 20:30 Pacifici2013_about.txt
+-rw-rw----+ 1 jelmer PAS0471 1076150 Feb 24 20:30 Pacifici2013_data.csv
+drwxrwx---+ 2 jelmer PAS0471    4096 Feb 24 20:30 Saavedra2013
+-rw-rw----+ 1 jelmer PAS0471     322 Feb 24 20:30 Saavedra2013_about.txt</code></pre>
+<p>It lists the same items as earlier, but <strong>printed in a different format</strong>: one item per line, with additional information such as the date and time each file was last modified, and file sizes in bytes (to the left of the date).</p>
+<p>Let’s add another option, <strong><code>-h</code></strong>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>total 1.8M
+-rw-rw----+ 1 jelmer PAS0471  562 Feb 24 20:30 Buzzard2015_about.txt
+-rw-rw----+ 1 jelmer PAS0471  39K Feb 24 20:30 Buzzard2015_data.csv
+-rw-rw----+ 1 jelmer PAS0471  447 Feb 24 20:30 Gesquiere2011_about.txt
+-rw-rw----+ 1 jelmer PAS0471  38K Feb 24 20:30 Gesquiere2011_data.csv
+-rw-rw----+ 1 jelmer PAS0471  756 Feb 24 20:30 Marra2014_about.txt
+-rw-rw----+ 1 jelmer PAS0471 553K Feb 24 20:30 Marra2014_data.fasta
+drwxrwx---+ 2 jelmer PAS0471 4.0K Feb 24 20:30 miRNA
+-rw-rw----+ 1 jelmer PAS0471  520 Feb 24 20:30 Pacifici2013_about.txt
+-rw-rw----+ 1 jelmer PAS0471 1.1M Feb 24 20:30 Pacifici2013_data.csv
+drwxrwx---+ 2 jelmer PAS0471 4.0K Feb 24 20:30 Saavedra2013
+-rw-rw----+ 1 jelmer PAS0471  322 Feb 24 20:30 Saavedra2013_about.txt</code></pre>
+<details>
+<summary>
+What is different about the output, and what do you think that means? <em>(Click to see the answer)</em>
+</summary>
+<p>The only difference is in the format of the column reporting the sizes of the items listed.</p>
+<p>We now have “Human-readable filesizes” (hence <code>-h</code>), where sizes on the scale of kilobytes will be shown with <code>K</code>s, of megabytes with <code>M</code>s, and of gigabytes with <code>G</code>s. That can be useful especially for large files.</p>
+</details>
+<hr style="height:1pt; visibility:hidden;">
+<p>Moving on to the argument(s) to <code>ls</code> – we can list files in directories other than the one we are in, by specifying that dir as an argument:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> miRNA</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>ggo_miR.fasta  hsa_miR.fasta  miR_about.txt  miRNA_about.txt  ppa_miR.fasta  ppy_miR.fasta  ptr_miR.fasta  ssy_miR.fasta</code></pre>
+<p>And like we saw with <code>cal</code>, we can combine options and arguments:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> miRNA</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>total 320K
+-rw-rw----+ 1 jelmer PAS0471  18K Feb 24 20:30 ggo_miR.fasta
+-rw-rw----+ 1 jelmer PAS0471 131K Feb 24 20:30 hsa_miR.fasta
+-rw-rw----+ 1 jelmer PAS0471  104 Feb 24 20:30 miR_about.txt
+-rw-rw----+ 1 jelmer PAS0471  104 Feb 24 20:30 miRNA_about.txt
+-rw-rw----+ 1 jelmer PAS0471 4.0K Feb 24 20:30 ppa_miR.fasta
+-rw-rw----+ 1 jelmer PAS0471  33K Feb 24 20:30 ppy_miR.fasta
+-rw-rw----+ 1 jelmer PAS0471  29K Feb 24 20:30 ptr_miR.fasta
+-rw-rw----+ 1 jelmer PAS0471  495 Feb 24 20:30 ssy_miR.fasta</code></pre>
+<section id="exercise" class="level4 exercise">
+<h4 class="anchored" data-anchor-id="exercise"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <strong>Exercise</strong></h4>
+<p>Say you wanted to check the size of a single file. Then, it may always be convenient to list an entire dir’s contents, as a dir could contain many files.</p>
+<p>Can you try to use <code>ls</code> to see the file size <strong>only</strong> for the <code>miRNA_about.txt</code> file we saw listed above?</p>
+<details>
+<summary>
+<em>Click to see the solution</em>
+</summary>
+<p>The argument to <code>ls</code> can be a path of any kind, including to a file rather than to a dir:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> miRNA/miRNA_about.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>-rw-rw----+ 1 jelmer PAS0471  104 Feb 24 20:30 miRNA_about.txt</code></pre>
+</details>
+</section>
+<hr style="height:1pt; visibility:hidden;">
+<p>In preparation for the next sections, let’s move into the <code>sandbox</code> dir:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../sandbox</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Papers and reviews</code></pre>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="touch-to-create-a-new-file" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="touch-to-create-a-new-file"><span class="header-section-number">1.2</span> <code>touch</code> to create a new file</h3>
+<p>To create new, empty files, we can use the <code>touch</code> command, specifiying the file name as the argument(s):</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a single new file called newfile1.txt</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> newfile1.txt</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create two additional files:</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> newfile2.txt newfile3.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="exercise-1" class="level4 exercise">
+<h4 class="anchored" data-anchor-id="exercise-1"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <strong>Exercise</strong></h4>
+<p>Where were these files created?</p>
+<p>Can you create a create a new file <code>test.txt</code> inside a new dir <code>test</code>?</p>
+<details>
+<summary>
+<em>Click to see the solutions</em>
+</summary>
+<p>The initial files were created in your working dir.</p>
+<p>To make a new dir and create a file in there, you can’t just use the <code>touch</code> command, as it cannot create the directory for you (pay attention to the error, which may seem a bit confusing):</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> test/test.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>touch: test/test.txt: No such file or directory</code></pre>
+<p>Instead, we should first create the new dir with <code>mkdir</code> and then create the new file in there:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> test</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> test/test.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</section>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="cp-to-copy-files-and-dirs" class="level3" data-number="1.3">
+<h3 data-number="1.3" class="anchored" data-anchor-id="cp-to-copy-files-and-dirs"><span class="header-section-number">1.3</span> <code>cp</code> to copy files and dirs</h3>
+<p>The <code>cp</code> command copies files and/or dirs from one location to another. Just like with copying files in file browsers on your computer, the copy can have a different name than the original file, or the same name if it’s copied to a different dir.</p>
+<p><code>cp</code> has two <strong>required</strong> arguments in the following order:</p>
+<ol type="1">
+<li>What you want to copy (<em>source</em> path)</li>
+<li>Where you want to copy it to (<em>destination</em> path).</li>
+</ol>
+<p>That is, its basic syntax is <code>cp &lt;source&gt; &lt;destination&gt;</code>.</p>
+<section id="basic-examples" class="level4">
+<h4 class="anchored" data-anchor-id="basic-examples">Basic examples</h4>
+<p>Create a copy of one of the files we created above:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> newfile3.txt newfile3_copy.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Importantly, like with any Unix command</strong>, you can always refer to files and dirs that aren’t in your current working dir – for example:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../data/Buzzard2015_about.txt buzz2.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The above copied the file <code>Buzzard2015_about.txt</code>, which was not in our working dir, to a new file with the name <code>buzz2.txt</code> in our working dir.</p>
+</section>
+<section id="copying-into-your-working-dir-without-changing-the-name" class="level4">
+<h4 class="anchored" data-anchor-id="copying-into-your-working-dir-without-changing-the-name">Copying into your working dir without changing the name</h4>
+<p>When copying something into our working dir, like above, we may not actually want to change the file name. To accomplish this, we could of course just repeat the original file name in the target argument:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../data/Buzzard2015_about.txt Buzzard2015_about.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>But do we really need to repeat the filename (which is not just more typing but can be error-prone as well)? No. If we only use the <code>.</code> shortcut that indicates our current working dir, the file name of the copy will not be changed:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../data/Buzzard2015_data.csv .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="copying-dirs-and-their-contents" class="level3" data-number="1.4">
+<h3 data-number="1.4" class="anchored" data-anchor-id="copying-dirs-and-their-contents"><span class="header-section-number">1.4</span> Copying dirs and their contents</h3>
+<p>Finally, <code>cp</code> will by default refuse to copy directories and their contents — that is, it is not “<strong>recursive</strong>” by default. The <code>-r</code> option is needed for recursive copying:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> ../data . </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Check the contents of the <code>sandbox</code> dir again now that we’ve copied several items there:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>TODO UPDATE</code></pre>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="mv-to-move-and-rename-files-and-dirs" class="level3" data-number="1.5">
+<h3 data-number="1.5" class="anchored" data-anchor-id="mv-to-move-and-rename-files-and-dirs"><span class="header-section-number">1.5</span> <code>mv</code> to move and rename files and dirs</h3>
+<p>Moving files to a different dir and renaming files is fundamentally the same operation: you are changing the path. It is important to realize that when talking about files, both its filename (e.g.&nbsp;<code>buzz2.txt</code>) and the dir it is inside (<code>/fs/ess/PAS2880/users/jelmer/CSB/sandbox</code>) are part of the path (<code>/fs/ess/PAS2880/users/jelmer/CSB/sandbox/buzz2.txt</code>).</p>
+<p>The <strong><code>mv</code></strong> command, then, can be used to move files, rename them, or do both at the same time:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Same directory, different file name ("renaming"):</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> buzz2.txt buzz_copy.txt</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Different directory, same file name ("moving"):</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> buzz_copy.txt data/</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Different directory, different file name ("moving + renaming"):</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> buzz_copy.txt data/buzz_copy99.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Finally, unlike <code>cp</code>, <code>mv</code> is recursive by default!</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Both the <code>mv</code> and <code>cp</code> commands will by default:
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Not report what they do: no output = success (use the <code>-v</code> option for <em>verbose</em> to make them report what they do).</li>
+<li>Overwrite existing files without reporting this (use the <code>-i</code> option for <em>interactive</em> to make them ask before overwriting).</li>
+</ul>
+</div>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="rm-to-remove-files-and-dirs" class="level3" data-number="1.6">
+<h3 data-number="1.6" class="anchored" data-anchor-id="rm-to-remove-files-and-dirs"><span class="header-section-number">1.6</span> <code>rm</code> to remove files and dirs</h3>
+<p>The <strong><code>rm</code></strong> command removes files and optionally dirs — here, we’ll remove the file copy we made above:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> Buzzard2015_about.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Like with <code>cp</code>, the <strong><code>-r</code></strong> option is needed to make the command work recursively:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> testdir</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>rm: cannot remove ‘testdir’: Is a directory</code></pre>
+<p>But it does work (silently!) with the ‘-r’ option:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> testdir</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+There is no thrash bin when deleting files in the shell, so use <code>rm</code> with caution! <em>(Click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><code>rm -r</code> can be very dangerous — for example, the command <code>rm -r /</code> would attempt to remove the entire contents of the computer, including the operating system.</p>
+<p>A couple ways to take precautions:</p>
+<ul>
+<li>You can add the <code>-i</code> option, which will have you confirm each individual removal (can be tedious)</li>
+<li>When you <em>intend</em> to remove an empty dir, you can use the <code>rmdir</code> command which will do just (and only) that — that way, if the dir isn’t empty after all, you’ll get an error.</li>
+</ul>
+</div>
+</div>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+<section id="bonus-exercise-cp-and-mv-behavior" class="level4 exercise">
+<h4 class="anchored" data-anchor-id="bonus-exercise-cp-and-mv-behavior"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Bonus exercise: <code>cp</code> and <code>mv</code> behavior</h4>
+<p>For both <code>cp</code> and <code>mv</code>, when operating on files (and this works equivalently for dirs):</p>
+<ul>
+<li>If the destination is an existing dir, the file will go into that dir and keep its original name.</li>
+<li>If the destination is <em>not</em> an existing dir, the (last bit of the) destination specifies the new file name.</li>
+<li>A trailing slash in the destination makes explicit that you are referring to a dir and not a file.</li>
+</ul>
+<hr>
+<p>With that in mind, try to answer the following questions about this command:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> Buzzard2015_about.txt more_data/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>What do you think the command would do or attempt to do?</li>
+<li>Do you think the command will succeed?</li>
+<li>What would the command have done if we had omitted the trailing forward slash?</li>
+</ul>
+<details>
+<summary>
+Click to see the solution
+</summary>
+<hr style="height:1pt; visibility:hidden;">
+<ul>
+<li><p>Because we put a trailing forward slash in <code>more_data/</code>, we are making clear that we are referring to a directory. So the file should be copied into a dir <code>more_data</code>, and keep the same file name.</p></li>
+<li><p>However, the <code>more_data/</code> dir does not exist, and <code>cp</code> will not create a dir on the fly, so this will fail:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> Buzzard2015_about.txt more_data/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>cp: cannot create regular file ‘more_data/’: Not a directory</code></pre></li>
+<li><p>If we had omitted the trailing forward slash, we would have created a copy of the file with <em>file</em> name <code>more_data</code> (note that no file extension is needed, per se).</p></li>
+<li><p>P.S: To make the original intention work, first create the destination dir:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> more_data</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> Buzzard2015_about.txt more_data/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note also that once the <code>more_data</code> dir exists, it <strong>does not</strong> make a difference whether or not you using a trailing slash (!).</p></li>
+</ul>
+</details>
+</section>
+<hr style="height:1pt; visibility:hidden;">
+<p><br></p>
+</section>
+</section>
+<section id="viewing-text-files" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="viewing-text-files"><span class="header-section-number">2</span> Viewing text files</h2>
+<section id="plain-text-files" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="plain-text-files"><span class="header-section-number">2.1</span> Plain-text files</h3>
+<p>In this course, we’ll be working almost exclusively with so-called “<strong>plain-text</strong>” files (files with <code>.txt</code> and related extensions). These are simple files that can be opened by any text editor and Unix shell tool.</p>
+<p>In contrast, so-called “binary” formats like Excel or Word files can only be opened in their respective apps, and cannot be operated on with the below commands. That is quite limiting, as such apps are not always available and problems may also arise if a file was produced by a more recent version of the app than you have, or a “too-old” version.</p>
+<p>While their simplicity may seem limiting, <strong>plain-text files are generally preferable in reproducible science</strong>. Additionally, many common omics file formats, like FASTA, FASTQ, and GFF, are plain-text.</p>
+<p>Therefore, we will be learning a number of Unix commands to view (this section) and process/summarize (next section) plain-text files in various formats.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../data   <span class="co"># Move to the data dir for the next commands</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="cat" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="cat"><span class="header-section-number">2.2</span> <code>cat</code></h3>
+<p>The <strong><code>cat</code></strong> command will print the entire contents of one or more files to screen:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> Marra2014_about.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Data published by:
+Marra NJ, DeWoody JA (2014) Transcriptomic characterization of the immunogenetic repertoires of heteromyid rodents. BMC Genomics 15: 929. http://dx.doi.org/10.1186/1471-2164-15-929
+
+Data description:
+File D_spec_spleen_filtered.fasta (57.01Mb) contains Dipodomys spectabilis spleen transcriptome data. Combined assembly of 454 reads and fragmented Illumina assembly (see methods of associated paper) in gsAssembler version 2.6.
+Note that we truncated the original file to 1% of its original size and named it Marra2014_data.txt
+
+Data taken from:
+Marra NJ, DeWoody JA (2014) Data from: Transcriptomic characterization of the immunogenetic repertoires of heteromyid rodents. Dryad Digital Repository. http://dx.doi.org/10.5061/dryad.qn474</code></pre>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="head-and-tail" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="head-and-tail"><span class="header-section-number">2.3</span> <code>head</code> and <code>tail</code></h3>
+<p>Some files, especially when working with omics data, can be huge, so printing the whole file with <code>cat</code> is not always ideal. The twin commands <strong><code>head</code></strong> and <strong><code>tail</code></strong> can be useful, as they will print only the first (<code>head</code>) or last (<code>tail</code>) lines of a file.</p>
+<p><code>head</code> &amp; <code>tail</code>’s defaults are to print 10 lines:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> Gesquiere2011_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>maleID  GC      T
+1       66.9    64.57
+1       51.09   35.57
+1       65.89   114.28
+1       80.88   137.81
+1       32.65   59.94
+1       60.52   101.83
+1       65.89   65.84
+1       52.72   43.98
+1       84.85   102.31</code></pre>
+<p>Use the <code>-n</code> option to specify the number of lines to print:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 3 Gesquiere2011_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>maleID  GC      T
+1       66.9    64.57
+1       51.09   35.57</code></pre>
+<p>A neat trick with <code>tail</code> is to <em>start at</em> a specific line, often used to skip the header line, like in this example<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 Gesquiere2011_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>1       66.9    64.57
+1       51.09   35.57
+1       65.89   114.28
+1       80.88   137.81
+1       32.65   59.94
+1       60.52   101.83
+1       65.89   65.84
+1       52.72   43.98
+1       84.85   102.31
+1       98.25   149.61
+[...output truncated...]</code></pre>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="less-a-file-pager" class="level3" data-number="2.4">
+<h3 data-number="2.4" class="anchored" data-anchor-id="less-a-file-pager"><span class="header-section-number">2.4</span> <code>less</code>: A file pager</h3>
+<p>TBA</p>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="wc--l" class="level3" data-number="2.5">
+<h3 data-number="2.5" class="anchored" data-anchor-id="wc--l"><span class="header-section-number">2.5</span> <code>wc -l</code></h3>
+<p>The <strong><code>wc</code></strong> command is different from the previous commands, all of which printed some or all of a file’s contents. By default, <code>wc</code> will count lines, words, and characters — but it is most commonly used to only <strong>count lines</strong>, with the <code>-l</code> option:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> Marra2014_about.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>9 Marra2014_about.txt</code></pre>
+<p>This can be surprisingly useful, as the number of lines in many types of files represent a count of the number of entries.</p>
+<p><br></p>
+</section>
+</section>
+<section id="redirection-and-pipes" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="redirection-and-pipes"><span class="header-section-number">3</span> Redirection and pipes</h2>
+<p>Start by moving back into the <code>sandbox</code> dir:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../sandbox</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="standard-output-and-redirection" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="standard-output-and-redirection"><span class="header-section-number">3.1</span> Standard output and redirection</h3>
+<p>The regular output of a command that is printed to the screen (like a list of files by <code>ls</code>, or a number of lines by <code>wc -l</code>) is technically called <strong>“standard out”</strong> or in short “<em>stdout</em>”.</p>
+<p>Sometimes, we may want to do something else with this output, like storing it in a file. Luckily, this is easy to do.</p>
+<p>With “<strong><code>&gt;</code></strong>”, we <strong>redirect</strong> output to a file:</p>
+<ul>
+<li>If the file doesn’t exist, it will be <em>created</em>.</li>
+<li>If the file does exist, any contents will be <em>overwritten</em>.</li>
+</ul>
+<p>First, let’s remind ourselves what <code>echo</code> does without redirection — it will simply print the characters we provide it with to the screen:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"My first line"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>My first line</code></pre>
+<p>Now, let’s redirect <code>echo</code>’s standard out to a new file `test.txt:</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"My first line"</span> <span class="op">&gt;</span> test.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>No output was printed to the screen, as it instead went into the file:</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> test.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>My first line</code></pre>
+<p>Let’s redirect another line into that same file:</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"My second line"</span> <span class="op">&gt;</span> test.txt</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> test.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>My second line</code></pre>
+<p>That may not have been what we intended! As explained above, the earlier file contents was <em>overwritten</em>.</p>
+<p>With “<strong><code>&gt;&gt;</code></strong>”, however, we <strong>append</strong> the output to a file:</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"My third line"</span> <span class="op">&gt;&gt;</span> test.txt</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> test.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>My second line
+My third line</code></pre>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="standard-input-and-pipes" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="standard-input-and-pipes"><span class="header-section-number">3.2</span> Standard input and pipes</h3>
+<p>Recall from today’s previous examples that a file name can be given as an argument to many commands — for example, see the following sequence of commands:</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First we redirect the ls output to a file</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> ../data/Saavedra2013 <span class="op">&gt;</span> filelist.txt</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's check what that looks like:</span></span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 5 filelist.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>n10.txt
+n11.txt
+n12.txt
+n13.txt
+n14.txt</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Then we count the nr. of lines, which is the number of files+dirs in Saavedra2013:</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> filelist.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>59 filelist.txt</code></pre>
+<p>Above, we provided the <code>head</code> and <code>wc</code> commands with an argument: the path to a file to operate on.</p>
+<p>However, most commands <em>also</em> accept input from so-called “standard input” (<em>stdin</em>) using the <strong>pipe</strong>, “<strong><code>|</code></strong>”:</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> ../data/Saavedra2013 <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>59</code></pre>
+<p>When we use the pipe, the output of the command on the left-hand side (a file listing, in this case) is no longer printed to screen but is <strong>redirected into the <code>wc</code> command</strong>. This command (and many others) will gladly accept input that way instead of via an file name argument, like in the earlier example.</p>
+<p>Pipes are useful because they avoid having to write/read intermediate files — this saves typing, makes the operation quicker, and reduces file clobber. In the example above, we don’t need to make a <code>filelist.txt</code> file to count the number of files.</p>
+<p><br></p>
+</section>
+</section>
+<section id="unix-data-tools" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="unix-data-tools"><span class="header-section-number">4</span> Unix data tools</h2>
+<p>We’ll now turn to some commands that may be described as Unix “data tools”: <code>cut</code>, <code>sort</code>, <code>uniq</code>, <code>tr</code>, and <code>grep</code>.</p>
+<p>Most of the examples will use the file <code>Pacifici2013_data.csv</code>, so let’s have a look at the contents of that file first:</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../data</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 3 Pacifici2013_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>TaxID;Order;Family;Genus;Scientific_name;AdultBodyMass_g;Sources_AdultBodyMass;Max_longevity_d;Sources_Max_longevity;Rspan_d;AFR_d;Data_AFR;Calculated_GL_d;GenerationLength_d;Sources_GL
+7580;Rodentia;Cricetidae;Eligmodontia;Eligmodontia typus;17.37;PanTHERIA;292;PanTHERIA;254.64;73.74;calculated;147.5856;147.5856;Rspan-AFR(SM+Gest)
+42632;Rodentia;Cricetidae;Microtus;Microtus oregoni;20.35;PanTHERIA;456.25;PanTHERIA;445.85;58.06;calculated;187.3565;187.3565;Rspan-AFR(SM+Gest)</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tabular plain-text files
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“<strong>Tabular</strong>” files contain data that is arranged in a rows-and-columns format, like a table or an Excel worksheet.</p>
+<p>Because plain-text files do not have an intrinsic way to define columns or cells, certain characters are used as “delimiters” in <strong>plain-text tabular</strong> files, like <code>Pacifici2013_data.csv</code>. Most commonly, these are:</p>
+<ul>
+<li>A Tab, and such files are often stored with a <strong><code>.tsv</code></strong> extension for Tab-Separated Values (“TSV file”).</li>
+<li>A comma, and such files are often stored with a <strong><code>.csv</code></strong> extension for Comma-Separated Values (“CSV file”).</li>
+</ul>
+</div>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+<details>
+<summary>
+What delimiter does the <code>Pacifici2013_data.csv</code> file appear to contain? <em>(Click for the answer)</em>
+</summary>
+From looking at the first couple of lines that we printed above, the delimiter is a semicolon <code>;</code> — “even though” the file has a <code>.csv</code> extension.
+</details>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A not about file extensions (TBA)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+<section id="selecting-columns-using-cut" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="selecting-columns-using-cut"><span class="header-section-number">4.1</span> Selecting columns using <code>cut</code></h3>
+<p>The <code>cut</code> command will select or we could say “cut out” one or more columns from a tabular file:</p>
+<ul>
+<li>We’ll always have to use the <strong><code>-f</code></strong> option to specify the <strong>desired column(s) / “field”(s)</strong>.</li>
+<li>Because its default column delimiter is a Tab, for this file, we’ll have to specify the <strong>delimiter</strong> with <strong><code>-d</code></strong>.</li>
+</ul>
+<div class="sourceCode" id="cb64"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the first column of the file:</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 1 Pacifici2013_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>TaxID
+7580
+42632
+42653
+42662
+16652
+[...output truncated...]</code></pre>
+<p>That worked, but a ton of output was printed, and we may find ourselves scrolling to the top to see the first few lines – in many cases, it can be useful to <strong>pipe the output to <code>head</code></strong> to see if our command works:</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 1 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>TaxID
+7580
+42632</code></pre>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Selecting multiple columns with <code>cut</code> <em>(Click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>To select <strong>multiple columns</strong>, use a range or comma-delimited list:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 1-4 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>TaxID;Order;Family;Genus
+7580;Rodentia;Cricetidae;Eligmodontia
+42632;Rodentia;Cricetidae;Microtus</code></pre>
+<div class="sourceCode" id="cb70"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 2,8 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Order;Max_longevity_d
+Rodentia;292
+Rodentia;456.25</code></pre>
+<p>However, it is not possible to change the order of columns with <code>cut</code>! (The more advanced <code>awk</code> command can do this.)</p>
+</div>
+</div>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="combining-cut-sort-and-uniq-to-create-a-list" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="combining-cut-sort-and-uniq-to-create-a-list"><span class="header-section-number">4.2</span> Combining <code>cut</code>, <code>sort</code>, and <code>uniq</code> to create a list</h3>
+<p>Let’s say we want an alphabetically sorted list of animal <em>orders</em> from the <code>Pacifici2013_data.csv</code> file. To do this, we’ll need to learn about two new commands:</p>
+<ul>
+<li><strong><code>sort</code></strong> to sort/order/arrange rows, by default in alphanumeric order.</li>
+<li><strong><code>uniq</code></strong> to remove duplicates (i.e., keep all distinct/unique) entries <em>from a sorted file/list</em>.</li>
+</ul>
+<p>We’ll build up a small “pipeline” to do this, step-by-step, and piping the output into <code>head</code> at every step. First, we get rid of the header line with our <code>tail</code> trick:</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>7580;Rodentia;Cricetidae;Eligmodontia;Eligmodontia typus;17.37;PanTHERIA;292;PanTHERIA;254.64;73.74;calculated;147.5856;147.5856;Rspan-AFR(SM+Gest)
+42632;Rodentia;Cricetidae;Microtus;Microtus oregoni;20.35;PanTHERIA;456.25;PanTHERIA;445.85;58.06;calculated;187.3565;187.3565;Rspan-AFR(SM+Gest)
+42653;Rodentia;Cricetidae;Peromyscus;Peromyscus gossypinus;27.68;PanTHERIA;471.45833335;PanTHERIA;444.87833335;72.58;calculated;201.59471667;201.5947166715;Rspan-AFR(SM+Gest)
+42662;Macroscelidea;Macroscelididae;Elephantulus;Elephantulus myurus;59.51;PanTHERIA;401.5;PanTHERIA;412.34;90.48;calculated;210.0586;210.0586;Rspan-AFR(SM+Gest)
+16652;Rodentia;Cricetidae;Peromyscus;Peromyscus boylii;23.9;PanTHERIA;547.5;PanTHERIA;514.13;79.97;calculated;229.0677;229.0677;Rspan-AFR(SM+Gest)</code></pre>
+<p>Second, we select our column of interest with <code>cut</code>:</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Rodentia
+Rodentia
+Rodentia
+Macroscelidea
+Rodentia</code></pre>
+<p>Third, we pipe to <code>sort</code> to alphabetically sort the result:</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Afrosoricida
+Afrosoricida
+Afrosoricida
+Afrosoricida
+Afrosoricida</code></pre>
+<p>Finally, we use <code>uniq</code> to only keep unique rows (values):</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Afrosoricida
+Carnivora
+Cetartiodactyla
+Chiroptera
+Cingulata
+Dasyuromorphia
+Dermoptera
+Didelphimorphia
+[...output truncated...]</code></pre>
+<p>Amazingly, with a very small modification to our pipeline, we can generate a “count table” instead of a simple list – we just have to add <code>uniq</code>’s <code>-c</code> option (for <strong>c</strong>ount):</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>     54 Afrosoricida
+    280 Carnivora
+    325 Cetartiodactyla
+   1144 Chiroptera
+     21 Cingulata
+[...output truncated...]</code></pre>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="grep-to-print-lines-matching-a-pattern" class="level3" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="grep-to-print-lines-matching-a-pattern"><span class="header-section-number">4.3</span> <code>grep</code> to print lines matching a pattern</h3>
+<p>The <code>grep</code> command is useful to find specific text or patterns in a file. By default, it will <strong>print each line that contains a “match” in full</strong>. It’s basic syntax is <code>grep "&lt;pattern&gt;" file</code>.</p>
+<p>For example, this will print all lines from <code>Pacifici2013_data.csv</code> that contain “Vombatidae”:</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"Vombatidae"</span> Pacifici2013_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>40555;Diprotodontia;Vombatidae;Lasiorhinus;Lasiorhinus latifrons;26163.8;PanTHERIA;9928;"PanTHERIA;AnAge";9317.5;652.24;calculated;3354.315;3354.315;Rspan-AFR(SM+Gest)
+40556;Diprotodontia;Vombatidae;Vombatus;Vombatus ursinus;26000;PanTHERIA;10238.25;"PanTHERIA;AnAge";9511.6;783.65;calculated;3542.014;3542.014;Rspan-AFR(SM+Gest)
+11343;Diprotodontia;Vombatidae;Lasiorhinus;Lasiorhinus krefftii;31849.99;PanTHERIA;10950;"PanTHERIA;AnAge";no information;no information;no information;no information;3354.315;Mean_congenerics_same_body_mass</code></pre>
+<p>Instead of printing matching lines, we can also <strong>count</strong> them with the <code>-c</code> option:</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co"># How many entries for bats (Chiroptera) does the file have?</span></span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">"Chiroptera"</span> Pacifici2013_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>1144</code></pre>
+<p>The option <code>-v</code> <strong>inverts</strong> <code>grep</code>’s behavior and will print all lines <em>not</em> matching the pattern — here, we’ll combine <code>-v</code> and <code>-c</code> to count the number of lines that do not contain “Vombatidae”:</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-vc</span> <span class="st">"Vombatidae"</span> Pacifici2013_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>5424</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<code>grep</code> tips <em>(Click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>While not always necessary, it is a good habit to always use quotes around the search pattern.</li>
+<li>Incomplete matches, including in individual words, work: “<code>Vombat</code>” matches <code>Vombatidae</code>.</li>
+<li><code>grep</code> has many other useful options — more in Week 4:
+<ul>
+<li><code>-i</code> to ignore case</li>
+<li><code>-r</code> to search files recursively</li>
+<li><code>-w</code> to match “words”</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="substituting-characters-using-tr" class="level3" data-number="4.4">
+<h3 data-number="4.4" class="anchored" data-anchor-id="substituting-characters-using-tr"><span class="header-section-number">4.4</span> Substituting characters using <code>tr</code></h3>
+<p><code>tr</code> for <strong><code>tr</code></strong>anslate will substitute all instances of characters –- here, any <code>a</code> for a <code>b</code>:</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"aaaaccc"</span> <span class="kw">|</span> <span class="fu">tr</span> a b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>bbbbccc</code></pre>
+<p>Oddly enough, <code>tr</code> does not take a file name as an argument, so how can we provide it with input from a file? The easiest way is by piping the output of <code>cat</code> into <code>tr</code> as follows:</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">";"</span> <span class="st">"\t"</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>TaxID   Order   Family  Genus   Scientific_name AdultBodyMass_g Sources_AdultBodyMass   Max_longevity_d Sources_Max_longevity   Rspan_d AFR_d   Data_AFR        Calculated_GL_d   GenerationLength_d      Sources_GL
+7580    Rodentia        Cricetidae      Eligmodontia    Eligmodontia typus      17.37   PanTHERIA       292     PanTHERIA       254.64  73.74   calculated      147.5856  147.5856        Rspan-AFR(SM+Gest)
+42632   Rodentia        Cricetidae      Microtus        Microtus oregoni        20.35   PanTHERIA       456.25  PanTHERIA       445.85  58.06   calculated      187.3565  187.3565        Rspan-AFR(SM+Gest)</code></pre>
+<p>The example above converted the <code>;</code> delimited to a <code>Tab</code> (i.e., a CSV file to a TSV file), where <strong><code>\t</code></strong> is a regular expression meaning Tab<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. (Though note that we didn’t modify the original file nor saved the output in a new file.)</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Don’t redirect to the input file! <em>(Click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>TBA</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Deletion and “squeezing” with <code>tr</code> <em>(Click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Delete all a’s:</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"aabbccddee"</span> <span class="kw">|</span> <span class="fu">tr</span> <span class="at">-d</span> a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>bbccddee</code></pre>
+<ul>
+<li>Remove consecutive duplicates a’s:</li>
+</ul>
+<div class="sourceCode" id="cb94"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"aabbccddee"</span> <span class="kw">|</span> <span class="fu">tr</span> <span class="at">-s</span> a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>abbccddee</code></pre>
+</div>
+</div>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+<section id="exercise-redirecting-tr-output" class="level4 exercise">
+<h4 class="anchored" data-anchor-id="exercise-redirecting-tr-output"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Redirecting <code>tr</code> output</h4>
+<p>Modify our command in which we changed the delimiter to a Tab to redirect the output to a new file, <code>Pacifici2013_data.tsv</code> (note the extension). This file should be located in the <code>sandbox</code> dir, which is not your current working dir.</p>
+<details>
+<summary>
+Click here for the solution
+</summary>
+<div class="sourceCode" id="cb96"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">";"</span> <span class="st">"\t"</span> <span class="op">&gt;</span> ../sandbox/Pacifici2013_data.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</section>
+<p><br></p>
+</section>
+</section>
+<section id="wrap-up-the-unix-philosophy" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="wrap-up-the-unix-philosophy"><span class="header-section-number">5</span> Wrap-up &amp; the Unix philosophy</h2>
+<section id="covered-in-the-chapter-but-not-in-todays-session" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="covered-in-the-chapter-but-not-in-todays-session"><span class="header-section-number">5.1</span> Covered in the chapter but not in today’s session</h3>
+<ul>
+<li>The <code>find</code> command to find files</li>
+<li>Showing and changing file permissions</li>
+<li>Basic shell scripting</li>
+<li><code>for</code> loops</li>
+<li><code>$PATH</code> and Bash profile settings</li>
+</ul>
+<p>We’ll cover all of these over the next few weeks.</p>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="the-unix-philosophy" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="the-unix-philosophy"><span class="header-section-number">5.2</span> The Unix philosophy</h3>
+<blockquote class="blockquote">
+<p><em>This is the Unix philosophy: Write programs that do one thing and do it well.</em> <em>Write programs to work together. Write programs to handle text <strong>streams</strong>,</em> <em>because that is a universal interface.</em><br> — Doug McIlory</p>
+</blockquote>
+<p><strong>Advantages of a modular approach:</strong></p>
+<ul>
+<li>Easier to spot errors</li>
+<li>Easy to swap out components, including in other languages</li>
+<li>Easier to learn (?)</li>
+</ul>
+<p><strong>Text “streams”?</strong></p>
+<p>Rather than loading entire files into memory, process them one line at a time. Very useful with large files!</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This command would combine all files in the working dir ending in `.fa`</span></span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (i.e. FASTA files) into a single file -- even if that's multiple GBs,</span></span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a><span class="co"># this will not be a heavy lift at all!</span></span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="pp">*</span>.fa <span class="op">&gt;</span> combined.fa</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="the-unix-shell-in-the-weeks-ahead" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="the-unix-shell-in-the-weeks-ahead"><span class="header-section-number">5.3</span> The Unix shell in the weeks ahead</h3>
+<ul>
+<li><p>In all course weeks, we will be working in the Unix shell, though our focus in several cases will be on a specific tool, such as Git in week 4.</p></li>
+<li><p>A couple of sessions that will be focused on further developing shell skills:</p>
+<ul>
+<li>Week 3, Thu session: Managing files in the shell</li>
+<li>Week 5: Shell scripting and using external CLI tools</li>
+</ul></li>
+</ul>
+
+
+</section>
+</section>
+
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>We’ll see this in action in a bit<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>We’ll learn more about regular expressions in Week 4.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/mcic-osu\.github\.io\/pracs-au25");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>2025, Jelmer Poelstra</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/mcic-osu/pracs-au25">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

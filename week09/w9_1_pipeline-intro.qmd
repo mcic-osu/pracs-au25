@@ -1,0 +1,112 @@
+---
+title: "Runner scripts and pipelines"
+subtitle: "Week 9 - part I"
+pagetitle: "PRACS25: Pipelines"
+author: Jelmer Poelstra
+date: 2025-10-21
+editor_options: 
+  chunk_output_type: console
+---
+
+----------------------------------------------------------------------------------------------------
+
+<br>
+
+## Overview  {-}
+
+TBA
+
+::: {.callout-note collapse="true"}
+#### Background reading on the need for pipelines _(Click to expand)_
+
+![Perkel 2019 - <https://www.nature.com/articles/d41586-019-02619-z>](img/nature-feature.png){fig-align="center" width="70%"}
+
+Two quotes from this article:
+
+> Typically, researchers codify workflows using general scripting languages such as Python or Bash. But these often lack the necessary flexibility.
+<br><br>
+>Workflows can involve hundreds to thousands of data files; a pipeline must be able to monitor their progress and exit gracefully if any step fails. And pipelines must be smart enough to work out which tasks need to be re-executed and which do not.
+:::
+
+<br>
+
+## Workflow management systems
+
+Pipeline/workflow tools, often called "workflow management systems" in full,
+provide ways to formally describe and execute pipelines.
+Advantages of these tools are improved automation, flexibility,
+portability, and scalability^[That's a lot of big words!].
+
+- **Automation**
+  - Detect & rerun upon changes in input files and failed steps.
+  - Automate Slurm job submissions.
+  - Integration with software management.
+  - Easily run for other data sets.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+- **Flexibility, portability, and scalability**\
+  This is due to these tools separating generic pipeline nuts-and-bolts from the
+  following two aspects:
+  - Run-specific configuration --- samples, directories, settings/parameters.
+  - Things specific to the run-time environment (laptop vs. cluster vs. cloud).
+
+The two most commonly used command-line based options in bioinformatics are
+**Nextflow** and **Snakemake**.
+Both have their pros and cons, but we'll focus on Nextflow here.
+
+#### Learn to write pipelines?
+
+Most workflow tools are small "domain-specific" languages (DSLs),
+often a sort of extension of a more general language:
+for example, Python for Snakemake, and Groovy/Java for Nextflow.
+
+Learning one of these tools is harder than it should be, in my opinion ---
+a truly excellent workflow tool does not yet exist,
+and may not appear in the near-future either because existing options have become
+entrenched.
+Therefore, learning to **write your own pipelines** with one of them is probably
+only worth it if you plan to regularly work on genomics/bioinformatics projects.
+
+If you decide not to do this,
+I recommend that you instead use runner scripts as taught in this course.
+[This week's exercises](w6_exercises.qmd) and your final project can help you get
+some more practice with these.
+
+Either way, for many kinds of omics data, it is also possible (and a great idea)
+to use publicly available pipelines written with one of these workflow tools,
+and we'll practice with that next.
+
+<br>
+
+## nf-core pipelines
+
+Among workflow tools, Nextflow has by far the best ecosystem of publicly available
+pipelines. The "nf-core" initiative
+(<https://nf-co.re>, [Ewels et al. 2020](https://www.nature.com/articles/s41587-020-0439-x))
+curates a set of best-practice, flexible, and well-documented pipelines written
+in Nextflow:
+
+![](img/nfcore_homepage.png){fig-align="center" width="50%"}
+
+<hr style="height:1pt; visibility:hidden;" />
+
+For many common omics analysis types, nf-core has a pipeline.
+It currently has 58 complete pipelines --- these are the four most popular ones:
+
+![](img/nfcore_pipelines.png){fig-align="center"}
+
+Let's take a closer look at the most widely used one,
+the [rnaseq pipeline](https://nf-co.re/rnaseq>),
+which we'll run in the next session:
+
+![](img/nfcore_rnaseq.png){fig-align="center" width="120%"}
+
+There is often a bewildering array of bioinformatics programs for a given type of
+analysis, and it can be very hard and time-consuming to figure out what you should use.
+An **additional advantage** of using an nf-core (or similar) pipeline is that you can
+be confident that it uses a good if not optimal combination of tools and tool settings,
+since most of these pipelines have been developed over years by many experts in
+the field, and are also continuously updated.
+
+<br>

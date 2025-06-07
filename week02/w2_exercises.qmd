@@ -10,7 +10,10 @@ number-sections: false
 
 <hr style="height:1pt; visibility:hidden;" />
 
-*The following are some of the exercises from Chapter 1 of the CSB book.*
+*The following are some of the exercises from Chapter 1 of the CSB book,*
+*some slighly modified.*
+
+*The solutions are at the bottom of the page.*
 
 <br>
 
@@ -45,19 +48,12 @@ with `cd` to go back to the dir you were in previously (a little like a Browser'
 
 ## Intermezzo 1.2
 
-To familiarize yourself with using basic Unix commands, try the following:
-
 **(a)** Go to the `data` directory within `CSB/unix`.  
 
 **(b)** How many lines are in the file `Marra2014_data.fasta`?
 
 **(c)** Create the empty file `toremove.txt` in the `CSB/unix/sandbox` directory
         without leaving the current directory.  
-
-<details><summary>Show hints</summary>
-We didn't see this in class, but the CSB book (page 23) demonstrates the use of the `touch`
-command to create a new, empty file.
-</details>
 
 **(d)** List the contents of the directory `unix/sandbox`.  
 
@@ -72,14 +68,11 @@ command to create a new, empty file.
         And which is the last?
 
 <details><summary>Show hints</summary>
-You can either first select the 5th column using `cut` and then use `sort`,
-or directly tell the `sort` command which column to sort by.
+You will want to use `cut` followed by `sort`,
+and you will need to specify the delimiter with `cut`.
 
-In either case, you'll also need to specify the column delimiter
-(if you use the latter approach, check the book for how to do that with `sort`).
-
-To view just the first or the last line so you don't have to scroll to get your answer,
-pipe to `head` or `tail`.
+To view just the first or the last line,
+so you don't have to scroll to get your answer, pipe to `head` or `tail`.
 </details>
 
 **(b)** How many families are represented in the database?
@@ -88,7 +81,7 @@ pipe to `head` or `tail`.
 - Check the first line of the file to see which column contains the family,
   and then select the relevant column with `cut`.
 - Use the "`tail` trick" we saw in class to exclude the first line.
-- Remember to `sort` before using `uniq`.
+- Remember to `sort` before using `uniq`, or `uniq` won't work properly.
 </details>
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -108,8 +101,9 @@ who investigated the immunogenetic repertoire of rodents.
 You will find the sequence file `Marra2014_data.fasta` in the directory
 `CSB/unix/data`. The file contains sequence segments (*contigs*) of variable size.
 The description of each contig provides its length, the number of reads that
-contributed to the contig, its isogroup (representing the collection of
-alternative splice products of a possible gene), and the isotig status.
+contributed to the contig, its isogroup (basically, a gene-level grouping of the
+transcripts: multiple transcripts can be produced by a genes),
+and some kind of status.
 
 **1.** Change directory to `CSB/unix/sandbox`.
 
@@ -125,7 +119,7 @@ Recall that you can see file sizes by using specific options to the `ls` command
 
 <details><summary>Show hints</summary>
 Is there a `grep` option that counts the number of occurrences?
-Alternatively, you can pass the output of `grep` to `wc -l`.
+Alternatively, you can pipe (`|`) the output of `grep` to `wc -l`.
 </details>
 
 **5.** Modify `my_file.fasta` to replace the original "two-spaces" delimiter with a **comma**
@@ -314,14 +308,6 @@ cut -d ";" -f 5 Pacifici2013_data.csv | sort | tail -n 1
 ```
 ```bash-out
 Zyzomys woodwardi
-```
-
-```bash
-# Or, using sort directly, but then you get all columns unless you pipe to cut:
-sort -t ";" -k 5 Pacifici2013_data.csv | head -n 1
-```
-```bash-out
-42641;Rodentia;Muridae;Abditomys;Abditomys latidens;268.09;PanTHERIA;no information;no information;no information;no information;no information;no information;639.6318318208;Mean_family_same_body_mass
 ```
 
 **(b)** How many families are represented in the database?

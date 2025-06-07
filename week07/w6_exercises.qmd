@@ -1,0 +1,1186 @@
+---
+title: "Week 6 exercises"
+pagetitle: "PRACS24: week 6 exercises"
+author: Jelmer Poelstra
+date: 2024-04-12
+number-sections: false
+---
+
+-----------
+
+<br>
+
+## Introduction and setting up 
+
+These exercises mainly serve to practice more with organizing your scripts
+according to the strategy of using:
+
+- Primary shell scripts that typically run a single bioinformatics tool for a
+  single file or sample, and that accept arguments such as input and output dirs or files.
+- A runner script that serves as an informal pipeline:
+  it mainly contains code to run all the primary scripts,
+  typically submitting those as batch jobs, and often using loops to do so.
+
+In the exercises of the past two weeks, you created primary and runner scripts to
+run FastQC and TrimGalore,
+and have used these to pre-process the Garrigos et al. RNA-seq reads.
+Here, you'll add a few steps to complete this RNA-seq analysis:
+aligning the reads to the reference genome, creating a gene count table,
+and summarizing QC metrics with MultiQC.
+As such, this is a much simpler alternative to the nf-core rnaseq workflow that
+we ran in class this week.
+
+After doing this, your runner script will more closely resemble something you might
+use in this course's final project, or your research projects:
+it will contain more steps including _consecutive_ ones,
+where the input of one step is the output of a previous step.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Setting up
+
+- Create and move into a dir for these exercises:
+
+  ```bash
+  # You should be in /fs/ess/PAS2700/users/$USER
+  mkdir week06/exercises
+  cd week06/exercises
+  ```
+
+- Create dirs for primary scripts and for a runner script,
+  the create the runner script and open it:
+
+  ```bash
+  mkdir scripts run
+  touch run/run.sh
+  ```
+
+- Copy the primary scripts:
+
+  ```bash
+  cp -v /fs/ess/PAS2700/share/exercises/week6/scripts/* scripts/
+  ```
+  ```bash-out
+  ‘/fs/ess/PAS2700/share/exercises/week6/scripts/fastqc.sh’ -> ‘scripts/fastqc.sh’
+  ‘/fs/ess/PAS2700/share/exercises/week6/scripts/featurecounts.sh’ -> ‘scripts/featurecounts.sh’
+  ‘/fs/ess/PAS2700/share/exercises/week6/scripts/multiqc.sh’ -> ‘scripts/multiqc.sh’
+  ‘/fs/ess/PAS2700/share/exercises/week6/scripts/star_align.sh’ -> ‘scripts/star_align.sh’
+  ‘/fs/ess/PAS2700/share/exercises/week6/scripts/star_index.sh’ -> ‘scripts/star_index.sh’
+  ‘/fs/ess/PAS2700/share/exercises/week6/scripts/trimgalore.sh’ -> ‘scripts/trimgalore.sh’
+  ```
+
+<br>
+
+## Exercise 1: Run FastQC and TrimGalore again
+
+**A)** Paste the following into the `run/run.sh` runner script, which includes:
+
+- A short description of what the script does
+  _(modify the date, your name, and the path as needed)_
+- Defining inputs and the main output as variables
+  (you'll use the reference genome files in the later exercises)
+- Running FastQC and TrimGalore for all samples using `for` loops and batch jobs,
+  with code very similar to what you used in last week's exercises.
+
+```bash
+# 2024-04-12, Jelmer Poelstra
+# - A runner script to run a simple RNA-seq analysis, creating a gene count table
+#   from RNA-seq reads and a reference genome assembly and annotation.
+# - The steps are read QC and trimming, alignment, and quantification.
+# - The working dir is /fs/ess/PAS2700/users/jelmer/week06/exercises.
+# - I am working on the OSC Pitzer cluster.
+
+# Step 0: setting up
+# A) Define the inputs
+fastq_dir=../../garrigos_data/fastq
+fasta=../../garrigos_data/ref/GCF_016801865.2.fna
+gtf=../../garrigos_data/ref/GCF_016801865.2.gtf
+# B) Define settings
+strandedness=1       # 1 means forward-stranded (used with featureCounts)
+# C) Define the outputs
+count_table=results/featurecounts/counts.tsv
+
+# Step 1: QC the reads with FastQC
+for fastq_file in "$fastq_dir"/*fastq.gz; do
+    sbatch scripts/fastqc.sh "$fastq_file" results/fastqc
+done
+
+# Step 2: Trim the reads with TrimGalore
+for R1 in "$fastq_dir"/*_R1.fastq.gz; do
+    sbatch scripts/trimgalore.sh "$R1" results/trimgalore
+done
+```
+
+**B)** Take a look at the `fastqc.sh` and `trimgalore.sh` scripts and see if you
+understand everything ---
+there are some additions relative to the scripts you wrote in the last two weeks,
+for example:
+
+- One best-practice addition is that these scripts **print the version** of the program
+  that they run at the end: this will end up in the Slurm log file for our records.
+- The `if` statement that tests whether the correct number of arguments were passed
+  to the script has expanded help text, including an example of how to run the script
+  (and uses the `$*` variable, which is a string with all arguments passed to the script).
+- Inside the output dir, a `logs` dir that you can later move Slurm log files into.
+- The TrimGalore script renames the output files, since TrimGalore
+  gives them unwieldy names that might trip us up in the next step.
+
+<details><summary>Click to see the code of the `fastqc.sh` script</summary>
+```bash
+#!/bin/bash
+#SBATCH --account=PAS2700
+#SBATCH --mail-type=FAIL
+#SBATCH --output=slurm-fastqc-%j.out
+set -euo pipefail
+
+# Load the software
+module load miniconda3/24.1.2-py310
+conda activate /fs/ess/PAS0471/jelmer/conda/fastqc
+
+# Process the command-line arguments
+if [[ ! "$#" -eq 2 ]]; then
+    echo "Error: You provided $# arguments, while 2 are required."
+    echo "Usage: fastqc.sh <FASTQ-file> <output-dir>"
+    echo "Example: sbatch fastqc.sh data/fastq/A_R1.fastq.gz results/fastqc"
+    echo "Your arguments: $*"
+    exit 1
+fi
+fastq_file=$1
+outdir=$2
+
+# Report start of script and variables
+echo "# Starting script fastqc.ch"
+date
+echo "# Input FASTQ file:   $fastq_file"
+echo "# Output dir:         $outdir"
+echo
+
+# Create the output dir (with a subdir for Slurm logs)
+mkdir -p "$outdir"/logs
+
+# Run FastQC
+fastqc --outdir "$outdir" "$fastq_file"
+
+# Report software version, end of script, and date
+echo
+echo "# Used FastQC version:"
+fastqc --version
+echo "# Done with script fastqc.sh"
+date
+echo
+```
+</details>
+
+<details><summary>Click to see the code of the `trimgalore.sh` script</summary>
+```bash
+#!/bin/bash
+#SBATCH --account=PAS2700
+#SBATCH --cpus-per-task=8
+#SBATCH --mail-type=FAIL
+#SBATCH --output=slurm-trimgalore-%j.out
+set -euo pipefail
+
+# Load the software
+module load miniconda3/24.1.2-py310
+conda activate /fs/ess/PAS0471/jelmer/conda/trimgalore
+
+# Copy the placeholder variables
+if [[ ! "$#" -eq 2 ]]; then
+    echo "Error: You provided $# arguments, while 2 are required."
+    echo "Usage: trimgalore.sh <R1-FASTQ> <outdir>"
+    echo "Example: sbatch trimgalore.sh data/fastq/A_R1.fastq.gz results/trimgalore"
+    echo "Your arguments: $*"
+    exit 1
+fi
+R1_in=$1
+outdir=$2
+
+# Infer the R2 FASTQ file name
+R2_in=${R1_in/_R1/_R2}
+
+# Report start of script and variables
+echo "# Starting script trimgalore.sh"
+date
+echo "# Input R1 FASTQ file:      $R1_in"
+echo "# Input R2 FASTQ file:      $R2_in"
+echo "# Output dir:               $outdir"
+echo
+
+# Create the output dir (with a subdir for Slurm logs)
+mkdir -p "$outdir"/logs
+
+# Run TrimGalore
+trim_galore \
+    --paired \
+    --fastqc \
+    --output_dir "$outdir" \
+    --cores 8 \
+    "$R1_in" \
+    "$R2_in"
+
+# Rename the output files - TrimGalore's output file names are unwieldy
+# with two separate read direction indicators (_R1 and _1).
+echo
+echo "# Renaming the output files:"
+sample_id=$(basename "$R1_in" _R1.fastq.gz)
+R1_out_init="$outdir"/"$sample_id"_R1_val_1.fq.gz # This will be the initial R1 output file 
+R2_out_init="$outdir"/"$sample_id"_R2_val_2.fq.gz # This will be the initial R2 output file 
+R1_out_final="$outdir"/"$sample_id"_R1.fastq.gz
+R2_out_final="$outdir"/"$sample_id"_R2.fastq.gz
+mv -v "$R1_out_init" "$R1_out_final"
+mv -v "$R2_out_init" "$R2_out_final"
+
+# Report software version, end of script, and date
+echo
+echo "# Used TrimGalore version:"
+trim_galore --version | grep version
+echo "# Done with script trimgalore.sh"
+date
+```
+</details>
+
+**C)** Run this code -- can you submit both sets of batch jobs
+(FastQC and TrimGalore) at once, or not?
+
+**D)** Monitor the progress of the jobs, and when they are all done,
+check the output files and move the Slurm log files to the `logs` dir within the
+output dir.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Exercise 2: Align reads with STAR
+
+You will align (map) the _trimmed_ reads to the reference genome with the program
+STAR, which is an aligner specifically designed for RNA-seq data^[
+RNA-seq read alignment needs to be "splice-aware": when the reads are mapped to
+the genome, introns are included in the reference but are (mostly) not present in
+the reads, as the reads are mostly mature mRNA with the introns spliced out.
+Therefore, a read may align as several disjunct fragments across introns!].
+
+#### A: Index the reference genomes
+
+When aligning reads, the first step is nearly always to create an "index" of the
+reference genome^[The aligner will then align the reads to this index rather
+than the genome itself, which is much more efficient. These indices are
+aligner-specific, and can even differ among versions of the same aligner.].
+The script `scripts/star_index.sh` that you already copied has the code to do this,
+and takes 3 arguments:
+
+1. The reference genome assembly FASTA file
+2. The reference genome annotation GTF file
+3. The output dir for the index files
+
+<details><summary>Click to see the code of the `star_index.sh` script</summary>
+```bash
+#!/bin/bash
+#SBATCH --account=PAS2700
+#SBATCH --cpus-per-task=16
+#SBATCH --mail-type=FAIL
+#SBATCH --output=slurm-star_index-%j.out
+set -euo pipefail
+
+# Load the software
+module load miniconda3/24.1.2-py310
+conda activate /fs/ess/PAS0471/jelmer/conda/star
+
+# Process the command-line arguments
+if [[ ! "$#" -eq 3 ]]; then
+    echo "Error: You provided $# arguments, while 3 are required."
+    echo "Usage: star_index.sh <assembly-fasta> <annotation-gtf> <outdir>"
+    echo "Example: sbatch star_index.sh data/ref/my.fna data/ref/my.gtf results/star/index"
+    echo "Your arguments: $*"
+    exit 1
+fi
+fasta=$1
+gtf=$2
+outdir=$3
+
+# Make sure the nr of threads/cores/cpus is however many the job has
+threads=$SLURM_CPUS_PER_TASK
+
+# Report start of script and variables
+echo "# Starting script star_index.sh"
+date
+echo "# Input assembly FASTA:           $fasta"
+echo "# Input annotation GTF:           $gtf"
+echo "# Output dir:                     $outdir"
+echo "# Number of threads:              $threads"
+echo
+
+# Create the output dir (with a subdir for Slurm logs)
+mkdir -p "$outdir"/logs
+
+# Run STAR
+# (Note: keeping this command as simple as possible - if using STAR in your research,
+#  then look into the --sjdbOverhang and --genomeSAindexNbases options as well.)
+STAR \
+    --runMode genomeGenerate \
+    --genomeFastaFiles "$fasta" \
+    --sjdbGTFfile "$gtf" \
+    --genomeDir "$outdir" \
+    --runThreadN "$threads"
+
+# Explanation of some of the options used:
+# --runMode genomeGenerate  => Instead of aligning, the "run mode" is to generate a genome index
+
+# Report software version, end of script, and date
+echo
+echo "# Used STAR version:"
+STAR --version
+echo "# Done with script star_index.sh"
+date
+```
+</details>
+
+{{< fa user-edit >}} Take a look at the `scripts/star_index.sh` script.
+In your runner script, write code to submit the script as a batch job,
+passing the appropriate arguments to the script.
+Then submit the job, monitor its progress, and when its done,
+check the output files and move the Slurm log file to to the `logs` dir within the
+output dir.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+#### B: Align the reads
+
+Now you can align the reads to the reference genome (index).
+The script `scripts/star_align.sh` does this for _one sample_
+(two FASTQ files, R1 and R2) at a time, and takes 4 arguments:
+
+1. An R1 FASTQ file (trimmed; the output from `trimgalore.sh`)
+2. The reference genome index dir (that `star_index.sh` created)
+3. The reference genome annotation GTF file
+4. An output dir (this can be the same for each sample)
+
+The main output files are alignment files in the BAM format.
+
+<details><summary>Click to see the code of the `star_align.sh` script</summary>
+```bash
+#!/bin/bash
+#SBATCH --account=PAS2700
+#SBATCH --cpus-per-task=8
+#SBATCH --mail-type=FAIL
+#SBATCH --output=slurm-star_align-%j.out
+set -euo pipefail
+
+# Load the software
+module load miniconda3/24.1.2-py310
+conda activate /fs/ess/PAS0471/jelmer/conda/star
+
+# Process the command-line arguments
+if [[ ! "$#" -eq 4 ]]; then
+    echo "Error: You provided $# arguments, while 4 are required."
+    echo "Usage: star_align.sh <R1-FASTQ> <genome-index-dir> <annotation-gtf> <outdir>"
+    echo "Example: sbatch star_align.sh data/fastq/A_R1.fastq.gz results/star/index data/ref/my.gtf results/star"
+    echo "Your arguments: $*"
+    exit 1
+fi
+R1_in=$1
+index_dir=$2
+gtf=$3
+outdir=$4
+
+# Make sure the nr of threads/cores/cpus is however many the job has
+threads=$SLURM_CPUS_PER_TASK
+
+# Infer the R2 FASTQ file name
+R2_in=${R1_in/_R1/_R2}
+
+# Infer the "sample ID" - we need this for the output file specification
+sample_id=$(basename "$R1_in" _R1.fastq.gz)
+
+# Report start of script and variables
+echo "# Starting script star_align.sh"
+date
+echo "# Input R1 FASTQ file:            $R1_in"
+echo "# Input R2 FASTQ file:            $R2_in"
+echo "# Input genome index:             $index_dir"
+echo "# Input annotation GTF:           $gtf"
+echo "# Output dir:                     $outdir"
+echo "# Number of threads:              $threads"
+echo
+
+# Create the output dir (with a subdir for Slurm logs)
+mkdir -p "$outdir"/logs
+
+# Run STAR
+# (Note: keeping this command as simple as possible - if using STAR in your research,
+#  then look into, e.g., the --alignIntronMin, --alignIntronMax and --outFilterMultimapNmax
+#  options as well.)
+STAR \
+    --readFilesIn "$R1_in" "$R2_in" \
+    --genomeDir "$index_dir" \
+    --sjdbGTFfile "$gtf" \
+    --runThreadN "$threads" \
+    --readFilesCommand zcat \
+    --outFileNamePrefix "$outdir"/"$sample_id"_ \
+    --outSAMtype BAM SortedByCoordinate
+
+# Explanation of some of the options used:
+# --readFilesCommand zcat                     => Tell STAR that the FASTQ files are gzipped
+# --outSAMtype BAM SortedByCoordinate         => Request a sorted BAM file as output (instead of unsorted SAM)
+# --outFileNamePrefix "$outdir"/"$sample_id"_ => Specify not just an outdir but a "sample ID" prefix, otherwise
+#                                                the BAM file would have a generic file name that does not ID the file/sample 
+
+# Report software version, end of script, and date
+echo
+echo "# Used STAR version:"
+STAR --version
+echo "# Done with script star_align.sh"
+date
+```
+</details>
+
+{{< fa user-edit >}} Take a look at the `scripts/star_align.sh` script.
+In your runner script,
+write a `for` loop to submit the script as a separate batch job for each sample.
+Then submit the jobs, monitor their progress, and when they are all done,
+check the output files and move the Slurm log files to to the `logs` dir within the
+output dir.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Exercise 3: Quantify gene counts with featureCounts
+
+Next, you'll create a gene count table with featureCounts
+(part of the "subread" program).
+The script `scripts/featurecounts.sh` only needs to be run once,
+and takes the following arguments:
+
+1. A dir with BAM files (featureCounts will use all BAM files in this dir in a single run)
+2. The reference genome annotation GTF file.
+3. A number indicating the RNA-seq library strandedness
+   (0 for unstranded, 1 for forward-stranded (our case), 2 for reverse-stranded ---
+   you should use the variable we defined at the top of the runner script).
+4. An output file name for the count table, e.g. `results/featurecounts/counts.tsv`.
+
+<details><summary>Click to see the code of the `featurecounts.sh` script</summary>
+```bash
+#!/bin/bash
+#SBATCH --account=PAS2700
+#SBATCH --cpus-per-task=8
+#SBATCH --mail-type=FAIL
+#SBATCH --output=slurm-featurecounts-%j.out
+set -euo pipefail
+
+# Load the software
+module load miniconda3/24.1.2-py310
+conda activate /fs/ess/PAS0471/jelmer/conda/subread
+
+# Process the command-line arguments
+if [[ ! "$#" -eq 4 ]]; then
+    echo "Error: You provided $# arguments, while 4 are required."
+    echo "Usage: featurecounts.sh <input-dir> <annotation-gtf> <strandedness> <outfile>"
+    echo "Example: sbatch featurecounts.sh results/star data/ref/my.gtf 2 results/featurecounts/counts.tsv"
+    echo "Your arguments: $*"
+    exit 1
+fi
+indir=$1
+gtf=$2
+strandedness=$3
+outfile=$4
+
+# Make sure the nr of threads/cores/cpus is however many the job has
+threads=$SLURM_CPUS_PER_TASK
+
+# Report start of script and variables
+echo "# Starting script featurecounts.sh"
+date
+echo "# Input dir:                      $indir"
+echo "# Input annotation GTF:           $gtf"
+echo "# Strandedness:                   $strandedness"
+echo "# Output file:                    $outfile"
+echo "# Number of threads:              $threads"
+echo
+
+# Create the output dir (with a subdir for Slurm logs)
+outdir=$(dirname "$outfile")
+mkdir -p "$outdir"/logs
+
+# Run featureCounts
+featureCounts \
+    -a "$gtf" \
+    -o "$outfile" \
+    -s "$strandedness" \
+    -p \
+    --countReadPairs \
+    -C \
+    -M \
+    -T "$threads" \
+    "$indir"/*bam
+
+# Explanation of some of the options used:
+# -s 2              => Reverse-stranded library like TruSeq
+# -p                => paired-end reads
+# --countReadPairs  => Count read pairs, not reads
+# -C                => Don't count pairs with discordant mates
+# -M                => Count multi-mapping reads
+
+# Report software version, end of script, and date
+echo
+echo "# Used featureCounts/subread version:"
+featureCounts -v
+echo "# Done with script featurecounts.sh"
+date
+```
+</details>
+
+{{< fa user-edit >}} Take a look at the `scripts/featurecounts.sh` script.
+In your runner script, add code to submit the featureCounts script as a batch job.
+Then submit the job, monitor its progress, and when it's done,
+check the output files and move the Slurm log file to the `logs` dir within the
+output dir.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Exercise 4: Summarize QC metrics with MultiQC
+
+Finally, you'll create a report with QC metrics using MultiQC.
+The `scripts/multiqc.sh` script will run MultiQC and takes two arguments:
+
+1. An input dir, which should simply be the `results` dir:
+   MultiQC will recursively search this dir for log files that it can recognize,
+   and include these in its report.
+2. An output dir for the MultiQC report.
+
+<details><summary>Click to see the code of the `multiqc.sh` script</summary>
+```bash
+#!/bin/bash
+#SBATCH --account=PAS2700
+#SBATCH --mail-type=FAIL
+#SBATCH --output=slurm-multiqc-%j.out
+set -euo pipefail
+
+# Load the software
+module load miniconda3/24.1.2-py310
+conda activate /fs/ess/PAS0471/jelmer/conda/multiqc
+
+# Process the command-line arguments
+if [[ ! "$#" -eq 2 ]]; then
+    echo "Error: You provided $# arguments, while 2 are required."
+    echo "Usage: multiqc.sh <input-dir> <output-dir>"
+    echo "Example: sbatch multiqc.sh results/ results/multiqc"
+    echo "Your arguments: $*"
+    exit 1
+fi
+indir=$1
+outdir=$2
+
+# Report start of script and variables
+echo "# Starting script multiqc.sh"
+date
+echo "# Input dir:                      $indir"
+echo "# Output file:                    $outdir"
+echo
+
+# Create the output dir (with a subdir for Slurm logs)
+mkdir -p "$outdir"/logs
+
+# Run MultiQC
+multiqc \
+    --outdir "$outdir" \
+    --interactive \
+    --force \
+    "$indir"
+
+# Explanation of some of the options used:
+# --interactive     => Always use interactive plots
+# --force           => Overwrite existing MultiQC reports in output dir
+
+# Report software version, end of script, and date
+echo
+echo "# Used MultiQC version:"
+multiqc --version
+echo "# Done with script multiqc.sh"
+date
+```
+</details>
+
+{{< fa user-edit >}} Take a look at the `scripts/multiqc.sh` script.
+In your runner script, add code to submit the MultiQC script as a batch job.
+Then submit the job, monitor its progress, and when it's done,
+check the output files and move the Slurm log file to to the `logs` dir within
+the output dir.
+_Make sure also to download the MultiQC report to your computer, opening it,_
+_and taking a look at the metrics that are reported._
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: callout-note
+#### FastQC results in the MultiQC report
+One thing to realize in the MultiQC report is that unfortunately,
+the pre- and post-trimming FastQC results are all presented together
+(but they can be distinguished based on the file names,
+with `_val` in trimmed file names).
+If you needed to take a closer look at this for your own research,
+a work-around would be to run MultiQC separately on the two FastQC dirs.
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: callout-tip
+#### Take another look at your runner script
+Now that you're done, take a close look at your runner script and think about
+whether this structure makes sense you to,
+and how you could do something similar in your final project and your own research.
+:::
+
+<br>
+
+## Solutions
+
+### Exercise 1
+
+<details><summary>**C)** solution _(click to expand)_</summary>
+Yes, you can run these two steps at the same time:
+both use the raw FASTQ files as the input, so the steps don't depend on each other. 
+</details>
+
+<details><summary>**D)** solution 1: check the queue _(click to expand)_</summary>
+
+- Check the Slurm queue:
+  
+  ```bash
+  squeue -u $USER -l
+  # [Output not shown]
+  ```
+</details>
+
+<details><summary>**D)** solution 2: Check the FastQC output _(click to expand)_</summary>
+
+```bash
+# Take a close look at 1 or 2 log files with 'less':
+less slurm-fastqc*
+# [Showing one output file by means of example]
+```
+```bash-out
+# Starting script fastqc.ch
+Fri Apr 12 09:34:40 EDT 2024
+# Input FASTQ file:   ../../garrigos_data/fastq/ERR10802863_R1.fastq.gz
+# Output dir:         results/fastqc
+
+application/gzip
+Started analysis of ERR10802863_R1.fastq.gz
+Approx 5% complete for ERR10802863_R1.fastq.gz
+Approx 10% complete for ERR10802863_R1.fastq.gz
+Approx 15% complete for ERR10802863_R1.fastq.gz
+Approx 20% complete for ERR10802863_R1.fastq.gz
+Approx 25% complete for ERR10802863_R1.fastq.gz
+Approx 30% complete for ERR10802863_R1.fastq.gz
+Approx 35% complete for ERR10802863_R1.fastq.gz
+Approx 40% complete for ERR10802863_R1.fastq.gz
+Approx 45% complete for ERR10802863_R1.fastq.gz
+Approx 50% complete for ERR10802863_R1.fastq.gz
+Approx 55% complete for ERR10802863_R1.fastq.gz
+Approx 60% complete for ERR10802863_R1.fastq.gz
+Approx 65% complete for ERR10802863_R1.fastq.gz
+Approx 70% complete for ERR10802863_R1.fastq.gz
+Approx 75% complete for ERR10802863_R1.fastq.gz
+Approx 80% complete for ERR10802863_R1.fastq.gz
+Approx 85% complete for ERR10802863_R1.fastq.gz
+Approx 90% complete for ERR10802863_R1.fastq.gz
+Approx 95% complete for ERR10802863_R1.fastq.gz
+Approx 100% complete for ERR10802863_R1.fastq.gz
+Analysis complete for ERR10802863_R1.fastq.gz
+  
+# Used FastQC version:
+FastQC v0.12.1
+# Done with script fastqc.sh
+Fri Apr 12 09:34:47 EDT 2024
+```
+
+```bash
+# Optional: check the last lines of each Slurm log file
+# (And/or check your email for failed job messages)
+tail slurm-fastqc*
+# [Output not shown, each file should end with "Done with script" line and the date]
+```
+
+```bash
+# Move the Slurm log files to an output dir:
+mv slurm-fastqc* results/fastqc/logs/
+```
+
+```bash
+# Check the main FastQC output files:
+ls -lh results/fastqc
+```
+```bash-out
+total 48M
+-rw-r--r-- 1 jelmer PAS0471 718K Apr 12 09:34 ERR10802863_R1_fastqc.html
+-rw-r--r-- 1 jelmer PAS0471 364K Apr 12 09:34 ERR10802863_R1_fastqc.zip
+-rw-r--r-- 1 jelmer PAS0471 688K Apr 12 09:34 ERR10802863_R2_fastqc.html
+-rw-r--r-- 1 jelmer PAS0471 363K Apr 12 09:34 ERR10802863_R2_fastqc.zip
+-rw-r--r-- 1 jelmer PAS0471 714K Apr 12 09:34 ERR10802864_R1_fastqc.html
+-rw-r--r-- 1 jelmer PAS0471 366K Apr 12 09:34 ERR10802864_R1_fastqc.zip
+-rw-r--r-- 1 jelmer PAS0471 695K Apr 12 09:34 ERR10802864_R2_fastqc.html
+-rw-r--r-- 1 jelmer PAS0471 351K Apr 12 09:34 ERR10802864_R2_fastqc.zip
+-rw-r--r-- 1 jelmer PAS0471 713K Apr 12 09:34 ERR10802865_R1_fastqc.html
+-rw-r--r-- 1 jelmer PAS0471 367K Apr 12 09:34 ERR10802865_R1_fastqc.zip
+# [...output truncated...]
+```
+</details>
+
+<details><summary>**D)** solution 3: Check the TrimGalore output _(click to expand)_</summary>
+
+```bash
+# Take a close look at 1 or 2 log files with 'less':
+less slurm-trimgalore*
+# [Showing the top of one output file by means of example]
+```
+```bash-out
+# Starting script trimgalore.sh
+Fri Apr 12 09:35:18 EDT 2024
+# Input R1 FASTQ file:      ../../garrigos_data/fastq/ERR10802863_R1.fastq.gz
+# Input R2 FASTQ file:      ../../garrigos_data/fastq/ERR10802863_R2.fastq.gz
+# Output dir:               results/trimgalore
+
+Path to Cutadapt set as: 'cutadapt' (default)
+# [...output truncated...]
+```
+
+```bash
+# Check the main TrimGalore output files:
+ls -lh results/trimgalore
+```
+```bash-out
+total 951M
+-rw-r--r-- 1 jelmer PAS0471  20M Apr 12 09:35 ERR10802863_R1.fastq.gz
+-rw-r--r-- 1 jelmer PAS0471 2.4K Apr 12 09:35 ERR10802863_R1.fastq.gz_trimming_report.txt
+-rw-r--r-- 1 jelmer PAS0471 674K Apr 12 09:35 ERR10802863_R1_val_1_fastqc.html
+-rw-r--r-- 1 jelmer PAS0471 349K Apr 12 09:35 ERR10802863_R1_val_1_fastqc.zip
+-rw-r--r-- 1 jelmer PAS0471  21M Apr 12 09:35 ERR10802863_R2.fastq.gz
+-rw-r--r-- 1 jelmer PAS0471 2.4K Apr 12 09:35 ERR10802863_R2.fastq.gz_trimming_report.txt
+-rw-r--r-- 1 jelmer PAS0471 676K Apr 12 09:35 ERR10802863_R2_val_2_fastqc.html
+-rw-r--r-- 1 jelmer PAS0471 341K Apr 12 09:35 ERR10802863_R2_val_2_fastqc.zip
+# [...output truncated...]
+```
+
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Exercise 2
+
+<details><summary> Runner script solution: index _(click to expand)_</summary>
+```bash
+# Step 3: Align the reads with STAR
+# A) Index the reference genomes
+sbatch scripts/star_index.sh "$fasta" "$gtf" results/star/index
+```
+</details>
+
+<details><summary> Runner script solution: align _(click to expand)_</summary>
+```bash
+# B) Align the reads to the index
+for R1 in results/trimgalore/*R1.fastq.gz; do
+    sbatch scripts/star_align.sh "$R1" results/star/index "$gtf" results/star
+done
+```
+</details>
+
+<details><summary> Indexing Slurm log _(click to expand)_</summary>
+```bash-out-solo
+# Starting script star_index.sh
+Fri Apr 12 10:37:44 EDT 2024
+# Input assembly FASTA:           ../../garrigos_data/ref/GCF_016801865.2.fna
+# Input annotation GTF:           ../../garrigos_data/ref/GCF_016801865.2.gtf
+# Output dir:                     results/star/index
+# Number of threads:              16
+
+        /fs/ess/PAS0471/jelmer/conda/star/bin/STAR-avx2 --runMode genomeGenerate --genomeFastaFiles ../../garrigos_data/ref/GCF_016801865.2.fna --sjdbGTFfile ../../garrigos_data/ref/GCF_016801865.2.gtf --genomeDir results/star/index --runThreadN 16
+        STAR version: 2.7.11b   compiled: 2024-03-19T08:38:59+0000 :/opt/conda/conda-bld/star_1710837244939/work/source
+Apr 12 10:37:44 ..... started STAR run
+Apr 12 10:37:44 ... starting to generate Genome files
+Apr 12 10:37:51 ..... processing annotations GTF
+!!!!! WARNING: --genomeSAindexNbases 14 is too large for the genome size=566354144, which may cause seg-fault at the mapping step. Re-run genome generation with recommended --genomeSAindexNbases 13
+Apr 12 10:37:55 ... starting to sort Suffix Array. This may take a long time...
+Apr 12 10:37:58 ... sorting Suffix Array chunks and saving them to disk...
+Apr 12 10:39:06 ... loading chunks from disk, packing SA...
+Apr 12 10:39:16 ... finished generating suffix array
+Apr 12 10:39:16 ... generating Suffix Array index
+Apr 12 10:40:36 ... completed Suffix Array index
+Apr 12 10:40:36 ..... inserting junctions into the genome indices
+Apr 12 10:41:05 ... writing Genome to disk ...
+Apr 12 10:41:06 ... writing Suffix Array to disk ...
+Apr 12 10:41:07 ... writing SAindex to disk
+Apr 12 10:41:08 ..... finished successfully
+
+# Used STAR version:
+2.7.11b
+# Done with script star_index.sh
+Fri Apr 12 10:41:08 EDT 2024
+```
+</details>
+
+<details><summary> Example alignment Slurm log _(click to expand)_</summary>
+```bash-out-solo
+# Starting script star_align.sh
+Fri Apr 12 10:41:45 EDT 2024
+# Input R1 FASTQ file:            results/trimgalore/ERR10802863_R1.fastq.gz
+# Input R2 FASTQ file:            results/trimgalore/ERR10802863_R2.fastq.gz
+# Input genome index:             results/star/index
+# Input annotation GTF:           ../../garrigos_data/ref/GCF_016801865.2.gtf
+# Output dir:                     results/star
+# Number of threads:              8
+
+        /fs/ess/PAS0471/jelmer/conda/star/bin/STAR-avx2 --readFilesIn results/trimgalore/ERR10802863_R1.fastq.gz results/trimgalore/ERR10802863_R2.fastq.gz --genomeDir results/star/index --sjdbGTFfile ../../garrigos_data/ref/GCF_016801865.2.gtf --runThreadN 8 --readFilesCommand zcat --outFileNamePrefix results/star/ERR10802863_ --outSAMtype BAM SortedByCoordinate
+        STAR version: 2.7.11b   compiled: 2024-03-19T08:38:59+0000 :/opt/conda/conda-bld/star_1710837244939/work/source
+Apr 12 10:41:45 ..... started STAR run
+Apr 12 10:41:45 ..... loading genome
+Apr 12 10:41:48 ..... processing annotations GTF
+Apr 12 10:41:50 ..... inserting junctions into the genome indices
+Apr 12 10:42:06 ..... started mapping
+Apr 12 10:42:21 ..... finished mapping
+Apr 12 10:42:21 ..... started sorting BAM
+Apr 12 10:42:22 ..... finished successfully
+
+# Used STAR version:
+2.7.11b
+# Done with script star_align.sh
+Fri Apr 12 10:42:22 EDT 2024
+```
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Exercise 3
+
+<details><summary>Runner script solution _(click to expand)_</summary>
+```bash
+# Step 4: Create a gene count table with featureCounts
+sbatch scripts/featurecounts.sh results/star "$gtf" "$strandedness" "$count_table"
+```
+</details>
+
+<details><summary> featureCounts Slurm log _(click to expand)_</summary>
+```bash-out-solo
+# Starting script featurecounts.sh
+Fri Apr 12 10:45:05 EDT 2024
+# Input dir:                      results/star
+# Input annotation GTF:           ../../garrigos_data/ref/GCF_016801865.2.gtf
+# Strandedness:                   1
+# Output file:                    results/featurecounts/counts.tsv
+# Number of threads:              8
+
+
+        ==========     _____ _    _ ____  _____  ______          _____  
+        =====         / ____| |  | |  _ \|  __ \|  ____|   /\   |  __ \ 
+          =====      | (___ | |  | | |_) | |__) | |__     /  \  | |  | |
+            ====      \___ \| |  | |  _ <|  _  /|  __|   / /\ \ | |  | |
+              ====    ____) | |__| | |_) | | \ \| |____ / ____ \| |__| |
+        ==========   |_____/ \____/|____/|_|  \_\______/_/    \_\_____/
+	  v2.0.6
+
+//========================== featureCounts setting ===========================\\
+||                                                                            ||
+||             Input files : 22 BAM files                                     ||
+||                                                                            ||
+||                           ERR10802863_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802864_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802865_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802866_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802867_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802868_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802869_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802870_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802871_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802874_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802875_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802876_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802877_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802878_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802879_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802880_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802881_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802882_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802883_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802884_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802885_Aligned.sortedByCoord.out.bam        ||
+||                           ERR10802886_Aligned.sortedByCoord.out.bam        ||
+||                                                                            ||
+||             Output file : counts.tsv                                       ||
+||                 Summary : counts.tsv.summary                               ||
+||              Paired-end : yes                                              ||
+||        Count read pairs : yes                                              ||
+||              Annotation : GCF_016801865.2.gtf (GTF)                        ||
+||      Dir for temp files : results/featurecounts                            ||
+||                                                                            ||
+||                 Threads : 8                                                ||
+||                   Level : meta-feature level                               ||
+||      Multimapping reads : counted                                          ||
+|| Multi-overlapping reads : not counted                                      ||
+||   Min overlapping bases : 1                                                ||
+||                                                                            ||
+\\============================================================================//
+
+//================================= Running ==================================\\
+||                                                                            ||
+|| Load annotation file GCF_016801865.2.gtf ...                               ||
+||    Features : 166177                                                       ||
+||    Meta-features : 18855                                                   ||
+||    Chromosomes/contigs : 162                                               ||
+||                                                                            ||
+|| Process BAM file ERR10802863_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 434318                                               ||
+||    Successfully assigned alignments : 401890 (92.5%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802864_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 453285                                               ||
+||    Successfully assigned alignments : 420396 (92.7%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802865_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 450789                                               ||
+||    Successfully assigned alignments : 409131 (90.8%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802866_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 453068                                               ||
+||    Successfully assigned alignments : 420634 (92.8%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802867_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 469293                                               ||
+||    Successfully assigned alignments : 438336 (93.4%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802868_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 453389                                               ||
+||    Successfully assigned alignments : 410776 (90.6%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802869_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 446533                                               ||
+||    Successfully assigned alignments : 413794 (92.7%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802870_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 456614                                               ||
+||    Successfully assigned alignments : 423864 (92.8%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802871_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 442307                                               ||
+||    Successfully assigned alignments : 403651 (91.3%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802874_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 441439                                               ||
+||    Successfully assigned alignments : 396114 (89.7%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802875_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 397679                                               ||
+||    Successfully assigned alignments : 372151 (93.6%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802876_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 445342                                               ||
+||    Successfully assigned alignments : 414676 (93.1%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802877_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 356283                                               ||
+||    Successfully assigned alignments : 332904 (93.4%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802878_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 403889                                               ||
+||    Successfully assigned alignments : 379018 (93.8%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802879_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 399408                                               ||
+||    Successfully assigned alignments : 373530 (93.5%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802880_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 447356                                               ||
+||    Successfully assigned alignments : 413845 (92.5%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802881_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 388963                                               ||
+||    Successfully assigned alignments : 364413 (93.7%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802882_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 432376                                               ||
+||    Successfully assigned alignments : 397751 (92.0%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802883_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 431581                                               ||
+||    Successfully assigned alignments : 392518 (90.9%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802884_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 396408                                               ||
+||    Successfully assigned alignments : 371702 (93.8%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802885_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 411164                                               ||
+||    Successfully assigned alignments : 378424 (92.0%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Process BAM file ERR10802886_Aligned.sortedByCoord.out.bam...              ||
+||    Strand specific : stranded                                              ||
+||    Paired-end reads are included.                                          ||
+||    Total alignments : 444531                                               ||
+||    Successfully assigned alignments : 416370 (93.7%)                       ||
+||    Running time : 0.01 minutes                                             ||
+||                                                                            ||
+|| Write the final count table.                                               ||
+|| Write the read assignment summary.                                         ||
+||                                                                            ||
+|| Summary of counting results can be found in file "results/featurecounts/c  ||
+|| ounts.tsv.summary"                                                         ||
+||                                                                            ||
+\\============================================================================//
+
+
+# Used featureCounts/Subread version:
+
+featureCounts v2.0.6
+
+# Done with script featurecounts.sh
+Fri Apr 12 10:45:21 EDT 2024
+```
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Exercise 4
+
+<details><summary>Runner script solution _(click to expand)_</summary>
+```bash
+# Step 5: QC summaries with MultiQC
+sbatch scripts/multiqc.sh results results/multiqc
+```
+</details>
+
+<details><summary>MultiQC Slurm log file _(click to expand)_</summary>
+```bash-out-solo
+# Starting script multiqc.sh
+Fri Apr 12 11:43:45 EDT 2024
+# Input dir:                      results
+# Output file:                    results/multiqc
+
+
+  /// MultiQC 🔍 | v1.17
+
+|           multiqc | Search path : /fs/ess/PAS0471/jelmer/teach/courses/pracs-sp24/week6/exercises/results
+|         searching | ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 635/635  
+|    feature_counts | Found 22 reports
+|              star | Found 22 reports
+|          cutadapt | Found 44 reports
+|            fastqc | Found 88 reports
+|           multiqc | Report      : results/multiqc/multiqc_report.html
+|           multiqc | Data        : results/multiqc/multiqc_data
+|           multiqc | MultiQC complete
+
+# Used MultiQC version:
+multiqc, version 1.17
+# Done with script multiqc.sh
+Fri Apr 12 11:44:30 EDT 2024
+```
+</details>
+
+[Here is a copy of the MultiQC report that I got](misc/multiqc_report.html).
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Complete final runner script
+
+<details><summary>Complete final runner script _(click to expand)_</summary>
+```bash
+#!/bin/bash
+
+# 2024-04-12, Jelmer Poelstra
+# - A runner script to run a simple RNA-seq analysis, creating a gene count table
+#   from RNA-seq reads and a reference genome assembly and annotation.
+# - The steps are read QC and trimming, alignment, and quantification.
+# - The working dir is /fs/ess/PAS2700/users/jelmer/week06/exercises.
+# - I am working on the OSC Pitzer cluster.
+
+# Step 0: setting up
+# A) Define the inputs
+fastq_dir=../../garrigos_data/fastq
+fasta=../../garrigos_data/ref/GCF_016801865.2.fna
+gtf=../../garrigos_data/ref/GCF_016801865.2.gtf
+# B) Define settings
+strandedness=1
+# C) Define the outputs
+count_table=results/featurecounts/counts.tsv
+
+# Step 1: QC the reads with FastQC
+for fastq_file in "$fastq_dir"/*fastq.gz; do
+    sbatch scripts/fastqc.sh "$fastq_file" results/fastqc
+done
+  
+# Step 2: Trim the reads with TrimGalore
+for R1 in "$fastq_dir"/*_R1.fastq.gz; do
+    sbatch scripts/trimgalore.sh "$R1" results/trimgalore
+done
+
+# Step 3: Align the reads with STAR
+# A) Index the reference genomes
+sbatch scripts/star_index.sh "$fasta" "$gtf" results/star/index
+# B) Align the reads to the index
+for R1 in results/trimgalore/*R1.fastq.gz; do
+    sbatch scripts/star_align.sh "$R1" results/star/index "$gtf" results/star
+done
+
+# Step 4: Create a gene count table with featureCounts
+sbatch scripts/featurecounts.sh results/star "$gtf" "$strandedness" "$count_table"
+
+# Step 5: QC summaries with MultiQC
+sbatch scripts/multiqc.sh results results/multiqc
+```
+</details>
+<br><br>

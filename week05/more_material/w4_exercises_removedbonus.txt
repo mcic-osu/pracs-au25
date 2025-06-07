@@ -1,0 +1,142 @@
+## Bonus exercise: Modify your TrimGalore script (advanced)
+
+- Annoyingly, the TrimGalore output FASTQ files are oddly named,
+  ending in `_R1_val_1.fq.gz` and `_R2_val_2.fq.gz` ---
+  check the output files from your initial run to see this.
+  This is not _necessarily_ a problem, but could trip you up in a next step with these files.
+  Therefore, in your TrimGalore script (`scripts/trimgalore.sh`),
+  **rename the output files** after you run TrimGalore.
+  
+  I would suggest to rename them to have the exact same file names as the input files
+  (recall: they will be in a different dir so this is OK -- but see also below);
+  alternatively, add a `_trimmed` suffix before the file extension.
+
+<details><summary> Hint _(Click to expand)_</summary>
+
+To do this, you should first extract and store what is basically a sample ID:
+the part of the file name that is shared by the R1 and R2 file.
+
+```bash
+sample_id=$(basename "$R1_in" _R1.fastq.gz)
+```
+
+Based on that ID, you can build up the names of the TrimGalore output files
+as well as the desired final output files. For example:
+
+```bash
+# The name of the initial ('init') TrimGalore R1 output file will be:
+R1_out_init="$outdir"/"$sample_id"_R1_val_1.fq.gz
+```
+</details>
+
+- If you rename the output files to have the exact same file names as the input files,
+  then it is critically important that the output dir is not the same as the input dir.
+  Otherwise, your renaming step would overwrite the original input files!
+  To prevent this from ever happening, **include an `if` statement** in your script
+  that tests whether the input dir is the same as the output dir,
+  and that makes the script `exit` if this is the case.
+
+<details><summary> Hint _(Click to expand)_</summary>
+To test this, you'll need to derive the input dir from the FASTQ path.
+In this week's second lecture, we saw how to do this.
+Use command substitution (`$(...)` to store the input dir in a variable.
+</details>
+
+- Finally, re-run the script for a single sample to check that your changes
+  were successful (and if you want, you can also re-run the loop).
+  _Use a different output dir for the TrimGalore results._
+  
+### Bonus exercise
+
+<details><summary> Solution _(Click to expand)_</summary>
+
+The full script:
+
+```bash
+#!/bin/bash
+set -euo pipefail
+
+# Load TrimGalore
+module load miniconda3
+source activate /fs/ess/PAS0471/jelmer/conda/trimgalore
+
+# Copy the placeholder variables
+R1_in=$1
+outdir=$2
+
+# Check that the output dir isn't the same as the input dir
+# This is because we will let the output files have the same name as the input files
+indir=$(dirname "$R1_in")
+if [[ "$indir" == "$outdir" ]]; then
+    echo "ERROR: Input dir is the same as the output dir ($outdir)" 
+    exit 1
+fi
+
+# Infer the R2 FASTQ file name
+R2_in=${R1_in/_R1/_R2}
+
+# Report
+echo "# Starting script trimgalore.sh"
+date
+echo "# Input R1 FASTQ file:      $R1_in"
+echo "# Input R2 FASTQ file:      $R2_in"
+echo "# Output dir:               $outdir"
+echo
+
+# Create the output dir
+mkdir -p "$outdir"
+
+# Run TrimGalore
+trim_galore \
+    --paired \
+    --output_dir "$outdir" \
+    --fastqc \
+    "$R1_in" \
+    "$R2_in"
+
+# Rename output files
+echo
+echo "# Renaming the output files:"
+sample_id=$(basename "$R1_in" _R1.fastq.gz)
+R1_out_init="$outdir"/"$sample_id"_R1_val_1.fq.gz
+R2_out_init="$outdir"/"$sample_id"_R2_val_2.fq.gz
+R1_out_final="$outdir"/"$sample_id"_R1.fastq.gz
+R2_out_final="$outdir"/"$sample_id"_R2.fastq.gz
+mv -v "$R1_out_init" "$R1_out_final"
+mv -v "$R2_out_init" "$R2_out_final"
+
+# Report
+echo
+echo "# Done with script trimgalore.sh"
+date
+```
+
+Run the script with a different output dir:
+
+```bash
+R1=garrigos_data/fastq/ERR10802863_R1.fastq.gz
+bash scripts/trimgalore.sh "$R1" results/trimgalore_rename
+```
+
+Let's check the output files to see they were successfully renamed:
+
+```bash
+ls -lh results/trimgalore_rename
+```
+```bash-out
+total 42M
+-rw-rw----+ 1 jelmer PAS0471  20M Mar 28 10:40 ERR10802863_R1.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 2.4K Mar 28 10:39 ERR10802863_R1.fastq.gz_trimming_report.txt
+-rw-rw----+ 1 jelmer PAS0471 674K Mar 28 10:40 ERR10802863_R1_val_1_fastqc.html
+-rw-rw----+ 1 jelmer PAS0471 349K Mar 28 10:40 ERR10802863_R1_val_1_fastqc.zip
+-rw-rw----+ 1 jelmer PAS0471  21M Mar 28 10:40 ERR10802863_R2.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 2.3K Mar 28 10:40 ERR10802863_R2.fastq.gz_trimming_report.txt
+-rw-rw----+ 1 jelmer PAS0471 676K Mar 28 10:40 ERR10802863_R2_val_2_fastqc.html
+-rw-rw----+ 1 jelmer PAS0471 341K Mar 28 10:40 ERR10802863_R2_val_2_fastqc.zip
+```
+
+Looks good --- though note that we only renamed the FASTQ files, not the other files.
+
+</details>
+
+<br>

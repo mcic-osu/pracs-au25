@@ -1,0 +1,1084 @@
+---
+title: "Unix Shell Basics - part II"
+pagetitle: "PRACS25: Shell Basics II"
+author: Jelmer Poelstra
+date: 2025-09-04
+editor_options: 
+  chunk_output_type: console
+---
+
+--------------------------------------------------------------------------------
+
+<br>
+
+In this session, we will continue with ...
+
+::: callout-important
+
+While some of these commands may seem to do somewhat trivial tasks,
+TBA
+
+- Getting more comfortable with working in the shell
+- Syntax is consistent, can generalize across commands
+- Better to stick with the shell also for these operations instead of going
+  back and forth
+
+:::
+
+<br>
+
+## File browser-type commands 
+
+### `ls` to list files
+
+The `ls` command, short for "list", will list files and directories ---
+by default those in your current working dir:
+
+``` bash
+# (You should be in /fs/ess/PAS2880/users/$USER/CSB/unix/data)
+ls
+```
+``` bash-out
+Buzzard2015_about.txt  Gesquiere2011_about.txt  Marra2014_about.txt   miRNA                   Pacifici2013_data.csv  Saavedra2013_about.txt
+Buzzard2015_data.csv   Gesquiere2011_data.csv   Marra2014_data.fasta  Pacifici2013_about.txt  Saavedra2013
+```
+
+::: {.callout-tip collapse="true"}
+#### `ls` output colors *(click to expand)*
+
+The `ls` output above does not show the different colors you should see in your shell —
+the most common ones are:
+
+-   Entries in [blue]{style="color: #0328fc"} are directories (like `miRNA` and `Saavedra2013` above)
+-   Entries in black are regular files (like all other entries above)
+-   Entries in [red]{style="color: #d92118"} are compressed files (we'll see examples of this later).
+:::
+
+You can use an _argument_ to change the dir (or file) that `ls` operates on, 
+and you can use _options_ to change how it shows the output.
+
+Let's start with options.
+For example, we can run `ls` with the **option `-l`** (lowercase L):
+
+``` bash
+ls -l 
+```
+``` bash-out
+total 1793
+-rw-rw----+ 1 jelmer PAS0471     562 Feb 24 20:30 Buzzard2015_about.txt
+-rw-rw----+ 1 jelmer PAS0471   39058 Feb 24 20:30 Buzzard2015_data.csv
+-rw-rw----+ 1 jelmer PAS0471     447 Feb 24 20:30 Gesquiere2011_about.txt
+-rw-rw----+ 1 jelmer PAS0471   38025 Feb 24 20:30 Gesquiere2011_data.csv
+-rw-rw----+ 1 jelmer PAS0471     756 Feb 24 20:30 Marra2014_about.txt
+-rw-rw----+ 1 jelmer PAS0471  566026 Feb 24 20:30 Marra2014_data.fasta
+drwxrwx---+ 2 jelmer PAS0471    4096 Feb 24 20:30 miRNA
+-rw-rw----+ 1 jelmer PAS0471     520 Feb 24 20:30 Pacifici2013_about.txt
+-rw-rw----+ 1 jelmer PAS0471 1076150 Feb 24 20:30 Pacifici2013_data.csv
+drwxrwx---+ 2 jelmer PAS0471    4096 Feb 24 20:30 Saavedra2013
+-rw-rw----+ 1 jelmer PAS0471     322 Feb 24 20:30 Saavedra2013_about.txt
+```
+
+It lists the same items as earlier, but **printed in a different format**:
+one item per line, with additional information such as the date and time each file was last modified,
+and file sizes in bytes (to the left of the date).
+
+Let's add another option, **`-h`**:
+
+``` bash
+ls -lh
+```
+``` bash-out
+total 1.8M
+-rw-rw----+ 1 jelmer PAS0471  562 Feb 24 20:30 Buzzard2015_about.txt
+-rw-rw----+ 1 jelmer PAS0471  39K Feb 24 20:30 Buzzard2015_data.csv
+-rw-rw----+ 1 jelmer PAS0471  447 Feb 24 20:30 Gesquiere2011_about.txt
+-rw-rw----+ 1 jelmer PAS0471  38K Feb 24 20:30 Gesquiere2011_data.csv
+-rw-rw----+ 1 jelmer PAS0471  756 Feb 24 20:30 Marra2014_about.txt
+-rw-rw----+ 1 jelmer PAS0471 553K Feb 24 20:30 Marra2014_data.fasta
+drwxrwx---+ 2 jelmer PAS0471 4.0K Feb 24 20:30 miRNA
+-rw-rw----+ 1 jelmer PAS0471  520 Feb 24 20:30 Pacifici2013_about.txt
+-rw-rw----+ 1 jelmer PAS0471 1.1M Feb 24 20:30 Pacifici2013_data.csv
+drwxrwx---+ 2 jelmer PAS0471 4.0K Feb 24 20:30 Saavedra2013
+-rw-rw----+ 1 jelmer PAS0471  322 Feb 24 20:30 Saavedra2013_about.txt
+```
+
+<details><summary>What is different about the output, and what do you think that means? *(Click to see the answer)*</summary>
+
+The only difference is in the format of the column reporting the sizes of the items listed.
+
+We now have "Human-readable filesizes" (hence `-h`),
+where sizes on the scale of kilobytes will be shown  with `K`s,
+of megabytes with `M`s, and of gigabytes with `G`s.
+That can be useful especially for large files.
+
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+Moving on to the argument(s) to `ls` --
+we can list files in directories other than the one we are in,
+by specifying that dir as an argument:
+
+``` bash
+ls miRNA
+```
+``` bash-out
+ggo_miR.fasta  hsa_miR.fasta  miR_about.txt  miRNA_about.txt  ppa_miR.fasta  ppy_miR.fasta  ptr_miR.fasta  ssy_miR.fasta
+```
+
+And like we saw with `cal`, we can combine options and arguments:
+
+``` bash
+ls -lh miRNA
+```
+``` bash-out
+total 320K
+-rw-rw----+ 1 jelmer PAS0471  18K Feb 24 20:30 ggo_miR.fasta
+-rw-rw----+ 1 jelmer PAS0471 131K Feb 24 20:30 hsa_miR.fasta
+-rw-rw----+ 1 jelmer PAS0471  104 Feb 24 20:30 miR_about.txt
+-rw-rw----+ 1 jelmer PAS0471  104 Feb 24 20:30 miRNA_about.txt
+-rw-rw----+ 1 jelmer PAS0471 4.0K Feb 24 20:30 ppa_miR.fasta
+-rw-rw----+ 1 jelmer PAS0471  33K Feb 24 20:30 ppy_miR.fasta
+-rw-rw----+ 1 jelmer PAS0471  29K Feb 24 20:30 ptr_miR.fasta
+-rw-rw----+ 1 jelmer PAS0471  495 Feb 24 20:30 ssy_miR.fasta
+```
+
+::: exercise
+#### {{< fa user-edit >}} **Exercise**
+
+Say you wanted to check the size of a single file.
+Then, it may always be convenient to list an entire dir's contents,
+as a dir could contain many files.
+
+Can you try to use `ls` to see the file size **only** for the 
+`miRNA_about.txt` file we saw listed above?
+
+<details><summary>*Click to see the solution*</summary>
+
+The argument to `ls` can be a path of any kind,
+including to a file rather than to a dir:
+
+```bash
+ls -lh miRNA/miRNA_about.txt
+```
+``` bash-out
+-rw-rw----+ 1 jelmer PAS0471  104 Feb 24 20:30 miRNA_about.txt
+```
+
+</details>
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+In preparation for the next sections, let's move into the `sandbox` dir:
+
+```bash
+cd ../sandbox
+
+ls
+```
+```bash-out
+Papers and reviews
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### `touch` to create a new file
+
+To create new, empty files, we can use the `touch` command,
+specifiying the file name as the argument(s):
+
+```bash
+# Create a single new file called newfile1.txt
+touch newfile1.txt
+
+# Create two additional files:
+touch newfile2.txt newfile3.txt
+```
+
+::: exercise
+#### {{< fa user-edit >}} **Exercise**
+
+Where were these files created?
+
+Can you create a create a new file `test.txt` inside a new dir `test`?
+
+<details><summary>*Click to see the solutions*</summary>
+
+The initial files were created in your working dir.
+
+To make a new dir and create a file in there,
+you can't just use the `touch` command,
+as it cannot create the directory for you
+(pay attention to the error, which may seem a bit confusing):
+
+```bash
+touch test/test.txt
+```
+```bash-out
+touch: test/test.txt: No such file or directory
+```
+
+Instead, we should first create the new dir with `mkdir` and then create the
+new file in there:
+
+```bash
+mkdir test
+touch test/test.txt
+```
+
+</details>
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### `cp` to copy files and dirs
+
+The `cp` command copies files and/or dirs from one location to another.
+Just like with copying files in file browsers on your computer,
+the copy can have a different name than the original file,
+or the same name if it's copied to a different dir.
+
+`cp` has two **required** arguments in the following order:
+
+1. What you want to copy (_source_ path)
+2. Where you want to copy it to (_destination_ path).
+
+That is, its basic syntax is `cp <source> <destination>`.
+
+#### Basic examples
+
+Create a copy of one of the files we created above:
+
+```bash
+cp newfile3.txt newfile3_copy.txt
+```
+
+**Importantly, like with any Unix command**, 
+you can always refer to files and dirs that aren't in your current working dir --
+for example:
+
+```bash
+cp ../data/Buzzard2015_about.txt buzz2.txt
+```
+
+The above copied the file `Buzzard2015_about.txt`, which was not in our working dir,
+to a new file with the name `buzz2.txt` in our working dir.
+
+#### Copying into your working dir without changing the name
+
+When copying something into our working dir, like above,
+we may not actually want to change the file name.
+To accomplish this,
+we could of course just repeat the original file name in the target argument:
+
+```bash
+cp ../data/Buzzard2015_about.txt Buzzard2015_about.txt
+```
+
+But do we really need to repeat the filename
+(which is not just more typing but can be error-prone as well)? No.
+If we only use the `.` shortcut that indicates our current working dir,
+the file name of the copy will not be changed:
+
+```bash
+cp ../data/Buzzard2015_data.csv .
+```
+
+### Copying dirs and their contents
+
+Finally, `cp` will by default refuse to copy directories and their contents ---
+that is, it is not "**recursive**" by default.
+The `-r` option is needed for recursive copying:
+
+```bash
+cp -r ../data . 
+```
+
+Check the contents of the `sandbox` dir again now that we've copied several items there:
+
+```bash
+ls
+```
+```bash-out
+TODO UPDATE
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### `mv` to move and rename files and dirs
+
+Moving files to a different dir and renaming files is fundamentally the same
+operation: you are changing the path.
+It is important to realize that when talking about files,
+both its filename (e.g. `buzz2.txt`) and the dir it is inside
+(`/fs/ess/PAS2880/users/jelmer/CSB/sandbox`) are part of the path
+(`/fs/ess/PAS2880/users/jelmer/CSB/sandbox/buzz2.txt`).
+
+The **`mv`** command, then, can be used to move files, rename them,
+or do both at the same time:
+
+```bash
+# Same directory, different file name ("renaming"):
+mv buzz2.txt buzz_copy.txt
+
+# Different directory, same file name ("moving"):
+mv buzz_copy.txt data/
+
+# Different directory, different file name ("moving + renaming"):
+mv buzz_copy.txt data/buzz_copy99.txt
+```
+
+Finally, unlike `cp`, `mv` is recursive by default!
+
+::: callout-tip
+#### Both the `mv` and `cp` commands will by default:
+
+- Not report what they do: no output = success
+  (use the `-v` option for _verbose_ to make them report what they do).
+- Overwrite existing files without reporting this
+  (use the `-i` option for _interactive_ to make them ask before overwriting).
+  
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### `rm` to remove files and dirs
+
+The **`rm`** command removes files and optionally dirs --- here,
+we'll remove the file copy we made above: 
+
+```bash
+rm Buzzard2015_about.txt
+```
+
+Like with `cp`, the **`-r`** option is needed to make the command work recursively:
+
+```bash
+rm testdir
+```
+```bash-out
+rm: cannot remove ‘testdir’: Is a directory
+```
+
+But it does work (silently!) with the '-r' option:
+
+```bash
+rm -r testdir
+```
+
+::: {.callout-warning collapse="true"}
+#### There is no thrash bin when deleting files in the shell, so use `rm` with caution! _(Click to expand)_
+
+`rm -r` can be very dangerous --- for example, the command `rm -r /`
+would attempt to remove the entire contents of the computer,
+including the operating system.
+
+A couple ways to take precautions:
+
+- You can add the `-i` option, which will have you confirm each individual removal (can be tedious)
+- When you _intend_ to remove an empty dir, you can use the `rmdir` command which will
+  do just (and only) that --- that way, if the dir isn't empty after all, you'll get an error.
+
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: exercise
+#### {{< fa user-edit >}} Bonus exercise: `cp` and `mv` behavior
+
+For both `cp` and `mv`, when operating on files (and this works equivalently for dirs):
+
+- If the destination is an existing dir, the file will go into that dir and keep its original name.
+- If the destination is _not_ an existing dir, the (last bit of the) destination specifies the new file name.
+- A trailing slash in the destination makes explicit that you are referring to a dir and not a file.
+
+-----
+
+With that in mind, try to answer the following questions about this command:
+
+```bash
+cp Buzzard2015_about.txt more_data/
+```
+
+- What do you think the command would do or attempt to do?
+- Do you think the command will succeed?
+- What would the command have done if we had omitted the trailing forward slash?
+
+<details><summary>Click to see the solution</summary>
+<hr style="height:1pt; visibility:hidden;" />
+
+- Because we put a trailing forward slash in `more_data/`, we are making clear
+  that we are referring to a directory.
+  So the file should be copied into a dir `more_data`, and keep the same file name.
+  
+- However, the `more_data/` dir does not exist, and `cp` will not create
+  a dir on the fly, so this will fail:
+
+  ```bash
+  cp Buzzard2015_about.txt more_data/
+  ```
+  ```bash-out
+  cp: cannot create regular file ‘more_data/’: Not a directory
+  ```
+
+- If we had omitted the trailing forward slash, we would have created a copy
+  of the file with *file* name `more_data` (note that no file extension is needed, per se).
+
+- P.S: To make the original intention work, first create the destination dir:
+
+  ```bash
+  mkdir more_data
+  cp Buzzard2015_about.txt more_data/
+  ```
+  
+  Note also that once the `more_data` dir exists, it **does not** make a difference
+  whether or not you using a trailing slash (!).
+
+</details>
+
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+<br>
+
+## Viewing text files
+
+### Plain-text files
+
+In this course,
+we'll be working almost exclusively with so-called "**plain-text**" files
+(files with `.txt` and related extensions).
+These are simple files that can be opened by any text editor and Unix shell tool.
+
+In contrast, so-called "binary" formats like Excel or Word files can only be opened
+in their respective apps, and cannot be operated on with the below commands.
+That is quite limiting, as such apps are not always available and problems may
+also arise if a file was produced by a more recent version of the app than you have,
+or a "too-old" version.
+
+While their simplicity may seem limiting,
+**plain-text files are generally preferable in reproducible science**.
+Additionally, many common omics file formats,
+like FASTA, FASTQ, and GFF, are plain-text.
+
+Therefore, we will be learning a number of Unix commands to view (this section)
+and process/summarize (next section) plain-text files in various formats.
+
+```bash
+cd ../data   # Move to the data dir for the next commands
+```
+
+### `cat`
+
+The **`cat`** command will print the entire contents of one or more files to
+screen:
+
+```bash
+cat Marra2014_about.txt
+```
+```bash-out
+Data published by:
+Marra NJ, DeWoody JA (2014) Transcriptomic characterization of the immunogenetic repertoires of heteromyid rodents. BMC Genomics 15: 929. http://dx.doi.org/10.1186/1471-2164-15-929
+
+Data description:
+File D_spec_spleen_filtered.fasta (57.01Mb) contains Dipodomys spectabilis spleen transcriptome data. Combined assembly of 454 reads and fragmented Illumina assembly (see methods of associated paper) in gsAssembler version 2.6.
+Note that we truncated the original file to 1% of its original size and named it Marra2014_data.txt
+
+Data taken from:
+Marra NJ, DeWoody JA (2014) Data from: Transcriptomic characterization of the immunogenetic repertoires of heteromyid rodents. Dryad Digital Repository. http://dx.doi.org/10.5061/dryad.qn474
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### `head` and `tail`
+
+Some files, especially when working with omics data, can be huge,
+so printing the whole file with `cat` is not always ideal.
+The twin commands **`head`** and **`tail`** can be useful,
+as they will print only the first (`head`) or last (`tail`) lines of a file.
+
+`head` & `tail`'s defaults are to print 10 lines:
+
+```bash
+head Gesquiere2011_data.csv
+```
+```bash-out
+maleID  GC      T
+1       66.9    64.57
+1       51.09   35.57
+1       65.89   114.28
+1       80.88   137.81
+1       32.65   59.94
+1       60.52   101.83
+1       65.89   65.84
+1       52.72   43.98
+1       84.85   102.31
+```
+
+Use the `-n` option to specify the number of lines to print:
+
+```bash
+head -n 3 Gesquiere2011_data.csv
+```
+```bash-out
+maleID  GC      T
+1       66.9    64.57
+1       51.09   35.57
+```
+
+A neat trick with `tail` is to *start at* a specific line,
+often used to skip the header line,
+like in this example^[We'll see this in action in a bit]:
+
+  ```bash
+  tail -n +2 Gesquiere2011_data.csv
+  ```
+  ```bash-out
+  1       66.9    64.57
+  1       51.09   35.57
+  1       65.89   114.28
+  1       80.88   137.81
+  1       32.65   59.94
+  1       60.52   101.83
+  1       65.89   65.84
+  1       52.72   43.98
+  1       84.85   102.31
+  1       98.25   149.61
+  [...output truncated...]
+  ```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### `less`: A file pager
+
+TBA
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### `wc -l`
+
+The **`wc`** command is different from the previous commands,
+all of which printed some or all of a file's contents.
+By default, `wc` will count lines, words, and characters ---
+but it is most commonly used to only **count lines**, with the `-l` option:
+
+```bash
+wc -l Marra2014_about.txt
+```
+```bash-out
+9 Marra2014_about.txt
+```
+
+This can be surprisingly useful,
+as the number of lines in many types of files represent a count of the number
+of entries.
+
+<br>
+
+## Redirection and pipes
+
+Start by moving back into the `sandbox` dir:
+
+```bash
+cd ../sandbox
+```
+
+### Standard output and redirection
+
+The regular output of a command that is printed to the screen
+(like a list of files by `ls`, or a number of lines by `wc -l`)
+is technically called **"standard out"** or in short "*stdout*".
+
+Sometimes, we may want to do something else with this output,
+like storing it in a file. Luckily, this is easy to do.
+
+With "**`>`**", we **redirect** output to a file:
+
+-   If the file doesn't exist, it will be *created*.
+-   If the file does exist, any contents will be *overwritten*.
+
+First, let's remind ourselves what `echo` does without redirection ---
+it will simply print the characters we provide it with to the screen:
+
+```bash
+echo "My first line"
+```
+```bash-out
+My first line
+```
+
+Now, let's redirect `echo`'s standard out to a new file `test.txt:
+
+```bash
+echo "My first line" > test.txt
+```
+
+No output was printed to the screen, as it instead went into the file:
+
+```bash
+cat test.txt
+```
+```bash-out
+My first line
+```
+
+Let's redirect another line into that same file:
+
+```bash
+echo "My second line" > test.txt
+cat test.txt
+```
+```bash-out
+My second line
+```
+
+That may not have been what we intended!
+As explained above, the earlier file contents was _overwritten_. 
+
+With "**`>>`**", however, we **append** the output to a file:
+
+```bash
+echo "My third line" >> test.txt
+cat test.txt
+```
+```bash-out
+My second line
+My third line
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Standard input and pipes
+
+Recall from today's previous examples that a file name can be given as an argument
+to many commands --- for example, see the following sequence of commands:
+
+```bash
+# First we redirect the ls output to a file
+ls ../data/Saavedra2013 > filelist.txt
+
+# Let's check what that looks like:
+head -n 5 filelist.txt
+```
+```bash-out
+n10.txt
+n11.txt
+n12.txt
+n13.txt
+n14.txt
+```
+```bash
+# Then we count the nr. of lines, which is the number of files+dirs in Saavedra2013:
+wc -l filelist.txt
+```
+```bash-out
+59 filelist.txt
+```
+
+Above, we provided the `head` and `wc` commands with an argument:
+the path to a file to operate on.
+
+However, most commands *also* accept input from so-called "standard input" (*stdin*)
+using the **pipe**, "**`|`**":
+
+```bash
+ls ../data/Saavedra2013 | wc -l
+```
+```bash-out
+59
+```
+
+When we use the pipe, the output of the command on the left-hand side (a file listing, in this case)
+is no longer printed to screen but is **redirected into the `wc` command**.
+This command (and many others) will gladly accept input that way instead of
+via an file name argument, like in the earlier example.
+
+Pipes are useful because they avoid having to write/read intermediate files ---
+this saves typing, makes the operation quicker, and reduces file clobber.
+In the example above,
+we don't need to make a `filelist.txt` file to count the number of files.
+
+<br>
+
+## Unix data tools
+
+We'll now turn to some commands that may be described as Unix "data tools":
+`cut`, `sort`, `uniq`, `tr`, and `grep`.
+
+Most of the examples will use the file `Pacifici2013_data.csv`,
+so let's have a look at the contents of that file first:
+
+```bash
+cd ../data
+head -n 3 Pacifici2013_data.csv
+```
+```bash-out
+TaxID;Order;Family;Genus;Scientific_name;AdultBodyMass_g;Sources_AdultBodyMass;Max_longevity_d;Sources_Max_longevity;Rspan_d;AFR_d;Data_AFR;Calculated_GL_d;GenerationLength_d;Sources_GL
+7580;Rodentia;Cricetidae;Eligmodontia;Eligmodontia typus;17.37;PanTHERIA;292;PanTHERIA;254.64;73.74;calculated;147.5856;147.5856;Rspan-AFR(SM+Gest)
+42632;Rodentia;Cricetidae;Microtus;Microtus oregoni;20.35;PanTHERIA;456.25;PanTHERIA;445.85;58.06;calculated;187.3565;187.3565;Rspan-AFR(SM+Gest)
+```
+
+::: {.callout-note}
+#### Tabular plain-text files
+
+"**Tabular**" files contain data that is arranged in a rows-and-columns format,
+like a table or an Excel worksheet.
+
+Because plain-text files do not have an intrinsic way to define columns or cells,
+certain characters are used as "delimiters" in  **plain-text tabular** files,
+like `Pacifici2013_data.csv`.
+Most commonly, these are:
+
+- A Tab, and such files are often stored with a **`.tsv`** extension for Tab-Separated Values ("TSV file").
+- A comma, and such files are often stored with a **`.csv`** extension for Comma-Separated Values ("CSV file").
+
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+<details><summary>What delimiter does the `Pacifici2013_data.csv` file appear to contain? _(Click for the answer)_</summary>
+From looking at the first couple of lines that we printed above, the delimiter
+is a semicolon `;` --- "even though" the file has a `.csv` extension.
+</details>
+
+::: {.callout-warning}
+#### A not about file extensions (TBA)
+
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Selecting columns using `cut`
+
+The `cut` command will select or we could say "cut out" one or more columns
+from a tabular file:
+
+- We'll always have to use the **`-f`** option to specify the
+  **desired column(s) / "field"(s)**.
+- Because its default column delimiter is a Tab, for this file,
+  we'll have to specify the **delimiter** with **`-d`**.
+
+```bash
+# Select the first column of the file:
+cut -d ";" -f 1 Pacifici2013_data.csv
+```
+```bash-out
+TaxID
+7580
+42632
+42653
+42662
+16652
+[...output truncated...]
+```
+
+That worked, but a ton of output was printed, and we may find ourselves scrolling to
+the top to see the first few lines --
+in many cases, it can be useful to **pipe the output to `head`** to see if our command works:
+
+```bash
+cut -d ";" -f 1 Pacifici2013_data.csv | head -n 3
+```
+```bash-out
+TaxID
+7580
+42632
+```
+
+::: {.callout-tip collapse="true"}
+#### Selecting multiple columns with `cut` _(Click to expand)_
+
+To select **multiple columns**, use a range or comma-delimited list:
+
+```bash
+cut -d ";" -f 1-4 Pacifici2013_data.csv | head -n 3
+```
+```bash-out
+TaxID;Order;Family;Genus
+7580;Rodentia;Cricetidae;Eligmodontia
+42632;Rodentia;Cricetidae;Microtus
+```
+
+```bash
+cut -d ";" -f 2,8 Pacifici2013_data.csv | head -n 3
+```
+```bash-out
+Order;Max_longevity_d
+Rodentia;292
+Rodentia;456.25
+```
+
+However, it is not possible to change the order of columns with `cut`!
+(The more advanced `awk` command can do this.)
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Combining `cut`, `sort`, and `uniq` to create a list
+
+Let's say we want an alphabetically sorted list of animal *orders* from the
+`Pacifici2013_data.csv` file.
+To do this, we'll need to learn about two new commands:
+
+- **`sort`** to sort/order/arrange rows, by default in alphanumeric order.
+- **`uniq`** to remove duplicates (i.e., keep all distinct/unique) entries
+  _from a sorted file/list_.
+
+We'll build up a small "pipeline" to do this, step-by-step,
+and piping the output into `head` at every step.
+First, we get rid of the header line with our `tail` trick:
+
+```bash
+tail -n +2 Pacifici2013_data.csv | head -n 5
+```
+```bash-out
+7580;Rodentia;Cricetidae;Eligmodontia;Eligmodontia typus;17.37;PanTHERIA;292;PanTHERIA;254.64;73.74;calculated;147.5856;147.5856;Rspan-AFR(SM+Gest)
+42632;Rodentia;Cricetidae;Microtus;Microtus oregoni;20.35;PanTHERIA;456.25;PanTHERIA;445.85;58.06;calculated;187.3565;187.3565;Rspan-AFR(SM+Gest)
+42653;Rodentia;Cricetidae;Peromyscus;Peromyscus gossypinus;27.68;PanTHERIA;471.45833335;PanTHERIA;444.87833335;72.58;calculated;201.59471667;201.5947166715;Rspan-AFR(SM+Gest)
+42662;Macroscelidea;Macroscelididae;Elephantulus;Elephantulus myurus;59.51;PanTHERIA;401.5;PanTHERIA;412.34;90.48;calculated;210.0586;210.0586;Rspan-AFR(SM+Gest)
+16652;Rodentia;Cricetidae;Peromyscus;Peromyscus boylii;23.9;PanTHERIA;547.5;PanTHERIA;514.13;79.97;calculated;229.0677;229.0677;Rspan-AFR(SM+Gest)
+```
+
+Second, we select our column of interest with `cut`:
+
+```bash
+tail -n +2 Pacifici2013_data.csv | cut -d ";" -f 2 | head -n 5
+```
+```bash-out
+Rodentia
+Rodentia
+Rodentia
+Macroscelidea
+Rodentia
+```
+
+Third, we pipe to `sort` to alphabetically sort the result:
+
+```bash
+tail -n +2 Pacifici2013_data.csv | cut -d ";" -f 2 | sort | head -n 5
+```
+```bash-out
+Afrosoricida
+Afrosoricida
+Afrosoricida
+Afrosoricida
+Afrosoricida
+```
+
+Finally, we use `uniq` to only keep unique rows (values):
+
+```bash
+tail -n +2 Pacifici2013_data.csv | cut -d ";" -f 2 | sort | uniq
+```
+```bash-out
+Afrosoricida
+Carnivora
+Cetartiodactyla
+Chiroptera
+Cingulata
+Dasyuromorphia
+Dermoptera
+Didelphimorphia
+[...output truncated...]
+```
+
+Amazingly, with a very small modification to our pipeline,
+we can generate a "count table" instead of a simple list --
+we just have to add `uniq`'s `-c` option (for **c**ount):
+
+```bash
+tail -n +2 Pacifici2013_data.csv | cut -d ";" -f 2 | sort | uniq -c
+```
+```bash-out
+     54 Afrosoricida
+    280 Carnivora
+    325 Cetartiodactyla
+   1144 Chiroptera
+     21 Cingulata
+[...output truncated...]
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### `grep` to print lines matching a pattern
+
+The `grep` command is useful to find specific text or patterns in a file.
+By default, it will **print each line that contains a "match" in full**.
+It's basic syntax is `grep "<pattern>" file`.
+
+
+For example, this will print all lines from `Pacifici2013_data.csv` that contain "Vombatidae":
+
+```bash
+grep "Vombatidae" Pacifici2013_data.csv
+```
+```bash-out
+40555;Diprotodontia;Vombatidae;Lasiorhinus;Lasiorhinus latifrons;26163.8;PanTHERIA;9928;"PanTHERIA;AnAge";9317.5;652.24;calculated;3354.315;3354.315;Rspan-AFR(SM+Gest)
+40556;Diprotodontia;Vombatidae;Vombatus;Vombatus ursinus;26000;PanTHERIA;10238.25;"PanTHERIA;AnAge";9511.6;783.65;calculated;3542.014;3542.014;Rspan-AFR(SM+Gest)
+11343;Diprotodontia;Vombatidae;Lasiorhinus;Lasiorhinus krefftii;31849.99;PanTHERIA;10950;"PanTHERIA;AnAge";no information;no information;no information;no information;3354.315;Mean_congenerics_same_body_mass
+```
+
+Instead of printing matching lines, we can also **count** them with the `-c` option:
+
+```bash
+# How many entries for bats (Chiroptera) does the file have?
+grep -c "Chiroptera" Pacifici2013_data.csv
+```
+```bash-out
+1144
+```
+
+The option `-v` **inverts** `grep`'s behavior and will print all lines _not_ matching the pattern ---
+here, we'll combine `-v` and `-c` to count the number of lines that do not contain "Vombatidae":
+
+```bash
+grep -vc "Vombatidae" Pacifici2013_data.csv
+```
+```bash-out
+5424
+```
+
+::: {.callout-note collapse="true"}
+#### `grep` tips _(Click to expand)_
+
+- While not always necessary,
+  it is a good habit to always use quotes around the search pattern.
+- Incomplete matches, including in individual words, work: "`Vombat`" matches `Vombatidae`.
+- `grep` has many other useful options — more in Week 4:
+  - `-i` to ignore case
+  - `-r` to search files recursively
+  - `-w` to match "words"
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Substituting characters using `tr`
+
+`tr` for **`tr`**anslate will substitute all instances of characters –-
+here, any `a` for a `b`:
+
+```bash
+echo "aaaaccc" | tr a b
+```
+```bash-out
+bbbbccc
+```
+
+Oddly enough, `tr` does not take a file name as an argument,
+so how can we provide it with input from a file?
+The easiest way is by piping the output of `cat` into `tr` as follows:
+
+```bash
+cat Pacifici2013_data.csv | tr ";" "\t" | head -n 3
+```
+```bash-out
+TaxID   Order   Family  Genus   Scientific_name AdultBodyMass_g Sources_AdultBodyMass   Max_longevity_d Sources_Max_longevity   Rspan_d AFR_d   Data_AFR        Calculated_GL_d   GenerationLength_d      Sources_GL
+7580    Rodentia        Cricetidae      Eligmodontia    Eligmodontia typus      17.37   PanTHERIA       292     PanTHERIA       254.64  73.74   calculated      147.5856  147.5856        Rspan-AFR(SM+Gest)
+42632   Rodentia        Cricetidae      Microtus        Microtus oregoni        20.35   PanTHERIA       456.25  PanTHERIA       445.85  58.06   calculated      187.3565  187.3565        Rspan-AFR(SM+Gest)
+```
+
+The example above converted the `;` delimited to a `Tab` (i.e., a CSV file to a TSV file),
+where **`\t`** is a regular expression meaning Tab^[We'll learn more about regular expressions in Week 4.].
+(Though note that we didn't modify the original file nor saved the output in a new file.)
+
+::: {.callout-warning collapse="true"}
+#### Don't redirect to the input file! _(Click to expand)_
+
+TBA
+
+:::
+
+::: {.callout-note collapse="true"}
+#### Deletion and "squeezing" with `tr` _(Click to expand)_
+
+Delete all a's:
+
+```bash
+echo "aabbccddee" | tr -d a
+```
+```bash-out
+bbccddee
+```
+
+- Remove consecutive duplicates a's:
+
+```bash
+echo "aabbccddee" | tr -s a
+```
+```bash-out
+abbccddee
+```
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: exercise
+#### {{< fa user-edit >}} Exercise: Redirecting `tr` output
+
+Modify our command in which we changed the delimiter to a Tab to redirect the output
+to a new file, `Pacifici2013_data.tsv` (note the extension).
+This file should be located in the `sandbox` dir,
+which is not your current working dir.
+
+<details><summary>Click here for the solution</summary>
+
+```bash
+cat Pacifici2013_data.csv | tr ";" "\t" > ../sandbox/Pacifici2013_data.tsv
+```
+
+</details>
+:::
+
+<br>
+
+## Wrap-up & the Unix philosophy
+
+### Covered in the chapter but not in today's session
+
+-   The `find` command to find files
+-   Showing and changing file permissions
+-   Basic shell scripting
+-   `for` loops
+-   `$PATH` and Bash profile settings
+
+We'll cover all of these over the next few weeks.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### The Unix philosophy
+
+> *This is the Unix philosophy: Write programs that do one thing and do it
+> well.* *Write programs to work together. Write programs to handle text
+> **streams**,* *because that is a universal interface.*<br> — Doug McIlory
+
+**Advantages of a modular approach:**
+
+-   Easier to spot errors
+-   Easy to swap out components, including in other languages
+-   Easier to learn (?)
+
+**Text "streams"?**
+
+Rather than loading entire files into memory, process them one line at a time.
+Very useful with large files!
+
+```bash
+# This command would combine all files in the working dir ending in `.fa`
+# (i.e. FASTA files) into a single file -- even if that's multiple GBs,
+# this will not be a heavy lift at all!
+cat *.fa > combined.fa
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### The Unix shell in the weeks ahead
+
+-   In all course weeks, we will be working in the Unix shell,
+    though our focus in several cases will be on a specific tool,
+    such as Git in week 4.
+
+-   A couple of sessions that will be focused on further developing shell skills:
+    - Week 3, Thu session: Managing files in the shell
+    - Week 5: Shell scripting and using external CLI tools

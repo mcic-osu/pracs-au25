@@ -246,37 +246,42 @@ i.e. having a \>1x so-called "**depth of coverage**" allows to infer the correct
 
 ## Libraries and library prep
 
-In a sequencing context, a "**library**" is a collection of nucleic acid fragments ready for sequencing.
+We will talk a but about Illumina library prep because this is the most common
+type of sequencing, and because throughout the course,
+we will use Illumina read files as examples.
 
-. . .
-
-In Illumina and other HTS libraries, these fragments **number in the millions or billions** and are **often** **randomly generated** from input such as genomic DNA:
+In a sequencing context,
+a "**library**" is a collection of nucleic acid fragments ready for sequencing.
 
 . . .
 
 <hr style="height:1pt; visibility:hidden;" />
 
+In Illumina and other HTS libraries, these fragments **number in the millions or billions** and are **often** **randomly generated** from input such as genomic DNA:
+
+. . .
+
 ![](img/library_prep.png){fig-align="center"}
 
 ::: legend2
-This procedure is called **library prep**, and is typically done for you by a sequencing facility or company.
+An overview of the **library prep** procedure.
+This is typically done for you by a sequencing facility or company.
 :::
 
-## Libraries and library prep (cont.)
+## A closer look at the processed DNA fragments
 
-After library prep (here, for Illumina sequencing), each DNA fragment is flanked by several types of short sequences that together make up the "**adapters**":
+As shown in the previous slide, after library prep,
+each DNA fragment is flanked by several types of short sequences that together
+make up the "**adapters**":
 
 <br>
 
 ![](img/adapters2.png){fig-align="center"}
 
-. . .
-
-<br>
-
 ## Paired-end vs. single-end sequencing
 
-In Illumina sequencing, DNA fragments can be sequenced from both ends as shown below — this is called **"paired-end" (PE) sequencing**:
+DNA fragments can be sequenced from both ends as shown below —   
+this is called **"paired-end" (PE) sequencing**:
 
 ![](img/pairedend.png){fig-align="center"}
 
@@ -288,17 +293,10 @@ When sequencing is instead **single-end (SE)**, no reverse read is produced:
 
 ![](img/singleend.png){fig-align="center"}
 
-## Insert size
-
-The total size of the biological DNA fragment (without adapters) is often called the **insert size:**
-
-<hr style="height:1pt; visibility:hidden;" />
-
-![](img/insert_size.png){fig-align="center"}
-
 ## Insert size variation
 
-Insert size varies — because the library prep protocol can aim for various sizes, and because of variation due to limited precision in size selection. In some cases, the insert size can be:
+The size of the DNA fragment can vary -- both by design and because of limited
+precision in size selection. In some cases, it is:
 
 -   Shorter than the *combined* read length, leading to **overlapping reads** (this can be useful):
 
@@ -316,7 +314,7 @@ Insert size varies — because the library prep protocol can aim for various siz
 Using the indices/barcodes in adapters, up to 96 samples can be multiplexed into a single library.
 :::
 
-# Reference genomes
+# Reference genomes {background-color="dimgray"}
 
 ## Genomes
 
@@ -378,6 +376,8 @@ What exactly does "reference genome" refer to? We'll discuss three components to
 Often, the order and orientation of two or more contigs is known, but there is a gap of unknown size between them. Such contigs are connected into **scaffolds** with a stretch of `N`s in between.
 
 </details>
+
+# Sequence file types {background-color="dimgray"}
 
 ## Overview
 
@@ -534,68 +534,6 @@ sample1_R2.fastq.gz
 sample2_R1.fastq.gz
 sample2_R1.fastq.gz
 ```
-
-## GTF/GFF
-
-The GTF and GFF formats are tab-delimited **tabular** **files** that contain **genome annotations**, with:
-
--   One row for each annotated "**genomic feature**" (gene, exon, etc.)
-
--   One column for each piece of information about a feature, like its genomic coordinates
-
-. . .
-
-See the sample below, with an added header line (not normally present) with column names:
-
-``` bash-out-solo
-seqname     source  feature start   end     score  strand  frame    attributes
-NC_000001   RefSeq  gene    11874   14409   .       +       .       gene_id "DDX11L1"; transcript_id ""; db_xref "GeneID:100287102"; db_xref "HGNC:HGNC:37102"; description "DEAD/H-box helicase 11 like 1 (pseudogene)"; gbkey "Gene"; gene "DDX11L1"; gene_biotype "transcribed_pseudogene"; pseudo "true"; 
-NC_000001   RefSeq  exon    11874   12227   .       +       .       gene_id "DDX11L1"; transcript_id "NR_046018.2"; db_xref "GeneID:100287102"; gene "DDX11L1"; product "DEAD/H-box helicase 11 like 1 (pseudogene)"; pseudo "true"; 
-```
-
-. . .
-
-::: callout-note
-## Some details on the more important/interesting columns:
-
--   ***seqname*** — Name of the chromosome, scaffold, or contig
--   ***feature*** — Name of the feature type, e.g. "gene", "exon", "intron", "CDS"
--   ***start*** & **end**— Start & end position of the feature
--   ***strand*** — Whether the feature is on the `+` (forward) or `-` (reverse) strand
--   ***attribute*** — A semicolon-separated list of tag-value pairs with additional information
-:::
-
-## SAM/BAM
-
-Using specialized bioinformatics tools, you can align HTS reads (in FASTQ files) to a reference genome assembly (in a FASTA file).
-
-The resulting alignments are stored in the SAM (uncompressed) / BAM (compressed) format.
-
-. . .
-
-<hr style="height:1pt; visibility:hidden;" />
-
-**SAM/BAM are tabular files with one line per alignment**, each of which includes:
-
--   The position in the genome that the read aligned to
-
--   A mapping score based on the length of the alignment and the number of mismatches
-
--   The sequence of aligned the read itself
-
-. . .
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: callout-tip
-## File conversions
-
--   FASTQ files can be converted to FASTA files (losing quality information) but not vice versa
-
--   SAM/BAM files can be converted to FASTQ files (losing alignment information) but not vice versa
-
--   Proteome FASTA files can be produced from the combination of a FASTA genome assembly and a GFF/GTF genome annotation
-:::
 
 # Questions? {background-color="dimgray"}
 
