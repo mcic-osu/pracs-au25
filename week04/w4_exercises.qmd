@@ -1,6 +1,9 @@
 ---
-title: "Week 3 exercises"
-pagetitle: "PRACS24: Week 3 exercises"
+title: "Week 4 exercises: Version control with Git and GitHub"
+pagetitle: "PRACS25: Week 4 exercises"
+author: Jelmer Poelstra
+date: 2025-09-22
+number-sections: false
 ---
 
 ---------
@@ -8,72 +11,64 @@ pagetitle: "PRACS24: Week 3 exercises"
 <br>
 
 In this exercise, you will primarily be practicing your Git skills.
-Some tips:
 
-- Keep checking the status of your repository (repo) with `git status`
-  before and after nearly all other Git commands that you issue.
-  This will help prevent mistakes, and will also help you understand Git better.
-- You won't be doing anything new relative to what we did in class,
-  and you can refer to those pages to see which commands and options you need to use. 
+A general tips to keep in mind is to keep checking the status of your repository (repo)
+with **`git status`** before and after nearly all other Git commands that you issue.
+This will help prevent mistakes, and will also help you understand Git better.
 
 <hr style="height:1pt; visibility:hidden;" />
 
-## Exercise
-
-#### Local Git workflow
+#### Part I: Local Git workflow
 
 1. **Create a new directory at OSC for these exercises, and move there.**\
-   For example, `/fs/ess/PAS2700/users/$USER/week03/exercises`.
+   For example, `/fs/ess/PAS2880/users/$USER/week03/exercises`.
 
-2. **Load the OSC Git module.**\
-   Don't forget to do this, or you will be working with a much older version of Git. 
+2. **Initialize a local Git repository** inside your new directory.
 
-3. **Initialize a local Git repository** inside your new directory.
-
-4. **Create a README file in Markdown format.**\
+3. **Create a README file in Markdown format.**\
    The file should be named `README.md`,
    and for now, just contain a *header* saying that this is a repository for your exercises.
    
-5. **Stage and then commit the README file** with an appropriate commit message.
+4. **Stage and then commit the README file** with an appropriate commit message.
 
-6. **Create a second Markdown file with some more contents.**\
+5. **Create a second Markdown file with some more contents.**\
    Name it as you like and in it, describe the basic Git workflow and commands
    with bullet points and headers^[
    Recall that in VS Code, you can open the Markdown preview on the side,
    so you can experiment and see whether your formatting is working the way you intend.
    ].
      
-7. **Create at least two commits while you work on the Markdown file.**\
+6. **Create at least two commits while you work on the Markdown file.**\
    Try to break your progress up into logical units that can be
    summarized with a descriptive commit message.
    
-8. **Update the `README.md` file**.\
+7. **Update the `README.md` file**.\
    Briefly describe the current contents of your repo now that you actually
    have some contents.
 
-9. **Stage and commit the updated README file.**\
+8. **Stage and commit the updated README file.**\
 
-10. **Create a `results` directory with an empty file and make Git ignore this directory.**\
-    Also, commit your `.gitignore` file.
+9. **Create a `results` directory with an empty file and make Git ignore this directory.**\
+   Also, commit your `.gitignore` file.
 
 <hr style="height:1pt; visibility:hidden;" />
 
-#### Create and sync an online version of the repo
+#### Part II: Create and sync an online version of the repo
 
 Phew, you made several commits! Time to share all this work with the world.
 
-11. **Create a Github repository.**\
+10. **Create a Github repository.**\
     Go to <https://github.com>, sign in, and create a new repository.
     It's a good idea to give it the same name as your local repo,
     but these names don't *have to* match.
     Like in class, you want to create an *empty* GitHub repository,
     because you will upload all the contents from your local repo.
     
-12. **Push your local repo to the online one you just created.**\
+11. **Push your local repo to the online one you just created.**\
     When you're done, click the `Code` button, and
     admire the nicely rendered README on the front page of your Github repo.
 
-13. **Open a GitHub Issue**\
+12. **Open a GitHub Issue**\
     As practice for when you need to do this for your Final Project submissions,
     open an Issue for your repo: in the Issues tab, click "New Issue",
     and in the box where you can type your issue, tag me. For example:
@@ -84,111 +79,121 @@ Phew, you made several commits! Time to share all this work with the world.
     
 <br>
 
-## Solutions
-
-1. Create a new directory at OSC for these exercises, and move there.
-
-   ```bash
-   mkdir /fs/ess/PAS2700/users/$USER/week03/exercises
-   cd /fs/ess/PAS2700/users/$USER/week03/exercises
-   ```
-
-2. Load the OSC Git module.
-
-   ```bash
-   module load git/2.39.0
-   ```
-   
-3. Initialize a local Git repository inside your new directory.
-
-   ```bash
-   git init
-   ```
-
-4. Create a README file in Markdown format.
-
-   ```bash
-   echo "# This dir is for the week3 exercises on Git" > README.md
-   ```
-   
-5. Stage and then commit the README file with an appropriate commit message.
-
-   ```bash
-   git add README.md
-   git commit -m "Added a README file"
-   ```
-
-6. Create a second Markdown file with some more contents.
-
-   ```bash
-   git_notes.md
-   ```
-
-7. Create at least two commits while you work on the Markdown file.
-
-   ```bash
-   # Commit #1
-   git add git_notes.md
-   git commit -m "Started a document with notes on Git"
-   
-   # (Make changes to git_notes.md)
-   
-   # Commit #1
-   git add git_notes.md
-   git commit -m "Descriptive commit message #2"
-   ```
-
-8. Update the `README.md` file.
-
-   ```bash
-   echo "Added a file with notes on Git" >> README.md
-   ```
-   
-9. Stage and commit the updated README file.
-
-   ```bash
-   git add README.md
-   git commit -m "Added a description of the repo's contents to the README"
-   ```
-
-10. Create a `results` dir and file, and make Git ignore this directory.
-
-    ```bash
-    # Create the dir and file that should be ignored
-    mkdir results
-    touch results/results.txt
-    ```
-    
-    ```bash
-    # Create a gitignore file with instructions to ignore the 'results' dir
-    echo "results/" > .gitignore
-    ```
-    
-    ```bash
-    # Add and commit the .gitignore
-    git add .gitignore
-    git commit -m "Added a gitignore file"
-    ```
-
-11. Create a GitHub repository.
-
-    See the [lecture page](w3_git2.qmd).
-
-12. Push your local repo to the online one you just created.
-
-    ```bash
-    # Step 1: Set up the connection to the remote repo
-    # (replace <SSH-URL-to-repo> with your actual SSH (not HTTPS!) URL)
-    git remote add origin <SSH-URL-to-repo>
-    ```
-    
-    ```bash
-    # Step 2: Push to remote
-    git push -u origin main
-    ```
-
-13. Open a GitHub Issue.
-
-    See the [lecture page](w3_git2.qmd).
+-----
 
 <br>
+
+## Solutions
+
+<details><summary>**1.** Create a new directory at OSC for these exercises, and move there.</summary>
+For example:
+
+```bash
+mkdir /fs/ess/PAS2880/users/$USER/week03/exercises
+cd /fs/ess/PAS2880/users/$USER/week03/exercises
+```
+</details>
+
+<details><summary>**2.** Initialize a local Git repository inside your new directory.</summary>
+
+```bash
+git init
+```
+</details>
+
+<details><summary>**3.** Create a README file in Markdown format.</summary>
+
+```bash
+echo "# This dir is for the week3 exercises on Git" > README.md
+```
+</details>
+
+<details><summary>**4.** Stage and then commit the README file with an appropriate commit message.</summary>
+
+```bash
+git add README.md
+git commit -m "Added a README file"
+```
+</details>
+
+<details><summary>**5.** Create a second Markdown file with some more contents.</summary>
+
+Create a new empty file:
+
+```bash
+touch git_notes.md
+```
+
+Then, open the file in the VS Code editor and describe the Git workflow in your own words. 
+</details>
+
+<details><summary>**6.** Create at least two commits while you work on the Markdown file.</summary>
+
+- First commit, after adding a first batch of content to the Markdown file:
+
+```bash
+git add git_notes.md
+git commit -m "Started a document with notes on Git"
+```
+
+- Make additional changes to `git_notes.md`, and commit again:
+
+```bash   
+git add git_notes.md
+git commit -m "Descriptive commit message #2"
+```
+</details>
+
+<details><summary>**8.** Update the `README.md` file.</summary>
+
+```bash
+echo "Added a file with notes on Git" >> README.md
+```
+</details>
+
+<details><summary>**8.** Stage and commit the updated README file.</summary>
+
+```bash
+git add README.md
+git commit -m "Added a description of the repo's contents to the README"
+```
+</details>
+
+<details><summary>**9.** Create a `results` dir and file, and make Git ignore this directory.</summary>
+
+- Create the dir and file that should be ignored:
+    
+```bash
+mkdir results
+touch results/results.txt
+```
+
+- Create a gitignore file with instructions to ignore the `results` dir:
+
+```bash
+echo "results/" > .gitignore
+```
+    
+- Add and commit the `.gitignore` file:
+
+```bash
+git add .gitignore
+git commit -m "Added a gitignore file"
+```
+</details>
+
+<details><summary>**11.** Push your local repo to the online one you just created.</summary>
+
+- Step 1: Set up the connection to the remote repo:
+
+```bash
+# (replace <SSH-URL-to-repo> with your actual SSH (not HTTPS!) URL)
+git remote add origin <SSH-URL-to-repo>
+```
+    
+- Step 2: Push your local repo contents to the remote repo:
+
+```bash
+git push -u origin main
+```
+</details>

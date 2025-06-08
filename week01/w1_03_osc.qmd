@@ -49,13 +49,14 @@ This is what Cardinal, one of the OSC supercomputers, physically looks like:
 
 Here are some possible reasons to use a supercomputer instead of your own laptop or desktop:
 
--   Your analyses take a long time to run, need large numbers of CPUs, or a large amount of memory.
--   You need to run some analyses many times.
+-   Your analyses take a long time to run, need large numbers of processors,
+    or a large amount of memory.
+-   You need to run an analysis many times.
 -   You need to store a lot of data.
--   Your analyses require software available only for the Linux operating system, but you use Windows.
+-   Your analyses require software available only for the Linux operating system, but you have Windows.
 -   Your analyses require specialized hardware, such as GPUs (Graphical Processing Units).
 
-_When you're working with omics data, many of these reasons typically apply._
+**When you're working with omics data, many of these reasons typically apply.**
 This can make it hard or sometimes simply impossible to run all your analyses on your
 personal workstation, and supercomputers provide a solution.
 
@@ -63,7 +64,7 @@ personal workstation, and supercomputers provide a solution.
 
 #### The Ohio Supercomputer Center (OSC)
 
-The Ohio Supercomputer Center (OSC) is a facility provided by the state of Ohio in the US.
+The Ohio Supercomputer Center (OSC) is a facility provided by the state of Ohio.
 It has several supercomputers, lots of storage space,
 and an excellent infrastructure for accessing these resources.
 
@@ -97,12 +98,13 @@ Access to OSC's computing power and storage space goes through **OSC "Projects"*
 
 ### Terminology
 
-Let's start with some (super)computing terminology, going from smaller things to bigger things:
+Let's start with some (super)computing terminology,
+going from smaller things to bigger things:
 
 -   **Node**\
     A single computer that is a part of a supercomputer.
 -   **Supercomputer / Cluster**\
-    A collection of computers connected by a high-speed network.
+    A collection of connected computers.
     OSC currently has three: "Ascend", "Cardinal", and "Pitzer".
 -   **Supercomputer Center**\
     A facility like OSC that has one or more supercomputers.
@@ -111,9 +113,12 @@ Let's start with some (super)computing terminology, going from smaller things to
 
 We can think of a supercomputer as having three main parts:
 
--   **File Systems**: Where files are stored (these are shared between the two OSC supercomputers!)
--   **Login Nodes**: The handful of computers everyone shares after logging in
--   **Compute Nodes**: The many computers you can reserve to run your analyses
+- **File Systems**: Where files are stored (these are shared between the OSC supercomputers!)
+- **Login Nodes**: The handful of computers everyone shares after logging in
+- **Compute Nodes**: The many computers you can reserve to run your analyses
+
+We wil briefly discuss these below,
+and come back to them in more detail later in the course.
 
 ![_The structure of a supercomputer with three main components: file systems, login nodes, and compute nodes_ ](img/cluster_overview_ed.png){fig-align="center" width="85%"}
 
@@ -123,19 +128,20 @@ We can think of a supercomputer as having three main parts:
 
 OSC has several distinct file systems:
 
-| File system | Located within | Quota              | Backed up? | Auto-purged?  | One for each... |
-|----------|------------|--------------|------------|------------|------------|
-| **Home**        | `/users/`         | 500 GB / 1 M files | Yes        | No            | User            |
-| **Project**     | `/fs/ess/`   | Flexible           | Yes        | No            | OSC Project     |
-| **Scratch**     | `/fs/scratch/`    | 100 TB             | No         | After 90 days | OSC Project     |
+| File system | Located within "path" | Main purpose
+|------|-------|-----------------|
+| **Project**     | `/fs/ess/`   | Main storage location
+| **Scratch**     | `/fs/scratch/`    | Additional, temporary storage
+| **Home**        | `/users/`         | General, personal files not tied to research projects or courses
 
-During the course, we will be working in the project directory of the course's OSC Project `PAS2880`: `/fs/ess/PAS2880`.
+During the course, we'll work in the project folder of the course's OSC Project
+`PAS2880`: `/fs/ess/PAS2880`.
 
 ::: callout-tip
-#### Terminology
-
-- Directory is just another word for folder, often written as "dir" for short
-- **Paths TBA**
+#### Paths?
+Paths, like those shown in the table above,
+specify the locations of folders and files on a computer.
+You will learn more about them in the next few weeks.
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -160,18 +166,8 @@ You can only use compute nodes after putting in a **request** for resources (a "
 The Slurm *job scheduler*, which we will learn to use later in this course,
 will then assign resources to your request.
 
-::: {.callout-note}
-#### Compute node types
-
-Compute nodes come in different shapes and sizes.
-Standard, default nodes work fine for the vast majority of analyses,
-even with large-scale omics data.
-But you will sometimes need non-standard nodes,
-such as when you need a lot of RAM memory or need GPUs^[GPUs are e.g. used for Nanopore basecalling].
-:::
-
 ::: {.callout-caution collapse="true"}
-## At-home reading: What works differently on a supercomputer like at OSC? _(Click to expand)_
+## What works differently on a supercomputer like at OSC? _(Click to expand)_
 
 Compared to command-line computing on a laptop or desktop,
 a number of aspects are different when working on a supercomputer like at OSC.
@@ -196,11 +192,11 @@ The OSC OnDemand web portal allows you to use a web browser to access OSC resour
 
 -   A **file browser** where you can also create and rename folders and files, etc.
 -   A **Unix shell**
--   "**Interactive Apps**": programs such as RStudio, Jupyter, VS Code and QGIS.
+-   "**Interactive Apps**": programs such as RStudio and VS Code
 
-{{< fa user-edit >}} **Go to <https://ondemand.osc.edu> and log in** (use the boxes on the left-hand side)
+{{< fa user-edit >}} **Go to <https://ondemand.osc.edu> and log in** (use the boxes on the left-hand side).
 
-You should see a landing page similar to the one below:
+Once logged in, you should see a landing page similar to the one below:
 
 ![_The OSC OnDemand landing page_](img/ondemand_home.png){fig-align="center" width="90%"}
 
@@ -214,8 +210,8 @@ Hovering over the **Files** dropdown menu gives a list of directories that you h
 If your account is brand new, and you were added to `PAS2880`, you should only have three directories listed:
 
 1.  A **Home** directory (starts with `/users/`)
-2.  The `PAS2880` project's "**scratch**" directory (`/fs/scratch/PAS2880`) 
-3.  The `PAS2880` project's "**project**" directory (`/fs/ess/PAS2880`)
+2.  The `PAS2880` project's "**project**" directory (`/fs/ess/PAS2880`)
+3.  The `PAS2880` project's "**scratch**" directory (`/fs/scratch/PAS2880`) 
 
 You will only ever have one Home directory at OSC,
 but for every additional project you are a member of,
@@ -257,21 +253,21 @@ that can be interesting to get a good idea of the scale of the supercomputer cen
 which cluster is being used more,
 what the size of the "queue" (which has jobs waiting to start) is, and so on.
 
-![](img/ondemand_systemstatus.png){fig-align="center" width="90%"}
+![A screenshot of the "System Status" page showing live cluster usage.](img/ondemand_systemstatus.png){fig-align="center" width="90%"}
 
 #### Shell Acccess
 
 Interacting with a supercomputer is most commonly done using a so-called "Unix shell",
-which is a command-line interface to a computer that we will be using throughout this course.
+which is a command-line interface to a computer that we'll use throughout the course.
 Still under the **Clusters** dropdown menu (see the screenshot above),
 you can access a Unix shell on Ascend, Cardinal, or Pitzer.
 
-I'm selecting a shell on the Cardinal cluster (`Cardinal Shell Access` item),
-which is the cluster we will be using throughout this course.
+{{< fa user-edit >}} Select a shell on the Cardinal cluster (`Cardinal Shell Access` item).
+
 This will open a new browser tab,
 where the bottom of the page looks like this:
 
-![](img/ondemand_shell-cardinal.png){fig-align="center" width="95%"}
+![A Unix shell on the Cardinal cluster as accessed through OSC OnDemand. OSC prints some information like file usage quota, and at the bottom of the screen is the prompt where you can type commands.](img/ondemand_shell-cardinal.png){fig-align="center" width="95%"}
 
 We'll return to this Unix shell next week.
 

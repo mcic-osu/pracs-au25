@@ -1,5 +1,5 @@
 ---
-title: "Unix Shell Basics - part I"
+title: "Unix Shell Basics"
 pagetitle: "PRACS25: Shell Basics"
 author: Jelmer Poelstra
 date: 2025-09-02
@@ -11,16 +11,17 @@ editor_options:
 
 <br>
 
-## Goals for this and the next session
+### Overview {-}
 
-In this week's sessions, we'll cover much of [CSB](https://library.ohio-state.edu/record=b8624007~S7)'s
+In this week's sessions,
+we'll cover much of [CSB](https://library.ohio-state.edu/record=b8624007~S7)'s
 Chapter 1 to learn:
 
 - Why using a command-line interface can be beneficial.
 - What the Unix shell is and what you can do with it. 
 - Using the shell, how to:
   - Navigate around your computer.
-  - Create and manage directories and files.
+  - Create and manage folders and files.
   - View text files.
   - Search within, manipulate, and extract information from text files.
 
@@ -30,7 +31,7 @@ Chapter 1 to learn:
 
 <br>
 
-## Introduction
+## Introduction to Unix and the Unix Shell
 
 ### Some terminology and concepts
 
@@ -48,24 +49,20 @@ precisely because we will connect to OSC and do our work there.
 
 #### Unix shell-related terms
 
--   **Command Line** — the most general term, an interface where you type commands
--   **Terminal** — the program/app/window that can run a Unix shell
--   **Shell** — a command line interface to your computer
+-   **Command Line** and **Command Line Interface (CLI)** — A user interface where you type commands
+-   **Shell** — a more specific and technical term for a command line interface _to your computer_
 -   **Unix Shell** — the type of shell on Unix-based (Linux + Mac) computers
--   **Bash** — the specific Unix shell language that is most common on Unix computers
+-   **Bash** — the specific Unix shell _language_ that is most common
+-   **Terminal** — the program/app/window that can run a shell
 
-While these are not synonyms, in day-to-day computing,
+While these are clearly not synonyms, in day-to-day computing,
 they are often used interchangeably.
 
 ::: callout-note
-#### User interfaces: CLI vs. GUI
-Also, two common related acronyms:
-
-- Command-line Interface (CLI)
-- Graphical User Interface (GUI)
-
-These refer to the user interfaces to computers or individual program that are
-operated either by typing commands (CLI) or by pointing-and-clicking (GUI).
+#### CLI vs. GUI
+Instead of a Command-line Interface (CLI),
+most programs that we use on a day-to-day basis have a Graphical User Interface (GUI),
+which are operated mostly by pointing and clicking rather than typing.
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -84,18 +81,18 @@ programs with Graphical User Interfaces (GUIs) because of:
 - **Software needs**\
   When working with omics data, we don't code our entire analysis from scratch --
   for example, we don't build our own genome assembly or read alignment algorithm.
-  Many of the external tools that we use for this are run using the shell with
+  Many of the external tools that we use for this are run in the shell with
   a Command-Line Interface (CLI).
 - **Automation and fewer errors**\
   The shell allows you to repeat and automate tasks easily and without
   introducing errors.
 - **Reproducibility**\
-  It's straightforward to keep a record of what you have done.
+  It's more straightforward to keep a detailed record of what you have done.
 - **Working with large files**\
   Shell commands are really good at processing _large, plain-text files_,
-  which are very common when working with omics data.
+  which are very common in omics data.
 - **Remote computing – especially supercomputers**\
-  It is often only possible to work in a terminal when doing remote computing.
+  It is often only possible to work in a shell when doing remote computing.
 
 But what about versus other coding languages?
 Why do we need to know the Unix shell on top of R and/or Python?
@@ -103,19 +100,16 @@ Why do we need to know the Unix shell on top of R and/or Python?
 - **Efficiency**\
   For many _simpler_ tasks, built-in shell tools are faster ---
   in terms of coding time, processing time,
-  and the ease of processing very large files.
+  and the ease of working with very large files.
 - **Running external software**\
   As mentioned above,
-  we need to use many external programs with a CLI when we do omics data analysis.
+  we need to use many external programs with a CLI in omics data analysis.
   While those _can_ be called from within other languages,
-  the shell has a _direct_ interface to them and is therefore often strongly
-  preferred.
+  the shell has a _direct_ interface to them and is therefore often preferred.
 
-<br>
+<hr style="height:1pt; visibility:hidden;" />
 
-## Getting started with Unix
-
-#### Unix directory structure
+### The Unix directory structure
 
 - "Directory" (or "**dir**" for short) is the term for *folder* that is commonly
   used in Unix contexts.
@@ -162,15 +156,13 @@ The path to the file `todo_list.txt` is:
 
 <br>
 
-## Getting started with the shell
+## First steps in the shell
 
 ### Accessing a shell at OSC
 
 1.  Go to <https://ondemand.osc.edu> in your browser, and log in.
 2.  Click on the `Clusters` dropdown menu in the top bar and select
     `Cardinal Shell Access`.
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### The shell's prompt
 
@@ -183,7 +175,7 @@ but our prompts at OSC should show the following information:
 For example (and _note that **`~`** means your Home dir_):
 
 ``` bash-in-nocolor
-[jelmer@pitzer-login02 ~]$ 
+[jelmer@cardinal-login02 ~]$ 
 ```
 
 We type our commands after the dollar sign `$`,
@@ -253,6 +245,8 @@ if the latter, click on the clipboard icon in your browser's address bar
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
+
+## Options, arguments, and help
 
 ### The `cal` command --- and options & arguments
 
@@ -396,13 +390,17 @@ To summarize, different from options, _arguments_ to a command:
 - If options and arguments are combined, arguments **come after** options^[
   Though some commands are flexible and accept either order.].
 
+::: callout-warning
+#### TBA: Command structure visualization
+:::
+
 <hr style="height:1pt; visibility:hidden;" />
 
 ### Getting help
 
 Many basic Unix commands – *and other command-line programs!* –
 have a **`-h`** option for help,
-which usually gives a concise summary of the command's syntax,
+which usually gives a concise summary of the command's "syntax",
 i.e. its available options and arguments:
 
 ```bash
@@ -532,7 +530,9 @@ Su Mo Tu We Th Fr Sa
 
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
+<br>
+
+## `cd`, paths, and shortcuts 
 
 ### `cd` and command "actions"
 
@@ -652,7 +652,7 @@ And some are invaluable:
   bash: /fs/ess/PAS2880/: Is a directory
   ```
 
-<details><summary>Click to see the solution</summary>
+<details><summary>Click for the solution</summary>
 Basically, everything you type in the shell should start with a command.
 Just typing the name of a dir or file will not make the shell print some info about
 or the contents of said dir or file, as you perhaps expected.
@@ -696,7 +696,7 @@ When you do this, nothing is executed and you are not getting your prompt back:
 you should see a `>` on the next line.
 This is the shell wanting you to "complete" you command. Why would that be?
 
-<details><summary>Click to see the solution</summary>
+<details><summary>Click for the solution</summary>
 This is an incomplete command by definition because any opening parenthesis
 should have a matching closing parenthesis.
 </details>
@@ -765,10 +765,10 @@ By the way, `echo` can also print literal text (as shown below) or combinations
 of literals and variables (next exercise):
     
 ```bash
-echo "Welcome to PLNTPTH 6193"
+echo "Welcome to PLNTPTH 5004"
 ```
 ```bash-out
-Welcome to PLNTPTH 6193
+Welcome to PLNTPTH 5004
 ```
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -799,11 +799,11 @@ jelmer
 ```
 
 ::: exercise
-#### {{< fa user-edit >}} **Exercise**: environment variables
+#### {{< fa user-edit >}} Exercise: environment variables
 
 Using an environment variable, print "_Hello, my name is \<your username\>_" (e.g. "Hello, my name is natalie").
 
-<details><summary>*Click to see the solution*</summary>
+<details><summary>*Click for the solution*</summary>
 
 ``` bash
 # (This would also work without the " " quotes)
@@ -852,23 +852,40 @@ Now, let's all create our own subdir in here, and get the data from the CSB book
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### Paths & navigation shortcuts
+### Paths and path shortcuts
 
 #### Absolute (full) paths versus relative paths
 
-- **Absolute (full) paths** (e.g. `/fs/ess/PAS2880`) \
-  Paths that begin with a `/` always start from the computer's root directory,
-  and are called "absolute paths".\
-  *(They are equivalent to GPS coordinates for a geographical location,*
-  *as they work regardless of where you are*).
+Recall from above that "paths" specify the location of a file or dir.
+Any file or dir can be referred to in two different ways, using either:
 
-- **Relative paths** (e.g. `CSB/unix/sandbox`)\
-  Paths that instead start from your current working directory are called "relative paths".\
-    *(These work like directions along the lines of "take the second left:"*
-    *they depend on your current location.)*
+- An **absolute (full) path** (e.g. `/fs/ess/PAS2880`) \
+  A path that begin with a `/` starts from the computer's root directory,
+  and is called an "absolute path".\
+  *(It is equivalent to GPS coordinates for a geographical location,*
+  *and works regardless of where you are*).
+
+- A **Relative path** (e.g. `CSB/unix/sandbox` or `todo_list.txt`)\
+  A Path that starts from your current working directory is a "relative path".\
+  *(It works like directions along the lines of "take the second left:"*
+  *it depends on your current location.)*
 
 Next week, we'll talk more about the distinction between absolute and relative paths,
 and their respective merits.
+
+<details><summary>In the example above, how can the file name `todo_list.txt` represent a path? _(Click for the solution)_</summary>
+
+A file name like `todo_list.txt`, with no directories included,
+can be seen (and is often used!) as a relative path that implies that the file
+is in our current working dir.
+
+Alternatively, and often equivalently, you can be explicit about that
+by using a `./` preface, e.g.: `./todo_list.txt`
+(see the Path shortcuts section below).
+
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
 
 #### Path shortcuts
 
@@ -907,6 +924,8 @@ Some examples of `..`:
   /fs/ess/PAS2880/users/jelmer
   ```
 
+<hr style="height:1pt; visibility:hidden;" />
+
 ::: callout-tip
 #### These path shortcuts work with many commands
 These are *general shell shortcuts* that work with **any** command that accepts a path/file name.
@@ -915,7 +934,7 @@ These are *general shell shortcuts* that work with **any** command that accepts 
 <hr style="height:1pt; visibility:hidden;" />
 
 ::: exercise
-#### {{< fa user-edit >}} Exercise
+#### {{< fa user-edit >}} Exercise: navigation
 
 - **A)** Use a relative path to move back to the `/fs/ess/PAS2880/users/$USER/CSB/unix/sandbox` dir.
   (You should be in `/fs/ess/PAS2880/users/$USER`.)

@@ -1,5 +1,5 @@
 ---
-title: "Unix Shell Basics - part II"
+title: "Unix shell: working with files"
 pagetitle: "PRACS25: Shell Basics II"
 author: Jelmer Poelstra
 date: 2025-09-04
@@ -11,23 +11,42 @@ editor_options:
 
 <br>
 
-In this session, we will continue with ...
-
-::: callout-important
-
-While some of these commands may seem to do somewhat trivial tasks,
-TBA
-
-- Getting more comfortable with working in the shell
-- Syntax is consistent, can generalize across commands
-- Better to stick with the shell also for these operations instead of going
-  back and forth
-
-:::
+In this session, we continue with basics Unix shell commands,
+focusing on commands that work with files (and dirs).
 
 <br>
 
-## File browser-type commands 
+## The shell as a file browser
+
+### Introduction
+
+File browser GUIs, such as "Finder" on Mac, "File Explorer" on Windows,
+and the one we saw in OSC OnDemand's File menu,
+can perform operations like listing, creating, moving, renaming, copying and
+removing files and folders.
+
+Here, we will learn to use Unix shell commands that can perform these actions.
+
+::: callout-warning
+#### Why do I need to learn to do these relatively trivial tasks in the shell?
+
+- This will help you to get more comfortable with working in the shell.
+- These are good commands to learn how the shell works more generally,
+  and how commands are structured.
+- You will eventually use the shell for data processing,
+  and it is more efficient to stick with the shell for file browser operations,
+  rather than going back and forth all the time.
+- You may run into situations where a GUI file browser is not at all available.
+- **With practice, using the shell is faster and more powerful than a GUI file browser.**
+:::
+
+In the previous session, we already learned some commands that also fall
+in this category -- to recap:
+
+- `cd` will change your working directory, i.e. it can move you around
+- `mkdir` will create a new directory (folder)
+
+<hr style="height:1pt; visibility:hidden;" />
 
 ### `ls` to list files
 
@@ -144,13 +163,13 @@ total 320K
 ```
 
 ::: exercise
-#### {{< fa user-edit >}} **Exercise**
+#### {{< fa user-edit >}} **Exercise**: Listing a single file
 
 Say you wanted to check the size of a single file.
-Then, it may always be convenient to list an entire dir's contents,
-as a dir could contain many files.
+Then, it is not always convenient to list an entire dir's contents,
+as it could contain many files.
 
-Can you try to use `ls` to see the file size **only** for the 
+Can you use `ls` to see the file size **only** for the 
 `miRNA_about.txt` file we saw listed above?
 
 <details><summary>*Click to see the solution*</summary>
@@ -196,21 +215,38 @@ touch newfile1.txt
 touch newfile2.txt newfile3.txt
 ```
 
+::: callout-tip
+#### Operating on multiple files
+It is important to realize that almost all Unix commands that operate on files
+and/or dirs can operate on multiple (many!) files at a time,
+which is one reason using them can be highly efficient.
+In week 6, you'll learn to select many files at once using shortcuts known
+as wildcards.
+:::
+
 ::: exercise
-#### {{< fa user-edit >}} **Exercise**
+#### {{< fa user-edit >}} **Exercise**: file locations
 
-Where were these files created?
+1. Using the code above, where were these files created?
+   Can you check their sizes?
 
-Can you create a create a new file `test.txt` inside a new dir `test`?
+2. Can you create a create a new file `test.txt` inside a new dir `test`?
 
 <details><summary>*Click to see the solutions*</summary>
 
-The initial files were created in your working dir.
+1. The initial files were created in your working dir.
 
-To make a new dir and create a file in there,
-you can't just use the `touch` command,
-as it cannot create the directory for you
-(pay attention to the error, which may seem a bit confusing):
+```bash
+ls -lh
+```
+```bash-out
+TBA
+```
+
+2. To make a new dir and create a file in there,
+   you can't just use the `touch` command,
+   as it cannot create the directory for you
+   (pay attention to the error, which may seem a bit confusing):
 
 ```bash
 touch test/test.txt
@@ -219,8 +255,8 @@ touch test/test.txt
 touch: test/test.txt: No such file or directory
 ```
 
-Instead, we should first create the new dir with `mkdir` and then create the
-new file in there:
+Instead, we should first create the new dir with `mkdir`,
+and _then_ create the new file in there:
 
 ```bash
 mkdir test
@@ -235,16 +271,21 @@ touch test/test.txt
 ### `cp` to copy files and dirs
 
 The `cp` command copies files and/or dirs from one location to another.
-Just like with copying files in file browsers on your computer,
-the copy can have a different name than the original file,
-or the same name if it's copied to a different dir.
+Just like when copying files in a GUI file browser,
+the copy can have a different name than the original file --
+or the same name, as long as it's copied to a different dir.
 
 `cp` has two **required** arguments in the following order:
 
 1. What you want to copy (_source_ path)
 2. Where you want to copy it to (_destination_ path).
 
-That is, its basic syntax is `cp <source> <destination>`.
+That is, its basic syntax is `cp <source path> <destination path>`^[
+Note: when I use `< >` around words in a line of code,
+those are **descriptive** rather than literal.
+In this example, `<source>` should be replaced in an actual line of code by
+whatever "source" you want to use, and likewise for the `<destination>`.
+].
 
 #### Basic examples
 
@@ -254,7 +295,7 @@ Create a copy of one of the files we created above:
 cp newfile3.txt newfile3_copy.txt
 ```
 
-**Importantly, like with any Unix command**, 
+Importantly, _like with any Unix command_, 
 you can always refer to files and dirs that aren't in your current working dir --
 for example:
 
@@ -265,30 +306,36 @@ cp ../data/Buzzard2015_about.txt buzz2.txt
 The above copied the file `Buzzard2015_about.txt`, which was not in our working dir,
 to a new file with the name `buzz2.txt` in our working dir.
 
+:::callout-note
 #### Copying into your working dir without changing the name
 
 When copying something into our working dir, like above,
 we may not actually want to change the file name.
 To accomplish this,
-we could of course just repeat the original file name in the target argument:
+we could of course just repeat the original file name in the destination path:
 
 ```bash
 cp ../data/Buzzard2015_about.txt Buzzard2015_about.txt
 ```
 
 But do we really need to repeat the filename
-(which is not just more typing but can be error-prone as well)? No.
-If we only use the `.` shortcut that indicates our current working dir,
+(which is not just more typing, but can be error-prone as well)?
+No.
+If the destination path is simply the `.` shortcut that indicates our current
+working dir,
 the file name of the copy will not be changed:
 
 ```bash
 cp ../data/Buzzard2015_data.csv .
 ```
+:::
 
 ### Copying dirs and their contents
 
 Finally, `cp` will by default refuse to copy directories and their contents ---
-that is, it is not "**recursive**" by default.
+that is, it is not "**recursive**" by default^[
+For better or worse, non-recursiveness in Unix commands is meant as a sort of safety mechanism,
+as you may otherwise more easily operate on very large amounts of data accidentally.].
 The `-r` option is needed for recursive copying:
 
 ```bash
@@ -308,12 +355,15 @@ TODO UPDATE
 
 ### `mv` to move and rename files and dirs
 
-Moving files to a different dir and renaming files is fundamentally the same
-operation: you are changing the path.
+Moving files to a different dir and renaming files is
+_fundamentally the same operation_: you are **changing the path**.
+
 It is important to realize that when talking about files,
-both its filename (e.g. `buzz2.txt`) and the dir it is inside
+both its file name (e.g. `buzz2.txt`) and the dir it is inside
 (`/fs/ess/PAS2880/users/jelmer/CSB/sandbox`) are part of the path
-(`/fs/ess/PAS2880/users/jelmer/CSB/sandbox/buzz2.txt`).
+(`/fs/ess/PAS2880/users/jelmer/CSB/sandbox/buzz2.txt`) ---
+and, as pointed out before,
+that a mere file name like `buzz2.txt` also represents a path.
 
 The **`mv`** command, then, can be used to move files, rename them,
 or do both at the same time:
@@ -323,21 +373,22 @@ or do both at the same time:
 mv buzz2.txt buzz_copy.txt
 
 # Different directory, same file name ("moving"):
+# (You don't need the trailing slash to data/, but this can be clearer.)
 mv buzz_copy.txt data/
 
 # Different directory, different file name ("moving + renaming"):
 mv buzz_copy.txt data/buzz_copy99.txt
 ```
 
-Finally, unlike `cp`, `mv` is recursive by default!
+Finally, unlike `cp`, the `mv` command is recursive by default!
 
 ::: callout-tip
 #### Both the `mv` and `cp` commands will by default:
 
 - Not report what they do: no output = success
-  (use the `-v` option for _verbose_ to make them report what they do).
+  (use the **`-v` option for _verbose_** to make them report what they do).
 - Overwrite existing files without reporting this
-  (use the `-i` option for _interactive_ to make them ask before overwriting).
+  (use the **`-i` option for _interactive_** to make them ask before overwriting).
   
 :::
 
@@ -389,9 +440,9 @@ A couple ways to take precautions:
 
 For both `cp` and `mv`, when operating on files (and this works equivalently for dirs):
 
-- If the destination is an existing dir, the file will go into that dir and keep its original name.
-- If the destination is _not_ an existing dir, the (last bit of the) destination specifies the new file name.
-- A trailing slash in the destination makes explicit that you are referring to a dir and not a file.
+- If the destination path is an existing dir, the file will go into that dir and keep its original name.
+- If the destination path is _not_ an existing dir, the (last bit of the) destination specifies the new file name.
+- A trailing slash in the destination path makes explicit that you are referring to a dir and not a file.
 
 -----
 
@@ -439,8 +490,6 @@ cp Buzzard2015_about.txt more_data/
 
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
 <br>
 
 ## Viewing text files
@@ -450,21 +499,21 @@ cp Buzzard2015_about.txt more_data/
 In this course,
 we'll be working almost exclusively with so-called "**plain-text**" files
 (files with `.txt` and related extensions).
-These are simple files that can be opened by any text editor and Unix shell tool.
+These are simple files that can be opened by any text editor on any computer,
+and by Unix commands.
 
 In contrast, so-called "binary" formats like Excel or Word files can only be opened
-in their respective apps, and cannot be operated on with the below commands.
-That is quite limiting, as such apps are not always available and problems may
-also arise if a file was produced by a more recent version of the app than you have,
-or a "too-old" version.
+in their respective apps and cannot be operated on with Unix commands.
+That can pose many problems: for example, these apps are not always available,
+and version mismatches may make files impossible to open.
 
 While their simplicity may seem limiting,
-**plain-text files are generally preferable in reproducible science**.
+**plain-text files are generally preferable for reproducible science**.
 Additionally, many common omics file formats,
-like FASTA, FASTQ, and GFF, are plain-text.
+like FASTA, FASTQ, and GFF, are in plain-text.
 
-Therefore, we will be learning a number of Unix commands to view (this section)
-and process/summarize (next section) plain-text files in various formats.
+Therefore, we will be learning a number of Unix commands to _view_ (this section)
+and _process/summarize_ (next section) plain-text files in various formats.
 
 ```bash
 cd ../data   # Move to the data dir for the next commands
@@ -553,15 +602,40 @@ like in this example^[We'll see this in action in a bit]:
 
 ### `less`: A file pager
 
-TBA
+The `less` command is rather different from the previous commands,
+which simply printed file contents to the screen and gave us our shell prompt back.
+Instead, `less` will open a file for you to browse through,
+and you need to explicitly quit the program to get your prompt back.
 
-<hr style="height:1pt; visibility:hidden;" />
+Let's try it:
 
-### `wc -l`
+```bash
+less Gesquiere2011_data.csv
+```
 
-The **`wc`** command is different from the previous commands,
-all of which printed some or all of a file's contents.
-By default, `wc` will count lines, words, and characters ---
+You can move around in the file in several ways:
+
+- By scrolling with your mouse
+- With up <kbd>↑</kbd> and down <kbd>↓</kbd> arrows to move line-by-line
+- If you have them, with <kbd>PgUp</kbd> and <kbd>PgDn</kbd> keys to move page-by-page
+- With <kbd>u</kbd> (up) and <kbd>d</kbd> (down) to half a page at a time
+
+To exit/quit `less` and get your shell prompt back, simply type **<kbd>q</kbd>**:
+
+```bash
+q
+```
+
+<br>
+
+## Redirection and pipes
+
+### `wc -l` to count lines
+
+Before we can move on to redirection and pipes,
+we'll learn about a useful little command that the examples below will use.
+The **`wc`** command by default counts the number of lines, words, and characters
+in its input ---
 but it is most commonly used to only **count lines**, with the `-l` option:
 
 ```bash
@@ -575,15 +649,12 @@ This can be surprisingly useful,
 as the number of lines in many types of files represent a count of the number
 of entries.
 
-<br>
-
-## Redirection and pipes
-
-Start by moving back into the `sandbox` dir:
+Now, let's move back into the `sandbox` dir:
 
 ```bash
 cd ../sandbox
 ```
+<hr style="height:1pt; visibility:hidden;" />
 
 ### Standard output and redirection
 
@@ -744,7 +815,7 @@ is a semicolon `;` --- "even though" the file has a `.csv` extension.
 </details>
 
 ::: {.callout-warning}
-#### A not about file extensions (TBA)
+#### A note about file extensions (TBA)
 
 :::
 
@@ -941,7 +1012,7 @@ grep -vc "Vombatidae" Pacifici2013_data.csv
 ```
 
 ::: {.callout-note collapse="true"}
-#### `grep` tips _(Click to expand)_
+#### Additional `grep` tips _(Click to expand)_
 
 - While not always necessary,
   it is a good habit to always use quotes around the search pattern.
@@ -1035,7 +1106,7 @@ cat Pacifici2013_data.csv | tr ";" "\t" > ../sandbox/Pacifici2013_data.tsv
 
 ## Wrap-up & the Unix philosophy
 
-### Covered in the chapter but not in today's session
+### Covered in the CSB chapter but not in today's session
 
 -   The `find` command to find files
 -   Showing and changing file permissions
@@ -1057,7 +1128,7 @@ We'll cover all of these over the next few weeks.
 
 -   Easier to spot errors
 -   Easy to swap out components, including in other languages
--   Easier to learn (?)
+-   Easier to learn
 
 **Text "streams"?**
 
@@ -1075,10 +1146,9 @@ cat *.fa > combined.fa
 
 ### The Unix shell in the weeks ahead
 
--   In all course weeks, we will be working in the Unix shell,
-    though our focus in several cases will be on a specific tool,
-    such as Git in week 4.
-
 -   A couple of sessions that will be focused on further developing shell skills:
-    - Week 3, Thu session: Managing files in the shell
+    - Week 3, Thu session: Advanced file management in the shell
     - Week 5: Shell scripting and using external CLI tools
+    
+-   In many other course weeks, we'll work in the Unix shell,
+    even when our focus is on a specific tool, such as Git in week 4.

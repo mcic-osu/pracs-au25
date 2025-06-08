@@ -1,6 +1,6 @@
 ---
 title: "Data management at OSC and beyond"
-subtitle: "Week 7 - part II"
+subtitle: "Week 6 - part II"
 pagetitle: "PRACS25: data management"
 author: Jelmer Poelstra
 date: 2025-09-30
@@ -13,8 +13,175 @@ editor_options:
 
 <br>
 
+## Overview
 
-### Viewing and modifying file permissions
+<br>
+
+## Managing your data and results
+
+- Keeping back-ups of raw data
+- Project versus scratch dirs (and avoid your Home dir for research projects)
+
+<br>
+
+## Sharing your data, results, and code
+
+- Raw sequences to NCBI
+- Some results can also go to NCBI, e.g. genome assemblies and annotations, GEO
+- Other results to e.g. Dryad / Zenodo
+- Scripts via GitHub
+
+<br>
+
+## File transfer to and from OSC
+
+### Overview of options
+
+In week 1, you were shown that you can upload and download files from OSC
+in the OnDemand Files menu, but that's only suitable for relatively small transfers.
+Here is a list of methods to transfer files between your computer and OSC:
+
+| Method                            | Transfer size         | CLI or GUI        | Ease of use   | Flexibility/options   |
+|-----------------------------------|-----------------------|-------------------|---------------|-----------------------|
+| **OnDemand Files menu**           | smaller (<1GB)        | GUI               | Easy          | Limited               |
+| **Remote transfer commands**      | smaller (<1GB)        | CLI               | Moderate      | Extensive             |
+| **SFTP**                          | larger (>1GB)         | Either            | Moderate      | Extensive             |
+| **Globus**                        | larger (>1GB)         | GUI               | Moderate      | Extensive             |
+
+::: legend2
+For more details, see the
+[self-study section at the bottom of this page](#more-details-on-file-transfer-to-and-from-osc).
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### FileZilla: a GUI-based SFTP client
+
+Here, we'll go over what is probably overall the most convenient and versatile
+way to transfer files to and from OSC,
+since it works for transfers of any size, and is easy and quick:
+**file transfer with a GUI-based SFTP client**.
+There are a number of such programs, but I chose to show you **FileZilla** because
+it works on all operating systems^[
+And has a more intuitive user interface than CyberDuck,
+another very commonly used program that works both on Mac and Windows.].
+
+- Go to the [FileZilla download page](https://filezilla-project.org/download.php?type=client) ---
+  it should automatically display a big green download button for your operating system:
+  click that and install and open the program.
+  
+- To connect to OSC, find the Site Manager:
+  click `File` in the top menu bar and then `Site Manager`^[
+  There is a also an icon in the far top-left to access this menu.
+  Additionally, there is a "Quickconnect" bar but I've not managed to connect to
+  OSC with that.].
+  In the Site Manager:
+  - Protocol: select "SFTP - SSH File Transfer Protocol".
+  - Host: type `sftp.osc.edu` (and you can leave the Port box empty).
+  - Logon Type: Make sure "Normal" is selected.
+  - User: Type you OSC user name.
+  - Password: Type or copy your OSC password.
+  - Click the "Connect" button at the bottom to connect to OSC.
+
+![](img/filezilla_connect.png){fig-align="center" width="60%"}
+
+- Once connected, your main screen is split with a local file explorer
+  on the left, and a remote file explorer on the right:
+  
+![](img/split_screen.png){fig-align="center" width="90%"}
+
+- Transferring dirs and files in either direction is as simple as dragging and
+  dropping them to the other side!
+  
+- Your default location at OSC is your home dir in `/users/`, but you can type
+  a path in the top bar to e.g. go to `/fs/ess/PAS2700/users`:
+  
+![](img/proj_dir.png){fig-align="center" width="70%"} 
+
+<br>
+
+## Downloading files at the command line
+
+When you need to get large files from public repositories like NCBI
+(e.g. reference genome files, raw reads from the SRA),
+I would recommend not to download these to your own computer and then transfer
+them to OSC, but to download them directly to OSC using commands.
+
+### `wget`
+
+You can download files from any URL that will allow you using the `wget` command.
+It has many options, but basic usage is quite simple:
+
+```bash
+# This will download the file at the URL to your current working dir
+wget <URL>
+```
+
+As an example, say that we want to download the reference genome FASTA and GTF
+files for _Culex pipiens_, the focal species of the Garrigos et al. RNA-seq data
+set that we've been working with.
+The files for that genome can be found at this
+[NCBI FTP webpage](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/).
+
+You can right-click on any of the files and then click "Copy Link Address"
+(or something similar, depending on your browser) ---
+let's copy the URL to the assembly FASTA (`.fna.gz`) file.
+Then type `wget` and <kbd>Space</kbd> in your terminal and paste the URL:
+
+```bash
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
+```
+```bash-out
+--2024-04-13 13:33:16--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
+Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.12, 130.14.250.11, 2607:f220:41e:250::12, ...
+Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.12|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 172895917 (165M) [application/x-gzip]
+Saving to: ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’
+
+100%[=====================================================================================================================>] 172,895,917 51.7MB/s   in 3.2s   
+
+2024-04-13 13:33:20 (51.7 MB/s) - ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’ saved [172895917/172895917]
+```
+
+Let's list our downloaded file:
+
+```bash
+ls -lh
+```
+```bash-out
+-rw-r--r--  1 jelmer PAS0471 165M Aug  5  2022 GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: callout-tip
+#### Another commonly used downloading command is `curl`
+`wget` and `curl` have similar functionality,
+so you don't really need to learn to use both of them.
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Other genomic downloads
+
+- For reference genome downloads,
+  NCBI also has a relatively new and very useful portal called **"datasets"**
+  [that also includes a CLI tools of the same name](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/reference-docs/command-line/datasets).
+  This is especially useful if you want to download multiple or many genomes ---
+  for example, you can download all available genomes of a certain (say, bacterial)
+  genus with a single command.
+
+- For downloads from the Sequence Read Archive (SRA),
+  which contains high-throughput sequencing reads,
+  you can use tools like [fasterq-dump](https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump)
+  and [dl-fastq](https://github.com/rpetit3/fastq-dl).
+  Also handy is the simple [SRA explorer website](https://sra-explorer.info),
+  where you can enter an NCBI accession number and it will give you download links.
+
+<br>
+
+## File permissions
 
 File "permissions" are the types of things (e.g. reading, writing) that different
 groups of users (creator, group, anyone else) are permitted to do with files and dirs.
@@ -200,9 +367,11 @@ If you answer `y` (yes), you can still remove them.
 (But note that people other than the file's owners cannot overried file permissions;
 only if they are system administrators.)
 
-<hr style="height:1pt; visibility:hidden;" />
+<br>
 
-### Using files across projects: Using symbolic links
+## Using symbolic links
+
+For example to use files across projects - recall week 2 - RBA
 
 #### Single files
 
@@ -296,4 +465,8 @@ The content of the original dir will be removed.
 </details>
 :::
 
-<br><br>
+<br>
+
+## Self study: check file integrity with checksums
+
+TBA

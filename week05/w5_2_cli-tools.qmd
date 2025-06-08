@@ -254,15 +254,13 @@ NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 #### {{< fa user-edit >}} **Exercise**: Explore the file with `less`
 
 After running the command above, you should be viewing the file inside the `less` pager.
-
-You can move around in the file in several ways: by scrolling with your mouse,
-with up and down arrows, or, if you have them, <kbd>PgUp</kbd> and <kbd>PgDn</kbd> keys
-(also, <kbd>u</kbd> will move up half a page and <kbd>d</kbd> down half a page).
-
-Recall that you won't get your shell prompt back until you **press** <kbd>q</kbd> to quit `less`.
-
 Do you notice anything that strikes you as potentially unusual,
-some reads that look different from others?
+some reads that look different from the others?
+
+_Recall that you can move around in the file in several ways: by scrolling with your mouse,_
+_with up and down arrows, or, if you have them, <kbd>PgUp</kbd> and <kbd>PgDn</kbd> keys_
+_(also, <kbd>u</kbd> will move up half a page and <kbd>d</kbd> down half a page)._
+_And that you won't get your shell prompt back until you **press** <kbd>q</kbd> to quit `less`._
 
 <details><summary>*Click for the solution*</summary>
 
@@ -699,6 +697,25 @@ touch scripts/fastqc.sh
 ```
 
 Open it and paste in the code in the box above.
+
+### Add the program version
+
+Here is one small best-practice addition to shell scripts that was used in last
+week's exercises, which I also wanted to point out here
+(you may want to use this in your final project!).
+For scripts that run bioinformatics tools,
+it's a good idea **include a line to print the program version**.
+For example, the FastQC script contained the following lines at the end:
+
+```bash
+echo "# Used FastQC version:"
+fastqc --version
+```
+
+This way you'll always have a clear record of the version that you used when you
+ran the script, at least if you keep the Slurm log file
+(and in last week's exercises, we additionally moved Slurm log files to a
+`logs` dir within the output dir).
 
 <br>
 
@@ -1167,3 +1184,69 @@ total 0
 ```
 
 <br>
+
+### At-home reading: Script arguments and hard-coding
+
+We've been writing shell scripts that accept arguments,
+instead of including variable things like inputs and outputs in the scripts themselves.
+The latter method can be referred to as "hard-coding" these items.
+  
+You can also use arguments for _settings_ like bioinformatics program options
+you may want to vary among different runs of the script,
+or relatedly, for information about your data like read length or RNA-seq library
+strandedness (as you did in last week's exercises).
+If you don't hard-code these options in your script but have arguments for them,
+it will be easier to re-use your script in different contexts.
+
+But there is balance to be struck here, and you can also "hobble" your script
+with a confusing array of arguably too many arguments.
+Along those lines, here are two things to consider:
+
+- When you do hard-code potentially variable things in your script,
+  it can be a good idea to define them clearly **at the top of your script**.
+  We actually did this in our primary script to run the nf-core rnaseq pipeline,
+  where we had the following lines to define a variable with the location of
+  the workflow dir:
+  
+  ```bash
+  # Settings and constants
+  WORKFLOW_DIR=software/nfc-rnaseq/3_14_0
+  ```
+
+  Such variables can be referred to as "constants", since they are hard-coded
+  in the script, and in shell code, ALL-CAPS is regularly used for them^[
+  But this is far from universal, it is also fairly common to use all-caps
+  for all shell variables, but this is not what we've been doing.].
+
+- It is also possible to make your shell script accept _options_.
+  The example below uses both long and short options (e.g. `-o | --outdir`).
+  It also uses "flag" options that turn functionality on/off (e.g. `--no_gcbias`)
+  and options that take arguments (e.g. `--infile`).
+
+  ```bash
+  # Process command-line options
+  while [ "$1" != "" ]; do
+      case "$1" in
+          -o | --outdir )     shift && outdir=$1 ;;
+          -i | --infile )     shift && infile=$1 ;;
+          --transcripts )     shift && transcripts=$1 ;;
+          --no_gcbias )       gcbias=false ;;
+          --dl_container )    dl_container=true ;;
+          -h | --help )       script_help; exit 0 ;;
+          -v | --version )    echo "Version 2024-04-13" && exit 0 ;;
+          * )                 echo "Invalid option $1" && exit 1 ;;
+      esac
+      shift
+  done
+  ```
+  
+  Such a script could for example be run like so:
+  
+  ```bash
+  sbatch scripts/salmon.sh -i my.bam -o results/salmon --no_gcbias
+  ```
+  
+  That's more readable less error-prone than "anonymous" positional arguments.
+  It also makes it possible to add several/many settings that have defaults ---
+  when a script only takes arguments, all of them always need to be provided.
+  

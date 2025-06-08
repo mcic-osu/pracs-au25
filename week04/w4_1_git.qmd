@@ -19,7 +19,7 @@ and about using the **GitHub** website to host our Git repositories online.
 
 - This page (today and Thursday): Getting started with Git
 - Thursday: [Remotes on GitHub](w3_git2.qmd)
-- Optional self-study material: [branching & merging, undoing committed changes, and viewing the past](w3_git3.qmd)
+- Optional self-study material: [branching & merging, undoing committed changes, and viewing the past](w4_3_advanced-git.qmd)
 
 #### Overview of this session
 
@@ -70,7 +70,7 @@ Or, as the CSB book puts it:
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### How Git roughly works
+### How Git works
 
 **Git** is the most widely used Version Control System[^1].
 With Git, you save "snapshots" of your project with every minor piece of progress.
@@ -234,29 +234,22 @@ It is available by default, but that's a very ancient version.]
 and then do some one-time personal Git configuration:
 
 1. Launch VS Code at <https://ondemand.osc.edu> as before,
-   at the dir `/fs/ess/PAS2700/users/$USER`, and open a terminal in VS Code.
+   at the dir `/fs/ess/PAS2880/users/$USER`, and open a terminal in VS Code.
 
-2. "Load" the most recent version of Git that is available at OSC with the `module load` command^[
-   We will talk much more about "loading" (and installing) software at OSC in week 5]:
-   
-   ```sh
-   module load git/2.39.0
-   ```
-
-3. Use `git config` to make your (actual, not user) name known to Git:
+2. Use `git config` to make your (actual) name known to Git:
    
    ```sh
    git config --global user.name 'John Doe'
    ```
 
-4. Use `git config` to make your email address known
-   (use the same email address you signed up for GitHub with):
+3. Use `git config` to make your email address known
+   (_use the same email address you signed up for GitHub with_):
    
    ```sh
    git config --global user.email 'doe.391@osu.edu'
    ```
 
-5. Use `git config` to set a default text editor for Git.\
+4. Use `git config` to set a default text editor for Git.\
    (Occasionally^[When you need to provide Git with a "commit message" to Git
    and you haven't entered one on the command line.],
    Git will open up a text editor for you.
@@ -267,19 +260,19 @@ and then do some one-time personal Git configuration:
    git config --global core.editor "nano -w"
    ```
 
-6. Activate Git output with colors:
+5. Activate Git output with colors:
   
    ```sh
    git config --global color.ui true
    ```
 
-7. Change the default "branch" name to `main`:
+6. Change the default "branch" name to `main`:
 
    ```sh
    git config --global init.defaultbranch main
    ```
    
-8. Check whether you successfully changed the settings:
+7. Check whether you successfully changed the settings:
 
    ```sh
    git config --global --list
@@ -299,14 +292,12 @@ and then do some one-time personal Git configuration:
 You'll create a Git repository for a mock book project:
 writing Charles Darwin's "On the Origin of Species".
 
-[^6]: Note that Git is available at OSC even without loading this module, but that's a *much* older version.
-
 ### Start a new Git repository
 
 Create a new dir for a mock project that we will version-control with Git, and move there:
 
 ``` sh
-# Before starting, you should be in /fs/PAS2700/users/$USER, cd there first if needed
+# Before starting, you should be in /fs/PAS2880/users/$USER, cd there first if needed
 mkdir -p week03/originspecies
 cd week03/originspecies
 ```
@@ -318,7 +309,7 @@ use that to start a repo for the `originspecies` dir:
 git init
 ```
 ``` bash-out
-Initialized empty Git repository in /fs/ess/PAS2700/users/jelmer/week03/originspecies/.git/
+Initialized empty Git repository in /fs/ess/PAS2880/users/jelmer/week03/originspecies/.git/
 ```
 
 Can we confirm that the Git repo dir is there?
@@ -349,7 +340,7 @@ Git reports that you:
 
 - Are on a "branch" that is called 'main'.
   We won't talk about Git branches in class, but this is discussed in the
-  [optional self-study material](w3_git3.qmd) and CSB Chapter 2.6.
+  [optional self-study material](w4_3_advanced-git.qmd) and CSB Chapter 2.6.
   Basically, these are "parallel versions" of your repository.
 - Have not created any commits yet.
 - Have "nothing to commit" because there are no files in this dir.
@@ -1180,7 +1171,7 @@ Then, remove it with `git rm` and commit your file removal.
 
 Here, you'll learn how to undo changes that have not been
 committed, like undoing an accidental file removal or overwrite.
-(In the [optional self-study Git material](w3_git3.qmd),
+(In the [optional self-study Git material](w4_3_advanced-git.qmd),
 there is a section on undoing changes that _have_ been committed.)
 
 ### Recovering a version from the repo
