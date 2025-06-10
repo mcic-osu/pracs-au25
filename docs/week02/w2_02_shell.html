@@ -267,8 +267,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">Week 1: OSC account setup</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../week03/w3_ua_github-account.html">
- <span class="dropdown-text">Week 3: GitHub account setup</span></a>
+    <a class="dropdown-item" href="../week04/w4_ua_github-account.html">
+ <span class="dropdown-text">Week 4: GitHub account setup</span></a>
   </li>  
         <li class="dropdown-header">Week 16: Post-course survey</li>
     </ul>
@@ -291,10 +291,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Bonus &amp; overviews</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bonus--overviews">    
-        <li class="dropdown-header">BONUS MATERIAL</li>
+        <li class="dropdown-header">OPTIONAL SELF-STUDY MATERIAL</li>
+        <li class="dropdown-header">A deeper dive into Unix data tools</li>
+        <li>
+    <a class="dropdown-item" href="../week05/w5_3_bonus.html">
+ <span class="dropdown-text">Advanced Git (wk4)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week05/w5_3_bonus.html">
+ <span class="dropdown-text">Advanced Unix shell (wk5)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week06/w6_4_bonus_ssh.html">
+ <span class="dropdown-text">OSC SSH connections (wk6)</span></a>
+  </li>  
         <li>
     <a class="dropdown-item" href="../ref/file-transfer.html">
- <span class="dropdown-text">Other OSC file transfer options</span></a>
+ <span class="dropdown-text">Other OSC file transfer options (wk6)</span></a>
   </li>  
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header">TOPIC OVERVIEWS</li>
@@ -311,7 +324,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
         <li>
     <a class="dropdown-item" href="../ref/readings.html">
- <span class="dropdown-text">Overview of course readings</span></a>
+ <span class="dropdown-text">Course readings</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../ref/resources.html">
@@ -362,7 +375,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#the-shell-as-a-file-browser" id="toc-the-shell-as-a-file-browser" class="nav-link active" data-scroll-target="#the-shell-as-a-file-browser"><span class="header-section-number">1</span> The shell as a file browser</a>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#the-shell-as-a-file-browser" id="toc-the-shell-as-a-file-browser" class="nav-link" data-scroll-target="#the-shell-as-a-file-browser"><span class="header-section-number">1</span> The shell as a file browser</a>
   <ul class="collapse">
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><span class="header-section-number">1.1</span> Introduction</a></li>
   <li><a href="#ls-to-list-files" id="toc-ls-to-list-files" class="nav-link" data-scroll-target="#ls-to-list-files"><span class="header-section-number">1.2</span> <code>ls</code> to list files</a></li>
@@ -387,16 +401,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#unix-data-tools" id="toc-unix-data-tools" class="nav-link" data-scroll-target="#unix-data-tools"><span class="header-section-number">4</span> Unix data tools</a>
   <ul class="collapse">
-  <li><a href="#selecting-columns-using-cut" id="toc-selecting-columns-using-cut" class="nav-link" data-scroll-target="#selecting-columns-using-cut"><span class="header-section-number">4.1</span> Selecting columns using <code>cut</code></a></li>
-  <li><a href="#combining-cut-sort-and-uniq-to-create-a-list" id="toc-combining-cut-sort-and-uniq-to-create-a-list" class="nav-link" data-scroll-target="#combining-cut-sort-and-uniq-to-create-a-list"><span class="header-section-number">4.2</span> Combining <code>cut</code>, <code>sort</code>, and <code>uniq</code> to create a list</a></li>
-  <li><a href="#grep-to-print-lines-matching-a-pattern" id="toc-grep-to-print-lines-matching-a-pattern" class="nav-link" data-scroll-target="#grep-to-print-lines-matching-a-pattern"><span class="header-section-number">4.3</span> <code>grep</code> to print lines matching a pattern</a></li>
-  <li><a href="#substituting-characters-using-tr" id="toc-substituting-characters-using-tr" class="nav-link" data-scroll-target="#substituting-characters-using-tr"><span class="header-section-number">4.4</span> Substituting characters using <code>tr</code></a></li>
+  <li><a href="#tabular-plain-text-files-and-file-extensions" id="toc-tabular-plain-text-files-and-file-extensions" class="nav-link" data-scroll-target="#tabular-plain-text-files-and-file-extensions"><span class="header-section-number">4.1</span> Tabular plain-text files and file extensions</a></li>
+  <li><a href="#grep-to-print-lines-that-match-a-pattern" id="toc-grep-to-print-lines-that-match-a-pattern" class="nav-link" data-scroll-target="#grep-to-print-lines-that-match-a-pattern"><span class="header-section-number">4.2</span> <code>grep</code> to print lines that match a pattern</a></li>
+  <li><a href="#selecting-columns-using-cut" id="toc-selecting-columns-using-cut" class="nav-link" data-scroll-target="#selecting-columns-using-cut"><span class="header-section-number">4.3</span> Selecting columns using <code>cut</code></a></li>
+  <li><a href="#combining-cut-sort-and-uniq-to-create-a-list" id="toc-combining-cut-sort-and-uniq-to-create-a-list" class="nav-link" data-scroll-target="#combining-cut-sort-and-uniq-to-create-a-list"><span class="header-section-number">4.4</span> Combining <code>cut</code>, <code>sort</code>, and <code>uniq</code> to create a list</a></li>
+  <li><a href="#substituting-characters-using-tr" id="toc-substituting-characters-using-tr" class="nav-link" data-scroll-target="#substituting-characters-using-tr"><span class="header-section-number">4.5</span> Substituting characters using <code>tr</code></a></li>
   </ul></li>
   <li><a href="#wrap-up-the-unix-philosophy" id="toc-wrap-up-the-unix-philosophy" class="nav-link" data-scroll-target="#wrap-up-the-unix-philosophy"><span class="header-section-number">5</span> Wrap-up &amp; the Unix philosophy</a>
   <ul class="collapse">
-  <li><a href="#covered-in-the-csb-chapter-but-not-in-todays-session" id="toc-covered-in-the-csb-chapter-but-not-in-todays-session" class="nav-link" data-scroll-target="#covered-in-the-csb-chapter-but-not-in-todays-session"><span class="header-section-number">5.1</span> Covered in the CSB chapter but not in today’s session</a></li>
-  <li><a href="#the-unix-philosophy" id="toc-the-unix-philosophy" class="nav-link" data-scroll-target="#the-unix-philosophy"><span class="header-section-number">5.2</span> The Unix philosophy</a></li>
-  <li><a href="#the-unix-shell-in-the-weeks-ahead" id="toc-the-unix-shell-in-the-weeks-ahead" class="nav-link" data-scroll-target="#the-unix-shell-in-the-weeks-ahead"><span class="header-section-number">5.3</span> The Unix shell in the weeks ahead</a></li>
+  <li><a href="#the-unix-philosophy" id="toc-the-unix-philosophy" class="nav-link" data-scroll-target="#the-unix-philosophy"><span class="header-section-number">5.1</span> The Unix philosophy</a></li>
+  <li><a href="#the-unix-shell-in-the-weeks-ahead" id="toc-the-unix-shell-in-the-weeks-ahead" class="nav-link" data-scroll-target="#the-unix-shell-in-the-weeks-ahead"><span class="header-section-number">5.2</span> The Unix shell in the weeks ahead</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -437,8 +451,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <hr>
 <p><br></p>
-<p>In this session, we continue with basics Unix shell commands, focusing on commands that work with files (and dirs).</p>
+<section id="overview" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="overview">Overview</h3>
+<p>In this session, we continue with basic Unix shell commands, focusing on commands that work with files (and dirs). Specifically, you will learn:</p>
+<ul>
+<li>Create, copy, move, rename and delete directories and files</li>
+<li>View text files in various ways</li>
+<li>Search within, manipulate, and extract information from text files</li>
+</ul>
 <p><br></p>
+</section>
 <section id="the-shell-as-a-file-browser" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="the-shell-as-a-file-browser"><span class="header-section-number">1</span> The shell as a file browser</h2>
 <section id="introduction" class="level3" data-number="1.1">
@@ -493,7 +515,7 @@ Buzzard2015_data.csv   Gesquiere2011_data.csv   Marra2014_data.fasta  Pacifici20
 <p>The <code>ls</code> output above does not show the different colors you should see in your shell — the most common ones are:</p>
 <ul>
 <li>Entries in <span style="color: #0328fc">blue</span> are directories (like <code>miRNA</code> and <code>Saavedra2013</code> above)</li>
-<li>Entries in black are regular files (like all other entries above)</li>
+<li>Entries in <strong>black</strong> are regular files (like all other entries above)</li>
 <li>Entries in <span style="color: #d92118">red</span> are compressed files (we’ll see examples of this later).</li>
 </ul>
 </div>
@@ -909,31 +931,32 @@ n14.txt</code></pre>
 </section>
 <section id="unix-data-tools" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="unix-data-tools"><span class="header-section-number">4</span> Unix data tools</h2>
-<p>We’ll now turn to some commands that may be described as Unix “data tools”: <code>cut</code>, <code>sort</code>, <code>uniq</code>, <code>tr</code>, and <code>grep</code>.</p>
-<p>Most of the examples will use the file <code>Pacifici2013_data.csv</code>, so let’s have a look at the contents of that file first:</p>
+<p>We’ll now turn to some commands that may be described as Unix “data tools”. These commands are very useful when working in the shell generally, and when working with omics data specifically.</p>
+<p>Their strength is especially in relatively simple data processing and summarizing steps, and they are excellent in dealing with very large files.</p>
+<p>Here, we will cover:</p>
+<ul>
+<li><code>grep</code> to search for text in files</li>
+<li><code>cut</code> to select one or more columns from tabular data</li>
+<li><code>sort</code> to sort lines, or tabular data by column</li>
+<li><code>uniq</code> to remove duplicates</li>
+<li><code>tr</code> to replace characters</li>
+</ul>
+<p>We’ll start with taking a look at one of the example data files, and discussing tabular plain-text files.</p>
+<section id="tabular-plain-text-files-and-file-extensions" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="tabular-plain-text-files-and-file-extensions"><span class="header-section-number">4.1</span> Tabular plain-text files and file extensions</h3>
+<p>The examples below will use the file <code>Pacifici2013_data.csv</code>, so let’s have a look at the contents of that file first:</p>
 <div class="sourceCode" id="cb66"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../data</span>
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 3 Pacifici2013_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>TaxID;Order;Family;Genus;Scientific_name;AdultBodyMass_g;Sources_AdultBodyMass;Max_longevity_d;Sources_Max_longevity;Rspan_d;AFR_d;Data_AFR;Calculated_GL_d;GenerationLength_d;Sources_GL
 7580;Rodentia;Cricetidae;Eligmodontia;Eligmodontia typus;17.37;PanTHERIA;292;PanTHERIA;254.64;73.74;calculated;147.5856;147.5856;Rspan-AFR(SM+Gest)
 42632;Rodentia;Cricetidae;Microtus;Microtus oregoni;20.35;PanTHERIA;456.25;PanTHERIA;445.85;58.06;calculated;187.3565;187.3565;Rspan-AFR(SM+Gest)</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tabular plain-text files
-</div>
-</div>
-<div class="callout-body-container callout-body">
+<p>This file contains some natural history data on mammals from the paper <a href="https://natureconservation.pensoft.net/article/1343/"><em>Generation length for mammals</em> by Pacifici et al.&nbsp;2013</a>. (In the exercises and assignment, you will also work with sequence data files.)</p>
 <p>“<strong>Tabular</strong>” files contain data that is arranged in a rows-and-columns format, like a table or an Excel worksheet.</p>
 <p>Because plain-text files do not have an intrinsic way to define columns or cells, certain characters are used as “delimiters” in <strong>plain-text tabular</strong> files, like <code>Pacifici2013_data.csv</code>. Most commonly, these are:</p>
 <ul>
 <li>A Tab, and such files are often stored with a <strong><code>.tsv</code></strong> extension for Tab-Separated Values (“TSV file”).</li>
 <li>A comma, and such files are often stored with a <strong><code>.csv</code></strong> extension for Comma-Separated Values (“CSV file”).</li>
 </ul>
-</div>
-</div>
 <hr style="height:1pt; visibility:hidden;">
 <details>
 <summary>
@@ -941,29 +964,73 @@ What delimiter does the <code>Pacifici2013_data.csv</code> file appear to contai
 </summary>
 From looking at the first couple of lines that we printed above, the delimiter is a semicolon <code>;</code> — “even though” the file has a <code>.csv</code> extension.
 </details>
-<div class="callout callout-style-default callout-warning callout-titled">
+<hr style="height:1pt; visibility:hidden;">
+<div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-A note about file extensions (TBA)
+Plain-text file extensions are flexible and for human-readibility
 </div>
 </div>
 <div class="callout-body-container callout-body">
-
+<p>This brings us to an important side note on <strong>plain-text file extensions</strong> like <code>.txt</code>, <code>.csv</code>, <code>.tsv</code>, etc.: all plain text files, including the tabular files discussed above, most sequence data files, and scripts are fundamentally “just plain-text files”. <em>Changing the extension does not change the file.</em> Instead, different file extensions are used primarily to make it clear to humans (as opposed to the computer) what the file contains.</p>
 </div>
 </div>
 <hr style="height:1pt; visibility:hidden;">
-<section id="selecting-columns-using-cut" class="level3" data-number="4.1">
-<h3 data-number="4.1" class="anchored" data-anchor-id="selecting-columns-using-cut"><span class="header-section-number">4.1</span> Selecting columns using <code>cut</code></h3>
+</section>
+<section id="grep-to-print-lines-that-match-a-pattern" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="grep-to-print-lines-that-match-a-pattern"><span class="header-section-number">4.2</span> <code>grep</code> to print lines that match a pattern</h3>
+<p>The <code>grep</code> command is extremely useful and will find specific text or patterns in a file. By default, it will <strong>print each line that contains a “match” in full</strong>. It’s basic syntax is <code>grep "&lt;pattern&gt;" &lt;file-path&gt;</code>.</p>
+<p>For example, this will print all lines from <code>Pacifici2013_data.csv</code> that contain “Vombatidae”:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"Vombatidae"</span> Pacifici2013_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>40555;Diprotodontia;Vombatidae;Lasiorhinus;Lasiorhinus latifrons;26163.8;PanTHERIA;9928;"PanTHERIA;AnAge";9317.5;652.24;calculated;3354.315;3354.315;Rspan-AFR(SM+Gest)
+40556;Diprotodontia;Vombatidae;Vombatus;Vombatus ursinus;26000;PanTHERIA;10238.25;"PanTHERIA;AnAge";9511.6;783.65;calculated;3542.014;3542.014;Rspan-AFR(SM+Gest)
+11343;Diprotodontia;Vombatidae;Lasiorhinus;Lasiorhinus krefftii;31849.99;PanTHERIA;10950;"PanTHERIA;AnAge";no information;no information;no information;no information;3354.315;Mean_congenerics_same_body_mass</code></pre>
+<p>Instead of printing matching lines, we can also <strong>count</strong> them with the <code>-c</code> option:</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># How many entries for bats (Chiroptera) does the file have?</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">"Chiroptera"</span> Pacifici2013_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>1144</code></pre>
+<p>The option <code>-v</code> <strong>inverts</strong> <code>grep</code>’s behavior and will print all lines <em>not</em> matching the pattern — here, we’ll combine <code>-v</code> and <code>-c</code> to count the number of lines that do not contain “Vombatidae”:</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-vc</span> <span class="st">"Vombatidae"</span> Pacifici2013_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>5424</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Additional <code>grep</code> tips
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<ul>
+<li>While not always necessary, it is a good habit to consistently use quotes (<code>"..."</code>) around the search pattern.</li>
+<li>Incomplete matches, including in individual words, work: “<code>Vombat</code>” matches <code>Vombatidae</code>.</li>
+<li><code>grep</code> has many other useful options, such as:
+<ul>
+<li><code>-i</code> to ignore case</li>
+<li><code>-r</code> to search files recursively</li>
+<li><code>-w</code> to match “words”</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="selecting-columns-using-cut" class="level3" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="selecting-columns-using-cut"><span class="header-section-number">4.3</span> Selecting columns using <code>cut</code></h3>
 <p>The <code>cut</code> command will select or we could say “cut out” one or more columns from a tabular file:</p>
 <ul>
 <li>We’ll always have to use the <strong><code>-f</code></strong> option to specify the <strong>desired column(s) / “field”(s)</strong>.</li>
 <li>Because its default column delimiter is a Tab, for this file, we’ll have to specify the <strong>delimiter</strong> with <strong><code>-d</code></strong>.</li>
 </ul>
-<div class="sourceCode" id="cb68"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the first column of the file:</span></span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 1 Pacifici2013_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the first column of the file:</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 1 Pacifici2013_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>TaxID
 7580
 42632
@@ -972,7 +1039,7 @@ A note about file extensions (TBA)
 16652
 [...output truncated...]</code></pre>
 <p>That worked, but a ton of output was printed, and we may find ourselves scrolling to the top to see the first few lines – in many cases, it can be useful to <strong>pipe the output to <code>head</code></strong> to see if our command works:</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 1 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 1 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>TaxID
 7580
 42632</code></pre>
@@ -989,11 +1056,11 @@ Selecting multiple columns with <code>cut</code> <em>(Click to expand)</em>
 <div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>To select <strong>multiple columns</strong>, use a range or comma-delimited list:</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 1-4 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 1-4 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>TaxID;Order;Family;Genus
 7580;Rodentia;Cricetidae;Eligmodontia
 42632;Rodentia;Cricetidae;Microtus</code></pre>
-<div class="sourceCode" id="cb74"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 2,8 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 2,8 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Order;Max_longevity_d
 Rodentia;292
 Rodentia;456.25</code></pre>
@@ -1003,36 +1070,36 @@ Rodentia;456.25</code></pre>
 </div>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="combining-cut-sort-and-uniq-to-create-a-list" class="level3" data-number="4.2">
-<h3 data-number="4.2" class="anchored" data-anchor-id="combining-cut-sort-and-uniq-to-create-a-list"><span class="header-section-number">4.2</span> Combining <code>cut</code>, <code>sort</code>, and <code>uniq</code> to create a list</h3>
+<section id="combining-cut-sort-and-uniq-to-create-a-list" class="level3" data-number="4.4">
+<h3 data-number="4.4" class="anchored" data-anchor-id="combining-cut-sort-and-uniq-to-create-a-list"><span class="header-section-number">4.4</span> Combining <code>cut</code>, <code>sort</code>, and <code>uniq</code> to create a list</h3>
 <p>Let’s say we want an alphabetically sorted list of animal <em>orders</em> from the <code>Pacifici2013_data.csv</code> file. To do this, we’ll need to learn about two new commands:</p>
 <ul>
 <li><strong><code>sort</code></strong> to sort/order/arrange rows, by default in alphanumeric order.</li>
 <li><strong><code>uniq</code></strong> to remove duplicates (i.e., keep all distinct/unique) entries <em>from a sorted file/list</em>.</li>
 </ul>
 <p>We’ll build up a small “pipeline” to do this, step-by-step, and piping the output into <code>head</code> at every step. First, we get rid of the header line with our <code>tail</code> trick:</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>7580;Rodentia;Cricetidae;Eligmodontia;Eligmodontia typus;17.37;PanTHERIA;292;PanTHERIA;254.64;73.74;calculated;147.5856;147.5856;Rspan-AFR(SM+Gest)
 42632;Rodentia;Cricetidae;Microtus;Microtus oregoni;20.35;PanTHERIA;456.25;PanTHERIA;445.85;58.06;calculated;187.3565;187.3565;Rspan-AFR(SM+Gest)
 42653;Rodentia;Cricetidae;Peromyscus;Peromyscus gossypinus;27.68;PanTHERIA;471.45833335;PanTHERIA;444.87833335;72.58;calculated;201.59471667;201.5947166715;Rspan-AFR(SM+Gest)
 42662;Macroscelidea;Macroscelididae;Elephantulus;Elephantulus myurus;59.51;PanTHERIA;401.5;PanTHERIA;412.34;90.48;calculated;210.0586;210.0586;Rspan-AFR(SM+Gest)
 16652;Rodentia;Cricetidae;Peromyscus;Peromyscus boylii;23.9;PanTHERIA;547.5;PanTHERIA;514.13;79.97;calculated;229.0677;229.0677;Rspan-AFR(SM+Gest)</code></pre>
 <p>Second, we select our column of interest with <code>cut</code>:</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Rodentia
 Rodentia
 Rodentia
 Macroscelidea
 Rodentia</code></pre>
 <p>Third, we pipe to <code>sort</code> to alphabetically sort the result:</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Afrosoricida
 Afrosoricida
 Afrosoricida
 Afrosoricida
 Afrosoricida</code></pre>
 <p>Finally, we use <code>uniq</code> to only keep unique rows (values):</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Afrosoricida
 Carnivora
 Cetartiodactyla
@@ -1043,7 +1110,7 @@ Dermoptera
 Didelphimorphia
 [...output truncated...]</code></pre>
 <p>Amazingly, with a very small modification to our pipeline, we can generate a “count table” instead of a simple list – we just have to add <code>uniq</code>’s <code>-c</code> option (for <strong>c</strong>ount):</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">";"</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>     54 Afrosoricida
     280 Carnivora
     325 Cetartiodactyla
@@ -1052,51 +1119,9 @@ Didelphimorphia
 [...output truncated...]</code></pre>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="grep-to-print-lines-matching-a-pattern" class="level3" data-number="4.3">
-<h3 data-number="4.3" class="anchored" data-anchor-id="grep-to-print-lines-matching-a-pattern"><span class="header-section-number">4.3</span> <code>grep</code> to print lines matching a pattern</h3>
-<p>The <code>grep</code> command is useful to find specific text or patterns in a file. By default, it will <strong>print each line that contains a “match” in full</strong>. It’s basic syntax is <code>grep "&lt;pattern&gt;" file</code>.</p>
-<p>For example, this will print all lines from <code>Pacifici2013_data.csv</code> that contain “Vombatidae”:</p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"Vombatidae"</span> Pacifici2013_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>40555;Diprotodontia;Vombatidae;Lasiorhinus;Lasiorhinus latifrons;26163.8;PanTHERIA;9928;"PanTHERIA;AnAge";9317.5;652.24;calculated;3354.315;3354.315;Rspan-AFR(SM+Gest)
-40556;Diprotodontia;Vombatidae;Vombatus;Vombatus ursinus;26000;PanTHERIA;10238.25;"PanTHERIA;AnAge";9511.6;783.65;calculated;3542.014;3542.014;Rspan-AFR(SM+Gest)
-11343;Diprotodontia;Vombatidae;Lasiorhinus;Lasiorhinus krefftii;31849.99;PanTHERIA;10950;"PanTHERIA;AnAge";no information;no information;no information;no information;3354.315;Mean_congenerics_same_body_mass</code></pre>
-<p>Instead of printing matching lines, we can also <strong>count</strong> them with the <code>-c</code> option:</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co"># How many entries for bats (Chiroptera) does the file have?</span></span>
-<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">"Chiroptera"</span> Pacifici2013_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>1144</code></pre>
-<p>The option <code>-v</code> <strong>inverts</strong> <code>grep</code>’s behavior and will print all lines <em>not</em> matching the pattern — here, we’ll combine <code>-v</code> and <code>-c</code> to count the number of lines that do not contain “Vombatidae”:</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-vc</span> <span class="st">"Vombatidae"</span> Pacifici2013_data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>5424</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Additional <code>grep</code> tips <em>(Click to expand)</em>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-10" class="callout-10-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ul>
-<li>While not always necessary, it is a good habit to always use quotes around the search pattern.</li>
-<li>Incomplete matches, including in individual words, work: “<code>Vombat</code>” matches <code>Vombatidae</code>.</li>
-<li><code>grep</code> has many other useful options — more in Week 4:
-<ul>
-<li><code>-i</code> to ignore case</li>
-<li><code>-r</code> to search files recursively</li>
-<li><code>-w</code> to match “words”</li>
-</ul></li>
-</ul>
-</div>
-</div>
-</div>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="substituting-characters-using-tr" class="level3" data-number="4.4">
-<h3 data-number="4.4" class="anchored" data-anchor-id="substituting-characters-using-tr"><span class="header-section-number">4.4</span> Substituting characters using <code>tr</code></h3>
-<p><code>tr</code> for <strong><code>tr</code></strong>anslate will substitute all instances of characters –- here, any <code>a</code> for a <code>b</code>:</p>
+<section id="substituting-characters-using-tr" class="level3" data-number="4.5">
+<h3 data-number="4.5" class="anchored" data-anchor-id="substituting-characters-using-tr"><span class="header-section-number">4.5</span> Substituting characters using <code>tr</code></h3>
+<p><code>tr</code> for <strong><code>tr</code></strong>anslate will substitute all instances of characters – here, any <code>a</code> for a <code>b</code>:</p>
 <div class="sourceCode" id="cb92"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"aaaaccc"</span> <span class="kw">|</span> <span class="fu">tr</span> a b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>bbbbccc</code></pre>
 <p>Oddly enough, <code>tr</code> does not take a file name as an argument, so how can we provide it with input from a file? The easiest way is by piping the output of <code>cat</code> into <code>tr</code> as follows:</p>
@@ -1105,24 +1130,8 @@ Additional <code>grep</code> tips <em>(Click to expand)</em>
 7580    Rodentia        Cricetidae      Eligmodontia    Eligmodontia typus      17.37   PanTHERIA       292     PanTHERIA       254.64  73.74   calculated      147.5856  147.5856        Rspan-AFR(SM+Gest)
 42632   Rodentia        Cricetidae      Microtus        Microtus oregoni        20.35   PanTHERIA       456.25  PanTHERIA       445.85  58.06   calculated      187.3565  187.3565        Rspan-AFR(SM+Gest)</code></pre>
 <p>The example above converted the <code>;</code> delimited to a <code>Tab</code> (i.e., a CSV file to a TSV file), where <strong><code>\t</code></strong> is a regular expression meaning Tab<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. (Though note that we didn’t modify the original file nor saved the output in a new file.)</p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Don’t redirect to the input file! <em>(Click to expand)</em>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-11" class="callout-11-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>TBA</p>
-</div>
-</div>
-</div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1131,16 +1140,14 @@ Deletion and “squeezing” with <code>tr</code> <em>(Click to expand)</em>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Delete all a’s:</p>
+<p>You can delete characters with the <code>-d</code> option – for example, to delete all a’s:</p>
 <div class="sourceCode" id="cb96"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"aabbccddee"</span> <span class="kw">|</span> <span class="fu">tr</span> <span class="at">-d</span> a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>bbccddee</code></pre>
-<ul>
-<li>Remove consecutive duplicates a’s:</li>
-</ul>
-<div class="sourceCode" id="cb98"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"aabbccddee"</span> <span class="kw">|</span> <span class="fu">tr</span> <span class="at">-s</span> a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>abbccddee</code></pre>
+<p>You can “squeeze” i.e.&nbsp;remove consecutive duplicates with the <code>-s</code> option – for example, to turn variable numbers of spaces into a single space:</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"a     b   c   d"</span> <span class="kw">|</span> <span class="fu">tr</span> <span class="at">-s</span> <span class="st">" "</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>a b c d</code></pre>
 </div>
 </div>
 </div>
@@ -1154,26 +1161,31 @@ Click here for the solution
 </summary>
 <div class="sourceCode" id="cb100"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">";"</span> <span class="st">"\t"</span> <span class="op">&gt;</span> ../sandbox/Pacifici2013_data.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Don’t redirect back to the input file!
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>You should never redirect the output of Unix commands “back” to the input file. This will corrupt the input file because of the way that Unix commands work, which is in “streaming” line-by-line fashion<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
+<p>Therefore, if you really want to edit/overwrite the original file instead of creating a separate edited copy, you will need multiple steps: first produce a separate copy and then rename that.</p>
+</div>
+</div>
+</div>
 </section>
 <p><br></p>
 </section>
 </section>
 <section id="wrap-up-the-unix-philosophy" class="level2" data-number="5">
 <h2 data-number="5" class="anchored" data-anchor-id="wrap-up-the-unix-philosophy"><span class="header-section-number">5</span> Wrap-up &amp; the Unix philosophy</h2>
-<section id="covered-in-the-csb-chapter-but-not-in-todays-session" class="level3" data-number="5.1">
-<h3 data-number="5.1" class="anchored" data-anchor-id="covered-in-the-csb-chapter-but-not-in-todays-session"><span class="header-section-number">5.1</span> Covered in the CSB chapter but not in today’s session</h3>
-<ul>
-<li>The <code>find</code> command to find files</li>
-<li>Showing and changing file permissions</li>
-<li>Basic shell scripting</li>
-<li><code>for</code> loops</li>
-<li><code>$PATH</code> and Bash profile settings</li>
-</ul>
-<p>We’ll cover all of these over the next few weeks.</p>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="the-unix-philosophy" class="level3" data-number="5.2">
-<h3 data-number="5.2" class="anchored" data-anchor-id="the-unix-philosophy"><span class="header-section-number">5.2</span> The Unix philosophy</h3>
+<section id="the-unix-philosophy" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="the-unix-philosophy"><span class="header-section-number">5.1</span> The Unix philosophy</h3>
 <blockquote class="blockquote">
 <p><em>This is the Unix philosophy: Write programs that do one thing and do it well.</em> <em>Write programs to work together. Write programs to handle text <strong>streams</strong>,</em> <em>because that is a universal interface.</em><br> — Doug McIlory</p>
 </blockquote>
@@ -1191,8 +1203,8 @@ Click here for the solution
 <span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="pp">*</span>.fa <span class="op">&gt;</span> combined.fa</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="the-unix-shell-in-the-weeks-ahead" class="level3" data-number="5.3">
-<h3 data-number="5.3" class="anchored" data-anchor-id="the-unix-shell-in-the-weeks-ahead"><span class="header-section-number">5.3</span> The Unix shell in the weeks ahead</h3>
+<section id="the-unix-shell-in-the-weeks-ahead" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="the-unix-shell-in-the-weeks-ahead"><span class="header-section-number">5.2</span> The Unix shell in the weeks ahead</h3>
 <ul>
 <li>A couple of sessions that will be focused on further developing shell skills:
 <ul>
@@ -1214,6 +1226,7 @@ Click here for the solution
 <li id="fn2"><p> For better or worse, non-recursiveness in Unix commands is meant as a sort of safety mechanism, as you may otherwise more easily operate on very large amounts of data accidentally.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>We’ll see this in action in a bit<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>We’ll learn more about regular expressions in Week 4.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p> This is also why they can so easily work with huge files: the entire file contents are not loaded into the computer’s memory.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

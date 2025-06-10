@@ -11,8 +11,15 @@ editor_options:
 
 <br>
 
-In this session, we continue with basics Unix shell commands,
+### Overview {-}
+
+In this session, we continue with basic Unix shell commands,
 focusing on commands that work with files (and dirs).
+Specifically, you will learn:
+
+- Create, copy, move, rename and delete directories and files
+- View text files in various ways
+- Search within, manipulate, and extract information from text files
 
 <br>
 
@@ -69,7 +76,7 @@ The `ls` output above does not show the different colors you should see in your 
 the most common ones are:
 
 -   Entries in [blue]{style="color: #0328fc"} are directories (like `miRNA` and `Saavedra2013` above)
--   Entries in black are regular files (like all other entries above)
+-   Entries in **black** are regular files (like all other entries above)
 -   Entries in [red]{style="color: #d92118"} are compressed files (we'll see examples of this later).
 :::
 
@@ -775,10 +782,27 @@ we don't need to make a `filelist.txt` file to count the number of files.
 
 ## Unix data tools
 
-We'll now turn to some commands that may be described as Unix "data tools":
-`cut`, `sort`, `uniq`, `tr`, and `grep`.
+We'll now turn to some commands that may be described as Unix "data tools".
+These commands are very useful when working in the shell generally,
+and when working with omics data specifically.
 
-Most of the examples will use the file `Pacifici2013_data.csv`,
+Their strength is especially in relatively simple data processing and summarizing
+steps, and they are excellent in dealing with very large files. 
+
+Here, we will cover:
+
+- `grep` to search for text in files 
+- `cut` to select one or more columns from tabular data
+- `sort` to sort lines, or tabular data by column
+- `uniq` to remove duplicates
+- `tr` to replace characters
+
+We'll start with taking a look at one of the example data files,
+and discussing tabular plain-text files.
+
+### Tabular plain-text files and file extensions
+
+The examples below will use the file `Pacifici2013_data.csv`,
 so let's have a look at the contents of that file first:
 
 ```bash
@@ -791,8 +815,8 @@ TaxID;Order;Family;Genus;Scientific_name;AdultBodyMass_g;Sources_AdultBodyMass;M
 42632;Rodentia;Cricetidae;Microtus;Microtus oregoni;20.35;PanTHERIA;456.25;PanTHERIA;445.85;58.06;calculated;187.3565;187.3565;Rspan-AFR(SM+Gest)
 ```
 
-::: {.callout-note}
-#### Tabular plain-text files
+This file contains some natural history data on mammals from the paper [_Generation length for mammals_ by Pacifici et al. 2013](https://natureconservation.pensoft.net/article/1343/).
+(In the exercises and assignment, you will also work with sequence data files.)
 
 "**Tabular**" files contain data that is arranged in a rows-and-columns format,
 like a table or an Excel worksheet.
@@ -805,8 +829,6 @@ Most commonly, these are:
 - A Tab, and such files are often stored with a **`.tsv`** extension for Tab-Separated Values ("TSV file").
 - A comma, and such files are often stored with a **`.csv`** extension for Comma-Separated Values ("CSV file").
 
-:::
-
 <hr style="height:1pt; visibility:hidden;" />
 
 <details><summary>What delimiter does the `Pacifici2013_data.csv` file appear to contain? _(Click for the answer)_</summary>
@@ -814,9 +836,68 @@ From looking at the first couple of lines that we printed above, the delimiter
 is a semicolon `;` --- "even though" the file has a `.csv` extension.
 </details>
 
-::: {.callout-warning}
-#### A note about file extensions (TBA)
+<hr style="height:1pt; visibility:hidden;" />
 
+::: callout-important
+#### Plain-text file extensions are flexible and for human-readibility
+This brings us to an important side note on **plain-text file extensions**
+like `.txt`, `.csv`, `.tsv`, etc.:
+all plain text files, including the tabular files discussed above,
+most sequence data files, and scripts are fundamentally "just plain-text files".
+_Changing the extension does not change the file._
+Instead, different file extensions are used primarily to make it clear
+to humans (as opposed to the computer) what the file contains.
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### `grep` to print lines that match a pattern
+
+The `grep` command is extremely useful and will find specific text or patterns in a file.
+By default, it will **print each line that contains a "match" in full**.
+It's basic syntax is `grep "<pattern>" <file-path>`.
+
+For example, this will print all lines from `Pacifici2013_data.csv` that contain "Vombatidae":
+
+```bash
+grep "Vombatidae" Pacifici2013_data.csv
+```
+```bash-out
+40555;Diprotodontia;Vombatidae;Lasiorhinus;Lasiorhinus latifrons;26163.8;PanTHERIA;9928;"PanTHERIA;AnAge";9317.5;652.24;calculated;3354.315;3354.315;Rspan-AFR(SM+Gest)
+40556;Diprotodontia;Vombatidae;Vombatus;Vombatus ursinus;26000;PanTHERIA;10238.25;"PanTHERIA;AnAge";9511.6;783.65;calculated;3542.014;3542.014;Rspan-AFR(SM+Gest)
+11343;Diprotodontia;Vombatidae;Lasiorhinus;Lasiorhinus krefftii;31849.99;PanTHERIA;10950;"PanTHERIA;AnAge";no information;no information;no information;no information;3354.315;Mean_congenerics_same_body_mass
+```
+
+Instead of printing matching lines, we can also **count** them with the `-c` option:
+
+```bash
+# How many entries for bats (Chiroptera) does the file have?
+grep -c "Chiroptera" Pacifici2013_data.csv
+```
+```bash-out
+1144
+```
+
+The option `-v` **inverts** `grep`'s behavior and will print all lines _not_ matching the pattern ---
+here, we'll combine `-v` and `-c` to count the number of lines that do not contain "Vombatidae":
+
+```bash
+grep -vc "Vombatidae" Pacifici2013_data.csv
+```
+```bash-out
+5424
+```
+
+::: {.callout-note collapse="false"}
+#### Additional `grep` tips
+
+- While not always necessary,
+  it is a good habit to consistently use quotes (`"..."`) around the search pattern.
+- Incomplete matches, including in individual words, work: "`Vombat`" matches `Vombatidae`.
+- `grep` has many other useful options, such as:
+  - `-i` to ignore case
+  - `-r` to search files recursively
+  - `-w` to match "words"
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -973,61 +1054,9 @@ tail -n +2 Pacifici2013_data.csv | cut -d ";" -f 2 | sort | uniq -c
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### `grep` to print lines matching a pattern
-
-The `grep` command is useful to find specific text or patterns in a file.
-By default, it will **print each line that contains a "match" in full**.
-It's basic syntax is `grep "<pattern>" file`.
-
-
-For example, this will print all lines from `Pacifici2013_data.csv` that contain "Vombatidae":
-
-```bash
-grep "Vombatidae" Pacifici2013_data.csv
-```
-```bash-out
-40555;Diprotodontia;Vombatidae;Lasiorhinus;Lasiorhinus latifrons;26163.8;PanTHERIA;9928;"PanTHERIA;AnAge";9317.5;652.24;calculated;3354.315;3354.315;Rspan-AFR(SM+Gest)
-40556;Diprotodontia;Vombatidae;Vombatus;Vombatus ursinus;26000;PanTHERIA;10238.25;"PanTHERIA;AnAge";9511.6;783.65;calculated;3542.014;3542.014;Rspan-AFR(SM+Gest)
-11343;Diprotodontia;Vombatidae;Lasiorhinus;Lasiorhinus krefftii;31849.99;PanTHERIA;10950;"PanTHERIA;AnAge";no information;no information;no information;no information;3354.315;Mean_congenerics_same_body_mass
-```
-
-Instead of printing matching lines, we can also **count** them with the `-c` option:
-
-```bash
-# How many entries for bats (Chiroptera) does the file have?
-grep -c "Chiroptera" Pacifici2013_data.csv
-```
-```bash-out
-1144
-```
-
-The option `-v` **inverts** `grep`'s behavior and will print all lines _not_ matching the pattern ---
-here, we'll combine `-v` and `-c` to count the number of lines that do not contain "Vombatidae":
-
-```bash
-grep -vc "Vombatidae" Pacifici2013_data.csv
-```
-```bash-out
-5424
-```
-
-::: {.callout-note collapse="true"}
-#### Additional `grep` tips _(Click to expand)_
-
-- While not always necessary,
-  it is a good habit to always use quotes around the search pattern.
-- Incomplete matches, including in individual words, work: "`Vombat`" matches `Vombatidae`.
-- `grep` has many other useful options — more in Week 4:
-  - `-i` to ignore case
-  - `-r` to search files recursively
-  - `-w` to match "words"
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
 ### Substituting characters using `tr`
 
-`tr` for **`tr`**anslate will substitute all instances of characters –-
+`tr` for **`tr`**anslate will substitute all instances of characters –
 here, any `a` for a `b`:
 
 ```bash
@@ -1054,17 +1083,10 @@ The example above converted the `;` delimited to a `Tab` (i.e., a CSV file to a 
 where **`\t`** is a regular expression meaning Tab^[We'll learn more about regular expressions in Week 4.].
 (Though note that we didn't modify the original file nor saved the output in a new file.)
 
-::: {.callout-warning collapse="true"}
-#### Don't redirect to the input file! _(Click to expand)_
-
-TBA
-
-:::
-
 ::: {.callout-note collapse="true"}
 #### Deletion and "squeezing" with `tr` _(Click to expand)_
 
-Delete all a's:
+You can delete characters with the `-d` option -- for example, to delete all a's:
 
 ```bash
 echo "aabbccddee" | tr -d a
@@ -1073,13 +1095,14 @@ echo "aabbccddee" | tr -d a
 bbccddee
 ```
 
-- Remove consecutive duplicates a's:
+You can "squeeze" i.e. remove consecutive duplicates with the `-s` option --
+for example, to turn variable numbers of spaces into a single space:
 
 ```bash
-echo "aabbccddee" | tr -s a
+echo "a     b   c   d" | tr -s " "
 ```
 ```bash-out
-abbccddee
+a b c d
 ```
 :::
 
@@ -1100,23 +1123,26 @@ cat Pacifici2013_data.csv | tr ";" "\t" > ../sandbox/Pacifici2013_data.tsv
 ```
 
 </details>
+
+::: {.callout-warning collapse="false"}
+#### Don't redirect back to the input file!
+
+You should never redirect the output of Unix commands "back" to the input file.
+This will corrupt the input file because of the way that Unix commands work,
+which is in "streaming" line-by-line fashion^[
+This is also why they can so easily work with huge files:
+the entire file contents are not loaded into the computer's memory.
+].
+
+Therefore, if you really want to edit/overwrite the original file instead of
+creating a separate edited copy, you will need multiple steps:
+first produce a separate copy and then rename that.
+:::
 :::
 
 <br>
 
 ## Wrap-up & the Unix philosophy
-
-### Covered in the CSB chapter but not in today's session
-
--   The `find` command to find files
--   Showing and changing file permissions
--   Basic shell scripting
--   `for` loops
--   `$PATH` and Bash profile settings
-
-We'll cover all of these over the next few weeks.
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### The Unix philosophy
 
