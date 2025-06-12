@@ -18,7 +18,7 @@ focusing on commands that work with files (and dirs).
 Specifically, you will learn:
 
 - Create, copy, move, rename and delete directories and files
-- View text files in various ways
+- Viewing the contents of text files in various ways
 - Search within, manipulate, and extract information from text files
 
 <br>
@@ -176,8 +176,8 @@ Say you wanted to check the size of a single file.
 Then, it is not always convenient to list an entire dir's contents,
 as it could contain many files.
 
-Can you use `ls` to see the file size **only** for the 
-`miRNA_about.txt` file we saw listed above?
+Try to use `ls` to see the file size **only** for the 
+`miRNA_about.txt` file we saw listed above.
 
 <details><summary>*Click to see the solution*</summary>
 
@@ -237,7 +237,7 @@ as wildcards.
 1. Using the code above, where were these files created?
    Can you check their sizes?
 
-2. Can you create a create a new file `test.txt` inside a new dir `test`?
+2. Can you create a create a new file `test.txt` inside a new dir `testdir`?
 
 <details><summary>*Click to see the solutions*</summary>
 
@@ -256,18 +256,18 @@ TBA
    (pay attention to the error, which may seem a bit confusing):
 
 ```bash
-touch test/test.txt
+touch testdir/test.txt
 ```
 ```bash-out
-touch: test/test.txt: No such file or directory
+touch: testdir/test.txt: No such file or directory
 ```
 
 Instead, we should first create the new dir with `mkdir`,
 and _then_ create the new file in there:
 
 ```bash
-mkdir test
-touch test/test.txt
+mkdir testdir
+touch testdir/test.txt
 ```
 
 </details>
@@ -355,7 +355,8 @@ Check the contents of the `sandbox` dir again now that we've copied several item
 ls
 ```
 ```bash-out
-TODO UPDATE
+buzz2.txt              data           newfile2.txt        newfile3.txt          test
+Buzzard2015_data.csv   newfile1.txt   newfile3_copy.txt  'Papers and reviews'
 ```
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -384,7 +385,7 @@ mv buzz2.txt buzz_copy.txt
 mv buzz_copy.txt data/
 
 # Different directory, different file name ("moving + renaming"):
-mv buzz_copy.txt data/buzz_copy99.txt
+mv Buzzard2015_data.csv data/Buzzard.txt
 ```
 
 Finally, unlike `cp`, the `mv` command is recursive by default!
@@ -407,7 +408,7 @@ The **`rm`** command removes files and optionally dirs --- here,
 we'll remove the file copy we made above: 
 
 ```bash
-rm Buzzard2015_about.txt
+rm newfile1.txt
 ```
 
 Like with `cp`, the **`-r`** option is needed to make the command work recursively:
@@ -463,7 +464,7 @@ cp Buzzard2015_about.txt more_data/
 - Do you think the command will succeed?
 - What would the command have done if we had omitted the trailing forward slash?
 
-<details><summary>Click to see the solution</summary>
+<details><summary>*Click to see the solution*</summary>
 <hr style="height:1pt; visibility:hidden;" />
 
 - Because we put a trailing forward slash in `more_data/`, we are making clear
@@ -474,7 +475,7 @@ cp Buzzard2015_about.txt more_data/
   a dir on the fly, so this will fail:
 
   ```bash
-  cp Buzzard2015_about.txt more_data/
+  cp newfile2.txt more_data/
   ```
   ```bash-out
   cp: cannot create regular file ‘more_data/’: Not a directory
@@ -487,7 +488,7 @@ cp Buzzard2015_about.txt more_data/
 
   ```bash
   mkdir more_data
-  cp Buzzard2015_about.txt more_data/
+  cp newfile2.txt more_data/
   ```
   
   Note also that once the `more_data` dir exists, it **does not** make a difference
@@ -499,7 +500,7 @@ cp Buzzard2015_about.txt more_data/
 
 <br>
 
-## Viewing text files
+## Viewing the contents of text files
 
 ### Plain-text files
 
@@ -687,7 +688,7 @@ echo "My first line"
 My first line
 ```
 
-Now, let's redirect `echo`'s standard out to a new file `test.txt:
+Now, let's redirect `echo`'s standard out to a new file `test.txt`:
 
 ```bash
 echo "My first line" > test.txt
@@ -730,14 +731,14 @@ My third line
 
 ### Standard input and pipes
 
-Recall from today's previous examples that a file name can be given as an argument
-to many commands --- for example, see the following sequence of commands:
+Let's say that we want to use Unix commands to count the number of entries
+(files and "sub"dirs) in a directory. We could do that as follows:
 
 ```bash
 # First we redirect the ls output to a file
 ls ../data/Saavedra2013 > filelist.txt
 
-# Let's check what that looks like:
+# Let's check what that looks like -- note that each file is on its own line:
 head -n 5 filelist.txt
 ```
 ```bash-out
@@ -755,11 +756,11 @@ wc -l filelist.txt
 59 filelist.txt
 ```
 
-Above, we provided the `head` and `wc` commands with an argument:
-the path to a file to operate on.
+That worked, but we needed two separate lines of code,
+and we are left with a file `filelist.txt` that we would probably want to remove
+since it has served its sole purpose.
 
-However, most commands *also* accept input from so-called "standard input" (*stdin*)
-using the **pipe**, "**`|`**":
+A more conventient way to do this is with a "**pipe**", as follows:
 
 ```bash
 ls ../data/Saavedra2013 | wc -l
@@ -768,8 +769,8 @@ ls ../data/Saavedra2013 | wc -l
 59
 ```
 
-When we use the pipe, the output of the command on the left-hand side (a file listing, in this case)
-is no longer printed to screen but is **redirected into the `wc` command**.
+When we use the pipe, the output of the command on the left-hand side
+(a file listing, in this case) is **redirected into the `wc` command**.
 This command (and many others) will gladly accept input that way instead of
 via an file name argument, like in the earlier example.
 
@@ -832,14 +833,21 @@ Most commonly, these are:
 <hr style="height:1pt; visibility:hidden;" />
 
 <details><summary>What delimiter does the `Pacifici2013_data.csv` file appear to contain? _(Click for the answer)_</summary>
-From looking at the first couple of lines that we printed above, the delimiter
-is a semicolon `;` --- "even though" the file has a `.csv` extension.
+From looking at the first couple of lines that we printed above,
+the delimiter is a semicolon `;`.
+
 </details>
 
 <hr style="height:1pt; visibility:hidden;" />
 
 ::: callout-important
 #### Plain-text file extensions are flexible and for human-readibility
+In the above example, a file with a semicolon as the delimiter was stored
+with a `.csv` extension --- this may be a bit surprising but is not incorrect.
+More unusual, and technically incorrect,
+is the `Gesquiere2011_data.csv` file we saw earlier,
+which is Tab-delimited yes has a `.csv` extension.
+
 This brings us to an important side note on **plain-text file extensions**
 like `.txt`, `.csv`, `.tsv`, etc.:
 all plain text files, including the tabular files discussed above,
@@ -1116,7 +1124,7 @@ to a new file, `Pacifici2013_data.tsv` (note the extension).
 This file should be located in the `sandbox` dir,
 which is not your current working dir.
 
-<details><summary>Click here for the solution</summary>
+<details><summary>*Click to see the solution*</summary>
 
 ```bash
 cat Pacifici2013_data.csv | tr ";" "\t" > ../sandbox/Pacifici2013_data.tsv

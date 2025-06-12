@@ -138,7 +138,7 @@ Why do we need to know the Unix shell on top of R and/or Python?
 
 In the above schematic on the left, what is the path to the file `todo_list.txt`?
 
-<details><summary>Solution</summary>
+<details><summary>*Click to see the solution*</summary>
 
 The path to the file `todo_list.txt` is:
 `/home/oneils/documents/todo_list.txt`
@@ -440,7 +440,7 @@ type **<kbd>q</kbd>** to exit the pager that `man` launches.
   haven't used yet.
   (You can also combine this new option with other options, if you want.)
 
-<details><summary>Solution</summary>
+<details><summary>*Click to see the solution*</summary>
 
 ```bash
 # Print a calendar with Monday as the first day of th week (instead of the default, Sunday) 
@@ -461,7 +461,7 @@ Mo Tu We Th Fr Sa Su
 - Try using one or more options in their "long form" (with `--`).
   Why would those be useful?
 
-<details><summary>Solution</summary>
+<details><summary>*Click to see the solution*</summary>
 
 For example:
 
@@ -486,11 +486,13 @@ Note that long options **cannot** be "pasted together" like short options.
 
 </details>
 
-- Bonus: Try to figure out / guess what the meaning is of the top of the help text:
+------
+
+- **_Bonus_**: Try to figure out / guess what the meaning is of the top of the help text:
   `Usage: cal [options] [[[day] month] year]`.
   Based on that, can you print a calendar for April 2017?
 
-<details><summary>Solution</summary>
+<details><summary>*Click to see the solution*</summary>
 
 First of all, the square brackets around `options` and all of the possible arguments
 means that _none of these are required_ ---
@@ -582,22 +584,21 @@ Let's also see what happens when `cd` does not succeed — it gives an error:
 <hr style="height:1pt; visibility:hidden;" />
 
 ::: callout-note
-#### General shell tips
+#### Case-sensitivity and comments
 
--   Everything in the shell is **case-sensitive**, including commands and file names (hence the error above).
--   Your **cursor** can be anywhere on a line (not just at the end) when you
-    press <kbd>Enter</kbd> to execute a command!
--   Any text that comes after a **`#`** is considered a **comment** instead of code!
-    Comments are not executed but are ignored by the shell.
+- Everything in the shell (and in coding in general) is **case-sensitive**,
+  including commands and file names --- hence the error above.
 
-``` bash
-# This entire line is a comment - you can run it and nothing will happen
-pwd    # 'pwd' will be executed but everything after the '#' is ignored
-```
+- Any text that comes after a **`#`** is considered a **comment** instead of code!
+  Comments are not executed but are ignored by the shell. For example:
 
-``` bash-out
-/users/PAS0471/jelmer
-```
+  ``` bash
+  # This entire line is a comment - you can run it and nothing will happen
+  pwd    # 'pwd' will be executed but everything after the '#' is ignored
+  ```
+  ``` bash-out
+  /users/PAS0471/jelmer
+  ```
 
 <hr style="height:1pt; visibility:hidden;" />
 :::
@@ -609,11 +610,13 @@ pwd    # 'pwd' will be executed but everything after the '#' is ignored
 Using keyboard shortcuts help you work much more efficiently in the shell.
 And some are invaluable:
 
--   **Cancel/stop/abort** --- If your prompt is "missing", the shell is still
+- **Command history** --- `Up` / `Down` arrow keys to cycle through your command history.
+
+- **Tab completion** --- The shell will auto-complete partial commands or file paths when you press <kbd>Tab</kbd>.
+
+- **Cancel/stop/abort** --- If your prompt is "missing", the shell is still
     busy executing your command, *or* you typed an incomplete command. To abort,
     press <kbd>Ctrl</kbd>+<kbd>C</kbd> and you will get your prompt back.
--   **Command history** --- `Up` / `Down` arrow keys to cycle through your command history.
--   **Tab completion** --- The shell will auto-complete partial commands or file paths when you press <kbd>Tab</kbd>.
 
 ::: exercise
 #### {{< fa user-edit >}} Practice with Tab completion & command history
@@ -637,17 +640,19 @@ And some are invaluable:
   **twice in quick succession** (a single Tab won't do anything):
   you should see at least four dirs that start with `PAS288`.
 
-- Add `0` so your line reads `/fs/ess/PAS2880`.
-  Press <kbd>Enter</kbd>. What does the resulting error mean?
+- Add `0` so your line reads `/fs/ess/PAS2880`. Press <kbd>Enter</kbd>.
+  You will get the following output, which is an error.
+  Can you think of any reason why this you may have gotten an error here?
 
   ```bash-out-solo
   bash: /fs/ess/PAS2880/: Is a directory
   ```
 
-<details><summary>Click for the solution</summary>
+<details><summary>*Click to see the solution*</summary>
 Basically, everything you type in the shell should start with a command.
-Just typing the name of a dir or file will not make the shell print some info about
-or the contents of said dir or file, as you perhaps expected.
+Just typing a path will not make the shell print some info about, or the contents of,
+this dir or file.
+Instead, since a path is not a command, you will get an error.
 </details>
 
 - Press **<kbd>⇧</kbd>** to get the previous "command" back on the prompt.
@@ -659,6 +664,10 @@ or the contents of said dir or file, as you perhaps expected.
   ```bash
   cd /fs/ess/PAS2880/
   ```
+  
+:::callout-tip  
+#### Your **cursor** can be anywhere on a line (not just at the end) when you press <kbd>Enter</kbd> to execute a command!
+:::
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -688,7 +697,7 @@ When you do this, nothing is executed and you are not getting your prompt back:
 you should see a `>` on the next line.
 This is the shell wanting you to "complete" you command. Why would that be?
 
-<details><summary>Click for the solution</summary>
+<details><summary>*Click to see the solution*</summary>
 This is an incomplete command by definition because any opening parenthesis
 should have a matching closing parenthesis.
 </details>
@@ -936,7 +945,7 @@ These are *general shell shortcuts* that work with **any** command that accepts 
 - **A)** Use a relative path to move back to the `/fs/ess/PAS2880/users/$USER/CSB/unix/sandbox` dir.
   (You should be in `/fs/ess/PAS2880/users/$USER`.)
 
-<details><summary>*(Click for the solution)*</summary>
+<details><summary>*Click to see the solution*</summary>
 
 ``` bash
 cd CSB/unix/sandbox
@@ -946,7 +955,7 @@ cd CSB/unix/sandbox
 
 - **B)** Use a relative path (with `..`) to move into the `/fs/ess/PAS2880/users/$USER/CSB/unix/data` dir.
 
-<details><summary>*(Click for the solution)*</summary>
+<details><summary>*Click to see the solution*</summary>
 
 ``` bash
 cd ../data
@@ -967,7 +976,7 @@ That's OK, but is obviously more typing.
 - **C)** The `ls` command lists files and dirs, and accepts one or more paths as arguments.
   Use `ls` to list the files in your Home dir with a shortcut and without moving there.
 
-<details><summary>*(Click for the solution)*</summary>
+<details><summary>*Click to see the solution*</summary>
 
 - With the `~` shortcut:
 

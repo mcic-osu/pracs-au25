@@ -386,7 +386,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#mv-to-move-and-rename-files-and-dirs" id="toc-mv-to-move-and-rename-files-and-dirs" class="nav-link" data-scroll-target="#mv-to-move-and-rename-files-and-dirs"><span class="header-section-number">1.6</span> <code>mv</code> to move and rename files and dirs</a></li>
   <li><a href="#rm-to-remove-files-and-dirs" id="toc-rm-to-remove-files-and-dirs" class="nav-link" data-scroll-target="#rm-to-remove-files-and-dirs"><span class="header-section-number">1.7</span> <code>rm</code> to remove files and dirs</a></li>
   </ul></li>
-  <li><a href="#viewing-text-files" id="toc-viewing-text-files" class="nav-link" data-scroll-target="#viewing-text-files"><span class="header-section-number">2</span> Viewing text files</a>
+  <li><a href="#viewing-the-contents-of-text-files" id="toc-viewing-the-contents-of-text-files" class="nav-link" data-scroll-target="#viewing-the-contents-of-text-files"><span class="header-section-number">2</span> Viewing the contents of text files</a>
   <ul class="collapse">
   <li><a href="#plain-text-files" id="toc-plain-text-files" class="nav-link" data-scroll-target="#plain-text-files"><span class="header-section-number">2.1</span> Plain-text files</a></li>
   <li><a href="#cat" id="toc-cat" class="nav-link" data-scroll-target="#cat"><span class="header-section-number">2.2</span> <code>cat</code></a></li>
@@ -456,7 +456,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In this session, we continue with basic Unix shell commands, focusing on commands that work with files (and dirs). Specifically, you will learn:</p>
 <ul>
 <li>Create, copy, move, rename and delete directories and files</li>
-<li>View text files in various ways</li>
+<li>Viewing the contents of text files in various ways</li>
 <li>Search within, manipulate, and extract information from text files</li>
 </ul>
 <p><br></p>
@@ -576,7 +576,7 @@ What is different about the output, and what do you think that means? <em>(Click
 <section id="exercise-listing-a-single-file" class="level4 exercise">
 <h4 class="anchored" data-anchor-id="exercise-listing-a-single-file"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <strong>Exercise</strong>: Listing a single file</h4>
 <p>Say you wanted to check the size of a single file. Then, it is not always convenient to list an entire dir’s contents, as it could contain many files.</p>
-<p>Can you use <code>ls</code> to see the file size <strong>only</strong> for the <code>miRNA_about.txt</code> file we saw listed above?</p>
+<p>Try to use <code>ls</code> to see the file size <strong>only</strong> for the <code>miRNA_about.txt</code> file we saw listed above.</p>
 <details>
 <summary>
 <em>Click to see the solution</em>
@@ -619,7 +619,7 @@ Operating on multiple files
 <h4 class="anchored" data-anchor-id="exercise-file-locations"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <strong>Exercise</strong>: file locations</h4>
 <ol type="1">
 <li><p>Using the code above, where were these files created? Can you check their sizes?</p></li>
-<li><p>Can you create a create a new file <code>test.txt</code> inside a new dir <code>test</code>?</p></li>
+<li><p>Can you create a create a new file <code>test.txt</code> inside a new dir <code>testdir</code>?</p></li>
 </ol>
 <details>
 <summary>
@@ -633,11 +633,11 @@ Operating on multiple files
 <ol start="2" type="1">
 <li>To make a new dir and create a file in there, you can’t just use the <code>touch</code> command, as it cannot create the directory for you (pay attention to the error, which may seem a bit confusing):</li>
 </ol>
-<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> test/test.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>touch: test/test.txt: No such file or directory</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> testdir/test.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>touch: testdir/test.txt: No such file or directory</code></pre>
 <p>Instead, we should first create the new dir with <code>mkdir</code>, and <em>then</em> create the new file in there:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> test</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> test/test.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> testdir</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> testdir/test.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </section>
 <hr style="height:1pt; visibility:hidden;">
@@ -682,7 +682,8 @@ Copying into your working dir without changing the name
 <div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> ../data . </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Check the contents of the <code>sandbox</code> dir again now that we’ve copied several items there:</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>TODO UPDATE</code></pre>
+<pre class="bash-out"><code>buzz2.txt              data           newfile2.txt        newfile3.txt          test
+Buzzard2015_data.csv   newfile1.txt   newfile3_copy.txt  'Papers and reviews'</code></pre>
 <hr style="height:1pt; visibility:hidden;">
 </section>
 <section id="mv-to-move-and-rename-files-and-dirs" class="level3" data-number="1.6">
@@ -698,7 +699,7 @@ Copying into your working dir without changing the name
 <span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> buzz_copy.txt data/</span>
 <span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Different directory, different file name ("moving + renaming"):</span></span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> buzz_copy.txt data/buzz_copy99.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> Buzzard2015_data.csv data/Buzzard.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Finally, unlike <code>cp</code>, the <code>mv</code> command is recursive by default!</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -721,7 +722,7 @@ Both the <code>mv</code> and <code>cp</code> commands will by default:
 <section id="rm-to-remove-files-and-dirs" class="level3" data-number="1.7">
 <h3 data-number="1.7" class="anchored" data-anchor-id="rm-to-remove-files-and-dirs"><span class="header-section-number">1.7</span> <code>rm</code> to remove files and dirs</h3>
 <p>The <strong><code>rm</code></strong> command removes files and optionally dirs — here, we’ll remove the file copy we made above:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> Buzzard2015_about.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> newfile1.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Like with <code>cp</code>, the <strong><code>-r</code></strong> option is needed to make the command work recursively:</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> testdir</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>rm: cannot remove ‘testdir’: Is a directory</code></pre>
@@ -767,18 +768,18 @@ There is no thrash bin when deleting files in the shell, so use <code>rm</code> 
 </ul>
 <details>
 <summary>
-Click to see the solution
+<em>Click to see the solution</em>
 </summary>
 <hr style="height:1pt; visibility:hidden;">
 <ul>
 <li><p>Because we put a trailing forward slash in <code>more_data/</code>, we are making clear that we are referring to a directory. So the file should be copied into a dir <code>more_data</code>, and keep the same file name.</p></li>
 <li><p>However, the <code>more_data/</code> dir does not exist, and <code>cp</code> will not create a dir on the fly, so this will fail:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> Buzzard2015_about.txt more_data/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> newfile2.txt more_data/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>cp: cannot create regular file ‘more_data/’: Not a directory</code></pre></li>
 <li><p>If we had omitted the trailing forward slash, we would have created a copy of the file with <em>file</em> name <code>more_data</code> (note that no file extension is needed, per se).</p></li>
 <li><p>P.S: To make the original intention work, first create the destination dir:</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> more_data</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> Buzzard2015_about.txt more_data/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> newfile2.txt more_data/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Note also that once the <code>more_data</code> dir exists, it <strong>does not</strong> make a difference whether or not you using a trailing slash (!).</p></li>
 </ul>
 </details>
@@ -786,8 +787,8 @@ Click to see the solution
 <p><br></p>
 </section>
 </section>
-<section id="viewing-text-files" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="viewing-text-files"><span class="header-section-number">2</span> Viewing text files</h2>
+<section id="viewing-the-contents-of-text-files" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="viewing-the-contents-of-text-files"><span class="header-section-number">2</span> Viewing the contents of text files</h2>
 <section id="plain-text-files" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="plain-text-files"><span class="header-section-number">2.1</span> Plain-text files</h3>
 <p>In this course, we’ll be working almost exclusively with so-called “<strong>plain-text</strong>” files (files with <code>.txt</code> and related extensions). These are simple files that can be opened by any text editor on any computer, and by Unix commands.</p>
@@ -887,7 +888,7 @@ Marra NJ, DeWoody JA (2014) Data from: Transcriptomic characterization of the im
 <p>First, let’s remind ourselves what <code>echo</code> does without redirection — it will simply print the characters we provide it with to the screen:</p>
 <div class="sourceCode" id="cb51"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"My first line"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>My first line</code></pre>
-<p>Now, let’s redirect <code>echo</code>’s standard out to a new file `test.txt:</p>
+<p>Now, let’s redirect <code>echo</code>’s standard out to a new file <code>test.txt</code>:</p>
 <div class="sourceCode" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"My first line"</span> <span class="op">&gt;</span> test.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>No output was printed to the screen, as it instead went into the file:</p>
 <div class="sourceCode" id="cb54"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> test.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -906,11 +907,11 @@ My third line</code></pre>
 </section>
 <section id="standard-input-and-pipes" class="level3" data-number="3.3">
 <h3 data-number="3.3" class="anchored" data-anchor-id="standard-input-and-pipes"><span class="header-section-number">3.3</span> Standard input and pipes</h3>
-<p>Recall from today’s previous examples that a file name can be given as an argument to many commands — for example, see the following sequence of commands:</p>
+<p>Let’s say that we want to use Unix commands to count the number of entries (files and “sub”dirs) in a directory. We could do that as follows:</p>
 <div class="sourceCode" id="cb60"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First we redirect the ls output to a file</span></span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> ../data/Saavedra2013 <span class="op">&gt;</span> filelist.txt</span>
 <span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's check what that looks like:</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's check what that looks like -- note that each file is on its own line:</span></span>
 <span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 5 filelist.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>n10.txt
 n11.txt
@@ -920,11 +921,11 @@ n14.txt</code></pre>
 <div class="sourceCode" id="cb62"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Then we count the nr. of lines, which is the number of files+dirs in Saavedra2013:</span></span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> filelist.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>59 filelist.txt</code></pre>
-<p>Above, we provided the <code>head</code> and <code>wc</code> commands with an argument: the path to a file to operate on.</p>
-<p>However, most commands <em>also</em> accept input from so-called “standard input” (<em>stdin</em>) using the <strong>pipe</strong>, “<strong><code>|</code></strong>”:</p>
+<p>That worked, but we needed two separate lines of code, and we are left with a file <code>filelist.txt</code> that we would probably want to remove since it has served its sole purpose.</p>
+<p>A more conventient way to do this is with a “<strong>pipe</strong>”, as follows:</p>
 <div class="sourceCode" id="cb64"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> ../data/Saavedra2013 <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>59</code></pre>
-<p>When we use the pipe, the output of the command on the left-hand side (a file listing, in this case) is no longer printed to screen but is <strong>redirected into the <code>wc</code> command</strong>. This command (and many others) will gladly accept input that way instead of via an file name argument, like in the earlier example.</p>
+<p>When we use the pipe, the output of the command on the left-hand side (a file listing, in this case) is <strong>redirected into the <code>wc</code> command</strong>. This command (and many others) will gladly accept input that way instead of via an file name argument, like in the earlier example.</p>
 <p>Pipes are useful because they avoid having to write/read intermediate files — this saves typing, makes the operation quicker, and reduces file clobber. In the example above, we don’t need to make a <code>filelist.txt</code> file to count the number of files.</p>
 <p><br></p>
 </section>
@@ -962,7 +963,7 @@ n14.txt</code></pre>
 <summary>
 What delimiter does the <code>Pacifici2013_data.csv</code> file appear to contain? <em>(Click for the answer)</em>
 </summary>
-From looking at the first couple of lines that we printed above, the delimiter is a semicolon <code>;</code> — “even though” the file has a <code>.csv</code> extension.
+<p>From looking at the first couple of lines that we printed above, the delimiter is a semicolon <code>;</code>.</p>
 </details>
 <hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-important callout-titled">
@@ -975,6 +976,7 @@ Plain-text file extensions are flexible and for human-readibility
 </div>
 </div>
 <div class="callout-body-container callout-body">
+<p>In the above example, a file with a semicolon as the delimiter was stored with a <code>.csv</code> extension — this may be a bit surprising but is not incorrect. More unusual, and technically incorrect, is the <code>Gesquiere2011_data.csv</code> file we saw earlier, which is Tab-delimited yes has a <code>.csv</code> extension.</p>
 <p>This brings us to an important side note on <strong>plain-text file extensions</strong> like <code>.txt</code>, <code>.csv</code>, <code>.tsv</code>, etc.: all plain text files, including the tabular files discussed above, most sequence data files, and scripts are fundamentally “just plain-text files”. <em>Changing the extension does not change the file.</em> Instead, different file extensions are used primarily to make it clear to humans (as opposed to the computer) what the file contains.</p>
 </div>
 </div>
@@ -1157,7 +1159,7 @@ Deletion and “squeezing” with <code>tr</code> <em>(Click to expand)</em>
 <p>Modify our command in which we changed the delimiter to a Tab to redirect the output to a new file, <code>Pacifici2013_data.tsv</code> (note the extension). This file should be located in the <code>sandbox</code> dir, which is not your current working dir.</p>
 <details>
 <summary>
-Click here for the solution
+<em>Click to see the solution</em>
 </summary>
 <div class="sourceCode" id="cb100"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> Pacifici2013_data.csv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">";"</span> <span class="st">"\t"</span> <span class="op">&gt;</span> ../sandbox/Pacifici2013_data.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
