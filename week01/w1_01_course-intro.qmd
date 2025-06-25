@@ -29,26 +29,31 @@ editor_options:
 
 ## Introductions: Jelmer (instructor)
 
-- **Lead of the CFAES Bioinformatics and Microscopy cores**
-  - Part of what was until recently called the Molecular & Cellular Imaging Center (MCIC)
-  - We are now grouped under **CFAES Analytical Resources**,
-    core facilities providing services in molecular biology,
-    high-throughput sequencing, bioinformatics, microscopy, and soil analyses.
+**Lead of the CFAES Bioinformatics and Microscopy cores**
+
+- Part of what was until recently called the Molecular & Cellular Imaging Center (MCIC)
+- We are now under **CFAES Analytical Resources**,
+  a set of core facilities that provide services in molecular biology,
+  high-throughput sequencing, bioinformatics, microscopy, and soil analyses.
 
 . . .
 
 <hr style="height:1pt; visibility:hidden;" />
 
-- **What I work on**
-  - The majority of my time is spent providing research assistance,\
-    working with grad students and postdocs on omics data
-  - Teaching, such as this course, workshops, Code Club (<https://osu-codeclub.github.io>)
+**What I work on**
+
+- The majority of my time is spent providing research assistance,\
+  working with grad students and postdocs on omics data
+
+- Teaching, such as this course, workshops, Code Club (<https://osu-codeclub.github.io>)
 
 . . .
 
 <hr style="height:1pt; visibility:hidden;" />
 
-- Background in animal evolutionary genomics & speciation
+**Otherwise**
+
+- Research background in animal evolutionary genomics & speciation
 
 - In my free time, I enjoy bird watching -- locally & all across the world
 
@@ -70,7 +75,7 @@ TBA
 
 ## The core goals of this course
 
-Learning skills that will enable you to:
+This course's core goals are to teach you skills that will enable you to:
 
 - Do your research more **reproducibly** and **efficiently** (e.g. by using **code**)
 
@@ -84,8 +89,8 @@ To do so, this course will focus primarily on what we may call
 "**foundational computational skills**" rather than on specific applications.
 For example, you will learn to:
 
-- Code in the Unix shell and R languages
-- Organize, document, and manage your project data, code, and results
+- Code in the Unix shell and R
+- Organize, document, manage, and share your research data, code, and results
 - Work with a remote supercomputer
 - Write automated analysis pipelines
 
@@ -105,19 +110,27 @@ Our focus is on #2.
 ## Course background I: Reproducibility (cont.)
 
 > *"The most basic principle for reproducible research is: Do everything via code."*\
-> —Karl Broman
+> —Karl Broman, University of Madison
 
-<br>
+<hr style="height:1pt; visibility:hidden;" />
 
-Additionally, also important for reproducibility are:
+Also important for reproducibility are, for example:
 
-- Project organization and documentation (*week 3*)
-- Managing and sharing your data and code (*for code: Git & GitHub, week 4*)
+- Project documentation and file organization (*week 2*)
+- Managing and sharing your code and data (*week 4 & 6*)
+- Using open-source software and properly managing it (*week 6*)
+- Reporting a clear protocol (*week 7*) or even better creating an automated
+  pipeline to rerun your analyses (*weeks 9-10*)
 
-<br>
+<hr style="height:1pt; visibility:hidden;" />
+
+. . . 
 
 ::: callout-tip
 ##### Another motivator: working reproducibly will benefit future you!
+
+See [Markowetz 2015's](https://link.springer.com/article/10.1186/s13059-015-0850-7)
+"Five selfish reasons to work reproducibly" in this week's readings.
 :::
 
 ## Course background II: Efficiency and automation
@@ -129,7 +142,7 @@ particularly useful when having to:
   - Recreate a figure or redo an analysis after adding a sample
   - Redo a project after uncovering a mistake in the first data processing step.
 
-## Course background IIIa: Omics data
+## Course background III: Omics data
 
 Omics data is increasingly important in biology,
 and most notably includes the study of:
@@ -144,19 +157,30 @@ and most notably includes the study of:
 #### The next lecture will introduce omics data in more detail.
 :::
 
-## Course background IIIb: Omics data analysis
+## Course background III: Omics data (cont.)
 
 Examples in the course will involve the analyses of nucleotide sequencing-based
 data (genomics and transcriptomics),
 which in many cases can be divided into two subsequent stages:
 
-1. Algorithmic/bioinformatic data processing
+<hr style="height:1pt; visibility:hidden;" />
+
+1. **Algorithmic/bioinformatic data processing**
    - For example: alignment of reads to a genome
    - This is typically done in a **Unix shell** environment using a **supercomputer**
+   - These steps are often relatively standardized, automatable, and "non-interactive"
 
-2. Biostatistical downstream analysis
-  - For example: comparing expression levels of genes between treatments 
-  - This is typically done in **R** and can be done on a laptop
+. . . 
+
+<hr style="height:1pt; visibility:hidden;" />
+
+2. **Biostatistical downstream analysis**
+   - For example: comparing expression levels of genes between treatments 
+   - This is typically done in **R** and can be done on a laptop
+   - This is often highly interactive and iterative,
+     and less standardized and automatable than the previous stage.
+
+## Course background III: Omics data (cont.)
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -164,10 +188,11 @@ which in many cases can be divided into two subsequent stages:
 ## What this course does and does not focus on 
 
 - While we'll be using some example omics datasets,
-  this course will *not* comprehensively cover specific omics analyses ---
-  our focus is much more on foundational computational skills.
+  this course will *not* comprehensively cover how to do specific omics analyses,
+  or its underlying methods ---
+  our focus is much primarily on foundational computational skills.
 
-- A highly recommended follow-up course to learn omics analysis specifics:\
+- To learn more about specific omics analysis, I highly recommended the follow-up course
   **Genome Analytics** (HCS 7004) by Jonathan Fresnedo-Ramirez
 :::
 
@@ -197,7 +222,7 @@ using the shell.
 
 ::::::: columns
 :::: column
-![](img/bash.png){fig-align="center" width="40%"}
+![](../img/bash.png){fig-align="center" width="40%"}
 
 ::: legend2
 Bash (shell language)
@@ -205,7 +230,7 @@ Bash (shell language)
 ::::
 
 :::: column
-![](img/vscode.png){fig-align="center" width="40%"}
+![](../img/vscode.png){fig-align="center" width="40%"}
 
 ::: legend2
 VS Code
@@ -213,13 +238,14 @@ VS Code
 ::::
 :::::::
 
-## Project organization & documentation {.nostretch}
+## Project file organization & documentation {.nostretch}
 
-Good project organization & documentation is a necessary starting point for reproducible research.
+Good research project organization & documentation is a necessary starting point
+for reproducible research.
 
 <hr style="height:1pt; visibility:hidden;" />
 
-- You'll learn best practices for project organization, file naming, etc.
+- You'll learn best practices for project file organization
 
 - You'll learn how to manage your data and software
 
@@ -227,7 +253,7 @@ Good project organization & documentation is a necessary starting point for repr
 
 <br>
 
-![](img/markdown.png){fig-align="center" width="32%"}
+![](../img/markdown.png){fig-align="center" width="32%"}
 
 ::: legend2
 Markdown
@@ -250,10 +276,10 @@ collaborate, share code, revisit earlier versions, and undo.
 ::::: columns
 ::: {.column width="50%"}
 <hr style="height:1pt; visibility:hidden;" />
-![](img/git.png){fig-align="center" width="55%"}
+![](../img/git.png){fig-align="center" width="55%"}
 :::
 ::: {.column width="50%"}
-![](img/github.jpg){fig-align="center"}
+![](../img/github.jpg){fig-align="center"}
 :::
 :::::
 
@@ -268,23 +294,24 @@ and using much larger amounts of memory and storage space than a personal comput
 
 . . .
 
-- We will use OSC throughout the course, and you'll get a brief intro to it this week
-- In week 5, you'll learn how to manage data and software at OSC (e.g. with Conda)
-- In week 6, you'll learn to submit shell scripts as OSC "batch jobs" with Slurm
+- We will use the **Ohio Supercomputer Center (OSC)** throughout the course,
+  and you'll get a brief intro to it this week
+- In week 5, you'll learn how to manage data and software at OSC
+- In week 6, you'll learn to submit shell scripts at OSC as "batch jobs"
 
 <br>
 
 :::::: columns
 ::: {.column width="38%"}
 <br>
-![](img/osc.png){fig-align="center" width="100%"}
+![](../img/osc.png){fig-align="center" width="100%"}
 :::
 ::: {.column width="31%"}
 <br><br>
-![](img/conda.png){fig-align="center" width="95%"}
+![](../img/conda.png){fig-align="center" width="95%"}
 :::
 ::: {.column width="31%"}
-![](img/slurm.png){fig-align="center" width="75%"}
+![](../img/slurm.png){fig-align="center" width="75%"}
 :::
 ::::::
 
@@ -306,12 +333,12 @@ you can run and rerun an entire analysis pipeline with a single command
 
 :::::: columns
 ::: {.column width="45%"}
-![](img/nextflow.png){fig-align="center" width="95%"}
+![](../img/nextflow.png){fig-align="center" width="95%"}
 :::
 ::: {.column width="7%"}
 :::
 ::: {.column width="40%"}
-![](img/nf-core-logo.png){fig-align="center" width="95%"}
+![](../img/nf-core-logo.png){fig-align="center" width="95%"}
 :::
 ::::::
 
@@ -329,14 +356,14 @@ and how you can use specialized packages for omics data analyis.
 
 ::::: columns
 ::: {.column width="35%"}
-![](img/R_logo.svg.png){fig-align="center" width="65%"}
+![](../img/R_logo.svg.png){fig-align="center" width="65%"}
 :::
 ::: {.column width="35%"}
 <br>
-![](img/RStudio_logo_flat.svg.png){fig-align="center" width="90%"}
+![](../img/RStudio_logo_flat.svg.png){fig-align="center" width="90%"}
 :::
 ::: {.column width="25%"}
-![](img/logo-quarto.png){fig-align="center" width="65%"}
+![](../img/logo-quarto.png){fig-align="center" width="65%"}
 :::
 :::::
 
@@ -346,8 +373,8 @@ and how you can use specialized packages for omics data analyis.
 #### R vs. Python
 Python is also commonly used but I believe that altogether,
 R is a far better choice for this course.
-On the other, Python is a great follow-up language to learn for those seeking to 
-specialize in bioinformatics.
+On the other hand,
+Python is a great follow-up language for those seeking to specialize in bioinformatics.
 :::
 
 ## Using generative AI to help with coding
@@ -360,23 +387,24 @@ specialize in bioinformatics.
 
 ## Zoom
 
--   Be muted by default, but feel free to unmute yourself to ask questions any time.
+- Be muted by default, but feel free to unmute yourself to ask questions any time.
 
--   Questions can also be asked in the chat.
+- Questions can also be asked in the chat.
 
--   Having your camera turned on as much as possible is appreciated!
-
-. . .
-
--   "Screen real estate" — large/multiple monitors or multiple devices best.
-
--   Be ready to share your screen.
+- Having your camera turned on as much as possible is appreciated!
 
 ## Participatory live coding
 
 TBA
 
-## Websites & Books
+- It will often be important to simultaneously see the Zoom window where I will share my
+  screen, and one or more windows on your own computer. 
+  If you have access to large and/or multiple monitors,
+  I would highly recommend using those.
+
+- You should always be ready to share your screen for troubleshooting purposes.
+
+## Course websites
 
 - Info about CarmenCanvas website TBA
 
@@ -394,8 +422,7 @@ TBA
 
 . . .
 
-- I am only using slides for this course intro and for the very next lecture
-  on omics data.
+- I am only using slides for this course intro and for the next lecture.
   Other material will be presented via "regular" pages on the GitHub website,
   as this works better for the interactive live coding we'll be doing.
 
@@ -403,20 +430,6 @@ TBA
 
 TBA
 
-## Readings
-
-Most weeks, additional readings are optional because you are always expected
-to reread and practice more with the material that we go through in class.
-
-Additionally, anything on a given page that we do not get to in class automatically
-turns into required self-study material.
-
-- Several weeks will have 1 or 2 papers as required reading.
-
-- Most weeks have as optional readings chapters from the following two books:
-  - Computing Skills for Biologists ("CSB"; Allesina & Wilmes 2019)
-  - Bioinformatics Data Skills ("Buffalo"; Buffalo 2015)
-    
 ## Office hours
 
 TBA
@@ -485,15 +498,26 @@ TBA
 
 - Miscellaneous small assignments such as surveys and account setup.
 
-<br><br>
+## Readings
 
-::: callout-note
-### Weekly materials & homework
+- In a few of the weeks, you will have 1 or 2 papers as required reading.
 
-I will try add the materials for each week on the preceding Friday ---
-at the least the week's overview and readings.
+- Most weeks have as optional readings chapters from the following two books:
+  - Computing Skills for Biologists ("CSB"; Allesina & Wilmes 2019)
+  - Bioinformatics Data Skills ("Buffalo"; Buffalo 2015)
+ 
+<hr style="height:1pt; visibility:hidden;" />
 
-None of this homework had to be handed in.
+::: callout-important
+Most weeks, readings from books or papers are _optional_.
+This is because, instead:
+
+- You are _always_ expected to reread and practice more with the material that we
+  go through in class
+  (if you don't do this, you will not be able to learn the material well enough).
+
+- Anything on a given lecture page that we do not manage to cover in class
+  _automatically turns into required self-study material_.
 :::
 
 ## Weekly recitation on Monday
