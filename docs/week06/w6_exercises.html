@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -103,7 +137,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../week02/w2_overview.html">
- <span class="dropdown-text">Week 2: Markdown and Unix shell basics</span></a>
+ <span class="dropdown-text">Week 2: Project organization, Markdown, and Unix shell basics</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../week03/w3_overview.html">
@@ -206,12 +240,12 @@ ul.task-list li input[type="checkbox"] {
     <ul class="dropdown-menu" aria-labelledby="nav-menu-assignments">    
         <li class="dropdown-header">GRADED</li>
         <li>
-    <a class="dropdown-item" href="../week02/w2_ga_shell.html">
- <span class="dropdown-text">1. Week 2: Shell basics</span></a>
+    <a class="dropdown-item" href="../week02/w2_ga_markdown.html">
+ <span class="dropdown-text">1. Week 2: Essay in Markdown</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../week04/w4_ga_git.html">
- <span class="dropdown-text">2. Week 4: Markdown &amp; Git</span></a>
+ <span class="dropdown-text">2. Week 4: Git</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../week05/w5_ga_shell-scripts.html">
@@ -379,6 +413,49 @@ ul.task-list li input[type="checkbox"] {
 
 <hr>
 <hr style="height:1pt; visibility:hidden;">
+<details>
+<summary>
+<strong>9.</strong> Change file permissions
+</summary>
+<p>Before we start, let’s check the current file permissions:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> data/fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>ls -lh data/fastq/ | head
+total 0
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_F.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_R.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_F.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_R.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_F.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_R.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_F.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_R.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample005_F.fastq.gz</code></pre>
+<p>The file “owner”/“user” (you) and the “group” (in this case, PAS0471, likely a different group for you) have read and write permissions, and “others” have no permissions at all.</p>
+<p>There are several different ways to change permissions with the <code>chmod</code> command. Here are some examples which would ensure that no-one has write permission for the raw data:</p>
+<ul>
+<li><p>Set read(-only) permissions for all:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a=r =&gt; all=read</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a=r data/fastq/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Take away write permissions for all:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a-w =&gt; all minus write</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a-w data/fastq/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>You can also use the “numeric” syntax:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 444 data/fastq/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+<p>Whereas after running the second option, others won’t have read-access, the first and third option should give this result:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> data/fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>ls -lh data/fastq/ | head
+total 0
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_F.fastq.gz
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_R.fastq.gz
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_F.fastq.gz
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_R.fastq.gz
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_F.fastq.gz
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_R.fastq.gz
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_F.fastq.gz
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_R.fastq.gz
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample005_F.fastq.gz</code></pre>
+</details>
 
 
 

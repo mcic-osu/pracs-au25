@@ -184,111 +184,6 @@ and make the fix reproducible --- and much easier to repeat if needed
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### Use relative paths
-
-#### The Unix directory structure
-
-- "Directory" (or "**dir**" for short) is the term for *folder* that is commonly
-  used in Unix contexts.
-
-- The "**working dir**" is whatever dir/folder you are currently located in.
-  In a coding interface, like the Unix shell we'll learn after this,
-  you are _always_ in a certain working dir
-  (and the same is basically true in a file browser).
-
-- The Unix directory structure is entirely _hierarchical_,
-  with a single starting point: the **root**, depicted as **`/`**.
-
-- A "**path**" gives the location of a file or directory, in which directories
-  are separated by forward slashes `/`.
-    
-- So: a leading `/` in a path is the root dir,
-  and any subsequent `/` are used to separate dirs.
-  For example, the path to our OSC project's dir is `/fs/ess/PAS2880`.
-  This means: the dir `PAS2880` is located inside the dir `ess`, which in turn is
-  inside the dir `fs`, which in turn is in the computer's root directory.
-
-- The OSC dir structure is somewhat different from that of a personal computer.
-  Our Home dir is not `/home/<username>` like in the book and the schematic
-  on the left, but `/users/PASXXXX/<username>`.
-
-::: columns
-::: column
-![Generic computer dir structure, from [O'Neil 2017](https://open.oregonstate.education/computationalbiology/chapter/the-command-line-and-filesystem/)](../img/oneil_filesystem_ex2.png){fig-align="center" width="95%"}
-:::
-::: column
-![Key dirs in the OSC dir structure](../img/osc_dirstructure.png){fig-align="center" width="89%"}
-:::
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: exercise
-#### {{< fa user-edit >}} Exercise: Figure out the path
-
-In the above schematic on the left, what is the path to the file `todo_list.txt`?
-
-<details><summary>*Click to see the solution*</summary>
-
-The path to the file `todo_list.txt` is:
-`/home/oneils/documents/todo_list.txt`
-
-</details>
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-#### Absolute versus relative paths
-
-Any file or dir can be referred to in two different ways, using either:
-
-- An **absolute (full) path** (e.g. `/fs/ess/PAS2880`) \
-  A path that begin with a `/` starts from the computer's root directory,
-  and is called an "absolute path".\
-  *(It is equivalent to GPS coordinates for a geographical location,*
-  *and works regardless of where you are*).
-
-- A **Relative path** (e.g. `CSB/unix/sandbox` or `todo_list.txt`)\
-  A Path that starts from your current working directory is a "relative path".\
-  *(It works like directions along the lines of "take the second left:"*
-  *it depends on your current location.)*
-
-<details><summary>In the example above, how can the file name `todo_list.txt` represent a path? _(Click for the solution)_</summary>
-
-A file name like `todo_list.txt`, with no directories included,
-can be seen (and is often used!) as a relative path that implies that the file
-is in our current working dir.
-
-Alternatively, and often equivalently, you can be explicit about that
-by using a `./` preface, e.g.: `./todo_list.txt`
-(see the Path shortcuts section below).
-
-</details>
-
-<details><summary>Given that **absolute paths** do not depend on your working dir,
-while **relative paths** do, and won't work if you're elsewhere --- don't absolute paths sound better? What could be a disadvantage of them?</summary>
-
-Absolute paths:
-
-- Don't generally work across computers
-- Break when you move your entire project dir
-
-Relative paths, on the other hand, keep working when moving the project within and
-between computers ---
-as long as you consistently use the top-level dir of the project as the working dir.
-
-</details>
-
-<hr style="height:1pt; visibility:hidden;" />
-
-![Two project dir hierarchies, and the absolute and relative path to a FASTQ file.](../img/proj-dirs-2.svg){fig-align="center" width="70%"}
-
-<hr style="height:1pt; visibility:hidden;" />
-
-![Now everything was moved into `Dropbox`.<br>The absolute path has changed, but the relative path remains the same.](../img/proj-dirs-3.svg){fig-align="center" width="70%"}
-
-<br>
-
 ### Use machine- and human-readable file names
 
 Here are three key principles for good file names
@@ -310,7 +205,7 @@ Consistent and informative naming helps you to programmatically find and process
   - `samples_soil_treatmentA_2019-01.txt`
 
 - With such file names, you can easily select samples from e.g. a certain month or treatment
-  (*more on Thursday*):
+  (**TBA change this**)
   
   ```bash
   ls *2016-05*
@@ -377,11 +272,124 @@ Consistent and informative naming helps you to programmatically find and process
   DE-03_process-significant.R
   ```
 
+<hr style="height:1pt; visibility:hidden;" />
+
+### Use relative paths
+
+To understand this recommendation,
+you first need to learn more about paths and folder structures.
+
+#### Terminology and concepts related to paths
+
+- "Directory" (or "**dir**" for short) is another term for *folder*,
+  that is commonly used e.g. in coding contexts.
+
+- The "**working dir**" is whatever dir/folder you are currently located in.
+  In a coding interface, like the Unix shell we'll learn after this,
+  you are _always_ in a certain working dir
+  (and the same is basically true in a file browser).
+
+- On "Unix-like" (Mac and Linux - OSC uses Linux) operating systems,
+  there is a single starting point to the directory structure: 
+  the **root**, depicted as **`/`**.
+  While this works slightly differently on Windows,
+  directory structures have starting points there as well.
+
+::: columns
+::: column
+![Generic computer dir structure, from [O'Neil 2017](https://open.oregonstate.education/computationalbiology/chapter/the-command-line-and-filesystem/)](../img/oneil_filesystem_ex2.png){fig-align="center" width="95%"}
+:::
+::: column
+![Key dirs in the OSC dir structure](../img/osc_dirstructure.png){fig-align="center" width="89%"}
+:::
+:::
+
+- A "**path**" gives the location of a file or directory,
+  in which directories are separated by forward slashes `/`.
+  **_When we code, we always use paths to refer to files and dirs._**
+    
+- In a path, a leading `/` is the root dir,
+  and any subsequent `/` are used to separate dirs.
+  For example, the path to our OSC project's dir is `/fs/ess/PAS2880`.
+  This means: the dir `PAS2880` is located inside the dir `ess`, which in turn is
+  inside the dir `fs`, which in turn is in the computer's root directory.
+
+- The OSC dir structure is somewhat different from that of a regular computer.
+  Our Home dir is not `/home/<username>` like in the schematic on the left
+  (reflecting the dir structure of a Mac), but `/users/PASXXXX/<username>`.
+  
+<hr style="height:1pt; visibility:hidden;" />
+
+::: exercise
+#### {{< fa user-edit >}} Exercise: Figure out the path
+
+In the above schematic on the left, what is the path to the file `todo_list.txt`?
+
+<details><summary>*Click to see the solution*</summary>
+
+The path to the file `todo_list.txt` is:
+`/home/oneils/documents/todo_list.txt`
+
+</details>
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+#### Absolute versus relative paths
+
+The location of any file or dir can be referred to in two different ways, using either:
+
+- An **absolute path** (e.g. `/fs/ess/PAS2880`) \
+  A path that begin with a `/` starts from the computer's root directory,
+  and is called an "absolute path".\
+  *(It is equivalent to GPS coordinates for a geographical location,*
+  *and works regardless of where you are*).
+
+- A **relative path** (e.g. `CSB/unix/sandbox` or `todo_list.txt`)\
+  A Path that starts from your current working directory is a "relative path".\
+  *(It works like directions along the lines of "take the second left:"*
+  *it depends on your current location.)*
+
+<details><summary>In the example above, how can the file name `todo_list.txt` represent a path? _(Click for the solution)_</summary>
+
+A file name like `todo_list.txt`, with no directories included,
+can be seen (and is often used!) as a relative path that implies that the file
+is in our current working dir.
+
+Alternatively, and often equivalently, you can be explicit about that
+by using a `./` preface, e.g.: `./todo_list.txt`
+(see the Path shortcuts section below).
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+#### Why you should prefer relative paths
+
+Given that **absolute paths** do not depend on your working dir,
+while **relative paths** do, and won't work if you're elsewhere --- don't absolute paths sound better? What could be a disadvantage of them?
+
+Absolute paths:
+
+- Don't generally work across computers
+- Break when you move your entire project dir
+
+Relative paths, on the other hand, keep working when moving the project within and
+between computers ---
+as long as you consistently use the top-level dir of the project as the working dir.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+![Two project dir hierarchies, and the absolute and relative path to a FASTQ file.](../img/proj-dirs-2.svg){fig-align="center" width="70%"}
+
+<hr style="height:1pt; visibility:hidden;" />
+
+![Now everything was moved into `Dropbox`.<br>The absolute path has changed, but the relative path remains the same.](../img/proj-dirs-3.svg){fig-align="center" width="70%"}
+
 <br>
 
 ## Documenting your research project
 
-Slow down and document
+Slow down and document TBA
 
 #### "README" file(s)
 
@@ -404,10 +412,11 @@ Use README files to document the following:
 
 #### Electronic lab notebook (organized by date)
 
+TBA
 
 #### Final workflow file (organized in order of execution)
 
-
+TBA
 
 #### Use plain text files
 

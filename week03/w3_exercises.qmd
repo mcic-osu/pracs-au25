@@ -131,22 +131,6 @@ you can use two consecutive wildcard character sets (`[]`) here.
   `echo sample23_C_09-16-2020.sam | cut ...`.
 </details>
 
-9. **Bonus: Change file permissions**  
-   Make sure no-one has write permissions for the raw data files, not even yourself.
-   You can also change other permissions to what you think is reasonable
-   or necessary precaution for your fictional project.
-   
-<details><summary>Hints</summary>
-Use the `chmod` command to change file permissions and recall that you
-can use wildcard expansion to operate on many files at once.
-
-See [this Bonus section of the Managing files in the shell page](w2_shellfiles.html#viewing-and-modifying-file-permissions)
-for an overview of file permissions and the `chmod` command.
-
-Alternatively, `chmod` also has an `-R` argument to act **r**ecursively:
-that is, to act on dirs and all of their contents (including other dirs and *their* contents).
-</details>
-
 <br>
 
 ## Solutions
@@ -230,7 +214,6 @@ ls | wc -l
 ```bash-out
 300
 ```
-
 </details>
 
 <details><summary>**5.** Rename files in a batch</summary>
@@ -254,7 +237,6 @@ Also, note that:
 - We don't need a special construction to paste strings together:
   we simply type `bam` after what will be the extension-less file name from the `basename` command.
 - I used informative variable names (`oldname` and `newname`), not cryptic ones like `i` and `o`.
-
 </details>
 
 <details><summary>**6.** Copy files with wildcards</summary>
@@ -302,7 +284,6 @@ Also, note that:
   On Mon Mar 18 10:07:17 EDT 2024, created a dir 'subset' and copied only files for samples 1-29
   and treatments A-C into this dir.
   ```
-  
 </details>
 
 <details><summary>**8.** Bonus: a trickier renaming loop</summary>
@@ -354,75 +335,6 @@ done
 
 </details>
 
-<details><summary>**9.** Change file permissions</summary>
-
-Before we start, let's check the current file permissions:
-
-```bash
-ls -lh data/fastq
-```
-```bash-out
-ls -lh data/fastq/ | head
-total 0
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_F.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_R.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_F.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_R.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_F.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_R.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_F.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_R.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample005_F.fastq.gz
-```
-
-The file "owner"/"user" (you) and the "group" (in this case, PAS0471, likely a different group for you)
-have read and write permissions, and "others" have no permissions at all.
-
-There are several different ways to change permissions with the `chmod` command.
-Here are some examples which would ensure that no-one has write permission for the raw data:
-
-- Set read(-only) permissions for all:
-
-  ```sh
-  # a=r => all=read
-  chmod a=r data/fastq/*
-  ```
-
-- Take away write permissions for all:
-
-  ```bash
-  # a-w => all minus write
-  chmod a-w data/fastq/*
-  ```
-
-- You can also use the "numeric" syntax:
-
-  ```bash
-  chmod 444 data/fastq/*
-  ```
-
-Whereas after running the second option, others won't have read-access,
-the first and third option should give this result:
-
-```bash
-ls -lh data/fastq
-```
-```bash-out
-ls -lh data/fastq/ | head
-total 0
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_F.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_R.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_F.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_R.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_F.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_R.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_F.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_R.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample005_F.fastq.gz
-```
-
-</details>
-
 <br>
 
 ## Bonus exercises
@@ -437,10 +349,14 @@ Make sure you create a backup copy of the entire project first!
 
 ### Exercise 4: Buffalo Chapter 3 code-along
 
-Move back to `/fs/ess/PAS1855/users/$USER` and download the repository
-accompanying the Buffalo book using
-`git clone https://github.com/vsbuffalo/bds-files.git`.
-Then, move into the new dir `bds-files`, and code along with Buffalo Chapter 3.
+1. Move back to `/fs/ess/PAS2880/users/$USER`
+2. Download the repository accompanying the Buffalo book:
+
+   ```bash
+   git clone https://github.com/vsbuffalo/bds-files.git
+   ```
+3. Move into the new dir `bds-files`
+4. Code along with Buffalo Chapter 3!
 
 <hr style="height:1pt; visibility:hidden;" />
 

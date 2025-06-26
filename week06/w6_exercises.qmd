@@ -9,3 +9,73 @@ number-sections: false
 ---------
 
 <hr style="height:1pt; visibility:hidden;" />
+
+
+<details><summary>**9.** Change file permissions</summary>
+
+Before we start, let's check the current file permissions:
+
+```bash
+ls -lh data/fastq
+```
+```bash-out
+ls -lh data/fastq/ | head
+total 0
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_F.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_R.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_F.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_R.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_F.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_R.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_F.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_R.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample005_F.fastq.gz
+```
+
+The file "owner"/"user" (you) and the "group" (in this case, PAS0471, likely a different group for you)
+have read and write permissions, and "others" have no permissions at all.
+
+There are several different ways to change permissions with the `chmod` command.
+Here are some examples which would ensure that no-one has write permission for the raw data:
+
+- Set read(-only) permissions for all:
+
+  ```sh
+  # a=r => all=read
+  chmod a=r data/fastq/*
+  ```
+
+- Take away write permissions for all:
+
+  ```bash
+  # a-w => all minus write
+  chmod a-w data/fastq/*
+  ```
+
+- You can also use the "numeric" syntax:
+
+  ```bash
+  chmod 444 data/fastq/*
+  ```
+
+Whereas after running the second option, others won't have read-access,
+the first and third option should give this result:
+
+```bash
+ls -lh data/fastq
+```
+```bash-out
+ls -lh data/fastq/ | head
+total 0
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_F.fastq.gz
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_R.fastq.gz
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_F.fastq.gz
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_R.fastq.gz
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_F.fastq.gz
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_R.fastq.gz
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_F.fastq.gz
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_R.fastq.gz
+-r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample005_F.fastq.gz
+```
+
+</details>

@@ -352,6 +352,93 @@ in a few weeks.
 
 <hr style="height:1pt; visibility:hidden;" />
 
+### Environment variables
+
+You may be familiar with the concept of **variables** from previous experience with perhaps R or another language.
+Variables can hold values and other pieces of data and are essential in programming.
+
+- Assigning and printing the value of a variable **in R**:
+
+  ```{r, eval=TRUE}
+  #| class-output: styled-output
+  # (Don't run this)
+  x <- 5
+  x
+  ```
+
+- Assigning and printing the value of a variable **in the Unix shell**:
+
+  ``` bash
+  x=5
+  echo $x
+  ```
+  ``` bash-out
+  5
+  ```
+
+::: callout-tip
+#### In the Unix shell code above, note that:
+
+-   There cannot be any **spaces** around the **`=`** in `x=5`.
+-   You need a **`$` prefix** to *reference* (but not to *assign*) variables in the shell[^4].
+-   You need the **`echo`** command, a general command to print text, to print the value of `$x` (cf. in R).
+
+By the way, `echo` can also print literal text (as shown below) or combinations
+of literals and variables (next exercise):
+    
+```bash
+echo "Welcome to PLNTPTH 5004"
+```
+```bash-out
+Welcome to PLNTPTH 5004
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+:::
+
+[^4]: Because of this, anytime you see a word/string that starts with a `$` in the shell,
+you can safely assume that it is a variable.
+
+**Environment variables** are pre-existing variables that have been automatically assigned values. Two examples:
+
+``` bash
+# $HOME contains the path to your Home dir:
+echo $HOME
+```
+
+``` bash-out
+/users/PAS0471/jelmer
+```
+
+``` bash
+# $USER contains your user name:
+echo $USER
+```
+
+``` bash-out
+jelmer
+```
+
+::: exercise
+#### {{< fa user-edit >}} Exercise: environment variables
+
+Using an environment variable, print "_Hello, my name is \<your username\>_" (e.g. "Hello, my name is natalie").
+
+<details><summary>*Click for the solution*</summary>
+
+``` bash
+# (This would also work without the " " quotes)
+echo "Hello, my name is $USER"
+```
+
+``` bash-out
+Hello, my name is jelmer
+```
+
+</details>
+:::
+
 ### Command substitution
 
 Command substitution allows you to **store the output of a command in a variable**.

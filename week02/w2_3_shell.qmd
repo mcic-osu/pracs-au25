@@ -11,13 +11,12 @@ editor_options:
 
 <br>
 
-### Overview {-}
+### Learning goals {-}
 
 In this session, you'll learn:
 
 - What the Unix shell is and what you can do with it
 - Why it can be beneficial to use a command-line interface in general and the shell specifically
-- What the Unix file structure looks like and what paths are
 - How Unix commands are stuctured
 - How to navigate around your computer with Unix commands
   
@@ -41,14 +40,16 @@ precisely because we will connect to OSC and do our work there.
 
 #### Unix shell-related terms
 
--   **Command Line** and **Command Line Interface (CLI)** — A user interface where you type commands
--   **Shell** — a more specific and technical term for a command line interface _to your computer_
--   **Unix Shell** — the type of shell on Unix-based (Linux + Mac) computers
--   **Bash** — the specific Unix shell _language_ that is most common
--   **Terminal** — the program/app/window that can run a shell
+- **Command Line** and **Command Line Interface (CLI)** — A user interface where you type commands
+- **Shell** — a more specific and technical term for a command line interface _to your computer_
+- **Unix Shell** — the type of shell on Unix-based (Linux + Mac) computers
+- **Bash** — the specific Unix shell _language_ that is most common
+- **Terminal** — the program/app/window that can run a shell
 
 While these are clearly not synonyms, in day-to-day computing,
 they are often used interchangeably.
+
+Unrelated to these
 
 ::: callout-note
 #### CLI vs. GUI
@@ -103,11 +104,39 @@ Why do we need to know the Unix shell on top of R and/or Python?
 
 ## First steps in the shell
 
-### Accessing a shell at OSC
+### Accessing a shell within VS Code
 
-1.  Go to <https://ondemand.osc.edu> in your browser, and log in.
-2.  Click on the `Clusters` dropdown menu in the top bar and select
-    `Cardinal Shell Access`.
+If you don't already have a VS Code session with a Unix shell ---
+to access a Unix shell, follow the same steps as before:
+
+1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>.
+2. In the blue top bar, select `Interactive Apps` and near the bottom, click `Code Server`.
+3. In the form on the page that appears, fill out the following:
+   - "_Cluster_": `ascend`
+   - "_Account_" (= OSC Project): `PAS2880`.
+   - "_Number of hours_": `2`
+   - "_Working Directory_": your personal dir in `/fs/ess/PAS2880/users` (e.g. `/fs/ess/PAS2880/users/jelmer`)
+   - "_App Code Server version_": `4.8.3`
+4. Click `Launch`
+5. Once the blue *Connect to VS Code* button appears,
+   click that to open VS Code in a new browser tab.
+6. In VS Code, open a terminal by either:
+   - Clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal`
+   - Using the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>
+7. Check that your are in your dir within `/fs/ess/PAS2880/users` by typing `pwd`
+   in the terminal.
+   _(If you're not, that dir may be listed under `Recents` in the `Get Started`_
+   _document --- if that's the case, click on that entry._
+   _Otherwise, click `File` => `Open Folder` and type/select that dir.)_
+
+I also recommend that you create and open a Markdown file to keep notes on
+what we're doing in this session:
+
+1. Click <i class="fa fa-bars"></i> => `File` => `New File`.
+2. Save the file (e.g. <kbd>Ctrl/⌘</kbd>+<kbd>S</kbd>) inside the `week02` subdir,
+   e.g. as `session3_shell-intro.md`.
+
+<hr style="height:1pt; visibility:hidden;" />
 
 ### The shell's prompt
 
@@ -148,48 +177,29 @@ small programs that perform specific actions.
 
 Let's start with a few simple commands:
 
--   The `date` command prints the current date and time:
+- The `date` command prints the current date and time:
 
-    ``` bash
-    date
-    ```
-    ``` bash-out
-    Thu Feb 29 14:58:19 EST 2024
-    ```
+  ``` bash
+  date
+  ```
+  ``` bash-out
+  Thu Sep 02 13:58:19 EST 2025
+  ```
 
--   The `pwd` (Print Working Directory) command prints the path to the directory
-    you are currently located in:
+- The `pwd` (Print Working Directory) command prints the path to the directory
+  you are currently located in:
 
-    ``` bash
-    pwd
-    ```
-    ``` bash-out
-    /users/PAS0471/jelmer
-    ```
+  ``` bash
+  pwd
+  ```
+  ``` bash-out
+  /users/PAS0471/jelmer
+  ```
 
 Both of those commands provided us with some output. That output was **printed
 to screen**, which is the default behavior for nearly every Unix command.
 
-<hr style="height:1pt; visibility:hidden;" />
-
-::: callout-warning
-#### Copying and pasting in this shell
-
-You can't right-click in this shell, so to copy-and-paste:
-
--   **Copy** simply by selecting text
-    (you should see a copy ({{< fa copy >}}) icon appear).
--   **Paste** using <kbd>Ctrl</kbd>+<kbd>V</kbd>.
-
-{{< fa user-edit >}} Try copying and pasting a random word into your shell.
-This may just work, you may get a permission pop-up, or it may silently fail ---
-if the latter, click on the clipboard icon in your browser's address bar
-(see red circle in screenshot below):
-
-![](../img/pasting2.png)
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
+<br>
 
 ## Options, arguments, and help
 
@@ -383,7 +393,6 @@ man cal
 This manual page often includes a lot more details than the `--help` output,
 and it is opened inside a "pager" rather than printed to screen:
 type **<kbd>q</kbd>** to exit the pager that `man` launches.
-
 :::
 
 ::: exercise
@@ -479,7 +488,7 @@ Su Mo Tu We Th Fr Sa
 
 <br>
 
-## `cd`, paths, and shortcuts 
+## Navigation and keyboard shortcuts
 
 ### `cd` and command "actions"
 
@@ -684,126 +693,27 @@ _though in some cases, like copy/paste, both keys work)._
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### Environment variables
+### Move into your own dir & download some data
 
-You may be familiar with the concept of **variables** from previous experience with perhaps R or another language.
-Variables can hold values and other pieces of data and are essential in programming.
+- Move into your personal dir using `cd`:
 
-- Assigning and printing the value of a variable **in R**:
-
-  ```{r, eval=TRUE}
-  #| class-output: styled-output
-  # (Don't run this)
-  x <- 5
-  x
+  ```bash
+  # (Instead of $USER, you can also start typing your username and press Tab)
+  cd users/$USER
   ```
 
-- Assigning and printing the value of a variable **in the Unix shell**:
+- Get the files associated with the CSB book by "*cloning*" (downloading) its
+  GitHub repository:
 
-  ``` bash
-  x=5
-  echo $x
-  ```
-  ``` bash-out
-  5
+  ```bash
+  git clone https://github.com/CSB-book/CSB.git
   ```
 
-::: callout-tip
-#### In the Unix shell code above, note that:
+- Move into the *sandbox* dir for the Unix chapter (remember to use tab completion):
 
--   There cannot be any **spaces** around the **`=`** in `x=5`.
--   You need a **`$` prefix** to *reference* (but not to *assign*) variables in the shell[^4].
--   You need the **`echo`** command, a general command to print text, to print the value of `$x` (cf. in R).
-
-By the way, `echo` can also print literal text (as shown below) or combinations
-of literals and variables (next exercise):
-    
-```bash
-echo "Welcome to PLNTPTH 5004"
-```
-```bash-out
-Welcome to PLNTPTH 5004
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-:::
-
-[^4]: Because of this, anytime you see a word/string that starts with a `$` in the shell,
-you can safely assume that it is a variable.
-
-**Environment variables** are pre-existing variables that have been automatically assigned values. Two examples:
-
-``` bash
-# $HOME contains the path to your Home dir:
-echo $HOME
-```
-
-``` bash-out
-/users/PAS0471/jelmer
-```
-
-``` bash
-# $USER contains your user name:
-echo $USER
-```
-
-``` bash-out
-jelmer
-```
-
-::: exercise
-#### {{< fa user-edit >}} Exercise: environment variables
-
-Using an environment variable, print "_Hello, my name is \<your username\>_" (e.g. "Hello, my name is natalie").
-
-<details><summary>*Click for the solution*</summary>
-
-``` bash
-# (This would also work without the " " quotes)
-echo "Hello, my name is $USER"
-```
-
-``` bash-out
-Hello, my name is jelmer
-```
-
-</details>
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### Create your own dir & download some data
-
-Our base OSC directory for the course is the **`/fs/ess/PAS2880`** dir we are currently in.
-Now, you will create our own directory within here,
-and download a repository with practice data from the [CSB book](https://library.ohio-state.edu/record=b8624007~S7).
-
--   Create a directory for yourself using the **`mkdir`** (**m**a**k**e **dir**) command:
-
-    ```bash
-    mkdir users/$USER
-    ```
-
--   Move there using `cd`:
-
-    ```bash
-    # (Instead of $USER, you can also start typing your username and press Tab)
-    cd users/$USER
-    ```
-
--   Get the files associated with the CSB book by "*cloning*" (downloading) its
-    GitHub repository:
-
-    ```bash
-    git clone https://github.com/CSB-book/CSB.git
-    ```
-
--   Move into the *sandbox* dir for the Unix chapter (remember to use tab completion):
-
-    ```bash
-    cd CSB/unix/sandbox
-    ```
+  ```bash
+  cd CSB/unix/sandbox
+  ```
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -813,7 +723,8 @@ and download a repository with practice data from the [CSB book](https://library
   For example, `cd ~` moves you to your Home dir.
 - **`.`** (a single period) --- represents the current working directory
   (we'll see soon why that can be useful).
-- **`..`** (two periods) --- Represents the directory "one level up", i.e. towards the computer's root dir.
+- **`..`** (two periods) --- Represents the directory "one level up",
+  i.e. towards the computer's root dir.
 
 Some examples of `..`:
 
@@ -868,7 +779,6 @@ These are *general shell shortcuts* that work with **any** command that accepts 
 ``` bash
 cd CSB/unix/sandbox
 ```
-
 </details>
 
 - **B)** Use a relative path (with `..`) to move into the `/fs/ess/PAS2880/users/$USER/CSB/unix/data` dir.
@@ -888,7 +798,6 @@ cd data
 ```
 
 That's OK, but is obviously more typing.
-
 </details>
 
 - **C)** The `ls` command lists files and dirs, and accepts one or more paths as arguments.
@@ -909,6 +818,5 @@ ls ~
 ls $HOME
 # (Output not shown)
 ```
-
 </details>
 :::
