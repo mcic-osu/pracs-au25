@@ -215,7 +215,7 @@ Consistent and informative naming helps you to programmatically find and process
 
 - **Don't use spaces in file names**,
   as these lead to inconvenience at best and disaster at worst when working in
-  the Shell and to some extent with other programming languages (see example below).
+  the Shell -- and to some extent with other programming languages as well.
   
 - More generally, only use the following characters in file names:
   - Alphanumeric characters <kbd>A-Za-z0-9</kbd>
@@ -284,39 +284,38 @@ you first need to learn more about paths and folder structures.
 - "Directory" (or "**dir**" for short) is another term for *folder*,
   that is commonly used e.g. in coding contexts.
 
-- The "**working dir**" is whatever dir/folder you are currently located in.
-  In a coding interface, like the Unix shell we'll learn after this,
+- The "**working dir**" is the dir that you are currently located in.
+  In a command-line interface, like the Unix shell we'll learn after this,
   you are _always_ in a certain working dir
-  (and the same is basically true in a file browser).
+  (and the same is basically true in a regular file browser).
 
-- On "Unix-like" (Mac and Linux - OSC uses Linux) operating systems,
-  there is a single starting point to the directory structure: 
-  the **root**, depicted as **`/`**.
-  While this works slightly differently on Windows,
-  directory structures have starting points there as well.
+- "Unix-based" operating systems include Mac and Linux (OSC uses Linux),
+  and these have a single starting point to the directory structure: 
+  the **root** directory, depicted as **`/`**.
+  On a Windows computer, there are often multiple dir structures,
+  but they similarly have starting points, such as `C:/`.
 
 ::: columns
 ::: column
-![Generic computer dir structure, from [O'Neil 2017](https://open.oregonstate.education/computationalbiology/chapter/the-command-line-and-filesystem/)](../img/oneil_filesystem_ex2.png){fig-align="center" width="95%"}
+![Example dir structure on a Mac computer, from [O'Neil 2017](https://open.oregonstate.education/computationalbiology/chapter/the-command-line-and-filesystem/)](../img/oneil_filesystem_ex2.png){fig-align="center" width="95%"}
 :::
 ::: column
-![Key dirs in the OSC dir structure](../img/osc_dirstructure.png){fig-align="center" width="89%"}
+![Key directories OSC's dir structure](../img/osc_dirstructure.png){fig-align="center" width="89%"}
 :::
 :::
 
 - A "**path**" gives the location of a file or directory,
-  in which directories are separated by forward slashes `/`.
-  **_When we code, we always use paths to refer to files and dirs._**
+  in which directories are separated by forward slashes (`/`)^[
+  But Windows uses backslashes (`\`).].
     
-- In a path, a leading `/` is the root dir,
+- So, in a path, a leading `/` is the root dir,
   and any subsequent `/` are used to separate dirs.
   For example, the path to our OSC project's dir is `/fs/ess/PAS2880`.
   This means: the dir `PAS2880` is located inside the dir `ess`, which in turn is
   inside the dir `fs`, which in turn is in the computer's root directory.
 
-- The OSC dir structure is somewhat different from that of a regular computer.
-  Our Home dir is not `/home/<username>` like in the schematic on the left
-  (reflecting the dir structure of a Mac), but `/users/PASXXXX/<username>`.
+- Why all this talk of paths?
+  _When we code, we always use paths to refer to files and dirs._
   
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -337,7 +336,8 @@ The path to the file `todo_list.txt` is:
 
 #### Absolute versus relative paths
 
-The location of any file or dir can be referred to in two different ways, using either:
+The location of any file or dir can be referred to in two different ways,
+using either:
 
 - An **absolute path** (e.g. `/fs/ess/PAS2880`) \
   A path that begin with a `/` starts from the computer's root directory,
@@ -346,19 +346,19 @@ The location of any file or dir can be referred to in two different ways, using 
   *and works regardless of where you are*).
 
 - A **relative path** (e.g. `CSB/unix/sandbox` or `todo_list.txt`)\
-  A Path that starts from your current working directory is a "relative path".\
+  A path that starts from your current working directory is a "relative path".\
   *(It works like directions along the lines of "take the second left:"*
   *it depends on your current location.)*
 
-<details><summary>In the example above, how can the file name `todo_list.txt` represent a path? _(Click for the solution)_</summary>
+<details><summary>In the example above, how can the mere file name `todo_list.txt` represent a path? _(Click for the solution)_</summary>
 
 A file name like `todo_list.txt`, with no directories included,
 can be seen (and is often used!) as a relative path that implies that the file
 is in our current working dir.
 
-Alternatively, and often equivalently, you can be explicit about that
-by using a `./` preface, e.g.: `./todo_list.txt`
-(see the Path shortcuts section below).
+(Alternatively, and often equivalently, you can be explicit about the fact that
+a file is in your current working dir by using a `./` preface, e.g.: `./todo_list.txt`.
+We'll talk about the `.` notation next week.)
 </details>
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -366,7 +366,8 @@ by using a `./` preface, e.g.: `./todo_list.txt`
 #### Why you should prefer relative paths
 
 Given that **absolute paths** do not depend on your working dir,
-while **relative paths** do, and won't work if you're elsewhere --- don't absolute paths sound better? What could be a disadvantage of them?
+while **relative paths** do and therefore won't work if you're elsewhere ---
+don't absolute paths sound better? What could be a disadvantage of them?
 
 Absolute paths:
 
@@ -379,11 +380,11 @@ as long as you consistently use the top-level dir of the project as the working 
 
 <hr style="height:1pt; visibility:hidden;" />
 
-![Two project dir hierarchies, and the absolute and relative path to a FASTQ file.](../img/proj-dirs-2.svg){fig-align="center" width="70%"}
+![Two project dir hierarchies, and the absolute and relative path to a FASTQ file.<br>The relative path starts from the relevant project's top-level dir, which is good-practice.](../img/proj-dirs-2.svg){fig-align="center" width="70%"}
 
 <hr style="height:1pt; visibility:hidden;" />
 
-![Now everything was moved into `Dropbox`.<br>The absolute path has changed, but the relative path remains the same.](../img/proj-dirs-3.svg){fig-align="center" width="70%"}
+![Both projects were moved into `Dropbox`.<br>The absolute path to the FASTQ file has changed,<br>but the relative path from the project's top-level dir remains the same.](../img/proj-dirs-3.svg){fig-align="center" width="70%"}
 
 <br>
 

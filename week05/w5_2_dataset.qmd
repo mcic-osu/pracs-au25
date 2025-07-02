@@ -1,0 +1,282 @@
+---
+title: "An RNA-Seq dataset, FASTQ files, and FastQC"
+subtitle: "Week 5 - part II"
+pagetitle: "PRACS25: CLI tools in shell scripts"
+author: Jelmer Poelstra
+date: 2025-09-25
+editor_options: 
+  chunk_output_type: console
+---
+
+----------------------------------------------------------------------------------------------------
+
+<br>
+
+## A data set to practice
+
+#### A mosquito RNA-Seq data set
+
+Our practice data set is from the paper
+"*Two avian Plasmodium species trigger different transcriptional responses on their vector Culex pipiens*",
+published in 2023 in Molecular Ecology ([link](https://doi.org/10.1111/mec.17240)):
+
+![](../img/garrigos_paper.png){fig-align="center" width="80%"}
+
+This paper uses RNA-seq data to study gene expression in *Culex pipiens* mosquitos
+infected with malaria-causing *Plasmodium* protozoans ---
+specifically, it compares mosquitos according to:
+
+- Infection status: *Plasmodium cathemerium* vs. *P. relictum* vs. control
+- Time after infection: 24 h vs. 10 days vs. 21 days
+
+_TBA - Table showing sampling grid?_
+
+However, to keep things manageable for our practice,
+I have **subset** the data to omit the 21-day samples and only keep 500,000
+reads per FASTQ file.
+All in all, our set of files consists of:
+
+- 44 paired-end Illumina FASTQ files for 22 samples.
+- _Culex pipiens_ reference genome file from NCBI:
+  assembly in FASTA format and annotation in GTF format.
+- A metadata file in TSV format with sample IDs and treatment & time point info.
+- A README file describing the data set.
+
+#### Get your own copy of the data
+
+```bash
+# (Assuming you are in /fs/ess/PAS2700/users/$USER)
+cd week04
+
+cp -rv /fs/ess/PAS2700/share/garrigos_data .
+```
+```bash-out
+‘/fs/ess/PAS2700/share/garrigos_data’ -> ‘./garrigos_data’
+‘/fs/ess/PAS2700/share/garrigos_data/meta’ -> ‘./garrigos_data/meta’
+‘/fs/ess/PAS2700/share/garrigos_data/meta/metadata.tsv’ -> ‘./garrigos_data/meta/metadata.tsv’
+‘/fs/ess/PAS2700/share/garrigos_data/ref’ -> ‘./garrigos_data/ref’
+‘/fs/ess/PAS2700/share/garrigos_data/ref/GCF_016801865.2.gtf’ -> ‘./garrigos_data/ref/GCF_016801865.2.gtf’
+‘/fs/ess/PAS2700/share/garrigos_data/ref/GCF_016801865.2.fna’ -> ‘./garrigos_data/ref/GCF_016801865.2.fna’
+‘/fs/ess/PAS2700/share/garrigos_data/fastq’ -> ‘./garrigos_data/fastq’
+‘/fs/ess/PAS2700/share/garrigos_data/fastq/ERR10802868_R2.fastq.gz’ -> ‘./garrigos_data/fastq/ERR10802868_R2.fastq.gz’
+‘/fs/ess/PAS2700/share/garrigos_data/fastq/ERR10802863_R1.fastq.gz’ -> ‘./garrigos_data/fastq/ERR10802863_R1.fastq.gz’
+‘/fs/ess/PAS2700/share/garrigos_data/fastq/ERR10802880_R2.fastq.gz’ -> ‘./garrigos_data/fastq/ERR10802880_R2.fastq.gz’
+‘/fs/ess/PAS2700/share/garrigos_data/fastq/ERR10802880_R1.fastq.gz’ -> ‘./garrigos_data/fastq/ERR10802880_R1.fastq.gz’
+‘/fs/ess/PAS2700/share/garrigos_data/fastq/ERR10802870_R1.fastq.gz’ -> ‘./garrigos_data/fastq/ERR10802870_R1.fastq.gz’
+# [...output truncated...]
+```
+
+Take a look at the files you just copied with the `tree` command,
+a sort of recursive `ls` with simple tree-like output:
+
+```bash
+# -C will add colors (not shown in the output below)
+tree -C garrigos_data
+```
+```bash-out
+garrigos_data
+├── fastq
+│   ├── ERR10802863_R1.fastq.gz
+│   ├── ERR10802863_R2.fastq.gz
+│   ├── ERR10802864_R1.fastq.gz
+│   ├── ERR10802864_R2.fastq.gz
+│   ├── [...other FASTQ files not shown...]
+├── meta
+│   └── metadata.tsv
+├── README.md
+└── ref
+    ├── GCF_016801865.2.fna
+    └── GCF_016801865.2.gtf
+
+3 directories, 48 files
+```
+
+<br>
+
+## FASTQ files and FastQC
+
+### The FASTQ format
+
+FASTQ is a very common output format of high-throughput sequencing machines.
+Like most genomic data files, these are plain text files.
+Each sequence that is read by the sequencer (i.e., each "read") forms
+**one FASTQ entry represented by four lines**.
+The lines contain, respectively:
+
+1.  A header that starts with `@` and e.g. uniquely identifies the read
+2.  The nucleotide sequence itself
+3.  A `+` (plus sign)
+4.  One-character quality scores for each base in the sequence
+
+![One entry (read) in a FASTQ file covers 4 lines. <br>The header line is annotated, with some of the more useful components highlighted in red. <br>For viewing purposes, this read (at only 56 bp) is shorter than what is typical.](../img/fastq_header.png){fig-align="center" width="85%"}
+
+The "Q" in FASTQ stands for "*quality*", to contrast this format with FASTA,
+a more basic and generic sequence data format that does not include base quality scores.
+FASTQ files have the extension `.fastq` or `.fq`,
+but they are very commonly gzip-compressed, in which case their name ends in `.fastq.gz` or `.fq.gz`.
+
+::: {.callout-note collapse="true"}
+#### FASTQ quality scores *(Click to expand)*
+
+The quality scores we saw in the read above represent an **estimate of the error probability of the base call**.
+Specifically, they correspond to a numeric "Phred" quality score (`Q`),
+which is a function of the estimated probability that a base call is erroneous (`P`):
+
+> **Q = -10 \* log10(P)**
+
+For some specific probabilities and their rough qualitative interpretations for Illumina data:
+
+| Phred quality score | Error probability | Rough interpretation | ASCII character |
+|------------------|------------------|------------------|------------------|
+| **10**              | 1 in 10           | terrible             | `+`             |
+| **20**              | 1 in 100          | bad                  | `5`             |
+| **30**              | 1 in 1,000        | good                 | `?`             |
+| **40**              | 1 in 10,000       | excellent            | `?`             |
+
+This numeric quality score is represented in FASTQ files *not by the number itself*, but by a corresponding "ASCII character" (last column in the table). This allows for a single-character representation of each possible score — as a consequence, **each quality score character can conveniently correspond to (& line up with) a base character** in the read. (For your reference, [here is a complete lookup table](https://www.drive5.com/usearch/manual/quality_score.html) --- look at the top table, "BASE=33").
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Our FASTQ files
+
+Take a look at a file listing of your FASTQ files:
+
+``` bash
+ls -lh garrigos_data/fastq
+```
+``` bash-out
+total 941M
+-rw-r-----+ 1 jelmer PAS0471 21M Mar 21 09:38 ERR10802863_R1.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 22M Mar 21 09:38 ERR10802863_R2.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 21M Mar 21 09:38 ERR10802864_R1.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 22M Mar 21 09:38 ERR10802864_R2.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 22M Mar 21 09:38 ERR10802865_R1.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 22M Mar 21 09:38 ERR10802865_R2.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 21M Mar 21 09:38 ERR10802866_R1.fastq.gz
+# [...output truncated...]
+```
+
+Note that:
+
+- There are two files per sample: `_R1` (forward reads) and `_R2` (reverse reads).
+- The files all have a `.gz` extension, indicating they have been _compressed_ with the gzip utility.
+- The files are ~21-22 Mb in size --- considerably smaller than the original file sizes
+  (around 1-2 Gb, which is typical) because they were subsampled.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### Viewing the contents of FASTQ files
+
+Next, try to take a peak inside one of these FASTQ files.
+Use `-n 8` with `head` to print the first 8 lines (2 reads):
+
+``` bash
+head -n 8 garrigos_data/fastq/ERR10802863_R1.fastq.gz
+```
+``` bash-out
+�
+Խے�8�E��_1f�"�QD�J��D�fs{����Yk����d��*��
+|��x���l޴�j�N������?������ٔ�bUs�Ng�Ǭ���i;_��������������|<�v����3��������|���ۧ��3ĐHyƕ�bIΟD�%����Sr#~��7��ν��1y�Ai,4
+w\]"b�#Q����8��+[e�3d�4H���̒�l�9LVMX��U*�M����_?���\["��7�s\<_���:�$���N��v�}^����sw�|�n;<�<�oP����
+i��k��q�ְ(G�ϫ��L�^��=��<���K��j�_/�[ۭV�ns:��U��G�z�ݎ�j����&��~�F��٤ZN�'��r2z}�f\#��:�9$�����H�݂�"�@M����H�C�
+�0�pp���1�O��I�H�P됄�.Ȣe��Q�>���
+�'�;@D8���#��St�7k�g��|�A䉻���_���d�_c������a\�|�_�mn�]�9N������l�٢ZN�c�9u�����n��n�`��
+"gͺ�
+    ���H�?2@�FC�S$n���Ԓh�       nԙj��望��f      �?N@�CzUlT�&�h�Pt!�r|��9~)���e�A�77�h{��~��     ��
+# [...output truncated...]
+```
+
+<details><summary>Ouch! 😳 What went wrong here? *(Click for the solution)*</summary>
+We were directly presented with the contents of the *compressed* file, which isn't human-readable.
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: callout-note
+#### No need to decompress
+To get around the problem we just encountered with `head`,
+we might be inclined to **uncompress** these files, which we could do with the **`gunzip` command**.
+However, uncompressed files take up several times as much disk storage space as compressed ones.
+Fortunately, we don't need to decompress them:
+
+- Almost any bioinformatics tool will accept compressed FASTQ files.
+- We can still view these files in compressed form, as shown below.
+:::
+
+Instead, we'll use the `less` command,
+which automatically displays gzip-compressed files in human-readable form:
+
+``` bash
+less -S garrigos_data/fastq/ERR10802863_R1.fastq.gz
+```
+```bash-out
+@ERR10802863.8435456 8435456 length=74
+CAACGAATACATCATGTTTGCGAAACTACTCCTCCTCGCCTTGGTGGGGATCAGTACTGCGTACCAGTATGAGT
++
+AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+@ERR10802863.27637245 27637245 length=74
+GCCACACTTTTGAAGAACAGCGTCATTGTTCTTAATTTTGTCGGCAACGCCTGCACGAGCCTTCCACGTAAGTT
++
+AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEE<EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+@ERR10802863.10009244 10009244 length=73
+CTCGGCGTTAACTTCATCACGCAGATCATTCCGTTCCAGCAGCTGAAGCAAGACTACCGTCAGTACGAGATGA
++
+AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+@ERR10802863.6604176 6604176 length=74
+AACTACAAATCTTCCTGTGCCGTTTCCAGCAAGTACGTCGATACCTTCGATGGACGCAACTACGAGTACAACAT
++
+AAAAAEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+@ERR10802863.11918285 11918285 length=35
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
++
+###################################
+```
+
+::: {.callout-tip}
+#### The `-S` option to `less` suppresses line-wrapping: lines in the file will not be "wrapped" across multiple lines.
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: exercise
+#### {{< fa user-edit >}} **Exercise**: Explore the file with `less`
+
+After running the command above, you should be viewing the file inside the `less` pager.
+Do you notice anything that strikes you as potentially unusual,
+some reads that look different from the others?
+
+_Recall that you can move around in the file in several ways: by scrolling with your mouse,_
+_with up and down arrows, or, if you have them, <kbd>PgUp</kbd> and <kbd>PgDn</kbd> keys_
+_(also, <kbd>u</kbd> will move up half a page and <kbd>d</kbd> down half a page)._
+_And that you won't get your shell prompt back until you **press** <kbd>q</kbd> to quit `less`._
+
+<details><summary>*Click for the solution*</summary>
+
+There are a number of reads that are much shorter than the others and only consist
+of `N`, i.e. uncalled bases. For example:
+
+```bash-out-solo
+@ERR10802863.11918285 11918285 length=35
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
++
+###################################
+```
+</details>
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### FastQC
+
+FastQC is a ubiquitous tool for **quality control of FASTQ files**.
+Running FastQC or a similar program is the first step in nearly any
+high-throughput sequencing project.
+FastQC is also a good introductory example of a tool with a command-line interface.
+
+For each FASTQ file, FastQC outputs an **HTML file** that you can open in your
+browser with about a dozen graphs showing different QC metrics.
+The most important one is the *per-base quality score* graph:
+
+![A FastQC per-base quality score graph for files with reasonably good quality reads.
+The y-axis shows Phred quality scores (higher is better, see also the color-coding) and the x-axis shows the position along the read.](../img/fastqc_good.png){fig-align="center" width="70%"}

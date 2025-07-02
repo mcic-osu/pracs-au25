@@ -627,7 +627,7 @@ Some other organization and naming options <em>(Click to expand)</em>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="pp">*</span>2016-05<span class="pp">*</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="pp">*</span>treatmentA<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p><strong>Don’t use spaces in file names</strong>, as these lead to inconvenience at best and disaster at worst when working in the Shell and to some extent with other programming languages (see example below).</p></li>
+<li><p><strong>Don’t use spaces in file names</strong>, as these lead to inconvenience at best and disaster at worst when working in the Shell – and to some extent with other programming languages as well.</p></li>
 <li><p>More generally, only use the following characters in file names:</p>
 <ul>
 <li>Alphanumeric characters <kbd>A-Za-z0-9</kbd></li>
@@ -686,30 +686,30 @@ DE-03_process-significant.R</code></pre></li>
 <h4 class="anchored" data-anchor-id="terminology-and-concepts-related-to-paths">Terminology and concepts related to paths</h4>
 <ul>
 <li><p>“Directory” (or “<strong>dir</strong>” for short) is another term for <em>folder</em>, that is commonly used e.g.&nbsp;in coding contexts.</p></li>
-<li><p>The “<strong>working dir</strong>” is whatever dir/folder you are currently located in. In a coding interface, like the Unix shell we’ll learn after this, you are <em>always</em> in a certain working dir (and the same is basically true in a file browser).</p></li>
-<li><p>On “Unix-like” (Mac and Linux - OSC uses Linux) operating systems, there is a single starting point to the directory structure: the <strong>root</strong>, depicted as <strong><code>/</code></strong>. While this works slightly differently on Windows, directory structures have starting points there as well.</p></li>
+<li><p>The “<strong>working dir</strong>” is the dir that you are currently located in. In a command-line interface, like the Unix shell we’ll learn after this, you are <em>always</em> in a certain working dir (and the same is basically true in a regular file browser).</p></li>
+<li><p>“Unix-based” operating systems include Mac and Linux (OSC uses Linux), and these have a single starting point to the directory structure: the <strong>root</strong> directory, depicted as <strong><code>/</code></strong>. On a Windows computer, there are often multiple dir structures, but they similarly have starting points, such as <code>C:/</code>.</p></li>
 </ul>
 <div class="columns">
 <div class="column">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../img/oneil_filesystem_ex2.png" class="img-fluid figure-img" style="width:95.0%"></p>
-<figcaption>Generic computer dir structure, from <a href="https://open.oregonstate.education/computationalbiology/chapter/the-command-line-and-filesystem/">O’Neil 2017</a></figcaption>
+<figcaption>Example dir structure on a Mac computer, from <a href="https://open.oregonstate.education/computationalbiology/chapter/the-command-line-and-filesystem/">O’Neil 2017</a></figcaption>
 </figure>
 </div>
 </div><div class="column">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../img/osc_dirstructure.png" class="img-fluid figure-img" style="width:89.0%"></p>
-<figcaption>Key dirs in the OSC dir structure</figcaption>
+<figcaption>Key directories OSC’s dir structure</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <ul>
-<li><p>A “<strong>path</strong>” gives the location of a file or directory, in which directories are separated by forward slashes <code>/</code>. <strong><em>When we code, we always use paths to refer to files and dirs.</em></strong></p></li>
-<li><p>In a path, a leading <code>/</code> is the root dir, and any subsequent <code>/</code> are used to separate dirs. For example, the path to our OSC project’s dir is <code>/fs/ess/PAS2880</code>. This means: the dir <code>PAS2880</code> is located inside the dir <code>ess</code>, which in turn is inside the dir <code>fs</code>, which in turn is in the computer’s root directory.</p></li>
-<li><p>The OSC dir structure is somewhat different from that of a regular computer. Our Home dir is not <code>/home/&lt;username&gt;</code> like in the schematic on the left (reflecting the dir structure of a Mac), but <code>/users/PASXXXX/&lt;username&gt;</code>.</p></li>
+<li><p>A “<strong>path</strong>” gives the location of a file or directory, in which directories are separated by forward slashes (<code>/</code>)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p></li>
+<li><p>So, in a path, a leading <code>/</code> is the root dir, and any subsequent <code>/</code> are used to separate dirs. For example, the path to our OSC project’s dir is <code>/fs/ess/PAS2880</code>. This means: the dir <code>PAS2880</code> is located inside the dir <code>ess</code>, which in turn is inside the dir <code>fs</code>, which in turn is in the computer’s root directory.</p></li>
+<li><p>Why all this talk of paths? <em>When we code, we always use paths to refer to files and dirs.</em></p></li>
 </ul>
 <hr style="height:1pt; visibility:hidden;">
 </section>
@@ -732,21 +732,21 @@ DE-03_process-significant.R</code></pre></li>
 A path that begin with a <code>/</code> starts from the computer’s root directory, and is called an “absolute path”.<br>
 <em>(It is equivalent to GPS coordinates for a geographical location,</em> <em>and works regardless of where you are</em>).</p></li>
 <li><p>A <strong>relative path</strong> (e.g.&nbsp;<code>CSB/unix/sandbox</code> or <code>todo_list.txt</code>)<br>
-A Path that starts from your current working directory is a “relative path”.<br>
+A path that starts from your current working directory is a “relative path”.<br>
 <em>(It works like directions along the lines of “take the second left:”</em> <em>it depends on your current location.)</em></p></li>
 </ul>
 <details>
 <summary>
-In the example above, how can the file name <code>todo_list.txt</code> represent a path? <em>(Click for the solution)</em>
+In the example above, how can the mere file name <code>todo_list.txt</code> represent a path? <em>(Click for the solution)</em>
 </summary>
 <p>A file name like <code>todo_list.txt</code>, with no directories included, can be seen (and is often used!) as a relative path that implies that the file is in our current working dir.</p>
-Alternatively, and often equivalently, you can be explicit about that by using a <code>./</code> preface, e.g.: <code>./todo_list.txt</code> (see the Path shortcuts section below).
+(Alternatively, and often equivalently, you can be explicit about the fact that a file is in your current working dir by using a <code>./</code> preface, e.g.: <code>./todo_list.txt</code>. We’ll talk about the <code>.</code> notation next week.)
 </details>
 <hr style="height:1pt; visibility:hidden;">
 </section>
 <section id="why-you-should-prefer-relative-paths" class="level4">
 <h4 class="anchored" data-anchor-id="why-you-should-prefer-relative-paths">Why you should prefer relative paths</h4>
-<p>Given that <strong>absolute paths</strong> do not depend on your working dir, while <strong>relative paths</strong> do, and won’t work if you’re elsewhere — don’t absolute paths sound better? What could be a disadvantage of them?</p>
+<p>Given that <strong>absolute paths</strong> do not depend on your working dir, while <strong>relative paths</strong> do and therefore won’t work if you’re elsewhere — don’t absolute paths sound better? What could be a disadvantage of them?</p>
 <p>Absolute paths:</p>
 <ul>
 <li>Don’t generally work across computers</li>
@@ -757,14 +757,14 @@ Alternatively, and often equivalently, you can be explicit about that by using a
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../img/proj-dirs-2.svg" class="img-fluid figure-img" style="width:70.0%"></p>
-<figcaption>Two project dir hierarchies, and the absolute and relative path to a FASTQ file.</figcaption>
+<figcaption>Two project dir hierarchies, and the absolute and relative path to a FASTQ file.<br>The relative path starts from the relevant project’s top-level dir, which is good-practice.</figcaption>
 </figure>
 </div>
 <hr style="height:1pt; visibility:hidden;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../img/proj-dirs-3.svg" class="img-fluid figure-img" style="width:70.0%"></p>
-<figcaption>Now everything was moved into <code>Dropbox</code>.<br>The absolute path has changed, but the relative path remains the same.</figcaption>
+<figcaption>Both projects were moved into <code>Dropbox</code>.<br>The absolute path to the FASTQ file has changed,<br>but the relative path from the project’s top-level dir remains the same.</figcaption>
 </figure>
 </div>
 <p><br></p>
@@ -855,7 +855,13 @@ Alternatively, and often equivalently, you can be explicit about that by using a
 </section>
 </section>
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p> But Windows uses backslashes (<code>\</code>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

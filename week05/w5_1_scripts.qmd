@@ -10,17 +10,28 @@ date: 2025-09-23
 
 <br>
 
-## Learning Goals {-}
+## Introduction
 
-#### This and next week
+### Learning Goals
 
-This week, you will learn how to write shell scripts and then how to use shell scripts
-to run programs, like various bioinformatics tools, with command-line interfaces (CLIs).
+#### This week and the next two weeks
 
-Organizing your code into scripts that do a single task is generally a good idea,
-and it is particularly important if you want to be able to analyze your data at
-OSC: this is best done by submitting shell scrits as "batch jobs",
-as we'll learn in the next two weeks.
+This week, you will learn how to write shell scripts and use them to run programs,
+like various bioinformatics tools, that have command-line interfaces (CLIs).
+
+A key reason we need to use shell scripts rather than executing the programs
+directly in the shell is that they make take quite a while to run,
+and we often need to run these program many times (e.g., once for each sample).
+If we write shell scripts, we can easily submit them as "batch jobs" at OSC ---
+and that e.g.. allows us to run the program simultaneously up to hundreds of times!
+
+Before you can actually start doing that,
+you'll still need to learn about the following topics:
+
+1. The basics of shell scripts (this session)
+2. Running command-line programs using shell scripts (next session)
+3. Making these programs available at OSC (next week)
+4. Submitting batch jobs with Slurm (in two weeks)
 
 #### This session
 
@@ -30,6 +41,9 @@ In this session, we will talk about:
 - Boilerplate shell script header lines: shebang and safe settings
 - Command-line arguments to scripts
 - Shell variables once again
+
+### Getting ready
+
 
 <br>
 
@@ -74,12 +88,7 @@ But when you run bioinformatics tools,
 it is in most cases a much better idea to **run them via shell scripts**,
 which are plain-text files that contain shell code.
 
-> *"Most Bash scripts in bioinformatics are simply commands organized into a
-> rerunnable script with some added bells and whistles to check that files exist
-> and ensuring any error causes the script to abort."* --- Buffalo Ch. 12
-
 Therefore, shell scripts are relatively straightforward to write given what you already know!
-In this session, we will learn about those bells and whistles from the quote above.
 
 ::: callout-tip
 #### Bash vs. shell
@@ -92,46 +101,13 @@ Our shell scripts are therefore in the Bash language and can be specifically cal
 
 <hr style="height:1pt; visibility:hidden;" />
 
-#### Running commands interactively vs. via scripts 
-
-Before we see why it's often a better idea to use scripts than to run code
-interactively, let's go through a minimal example of both approaches with the tool FastQC, 
-which performs FASTQ file quality control (QC; more on FastQC in the next session).
-
-- Here's how you can run FastQC on one FASTQ file ---
-  the command `fastqc` followed by a file name:
-  
-  ```bash
-  fastqc data/fastq/A_R1.fastq.gz
-  ```
-
-- This is what a minimal shell script to do the same thing would look like:
-
-  ```bash
-  #!/bin/bash
-  fastqc data/fastq/A_R1.fastq.gz
-  ```
-
-- If the above shell script is saved as `fastqc.sh` in our working dir,
-  it can be executed as follows:
-  
-  ```bash
-  bash fastqc.sh
-  ```
-
-<hr style="height:1pt; visibility:hidden;" />
-
 #### Why use shell scripts
 
-There are several general reasons why it can be beneficial to use shell scripts
+There are some general reasons why it can be beneficial to use shell scripts
 instead of running code interactively line-by-line:
 
 - It is a good way to save and organize your code.
 - You can easily rerun scripts and re-use them in similar contexts.
-- Related to the point above, they provide a first step towards automating the
-  set of analyses in your project.
-- When your code is tucked away in a shell script,
-  you only have to call the script to run what is potentially a large set of commands.
 
 And very importantly for our purposes at OSC,
 we can **submit scripts as "batch jobs"** to the compute job scheduling program
@@ -142,14 +118,6 @@ we can **submit scripts as "batch jobs"** to the compute job scheduling program
   we can submit a script, log out from OSC and shut down our computer, and it will still run.
 - Easily run analyses that take many hours or even multiple days.
 - Run a script many times _simultaneously_, such as for different files/samples.
-
-<hr style="height:1pt; visibility:hidden;" />
-
-#### Summary of what we need to learn about
-
-- Writing shell scripts (this week)
-- Making software available at OSC (next week)
-- Submitting scripts to the Slurm job scheduler (in two weeks)
 
 <br>
 

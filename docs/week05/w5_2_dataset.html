@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jelmer Poelstra">
-<meta name="dcterms.date" content="2025-09-24">
+<meta name="dcterms.date" content="2025-09-25">
 
-<title>Week 5: Shell scripting &amp; CLI tools – PRACS-AU25</title>
+<title>PRACS25: CLI tools in shell scripts – PRACS-AU25</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -345,10 +379,14 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#links" id="toc-links" class="nav-link active" data-scroll-target="#links"><span class="header-section-number">1</span> Links</a></li>
-  <li><a href="#content-overview" id="toc-content-overview" class="nav-link" data-scroll-target="#content-overview"><span class="header-section-number">2</span> Content overview</a></li>
-  <li><a href="#exercises-assignments" id="toc-exercises-assignments" class="nav-link" data-scroll-target="#exercises-assignments"><span class="header-section-number">3</span> Exercises &amp; assignments</a></li>
-  <li><a href="#readings" id="toc-readings" class="nav-link" data-scroll-target="#readings"><span class="header-section-number">4</span> Readings</a></li>
+  <li><a href="#a-data-set-to-practice" id="toc-a-data-set-to-practice" class="nav-link active" data-scroll-target="#a-data-set-to-practice"><span class="header-section-number">1</span> A data set to practice</a></li>
+  <li><a href="#fastq-files-and-fastqc" id="toc-fastq-files-and-fastqc" class="nav-link" data-scroll-target="#fastq-files-and-fastqc"><span class="header-section-number">2</span> FASTQ files and FastQC</a>
+  <ul class="collapse">
+  <li><a href="#the-fastq-format" id="toc-the-fastq-format" class="nav-link" data-scroll-target="#the-fastq-format"><span class="header-section-number">2.1</span> The FASTQ format</a></li>
+  <li><a href="#our-fastq-files" id="toc-our-fastq-files" class="nav-link" data-scroll-target="#our-fastq-files"><span class="header-section-number">2.2</span> Our FASTQ files</a></li>
+  <li><a href="#viewing-the-contents-of-fastq-files" id="toc-viewing-the-contents-of-fastq-files" class="nav-link" data-scroll-target="#viewing-the-contents-of-fastq-files"><span class="header-section-number">2.3</span> Viewing the contents of FASTQ files</a></li>
+  <li><a href="#fastqc" id="toc-fastqc" class="nav-link" data-scroll-target="#fastqc"><span class="header-section-number">2.4</span> FastQC</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -357,7 +395,8 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Week 5: Shell scripting &amp; CLI tools</h1>
+<h1 class="title">An RNA-Seq dataset, FASTQ files, and FastQC</h1>
+<p class="subtitle lead">Week 5 - part II</p>
 </div>
 
 
@@ -374,7 +413,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 24, 2025</p>
+      <p class="date">September 25, 2025</p>
     </div>
   </div>
   
@@ -388,49 +427,275 @@ ul.task-list li input[type="checkbox"] {
 
 <hr>
 <p><br></p>
-<section id="links" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="links"><span class="header-section-number">1</span> Links</h2>
-<section id="lecture-pages" class="level4">
-<h4 class="anchored" data-anchor-id="lecture-pages">Lecture pages</h4>
+<section id="a-data-set-to-practice" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="a-data-set-to-practice"><span class="header-section-number">1</span> A data set to practice</h2>
+<section id="a-mosquito-rna-seq-data-set" class="level4">
+<h4 class="anchored" data-anchor-id="a-mosquito-rna-seq-data-set">A mosquito RNA-Seq data set</h4>
+<p>Our practice data set is from the paper “<em>Two avian Plasmodium species trigger different transcriptional responses on their vector Culex pipiens</em>”, published in 2023 in Molecular Ecology (<a href="https://doi.org/10.1111/mec.17240">link</a>):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/garrigos_paper.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+<p>This paper uses RNA-seq data to study gene expression in <em>Culex pipiens</em> mosquitos infected with malaria-causing <em>Plasmodium</em> protozoans — specifically, it compares mosquitos according to:</p>
 <ul>
-<li>Tuesday – <a href="../week05/w5_1_scripts.html">Shell scripts</a>.</li>
-<li>Thursday – <a href="w5_2_cli-tools.qmd">Running CLI tools with shell scripts</a>.</li>
-<li>Bonus (optional self-study) content: <a href="../week05/w5_3_bonus.html">While loops, arrays, and more</a>.</li>
+<li>Infection status: <em>Plasmodium cathemerium</em> vs.&nbsp;<em>P. relictum</em> vs.&nbsp;control</li>
+<li>Time after infection: 24 h vs.&nbsp;10 days vs.&nbsp;21 days</li>
+</ul>
+<p><em>TBA - Table showing sampling grid?</em></p>
+<p>However, to keep things manageable for our practice, I have <strong>subset</strong> the data to omit the 21-day samples and only keep 500,000 reads per FASTQ file. All in all, our set of files consists of:</p>
+<ul>
+<li>44 paired-end Illumina FASTQ files for 22 samples.</li>
+<li><em>Culex pipiens</em> reference genome file from NCBI: assembly in FASTA format and annotation in GTF format.</li>
+<li>A metadata file in TSV format with sample IDs and treatment &amp; time point info.</li>
+<li>A README file describing the data set.</li>
 </ul>
 </section>
+<section id="get-your-own-copy-of-the-data" class="level4">
+<h4 class="anchored" data-anchor-id="get-your-own-copy-of-the-data">Get your own copy of the data</h4>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Assuming you are in /fs/ess/PAS2700/users/$USER)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> week04</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-rv</span> /fs/ess/PAS2700/share/garrigos_data .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>‘/fs/ess/PAS2700/share/garrigos_data’ -&gt; ‘./garrigos_data’
+‘/fs/ess/PAS2700/share/garrigos_data/meta’ -&gt; ‘./garrigos_data/meta’
+‘/fs/ess/PAS2700/share/garrigos_data/meta/metadata.tsv’ -&gt; ‘./garrigos_data/meta/metadata.tsv’
+‘/fs/ess/PAS2700/share/garrigos_data/ref’ -&gt; ‘./garrigos_data/ref’
+‘/fs/ess/PAS2700/share/garrigos_data/ref/GCF_016801865.2.gtf’ -&gt; ‘./garrigos_data/ref/GCF_016801865.2.gtf’
+‘/fs/ess/PAS2700/share/garrigos_data/ref/GCF_016801865.2.fna’ -&gt; ‘./garrigos_data/ref/GCF_016801865.2.fna’
+‘/fs/ess/PAS2700/share/garrigos_data/fastq’ -&gt; ‘./garrigos_data/fastq’
+‘/fs/ess/PAS2700/share/garrigos_data/fastq/ERR10802868_R2.fastq.gz’ -&gt; ‘./garrigos_data/fastq/ERR10802868_R2.fastq.gz’
+‘/fs/ess/PAS2700/share/garrigos_data/fastq/ERR10802863_R1.fastq.gz’ -&gt; ‘./garrigos_data/fastq/ERR10802863_R1.fastq.gz’
+‘/fs/ess/PAS2700/share/garrigos_data/fastq/ERR10802880_R2.fastq.gz’ -&gt; ‘./garrigos_data/fastq/ERR10802880_R2.fastq.gz’
+‘/fs/ess/PAS2700/share/garrigos_data/fastq/ERR10802880_R1.fastq.gz’ -&gt; ‘./garrigos_data/fastq/ERR10802880_R1.fastq.gz’
+‘/fs/ess/PAS2700/share/garrigos_data/fastq/ERR10802870_R1.fastq.gz’ -&gt; ‘./garrigos_data/fastq/ERR10802870_R1.fastq.gz’
+# [...output truncated...]</code></pre>
+<p>Take a look at the files you just copied with the <code>tree</code> command, a sort of recursive <code>ls</code> with simple tree-like output:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -C will add colors (not shown in the output below)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-C</span> garrigos_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>garrigos_data
+├── fastq
+│   ├── ERR10802863_R1.fastq.gz
+│   ├── ERR10802863_R2.fastq.gz
+│   ├── ERR10802864_R1.fastq.gz
+│   ├── ERR10802864_R2.fastq.gz
+│   ├── [...other FASTQ files not shown...]
+├── meta
+│   └── metadata.tsv
+├── README.md
+└── ref
+    ├── GCF_016801865.2.fna
+    └── GCF_016801865.2.gtf
+
+3 directories, 48 files</code></pre>
+<p><br></p>
 </section>
-<section id="content-overview" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="content-overview"><span class="header-section-number">2</span> Content overview</h2>
-<p>This week, we will talk about shell <em>scripting</em>. So far, we have been running commands interactively in the shell, one line at a time. When you need to repeat a certain sequence of commands regularly, or run a bioinformatics program that may take a while, it becomes useful to put your shell commands in a script. Such a script can be easily and quickly (re-)executed, or submitted to a queue on a cluster (the latter is next week’s topic).</p>
-<p>We will also start practicing with running programs/tools with a command-line interface (CLI), focusing on bioinformatics/genomics tools, and doing so inside shell scripts.</p>
-<p><strong>Some of the things you will learn this week:</strong></p>
+</section>
+<section id="fastq-files-and-fastqc" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="fastq-files-and-fastqc"><span class="header-section-number">2</span> FASTQ files and FastQC</h2>
+<section id="the-fastq-format" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="the-fastq-format"><span class="header-section-number">2.1</span> The FASTQ format</h3>
+<p>FASTQ is a very common output format of high-throughput sequencing machines. Like most genomic data files, these are plain text files. Each sequence that is read by the sequencer (i.e., each “read”) forms <strong>one FASTQ entry represented by four lines</strong>. The lines contain, respectively:</p>
+<ol type="1">
+<li>A header that starts with <code>@</code> and e.g.&nbsp;uniquely identifies the read</li>
+<li>The nucleotide sequence itself</li>
+<li>A <code>+</code> (plus sign)</li>
+<li>One-character quality scores for each base in the sequence</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/fastq_header.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>One entry (read) in a FASTQ file covers 4 lines. <br>The header line is annotated, with some of the more useful components highlighted in red. <br>For viewing purposes, this read (at only 56 bp) is shorter than what is typical.</figcaption>
+</figure>
+</div>
+<p>The “Q” in FASTQ stands for “<em>quality</em>”, to contrast this format with FASTA, a more basic and generic sequence data format that does not include base quality scores. FASTQ files have the extension <code>.fastq</code> or <code>.fq</code>, but they are very commonly gzip-compressed, in which case their name ends in <code>.fastq.gz</code> or <code>.fq.gz</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+FASTQ quality scores <em>(Click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The quality scores we saw in the read above represent an <strong>estimate of the error probability of the base call</strong>. Specifically, they correspond to a numeric “Phred” quality score (<code>Q</code>), which is a function of the estimated probability that a base call is erroneous (<code>P</code>):</p>
+<blockquote class="blockquote">
+<p><strong>Q = -10 * log10(P)</strong></p>
+</blockquote>
+<p>For some specific probabilities and their rough qualitative interpretations for Illumina data:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Phred quality score</th>
+<th>Error probability</th>
+<th>Rough interpretation</th>
+<th>ASCII character</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>10</strong></td>
+<td>1 in 10</td>
+<td>terrible</td>
+<td><code>+</code></td>
+</tr>
+<tr class="even">
+<td><strong>20</strong></td>
+<td>1 in 100</td>
+<td>bad</td>
+<td><code>5</code></td>
+</tr>
+<tr class="odd">
+<td><strong>30</strong></td>
+<td>1 in 1,000</td>
+<td>good</td>
+<td><code>?</code></td>
+</tr>
+<tr class="even">
+<td><strong>40</strong></td>
+<td>1 in 10,000</td>
+<td>excellent</td>
+<td><code>?</code></td>
+</tr>
+</tbody>
+</table>
+<p>This numeric quality score is represented in FASTQ files <em>not by the number itself</em>, but by a corresponding “ASCII character” (last column in the table). This allows for a single-character representation of each possible score — as a consequence, <strong>each quality score character can conveniently correspond to (&amp; line up with) a base character</strong> in the read. (For your reference, <a href="https://www.drive5.com/usearch/manual/quality_score.html">here is a complete lookup table</a> — look at the top table, “BASE=33”).</p>
+</div>
+</div>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="our-fastq-files" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="our-fastq-files"><span class="header-section-number">2.2</span> Our FASTQ files</h3>
+<p>Take a look at a file listing of your FASTQ files:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> garrigos_data/fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>total 941M
+-rw-r-----+ 1 jelmer PAS0471 21M Mar 21 09:38 ERR10802863_R1.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 22M Mar 21 09:38 ERR10802863_R2.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 21M Mar 21 09:38 ERR10802864_R1.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 22M Mar 21 09:38 ERR10802864_R2.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 22M Mar 21 09:38 ERR10802865_R1.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 22M Mar 21 09:38 ERR10802865_R2.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 21M Mar 21 09:38 ERR10802866_R1.fastq.gz
+# [...output truncated...]</code></pre>
+<p>Note that:</p>
 <ul>
-<li>Why it is useful to collect your commands into shell scripts that can be rerun easily.</li>
-<li>The basics of shell scripts including hell script header lines.</li>
-<li>Why and how to adorn scripts with tests and <code>echo</code> statements.</li>
-<li>More on shell variables and how to use them.</li>
-<li>Using command-line arguments with your own scripts.</li>
-<li><code>if</code> statements and true/false tests.</li>
-<li>Running command-line programs (we focus on bioinformatics tools), and running them using shell scripts.</li>
+<li>There are two files per sample: <code>_R1</code> (forward reads) and <code>_R2</code> (reverse reads).</li>
+<li>The files all have a <code>.gz</code> extension, indicating they have been <em>compressed</em> with the gzip utility.</li>
+<li>The files are ~21-22 Mb in size — considerably smaller than the original file sizes (around 1-2 Gb, which is typical) because they were subsampled.</li>
 </ul>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="exercises-assignments" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="exercises-assignments"><span class="header-section-number">3</span> Exercises &amp; assignments</h2>
+<section id="viewing-the-contents-of-fastq-files" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="viewing-the-contents-of-fastq-files"><span class="header-section-number">2.3</span> Viewing the contents of FASTQ files</h3>
+<p>Next, try to take a peak inside one of these FASTQ files. Use <code>-n 8</code> with <code>head</code> to print the first 8 lines (2 reads):</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 8 garrigos_data/fastq/ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>�
+Խے�8�E��_1f�"�QD�J��D�fs{����Yk����d��*��
+|��x���l޴�j�N������?������ٔ�bUs�Ng�Ǭ���i;_��������������|&lt;�v����3��������|���ۧ��3ĐHyƕ�bIΟD�%����Sr#~��7��ν��1y�Ai,4
+w\]"b�#Q����8��+[e�3d�4H���̒�l�9LVMX��U*�M����_?���\["��7�s\&lt;_���:�$���N��v�}^����sw�|�n;&lt;�&lt;�oP����
+i��k��q�ְ(G�ϫ��L�^��=��&lt;���K��j�_/�[ۭV�ns:��U��G�z�ݎ�j����&amp;��~�F��٤ZN�'��r2z}�f\#��:�9$�����H�݂�"�@M����H�C�
+�0�pp���1�O��I�H�P됄�.Ȣe��Q�&gt;���
+�'�;@D8���#��St�7k�g��|�A䉻���_���d�_c������a\�|�_�mn�]�9N������l�٢ZN�c�9u�����n��n�`��
+"gͺ�
+    ���H�?2@�FC�S$n���Ԓh�       nԙj��望��f      �?N@�CzUlT�&amp;�h�Pt!�r|��9~)���e�A�77�h{��~��     ��
+# [...output truncated...]</code></pre>
+<details>
+<summary>
+Ouch! 😳 What went wrong here? <em>(Click for the solution)</em>
+</summary>
+We were directly presented with the contents of the <em>compressed</em> file, which isn’t human-readable.
+</details>
+<hr style="height:1pt; visibility:hidden;">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+No need to decompress
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To get around the problem we just encountered with <code>head</code>, we might be inclined to <strong>uncompress</strong> these files, which we could do with the <strong><code>gunzip</code> command</strong>. However, uncompressed files take up several times as much disk storage space as compressed ones. Fortunately, we don’t need to decompress them:</p>
 <ul>
-<li><strong>Graded assignment</strong>: <a href="../week05/w5_ga_shell-scripts.html">Shell scripts</a> <span style="color:#bb0000"><em>(Due 9/29)</em></span></li>
-<li><a href="../week05/w5_exercises.html">Exercises for this week</a></li>
+<li>Almost any bioinformatics tool will accept compressed FASTQ files.</li>
+<li>We can still view these files in compressed form, as shown below.</li>
 </ul>
+</div>
+</div>
+<p>Instead, we’ll use the <code>less</code> command, which automatically displays gzip-compressed files in human-readable form:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> <span class="at">-S</span> garrigos_data/fastq/ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>@ERR10802863.8435456 8435456 length=74
+CAACGAATACATCATGTTTGCGAAACTACTCCTCCTCGCCTTGGTGGGGATCAGTACTGCGTACCAGTATGAGT
++
+AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+@ERR10802863.27637245 27637245 length=74
+GCCACACTTTTGAAGAACAGCGTCATTGTTCTTAATTTTGTCGGCAACGCCTGCACGAGCCTTCCACGTAAGTT
++
+AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEE&lt;EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+@ERR10802863.10009244 10009244 length=73
+CTCGGCGTTAACTTCATCACGCAGATCATTCCGTTCCAGCAGCTGAAGCAAGACTACCGTCAGTACGAGATGA
++
+AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+@ERR10802863.6604176 6604176 length=74
+AACTACAAATCTTCCTGTGCCGTTTCCAGCAAGTACGTCGATACCTTCGATGGACGCAACTACGAGTACAACAT
++
+AAAAAEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+@ERR10802863.11918285 11918285 length=35
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
++
+###################################</code></pre>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The <code>-S</code> option to <code>less</code> suppresses line-wrapping: lines in the file will not be “wrapped” across multiple lines.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+<section id="exercise-explore-the-file-with-less" class="level4 exercise">
+<h4 class="anchored" data-anchor-id="exercise-explore-the-file-with-less"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <strong>Exercise</strong>: Explore the file with <code>less</code></h4>
+<p>After running the command above, you should be viewing the file inside the <code>less</code> pager. Do you notice anything that strikes you as potentially unusual, some reads that look different from the others?</p>
+<p><em>Recall that you can move around in the file in several ways: by scrolling with your mouse,</em> <em>with up and down arrows, or, if you have them, <kbd>PgUp</kbd> and <kbd>PgDn</kbd> keys</em> <em>(also, <kbd>u</kbd> will move up half a page and <kbd>d</kbd> down half a page).</em> <em>And that you won’t get your shell prompt back until you <strong>press</strong> <kbd>q</kbd> to quit <code>less</code>.</em></p>
+<details>
+<summary>
+<em>Click for the solution</em>
+</summary>
+<p>There are a number of reads that are much shorter than the others and only consist of <code>N</code>, i.e.&nbsp;uncalled bases. For example:</p>
+<pre class="bash-out-solo"><code>@ERR10802863.11918285 11918285 length=35
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
++
+###################################</code></pre>
+</details>
+</section>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="readings" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="readings"><span class="header-section-number">4</span> Readings</h2>
-<section id="optional-readings" class="level4">
-<h4 class="anchored" data-anchor-id="optional-readings">Optional readings</h4>
-<ul>
-<li><p><a href="https://library.ohio-state.edu/record=b9490023~S7">Buffalo</a> Chapter 12: “Bioinformatics Shell Scripting, Writing Pipelines, and Parallelizing Tasks”</p>
-<p>The latter part of this chapter is about using <code>find</code>, <code>xargs</code>, and Makefiles. These are somewhat tangential to the week’s topic of scripts, and we will not talk about them in class. As for Makefiles specifically, we will instead learn Nextflow later in this course, an alternative approach to workflow management,</p></li>
-</ul>
+<section id="fastqc" class="level3" data-number="2.4">
+<h3 data-number="2.4" class="anchored" data-anchor-id="fastqc"><span class="header-section-number">2.4</span> FastQC</h3>
+<p>FastQC is a ubiquitous tool for <strong>quality control of FASTQ files</strong>. Running FastQC or a similar program is the first step in nearly any high-throughput sequencing project. FastQC is also a good introductory example of a tool with a command-line interface.</p>
+<p>For each FASTQ file, FastQC outputs an <strong>HTML file</strong> that you can open in your browser with about a dozen graphs showing different QC metrics. The most important one is the <em>per-base quality score</em> graph:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/fastqc_good.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>A FastQC per-base quality score graph for files with reasonably good quality reads. The y-axis shows Phred quality scores (higher is better, see also the color-coding) and the x-axis shows the position along the read.</figcaption>
+</figure>
+</div>
 
 
 </section>
