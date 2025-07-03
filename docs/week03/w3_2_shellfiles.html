@@ -296,7 +296,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bonus--overviews">    
         <li class="dropdown-header">OPTIONAL SELF-STUDY MATERIAL</li>
-        <li class="dropdown-header">A deeper dive into Unix data tools (TBA)</li>
+        <li>
+    <a class="dropdown-item" href="../ref/shell-data.html">
+ <span class="dropdown-text">A deeper dive into Unix data tools (TBA)</span></a>
+  </li>  
         <li>
     <a class="dropdown-item" href="../ref/adv-git.html">
  <span class="dropdown-text">Advanced Git (wk4)</span></a>
@@ -759,7 +762,7 @@ In the Unix shell code above, note that:
 <p>Command substitution allows you to <strong>store the output of a command in a variable</strong>.</p>
 <p>Let’s see an example. As you know, the <code>date</code> command will print the current date and time:</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>Thu Mar  7 14:52:22 EST 2024</code></pre>
+<pre class="bash-out"><code>Thu Sep 11 14:52:22 EDT 2025</code></pre>
 <p>If we try to <em>store the date in a variable</em> directly, it doesn’t work: the literal string “date” is stored instead:</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="va">today</span><span class="op">=</span>date</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$today</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -767,17 +770,17 @@ In the Unix shell code above, note that:
 <p>That’s why we need command substitution, which we can use by wrapping the command inside <strong><code>$()</code></strong>:</p>
 <div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="va">today</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span><span class="va">)</span></span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$today</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>Thu Mar  7 14:53:11 EST 2024</code></pre>
+<pre class="bash-out"><code>Thu Sep 11 14:54:11 EDT 2025</code></pre>
 <hr style="height:1pt; visibility:hidden;">
 <p>One practical example of using command substitution is when you want to <strong>automatically include the current date in a file name</strong> (with “automatic” meaning that you can use the same command regardless of the date, and that you could use it in a script that you could run at any point). First, note that we can use <code>date +%F</code> to print the date in <code>YYYY-MM-DD</code> format, and omit the time:</p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span> +%F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>2024-03-07</code></pre>
+<pre class="bash-out"><code>2025-09-07</code></pre>
 <p>Let’s use that in a command substitution:</p>
 <div class="sourceCode" id="cb50"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="va">today</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%F<span class="va">)</span></span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> README_<span class="st">"</span><span class="va">$today</span><span class="st">"</span>.txt</span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>README_2024-03-07.txt</code></pre>
+<pre class="bash-out"><code>README_2025-09-07.txt</code></pre>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1113,12 +1116,12 @@ Note: <code>[]</code> works on single character ranges only: 0-9 works but 10-13
 <span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../..</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Use <code>..</code> within <code>{}</code> to indicate ranges of numbers or letters:</p>
 <div class="sourceCode" id="cb101"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Here we'll create 31 _dirs_ for different dates</span></span>
-<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/obs/2024-03-{01..31}</span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/obs/2025-09-{01..31}</span>
 <span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/obs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>2024-03-01  2024-03-04  2024-03-07  2024-03-10  2024-03-13  2024-03-16  2024-03-19  2024-03-22  2024-03-25  2024-03-28  2024-03-31
-2024-03-02  2024-03-05  2024-03-08  2024-03-11  2024-03-14  2024-03-17  2024-03-20  2024-03-23  2024-03-26  2024-03-29
-2024-03-03  2024-03-06  2024-03-09  2024-03-12  2024-03-15  2024-03-18  2024-03-21  2024-03-24  2024-03-27  2024-03-30</code></pre>
+<pre class="bash-out"><code>2025-09-01  2025-09-04  2025-09-07  2025-09-10  2025-09-13  2025-09-16  2025-09-19  2025-09-22  2025-09-25  2025-09-28  2025-09-31
+2025-09-02  2025-09-05  2025-09-08  2025-09-11  2025-09-14  2025-09-17  2025-09-20  2025-09-23  2025-09-26  2025-09-29
+2025-09-03  2025-09-06  2025-09-09  2025-09-12  2025-09-15  2025-09-18  2025-09-21  2025-09-24  2025-09-27  2025-09-30</code></pre>
 <div class="sourceCode" id="cb103"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Here we'll create 6 empty _files_</span></span>
 <span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> results/figures/fig-1{A..F}.png</span>
 <span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a></span>

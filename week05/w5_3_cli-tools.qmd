@@ -92,7 +92,7 @@ We'll talk more about loading (and installing) software at OSC next week.]:
 <https://www.osc.edu/resources/available_software/software_list>.
 
 ``` bash
-module load fastqc/0.11.8
+module load fastqc/0.12.1
 ```
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -321,7 +321,7 @@ to which we should add a number of "boilerplate" bits of code:
 - A line to load the relevant OSC software module:
 
   ```bash
-  module load fastqc/0.11.8
+  module load fastqc/0.12.1
   ```
   
 - A line to create the output directory if it doesn't yet exist:
@@ -379,7 +379,7 @@ With those additions, our partial script would look like this:
 set -euo pipefail
 
 # Load the OSC module for FastQC
-module load fastqc
+module load fastqc/0.12.1
 
 # Copy the placeholder variables
 fastq_file=$1
@@ -424,7 +424,7 @@ Let's try this with our FastQC script:
 set -euo pipefail
 
 # Load the OSC module for FastQC
-module load fastqc
+module load fastqc/0.12.1
 
 # Copy the placeholder variables
 fastq_file=$1
@@ -487,13 +487,11 @@ ran the script, at least if you keep the Slurm log file
 (and in last week's exercises, we additionally moved Slurm log files to a
 `logs` dir within the output dir).
 
-<br>
+<hr style="height:1pt; visibility:hidden;" />
 
-## A "runner" script
+### Running your FastQC script for 1 file
 
-### Running our FastQC script for 1 file
-
-Let's run our FastQC script for one FASTQ file:
+Run your FastQC script for one FASTQ file:
 
 ```bash
 bash scripts/fastqc.sh garrigos_data/fastq/ERR10802863_R1.fastq.gz results/fastqc
@@ -531,10 +529,13 @@ Analysis complete for ERR10802863_R1.fastq.gz
 Wed Mar 27 21:53:19 EDT 2024
 ```
 
-However, as discussed above, we'll want to run the script for each FASTQ file.
-We'll have to write a loop to do so, and that loop will go in a "runner script".
+However, as discussed above,
+we'll eventually want to run the script for each FASTQ file.
+We will write the loop to do so in an accompanying Markdown document.
 
-<hr style="height:1pt; visibility:hidden;" />
+<br>
+
+## Markdown files to document your progress and store your workflow
 
 ### Storing the code that runs/submits your scripts
 
@@ -548,12 +549,12 @@ you will probably want to store this in one or more separate files.
 
 For anything but the smallest projects, you should also distinguish between:
 
-- A "lab notebook" style file that has chronological entries with everything of note
+- A "lab notebook"-style file that has chronological entries with everything of note
   that you did, including mishaps, dead ends, and things that were redone differently
   later on.
 
-- A "protocol" style file that has entries in the order of how they should be run
-  if you or someone else were to rerun all code in the project.
+- A "protocol" (or "recipe" / "workflow") style file that has the final code that
+  can be used to run and rerun your project's analyses.
 
 TBA expand
 
@@ -949,7 +950,7 @@ Along those lines, here are two things to consider:
           --no_gcbias )       gcbias=false ;;
           --dl_container )    dl_container=true ;;
           -h | --help )       script_help; exit 0 ;;
-          -v | --version )    echo "Version 2024-04-13" && exit 0 ;;
+          -v | --version )    echo "Version 2025-10-01" && exit 0 ;;
           * )                 echo "Invalid option $1" && exit 1 ;;
       esac
       shift

@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jelmer Poelstra">
-<meta name="dcterms.date" content="2024-03-25">
+<meta name="dcterms.date" content="2025-09-04">
 
-<title>PRACS24: Week 4 exercises – PRACS-AU25</title>
+<title>PRACS25: Week 5 exercises – PRACS-AU25</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -296,7 +296,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bonus--overviews">    
         <li class="dropdown-header">OPTIONAL SELF-STUDY MATERIAL</li>
-        <li class="dropdown-header">A deeper dive into Unix data tools (TBA)</li>
+        <li>
+    <a class="dropdown-item" href="../ref/shell-data.html">
+ <span class="dropdown-text">A deeper dive into Unix data tools (TBA)</span></a>
+  </li>  
         <li>
     <a class="dropdown-item" href="../ref/adv-git.html">
  <span class="dropdown-text">Advanced Git (wk4)</span></a>
@@ -398,7 +401,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Week 4 exercises</h1>
+<h1 class="title">Week 5 exercises</h1>
 </div>
 
 
@@ -415,7 +418,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 25, 2024</p>
+      <p class="date">September 4, 2025</p>
     </div>
   </div>
   
@@ -431,22 +434,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <hr style="height:1pt; visibility:hidden;">
 <section id="setting-up" class="level4">
 <h4 class="anchored" data-anchor-id="setting-up">Setting up</h4>
-<p>Start a VS Code session at OSC in the folder <code>/fs/ess/PAS2880/users/$USER</code>. In the terminal, move into your dir for this week:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> week04</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You’ll create two main shell scripts in these exercises, a small script to print a line and a script to run TrimGalore: save these in the <code>week04/scripts</code> dir, and open and edit them in the VS Code editor pane.</p>
-<p>Let’s also create a “runner” script straight away, which will have the commands to run the individual scripts:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> run/run_exercises.sh</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Then open it in the editor pane, e.g. with Ctrl/Cmd-click</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Start a VS Code session at OSC in the folder <code>/fs/ess/PAS2880/users/$USER</code>. In the terminal, create a dir for these exercises and move there:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> week05/exercises</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> week05/exercises</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Also make a scripts subdir:</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> scripts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You’ll be creating two main shell scripts in these exercises, which you should save in the <code>scripts</code> dir you just made, and edit in the VS Code editor pane.</p>
+<p>Let’s also create an accompanying Markdown document straight away, which will document what you did and e.g.&nbsp;contain the commands to run the scripts:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> <span class="kw">`</span><span class="ex">README.md</span><span class="kw">`</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Then open this file in the VS Code editor pane, e.g. with Ctrl/Cmd-click</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr style="height:1pt; visibility:hidden;">
 </section>
 <section id="exercise-1-a-shell-script-that-prints-a-specific-line" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-1-a-shell-script-that-prints-a-specific-line">Exercise 1: A shell script that prints a specific line</h2>
-<p>Write a shell script <code>scripts/printline.sh</code> that accepts two arguments, a file name and a line number, and prints the requested line from the file to screen. Additional notes:</p>
+<p>Write a shell script that accepts two arguments, a <em>file name</em> and a <em>line number</em>, and that will print the requested line from the specified file to the screen. Save this file as <code>scripts/printline.sh</code>.</p>
+<p>Additional instructions:</p>
 <ul>
-<li>Since this is a simple utility script, I suggest to make the script not print anything other than the requested line from the file (i.e., no <code>echo</code> statements).</li>
+<li>Since this is a simple “utility script”, I would suggest to make the script not print anything other than the requested line from the file (i.e., no <code>echo</code> statements).</li>
 <li>Don’t forget the best-practice shell script header lines we discussed.</li>
 <li>With an <code>if</code> statement, let the script check whether the correct number of arguments were passed to it, and if not, exit the script.</li>
-<li>Test your script by printing a couple of different lines from <code>garrigos_data/meta/metadata.tsv</code>. Also test that your argument-number-check works. (Add the lines of code to run the script various ways in your <code>run_exercises.sh</code> runner script.)</li>
+<li>Test your script by printing a couple of different lines from <code>garrigos_data/meta/metadata.tsv</code>. Also test that your check of the number of arguments works. (Add the lines of code to run the script in these various ways in your <code>README.md</code> document.)</li>
 </ul>
 <details>
 <summary>
@@ -455,15 +464,15 @@ Hint 1: an overview of the steps to take <em>(Click to expand)</em>
 <ul>
 <li>Open a new text file and save it as <code>scripts/printline.sh</code>.</li>
 <li>In the script, start with the <em>shebang</em> and <code>set</code> lines.</li>
-<li>Your script takes two arguments: a file name (<code>$1</code>) and a line number (<code>$2</code>) .</li>
-<li>Check the number of arguments in an <code>if</code> statement like we did in class.</li>
+<li>Your script takes two arguments: a file name (<code>$1</code>) and a line number (<code>$2</code>).</li>
+<li>Check the number of arguments in an <code>if</code> statement.</li>
 <li>Copy the <code>$1</code> and <code>$2</code> placeholder variables to descriptively named variables.</li>
 <li>To print a specific line, think how you might combine <code>head</code> and <code>tail</code> to do this. If you’re at a loss, feel free to check out the next hint.</li>
 </ul>
 </details>
 <details>
 <summary>
-Hint 2: how to print a specific line number <em>(Click to expand)</em>
+Hint 2: how to print a specific line <em>(Click to expand)</em>
 </summary>
 <p>For example, to print line 4 of the Garrigos et al.&nbsp;metadata file:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 4 garrigos_data/meta/metadata.tsv <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -592,7 +601,7 @@ Warning: Don’t use/adjust TrimGalore’s <code>--cores</code> option here <em>
 <section id="exercise-3-run-your-trimgalore-script-once" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-3-run-your-trimgalore-script-once">Exercise 3: Run your TrimGalore script once</h2>
 <ol type="1">
-<li><p>Run your TrimGalore script for just the <code>ERR10802863</code> sample in <code>garrigos_data/fastq</code> (remember to add the code to run the script in the <code>run_exercises.sh</code> runner script).</p></li>
+<li><p>Run your TrimGalore script for just the <code>ERR10802863</code> sample in <code>garrigos_data/fastq</code> (remember to add the code to run the script to your <code>README.md</code> file).</p></li>
 <li><p>Check if everything went well; also take a look at TrimGalore’s output files, which should include new (filtered) FASTQ files as well as FastQC outputs and a text file for each sample. If something went wrong, go back to your <code>trimgalore.sh</code> script and try to fix it.</p></li>
 <li><p>Take a closer look at the output that TrimGalore printed to screen (note that most of that is also saved in the <code>*_trimming_report.txt</code> file in the output dir):</p>
 <ul>
@@ -627,7 +636,7 @@ This will take some time (~20 minutes) to run!
 <h3 class="anchored" data-anchor-id="exercise-1">Exercise 1</h3>
 <details>
 <summary>
-The script <em>(Click to expand)</em>
+The <code>printline.sh</code> script <em>(Click to expand)</em>
 </summary>
 <div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
@@ -658,7 +667,7 @@ Running and testing the script <em>(Click to expand)</em>
 <li><p>Or the 7<sup>th</sup> line:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/printline.sh garrigos_data/meta/metadata.tsv 7</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>ERR10802884     10dpi   control</code></pre></li>
-<li><p>To test that the argument-number-check works:</p>
+<li><p>To test that the check for the correct number of arguments works:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Only pass 1 argument:</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/printline.sh garrigos_data/meta/metadata.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Error: wrong number of arguments

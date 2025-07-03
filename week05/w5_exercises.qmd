@@ -1,8 +1,8 @@
 ---
-title: "Week 4 exercises"
-pagetitle: "PRACS24: Week 4 exercises"
+title: "Week 5 exercises"
+pagetitle: "PRACS25: Week 5 exercises"
 author: Jelmer Poelstra
-date: 2024-03-25
+date: 2025-09-04
 number-sections: false
 editor_options: 
   chunk_output_type: console
@@ -15,54 +15,63 @@ editor_options:
 #### Setting up
 
 Start a VS Code session at OSC in the folder `/fs/ess/PAS2880/users/$USER`.
-In the terminal, move into your dir for this week:
+In the terminal, create a dir for these exercises and move there:
 
 ```bash
-cd week04
+mkdir week05/exercises
+cd week05/exercises
+
+# Also make a scripts subdir:
+mkdir scripts
 ```
 
-You'll create two main shell scripts in these exercises,
-a small script to print a line and a script to run TrimGalore:
-save these in the `week04/scripts` dir,
-and open and edit them in the VS Code editor pane.
+You'll be creating two main shell scripts in these exercises,
+which you should save in the `scripts` dir you just made,
+and edit in the VS Code editor pane.
 
-Let's also create a "runner" script straight away,
-which will have the commands to run the individual scripts:
+Let's also create an accompanying Markdown document straight away,
+which will document what you did and e.g. contain the commands to run the scripts:
 
 ```bash
-touch run/run_exercises.sh
-# Then open it in the editor pane, e.g. with Ctrl/Cmd-click
+touch `README.md`
+
+# Then open this file in the VS Code editor pane, e.g. with Ctrl/Cmd-click
 ```
 
 <hr style="height:1pt; visibility:hidden;" />
 
 ## Exercise 1: A shell script that prints a specific line
 
-Write a shell script `scripts/printline.sh` that accepts two arguments,
-a file name and a line number, and prints the requested line from the file to screen.
-Additional notes:
+Write a shell script that accepts two arguments,
+a _file name_ and a _line number_,
+and that will print the requested line from the specified file to the screen.
+Save this file as  `scripts/printline.sh`.
 
-- Since this is a simple utility script, I suggest to make the script not print
-  anything other than the requested line from the file (i.e., no `echo` statements).
+Additional instructions:
+
+- Since this is a simple "utility script",
+  I would suggest to make the script not print anything other than the requested
+  line from the file (i.e., no `echo` statements).
 - Don't forget the best-practice shell script header lines we discussed.
 - With an `if` statement, let the script check whether the correct
   number of arguments were passed to it, and if not, exit the script.
 - Test your script by printing a couple of different lines from
   `garrigos_data/meta/metadata.tsv`.
-  Also test that your argument-number-check works.
-  (Add the lines of code to run the script various ways in your `run_exercises.sh` runner script.)
+  Also test that your check of the number of arguments works.
+  (Add the lines of code to run the script in these various ways in your
+  `README.md` document.)
 
 <details><summary> Hint 1: an overview of the steps to take _(Click to expand)_</summary>
 - Open a new text file and save it as `scripts/printline.sh`.
 - In the script, start with the _shebang_ and `set` lines.
-- Your script takes two arguments: a file name (`$1`) and a line number (`$2`) .
-- Check the number of arguments in an `if` statement like we did in class.
+- Your script takes two arguments: a file name (`$1`) and a line number (`$2`).
+- Check the number of arguments in an `if` statement.
 - Copy the `$1` and `$2` placeholder variables to descriptively named variables.
 - To print a specific line, think how you might combine `head` and `tail` to do this.
   If you're at a loss, feel free to check out the next hint.
 </details>
 
-<details><summary> Hint 2: how to print a specific line number _(Click to expand)_</summary>
+<details><summary> Hint 2: how to print a specific line _(Click to expand)_</summary>
 For example, to print line 4 of the Garrigos et al. metadata file:
 
 ```bash
@@ -218,7 +227,7 @@ that will give us the opportunity to use multiple cores with programs like this.
 ## Exercise 3: Run your TrimGalore script once
 
 1. Run your TrimGalore script for just the `ERR10802863` sample in `garrigos_data/fastq`
-   (remember to add the code to run the script in the `run_exercises.sh` runner script).
+   (remember to add the code to run the script to your `README.md` file).
 
 2. Check if everything went well; also take a look at TrimGalore's output files,
    which should include new (filtered) FASTQ files as well as FastQC outputs and
@@ -257,7 +266,7 @@ we can do all of that by submitting the script as batch jobs, as we'll see next 
 
 ### Exercise 1
 
-<details><summary> The script _(Click to expand)_</summary>
+<details><summary> The `printline.sh` script _(Click to expand)_</summary>
 ```bash
 #!/bin/bash
 set -euo pipefail
@@ -299,7 +308,7 @@ head -n "$line_nr" "$input_file" | tail -n 1
   ERR10802884     10dpi   control
   ```
 
-- To test that the argument-number-check works:
+- To test that the check for the correct number of arguments works:
 
   ```bash
   # Only pass 1 argument:

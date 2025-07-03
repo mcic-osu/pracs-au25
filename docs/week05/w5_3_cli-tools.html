@@ -296,7 +296,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bonus--overviews">    
         <li class="dropdown-header">OPTIONAL SELF-STUDY MATERIAL</li>
-        <li class="dropdown-header">A deeper dive into Unix data tools (TBA)</li>
+        <li>
+    <a class="dropdown-item" href="../ref/shell-data.html">
+ <span class="dropdown-text">A deeper dive into Unix data tools (TBA)</span></a>
+  </li>  
         <li>
     <a class="dropdown-item" href="../ref/adv-git.html">
  <span class="dropdown-text">Advanced Git (wk4)</span></a>
@@ -391,12 +394,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#creating-an-initial-script" id="toc-creating-an-initial-script" class="nav-link" data-scroll-target="#creating-an-initial-script"><span class="header-section-number">3.2</span> Creating an initial script</a></li>
   <li><a href="#add-some-logging-statements" id="toc-add-some-logging-statements" class="nav-link" data-scroll-target="#add-some-logging-statements"><span class="header-section-number">3.3</span> Add some “logging” statements</a></li>
   <li><a href="#add-the-program-version" id="toc-add-the-program-version" class="nav-link" data-scroll-target="#add-the-program-version"><span class="header-section-number">3.4</span> Add the program version</a></li>
+  <li><a href="#running-your-fastqc-script-for-1-file" id="toc-running-your-fastqc-script-for-1-file" class="nav-link" data-scroll-target="#running-your-fastqc-script-for-1-file"><span class="header-section-number">3.5</span> Running your FastQC script for 1 file</a></li>
   </ul></li>
-  <li><a href="#a-runner-script" id="toc-a-runner-script" class="nav-link" data-scroll-target="#a-runner-script"><span class="header-section-number">4</span> A “runner” script</a>
+  <li><a href="#markdown-files-to-document-your-progress-and-store-your-workflow" id="toc-markdown-files-to-document-your-progress-and-store-your-workflow" class="nav-link" data-scroll-target="#markdown-files-to-document-your-progress-and-store-your-workflow"><span class="header-section-number">4</span> Markdown files to document your progress and store your workflow</a>
   <ul class="collapse">
-  <li><a href="#running-our-fastqc-script-for-1-file" id="toc-running-our-fastqc-script-for-1-file" class="nav-link" data-scroll-target="#running-our-fastqc-script-for-1-file"><span class="header-section-number">4.1</span> Running our FastQC script for 1 file</a></li>
-  <li><a href="#storing-the-code-that-runssubmits-your-scripts" id="toc-storing-the-code-that-runssubmits-your-scripts" class="nav-link" data-scroll-target="#storing-the-code-that-runssubmits-your-scripts"><span class="header-section-number">4.2</span> Storing the code that runs/submits your scripts</a></li>
-  <li><a href="#creating-our-protocol-document" id="toc-creating-our-protocol-document" class="nav-link" data-scroll-target="#creating-our-protocol-document"><span class="header-section-number">4.3</span> Creating our protocol document</a></li>
+  <li><a href="#storing-the-code-that-runssubmits-your-scripts" id="toc-storing-the-code-that-runssubmits-your-scripts" class="nav-link" data-scroll-target="#storing-the-code-that-runssubmits-your-scripts"><span class="header-section-number">4.1</span> Storing the code that runs/submits your scripts</a></li>
+  <li><a href="#creating-our-protocol-document" id="toc-creating-our-protocol-document" class="nav-link" data-scroll-target="#creating-our-protocol-document"><span class="header-section-number">4.2</span> Creating our protocol document</a></li>
   </ul></li>
   <li><a href="#looping-over-samples-rather-than-files" id="toc-looping-over-samples-rather-than-files" class="nav-link" data-scroll-target="#looping-over-samples-rather-than-files"><span class="header-section-number">5</span> Looping over samples rather than files</a>
   <ul class="collapse">
@@ -476,7 +479,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">-h</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>bash: fastqc: command not found...</code></pre>
 <p>However, there is a wrinkle — while FastQC is installed at OSC<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, we have to first <strong>“load it”</strong><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load fastqc/0.11.8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load fastqc/0.12.1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr style="height:1pt; visibility:hidden;">
 <section id="exercise-fastqc-help-and-output-dir" class="level4 exercise">
 <h4 class="anchored" data-anchor-id="exercise-fastqc-help-and-output-dir"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <strong>Exercise</strong>: FastQC help and output dir</h4>
@@ -618,7 +621,7 @@ Running the script
 <div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>A line to load the relevant OSC software module:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load fastqc/0.11.8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load fastqc/0.12.1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>A line to create the output directory if it doesn’t yet exist:</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul>
@@ -657,7 +660,7 @@ Refresher: the <code>-p</code> option to <code>mkdir</code> <em>(Click to expand
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the OSC module for FastQC</span></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load fastqc</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load fastqc/0.12.1</span>
 <span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the placeholder variables</span></span>
 <span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_file</span><span class="op">=</span><span class="va">$1</span></span>
@@ -685,7 +688,7 @@ Refresher: the <code>-p</code> option to <code>mkdir</code> <em>(Click to expand
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the OSC module for FastQC</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load fastqc</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load fastqc/0.12.1</span>
 <span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the placeholder variables</span></span>
 <span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_file</span><span class="op">=</span><span class="va">$1</span></span>
@@ -725,14 +728,11 @@ Refresher: the <code>-p</code> option to <code>mkdir</code> <em>(Click to expand
 <div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Used FastQC version:"</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This way you’ll always have a clear record of the version that you used when you ran the script, at least if you keep the Slurm log file (and in last week’s exercises, we additionally moved Slurm log files to a <code>logs</code> dir within the output dir).</p>
-<p><br></p>
+<hr style="height:1pt; visibility:hidden;">
 </section>
-</section>
-<section id="a-runner-script" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="a-runner-script"><span class="header-section-number">4</span> A “runner” script</h2>
-<section id="running-our-fastqc-script-for-1-file" class="level3" data-number="4.1">
-<h3 data-number="4.1" class="anchored" data-anchor-id="running-our-fastqc-script-for-1-file"><span class="header-section-number">4.1</span> Running our FastQC script for 1 file</h3>
-<p>Let’s run our FastQC script for one FASTQ file:</p>
+<section id="running-your-fastqc-script-for-1-file" class="level3" data-number="3.5">
+<h3 data-number="3.5" class="anchored" data-anchor-id="running-your-fastqc-script-for-1-file"><span class="header-section-number">3.5</span> Running your FastQC script for 1 file</h3>
+<p>Run your FastQC script for one FASTQ file:</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/fastqc.sh garrigos_data/fastq/ERR10802863_R1.fastq.gz results/fastqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code># Starting script fastqc.sh
 Wed Mar 27 21:53:13 EDT 2024
@@ -764,17 +764,20 @@ Analysis complete for ERR10802863_R1.fastq.gz
 
 # Done with script fastqc.sh
 Wed Mar 27 21:53:19 EDT 2024</code></pre>
-<p>However, as discussed above, we’ll want to run the script for each FASTQ file. We’ll have to write a loop to do so, and that loop will go in a “runner script”.</p>
-<hr style="height:1pt; visibility:hidden;">
+<p>However, as discussed above, we’ll eventually want to run the script for each FASTQ file. We will write the loop to do so in an accompanying Markdown document.</p>
+<p><br></p>
 </section>
-<section id="storing-the-code-that-runssubmits-your-scripts" class="level3" data-number="4.2">
-<h3 data-number="4.2" class="anchored" data-anchor-id="storing-the-code-that-runssubmits-your-scripts"><span class="header-section-number">4.2</span> Storing the code that runs/submits your scripts</h3>
+</section>
+<section id="markdown-files-to-document-your-progress-and-store-your-workflow" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="markdown-files-to-document-your-progress-and-store-your-workflow"><span class="header-section-number">4</span> Markdown files to document your progress and store your workflow</h2>
+<section id="storing-the-code-that-runssubmits-your-scripts" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="storing-the-code-that-runssubmits-your-scripts"><span class="header-section-number">4.1</span> Storing the code that runs/submits your scripts</h3>
 <p>The abovementioned loop code <em>could</em> be directly typed in the terminal, but we need to keep a record of and/or build a protocol of our analysis steps, so we will save this in a Markdown file.</p>
 <p>For small projects, this could be added to your main <code>README.md</code>. For larger projects, you will probably want to store this in one or more separate files.</p>
 <p>For anything but the smallest projects, you should also distinguish between:</p>
 <ul>
-<li><p>A “lab notebook” style file that has chronological entries with everything of note that you did, including mishaps, dead ends, and things that were redone differently later on.</p></li>
-<li><p>A “protocol” style file that has entries in the order of how they should be run if you or someone else were to rerun all code in the project.</p></li>
+<li><p>A “lab notebook”-style file that has chronological entries with everything of note that you did, including mishaps, dead ends, and things that were redone differently later on.</p></li>
+<li><p>A “protocol” (or “recipe” / “workflow”) style file that has the final code that can be used to run and rerun your project’s analyses.</p></li>
 </ul>
 <p>TBA expand</p>
 <hr style="height:1pt; visibility:hidden;">
@@ -797,8 +800,8 @@ Keep the scripts for individual steps simple
 </div>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="creating-our-protocol-document" class="level3" data-number="4.3">
-<h3 data-number="4.3" class="anchored" data-anchor-id="creating-our-protocol-document"><span class="header-section-number">4.3</span> Creating our protocol document</h3>
+<section id="creating-our-protocol-document" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="creating-our-protocol-document"><span class="header-section-number">4.2</span> Creating our protocol document</h3>
 <p>Create a new file…</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> 00_run.md</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>…and open it in the VS Code editor.</p>
@@ -1042,7 +1045,7 @@ Thu Mar 21 10:12:17 EDT 2024
 <span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>        <span class="ss">--no_gcbias</span> <span class="kw">)</span>       <span class="va">gcbias</span><span class="op">=</span>false <span class="cf">;;</span></span>
 <span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>        <span class="ss">--dl_container</span> <span class="kw">)</span>    <span class="va">dl_container</span><span class="op">=</span>true <span class="cf">;;</span></span>
 <span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>        <span class="ss">-h</span> <span class="kw">|</span> <span class="ss">--help</span> <span class="kw">)</span>       <span class="ex">script_help</span><span class="kw">;</span> <span class="bu">exit</span> 0 <span class="cf">;;</span></span>
-<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>        <span class="ss">-v</span> <span class="kw">|</span> <span class="ss">--version</span> <span class="kw">)</span>    <span class="bu">echo</span> <span class="st">"Version 2024-04-13"</span> <span class="kw">&amp;&amp;</span> <span class="bu">exit</span> 0 <span class="cf">;;</span></span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>        <span class="ss">-v</span> <span class="kw">|</span> <span class="ss">--version</span> <span class="kw">)</span>    <span class="bu">echo</span> <span class="st">"Version 2025-10-01"</span> <span class="kw">&amp;&amp;</span> <span class="bu">exit</span> 0 <span class="cf">;;</span></span>
 <span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>        <span class="pp">*</span> <span class="kw">)</span>                 <span class="bu">echo</span> <span class="st">"Invalid option </span><span class="va">$1</span><span class="st">"</span> <span class="kw">&amp;&amp;</span> <span class="bu">exit</span> 1 <span class="cf">;;</span></span>
 <span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">esac</span></span>
 <span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">shift</span></span>
