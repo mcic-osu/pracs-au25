@@ -296,18 +296,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bonus--overviews">    
         <li class="dropdown-header">OPTIONAL SELF-STUDY MATERIAL</li>
-        <li class="dropdown-header">A deeper dive into Unix data tools</li>
+        <li class="dropdown-header">A deeper dive into Unix data tools (TBA)</li>
         <li>
-    <a class="dropdown-item" href="../week05/w5_3_bonus.html">
+    <a class="dropdown-item" href="../ref/adv-git.html">
  <span class="dropdown-text">Advanced Git (wk4)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../week05/w5_3_bonus.html">
- <span class="dropdown-text">Advanced Unix shell (wk5)</span></a>
+    <a class="dropdown-item" href="../ref/adv-shell.html">
+ <span class="dropdown-text">Advanced Unix shell: <code>while</code> loops and more (wk5)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../week06/w6_4_bonus_ssh.html">
- <span class="dropdown-text">OSC SSH connections (wk6)</span></a>
+    <a class="dropdown-item" href="../ref/ssh.html">
+ <span class="dropdown-text">Connecting to OSC through SSH (wk6)</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../ref/file-transfer.html">
@@ -379,9 +379,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#remote-transfer-commands" id="toc-remote-transfer-commands" class="nav-link active" data-scroll-target="#remote-transfer-commands"><span class="header-section-number">0.1</span> Remote transfer commands</a></li>
-  <li><a href="#sftp" id="toc-sftp" class="nav-link" data-scroll-target="#sftp"><span class="header-section-number">0.2</span> SFTP</a></li>
-  <li><a href="#globus" id="toc-globus" class="nav-link" data-scroll-target="#globus"><span class="header-section-number">0.3</span> Globus</a></li>
+  <li><a href="#remote-transfer-commands" id="toc-remote-transfer-commands" class="nav-link active" data-scroll-target="#remote-transfer-commands"><span class="header-section-number">1</span> Remote transfer commands</a>
+  <ul class="collapse">
+  <li><a href="#scp" id="toc-scp" class="nav-link" data-scroll-target="#scp"><span class="header-section-number">1.1</span> <code>scp</code></a></li>
+  <li><a href="#rsync" id="toc-rsync" class="nav-link" data-scroll-target="#rsync"><span class="header-section-number">1.2</span> <code>rsync</code></a></li>
+  </ul></li>
+  <li><a href="#sftp" id="toc-sftp" class="nav-link" data-scroll-target="#sftp"><span class="header-section-number">2</span> SFTP</a></li>
+  <li><a href="#globus" id="toc-globus" class="nav-link" data-scroll-target="#globus"><span class="header-section-number">3</span> Globus</a></li>
   </ul>
 </nav>
     </div>
@@ -421,12 +425,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p><br></p>
 <hr>
-<section id="remote-transfer-commands" class="level3" data-number="0.1">
-<h3 data-number="0.1" class="anchored" data-anchor-id="remote-transfer-commands"><span class="header-section-number">0.1</span> Remote transfer commands</h3>
+<section id="remote-transfer-commands" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="remote-transfer-commands"><span class="header-section-number">1</span> Remote transfer commands</h2>
 <p>For small transfers, an alternative to the OnDemand Files menu is using <strong>remote transfer commands</strong> like <code>scp</code>, <code>rsync</code>, or <code>rclone</code>. These commands can be more convenient than OnDemand especially if you want to keep certain directories synced between OSC and your computer.</p>
 <p>Because at OSC, these transfers will happen using a login node, these commands are unfortunately not recommended for large transfers<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
-<section id="scp" class="level4">
-<h4 class="anchored" data-anchor-id="scp"><code>scp</code></h4>
+<section id="scp" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="scp"><span class="header-section-number">1.1</span> <code>scp</code></h3>
 <p>One option is <code>scp</code> (secure copy), which works much like the regular <code>cp</code> command, including the need for the <code>-r</code> option for recursive transfers. The key difference is that we have to somehow refer to a path on a remote computer, and we do so by starting with the remote computer’s address, followed by <code>:</code>, and then the path:</p>
 <pre class="bash-out-solo"><code># Copy from remote (OSC) to local (your computer):
 scp &lt;user&gt;@pitzer.osc.edu:&lt;remote-path&gt; &lt;local-path&gt;
@@ -473,8 +477,8 @@ So if I had a file called <code>fastqc.sh</code> in my top-level OneDrive dir, I
 </div>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="rsync" class="level4">
-<h4 class="anchored" data-anchor-id="rsync"><code>rsync</code></h4>
+<section id="rsync" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="rsync"><span class="header-section-number">1.2</span> <code>rsync</code></h3>
 <p>Another option, which I can recommend, is the <code>rsync</code> command, especially when you have directories that you repeatedly want to sync: <code>rsync</code> won’t copy any files that are identical in source and destination.</p>
 <p>A useful combination of options is <code>-avz --progress</code>:</p>
 <ul>
@@ -513,11 +517,11 @@ Trailing slashes in <code>rsync</code> <em>(Click to expand)</em>
 </div>
 </div>
 </div>
-<hr style="height:1pt; visibility:hidden;">
+<p><br></p>
 </section>
 </section>
-<section id="sftp" class="level3" data-number="0.2">
-<h3 data-number="0.2" class="anchored" data-anchor-id="sftp"><span class="header-section-number">0.2</span> SFTP</h3>
+<section id="sftp" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="sftp"><span class="header-section-number">2</span> SFTP</h2>
 <p>The first of two options for larger transfers is <strong>SFTP</strong>. You can use the <strong><code>sftp</code> command</strong> when you have access to a Unix shell on your computer, and this what I’ll cover below.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -605,11 +609,11 @@ Connected to sftp.osc.edu.</code></pre>
 <section id="closing-the-sftp-connection" class="level4">
 <h4 class="anchored" data-anchor-id="closing-the-sftp-connection">Closing the SFTP connection</h4>
 <p>When you’re done, you can type <code>exit</code> or press <kbd>Ctrl</kbd>+<kbd>D</kbd> to exit the <code>sftp</code> prompt.</p>
-<hr style="height:1pt; visibility:hidden;">
+<p><br></p>
 </section>
 </section>
-<section id="globus" class="level3" data-number="0.3">
-<h3 data-number="0.3" class="anchored" data-anchor-id="globus"><span class="header-section-number">0.3</span> Globus</h3>
+<section id="globus" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="globus"><span class="header-section-number">3</span> Globus</h2>
 <p>The second option for large transfers is <strong>Globus</strong>, which has a browser-based GUI, and is especially your best bet for very large transfers. Some advantages of using Globus are that:</p>
 <ul>
 <li>It checks whether all files were transferred correctly and completely</li>

@@ -296,18 +296,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bonus--overviews">    
         <li class="dropdown-header">OPTIONAL SELF-STUDY MATERIAL</li>
-        <li class="dropdown-header">A deeper dive into Unix data tools</li>
+        <li class="dropdown-header">A deeper dive into Unix data tools (TBA)</li>
         <li>
-    <a class="dropdown-item" href="../week05/w5_3_bonus.html">
+    <a class="dropdown-item" href="../ref/adv-git.html">
  <span class="dropdown-text">Advanced Git (wk4)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../week05/w5_3_bonus.html">
- <span class="dropdown-text">Advanced Unix shell (wk5)</span></a>
+    <a class="dropdown-item" href="../ref/adv-shell.html">
+ <span class="dropdown-text">Advanced Unix shell: <code>while</code> loops and more (wk5)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../week06/w6_4_bonus_ssh.html">
- <span class="dropdown-text">OSC SSH connections (wk6)</span></a>
+    <a class="dropdown-item" href="../ref/ssh.html">
+ <span class="dropdown-text">Connecting to OSC through SSH (wk6)</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../ref/file-transfer.html">
@@ -380,12 +380,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#a-data-set-to-practice" id="toc-a-data-set-to-practice" class="nav-link active" data-scroll-target="#a-data-set-to-practice"><span class="header-section-number">1</span> A data set to practice</a></li>
-  <li><a href="#fastq-files-and-fastqc" id="toc-fastq-files-and-fastqc" class="nav-link" data-scroll-target="#fastq-files-and-fastqc"><span class="header-section-number">2</span> FASTQ files and FastQC</a>
+  <li><a href="#rna-seq-analysis-steps" id="toc-rna-seq-analysis-steps" class="nav-link" data-scroll-target="#rna-seq-analysis-steps"><span class="header-section-number">2</span> RNA-Seq analysis steps</a></li>
+  <li><a href="#fastq-files-and-fastqc" id="toc-fastq-files-and-fastqc" class="nav-link" data-scroll-target="#fastq-files-and-fastqc"><span class="header-section-number">3</span> FASTQ files and FastQC</a>
   <ul class="collapse">
-  <li><a href="#the-fastq-format" id="toc-the-fastq-format" class="nav-link" data-scroll-target="#the-fastq-format"><span class="header-section-number">2.1</span> The FASTQ format</a></li>
-  <li><a href="#our-fastq-files" id="toc-our-fastq-files" class="nav-link" data-scroll-target="#our-fastq-files"><span class="header-section-number">2.2</span> Our FASTQ files</a></li>
-  <li><a href="#viewing-the-contents-of-fastq-files" id="toc-viewing-the-contents-of-fastq-files" class="nav-link" data-scroll-target="#viewing-the-contents-of-fastq-files"><span class="header-section-number">2.3</span> Viewing the contents of FASTQ files</a></li>
-  <li><a href="#fastqc" id="toc-fastqc" class="nav-link" data-scroll-target="#fastqc"><span class="header-section-number">2.4</span> FastQC</a></li>
+  <li><a href="#the-fastq-format" id="toc-the-fastq-format" class="nav-link" data-scroll-target="#the-fastq-format"><span class="header-section-number">3.1</span> The FASTQ format</a></li>
+  <li><a href="#our-fastq-files" id="toc-our-fastq-files" class="nav-link" data-scroll-target="#our-fastq-files"><span class="header-section-number">3.2</span> Our FASTQ files</a></li>
+  <li><a href="#viewing-the-contents-of-fastq-files" id="toc-viewing-the-contents-of-fastq-files" class="nav-link" data-scroll-target="#viewing-the-contents-of-fastq-files"><span class="header-section-number">3.3</span> Viewing the contents of FASTQ files</a></li>
+  <li><a href="#fastqc" id="toc-fastqc" class="nav-link" data-scroll-target="#fastqc"><span class="header-section-number">3.4</span> FastQC</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -453,22 +454,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="get-your-own-copy-of-the-data" class="level4">
 <h4 class="anchored" data-anchor-id="get-your-own-copy-of-the-data">Get your own copy of the data</h4>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Assuming you are in /fs/ess/PAS2700/users/$USER)</span></span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Assuming you are in /fs/ess/PAS2880/users/$USER)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> week04</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-rv</span> /fs/ess/PAS2700/share/garrigos_data .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>‘/fs/ess/PAS2700/share/garrigos_data’ -&gt; ‘./garrigos_data’
-‘/fs/ess/PAS2700/share/garrigos_data/meta’ -&gt; ‘./garrigos_data/meta’
-‘/fs/ess/PAS2700/share/garrigos_data/meta/metadata.tsv’ -&gt; ‘./garrigos_data/meta/metadata.tsv’
-‘/fs/ess/PAS2700/share/garrigos_data/ref’ -&gt; ‘./garrigos_data/ref’
-‘/fs/ess/PAS2700/share/garrigos_data/ref/GCF_016801865.2.gtf’ -&gt; ‘./garrigos_data/ref/GCF_016801865.2.gtf’
-‘/fs/ess/PAS2700/share/garrigos_data/ref/GCF_016801865.2.fna’ -&gt; ‘./garrigos_data/ref/GCF_016801865.2.fna’
-‘/fs/ess/PAS2700/share/garrigos_data/fastq’ -&gt; ‘./garrigos_data/fastq’
-‘/fs/ess/PAS2700/share/garrigos_data/fastq/ERR10802868_R2.fastq.gz’ -&gt; ‘./garrigos_data/fastq/ERR10802868_R2.fastq.gz’
-‘/fs/ess/PAS2700/share/garrigos_data/fastq/ERR10802863_R1.fastq.gz’ -&gt; ‘./garrigos_data/fastq/ERR10802863_R1.fastq.gz’
-‘/fs/ess/PAS2700/share/garrigos_data/fastq/ERR10802880_R2.fastq.gz’ -&gt; ‘./garrigos_data/fastq/ERR10802880_R2.fastq.gz’
-‘/fs/ess/PAS2700/share/garrigos_data/fastq/ERR10802880_R1.fastq.gz’ -&gt; ‘./garrigos_data/fastq/ERR10802880_R1.fastq.gz’
-‘/fs/ess/PAS2700/share/garrigos_data/fastq/ERR10802870_R1.fastq.gz’ -&gt; ‘./garrigos_data/fastq/ERR10802870_R1.fastq.gz’
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-rv</span> /fs/ess/PAS2880/share/garrigos_data .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>‘/fs/ess/PAS2880/share/garrigos_data’ -&gt; ‘./garrigos_data’
+‘/fs/ess/PAS2880/share/garrigos_data/meta’ -&gt; ‘./garrigos_data/meta’
+‘/fs/ess/PAS2880/share/garrigos_data/meta/metadata.tsv’ -&gt; ‘./garrigos_data/meta/metadata.tsv’
+‘/fs/ess/PAS2880/share/garrigos_data/ref’ -&gt; ‘./garrigos_data/ref’
+‘/fs/ess/PAS2880/share/garrigos_data/ref/GCF_016801865.2.gtf’ -&gt; ‘./garrigos_data/ref/GCF_016801865.2.gtf’
+‘/fs/ess/PAS2880/share/garrigos_data/ref/GCF_016801865.2.fna’ -&gt; ‘./garrigos_data/ref/GCF_016801865.2.fna’
+‘/fs/ess/PAS2880/share/garrigos_data/fastq’ -&gt; ‘./garrigos_data/fastq’
+‘/fs/ess/PAS2880/share/garrigos_data/fastq/ERR10802868_R2.fastq.gz’ -&gt; ‘./garrigos_data/fastq/ERR10802868_R2.fastq.gz’
+‘/fs/ess/PAS2880/share/garrigos_data/fastq/ERR10802863_R1.fastq.gz’ -&gt; ‘./garrigos_data/fastq/ERR10802863_R1.fastq.gz’
+‘/fs/ess/PAS2880/share/garrigos_data/fastq/ERR10802880_R2.fastq.gz’ -&gt; ‘./garrigos_data/fastq/ERR10802880_R2.fastq.gz’
+‘/fs/ess/PAS2880/share/garrigos_data/fastq/ERR10802880_R1.fastq.gz’ -&gt; ‘./garrigos_data/fastq/ERR10802880_R1.fastq.gz’
+‘/fs/ess/PAS2880/share/garrigos_data/fastq/ERR10802870_R1.fastq.gz’ -&gt; ‘./garrigos_data/fastq/ERR10802870_R1.fastq.gz’
 # [...output truncated...]</code></pre>
 <p>Take a look at the files you just copied with the <code>tree</code> command, a sort of recursive <code>ls</code> with simple tree-like output:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -C will add colors (not shown in the output below)</span></span>
@@ -491,10 +492,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><br></p>
 </section>
 </section>
-<section id="fastq-files-and-fastqc" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="fastq-files-and-fastqc"><span class="header-section-number">2</span> FASTQ files and FastQC</h2>
-<section id="the-fastq-format" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="the-fastq-format"><span class="header-section-number">2.1</span> The FASTQ format</h3>
+<section id="rna-seq-analysis-steps" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="rna-seq-analysis-steps"><span class="header-section-number">2</span> RNA-Seq analysis steps</h2>
+<p>TBA</p>
+<p><br></p>
+</section>
+<section id="fastq-files-and-fastqc" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="fastq-files-and-fastqc"><span class="header-section-number">3</span> FASTQ files and FastQC</h2>
+<section id="the-fastq-format" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="the-fastq-format"><span class="header-section-number">3.1</span> The FASTQ format</h3>
 <p>FASTQ is a very common output format of high-throughput sequencing machines. Like most genomic data files, these are plain text files. Each sequence that is read by the sequencer (i.e., each “read”) forms <strong>one FASTQ entry represented by four lines</strong>. The lines contain, respectively:</p>
 <ol type="1">
 <li>A header that starts with <code>@</code> and e.g.&nbsp;uniquely identifies the read</li>
@@ -574,8 +580,8 @@ FASTQ quality scores <em>(Click to expand)</em>
 </div>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="our-fastq-files" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="our-fastq-files"><span class="header-section-number">2.2</span> Our FASTQ files</h3>
+<section id="our-fastq-files" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="our-fastq-files"><span class="header-section-number">3.2</span> Our FASTQ files</h3>
 <p>Take a look at a file listing of your FASTQ files:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> garrigos_data/fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>total 941M
@@ -595,8 +601,8 @@ FASTQ quality scores <em>(Click to expand)</em>
 </ul>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="viewing-the-contents-of-fastq-files" class="level3" data-number="2.3">
-<h3 data-number="2.3" class="anchored" data-anchor-id="viewing-the-contents-of-fastq-files"><span class="header-section-number">2.3</span> Viewing the contents of FASTQ files</h3>
+<section id="viewing-the-contents-of-fastq-files" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="viewing-the-contents-of-fastq-files"><span class="header-section-number">3.3</span> Viewing the contents of FASTQ files</h3>
 <p>Next, try to take a peak inside one of these FASTQ files. Use <code>-n 8</code> with <code>head</code> to print the first 8 lines (2 reads):</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 8 garrigos_data/fastq/ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>�
@@ -686,8 +692,8 @@ NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 </section>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="fastqc" class="level3" data-number="2.4">
-<h3 data-number="2.4" class="anchored" data-anchor-id="fastqc"><span class="header-section-number">2.4</span> FastQC</h3>
+<section id="fastqc" class="level3" data-number="3.4">
+<h3 data-number="3.4" class="anchored" data-anchor-id="fastqc"><span class="header-section-number">3.4</span> FastQC</h3>
 <p>FastQC is a ubiquitous tool for <strong>quality control of FASTQ files</strong>. Running FastQC or a similar program is the first step in nearly any high-throughput sequencing project. FastQC is also a good introductory example of a tool with a command-line interface.</p>
 <p>For each FASTQ file, FastQC outputs an <strong>HTML file</strong> that you can open in your browser with about a dozen graphs showing different QC metrics. The most important one is the <em>per-base quality score</em> graph:</p>
 <div class="quarto-figure quarto-figure-center">

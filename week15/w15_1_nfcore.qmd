@@ -195,7 +195,7 @@ because we'll first interactively download the pipeline files.
 
 <details><summary>Code to create this Conda environment</summary>
 ```bash
-module load miniconda3/23.3.1-py310
+module load miniconda3/24.1.2-py310
 conda create -y -n nextflow -c bioconda nextflow=23.10.1 nf-core=2.13.1
 ```
 </details>
@@ -203,7 +203,7 @@ conda create -y -n nextflow -c bioconda nextflow=23.10.1 nf-core=2.13.1
 ```bash
 # [Paste this code into the run/run.sh script, then run it in the terminal]
 # Activate the Conda environment (or use mine: /fs/ess/PAS0471/jelmer/conda/nextflow)
-module load miniconda3/23.3.1-py310
+module load miniconda3/24.1.2-py310
 conda activate nextflow-23.10
 ```
 
@@ -243,7 +243,7 @@ First, we need to set the environment variable `NXF_SINGULARITY_CACHEDIR` to tel
 Nextflow where to store these containers^[
 Somewhat oddly, there is no command-line option available for this:
 we have to use this environment variable, also when running the pipeline.].
-Here, we will use a shared `PAS2700` dir that already has all the containers,
+Here, we will use a shared `PAS2880` dir that already has all the containers,
 to save some downloading time and storage space ---
 this took around 15 minutes to download.
 But when you run a pipeline for your own research,
@@ -252,7 +252,7 @@ you'll want to use a dir that you have permissions to write to.
 ```bash
 # [Paste this code into the run/run.sh script, then run it in the terminal]
 # Create an environment variable for the container dir
-export NXF_SINGULARITY_CACHEDIR=/fs/ess/PAS2700/containers
+export NXF_SINGULARITY_CACHEDIR=/fs/ess/PAS2880/containers
 ```
 
 Next, we'll run the `nf-core download` command to download the latest version
@@ -340,7 +340,7 @@ And we will need these outputs:
 # [Paste this into run/run.sh and then run it in the terminal]
 # Defining the pipeline outputs
 outdir=results/nfc-rnaseq
-workdir=/fs/scratch/PAS2700/week6/nfc-rnaseq/$USER
+workdir=/fs/scratch/PAS2880/week6/nfc-rnaseq/$USER
 
 # Defining the pipeline inputs
 samplesheet="$outdir"/nfc_samplesheet.csv
@@ -457,7 +457,7 @@ We'll keep this file as simple as possible, specifying only our "executor" progr
 # Create a config file for batch job submissions
 echo "
 process.executor='slurm'
-process.clusterOptions='--account=PAS2700'
+process.clusterOptions='--account=PAS2880'
 " > nextflow.config
 ```
 
@@ -587,7 +587,7 @@ Open your `scripts/nfc-rnaseq.sh` script and paste the following into it:
 
 ```bash
 #!/bin/bash
-#SBATCH --account=PAS2700
+#SBATCH --account=PAS2880
 #SBATCH --time=6:00:00
 #SBATCH --mail-type=END,FAIL
 #SBATCH --output=slurm-nfc_rnaseq-%j.out
@@ -597,7 +597,7 @@ set -euo pipefail
 WORKFLOW_DIR=software/nfc-rnaseq/3_14_0
 
 # Load the Nextflow Conda environment
-module load miniconda3/23.3.1-py310
+module load miniconda3/24.1.2-py310
 conda activate /fs/ess/PAS0471/jelmer/conda/nextflow
 export NXF_SINGULARITY_CACHEDIR=/fs/ess/PAS0471/containers
 
@@ -658,7 +658,7 @@ check that all variables have been assigned by prefacing the command with `echo`
 echo sbatch scripts/nfc-rnaseq.sh "$samplesheet" "$fasta" "$gtf" "$outdir" "$workdir"
 ```
 ```bash-out
-sbatch scripts/nfc-rnaseq.sh results/nfc-rnaseq/nfc_samplesheet.csv data/ref/GCF_016801865.2.fna data/ref/GCF_016801865.2.gtf results/nfc-rnaseq /fs/scratch/PAS2700/week6/nfc-rnaseq/jelmer
+sbatch scripts/nfc-rnaseq.sh results/nfc-rnaseq/nfc_samplesheet.csv data/ref/GCF_016801865.2.fna data/ref/GCF_016801865.2.gtf results/nfc-rnaseq /fs/scratch/PAS2880/week6/nfc-rnaseq/jelmer
 ```
 
 If so, you are ready to submit the script as a batch job:
@@ -677,11 +677,11 @@ Submitted batch job 27767854
 <details><summary>Not sure your `run.sh` script is complete, or getting errors? Click for its intended content.</summary>
 ```bash
 # Activate the Conda environment (or use mine: /fs/ess/PAS0471/jelmer/conda/nextflow)
-module load miniconda3/23.3.1-py310
+module load miniconda3/24.1.2-py310
 conda activate nextflow-23.10
 
 # Create an environment variable for the container dir
-export NXF_SINGULARITY_CACHEDIR=/fs/ess/PAS2700/containers
+export NXF_SINGULARITY_CACHEDIR=/fs/ess/PAS2880/containers
 
 # Download the nf-core rnaseq pipeline files
 nf-core download rnaseq \
@@ -694,7 +694,7 @@ nf-core download rnaseq \
 
 # Defining the pipeline outputs
 outdir=results/nfc-rnaseq
-workdir=/fs/scratch/PAS2700/week6/nfc-rnaseq/$USER
+workdir=/fs/scratch/PAS2880/week6/nfc-rnaseq/$USER
 
 # Defining the pipeline inputs
 samplesheet="$outdir"/nfc_samplesheet.csv
@@ -715,7 +715,7 @@ python3 software/nfc-rnaseq/3_14_0/bin/fastq_dir_to_samplesheet.py \
 # Create a config file for batch job submissions
 echo "
 process.executor='slurm'
-process.clusterOptions='--account=PAS2700'
+process.clusterOptions='--account=PAS2880'
 " > nextflow.config
 
 # Submit the script to run the pipeline as a batch job
@@ -822,7 +822,7 @@ Samplesheet:          results/nfc-rnaseq/nfc_samplesheet.csv
 Reference FASTA:      data/ref/GCF_016801865.2.fna
 Reference GTF:        data/ref/GCF_016801865.2.gtf
 Output dir:           results/nfc-rnaseq
-Nextflow workdir:     /fs/scratch/PAS2700/week6/nfc-rnaseq/jelmer
+Nextflow workdir:     /fs/scratch/PAS2880/week6/nfc-rnaseq/jelmer
 
 N E X T F L O W  ~  version 23.10.1
 WARN: It appears you have never run this project before -- Option `-resume` is ignored
@@ -921,7 +921,7 @@ or even just to take a closer look at what exactly the pipeline is running.
 - First, list the contents of the top-level work-dir:
 
   ```bash
-  ls /fs/scratch/PAS2700/week6/nfc-rnaseq/$USER
+  ls /fs/scratch/PAS2880/week6/nfc-rnaseq/$USER
   ```
   ```bash-out
   28  36  39  59  6e  b0  b7  c3  c9  collect-file  d5  d8  da  dd  e0  ec  ee  tmp
@@ -935,7 +935,7 @@ or even just to take a closer look at what exactly the pipeline is running.
   ```bash
   # (The full name of the `c1bb3e` dir is much longer, but these characters uniquely
   #  identify it, so we can use a *)
-  ls -a /fs/scratch/PAS2700/week6/nfc-rnaseq/jelmer/d8/c1bb3e*
+  ls -a /fs/scratch/PAS2880/week6/nfc-rnaseq/jelmer/d8/c1bb3e*
   ```
   ```bash-out
   .               .command.err  .command.run    ERR10802867_1_fastqc.html  ERR10802867_2_fastqc.html  ERR10802867_R1.fastq.gz  versions.yml
@@ -947,7 +947,7 @@ or even just to take a closer look at what exactly the pipeline is running.
   show the contents of the `.command.sh` file:
 
   ```bash
-  cat /fs/scratch/PAS2700/week6/nfc-rnaseq/jelmer/d8/c1bb3ea3e697573b4d5860308b2690/.command.sh 
+  cat /fs/scratch/PAS2880/week6/nfc-rnaseq/jelmer/d8/c1bb3ea3e697573b4d5860308b2690/.command.sh 
   ```
   ```bash-out
   #!/bin/bash -euo pipefail

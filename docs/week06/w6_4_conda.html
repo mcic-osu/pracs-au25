@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jelmer Poelstra">
-<meta name="dcterms.date" content="2025-09-30">
+<meta name="dcterms.date" content="2025-10-02">
 
-<title>PRACS25: data management – PRACS-AU25</title>
+<title>PRACS25: software at OSC – PRACS-AU25</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -379,22 +379,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
-  <li><a href="#managing-your-data-and-results" id="toc-managing-your-data-and-results" class="nav-link" data-scroll-target="#managing-your-data-and-results">Managing your data and results</a></li>
-  <li><a href="#sharing-your-data-results-and-code" id="toc-sharing-your-data-results-and-code" class="nav-link" data-scroll-target="#sharing-your-data-results-and-code">Sharing your data, results, and code</a></li>
-  <li><a href="#file-transfer-to-and-from-osc" id="toc-file-transfer-to-and-from-osc" class="nav-link" data-scroll-target="#file-transfer-to-and-from-osc">File transfer to and from OSC</a>
+  <li><a href="#conda-basics" id="toc-conda-basics" class="nav-link active" data-scroll-target="#conda-basics"><span class="header-section-number">1</span> Conda basics</a>
   <ul class="collapse">
-  <li><a href="#overview-of-options" id="toc-overview-of-options" class="nav-link" data-scroll-target="#overview-of-options">Overview of options</a></li>
-  <li><a href="#filezilla-a-gui-based-sftp-client" id="toc-filezilla-a-gui-based-sftp-client" class="nav-link" data-scroll-target="#filezilla-a-gui-based-sftp-client">FileZilla: a GUI-based SFTP client</a></li>
+  <li><a href="#activating-conda-environments" id="toc-activating-conda-environments" class="nav-link" data-scroll-target="#activating-conda-environments"><span class="header-section-number">1.1</span> Activating Conda environments</a></li>
+  <li><a href="#lines-to-add-to-your-shell-script" id="toc-lines-to-add-to-your-shell-script" class="nav-link" data-scroll-target="#lines-to-add-to-your-shell-script"><span class="header-section-number">1.2</span> Lines to add to your shell script</a></li>
   </ul></li>
-  <li><a href="#downloading-files-at-the-command-line" id="toc-downloading-files-at-the-command-line" class="nav-link" data-scroll-target="#downloading-files-at-the-command-line">Downloading files at the command line</a>
+  <li><a href="#creating-your-own-conda-environments" id="toc-creating-your-own-conda-environments" class="nav-link" data-scroll-target="#creating-your-own-conda-environments"><span class="header-section-number">2</span> Creating your own Conda environments</a>
   <ul class="collapse">
-  <li><a href="#wget" id="toc-wget" class="nav-link" data-scroll-target="#wget"><code>wget</code></a></li>
-  <li><a href="#other-genomic-downloads" id="toc-other-genomic-downloads" class="nav-link" data-scroll-target="#other-genomic-downloads">Other genomic downloads</a></li>
+  <li><a href="#one-time-conda-configuration" id="toc-one-time-conda-configuration" class="nav-link" data-scroll-target="#one-time-conda-configuration"><span class="header-section-number">2.1</span> One-time Conda configuration</a></li>
+  <li><a href="#example-creating-an-environment-for-trimgalore" id="toc-example-creating-an-environment-for-trimgalore" class="nav-link" data-scroll-target="#example-creating-an-environment-for-trimgalore"><span class="header-section-number">2.2</span> Example: Creating an environment for TrimGalore</a></li>
+  <li><a href="#finding-conda-installation-info-online" id="toc-finding-conda-installation-info-online" class="nav-link" data-scroll-target="#finding-conda-installation-info-online"><span class="header-section-number">2.3</span> Finding Conda installation info online</a></li>
+  <li><a href="#building-the-installation-command-from-the-online-info" id="toc-building-the-installation-command-from-the-online-info" class="nav-link" data-scroll-target="#building-the-installation-command-from-the-online-info"><span class="header-section-number">2.4</span> Building the installation command from the online info</a></li>
+  <li><a href="#organizing-your-conda-environments" id="toc-organizing-your-conda-environments" class="nav-link" data-scroll-target="#organizing-your-conda-environments"><span class="header-section-number">2.5</span> Organizing your Conda environments</a></li>
   </ul></li>
-  <li><a href="#file-permissions" id="toc-file-permissions" class="nav-link" data-scroll-target="#file-permissions">File permissions</a></li>
-  <li><a href="#using-symbolic-links" id="toc-using-symbolic-links" class="nav-link" data-scroll-target="#using-symbolic-links">Using symbolic links</a></li>
-  <li><a href="#check-file-integrity-with-checksums" id="toc-check-file-integrity-with-checksums" class="nav-link" data-scroll-target="#check-file-integrity-with-checksums">Check file integrity with checksums</a></li>
   </ul>
 </nav>
     </div>
@@ -403,8 +400,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Data transfer and management</h1>
-<p class="subtitle lead">Week 6 - part II</p>
+<h1 class="title">Software: Conda</h1>
+<p class="subtitle lead">Week 6 - at-home reading</p>
 </div>
 
 
@@ -421,7 +418,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 30, 2025</p>
+      <p class="date">October 2, 2025</p>
     </div>
   </div>
   
@@ -435,296 +432,118 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <hr>
 <p><br></p>
-<section id="overview" class="level2">
-<h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p><br></p>
-</section>
-<section id="managing-your-data-and-results" class="level2">
-<h2 class="anchored" data-anchor-id="managing-your-data-and-results">Managing your data and results</h2>
+<section id="conda-basics" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="conda-basics"><span class="header-section-number">1</span> Conda basics</h2>
+<p>Conda can create so-called <strong>environments</strong> in which you can install one or more software packages.</p>
+<p>As you’ll learn below, as long as a program is available in one of the online Conda repositories (and this is nearly always the case for open-source bioinformatics programs), then installing it:</p>
 <ul>
-<li>Keeping back-ups of raw data</li>
-<li>Project versus scratch dirs (and avoid your Home dir for research projects)</li>
+<li>Is quite straightforward;</li>
+<li>Is done with a procedure that is nearly identical regardless of the program you are installing;</li>
+<li>Doesn’t require admin privileges.</li>
 </ul>
-<p><br></p>
-</section>
-<section id="sharing-your-data-results-and-code" class="level2">
-<h2 class="anchored" data-anchor-id="sharing-your-data-results-and-code">Sharing your data, results, and code</h2>
-<ul>
-<li>Raw sequences to NCBI</li>
-<li>Some results can also go to NCBI, e.g.&nbsp;genome assemblies and annotations, GEO</li>
-<li>Other results to e.g.&nbsp;Dryad / Zenodo</li>
-<li>Scripts via GitHub</li>
-</ul>
-<p><br></p>
-</section>
-<section id="file-transfer-to-and-from-osc" class="level2">
-<h2 class="anchored" data-anchor-id="file-transfer-to-and-from-osc">File transfer to and from OSC</h2>
-<section id="overview-of-options" class="level3">
-<h3 class="anchored" data-anchor-id="overview-of-options">Overview of options</h3>
-<p>In week 1, you were shown that you can upload and download files from OSC in the OnDemand Files menu, but that’s only suitable for relatively small transfers. Here is a list of methods to transfer files between your computer and OSC:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 30%">
-<col style="width: 20%">
-<col style="width: 16%">
-<col style="width: 13%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Method</th>
-<th>Transfer size</th>
-<th>CLI or GUI</th>
-<th>Ease of use</th>
-<th>Flexibility/options</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>OnDemand Files menu</strong></td>
-<td>smaller (&lt;1GB)</td>
-<td>GUI</td>
-<td>Easy</td>
-<td>Limited</td>
-</tr>
-<tr class="even">
-<td><strong>Remote transfer commands</strong></td>
-<td>smaller (&lt;1GB)</td>
-<td>CLI</td>
-<td>Moderate</td>
-<td>Extensive</td>
-</tr>
-<tr class="odd">
-<td><strong>SFTP</strong></td>
-<td>larger (&gt;1GB)</td>
-<td>Either</td>
-<td>Moderate</td>
-<td>Extensive</td>
-</tr>
-<tr class="even">
-<td><strong>Globus</strong></td>
-<td>larger (&gt;1GB)</td>
-<td>GUI</td>
-<td>Moderate</td>
-<td>Extensive</td>
-</tr>
-</tbody>
-</table>
-<div class="legend2">
-<p>For more details, see the <a href="#more-details-on-file-transfer-to-and-from-osc">self-study section at the bottom of this page</a>.</p>
-</div>
+<p>A Conda environment is “merely” a directory that includes the executable (binary) files for the program(s) in question. I have a collection of Conda environments that anyone can use, and you can see a list of these environments as follows:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /fs/ess/PAS0471/jelmer/conda</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>agat           cactus         fastqc             mbarq             parsnp                   racon             smap-4.6.5
+alv            cgmlst         fastq-dl           medaka            perl                     ragtag-2.1.0      smartdenovo-env
+amber          chopper        feba               metabat2          phylofisher              rascaf            snippy-4.6.0
+amrfinderplus  cialign        filtlong           metaphlan         picard                   ratatosk          snpeff
+antismash      clinker        flye               metawrap          pilon-1.24               rcorrector-1.0.5  sortmerna-env
+aswcli         clipkit        gcta               minibusco         pirnn                    repeatmasker      sourmash
+bactopia3      clonalframeml  geofetch           mitofinder        pkgs                     repeatmodeler     spades
+bakta          cogclassifier  gffread            mitohifi          plasmidfinder-2.1.6      resfinder         sra-tools
+base           compleasm      gget               mlst              plink2                   rnaquast-2.2.1    star
+bbmap          curl           gubbins            mlst-cge          plottree                 roary-3.13        subread
+bcftools       cutadapt       hclust2            mlst_check        pmprimer                 r-rnaseq          taxonkit
+bedops         deeploc        hisat2             mobsuite          pod5                     r_tree            tgsgapcloser
+bedtools       deeptmhmm      hmmer              multiqc           porechop                 sabre-1.0         tiara
+bioawk         diamond        humann             mummer4           prokka                   salmon            transdecoder-5.5.0
+bioconvert     dorado         inspector          muscle            protrac                  samtools          treetime
+bit            dwgsim         interproscan-5.55  nanoplot          pseudofinder             scoary            trimgalore
+blast          eggnogmapper   iqtree             ncbi-datasets     purge_dups-1.2.6         seqkit            trimmomatic-0.39
+bowtie1        emboss         kofamscan          nextdenovo-env    pycoqc                   seqtk             unicycler
+bowtie2        emu            kraken2            nextflow          qiime2-amplicon-2024.10  shellcheck        vcftools
+bracken        entrez-direct  kraken-biom        nextflow-24.10.6  qualimap-env             shoot             virema
+busco          evigene        krona              orthofinder       quarto                   signalp-6.0       virsorter
+bwa            fast5tofastq   lissero            orthofisher       quast                    skim2mito         virulencefinder
+cabana         fastp          mafft              panaroo           quickmerge-env           smap              vsearch</code></pre>
+<p>This is organized similarly to the Lmod modules in that there’s generally <strong>one separate environment for one program</strong>, and the environment is named after that program.</p>
 <hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="filezilla-a-gui-based-sftp-client" class="level3">
-<h3 class="anchored" data-anchor-id="filezilla-a-gui-based-sftp-client">FileZilla: a GUI-based SFTP client</h3>
-<p>Here, we’ll go over what is probably overall the most convenient and versatile way to transfer files to and from OSC, since it works for transfers of any size, and is easy and quick: <strong>file transfer with a GUI-based SFTP client</strong>. There are a number of such programs, but I chose to show you <strong>FileZilla</strong> because it works on all operating systems<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
-<ul>
-<li><p>Go to the <a href="https://filezilla-project.org/download.php?type=client">FileZilla download page</a> — it should automatically display a big green download button for your operating system: click that and install and open the program.</p></li>
-<li><p>To connect to OSC, find the Site Manager: click <code>File</code> in the top menu bar and then <code>Site Manager</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. In the Site Manager:</p>
-<ul>
-<li>Protocol: select “SFTP - SSH File Transfer Protocol”.</li>
-<li>Host: type <code>sftp.osc.edu</code> (and you can leave the Port box empty).</li>
-<li>Logon Type: Make sure “Normal” is selected.</li>
-<li>User: Type you OSC user name.</li>
-<li>Password: Type or copy your OSC password.</li>
-<li>Click the “Connect” button at the bottom to connect to OSC.</li>
-</ul></li>
-</ul>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../img/filezilla_connect.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
-</figure>
-</div>
-<ul>
-<li>Once connected, your main screen is split with a local file explorer on the left, and a remote file explorer on the right:</li>
-</ul>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../img/split_screen.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%"></p>
-</figure>
-</div>
-<ul>
-<li><p>Transferring dirs and files in either direction is as simple as dragging and dropping them to the other side!</p></li>
-<li><p>Your default location at OSC is your home dir in <code>/users/</code>, but you can type a path in the top bar to e.g.&nbsp;go to <code>/fs/ess/PAS2880/users</code>:</p></li>
-</ul>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../img/proj_dir.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
-</figure>
-</div>
-<p><br></p>
-</section>
-</section>
-<section id="downloading-files-at-the-command-line" class="level2">
-<h2 class="anchored" data-anchor-id="downloading-files-at-the-command-line">Downloading files at the command line</h2>
-<p>When you need to get large files from public repositories like NCBI (e.g.&nbsp;reference genome files, raw reads from the SRA), I would recommend not to download these to your own computer and then transfer them to OSC, but to download them directly to OSC using commands.</p>
-<section id="wget" class="level3">
-<h3 class="anchored" data-anchor-id="wget"><code>wget</code></h3>
-<p>You can download files from any URL that will allow you using the <code>wget</code> command. It has many options, but basic usage is quite simple:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This will download the file at the URL to your current working dir</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="op">&lt;</span>URL<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>As an example, say that we want to download the reference genome FASTA and GTF files for <em>Culex pipiens</em>, the focal species of the Garrigos et al.&nbsp;RNA-seq data set that we’ve been working with. The files for that genome can be found at this <a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/">NCBI FTP webpage</a>.</p>
-<p>You can right-click on any of the files and then click “Copy Link Address” (or something similar, depending on your browser) — let’s copy the URL to the assembly FASTA (<code>.fna.gz</code>) file. Then type <code>wget</code> and <kbd>Space</kbd> in your terminal and paste the URL:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>--2024-04-13 13:33:16--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
-Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.12, 130.14.250.11, 2607:f220:41e:250::12, ...
-Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.12|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 172895917 (165M) [application/x-gzip]
-Saving to: ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’
-
-100%[=====================================================================================================================&gt;] 172,895,917 51.7MB/s   in 3.2s   
-
-2024-04-13 13:33:20 (51.7 MB/s) - ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’ saved [172895917/172895917]</code></pre>
-<p>Let’s list our downloaded file:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>-rw-r--r--  1 jelmer PAS0471 165M Aug  5  2022 GCA_016801865.2_TS_CPP_V2_genomic.fna.gz</code></pre>
-<hr style="height:1pt; visibility:hidden;">
+<section id="activating-conda-environments" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="activating-conda-environments"><span class="header-section-number">1.1</span> Activating Conda environments</h3>
+<p>Before you can activate Conda environments, you always need to load OSC’s Miniconda module first, and we will load the most recent one:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load miniconda3/24.1.2-py310</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As mentioned above, these environments are (de)activated much like with the Lmod system. But while the term “load” is used for Lmod modules, the term <strong>“activate”</strong> is used for Conda environments — it means the same thing.</p>
+<p>Also like Lmod, there is a main command (<code>conda</code>) and several sub-commands (<code>deactivate</code>, <code>create</code>, <code>install</code>, <code>update</code>). For example, to activate an environment:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate /fs/ess/PAS0471/jelmer/conda/multiqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>(/fs/ess/PAS0471/jelmer/conda/multiqc) [jelmer@p0085 jelmer]$</code></pre>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Another commonly used downloading command is <code>curl</code>
+Conda environment indicator!
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><code>wget</code> and <code>curl</code> have similar functionality, so you don’t really need to learn to use both of them.</p>
+<p>When you have an active Conda environment, its name is displayed in front of your prompt, as depicted above with <code>(multiqc)</code>.</p>
+<p>Because the MultiQC environment you just loaded is not your own, the full path to the environment is shown (making the prompt rather long…). But when you load your own environment, only the name will be shown, like so:</p>
+<pre class="bash-out-solo"><code>(multiqc) [jelmer@p0085 jelmer]$</code></pre>
 </div>
 </div>
+<p>After you have activated the <em>MultiQC</em> environment, you should be able to use the program. To test this, simply run the <code>multiqc</code> command with the <code>--help</code> option:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> <span class="at">--help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code> /// MultiQC 🔍 | v1.17
+                                                                                              
+ Usage: multiqc [OPTIONS] [ANALYSIS DIRECTORY]
+ 
+ MultiQC aggregates results from bioinformatics analyses across many samples into a    
+ single report.                                                                        
+[...output truncated...]</code></pre>
 <hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="other-genomic-downloads" class="level3">
-<h3 class="anchored" data-anchor-id="other-genomic-downloads">Other genomic downloads</h3>
-<ul>
-<li><p>For reference genome downloads, NCBI also has a relatively new and very useful portal called <strong>“datasets”</strong> <a href="https://www.ncbi.nlm.nih.gov/datasets/docs/v2/reference-docs/command-line/datasets">that also includes a CLI tools of the same name</a>. This is especially useful if you want to download multiple or many genomes — for example, you can download all available genomes of a certain (say, bacterial) genus with a single command.</p></li>
-<li><p>For downloads from the Sequence Read Archive (SRA), which contains high-throughput sequencing reads, you can use tools like <a href="https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump">fasterq-dump</a> and <a href="https://github.com/rpetit3/fastq-dl">dl-fastq</a>. Also handy is the simple <a href="https://sra-explorer.info">SRA explorer website</a>, where you can enter an NCBI accession number and it will give you download links.</p></li>
-</ul>
-<p><br></p>
-</section>
-</section>
-<section id="file-permissions" class="level2">
-<h2 class="anchored" data-anchor-id="file-permissions">File permissions</h2>
-<p>File “permissions” are the types of things (e.g.&nbsp;reading, writing) that different groups of users (creator, group, anyone else) are permitted to do with files and dirs.</p>
-<p>There are a couple of reasons you may occasionally need to view and modify file permissions:</p>
-<ul>
-<li>You may want to make your data read-only</li>
-<li>You may need to share files with other users at OSC</li>
-</ul>
+<p>Unlike Lmod / <code>module load</code>, Conda will by default only keep <strong>a single environment active</strong>. Therefore, when you have one environment activate and then activate another. For example, after activating the TrimGalore environment, the MultiQC environment is no longer active:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate /fs/ess/PAS0471/jelmer/conda/trimgalore</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> <span class="at">--help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>bash: multiqc: command not found...</code></pre>
 <hr style="height:1pt; visibility:hidden;">
-<section id="viewing-file-permissions" class="level4">
-<h4 class="anchored" data-anchor-id="viewing-file-permissions">Viewing file permissions</h4>
-<p>To show file permissions, use <strong><code>ls</code></strong> with the <strong><code>-l</code></strong> (<em>long</em> format) option that we’ve seen before. The command below also uses the <strong><code>-a</code></strong> option to show all files, including hidden ones (and <strong><code>-h</code></strong> to show file sizes in human-readable format):</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../img/long-ls.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
-</figure>
-</div>
-<p>Here is an overview of the file permission notation in <code>ls -l</code> output:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../img/permissions.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:40.0%"></p>
-</figure>
-</div>
-<p>In the two lines above:</p>
-<ul>
-<li><p><strong><code>rwxrwxr-x</code> means:</strong><br>
-read + write + execute permissions for both the owner (first <code>rwx</code>) and the group (second <code>rwx</code>), and read + execute <strong>but not</strong> write permissions for others (<code>r-x</code> at the end).</p></li>
-<li><p><strong><code>rw-rw-r--</code> means:</strong><br>
-read + write <em>but not</em> execute permissions for both the owner (first <code>rw-</code>) and the group (second <code>rw-</code>), and only read permissions for others (<code>r--</code> at the end).</p></li>
-</ul>
-<p>Let’s create a file to play around with file permissions:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a test file</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> testfile.txt</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the default permissions</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>-rw-rw----+ 1 jelmer PAS2880 0 Mar  7 13:36 testfile.txt</code></pre>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="changing-file-permissions" class="level4">
-<h4 class="anchored" data-anchor-id="changing-file-permissions">Changing file permissions</h4>
-<p>This can be done in two different ways with the <code>chmod</code> command. Here, we’ll focus on the method with <code>=</code> (set permission to), <code>+</code> (add permission), and <code>-</code> (remove permission).</p>
-<p>For example, to add read (<code>r</code>) permissions for all (<code>a</code>):</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chmod &lt;who&gt;+&lt;permission-to-add&gt;:</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a+r testfile.txt</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>-rw-rw-r--+ 1 jelmer PAS0471 0 Mar  7 13:40 testfile.txt</code></pre>
-<p>To set read + write + execute (<code>rwx</code>) permissions for all (<code>a</code>):</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chmod &lt;who&gt;=&lt;permission-to-set&gt;`:</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a=rwx testfile.txt</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>-rwxrwxrwx+ 1 jelmer PAS2880 0 Mar  7 13:36 testfile.txt</code></pre>
-<p>To remove write (<code>w</code>) permissions for others (<code>o</code>):</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chmod &lt;who&gt;-&lt;permission-to-remove&gt;:</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> o-w testfile.txt</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>-rwxrwxr-x+ 1 jelmer PAS2880 0 Mar  7 13:36 testfile.txt</code></pre>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Alternative: changing file permissions with numbers <em>(Click to expand)</em>
+The <code>--stack</code> option does enable you having multiple Conda environments active <em>(Click to expand)</em>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>You can also use a series of 3 numbers (for user, group, and others) to set permissions, where each number can take on the following values:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Nr</th>
-<th>Permission</th>
-<th>Nr</th>
-<th>Permission</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>x</td>
-<td>5</td>
-<td>r + x</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>w</td>
-<td>6</td>
-<td>r + w</td>
-</tr>
-<tr class="odd">
-<td>4</td>
-<td>r</td>
-<td>7</td>
-<td>r + w + x</td>
-</tr>
-</tbody>
-</table>
-<p>For example, to set read + write + execute permissions for all:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 777 testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To set read + write + execute permissions for yourself, and only read permission for the group and others:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 744 file.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="1">
+<li><p>Activate the TrimGalore environment, if it isn’t already active:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate /fs/ess/PAS0471/jelmer/conda/trimgalore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>“Stack” the MultiQC environment:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate <span class="at">--stack</span> /fs/ess/PAS0471/jelmer/conda/multiqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Check that you can use both programs — output not shown, but both should successfully print help info:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> <span class="at">--help</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
 </div>
 </div>
 </div>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="making-your-data-read-only" class="level4">
-<h4 class="anchored" data-anchor-id="making-your-data-read-only">Making your data read-only</h4>
-<p>So, if you want to make your raw data (here: the files in the <code>data/fastq</code> dir) read-only, you can use:</p>
-<ul>
-<li><p>Set only read permissions for everyone:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a=r data/fastq/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p>Take away write permissions for yourself (no-one else should have it by default):</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u-w data/fastq/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-</ul>
+<section id="lines-to-add-to-your-shell-script" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="lines-to-add-to-your-shell-script"><span class="header-section-number">1.2</span> Lines to add to your shell script</h3>
+<p>Like for Lmod modules, you’ll have to load Conda environments in every shell session that you want to use them — they don’t automatically reload.</p>
+<p>Conda environments loaded in your interactive shell environment <em>do</em> “carry over” to the environment in which your script runs (even when you submit them to the Slurm queue with <code>sbatch</code>). However, it is good practice to always <em>include the necessary code to load/activate programs in your shell scripts:</em></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load software</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load miniconda3/24.1.2-py310</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate /fs/ess/PAS0471/jelmer/conda/multiqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -732,123 +551,194 @@ Alternative: changing file permissions with numbers <em>(Click to expand)</em>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Read/execute permissions for directories
+Perils of Conda environments inside scripts
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>One tricky and confusing aspect of file permissions is that <em>to list a directory’s content, you need execute permissions for the dir!</em> This is something to take into account when you want to grant others access to your project e.g.&nbsp;at OSC.</p>
-<p>To set execute permissions for everyone but <em>only for dirs</em> throughout a dir hierarchy, use an <code>X</code> (<strong>uppercase x</strong>):</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> <span class="at">-R</span> a+X my-dir</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Problems can occur when you have a Conda environment active in your interactive shell while you submit a script as a batch job that activates a different environment. Therefore, it is generally a good idea <strong>not to have any Conda environments active</strong> <strong>in your interactive shell when submitting batch jobs</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. To deactivate the currently active Conda environment, simply type <code>conda deactivate</code> without any arguments:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> deactivate   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<hr style="height:1pt; visibility:hidden;">
-<p>After running one or both of the above commands, let’s check the permissions:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> data/fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>total 0
--r--r--r--+ 1 jelmer PAS0471 0 Mar  7 13:41 sample001_R1.fastq
--r--r--r--+ 1 jelmer PAS0471 0 Mar  7 13:41 sample001_R2.fastq
--r--r--r--+ 1 jelmer PAS0471 0 Mar  7 13:41 sample002_R1.fastq
--r--r--r--+ 1 jelmer PAS0471 0 Mar  7 13:41 sample002_R2.fastq
-# [...output truncated...]</code></pre>
-<p>What happens when we try to remove write-protected files?</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> data/fastq/<span class="pp">*</span>fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>rm: remove write-protected regular empty file ‘data/fastq/sample001_R1.fastq’?</code></pre>
-<p>You’ll be prompted for every file! If you answer <code>y</code> (yes), you can still remove them. (But note that people other than the file’s owners cannot overried file permissions; only if they are system administrators.)</p>
 <p><br></p>
 </section>
 </section>
-<section id="using-symbolic-links" class="level2">
-<h2 class="anchored" data-anchor-id="using-symbolic-links">Using symbolic links</h2>
-<p>For example to use files across projects - recall week 2 - RBA</p>
-<section id="single-files" class="level4">
-<h4 class="anchored" data-anchor-id="single-files">Single files</h4>
-<p>A symbolic (or soft) links only links to the <em>path</em> of the original file, whereas a hard link directly links to the <em>contents</em> of the original file. Note that modifying a file via either a hard or soft link <em>will</em> modify the original file.</p>
-<p>Create a <em>symlink</em> to a file using <code>ln -s &lt;source-file&gt; [&lt;link-name&gt;]</code>:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Only provide source =&gt; create link of the same name in the wd:</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /fs/ess/PAS2880/share/garrigos/data/fastq/ERR10802863_R1.fastq.gz</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The link can also be given an arbitrary name/path:</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /fs/ess/PAS2880/share/garrigos/data/fastq/ERR10802863_R1.fastq.gz shared-fastq.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="creating-your-own-conda-environments" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="creating-your-own-conda-environments"><span class="header-section-number">2</span> Creating your own Conda environments</h2>
+<section id="one-time-conda-configuration" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="one-time-conda-configuration"><span class="header-section-number">2.1</span> One-time Conda configuration</h3>
+<p>Before you can create our own environments, you first have to do some one-time configuration<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. The configuration will set the <strong>Conda “channels”</strong> (basically, software repositories) that we want to use when we install programs, including the relative priorities among channels (since one program may be available from multiple channels).</p>
+<p>We can do this configuration with the <code>config</code> sub-command — run the following in your shell:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--add</span> channels defaults     <span class="co"># Added first =&gt; lowest priority</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--add</span> channels bioconda</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--add</span> channels conda-forge  <span class="co"># Added last =&gt; highest priority</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Let’s check whether the configuration was successfully saved:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--get</span> channels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>--add channels 'defaults'   # lowest priority
+--add channels 'bioconda'
+--add channels 'conda-forge'   # highest priority</code></pre>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="example-creating-an-environment-for-trimgalore" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="example-creating-an-environment-for-trimgalore"><span class="header-section-number">2.2</span> Example: Creating an environment for TrimGalore</h3>
+<p>We will now create a Conda environment with the program TrimGalore installed, which you used in last week’s exercises, and which does not have a system-wide installation at OSC. Here is the command to all at once create a new Conda environment and install TrimGalore into that environment:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this - we'll modify this a bit below]</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-y</span> <span class="at">-n</span> trim-galore <span class="at">-c</span> bioconda trim-galore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Let’s break that command down:</p>
+<ul>
+<li><strong><code>create</code></strong> is the Conda sub-command to create a new environment.</li>
+<li>When adding <strong><code>-y</code></strong>, Conda will not ask us for confirmation to install.</li>
+<li>Following the <strong><code>-n</code></strong> option, you can specify the <em>name</em> you would like the environment to have: we used <code>trim-galore</code>. You can use whatever name you like for the environment, but a descriptive yet concise name is a good idea. For single-program environments, it makes sense to simply name it after the program.</li>
+<li>The <strong><code>-c</code></strong> option is to specify a “channel” (repository) from which to install, here <code>bioconda</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</li>
+<li>The <strong><code>trim-galore</code></strong> argument at the end of the line simply tells Conda to install the package of that name.</li>
+</ul>
+<hr style="height:1pt; visibility:hidden;">
+<p>By default, Conda will install the <strong>latest available version</strong> of a program. If you create an entirely new environment for a program, like we’re doing here, that default should always apply — but if you’re installing into an environment that already contains programs, it’s <em>possible</em> that due to compatibility issues, it will install a different version.</p>
+<p>If you want to be explicit about the version you want to install, add the version number after <strong><code>=</code></strong> following the package name, and you may then also want to include that version number in the Conda environment’s name — try this:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-y</span> <span class="at">-n</span> trim-galore-0.6.10 <span class="at">-c</span> bioconda trim-galore=0.6.10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Collecting package metadata (current_repodata.json): done  
+Solving environment: done
+# [...truncated...]</code></pre>
+<p>There should be a lot of output, with many packages that are being downloaded (these are all “dependencies” of TrimGalore), but if it works, you should see this before you get your prompt back:</p>
+<pre class="bash-out-solo"><code>Downloading and Extracting Packages
+
+Preparing transaction: done
+Verifying transaction: done
+Executing transaction: done                                                                                                                   
+#                        
+# To activate this environment, use                          
+#
+#     $ conda activate trim-galore-0.6.10                          
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate</code></pre>
+<p>Now, you should be able to activate the environment (using just its name – see the box below):</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate trim-galore-0.6.10  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Let’s test if we can run TrimGalore — note, the command is <code>trim_galore</code>:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code> USAGE:
+
+trim_galore [options] &lt;filename(s)&gt;
+
+-h/--help               Print this help message and exits.
+# [...truncated...]</code></pre>
+<hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Use an absolute path to refer to the source file when creating links
+Specifying the full path to the environment dir <em>(Click to expand)</em>
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>At least at OSC, you have to <strong>use an absolute path for the source file(s)</strong>, or the link will not work. The <code>$PWD</code> environment variable, which contains your current working directory can come in handy to do so:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Fictional example, don't run this)</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> <span class="va">$PWD</span>/shared-scripts/align.sh project1/scripts/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You may have noticed above that we merely gave the environment a <em>name</em> (<code>trim-galore</code> or <code>trim-galore-0.6.10</code>), and did not tell it <em>where</em> to put this environment. Similarly, we were able to activate the environment with just its name. Conda assigns a <strong>personal default directory for its environments</strong>, somewhere in your Home directory.</p>
+<p>You can install environments in a different location with the <code>-p</code> (instead of <code>-n</code>) option — for example:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this]</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-y</span> <span class="at">-p</span> /fs/scratch/PAS2880/<span class="va">$USER</span>/conda/trim-galore <span class="at">-c</span> bioconda trim-galore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>And when you want to load someone else’s Conda environments, you’ll always have to specify the full path to environment’s dir, like you did when loading one of my Conda environments above.</p>
+</div>
 </div>
 </div>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="multiple-files" class="level4">
-<h4 class="anchored" data-anchor-id="multiple-files">Multiple files</h4>
-<p>Link to multiple files in a directory at once:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Fictional example, don't run this)</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> <span class="va">$PWD</span>/shared_scripts/<span class="pp">*</span> project1/scripts/ </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Link to a directory:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Fictional example, don't run this)</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> <span class="va">$PWD</span>/shared_scripts/ project1/scripts/</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> <span class="va">$PWD</span>/shared_scripts/ project1/scripts/ln-shared-scripts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
+<section id="finding-conda-installation-info-online" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="finding-conda-installation-info-online"><span class="header-section-number">2.3</span> Finding Conda installation info online</h3>
+<p>Minor variations on the <code>conda create</code> command above can be used to install almost any program for which a Conda package is available, which is the vast majority of open-source bioinformatics programs!</p>
+<p>However, you may wonder how you would know:</p>
+<ul>
+<li>Whether the program is available and what the name of its Conda package is</li>
+<li>Which Conda channel we should use</li>
+<li>Which versions are available</li>
+</ul>
+<p>To find this out, my strategy is to simply Google the program name together with “conda”, e.g.&nbsp;“cutadapt conda” if I wanted to install the Cutadapt program. Let’s see that in action:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/conda_google.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%"></p>
+</figure>
+</div>
+<p>Click on that first link (in my experience, it is always the first Google hit):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/conda_website.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%"></p>
+</figure>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="building-the-installation-command-from-the-online-info" class="level3" data-number="2.4">
+<h3 data-number="2.4" class="anchored" data-anchor-id="building-the-installation-command-from-the-online-info"><span class="header-section-number">2.4</span> Building the installation command from the online info</h3>
+<p>You can take the top of the two example installation commands as a template, here: <code>conda install -c bioconda cutadapt</code>. You may notice the <code>install</code> subcommand, which we haven’t yet seen. This would install Cutadapt into <em>the currently activated Conda environment</em>. Since our strategy here is to create a separate environment for each program, just installing a program into whatever environment is currently active is not a great idea.</p>
+<p>You <em>can</em> use the <code>install</code> command with a new environment, but then you would first have to create an “empty” environment, and <em>then</em> run the install command. However, we saw above that we can do all of this in a single command. To build this create-plus-install command, all we need to do is replace <code>install</code> in the example command on the Conda website by <code>create -y -n &lt;env-name&gt;</code>. Then, our full command (without version specification) will be:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this - example command]</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-y</span> <span class="at">-n</span> cutadapt <span class="at">-c</span> bioconda cutadapt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To see which <strong>version</strong> of the software will be installed by default, and to see which older versions are available:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/conda_website_version.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+<p>For almost any other program, you can use the exact same procedure to find the Conda package and install it!</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Be careful not to remove source files!
+More Conda commands to manage your environments <em>(Click to expand)</em>
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Be careful when linking to <em>directories</em>: you are creating a <strong>point of entry to the original dir</strong>. Therefore, even if you enter via the symlink, you are interacting with the original files.</p>
-<p>This means that a command like the following would remove the original directory!</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> symlink-to-dir</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Instead, use <code>rm symlink-to-dir</code> (the link itself is a file, not a dir, so you don’t need <code>-r</code>!) or <code>unlink symlink-to-dir</code> to only remove the link.</p>
+<ul>
+<li><p>Remove an environment entirely:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env remove <span class="at">-n</span> cutadapt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>List all your conda environments:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>List all packages (programs) installed in an environment — due to dependencies, this can be a long list, even if you only actively installed one program:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> list <span class="at">-p</span> /fs/ess/PAS0471/jelmer/conda/multiqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Export a plain-text “YAML” file that contains the instructions to recreate your currently-active environment (useful for reproducibility!)</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env export <span class="op">&gt;</span> my_env.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>And you can use the following to create a Conda environment from such a YAML file:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env create <span class="at">-n</span> my_env <span class="at">--force</span> <span class="at">--file</span> my_env.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
 </div>
 </div>
+</div>
+<hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="exercise-creating-symbolic-links" class="level4 exercise">
-<h4 class="anchored" data-anchor-id="exercise-creating-symbolic-links"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Creating symbolic links</h4>
+<section id="organizing-your-conda-environments" class="level3" data-number="2.5">
+<h3 data-number="2.5" class="anchored" data-anchor-id="organizing-your-conda-environments"><span class="header-section-number">2.5</span> Organizing your Conda environments</h3>
+<p>There are two reasonable alternative way to organize your Conda environments:</p>
 <ul>
-<li><p>Create a symbolic link in your <code>$HOME</code> dir that points to your personal dir in the project dir (<code>/fs/ess/PAS2880/users/$USER</code>).</p>
-<p>If you don’t provide a name for the link, it will be your username (why?), which is not particularly informative about its destination. Therefore, give it a name that makes sense to you, like <code>PLNTPTH6193-SP24</code> or <code>pracs-sp24</code>.</p></li>
-</ul>
-<details>
-<summary>
-Click for the solution
-</summary>
-<div class="sourceCode" id="cb28"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /fs/ess/PAS1855/users/<span class="va">$USER</span> ~/PLNTPTH6193-SP24</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<li><strong>Have one environment per program</strong> (my preference)
 <ul>
-<li>What would happen if you do <code>rm -rf ~/PLNTPTH8300-SP21</code>? Don’t try this.</li>
+<li>Easier to keep an overview of what you have installed</li>
+<li>No need to reinstall the same program across different projects</li>
+<li>Less risk of running into problems with your environment due to mutually incompatible software and complicated dependency situations</li>
+</ul></li>
+<li><strong>Have one environment per research project</strong>
+<ul>
+<li>You just need to activate that one environment when you’re working on your project.</li>
+<li>Easier when you need to share your entire project with someone else (or yourself) on a different (super)computer.</li>
+</ul></li>
 </ul>
-<details>
-<summary>
-Click for the solution
-</summary>
-<p>The content of the original dir will be removed.</p>
-</details>
-</section>
-<p><br></p>
-</section>
-<section id="check-file-integrity-with-checksums" class="level2">
-<h2 class="anchored" data-anchor-id="check-file-integrity-with-checksums">Check file integrity with checksums</h2>
-<p>TBA</p>
+<p>Even though it might seem easier, a third alternative, to simply install all programs across all projects in one single environment, is <em>not</em> recommended. This doesn’t benefit reproducibility, and your environment is likely to stop functioning properly sooner or later.</p>
 
 
+</section>
 </section>
 
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p> And has a more intuitive user interface than CyberDuck, another very commonly used program that works both on Mac and Windows.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p> There is a also an icon in the far top-left to access this menu. Additionally, there is a “Quickconnect” bar but I’ve not managed to connect to OSC with that.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p> Unless you first deactivate any active environments in your script.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>That is, these settings will be saved somewhere in your OSC home directory, and you never have to set them again unless you need to make changes.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p> Given that you’ve done some config above, this is not always necessary, but it can be good to be explicit.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -296,18 +296,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bonus--overviews">    
         <li class="dropdown-header">OPTIONAL SELF-STUDY MATERIAL</li>
-        <li class="dropdown-header">A deeper dive into Unix data tools</li>
+        <li class="dropdown-header">A deeper dive into Unix data tools (TBA)</li>
         <li>
-    <a class="dropdown-item" href="../week05/w5_3_bonus.html">
+    <a class="dropdown-item" href="../ref/adv-git.html">
  <span class="dropdown-text">Advanced Git (wk4)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../week05/w5_3_bonus.html">
- <span class="dropdown-text">Advanced Unix shell (wk5)</span></a>
+    <a class="dropdown-item" href="../ref/adv-shell.html">
+ <span class="dropdown-text">Advanced Unix shell: <code>while</code> loops and more (wk5)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../week06/w6_4_bonus_ssh.html">
- <span class="dropdown-text">OSC SSH connections (wk6)</span></a>
+    <a class="dropdown-item" href="../ref/ssh.html">
+ <span class="dropdown-text">Connecting to OSC through SSH (wk6)</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../ref/file-transfer.html">
@@ -448,20 +448,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="setting-up">Setting up</h3>
 <ul>
 <li><p>Create and move into a dir for these exercises:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># You should be in /fs/ess/PAS2700/users/$USER</span></span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># You should be in /fs/ess/PAS2880/users/$USER</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> week06/exercises</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> week06/exercises</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Create dirs for primary scripts and for a runner script, the create the runner script and open it:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> scripts run</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> run/run.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Copy the primary scripts:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-v</span> /fs/ess/PAS2700/share/exercises/week6/scripts/<span class="pp">*</span> scripts/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>‘/fs/ess/PAS2700/share/exercises/week6/scripts/fastqc.sh’ -&gt; ‘scripts/fastqc.sh’
-‘/fs/ess/PAS2700/share/exercises/week6/scripts/featurecounts.sh’ -&gt; ‘scripts/featurecounts.sh’
-‘/fs/ess/PAS2700/share/exercises/week6/scripts/multiqc.sh’ -&gt; ‘scripts/multiqc.sh’
-‘/fs/ess/PAS2700/share/exercises/week6/scripts/star_align.sh’ -&gt; ‘scripts/star_align.sh’
-‘/fs/ess/PAS2700/share/exercises/week6/scripts/star_index.sh’ -&gt; ‘scripts/star_index.sh’
-‘/fs/ess/PAS2700/share/exercises/week6/scripts/trimgalore.sh’ -&gt; ‘scripts/trimgalore.sh’</code></pre></li>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-v</span> /fs/ess/PAS2880/share/exercises/week6/scripts/<span class="pp">*</span> scripts/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>‘/fs/ess/PAS2880/share/exercises/week6/scripts/fastqc.sh’ -&gt; ‘scripts/fastqc.sh’
+‘/fs/ess/PAS2880/share/exercises/week6/scripts/featurecounts.sh’ -&gt; ‘scripts/featurecounts.sh’
+‘/fs/ess/PAS2880/share/exercises/week6/scripts/multiqc.sh’ -&gt; ‘scripts/multiqc.sh’
+‘/fs/ess/PAS2880/share/exercises/week6/scripts/star_align.sh’ -&gt; ‘scripts/star_align.sh’
+‘/fs/ess/PAS2880/share/exercises/week6/scripts/star_index.sh’ -&gt; ‘scripts/star_index.sh’
+‘/fs/ess/PAS2880/share/exercises/week6/scripts/trimgalore.sh’ -&gt; ‘scripts/trimgalore.sh’</code></pre></li>
 </ul>
 <p><br></p>
 </section>
@@ -478,7 +478,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># - A runner script to run a simple RNA-seq analysis, creating a gene count table</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   from RNA-seq reads and a reference genome assembly and annotation.</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># - The steps are read QC and trimming, alignment, and quantification.</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># - The working dir is /fs/ess/PAS2700/users/jelmer/week06/exercises.</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># - The working dir is /fs/ess/PAS2880/users/jelmer/week06/exercises.</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># - I am working on the OSC Pitzer cluster.</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 0: setting up</span></span>
@@ -512,7 +512,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 Click to see the code of the <code>fastqc.sh</code> script
 </summary>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2700</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2880</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=FAIL</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-fastqc-%j.out</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
@@ -558,7 +558,7 @@ Click to see the code of the <code>fastqc.sh</code> script
 Click to see the code of the <code>trimgalore.sh</code> script
 </summary>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2700</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2880</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=8</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=FAIL</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-trimgalore-%j.out</span></span>
@@ -641,7 +641,7 @@ Click to see the code of the <code>trimgalore.sh</code> script
 Click to see the code of the <code>star_index.sh</code> script
 </summary>
 <div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2700</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2880</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=16</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=FAIL</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-star_index-%j.out</span></span>
@@ -716,7 +716,7 @@ Click to see the code of the <code>star_index.sh</code> script
 Click to see the code of the <code>star_align.sh</code> script
 </summary>
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2700</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2880</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=8</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=FAIL</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-star_align-%j.out</span></span>
@@ -806,7 +806,7 @@ Click to see the code of the <code>star_align.sh</code> script
 Click to see the code of the <code>featurecounts.sh</code> script
 </summary>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2700</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2880</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=8</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=FAIL</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-featurecounts-%j.out</span></span>
@@ -887,7 +887,7 @@ Click to see the code of the <code>featurecounts.sh</code> script
 Click to see the code of the <code>multiqc.sh</code> script
 </summary>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2700</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2880</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=FAIL</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-multiqc-%j.out</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
@@ -1463,7 +1463,7 @@ Complete final runner script <em>(click to expand)</em>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># - A runner script to run a simple RNA-seq analysis, creating a gene count table</span></span>
 <span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   from RNA-seq reads and a reference genome assembly and annotation.</span></span>
 <span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co"># - The steps are read QC and trimming, alignment, and quantification.</span></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co"># - The working dir is /fs/ess/PAS2700/users/jelmer/week06/exercises.</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co"># - The working dir is /fs/ess/PAS2880/users/jelmer/week06/exercises.</span></span>
 <span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co"># - I am working on the OSC Pitzer cluster.</span></span>
 <span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 0: setting up</span></span>

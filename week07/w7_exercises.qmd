@@ -15,7 +15,7 @@ number-sections: false
 - Create and move into a dir for the exercises:
 
   ```bash
-  # You should be in /fs/ess/PAS2700/users/$USER
+  # You should be in /fs/ess/PAS2880/users/$USER
   mkdir week05/exercises
   cd week05/exercises
   ```
@@ -29,7 +29,7 @@ number-sections: false
   ```
 
 You'll be using the Garrigos et al. FASTQ files again, which you should have in
-`/fs/ess/PAS2700/users/$USER/garrigos_data/fastq`.
+`/fs/ess/PAS2880/users/$USER/garrigos_data/fastq`.
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -63,7 +63,7 @@ cp -v ../class_slurm/scripts/fastqc.sh scripts
 
 ```bash
 #!/bin/bash
-#SBATCH --account=PAS2700
+#SBATCH --account=PAS2880
 #SBATCH --output=slurm-fastqc-%j.out
 #SBATCH --mail-type=END,FAIL
 
@@ -152,7 +152,7 @@ and save it as `scripts/trimgalore.sh`.
 set -euo pipefail
 
 # Load TrimGalore
-module load miniconda3/23.3.1-py310
+module load miniconda3/24.1.2-py310
 conda activate /fs/ess/PAS0471/jelmer/conda/trimgalore
 
 # Copy the placeholder variables
@@ -242,7 +242,7 @@ at least when you're using a "fresh" environment (there could be complicating
 factors if you already had other software in the same environment):
 
 ```bash
-module load miniconda3/23.3.1-py310
+module load miniconda3/24.1.2-py310
 conda create -y -n fastqc -c bioconda fastqc
 ```
 
@@ -270,7 +270,7 @@ FastQC v0.12.1
 Replace the line `module load fastqc` with:
 
 ```bash
-module load miniconda3/23.3.1-py310
+module load miniconda3/24.1.2-py310
 conda activate fastqc
 ```
 </details>
@@ -453,7 +453,7 @@ conda activate trim-galore-0.6.10
 
 <details><summary>2 - `#SBATCH` options</summary>
 ```bash
-#SBATCH --account=PAS2700
+#SBATCH --account=PAS2880
 #SBATCH --cpus-per-task=8
 #SBATCH --output=slurm-trimgalore-%j.out
 #SBATCH --mail-type=FAIL
@@ -510,7 +510,7 @@ mv slurm-trimgalore* results/trimgalore/logs
 <details><summary>Create a Nextflow + nf-core Conda environment</summary>
 
 ```bash
-module load miniconda3/23.3.1-py310
+module load miniconda3/24.1.2-py310
 conda create -y -n nextflow-23.10 -c bioconda nextflow=23.10.1 nf-core=2.13.1
 ```
 

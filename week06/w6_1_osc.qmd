@@ -4,7 +4,6 @@ subtitle: "Week 6 - part I"
 pagetitle: "PRACS25: OSC I"
 author: Jelmer Poelstra
 date: 2025-09-30
-number-sections: false
 editor_options: 
   chunk_output_type: console
 ---
@@ -13,23 +12,34 @@ editor_options:
 
 <br>
 
-In this short session, we will touch on some aspects of the Ohio Supercomputer Center (OSC)
-that we did not talk about during our initial OSC introduction in week 1 of this course.
+### Learning goals {-}
+
+In this short session, you will learn about some aspects of the Ohio Supercomputer
+Center (OSC) that we did not talk about during our initial OSC introduction in
+week 1 of this course:
+
+- OSC Project
+- Cores
+- File systems
+- Compute nodes
+
+In the next session, you will learn more about file transfer to and from OSC,
+and data management at OSC and beyond.
 
 <br>
 
 ## OSC Projects
 
-In this course, we are exclusively using the course's OSC Project `PAS2700`.
-When you use OSC for your own research project, you would use a different OSC Project,
-one that's likely either specific to a research project or grant,
-or that is your lab/PI's general use OSC Project.
+In this course, we are exclusively using the course's OSC Project `PAS2880`.
+When you use OSC for your own research project, you would use a different OSC Project.
+This would likely be specific to a research project or grant,
+or your lab/PI's general-use OSC Project.
 
 Generally, only PIs request OSC projects, and they typically manage them as well.
-OSC has [this page with more information on how to do so](https://www.osc.edu/supercomputing/support/account).
+OSC has [a webpage with more information on how to do so](https://www.osc.edu/supercomputing/support/account).
 Whoever manages an OSC Project can add both existing OSC users and new users to the Project.
-Anyone added to an OSC Project will have access to the project's directories,
-and will be able specify this Project when issuing compute node resource requests.
+Anyone added to an OSC Project will have access to its directories,
+and can use this Project when requesting compute node resources.
   
 ::: callout-note
 #### Billing
@@ -39,9 +49,9 @@ OSC will bill OSC Projects (not individual users), and only for the following tw
 - _**Compute node usage**_ per "core hour" (e.g. using 2 cores for 2 hours = 4 core hours)
 
 The prices for academic usage are quite low
-(see [this page for specifics](https://www.osc.edu/content/academic_fee_model_faq)),
-and at OSU, they are often covered at the department level so individual PIs
-often do not have to directly pay for this at all.
+(see [this page for specifics](https://www.osc.edu/content/academic_fee_model_faq)).
+At OSU, they are often covered at the college or department level,
+so individual PIs typically do not have to directly pay for OSC usage at all.
 :::
 
 <br>
@@ -65,7 +75,7 @@ But I omitted a fourth "level" in this hierarchy:
 
 ## File systems
 
-Let's expand our earlier list of file systems, and look at this table in a bit more detail:
+Here is an expanded table with details about OSC's file systems:
 
 | File system   | Located within        | Quota                 | Backed up?    | Auto-purged?          | One for each... |
 |---------------|-----------------------|-----------------------|---------------|-----------------------|-----------------|
@@ -76,28 +86,31 @@ Let's expand our earlier list of file systems, and look at this table in a bit m
 
 <hr style="height:1pt; visibility:hidden;" />
 
-We've been working in the "Project dir" (`/fs/ess/`) for this course's
-OSC project `PAS2700`.
 When you use OSC for your own research project with a different OSC Project,
-I would recommend that you also **work mostly in the Project (`/fs/ess/`) dir**,
-which offers backed up, permanent and flexible amounts of storage.
+I would recommend that you **work mostly in the Project (`/fs/ess/`) dir**,
+which offers backed-up, permanent storage with flexible quota.
 
-One other hand, Scratch dirs are temporary and not backed up,
-while the storage space of Home dirs is limited and cannot be expanded^[
-And file sharing / collaborating is also a bit more difficult with home dirs.].
-Compute storage space is linked to compute jobs and extremely fleeting:
-as soon as the compute "job" in question has stopped, these files will be deleted.
-So when _are_ non-Project file systems useful?
+This is because each of the other file systems has certain drawbacks:
 
-- Your **Home** dir can e.g. be useful for files that you use across projects, like some software.
+- Scratch dirs (`/fs/scratch`) are temporary and not backed up.
+- The storage space of Home dirs (`/users/`) is limited and cannot be expanded,
+  and file sharing / collaborating is also more difficult with Home dirs.
+- Compute storage space (`$TMPDIR`) is linked to compute jobs and extremely fleeting:
+  as soon as the compute "job" in question has stopped, these files will be deleted.
+
+So when _are_ these other file systems useful?
+
+- Your **Home** dir can e.g. be useful for files that you use across projects,
+  like some software.
 - **Scratch** has the advantages of having _effectively unlimited_ space and
   much _faster_ data read and write ("I/O") speed than Home and Project space.
-  It therefore regularly makes sense to run analyses on Scratch, and copy over files
-  that you will continue to need.
+  Especially if you are working with large datasets,
+  tt therefore regularly makes sense to run analyses on Scratch,
+  and then copy specific files over the the Project dirs.
 - **Compute** storage has even faster I/O so can be useful for very I/O-intensive jobs ---
   but using it requires some extra code in your script^[
   Copying of files back-and-forth, and making sure your results are not lost upon some kind of failure.]
-  and for better or worse, I personally end up using this very rarely.
+  and I personally end up using this very rarely.
 
 ::: {.callout-note}
 #### Accessing back-ups
@@ -118,17 +131,18 @@ in the exact same way regardless of which cluster you have connected to.
 
 Compute nodes come in different shapes and sizes:
 
-- **"Standard nodes"** are by far the most numerous (e.g., Owens has 648 and Pitzer has 564)
-  and even those vary in size, from 28 cores per node (Owens) to 48 cores per node
-  (the "expansion" part of Pitzer).
-- Some examples of **other types of nodes** are nodes with extra memory (`largemem` and `hugemem`)
+- **"Standard nodes"** are by far the most numerous (e.g., Pitzer has 564)
+  and even those vary in size, e.g. from 40-48 cores per node on Pitzer.
+
+- **Other types of nodes** include those with extra memory
+  (`largemem` and `hugemem`),
   and nodes that provide access to GPUs (Graphical Processing Units) rather than CPUs.
 
 Standard nodes are used by default and these will serve you well for the majority
 of omics analysis.
 But you may occasionally need a different type of node, such as for genome or transcriptome
 assembly (you'll need need nodes with a lot of memory) or Oxford Nanopore sequence data
-base-calling (you'll need GPUs).
+base-calling (GPU nodes).
 
 ::: {.callout-caution}
 #### Memory versus storage
@@ -140,32 +154,30 @@ Genomics programs sometimes load all the input data from disk into memory to
 allow for fast access, or they will hold a huge assembly graph in memory,
 and therefore may need a lot of memory as well.
 
-Don't confuse memory with file storage, the data that is on disk,
-some of which may have been unused for years.
+Don't confuse memory with file storage, the data that is on disk.
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
-### Using compute nodes
+#### Using compute nodes
 
 You can use compute nodes by putting in a request for resources,
 such as the number of nodes, cores, and for how long you will need them.
 These requests result in "**compute jobs**" (also simply called "jobs").
+Our VS Code sessions are an example of such compute jobs. 
 
 Because many different users are sending such requests all the time,
 there is software called a **job scheduler** (specifically, _Slurm_ in case of OSC)
 that considers each request and assigns the necessary resources to the job as they become available.
-We've already been running compute jobs by running VS Code via OnDemand,
-and we will talk about submitting scripts as "batch jobs" this week.
+
+Next week, you will learn about submitting scripts as "batch jobs" with Slurm commands.
 
 <br>
 
 ## Putting it together
 
-Let's take a look at the specs for Owens now that we understand a supercomputer's
+Let's take a look at the specs for Pitzer now that we understand a supercomputer's
 components a bit better:
 
-![](../img/owens_specs.png){fig-align="center" width="95%"}
+![Specs for the Pitzer cluster on OSC.](../img/pitzer_specs.png){fig-align="center" width="95%"}
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -174,9 +186,10 @@ components a bit better:
 
 - When you use OSC, it's good practice to **acknowledge and cite OSC** in your papers,
   see their [citation page](https://www.osc.edu/resources/getting_started/citation). 
-- For many questions such as if you have problems with your account,
-  have problems installing or using specific software,
-  or don't understand why your jobs keep failing, you can **email OSC at <oschelp@osc.edu>**.
+- For many questions,
+  such as if you have problems with your account or with installing or using specific software,
+  or don't understand why your jobs keep failing,
+  you can **email OSC at <oschelp@osc.edu>**.
   They are usually very quick to respond!
 :::
 

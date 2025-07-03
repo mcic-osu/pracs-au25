@@ -40,7 +40,7 @@ Let's get set up by:
   (since you'll keep using this data this and next week):
   
   ```bash
-  # You should be in /fs/ess/PAS2700/users/$USER
+  # You should be in /fs/ess/PAS2880/users/$USER
   mv week04/garrigos_data .
   
   ls
@@ -59,8 +59,8 @@ Let's get set up by:
 - Copying two scripts from last week which you'll use again:
   
   ```bash
-  cp /fs/ess/PAS2700/users/$USER/week04/scripts/printname.sh scripts/
-  cp /fs/ess/PAS2700/users/$USER/week04/scripts/fastqc.sh scripts/
+  cp /fs/ess/PAS2880/users/$USER/week04/scripts/printname.sh scripts/
+  cp /fs/ess/PAS2880/users/$USER/week04/scripts/fastqc.sh scripts/
   ```
 
 <br>
@@ -109,7 +109,7 @@ you want to use for this compute job.
 Use the `--account=` option to `sbatch` to do this:
 
 ```bash
-sbatch --account=PAS2700 scripts/printname.sh Jane Doe
+sbatch --account=PAS2880 scripts/printname.sh Jane Doe
 ```
 ```{.bash-out}
 Submitted batch job 12431935
@@ -138,8 +138,8 @@ But, depending on the details of the script itself, all combinations of using
 ```bash
 sbatch scripts/printname.sh                             # No options/arguments for either
 sbatch scripts/printname.sh Jane Doe                    # Script arguments but no sbatch option
-sbatch --account=PAS2700 scripts/printname.sh           # sbatch option but no script arguments
-sbatch --account=PAS2700 scripts/printname.sh Jane Doe  # Both sbatch option and script arguments
+sbatch --account=PAS2880 scripts/printname.sh           # sbatch option but no script arguments
+sbatch --account=PAS2880 scripts/printname.sh Jane Doe  # Both sbatch option and script arguments
 ```
 
 (Omitting the `--account` option is possible when we specify this option
@@ -170,13 +170,13 @@ Let's add one such line to the `printname.sh` script, such that the first few li
 
 ```bash
 #!/bin/bash
-#SBATCH --account=PAS2700
+#SBATCH --account=PAS2880
 
 set -euo pipefail
 ```
 
-So, the equivalent of adding `--account=PAS2700` after `sbatch` on the command line
-is a line in your script that reads `#SBATCH --account=PAS2700`.
+So, the equivalent of adding `--account=PAS2880` after `sbatch` on the command line
+is a line in your script that reads `#SBATCH --account=PAS2880`.
 
 After adding this to the script,
 you are now able to run the `sbatch` command without options (which failed earlier):
@@ -331,7 +331,7 @@ Open the file in the VS Code editor and copy the following into it:
 
 ```bash
 #!/bin/bash
-#SBATCH --account=PAS2700
+#SBATCH --account=PAS2880
 
 echo "I will sleep for 30 seconds" > sleep.txt
 sleep 30s
@@ -599,7 +599,7 @@ scancel -u $USER       # Cancel all your running and queued jobs (careful with t
   ```
   ```bash-out
   UserId=jelmer(33227) GroupId=PAS0471(3773) MCS_label=N/A
-  Priority=200005206 Nice=0 Account=pas2700 QOS=pitzer-default
+  Priority=200005206 Nice=0 Account=PAS2880 QOS=pitzer-default
   JobState=RUNNING Reason=None Dependency=(null)
   Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
   RunTime=00:02:00 TimeLimit=01:00:00 TimeMin=N/A
@@ -634,11 +634,11 @@ scancel -u $USER       # Cancel all your running and queued jobs (careful with t
 Here, we'll go through the most commonly used Slurm options.
 As pointed out above, each of these can either be:
 
-- Passed on the command line: `sbatch --account=PAS2700 myscript.sh` _(has precedence over the next)_
-- Added at the top of the script you're submitting: `#SBATCH --account=PAS2700`.
+- Passed on the command line: `sbatch --account=PAS2880 myscript.sh` _(has precedence over the next)_
+- Added at the top of the script you're submitting: `#SBATCH --account=PAS2880`.
 
 Also, note that many Slurm options have a corresponding long
-(`--account=PAS2700`) and short format (`-A PAS2700`).
+(`--account=PAS2880`) and short format (`-A PAS2880`).
 For clarity, we'll stick to long format options here.
 
 ### `--account`: The OSC project
@@ -710,7 +710,7 @@ where we request 1 minute of wall-time while we let the script sleep for 80 seco
 
 ```bash
 #!/bin/bash
-#SBATCH --account=PAS2700
+#SBATCH --account=PAS2880
 #SBATCH --time=1
 
 echo "I will sleep for 80 seconds" > sleep.txt
@@ -1008,7 +1008,7 @@ fastq_file=../../garrigos_data/fastq/ERR10802863_R1.fastq.gz
 bash scripts/fastqc.sh "$fastq_file" results/fastqc
 ```
 
-1. Add an `#SBATCH` lines to the script to specify the course's OSC project `PAS2700`,
+1. Add an `#SBATCH` lines to the script to specify the course's OSC project `PAS2880`,
    and submit the modified script as a batch job with the same arguments as above.
 
 <details><summary>Solution (click here)</summary>
@@ -1017,7 +1017,7 @@ bash scripts/fastqc.sh "$fastq_file" results/fastqc
 
   ```bash
   #!/bin/bash
-  #SBATCH --account=PAS2700
+  #SBATCH --account=PAS2880
   ```
   
 - Submit the script as follows:
@@ -1048,7 +1048,7 @@ bash scripts/fastqc.sh "$fastq_file" results/fastqc
 
   ```bash
   #!/bin/bash
-  #SBATCH --account=PAS2700
+  #SBATCH --account=PAS2880
   #SBATCH --output=slurm-fastqc-%j.out
   #SBATCH --mail-type=END,FAIL
   ```
@@ -1142,7 +1142,7 @@ which we can use with `--pty /bin/bash` added to get an interactive Bash shell.
       whereas `sinteractive` is an OSC convenience wrapper but with more limited options.
      
 ```bash
-srun --account=PAS2700 --pty /bin/bash
+srun --account=PAS2880 --pty /bin/bash
 ```
 ```bash-out
 srun: job 12431932 queued and waiting for resources  
@@ -1150,7 +1150,7 @@ srun: job 12431932 has been allocated resources
 
 [...regular login info, such as quota, not shown...]
 
-[jelmer@p0133 PAS2700]$
+[jelmer@p0133 PAS2880]$
 ```
 
 There we go! First some Slurm scheduling info was printed to screen:
@@ -1173,7 +1173,7 @@ First, here are the options we discussed above:
 
 | Resource/use                  | short      | long                 | default
 |-------------------------|------------|----------------------|:---------:|
-| Project to be billed          | `-A PAS2700` | `--account=PAS2700`    | _N/A_
+| Project to be billed          | `-A PAS2880` | `--account=PAS2880`    | _N/A_
 | Time limit                    | `-t 4:00:00` | `--time=4:00:00`      | 1:00:00
 | Nr of nodes                   | `-N 1`       | `--nodes=1`            | 1
 | Nr of cores                   | `-c 1`       | `--cpus-per-task=1`    | 1
