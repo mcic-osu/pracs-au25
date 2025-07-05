@@ -11,7 +11,9 @@ editor_options:
 
 <br>
 
-### Learning goals {-}
+## Introduction
+
+### Learning goals
 
 In this session, you'll learn:
 
@@ -20,15 +22,11 @@ In this session, you'll learn:
 - How Unix commands are stuctured
 - How to navigate around your computer with Unix commands
   
-<br>
-
-## Introduction to Unix and the Unix Shell
-
 ### Some terminology and concepts
 
 #### Unix (vs. Linux)
 
-We can conceptualize Unix (or "Unix-like" / "Unix-based")^[
+We can think of Unix (or "Unix-like" / "Unix-based")^[
 _Technically_, the latter terms are more correct,
 as Unix formally does refer to a specific operating system.]
 as a **family of operating systems**, which includes Linux and Mac but not Windows.
@@ -40,16 +38,17 @@ precisely because we will connect to OSC and do our work there.
 
 #### Unix shell-related terms
 
+We will be using the Unix shell.
+How does that relate to some other terms you may have heard of?
+
 - **Command Line** and **Command Line Interface (CLI)** — A user interface where you type commands
 - **Shell** — a more specific and technical term for a command line interface _to your computer_
-- **Unix Shell** — the type of shell on Unix-based (Linux + Mac) computers
+- **Unix shell** — the type of shell on Unix-based (Linux + Mac) computers
 - **Bash** — the specific Unix shell _language_ that is most common
 - **Terminal** — the program/app/window that can run a shell
 
 While these are clearly not synonyms, in day-to-day computing,
 they are often used interchangeably.
-
-Unrelated to these
 
 ::: callout-note
 #### CLI vs. GUI
@@ -62,8 +61,7 @@ which are operated mostly by pointing and clicking rather than typing.
 
 ### Why use the Unix shell?
 
-The Unix shell has been around for a long time and can sometimes seem a bit
-archaic.
+The Unix shell has been around for a long time and may seem a bit archaic.
 But astonishingly, a system largely built decades ago in an era with very
 different computers and datasets has stood the test of time,
 and the ability to use it is a crucial skill in applied bioinformatics.
@@ -107,27 +105,24 @@ Why do we need to know the Unix shell on top of R and/or Python?
 ### Accessing a shell within VS Code
 
 If you don't already have a VS Code session with a Unix shell ---
-to access a Unix shell, follow the same steps as before:
+follow these steps:
 
 1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>.
 2. In the blue top bar, select `Interactive Apps` and near the bottom, click `Code Server`.
 3. In the form on the page that appears, fill out the following:
-   - "_Cluster_": `ascend`
+   - "_Cluster_": `pitzer-rhel9`
    - "_Account_" (= OSC Project): `PAS2880`.
    - "_Number of hours_": `2`
-   - "_Working Directory_": your personal dir in `/fs/ess/PAS2880/users` (e.g. `/fs/ess/PAS2880/users/jelmer`)
+   - **"_Working Directory_": your personal dir in `/fs/ess/PAS2880/users`**
+     (e.g. `/fs/ess/PAS2880/users/jelmer`) --
+     this is different from what we did last time
    - "_App Code Server version_": `4.8.3`
 4. Click `Launch`
 5. Once the blue *Connect to VS Code* button appears,
    click that to open VS Code in a new browser tab.
-6. In VS Code, open a terminal by either:
+6. In VS Code, open a terminal with a Unix shell by either:
    - Clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal`
    - Using the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>
-7. Check that your are in your dir within `/fs/ess/PAS2880/users` by typing `pwd`
-   in the terminal.
-   _(If you're not, that dir may be listed under `Recents` in the `Get Started`_
-   _document --- if that's the case, click on that entry._
-   _Otherwise, click `File` => `Open Folder` and type/select that dir.)_
 
 I also recommend that you create and open a Markdown file to keep notes on
 what we're doing in this session:
@@ -146,11 +141,14 @@ but our prompts at OSC should show the following information:
 
 `[<username>@<node-name> <working-dir>]$`
 
-For example (and _note that **`~`** means your Home dir_):
+For example:
 
 ``` bash-in-nocolor
-[jelmer@cardinal-login02 ~]$ 
+[jelmer@p0362 jelmer]$ 
 ```
+
+The `<working-dir>` part only shows the name of the directory you are directly
+located in, and doesn't give the entire path (`/fs/ess/PAS2880/users/jelmer`).
 
 We type our commands after the dollar sign `$`,
 and then press <kbd>Enter</kbd> to execute the command.
@@ -162,9 +160,6 @@ we'll get our prompt back and are able to type and execute a new command.
 OSC prints welcome messages and storage quota information when you open a shell.
 To reduce the amount of text on the screen, I will **clear** the screen now and regularly throughout.
 This can be done with the keyboard shortcut **<kbd>Ctrl</kbd>+<kbd>L</kbd>**.
-
-This is the first of a number of keyboard shortcuts you will learn,
-as these are very useful when working in the shell.
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -173,7 +168,8 @@ as these are very useful when working in the shell.
 
 The Unix shell comes with hundreds of "commands":
 small programs that perform specific actions.
-(If you're familiar with R or Python, a Unix *command* is like an R/Python *function*.)
+(If you're familiar with R or Python,
+a Unix *command* is like an R/Python *function*.)
 
 Let's start with a few simple commands:
 
@@ -193,11 +189,12 @@ Let's start with a few simple commands:
   pwd
   ```
   ``` bash-out
-  /users/PAS0471/jelmer
+  /fs/ess/PAS2880/users/jelmer
   ```
 
-Both of those commands provided us with some output. That output was **printed
-to screen**, which is the default behavior for nearly every Unix command.
+Both of those commands provided us with some output.
+That output was **printed to screen**,
+which is the default behavior for nearly every Unix command.
 
 <br>
 
@@ -483,7 +480,62 @@ Su Mo Tu We Th Fr Sa
 ```
 
 </details>
+:::
 
+<br>
+
+## Environment variables
+
+You may be familiar with the concept of **variables** from previous experience
+with perhaps R or another language.
+Variables can hold values and other pieces of data and are essential in programming.
+
+**Environment variables** are pre-existing variables that have been
+automatically assigned values.
+Two examples:
+
+```bash
+# $HOME contains the path to your Home dir:
+echo $HOME
+```
+```bash-out
+/users/PAS0471/jelmer
+```
+
+```bash
+# $USER contains your user name:
+echo $USER
+```
+```bash-out
+jelmer
+```
+
+By the way, `echo` can also print literal text (as shown below) or combinations
+of literals and variables (next exercise):
+    
+```bash
+echo "Welcome to PLNTPTH 5004"
+```
+```bash-out
+Welcome to PLNTPTH 5004
+```
+
+::: exercise
+#### {{< fa user-edit >}} Exercise: environment variables
+
+Using an environment variable,
+print "_Hello, my name is \<your username\>_" (e.g. "Hello, my name is natalie").
+
+<details><summary>*Click for the solution*</summary>
+
+``` bash
+# (This would also work without the " " quotes)
+echo "Hello, my name is $USER"
+```
+``` bash-out
+Hello, my name is jelmer
+```
+</details>
 :::
 
 <br>
@@ -500,14 +552,14 @@ For example, the command **`cd`** will change your *working* directory.
 And like many commands that perform a potentially invisible action,
 `cd` normally has **no output** at all.
 
-First, let's check again where we are --- we should be in our Home directory:
+First, check again where you are ---
+you should be in your personal dir within `/fs/ess/PAS2880/users`:
 
 ```bash
-# (Note: you will have a different PAS project listed in your Home dir. This is not important.)
 pwd
 ```
 ```bash-out
-/users/PAS0471/jelmer
+/fs/ess/PAS2880/users/jelmer
 ```
 
 Now, let's use `cd` to move to another directory by specifying the *path* to that
@@ -518,7 +570,7 @@ cd /fs/ess/PAS2880
 ```
 
 ```bash
-# Double-check that we moved:
+# Double-check that you moved:
 pwd
 ```
 ``` bash-out
@@ -570,18 +622,20 @@ Let's also see what happens when `cd` does not succeed — it gives an error:
 ### Keyboard shortcuts
 
 Using keyboard shortcuts help you work much more efficiently in the shell.
-And some are invaluable:
+Here are some of the most useful ones:
 
-- **Command history** --- `Up` / `Down` arrow keys to cycle through your command history.
+- **Command history** ---
+  `Up` / `Down` arrow keys to cycle through your command history.
 
-- **Tab completion** --- The shell will auto-complete partial commands or file paths when you press <kbd>Tab</kbd>.
+- **Tab completion** ---
+  The shell will auto-complete partial commands or file paths when you press <kbd>Tab</kbd>.
 
 - **Cancel/stop/abort** --- If your prompt is "missing", the shell is still
-    busy executing your command, *or* you typed an incomplete command. To abort,
-    press <kbd>Ctrl</kbd>+<kbd>C</kbd> and you will get your prompt back.
+  busy executing your command, *or* you typed an incomplete command. To abort,
+  press <kbd>Ctrl</kbd>+<kbd>C</kbd> and you will get your prompt back.
 
 ::: exercise
-#### {{< fa user-edit >}} Practice with Tab completion & command history
+#### {{< fa user-edit >}} Exercise: Tab completion & command history
 
 - Type **`/f`** and press <kbd>Tab</kbd> (will autocomplete to */fs/*)
 
@@ -635,7 +689,7 @@ Instead, since a path is not a command, you will get an error.
 <hr style="height:1pt; visibility:hidden;" />
 
 ::: exercise
-#### {{< fa user-edit >}} Practice with canceling
+#### {{< fa user-edit >}} Exercise: canceling
 
 To simulate a long-running command that we may want to abort, we can use the
 `sleep` command, which will make the computer wait for a specified amount of
@@ -667,8 +721,8 @@ should have a matching closing parenthesis.
 Press <kbd>Ctrl</kbd> + <kbd>C</kbd> to get your regular prompt back.
 :::
 
-::: {.callout-note collapse="true"}
-#### Table with useful keyboard shortcuts  _(Click to expand)_
+::: {.callout-note collapse="false"}
+#### Table with useful keyboard shortcuts
 
 _(Note that even on Macs, you should use <kbd>Ctrl</kbd> instead of switching them_
 _out for <kbd>Cmd</kbd> as you may be used to doing --_
@@ -678,11 +732,11 @@ _though in some cases, like copy/paste, both keys work)._
 |-----|------------|
 | <kbd>Tab</kbd> | Tab completion |
 | <kbd>⇧</kbd> / <kbd>⇩</kbd> | Cycle through previously issued commands | |
-| <kbd>Ctrl</kbd>(+<kbd>Shift</kbd>)+<kbd>C</kbd> | Copy selected text | |
-| <kbd>Ctrl</kbd>(+<kbd>Shift</kbd>)+<kbd>V</kbd> | Paste text from clipboard |
+| <kbd>Ctrl</kbd>+<kbd>C</kbd> | Copy selected text | |
+| <kbd>Ctrl</kbd>+<kbd>V</kbd> | Paste text from clipboard |
 | <kbd>Ctrl</kbd>+<kbd>A</kbd> / <kbd>Ctrl</kbd>+<kbd>E</kbd> | Go to beginning/end of line |
 | <kbd>Ctrl</kbd>+<kbd>U</kbd> /<kbd>Ctrl</kbd>+<kbd>K</kbd> | Cut from cursor to beginning / end of line |
-| <kbd>Ctrl</kbd>+<kbd>W</kbd> | ~~Cut word before before cursor~~ (Only works on Macs in our shell in the browser!) |
+| <kbd>Ctrl</kbd>+<kbd>W</kbd> | Cut word before before cursor |
 | <kbd>Ctrl</kbd>+<kbd>Y</kbd> | Paste ("yank") text that was cut with one of the shortcuts above |
 | <kbd>Alt</kbd>+<kbd>.</kbd> / <kbd>Esc</kbd>+<kbd>.</kbd>  | Retrieve last argument of previous command (very useful!) (<kbd>Esc</kbd>+<kbd>.</kbd> for Mac) |
 | <kbd>Ctrl</kbd>+<kbd>R</kbd> | Search history: press <kbd>Ctrl</kbd>+<kbd>R</kbd> again to cycle through matches, <kbd>Enter</kbd> to put command in prompt. |
@@ -690,30 +744,6 @@ _though in some cases, like copy/paste, both keys work)._
 | <kbd>Ctrl</kbd>+<kbd>D</kbd> | Exit (a program or the shell, depending on the context) (same as `exit` command) |
 | <kbd>Ctrl</kbd>+<kbd>L</kbd> | Clear the screen (same as `clear` command) |
 :::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### Move into your own dir & download some data
-
-- Move into your personal dir using `cd`:
-
-  ```bash
-  # (Instead of $USER, you can also start typing your username and press Tab)
-  cd users/$USER
-  ```
-
-- Get the files associated with the CSB book by "*cloning*" (downloading) its
-  GitHub repository:
-
-  ```bash
-  git clone https://github.com/CSB-book/CSB.git
-  ```
-
-- Move into the *sandbox* dir for the Unix chapter (remember to use tab completion):
-
-  ```bash
-  cd CSB/unix/sandbox
-  ```
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -735,18 +765,21 @@ Some examples of `..`:
   pwd
   ```
   ```bash-out
-  /fs/ess/PAS2880/users/jelmer/CSB/unix/sandbox
+  /fs/ess/PAS2880
   ```
   ```bash
-  # Move on level up:
+  # Move one level up:
   cd ..
   
   # Check where you are now:
   pwd
   ```
   ``` bash-out
-  /fs/ess/PAS2880/users/jelmer/CSB/unix
+  /fs/ess/
   ```
+
+- TBA Move up then into a dir
+
 
 - This pattern can be continued all the way to the root of the computer,
   so `../..` means two levels up:
@@ -756,7 +789,7 @@ Some examples of `..`:
   pwd
   ```
   ``` bash-out
-  /fs/ess/PAS2880/users/jelmer
+  /
   ```
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -771,52 +804,21 @@ These are *general shell shortcuts* that work with **any** command that accepts 
 ::: exercise
 #### {{< fa user-edit >}} Exercise: navigation
 
-- **A)** Use a relative path to move back to the `/fs/ess/PAS2880/users/$USER/CSB/unix/sandbox` dir.
-  (You should be in `/fs/ess/PAS2880/users/$USER`.)
+- **A)** Move back to your personal dir 
+  `/fs/ess/PAS2880/users/<user>`
 
 <details><summary>*Click to see the solution*</summary>
-
 ``` bash
-cd CSB/unix/sandbox
+cd /fs/ess/PAS2880/users/<user>
 ```
 </details>
 
-- **B)** Use a relative path (with `..`) to move into the `/fs/ess/PAS2880/users/$USER/CSB/unix/data` dir.
+- **B)** Use a relative path (with `..`) to move into the
+  `/fs/ess/PAS2880/share` dir.
 
 <details><summary>*Click to see the solution*</summary>
-
 ``` bash
-cd ../data
-```
-
-You may have done this in two steps, because you may not have realized that you
-can "add to" a path after `..` like we did above. So you may have done this:
-
-```bash
-cd ..
-cd data
-```
-
-That's OK, but is obviously more typing.
-</details>
-
-- **C)** The `ls` command lists files and dirs, and accepts one or more paths as arguments.
-  Use `ls` to list the files in your Home dir with a shortcut and without moving there.
-
-<details><summary>*Click to see the solution*</summary>
-
-- With the `~` shortcut:
-
-``` bash
-ls ~
-# (Output not shown)
-```
-
-- With the `$HOME` environment variable:
-
-``` bash
-ls $HOME
-# (Output not shown)
+cd ../../share
 ```
 </details>
 :::

@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jelmer Poelstra">
+<meta name="dcterms.date" content="2025-09-30">
+
+<title>PRACS25: data management – PRACS-AU25</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-57476271c5f0467c372e20ff5d25630e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-bdb0de5c748ca9949e0b531c91ee7ebd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">PRACS-AU25</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-week-overviews" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Week overviews</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-week-overviews">    
+        <li>
+    <a class="dropdown-item" href="../week01/w1_overview.html">
+ <span class="dropdown-text">Week 1: Omics data and OSC</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week02/w2_overview.html">
+ <span class="dropdown-text">Week 2: Project organization, Markdown, and Unix shell basics</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week03/w3_overview.html">
+ <span class="dropdown-text">Week 3: Working with files in the Unix shell</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week04/w4_overview.html">
+ <span class="dropdown-text">Week 4: Version control with Git and GitHub</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week05/w5_overview.html">
+ <span class="dropdown-text">Week 5: Data and software management at OSC</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week06/w6_overview.html">
+ <span class="dropdown-text">Week 6: Shell scripts and CLI tools</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week07/w7_overview.html">
+ <span class="dropdown-text">Week 7: Slurm batch jobs at OSC</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week08/w8_overview.html">
+ <span class="dropdown-text">Week 8: Using generative AI when coding</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week09/w9_overview.html">
+ <span class="dropdown-text">Week 9: Automated pipelines with Nextflow</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week10/w10_overview.html">
+ <span class="dropdown-text">Week 10: Building Nextflow pipelines</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week11/w11_overview.html">
+ <span class="dropdown-text">Week 11: R – basics</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week12/w12_overview.html">
+ <span class="dropdown-text">Week 12: R – data wrangling and visualization</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week13/w13_overview.html">
+ <span class="dropdown-text">Week 13: R – Quarto</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week14/w14_overview.html">
+ <span class="dropdown-text">Week 14: R – omics data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week15/w15_overview.html">
+ <span class="dropdown-text">Week 15: Nextflow nf-core pipelines</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-exercises" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Exercises</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-exercises">    
+        <li>
+    <a class="dropdown-item" href="../week03/w3_exercises.html">
+ <span class="dropdown-text">Week 3: Unix shell</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week05/w5_exercises.html">
+ <span class="dropdown-text">Week 5: OSC data and software</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week07/w7_exercises.html">
+ <span class="dropdown-text">Week 7: Slurm batch jobs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week09/w9_exercises.html">
+ <span class="dropdown-text">Week 9: Nextflow</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week11/w11_exercises.html">
+ <span class="dropdown-text">Week 11: R basics</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week12/w12_exercises.html">
+ <span class="dropdown-text">Week 12: R data visualization</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week13/w13_exercises.html">
+ <span class="dropdown-text">Week 13: R for omics data</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-assignments" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Assignments</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-assignments">    
+        <li class="dropdown-header">GRADED</li>
+        <li>
+    <a class="dropdown-item" href="../week02/w2_ga_markdown.html">
+ <span class="dropdown-text">1. Week 2: Essay in Markdown</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week04/w4_ga_git.html">
+ <span class="dropdown-text">2. Week 4: Git</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week06/w6_ga_shell-scripts.html">
+ <span class="dropdown-text">3. Week 6: Shell scripting</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week08/w8_ga.html">
+ <span class="dropdown-text">4. Week 8: Slurm batch jobs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week10/w10_ga_nextflow.html">
+ <span class="dropdown-text">5. Week 10: Nextflow</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week14/w14_ga_R.html">
+ <span class="dropdown-text">6. Week 14: R</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header">UNGRADED</li>
+        <li class="dropdown-header">Week 1: Pre-course survey</li>
+        <li>
+    <a class="dropdown-item" href="../week01/w1_ua_osc-setup.html">
+ <span class="dropdown-text">Week 1: OSC account setup</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week04/w4_ua_github-account.html">
+ <span class="dropdown-text">Week 4: GitHub account setup</span></a>
+  </li>  
+        <li class="dropdown-header">Week 16: Post-course survey</li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-final-project" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Final project</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-final-project">    
+        <li class="dropdown-header">General info</li>
+        <li class="dropdown-header">Checkpoint I: Proposal</li>
+        <li class="dropdown-header">Checkpoint II: Oral presentation</li>
+        <li class="dropdown-header">Checkpoint III: Final submission</li>
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bonus--overviews" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Bonus &amp; overviews</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bonus--overviews">    
+        <li class="dropdown-header">OPTIONAL SELF-STUDY MATERIAL</li>
+        <li>
+    <a class="dropdown-item" href="../ref/shell-data.html">
+ <span class="dropdown-text">Unix data tools (wk3)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../ref/adv-shell.html">
+ <span class="dropdown-text">Misc. advanced Unix shell (wk3)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../ref/adv-git.html">
+ <span class="dropdown-text">Advanced Git (wk4)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../ref/conda.html">
+ <span class="dropdown-text">Software management with Conda (wk5)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../ref/ssh.html">
+ <span class="dropdown-text">Connecting to OSC through SSH (wk5)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../ref/file-transfer.html">
+ <span class="dropdown-text">Other OSC file transfer options (wk5)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../ref/while-arrays.html">
+ <span class="dropdown-text">Advanced shell scripting and looping (wk6)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../ref/adv-slurm.html">
+ <span class="dropdown-text">Advanced Slurm batch jobs (wk7)</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header">TOPIC OVERVIEWS</li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-miscellaneous" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Miscellaneous</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-miscellaneous">    
+        <li>
+    <a class="dropdown-item" href="../ref/about.html">
+ <span class="dropdown-text">About this website</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../ref/readings.html">
+ <span class="dropdown-text">Course readings</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../ref/resources.html">
+ <span class="dropdown-text">Further learning resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../ref/glossary.html">
+ <span class="dropdown-text">Course glossary</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://osu.instructure.com/courses/163340"> 
+<span class="menu-text"><i class="fa-solid fa-graduation-cap" aria-label="graduation-cap"></i></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://ondemand.osc.edu"> 
+<span class="menu-text"><i class="fa-solid fa-desktop" aria-label="desktop"></i></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="https://github.com/mcic-osu/pracs-au25">
+            Source Code
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="https://github.com/mcic-osu/pracs-au25/issues/new">
+            Report an Issue
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#managing-your-data-and-results" id="toc-managing-your-data-and-results" class="nav-link" data-scroll-target="#managing-your-data-and-results">Managing your data and results</a></li>
+  <li><a href="#sharing-your-data-results-and-code" id="toc-sharing-your-data-results-and-code" class="nav-link" data-scroll-target="#sharing-your-data-results-and-code">Sharing your data, results, and code</a></li>
+  <li><a href="#file-transfer-to-and-from-osc" id="toc-file-transfer-to-and-from-osc" class="nav-link" data-scroll-target="#file-transfer-to-and-from-osc">File transfer to and from OSC</a>
+  <ul class="collapse">
+  <li><a href="#overview-of-options" id="toc-overview-of-options" class="nav-link" data-scroll-target="#overview-of-options">Overview of options</a></li>
+  <li><a href="#filezilla-a-gui-based-sftp-client" id="toc-filezilla-a-gui-based-sftp-client" class="nav-link" data-scroll-target="#filezilla-a-gui-based-sftp-client">FileZilla: a GUI-based SFTP client</a></li>
+  </ul></li>
+  <li><a href="#downloading-files-at-the-command-line" id="toc-downloading-files-at-the-command-line" class="nav-link" data-scroll-target="#downloading-files-at-the-command-line">Downloading files at the command line</a>
+  <ul class="collapse">
+  <li><a href="#wget" id="toc-wget" class="nav-link" data-scroll-target="#wget"><code>wget</code></a></li>
+  <li><a href="#other-genomic-downloads" id="toc-other-genomic-downloads" class="nav-link" data-scroll-target="#other-genomic-downloads">Other genomic downloads</a></li>
+  </ul></li>
+  <li><a href="#file-permissions" id="toc-file-permissions" class="nav-link" data-scroll-target="#file-permissions">File permissions</a></li>
+  <li><a href="#using-symbolic-links" id="toc-using-symbolic-links" class="nav-link" data-scroll-target="#using-symbolic-links">Using symbolic links</a></li>
+  <li><a href="#check-file-integrity-with-checksums" id="toc-check-file-integrity-with-checksums" class="nav-link" data-scroll-target="#check-file-integrity-with-checksums">Check file integrity with checksums</a></li>
+  <li><a href="#file-compression" id="toc-file-compression" class="nav-link" data-scroll-target="#file-compression">File compression</a>
+  <ul class="collapse">
+  <li><a href="#decompress-files" id="toc-decompress-files" class="nav-link" data-scroll-target="#decompress-files">Decompress files</a></li>
+  <li><a href="#compress-files" id="toc-compress-files" class="nav-link" data-scroll-target="#compress-files">Compress files</a></li>
+  <li><a href="#working-with-compressed-data-directly" id="toc-working-with-compressed-data-directly" class="nav-link" data-scroll-target="#working-with-compressed-data-directly">Working with compressed data directly</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Data transfer and management</h1>
+<p class="subtitle lead">Week 5 - part II</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jelmer Poelstra </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 30, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<hr>
+<p><br></p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p><br></p>
+</section>
+<section id="managing-your-data-and-results" class="level2">
+<h2 class="anchored" data-anchor-id="managing-your-data-and-results">Managing your data and results</h2>
+<p>Your raw FASTQ data is extremely invaluable as it contains the result of your experiment and was produced by an expensive sequencing process. Even after you’ve produced “clean versions” of these files after quality and adapter trimming, or after you have generated your final gene count tables, you’ll always want to keep these files around. For example, these are the foremost files you need to <strong>make publicly available</strong> when you publish your results (they are typically deposited at the <strong><a href="https://www.ncbi.nlm.nih.gov/sra">NCBI’s SRA</a></strong>), they ensure that your results can be reproduced by yourself and others, and they allow for a modified re-analysis of the data after e.g.&nbsp;new methods or relevant data become available.</p>
+<p>You should therefore keep at least one copy of your FASTQ files in a Project dir (as opposed to a Scratch dir) at OSC — recall that these dirs are being backed up daily by OSC! You’ll also want to keep at least one copy of the data outside of OSC.</p>
+<ul>
+<li>Keeping back-ups of raw data</li>
+<li>Project versus scratch dirs (and avoid your Home dir for research projects)</li>
+</ul>
+<p><br></p>
+</section>
+<section id="sharing-your-data-results-and-code" class="level2">
+<h2 class="anchored" data-anchor-id="sharing-your-data-results-and-code">Sharing your data, results, and code</h2>
+<ul>
+<li>Raw sequences to NCBI</li>
+<li>Some results can also go to NCBI, e.g.&nbsp;genome assemblies and annotations, GEO</li>
+<li>Other results to e.g.&nbsp;Dryad / Zenodo</li>
+<li>Scripts via GitHub</li>
+</ul>
+<p><br></p>
+</section>
+<section id="file-transfer-to-and-from-osc" class="level2">
+<h2 class="anchored" data-anchor-id="file-transfer-to-and-from-osc">File transfer to and from OSC</h2>
+<section id="overview-of-options" class="level3">
+<h3 class="anchored" data-anchor-id="overview-of-options">Overview of options</h3>
+<p>In week 1, you were shown that you can upload and download files from OSC in the OnDemand Files menu, but that’s only suitable for relatively small transfers. Here is a list of methods to transfer files between your computer and OSC:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 20%">
+<col style="width: 16%">
+<col style="width: 13%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Transfer size</th>
+<th>CLI or GUI</th>
+<th>Ease of use</th>
+<th>Flexibility/options</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>OnDemand Files menu</strong></td>
+<td>smaller (&lt;1GB)</td>
+<td>GUI</td>
+<td>Easy</td>
+<td>Limited</td>
+</tr>
+<tr class="even">
+<td><strong>Remote transfer commands</strong></td>
+<td>smaller (&lt;1GB)</td>
+<td>CLI</td>
+<td>Moderate</td>
+<td>Extensive</td>
+</tr>
+<tr class="odd">
+<td><strong>SFTP</strong></td>
+<td>larger (&gt;1GB)</td>
+<td>Either</td>
+<td>Moderate</td>
+<td>Extensive</td>
+</tr>
+<tr class="even">
+<td><strong>Globus</strong></td>
+<td>larger (&gt;1GB)</td>
+<td>GUI</td>
+<td>Moderate</td>
+<td>Extensive</td>
+</tr>
+</tbody>
+</table>
+<div class="legend2">
+<p>For more details, see the <a href="#more-details-on-file-transfer-to-and-from-osc">self-study section at the bottom of this page</a>.</p>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="filezilla-a-gui-based-sftp-client" class="level3">
+<h3 class="anchored" data-anchor-id="filezilla-a-gui-based-sftp-client">FileZilla: a GUI-based SFTP client</h3>
+<p>Here, we’ll go over what is probably overall the most convenient and versatile way to transfer files to and from OSC, since it works for transfers of any size, and is easy and quick: <strong>file transfer with a GUI-based SFTP client</strong>. There are a number of such programs, but I chose to show you <strong>FileZilla</strong> because it works on all operating systems<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<ul>
+<li><p>Go to the <a href="https://filezilla-project.org/download.php?type=client">FileZilla download page</a> — it should automatically display a big green download button for your operating system: click that and install and open the program.</p></li>
+<li><p>To connect to OSC, find the Site Manager: click <code>File</code> in the top menu bar and then <code>Site Manager</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. In the Site Manager:</p>
+<ul>
+<li>Protocol: select “SFTP - SSH File Transfer Protocol”.</li>
+<li>Host: type <code>sftp.osc.edu</code> (and you can leave the Port box empty).</li>
+<li>Logon Type: Make sure “Normal” is selected.</li>
+<li>User: Type you OSC user name.</li>
+<li>Password: Type or copy your OSC password.</li>
+<li>Click the “Connect” button at the bottom to connect to OSC.</li>
+</ul></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/filezilla_connect.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+<ul>
+<li>Once connected, your main screen is split with a local file explorer on the left, and a remote file explorer on the right:</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/split_screen.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%"></p>
+</figure>
+</div>
+<ul>
+<li><p>Transferring dirs and files in either direction is as simple as dragging and dropping them to the other side!</p></li>
+<li><p>Your default location at OSC is your home dir in <code>/users/</code>, but you can type a path in the top bar to e.g.&nbsp;go to <code>/fs/ess/PAS2880/users</code>:</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/proj_dir.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+<p><br></p>
+</section>
+</section>
+<section id="downloading-files-at-the-command-line" class="level2">
+<h2 class="anchored" data-anchor-id="downloading-files-at-the-command-line">Downloading files at the command line</h2>
+<p>When you need to get large files from public repositories like NCBI (e.g.&nbsp;reference genome files, raw reads from the SRA), I would recommend not to download these to your own computer and then transfer them to OSC, but to download them directly to OSC using commands.</p>
+<section id="wget" class="level3">
+<h3 class="anchored" data-anchor-id="wget"><code>wget</code></h3>
+<p>You can download files from any URL that will allow you using the <code>wget</code> command. It has many options, but basic usage is quite simple:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This will download the file at the URL to your current working dir</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="op">&lt;</span>URL<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As an example, say that we want to download the reference genome FASTA and GTF files for <em>Culex pipiens</em>, the focal species of the Garrigos et al.&nbsp;RNA-seq data set that we’ve been working with. The files for that genome can be found at this <a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/">NCBI FTP webpage</a>.</p>
+<p>You can right-click on any of the files and then click “Copy Link Address” (or something similar, depending on your browser) — let’s copy the URL to the assembly FASTA (<code>.fna.gz</code>) file. Then type <code>wget</code> and <kbd>Space</kbd> in your terminal and paste the URL:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>--2024-04-13 13:33:16--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
+Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.12, 130.14.250.11, 2607:f220:41e:250::12, ...
+Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.12|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 172895917 (165M) [application/x-gzip]
+Saving to: ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’
+
+100%[=====================================================================================================================&gt;] 172,895,917 51.7MB/s   in 3.2s   
+
+2024-04-13 13:33:20 (51.7 MB/s) - ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’ saved [172895917/172895917]</code></pre>
+<p>Let’s list our downloaded file:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>-rw-r--r--  1 jelmer PAS0471 165M Aug  5  2022 GCA_016801865.2_TS_CPP_V2_genomic.fna.gz</code></pre>
+<hr style="height:1pt; visibility:hidden;">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Another commonly used downloading command is <code>curl</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>wget</code> and <code>curl</code> have similar functionality, so you don’t really need to learn to use both of them.</p>
+</div>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="other-genomic-downloads" class="level3">
+<h3 class="anchored" data-anchor-id="other-genomic-downloads">Other genomic downloads</h3>
+<ul>
+<li><p>For reference genome downloads, NCBI also has a relatively new and very useful portal called <strong>“datasets”</strong> <a href="https://www.ncbi.nlm.nih.gov/datasets/docs/v2/reference-docs/command-line/datasets">that also includes a CLI tools of the same name</a>. This is especially useful if you want to download multiple or many genomes — for example, you can download all available genomes of a certain (say, bacterial) genus with a single command.</p></li>
+<li><p>For downloads from the Sequence Read Archive (SRA), which contains high-throughput sequencing reads, you can use tools like <a href="https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump">fasterq-dump</a> and <a href="https://github.com/rpetit3/fastq-dl">dl-fastq</a>. Also handy is the simple <a href="https://sra-explorer.info">SRA explorer website</a>, where you can enter an NCBI accession number and it will give you download links.</p></li>
+</ul>
+<p><br></p>
+</section>
+</section>
+<section id="file-permissions" class="level2">
+<h2 class="anchored" data-anchor-id="file-permissions">File permissions</h2>
+<p>File “permissions” are the types of things (e.g.&nbsp;reading, writing) that different groups of users (creator, group, anyone else) are permitted to do with files and dirs.</p>
+<p>There are a couple of reasons you may occasionally need to view and modify file permissions:</p>
+<ul>
+<li>You may want to make your data read-only to prevent accidental modification or deletion</li>
+<li>You may need to share files with other users at OSC</li>
+</ul>
+<p>Here is an overview of the different file permissions:</p>
+<ul>
+<li><strong>Read permissions</strong> allow you to read and copy files/dirs</li>
+<li><strong>Write permissions</strong> allow you to move, rename, modify, overwrite, or delete</li>
+<li><em>Execute permissions</em> allow you to directly execute a file (e.g.&nbsp;running a program, or a script as a command).</li>
+</ul>
+<p>These permissions can be most easily set for three different groups of people:</p>
+<ul>
+<li><strong>Owner (or “user”)</strong> — By default, this the person that created the file or dir. After you have copied or downloaded some FASTQ files, for example, you are the owner of these copies.</li>
+<li><strong>Group</strong> — When you create a file in the PAS2880 project dir, its “group” will include all members of the OSC project PAS2880.</li>
+<li><strong>Other</strong> — In the example above, anyone with access to OSC that is not a member of PAS2880.</li>
+</ul>
+<hr style="height:1pt; visibility:hidden;">
+<section id="viewing-file-permissions" class="level4">
+<h4 class="anchored" data-anchor-id="viewing-file-permissions">Viewing file permissions</h4>
+<p>To show file permissions, use <strong><code>ls</code></strong> with the <strong><code>-l</code></strong> (<em>long</em> format) option that we’ve seen before. The command below also uses the <strong><code>-a</code></strong> option to show all files, including hidden ones (and <strong><code>-h</code></strong> to show file sizes in human-readable format):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/long-ls.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+<p>Here is an overview of the file permission notation in <code>ls -l</code> output:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/permissions.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:40.0%"></p>
+</figure>
+</div>
+<p>In the two lines above:</p>
+<ul>
+<li><p><strong><code>rwxrwxr-x</code> means:</strong><br>
+read + write + execute permissions for both the owner (first <code>rwx</code>) and the group (second <code>rwx</code>), and read + execute <strong>but not</strong> write permissions for others (<code>r-x</code> at the end).</p></li>
+<li><p><strong><code>rw-rw-r--</code> means:</strong><br>
+read + write <em>but not</em> execute permissions for both the owner (first <code>rw-</code>) and the group (second <code>rw-</code>), and only read permissions for others (<code>r--</code> at the end).</p></li>
+</ul>
+<p>Let’s create a file to play around with file permissions:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a test file</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> testfile.txt</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the default permissions</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>-rw-rw----+ 1 jelmer PAS2880 0 Mar  7 13:36 testfile.txt</code></pre>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="changing-file-permissions" class="level4">
+<h4 class="anchored" data-anchor-id="changing-file-permissions">Changing file permissions</h4>
+<p>This can be done in two different ways with the <code>chmod</code> command. Here, we’ll focus on the method with <code>=</code> (set permission to), <code>+</code> (add permission), and <code>-</code> (remove permission).</p>
+<p>For example, to add read (<code>r</code>) permissions for all (<code>a</code>):</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chmod &lt;who&gt;+&lt;permission-to-add&gt;:</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a+r testfile.txt</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>-rw-rw-r--+ 1 jelmer PAS0471 0 Mar  7 13:40 testfile.txt</code></pre>
+<p>To set read + write + execute (<code>rwx</code>) permissions for all (<code>a</code>):</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chmod &lt;who&gt;=&lt;permission-to-set&gt;`:</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a=rwx testfile.txt</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>-rwxrwxrwx+ 1 jelmer PAS2880 0 Mar  7 13:36 testfile.txt</code></pre>
+<p>To remove write (<code>w</code>) permissions for others (<code>o</code>):</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chmod &lt;who&gt;-&lt;permission-to-remove&gt;:</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> o-w testfile.txt</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>-rwxrwxr-x+ 1 jelmer PAS2880 0 Mar  7 13:36 testfile.txt</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Alternative: changing file permissions with numbers <em>(Click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>You can also use a series of 3 numbers (for user, group, and others) to set permissions, where each number can take on the following values:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Nr</th>
+<th>Permission</th>
+<th>Nr</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>x</td>
+<td>5</td>
+<td>r + x</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>w</td>
+<td>6</td>
+<td>r + w</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>r</td>
+<td>7</td>
+<td>r + w + x</td>
+</tr>
+</tbody>
+</table>
+<p>For example, to set read + write + execute permissions for all:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 777 testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To set read + write + execute permissions for yourself, and only read permission for the group and others:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 744 file.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="making-your-data-read-only" class="level4">
+<h4 class="anchored" data-anchor-id="making-your-data-read-only">Making your data read-only</h4>
+<p>So, if you want to make your raw data (here: the files in the <code>data/fastq</code> dir) read-only, you can use:</p>
+<ul>
+<li><p>Set only read permissions for everyone:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a=r data/fastq/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Take away write permissions for yourself (no-one else should have it by default):</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u-w data/fastq/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+<hr style="height:1pt; visibility:hidden;">
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Read/execute permissions for directories
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>One tricky and confusing aspect of file permissions is that <em>to list a directory’s content, you need execute permissions for the dir!</em> This is something to take into account when you want to grant others access to your project e.g.&nbsp;at OSC.</p>
+<p>To set execute permissions for everyone but <em>only for dirs</em> throughout a dir hierarchy, use an <code>X</code> (<strong>uppercase x</strong>):</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> <span class="at">-R</span> a+X my-dir</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+<p>After running one or both of the above commands, let’s check the permissions:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> data/fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>total 0
+-r--r--r--+ 1 jelmer PAS0471 0 Mar  7 13:41 sample001_R1.fastq
+-r--r--r--+ 1 jelmer PAS0471 0 Mar  7 13:41 sample001_R2.fastq
+-r--r--r--+ 1 jelmer PAS0471 0 Mar  7 13:41 sample002_R1.fastq
+-r--r--r--+ 1 jelmer PAS0471 0 Mar  7 13:41 sample002_R2.fastq
+# [...output truncated...]</code></pre>
+<p>What happens when we try to remove write-protected files?</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> data/fastq/<span class="pp">*</span>fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>rm: remove write-protected regular empty file ‘data/fastq/sample001_R1.fastq’?</code></pre>
+<p>You’ll be prompted for every file! If you answer <code>y</code> (yes), you can still remove them. (But note that people other than the file’s owners cannot override file permissions; only if they are system administrators.)</p>
+<p><br></p>
+</section>
+</section>
+<section id="using-symbolic-links" class="level2">
+<h2 class="anchored" data-anchor-id="using-symbolic-links">Using symbolic links</h2>
+<p>For example to use files across projects - recall week 2 - RBA</p>
+<section id="single-files" class="level4">
+<h4 class="anchored" data-anchor-id="single-files">Single files</h4>
+<p>A symbolic (or soft) links only links to the <em>path</em> of the original file, whereas a hard link directly links to the <em>contents</em> of the original file. Note that modifying a file via either a hard or soft link <em>will</em> modify the original file.</p>
+<p>Create a <em>symlink</em> to a file using <code>ln -s &lt;source-file&gt; [&lt;link-name&gt;]</code>:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Only provide source =&gt; create link of the same name in the wd:</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /fs/ess/PAS2880/share/garrigos/data/fastq/ERR10802863_R1.fastq.gz</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The link can also be given an arbitrary name/path:</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /fs/ess/PAS2880/share/garrigos/data/fastq/ERR10802863_R1.fastq.gz shared-fastq.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Use an absolute path to refer to the source file when creating links
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>At least at OSC, you have to <strong>use an absolute path for the source file(s)</strong>, or the link will not work. The <code>$PWD</code> environment variable, which contains your current working directory can come in handy to do so:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Fictional example, don't run this)</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> <span class="va">$PWD</span>/shared-scripts/align.sh project1/scripts/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="multiple-files" class="level4">
+<h4 class="anchored" data-anchor-id="multiple-files">Multiple files</h4>
+<p>Link to multiple files in a directory at once:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Fictional example, don't run this)</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> <span class="va">$PWD</span>/shared_scripts/<span class="pp">*</span> project1/scripts/ </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Link to a directory:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Fictional example, don't run this)</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> <span class="va">$PWD</span>/shared_scripts/ project1/scripts/</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> <span class="va">$PWD</span>/shared_scripts/ project1/scripts/ln-shared-scripts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Be careful not to remove source files!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Be careful when linking to <em>directories</em>: you are creating a <strong>point of entry to the original dir</strong>. Therefore, even if you enter via the symlink, you are interacting with the original files.</p>
+<p>This means that a command like the following would remove the original directory!</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> symlink-to-dir</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Instead, use <code>rm symlink-to-dir</code> (the link itself is a file, not a dir, so you don’t need <code>-r</code>!) or <code>unlink symlink-to-dir</code> to only remove the link.</p>
+</div>
+</div>
+</section>
+<section id="exercise-creating-symbolic-links" class="level4 exercise">
+<h4 class="anchored" data-anchor-id="exercise-creating-symbolic-links"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Creating symbolic links</h4>
+<ul>
+<li><p>Create a symbolic link in your <code>$HOME</code> dir that points to your personal dir in the project dir (<code>/fs/ess/PAS2880/users/$USER</code>).</p>
+<p>If you don’t provide a name for the link, it will be your username (why?), which is not particularly informative about its destination. Therefore, give it a name that makes sense to you, like <code>PLNTPTH6193-SP24</code> or <code>pracs-sp24</code>.</p></li>
+</ul>
+<details>
+<summary>
+Click for the solution
+</summary>
+<div class="sourceCode" id="cb28"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> /fs/ess/PAS1855/users/<span class="va">$USER</span> ~/PLNTPTH6193-SP24</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<ul>
+<li>What would happen if you do <code>rm -rf ~/PLNTPTH8300-SP21</code>? Don’t try this.</li>
+</ul>
+<details>
+<summary>
+Click for the solution
+</summary>
+<p>The content of the original dir will be removed.</p>
+</details>
+</section>
+<p><br></p>
+</section>
+<section id="check-file-integrity-with-checksums" class="level2">
+<h2 class="anchored" data-anchor-id="check-file-integrity-with-checksums">Check file integrity with checksums</h2>
+<p>When you receive your FASTQ files from a sequencing facility, a small text file will usually accompany your FASTQ files, and will have a name along the lines of <code>md5.txt</code>, <code>md5checksums.txt</code>, or <code>shasums.txt</code>.</p>
+<p>Such a file contains so-called <strong>checksums</strong>, a sort of digital fingerprints for your FASTQ files, which can be used to <strong>check whether your copy of these files is completely intact</strong>. Checksums are extremely compact summaries of files, computed so that even if just one character is changed in the data, the checksum will be different.</p>
+<p>For example, in the dir with the original FASTQ files for our focal project, the following <code>md5.txt</code> file is present:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> /fs/ess/PAS0471/jelmer/assist/2023-08_hy/data/fastq <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 6</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>total 48G
+-rw-r--r-- 1 jelmer PAS0471 3.4K Aug  9 16:33 md5.txt
+-rw-r--r-- 1 jelmer PAS0471 1.2G Aug  9 16:33 X10784_Cruz-MonserrateZ_ASPC1_vec_V1N_1_S25_R1_001.fastq.gz
+-rw-r--r-- 1 jelmer PAS0471 1.2G Aug  9 16:33 X10784_Cruz-MonserrateZ_ASPC1_vec_V1N_1_S25_R2_001.fastq.gz
+-rw-r--r-- 1 jelmer PAS0471 1.3G Aug  9 16:33 X10785_Cruz-MonserrateZ_ASPC1_RASD1_V1N_1_S26_R1_001.fastq.gz
+-rw-r--r-- 1 jelmer PAS0471 1.4G Aug  9 16:33 X10785_Cruz-MonserrateZ_ASPC1_RASD1_V1N_1_S26_R2_001.fastq.gz</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+More on checksums
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Several algorithms and their associated shell commands can compute checksums. Like in our case, you’ll most often see <em>md5</em> checksums accompany genomic data files, which can be computed and checked with the <code>md5sum</code> command (the newer <em>SHA-1</em> checksums can be computer and checked with the very similar <code>shasum</code> command).</p>
+<p>Checksums consist of <em>hexadecimal</em> characters only: numbers and the letters a-f.</p>
+<p>We typically compute or check checksums for one or more <em>files</em>, but we can even do it for a <em>string of text</em> — the example below demonstrates that the slightest change in a string (or file alike) will generate a completely different checksum:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"bioinformatics is fun"</span> <span class="kw">|</span> <span class="fu">md5sum</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>010b5ebf7e207330de0e3fb0ff17a85a  -</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"bioinformatic is fun"</span> <span class="kw">|</span> <span class="fu">md5sum</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>45cc2b76c02b973494954fd664fc0456  -</code></pre>
+</div>
+</div>
+<p>Let’s take a look at our checksums — the file has one row per file and two columns, the first with the checksum and the second with the corresponding file name:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 4 /fs/ess/PAS0471/jelmer/assist/2023-08_hy/data/fastq/md5.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>54224841f172e016245843d4a8dbd9fd        X10790_Cruz-MonserrateZ_Panc1_vec_V1N_1_S31_R2_001.fastq.gz
+cf22012ae8c223a309cff4b6182c7d62        X10790_Cruz-MonserrateZ_Panc1_vec_V1N_1_S31_R1_001.fastq.gz
+647a4a15c0d55e56dd347cf295723f22        X10797_Cruz-MonserrateZ_Miapaca2_RASD1_V1N_1_S38_R2_001.fastq.gz
+ce5d444f8f9d87d325dbe9bc09ef0470        X10797_Cruz-MonserrateZ_Miapaca2_RASD1_V1N_1_S38_R1_001.fastq.gz</code></pre>
+<p>This file was created by the folks at the sequencing facility, and now that we have the data at OSC and are ready to analyze it, we can check if they are still fully intact and didn’t –for example– get incompletely transferred.</p>
+<p>I have done this check for the original files, but this takes a little while, and for a quick exercise, we can now do so with our subsampled FASTQ files. First, let’s copy a file <code>md5.txt</code> from the <code>demo</code> directory, which has the checksums for the subsampled FASTQ files as I created them:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> /fs/ess/PAS0471/demo/202307_rnaseq/data/fastq/md5sums.txt data/fastq/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To check whether the checksums for one or more files in a file correspond to those for the files, we can run <code>mdsum -c &lt;mdsum-file&gt;</code>, and should do so <em>while inside the dir with the files of interest</em><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. For example:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> data/fastq</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">md5sum</span> <span class="at">-c</span> md5sums.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>ASPC1_A178V_R1.fastq.gz: OK
+ASPC1_A178V_R2.fastq.gz: OK
+ASPC1_G31V_R1.fastq.gz: OK
+ASPC1_G31V_R2.fastq.gz: OK
+Miapaca2_A178V_R1.fastq.gz: OK
+Miapaca2_A178V_R2.fastq.gz: OK
+Miapaca2_G31V_R1.fastq.gz: OK
+Miapaca2_G31V_R2.fastq.gz: OK</code></pre>
+<p>If there were any differences, the <code>md5sum</code> command would clearly warn you about them, as you can see in the exercise below.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Making the checksum check fail (Click to expand)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let’s compute a checksum for the <code>README.md</code> file and save it in a file:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming you went into data/fastq above;</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># you need to be in /fs/ess/PAS0471/$USER/rnaseq-intro</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../..</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">md5sum</span> README.md <span class="op">&gt;</span> md5sum_for_README.txt</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> md5sum_for_README.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>d4c4a8df4870f68808553ac0f5484aa3  README.md</code></pre>
+<p>Now, let’s add a line to our <code>README.md</code> that says where the reference genome files are:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (You'll need single quotes like below, or the shell will interpret the backticks)</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'Files for the GRCh38.p14 human genome are in the `data/ref` dir'</span> <span class="op">&gt;&gt;</span> README.md</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> 3 README.md</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>and columns specifying the read direction, sample ID, cell line, and variant.
+
+Files for the GRCh38.p14 human genome are in the `data/ref` dir</code></pre>
+<p>Finally, let’s check the checksum, and watch it fail:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">md5sum</span> <span class="at">-c</span> md5sum_for_README.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>README.md: FAILED
+md5sum: WARNING: 1 computed checksum did NOT match</code></pre>
+</div>
+</div>
+</div>
+<p><br></p>
+</section>
+<section id="file-compression" class="level2">
+<h2 class="anchored" data-anchor-id="file-compression">File compression</h2>
+<p>Let’s start with downloading a file to play around with:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr22.fa.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="decompress-files" class="level3">
+<h3 class="anchored" data-anchor-id="decompress-files">Decompress files</h3>
+<p>When you download data, it is often compressed with <code>gzip</code> (“gzipped”, <code>.gz</code> extension).</p>
+<p>Many programs can work with gzipped files directly, but sometimes you do need to unzip them, which can be done with <code>gunzip</code>:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># gunzip unzips in place - the original zipped file disappears:</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> chr21.fa.gz</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> chr21<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="{bash-out}"><code>chr21.fa</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To keep the original, output to stdout with "-c" and redirect:</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> <span class="at">-c</span> chr22.fa.gz <span class="op">&gt;</span> chr22.fa</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> chr22<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="{bash-out}"><code>chr22.fa  chr22.fa.gz</code></pre>
+</section>
+<section id="compress-files" class="level3">
+<h3 class="anchored" data-anchor-id="compress-files">Compress files</h3>
+<p>Conversely, to zip files, use <code>gzip</code>:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> chr21.fa</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> chr21<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="{bash-out}"><code>chr21.fa.gz</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As with unzipping, use -c and redirect to keep the original:</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> <span class="at">-c</span> chr22.fa <span class="op">&gt;</span> chr22_copy.fa.gz</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> chr22<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="{bash-out}"><code>chr22_copy.fa.gz  chr22.fa  chr22.fa.gz</code></pre>
+<p>Often, a program will <em>output unzipped data to standard out</em>, which we can immediately pipe to <code>gzip</code> so we only need to write the compressed file to disk (beneficial because reading/writing to files is time-consuming):</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="ex">trimmer</span> in.fastq.gz <span class="kw">|</span> <span class="fu">gzip</span> <span class="op">&gt;</span> out.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><em>(Note that because the input to <code>gzip</code> comes from standard in, the output will by default be to standard out!)</em></p>
+</section>
+<section id="working-with-compressed-data-directly" class="level3">
+<h3 class="anchored" data-anchor-id="working-with-compressed-data-directly">Working with compressed data directly</h3>
+<p>Several familiar shell commands have <code>z</code> counterparts that can work with gzipped files directly, such as <code>zgrep</code> and <code>zcat</code>.</p>
+<ul>
+<li><code>zgrep</code> is <code>grep</code> for gzipped files:</li>
+</ul>
+<div class="sourceCode" id="cb56"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zgrep</span> <span class="at">-i</span> <span class="at">-n</span> <span class="at">--color</span> <span class="st">"AGATAGATATAT"</span> chr22.fa.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="{bash-out}"><code>589810:TATTGCAGGTAAGATGGGGCCACTCAGTACTTTAAAAAGATAGATATATA
+596134:tctatctatatatagatagatatattgtagatatatctatctatatatat
+966248:tatagatagatatataaaggggagtttattaagtattaactcacatgatc</code></pre>
+<ul>
+<li><code>zcat</code> is <code>cat</code> for gzipped files:</li>
+</ul>
+<div class="sourceCode" id="cb58"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> chr22.fa.gz <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="{bash-out}"><code>&gt;chr22
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Concatenating compressed data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When it is okay to concatenate files (losing information about the original file origin of the data), this can be done very easily.</p>
+<p>To add a second FASTQ file to an existing gzipped file,<br>
+we can simply use <code>&gt;&gt;</code>:</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="{bash-out}"><code>in.fastq.gz in2.fastq</code></pre>
+<div class="sourceCode" id="cb62"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> <span class="at">-c</span> in2.fastq <span class="op">&gt;&gt;</span> in.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Even more conveniently, if we have two gzipped FASTQ file for the same sample but from different Illumina lanes:</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> smpA_L001_R1.fastq.gz smpA_L002_R1.fastq.gz <span class="op">&gt;</span> smpA_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p> And has a more intuitive user interface than CyberDuck, another very commonly used program that works both on Mac and Windows.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p> There is a also an icon in the far top-left to access this menu. Additionally, there is a “Quickconnect” bar but I’ve not managed to connect to OSC with that.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>This technically depends on how the file names are shown in the text file with the checksums: if there are just file names without directories (or <code>./&lt;filename&gt;</code>, etc.), you’ll have to be in the dir with the files to run <code>md5sum -c</code>. (This in turn depends on from where the checksums were <em>generated</em>: if you generate them while in the dir with the focal files, which is the only sensible way to do this, that’s how they will be displayed.)<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/mcic-osu\.github\.io\/pracs-au25");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>2025, Jelmer Poelstra</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/mcic-osu/pracs-au25">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

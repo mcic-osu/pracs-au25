@@ -440,7 +440,7 @@ FASTQ is the standard format for HTS reads.\
 3.  A **`+`** (plus sign)
 4.  One-character **quality scores** for each base (hence FASTQ as in "Q" for "quality")
 
-![](../img/fastq_header.png){fig-align="center" width="80%"}
+![One entry (read) in a FASTQ file covers 4 lines. <br>The header line is annotated, with some of the more useful components highlighted in red. <br>For viewing purposes, this read (at only 56 bp) is shorter than what is typical.](../img/fastq_header.png){fig-align="center" width="80%"}
 
 ## FASTQ quality scores
 
@@ -465,9 +465,13 @@ For some specific probabilities and their rough qualitative interpretation for I
 
 ## FASTQ quality scores (cont.)
 
-This numeric quality score is represented in FASTQ files *not by the number itself*, but by a corresponding "ASCII character".
+This numeric quality score is represented in FASTQ files *not by the number itself*,
+but by a corresponding "ASCII character".
 
-This allows for a single-character representation of each possible score — as a consequence, **each quality score character can conveniently correspond to (& line up with) a base character** in the read.
+This allows for a single-character representation of each possible score —
+as a consequence,
+**each quality score character can conveniently correspond to (& line up with) a base character**
+in the read.
 
 . . .
 
@@ -481,7 +485,9 @@ This allows for a single-character representation of each possible score — as 
 ::: callout-tip
 #### A rule of thumb
 In practice, you almost never have to manually check the quality scores of bases in
-FASTQ files, but if you do, a rule of thumb is that letter characters are good (Phred of 32 and up).
+FASTQ files, but if you do, a rule of thumb is that letter characters mean that the
+quality is good (Phred of 32 and up).
+[Complete lookup table](https://www.drive5.com/usearch/manual/quality_score.html)
 :::
 
 ## FASTQ (cont.)
@@ -501,6 +507,48 @@ sample2_R2.fastq.gz
 ```
 
 ## GFF/GTF
+
+TBA
+
+## SAM/BAM
+
+TBA
+
+# Our practice dataset {background-color="dimgray"}
+
+## Garrigos et al. 2023
+
+Our practice data set is from the paper
+"*Two avian Plasmodium species trigger different transcriptional responses on their vector Culex pipiens*",
+published in 2023 in Molecular Ecology ([link](https://doi.org/10.1111/mec.17240)):
+
+![](../img/garrigos_paper.png){fig-align="center" width="80%"}
+
+## Experimental design
+
+This paper uses RNA-seq data to study gene expression in *Culex pipiens* mosquitos
+infected with malaria-causing *Plasmodium* protozoans ---
+specifically, it compares mosquitos according to:
+
+- Infection status: *Plasmodium cathemerium* vs. *P. relictum* vs. control
+- Time after infection: 24 h vs. 10 days vs. 21 days
+
+_TBA - Table showing sampling grid?_
+
+## The dataset's files
+
+However, to keep things manageable for our practice,
+I have **subset** the data to omit the 21-day samples and only keep 500,000
+reads per FASTQ file.
+All in all, our set of files consists of:
+
+- 44 paired-end Illumina FASTQ files for 22 samples.
+- _Culex pipiens_ reference genome file from NCBI:
+  assembly in FASTA format and annotation in GTF format.
+- A metadata file in TSV format with sample IDs and treatment & time point info.
+- A README file describing the data set.
+
+## Analysis steps
 
 TBA
 

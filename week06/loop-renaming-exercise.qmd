@@ -1,0 +1,205 @@
+---
+title: "Loop file renaming exercises"
+---
+
+## Exercise 1
+
+**Create mock "alignment" files**
+
+- Create a directory `alignment` inside an appropriate dir in your project
+     (e.g. `analysis`, `results`)
+- Inside the `alignment` dir, create files with names like
+  `sample01_A_08-14-2020.sam` - `sample50_H_09-16-2020.sam` for all combinations of: 
+  - 30 samples (`01`-`30`)
+  - 5 treatments (`A`-`E`)
+  - 2 dates (`08-14-2020` and `09-16-2020` -- yes, use this date format for now)
+     
+```sh
+mkdir -p results/alignment
+cd results/alignment 
+  
+# Create the files:
+touch sample{01..30}_{A..E}_{08-14-2020,09-16-2020}.sam
+  
+# Check that we have 300 files:
+ls | wc -l
+```
+```bash-out
+300
+```
+  
+1. **Rename files in a batch**  
+   Woops! We stored the alignment files that we created in the previous step
+   as SAM files (`.sam`), but this was a mistake --
+   the files are actually the binary counterparts of SAM files: BAM files (`.bam`).
+   
+   Move into the dir with BAM files, and use a `for` loop to rename them,
+   changing the extension from `.sam` to `.bam`.
+   
+<details><summary>Hints</summary>
+
+- Loop over the files using globbing (wildcard expansion) directly;
+  there is no need to call `ls`.
+- Use the `basename` command, or alternatively, `cut`, to strip the extension.
+- Store the output of the `basename` (or `cut`) call using command substitution
+  (`$(command)` syntax).
+- The new extension can simply be pasted behind the file name, like
+  `newname="$filename_no_extension"bam` or `newname=$(basename ...)bam`.
+   
+</details>
+   
+2. **Copy files with wildcards**  
+   
+   Still in the dir with your SAM files, create a new dir called `subset`.
+   Then, using a single `cp` command, copy files that satisfy the following conditions into the `subset` dir:
+   
+      - The sample ID/number should be 01-19, and
+      - The treatment should be A, B, or C.  
+   
+   Create a `README.md` in the dir that explains what you did.
+   
+<details><summary>Hints</summary>
+  Just like you used multiple consecutive brace expansions above,
+  you can use two consecutive wildcard character sets (`[]`) here.
+</details>
+   
+3. **Bonus: a trickier renaming loop**  
+   You now realize that your date format is suboptimal
+   (`MM-DD-YYYY`; which gave `08-14-2020` and `09-16-2020`)
+   and that you should use the `YYYY-MM-DD` format.
+   Use a `for` loop to rename the files.
+   
+<details><summary>Hints</summary>
+
+- Use `cut` to extract the three elements of the date (day, month, and year) on three separate lines.
+- Store the output of these lines in variables using commands substitution, like: `day=$(commands)`.
+- Finally, paste your new file name together like: `newname="$part1"_"$year"` etc.
+- When first writing your commands, it's helpful to be able to experiment easily:
+  start by echo-ing a single example file name, as in:
+  `echo sample23_C_09-16-2020.sam | cut ...`.
+</details>
+
+<br>
+
+### Exercise 1
+
+<details><summary>**1.** Rename files in a batch</summary>
+
+  ```sh
+  for oldname in *.sam; do
+     newname=$(basename "$oldname" sam)bam
+     mv -v "$oldname" "$newname"
+  done
+  ```
+  
+  In the code above:
+  
+  - `$oldname` will contain the old file name in each iteration of the loop.
+  - We remove the `sam` suffix using `basename "$oldname" sam`.
+  - We use command substitution (`$()` syntax) to catch the output of the
+    `basename` command, and paste `bam` at the end.
+  
+  Also, note that:
+  
+  - We don't need a special construction to paste strings together:
+    we simply type `bam` after what will be the extension-less file name from the `basename` command.
+  - I used informative variable names (`oldname` and `newname`), not cryptic ones like `i` and `o`.
+
+</details>
+
+<details><summary>**6.** Copy files with wildcards</summary>
+
+- Create the new dir:
+
+  ```sh
+  mkdir subset
+  ```
+
+- Copy the files using four consecutive wildcard selections:
+  - The first digit should be a 0 or a 1 `[01]` (or `[0-1]`),
+  - The second can be any number `[0-9]` (`?` would work, too),
+  - The third, after an underscore, should be A, B, or C `[A-C]`,
+  - We don't care about what comes after that, but do need to account for
+    the additional characters, so will use a `*` to match any character:
+  
+  ```sh
+  cp -v sample[01][0-9]_[A-C]* subset/
+  ```
+  ```bash-out
+  ‘sample01_A_08-14-2020.bam’ -> ‘subset/sample01_A_08-14-2020.bam’
+  ‘sample01_A_09-16-2020.bam’ -> ‘subset/sample01_A_09-16-2020.bam’
+  ‘sample01_B_08-14-2020.bam’ -> ‘subset/sample01_B_08-14-2020.bam’
+  ‘sample01_B_09-16-2020.bam’ -> ‘subset/sample01_B_09-16-2020.bam’
+  ‘sample01_C_08-14-2020.bam’ -> ‘subset/sample01_C_08-14-2020.bam’
+  ‘sample01_C_09-16-2020.bam’ -> ‘subset/sample01_C_09-16-2020.bam’
+  ‘sample02_A_08-14-2020.bam’ -> ‘subset/sample02_A_08-14-2020.bam’
+  # [...output truncated...]
+  ```
+
+- Report what we did, including a command substitution to insert the current date:
+
+  ```sh
+  echo "On $(date), created a dir 'subset' and copied only files for samples 1-29
+  and treatments A-C into this dir." > subset/README.md
+  ```
+
+- Check the resulting README files:
+
+  ```bash
+  cat subset/README.md
+  ```
+  ```bash-out
+  On Mon Mar 18 10:07:17 EDT 2024, created a dir 'subset' and copied only files for samples 1-29
+  and treatments A-C into this dir.
+  ```
+</details>
+
+<details><summary>**8.** Bonus: a trickier renaming loop</summary>
+
+- In the loop, first use `cut` to extract the month, day, and year:
+  - Start by extracting the entire date: cut by an `_` and take the third item
+    (`cut -d "_" -f 3`).
+  - Then extract the different components of the date separately for month,
+    date, and year, with `cut -d "-"`: the first item is the month, the second
+    is the day, and the third is the year.
+  - Save these compoinents of the date in variables using command substitution (`$()`).
+- Second, use `cut` to extract what we may call the "sample prefix",
+  which contains the sample number and the treatment.
+- Third, build the new file name simply by putting the variables in the right
+  order with `_` and `-` delimiters.
+- Use `mv` to rename the files --- below, I've added `-v` for verbose so it
+  will report what it does.
+
+```sh
+for oldname in *.bam; do
+     # Extract and store the month, day, and year:
+     # (First cut by '_' taking the 3rd item, then by '-')
+     month=$(echo "$oldname" | cut -d "_" -f 3 | cut -d "-" -f 1)
+     day=$(echo "$oldname" | cut -d "_" -f 3 | cut -d "-" -f 2)
+     year=$(basename "$oldname" .bam | cut -d "_" -f 3 | cut -d "-" -f 3)
+     
+     # Extract and store the sample prefix:
+     sample_prefix=$(echo "$oldname" | cut -d "_" -f 1-2)
+     
+     # Paste together the new name:
+     newname="$sample_prefix"_"$year"-"$month"-"$day".bam
+     
+     # Execute the move:
+     mv -v "$oldname" "$newname"
+done
+```
+```bash-out
+‘sample01_A_08-14-2020.bam’ -> ‘sample01_A_2020-08-14.bam’
+‘sample01_A_09-16-2020.bam’ -> ‘sample01_A_2020-09-16.bam’
+‘sample01_B_08-14-2020.bam’ -> ‘sample01_B_2020-08-14.bam’
+‘sample01_B_09-16-2020.bam’ -> ‘sample01_B_2020-09-16.bam’
+‘sample01_C_08-14-2020.bam’ -> ‘sample01_C_2020-08-14.bam’
+‘sample01_C_09-16-2020.bam’ -> ‘sample01_C_2020-09-16.bam’
+‘sample01_D_08-14-2020.bam’ -> ‘sample01_D_2020-08-14.bam’
+‘sample01_D_09-16-2020.bam’ -> ‘sample01_D_2020-09-16.bam’
+‘sample01_E_08-14-2020.bam’ -> ‘sample01_E_2020-08-14.bam’
+# [...output truncated...]
+```
+
+</details>
+

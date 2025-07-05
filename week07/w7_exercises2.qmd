@@ -92,9 +92,9 @@ where the input of one step is the output of a previous step.
 
 # Step 0: setting up
 # A) Define the inputs
-fastq_dir=../../garrigos_data/fastq
-fasta=../../garrigos_data/ref/GCF_016801865.2.fna
-gtf=../../garrigos_data/ref/GCF_016801865.2.gtf
+fastq_dir=../../garrigos-data/fastq
+fasta=../../garrigos-data/ref/GCF_016801865.2.fna
+gtf=../../garrigos-data/ref/GCF_016801865.2.gtf
 # B) Define settings
 strandedness=1       # 1 means forward-stranded (used with featureCounts)
 # C) Define the outputs
@@ -165,7 +165,7 @@ fastqc --outdir "$outdir" "$fastq_file"
 echo
 echo "# Used FastQC version:"
 fastqc --version
-echo "# Done with script fastqc.sh"
+echo "# Successfully finished script fastqc.sh"
 date
 echo
 ```
@@ -234,7 +234,7 @@ mv -v "$R2_out_init" "$R2_out_final"
 echo
 echo "# Used TrimGalore version:"
 trim_galore --version | grep version
-echo "# Done with script trimgalore.sh"
+echo "# Successfully finished script trimgalore.sh"
 date
 ```
 </details>
@@ -327,7 +327,7 @@ STAR \
 echo
 echo "# Used STAR version:"
 STAR --version
-echo "# Done with script star_index.sh"
+echo "# Successfully finished script star_index.sh"
 date
 ```
 </details>
@@ -426,7 +426,7 @@ STAR \
 echo
 echo "# Used STAR version:"
 STAR --version
-echo "# Done with script star_align.sh"
+echo "# Successfully finished script star_align.sh"
 date
 ```
 </details>
@@ -520,7 +520,7 @@ featureCounts \
 echo
 echo "# Used featureCounts/subread version:"
 featureCounts -v
-echo "# Done with script featurecounts.sh"
+echo "# Successfully finished script featurecounts.sh"
 date
 ```
 </details>
@@ -591,7 +591,7 @@ multiqc \
 echo
 echo "# Used MultiQC version:"
 multiqc --version
-echo "# Done with script multiqc.sh"
+echo "# Successfully finished script multiqc.sh"
 date
 ```
 </details>
@@ -656,7 +656,7 @@ less slurm-fastqc*
 ```bash-out
 # Starting script fastqc.ch
 Fri Apr 12 09:34:40 EDT 2024
-# Input FASTQ file:   ../../garrigos_data/fastq/ERR10802863_R1.fastq.gz
+# Input FASTQ file:   ../../garrigos-data/fastq/ERR10802863_R1.fastq.gz
 # Output dir:         results/fastqc
 
 application/gzip
@@ -685,7 +685,7 @@ Analysis complete for ERR10802863_R1.fastq.gz
   
 # Used FastQC version:
 FastQC v0.12.1
-# Done with script fastqc.sh
+# Successfully finished script fastqc.sh
 Fri Apr 12 09:34:47 EDT 2024
 ```
 
@@ -693,7 +693,7 @@ Fri Apr 12 09:34:47 EDT 2024
 # Optional: check the last lines of each Slurm log file
 # (And/or check your email for failed job messages)
 tail slurm-fastqc*
-# [Output not shown, each file should end with "Done with script" line and the date]
+# [Output not shown, each file should end with "Successfully finished script" line and the date]
 ```
 
 ```bash
@@ -731,8 +731,8 @@ less slurm-trimgalore*
 ```bash-out
 # Starting script trimgalore.sh
 Fri Apr 12 09:35:18 EDT 2024
-# Input R1 FASTQ file:      ../../garrigos_data/fastq/ERR10802863_R1.fastq.gz
-# Input R2 FASTQ file:      ../../garrigos_data/fastq/ERR10802863_R2.fastq.gz
+# Input R1 FASTQ file:      ../../garrigos-data/fastq/ERR10802863_R1.fastq.gz
+# Input R2 FASTQ file:      ../../garrigos-data/fastq/ERR10802863_R2.fastq.gz
 # Output dir:               results/trimgalore
 
 Path to Cutadapt set as: 'cutadapt' (default)
@@ -783,12 +783,12 @@ done
 ```bash-out-solo
 # Starting script star_index.sh
 Fri Apr 12 10:37:44 EDT 2024
-# Input assembly FASTA:           ../../garrigos_data/ref/GCF_016801865.2.fna
-# Input annotation GTF:           ../../garrigos_data/ref/GCF_016801865.2.gtf
+# Input assembly FASTA:           ../../garrigos-data/ref/GCF_016801865.2.fna
+# Input annotation GTF:           ../../garrigos-data/ref/GCF_016801865.2.gtf
 # Output dir:                     results/star/index
 # Number of threads:              16
 
-        /fs/ess/PAS0471/jelmer/conda/star/bin/STAR-avx2 --runMode genomeGenerate --genomeFastaFiles ../../garrigos_data/ref/GCF_016801865.2.fna --sjdbGTFfile ../../garrigos_data/ref/GCF_016801865.2.gtf --genomeDir results/star/index --runThreadN 16
+        /fs/ess/PAS0471/jelmer/conda/star/bin/STAR-avx2 --runMode genomeGenerate --genomeFastaFiles ../../garrigos-data/ref/GCF_016801865.2.fna --sjdbGTFfile ../../garrigos-data/ref/GCF_016801865.2.gtf --genomeDir results/star/index --runThreadN 16
         STAR version: 2.7.11b   compiled: 2024-03-19T08:38:59+0000 :/opt/conda/conda-bld/star_1710837244939/work/source
 Apr 12 10:37:44 ..... started STAR run
 Apr 12 10:37:44 ... starting to generate Genome files
@@ -808,7 +808,7 @@ Apr 12 10:41:08 ..... finished successfully
 
 # Used STAR version:
 2.7.11b
-# Done with script star_index.sh
+# Successfully finished script star_index.sh
 Fri Apr 12 10:41:08 EDT 2024
 ```
 </details>
@@ -820,11 +820,11 @@ Fri Apr 12 10:41:45 EDT 2024
 # Input R1 FASTQ file:            results/trimgalore/ERR10802863_R1.fastq.gz
 # Input R2 FASTQ file:            results/trimgalore/ERR10802863_R2.fastq.gz
 # Input genome index:             results/star/index
-# Input annotation GTF:           ../../garrigos_data/ref/GCF_016801865.2.gtf
+# Input annotation GTF:           ../../garrigos-data/ref/GCF_016801865.2.gtf
 # Output dir:                     results/star
 # Number of threads:              8
 
-        /fs/ess/PAS0471/jelmer/conda/star/bin/STAR-avx2 --readFilesIn results/trimgalore/ERR10802863_R1.fastq.gz results/trimgalore/ERR10802863_R2.fastq.gz --genomeDir results/star/index --sjdbGTFfile ../../garrigos_data/ref/GCF_016801865.2.gtf --runThreadN 8 --readFilesCommand zcat --outFileNamePrefix results/star/ERR10802863_ --outSAMtype BAM SortedByCoordinate
+        /fs/ess/PAS0471/jelmer/conda/star/bin/STAR-avx2 --readFilesIn results/trimgalore/ERR10802863_R1.fastq.gz results/trimgalore/ERR10802863_R2.fastq.gz --genomeDir results/star/index --sjdbGTFfile ../../garrigos-data/ref/GCF_016801865.2.gtf --runThreadN 8 --readFilesCommand zcat --outFileNamePrefix results/star/ERR10802863_ --outSAMtype BAM SortedByCoordinate
         STAR version: 2.7.11b   compiled: 2024-03-19T08:38:59+0000 :/opt/conda/conda-bld/star_1710837244939/work/source
 Apr 12 10:41:45 ..... started STAR run
 Apr 12 10:41:45 ..... loading genome
@@ -837,7 +837,7 @@ Apr 12 10:42:22 ..... finished successfully
 
 # Used STAR version:
 2.7.11b
-# Done with script star_align.sh
+# Successfully finished script star_align.sh
 Fri Apr 12 10:42:22 EDT 2024
 ```
 </details>
@@ -858,7 +858,7 @@ sbatch scripts/featurecounts.sh results/star "$gtf" "$strandedness" "$count_tabl
 # Starting script featurecounts.sh
 Fri Apr 12 10:45:05 EDT 2024
 # Input dir:                      results/star
-# Input annotation GTF:           ../../garrigos_data/ref/GCF_016801865.2.gtf
+# Input annotation GTF:           ../../garrigos-data/ref/GCF_016801865.2.gtf
 # Strandedness:                   1
 # Output file:                    results/featurecounts/counts.tsv
 # Number of threads:              8
@@ -1088,7 +1088,7 @@ Fri Apr 12 10:45:05 EDT 2024
 
 featureCounts v2.0.6
 
-# Done with script featurecounts.sh
+# Successfully finished script featurecounts.sh
 Fri Apr 12 10:45:21 EDT 2024
 ```
 </details>
@@ -1126,7 +1126,7 @@ Fri Apr 12 11:43:45 EDT 2024
 
 # Used MultiQC version:
 multiqc, version 1.17
-# Done with script multiqc.sh
+# Successfully finished script multiqc.sh
 Fri Apr 12 11:44:30 EDT 2024
 ```
 </details>
@@ -1150,9 +1150,9 @@ Fri Apr 12 11:44:30 EDT 2024
 
 # Step 0: setting up
 # A) Define the inputs
-fastq_dir=../../garrigos_data/fastq
-fasta=../../garrigos_data/ref/GCF_016801865.2.fna
-gtf=../../garrigos_data/ref/GCF_016801865.2.gtf
+fastq_dir=../../garrigos-data/fastq
+fasta=../../garrigos-data/ref/GCF_016801865.2.fna
+gtf=../../garrigos-data/ref/GCF_016801865.2.gtf
 # B) Define settings
 strandedness=1
 # C) Define the outputs

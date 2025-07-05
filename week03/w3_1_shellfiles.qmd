@@ -1,6 +1,7 @@
 ---
-title: "Working with files in the Unix shell: Part I"
-pagetitle: "PRACS25: Shell Basics II"
+title: "Working with files in the Unix shell I:<br>The shell as a file browser"
+subtitle: "Week 3 -- part I ([link to part II](./w3_2_shellfiles.qmd))"
+pagetitle: "PRACS25: Shell files I"
 author: Jelmer Poelstra
 date: 2025-09-04
 editor_options: 
@@ -11,85 +12,27 @@ editor_options:
 
 <br>
 
-### Learning Goals {-}
+## Introduction
 
-In this session, we continue with basic Unix shell commands,
-focusing on commands that work with files (and dirs).
-Specifically, you will learn:
+### Learning Goals
 
-- Create, copy, move, rename and delete directories and files
-- Viewing the contents of text files in various ways
-- Search within, manipulate, and extract information from text files
+#### This week
 
-<hr style="height:1pt; visibility:hidden;" />
+This week, we continue with basic Unix shell commands,
+focusing on commands that work with files and dirs.
+Specifically, you will learn to use the Unix shell to:
 
-### Getting ready {-}
+- Create, copy, move, rename and delete directories and files (this session)
+- View the contents of text files in various ways (next session)
+- Search within, manipulate, and extract information from text files (next session)
 
-Start a VS Code session like we've done before.
+#### This session
 
-<details><summary>_Click here if you need the instructions_</summary>
-
-1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>.
-2. In the blue top bar, select `Interactive Apps` and near the bottom, click `Code Server`.
-3. In the form on the page that appears, fill out the following:
-   - "_Cluster_": `ascend`
-   - "_Account_" (= OSC Project): `PAS2880`.
-   - "_Number of hours_": `2`
-   - "_Working Directory_": your personal dir in `/fs/ess/PAS2880/users` (e.g. `/fs/ess/PAS2880/users/jelmer`)
-   - "_App Code Server version_": `4.8.3`
-4. Click `Launch`
-5. Once the blue *Connect to VS Code* button appears,
-   click that to open VS Code in a new browser tab.
-6. In VS Code, open a terminal by either:
-   - Clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal`
-   - Using the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>
-7. Check that your are in your dir within `/fs/ess/PAS2880/users` by typing `pwd`
-   in the terminal.
-   _(If you're not, that dir may be listed under `Recents` in the `Get Started`_
-   _document --- if that's the case, click on that entry._
-   _Otherwise, click `File` => `Open Folder` and type/select that dir.)_
-  
-</details>
-
-Like before, I also recommend that you create and open a Markdown file to keep
-notes on what we're doing in this session:
-
-1. Create a dir for this week (e.g. `mkdir week03` in the shell)
-1. Click <i class="fa fa-bars"></i> => `File` => `New File`.
-2. Save the file (e.g. <kbd>Ctrl/⌘</kbd>+<kbd>S</kbd>) inside the `week03` dir
-   in your personal dir as e.g. `session1-shellfiles.md`.
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### Further VS Code setup {-}
-
-We'll add a keyboard shortcut to send code from your editor to the terminal.
-This is the same type of behavior that you may be familiar with from RStudio,
-and will mean that won't have to copy-and-paste code into the terminal:
-
-- Click the <i class="fa fa-cog"></i> (bottom-left) => `Keyboard Shortcuts`.
-- Find `Terminal: Run Selected Text in Active Terminal`, click on it,
-  then add a shortcut, e.g. <kbd>Ctrl</kbd>+<kbd>Enter</kbd>^[
-  Don't worry about the warning that other keybindings exist for this shortcut.].
-
-In VS Code's editor pane,
-the _entire line that your cursor is on is selected by default_.
-As such, your keyboard shortcut will send the line that your cursor is in to the terminal;
-you can also send multiple lines to the terminal after selecting them.
-
-**TBA test the shortcut**
-
-<br>
-
-## The shell as a file browser
-
-### Introduction
-
-File browser GUIs, such as "Finder" on Mac, "File Explorer" on Windows,
-and the one we saw in OSC OnDemand's File menu,
+File browser GUIs
+(such as "Finder" on Mac, "File Explorer" on Windows,
+and the interface we saw in OSC OnDemand's File menu)
 can perform operations like listing, creating, moving, renaming, copying and
 removing files and folders.
-
 Here, we will learn to use Unix shell commands that can perform these actions.
 
 ::: callout-warning
@@ -105,60 +48,144 @@ Here, we will learn to use Unix shell commands that can perform these actions.
 - **With practice, using the shell is faster and more powerful than a GUI file browser.**
 :::
 
-In the previous session,
-we already learned a command that also falls in this category -- to recap:
+<hr style="height:1pt; visibility:hidden;" />
 
-- `cd` will change your working directory, i.e. it can move you around
+### Getting ready
+
+#### Start a VS Code session
+
+Start a VS Code session like we've done before.
+
+<details><summary>_Click here to see the instructions_</summary>
+
+1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>.
+2. In the blue top bar, select `Interactive Apps` and near the bottom, click `Code Server`.
+3. In the form on the page that appears, fill out the following:
+   - "_Cluster_": `pitzer-rhel9`
+   - "_Account_" (= OSC Project): `PAS2880`.
+   - "_Number of hours_": `2`
+   - "_Working Directory_": your personal dir in `/fs/ess/PAS2880/users`
+     (e.g. `/fs/ess/PAS2880/users/jelmer`)
+   - "_App Code Server version_": `4.8.3`
+4. Click `Launch`
+5. Once the blue *Connect to VS Code* button appears,
+   click that to open VS Code in a new browser tab.
+6. In VS Code, open a terminal by either:
+   - Clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal`
+   - Using the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>
+7. Check that your are in your dir within `/fs/ess/PAS2880/users` by typing `pwd`
+   in the terminal.
+   _(If you're not, that dir may be listed under `Recents` in the `Get Started`_
+   _document --- if that's the case, click on that entry._
+   _Otherwise, click `File` => `Open Folder` and type/select that dir.)_
+   
+</details>
+
+#### Open a Markdown file for notes
+
+Like before, I also recommend that you create and open a Markdown file to keep
+notes on what we're doing in this session:
+
+1. Click <i class="fa fa-bars"></i> => `File` => `New File`.
+2. Save the file (e.g. <kbd>Ctrl/⌘</kbd>+<kbd>S</kbd>) inside the
+   `week03` dir within `/fs/ess/PAS2880/users/$USER`,
+   e.g. as `session1.md` (make sure to use a `.md` extension).
+
+#### Add a VS Code keyboard shortcut
+
+We'll add a keyboard shortcut to send code from your editor to the terminal.
+That way, you don't have to copy-and-paste code into the terminal when you've
+typed it in the editor^[
+This is the same type of behavior that you may be familiar with from RStudio]:
+
+- Click the <i class="fa fa-cog"></i> (bottom-left) => `Keyboard Shortcuts`.
+- Find `Terminal: Run Selected Text in Active Terminal`, click on it,
+  then add the shortcut <kbd>Ctrl</kbd>+<kbd>Enter</kbd>^[
+  Don't worry about the warning that other keybindings exist for this shortcut.].
+
+In VS Code's editor pane,
+the _entire line that your cursor is on is selected by default_.
+As such, you don't need to select the entire line yourself:
+the keyboard shortcut will send the line that your cursor is in to the terminal.
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### `ls` to list files
+### Downloading our practice dataset
+
+First, make sure you are in your personal dir within `/fs/ess/PAS2880/users`:
+
+```bash
+pwd
+```
+```bash-out
+/fs/ess/PAS2880/users/jelmer
+```
+
+Then, use the `git clone` command (there is a space between `git` and `clone`^[
+`git` is a type of command that has "subcommands",
+such as `clone` and many others. You will learn much more about Git next week.
+])
+to download a repository on GitHub that has our practice dataset:
+
+```bash
+git clone https://github.com/jelmerp/garrigos-data
+```
+```bash-out
+Cloning into 'garrigos-data'...
+remote: Enumerating objects: 52, done.
+remote: Total 52 (delta 0), reused 0 (delta 0), pack-reused 52 (from 1)
+Receiving objects: 100% (52/52), 945.76 MiB | 132.14 MiB/s, done.
+Updating files: 100% (47/47), done.
+```
+
+This may take 10 or so seconds, since it will download almost 1 GB of data.
+Finally, move into the downloaded dir:
+
+```bash
+cd garrigos-data
+```
+
+<br>
+
+## `ls` and `tree` to list
+
+### `ls`
 
 The `ls` command, short for "list", will list files and directories ---
 by default those in your current working dir:
 
 ``` bash
-# (You should be in /fs/ess/PAS2880/users/$USER/CSB/unix/data)
 ls
 ```
 ``` bash-out
-Buzzard2015_about.txt  Gesquiere2011_about.txt  Marra2014_about.txt   miRNA                   Pacifici2013_data.csv  Saavedra2013_about.txt
-Buzzard2015_data.csv   Gesquiere2011_data.csv   Marra2014_data.fasta  Pacifici2013_about.txt  Saavedra2013
+fastq  meta  README.md  ref
 ```
 
-::: {.callout-tip collapse="true"}
-#### `ls` output colors *(click to expand)*
+::: {.callout-tip collapse="false"}
+#### `ls` output colors
 
 The `ls` output above does not show the different colors you should see in your shell —
 the most common ones are:
 
 - Entries in [blue]{style="color: #0328fc"} are directories (like `miRNA` and `Saavedra2013` above)
 - Entries in **black** are regular files (like all other entries above)
-- Entries in [red]{style="color: #d92118"} are compressed files (we'll see examples of this later).
+- Entries in [red]{style="color: #d92118"} are compressed files (we'll see examples of this soon).
 :::
 
-You can use an _argument_ to change the dir (or file) that `ls` operates on, 
-and you can use _options_ to change how it shows the output.
-
-Let's start with options.
-For example, we can run `ls` with the **option `-l`** (lowercase L):
+You can use an **argument** to change the dir (or file) that `ls` operates on, 
+and you can use **options** to change how it shows the output.
+Let's start with *options* --
+for example, we can run `ls` with the option **`-l`** (lowercase L):
 
 ``` bash
 ls -l 
 ```
 ``` bash-out
-total 1793
--rw-rw----+ 1 jelmer PAS0471     562 Feb 24 20:30 Buzzard2015_about.txt
--rw-rw----+ 1 jelmer PAS0471   39058 Feb 24 20:30 Buzzard2015_data.csv
--rw-rw----+ 1 jelmer PAS0471     447 Feb 24 20:30 Gesquiere2011_about.txt
--rw-rw----+ 1 jelmer PAS0471   38025 Feb 24 20:30 Gesquiere2011_data.csv
--rw-rw----+ 1 jelmer PAS0471     756 Feb 24 20:30 Marra2014_about.txt
--rw-rw----+ 1 jelmer PAS0471  566026 Feb 24 20:30 Marra2014_data.fasta
-drwxrwx---+ 2 jelmer PAS0471    4096 Feb 24 20:30 miRNA
--rw-rw----+ 1 jelmer PAS0471     520 Feb 24 20:30 Pacifici2013_about.txt
--rw-rw----+ 1 jelmer PAS0471 1076150 Feb 24 20:30 Pacifici2013_data.csv
-drwxrwx---+ 2 jelmer PAS0471    4096 Feb 24 20:30 Saavedra2013
--rw-rw----+ 1 jelmer PAS0471     322 Feb 24 20:30 Saavedra2013_about.txt
+total 2
+drwxr-x---+ 2 jelmer PAS0471 4096 Nov 24  2024 fastq
+drwxr-x---+ 2 jelmer PAS0471 4096 Nov 13  2024 meta
+-rw-rw----+ 1 jelmer PAS0471 1539 Nov 13  2024 README.md
+drwxr-x---+ 2 jelmer PAS0471 4096 Jul  4 20:52 ref
 ```
 
 It lists the same items as earlier, but **printed in a different format**:
@@ -171,70 +198,92 @@ Let's add another option, **`-h`**:
 ls -lh
 ```
 ``` bash-out
-total 1.8M
--rw-rw----+ 1 jelmer PAS0471  562 Feb 24 20:30 Buzzard2015_about.txt
--rw-rw----+ 1 jelmer PAS0471  39K Feb 24 20:30 Buzzard2015_data.csv
--rw-rw----+ 1 jelmer PAS0471  447 Feb 24 20:30 Gesquiere2011_about.txt
--rw-rw----+ 1 jelmer PAS0471  38K Feb 24 20:30 Gesquiere2011_data.csv
--rw-rw----+ 1 jelmer PAS0471  756 Feb 24 20:30 Marra2014_about.txt
--rw-rw----+ 1 jelmer PAS0471 553K Feb 24 20:30 Marra2014_data.fasta
-drwxrwx---+ 2 jelmer PAS0471 4.0K Feb 24 20:30 miRNA
--rw-rw----+ 1 jelmer PAS0471  520 Feb 24 20:30 Pacifici2013_about.txt
--rw-rw----+ 1 jelmer PAS0471 1.1M Feb 24 20:30 Pacifici2013_data.csv
-drwxrwx---+ 2 jelmer PAS0471 4.0K Feb 24 20:30 Saavedra2013
--rw-rw----+ 1 jelmer PAS0471  322 Feb 24 20:30 Saavedra2013_about.txt
+total 2.0K
+drwxr-x---+ 2 jelmer PAS0471 4.0K Nov 24  2024 fastq
+drwxr-x---+ 2 jelmer PAS0471 4.0K Nov 13  2024 meta
+-rw-rw----+ 1 jelmer PAS0471 1.6K Nov 13  2024 README.md
+drwxr-x---+ 2 jelmer PAS0471 4.0K Jul  4 20:52 ref
 ```
 
 <details><summary>What is different about the output, and what do you think that means? *(Click to see the answer)*</summary>
-
-The only difference is in the format of the column reporting the sizes of the items listed.
-
-We now have "Human-readable filesizes" (hence `-h`),
-where sizes on the scale of kilobytes will be shown  with `K`s,
-of megabytes with `M`s, and of gigabytes with `G`s.
-That can be useful especially for large files.
-
+  The only difference is in the format of the column reporting the sizes of the items listed.
+  
+  We now have "Human-readable filesizes" (hence `-h`),
+  where sizes on the scale of kilobytes will be shown  with `K`s,
+  of megabytes with `M`s, and of gigabytes with `G`s.
+  That can be useful especially for large files.
 </details>
 
 <hr style="height:1pt; visibility:hidden;" />
 
-Moving on to the argument(s) to `ls` --
+::: {.callout-warning collapse="true"}
+#### Don't pay attention to `ls` dir sizes _(Click to expand)_
+The sizes that `ls -l`/`ls -lh` show for a directory unfortunately does not
+correspond to the total size of the dir and its contents:
+basically, you should only pay attention to file sizes.
+
+You could use the following command to figure out a total dir size:
+
+```bash
+du -sh fastq
+```
+```bash-out
+941M    fastq
+```
+<hr style="height:1pt; visibility:hidden;" />
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+Moving on to **argument(s)** --
 we can list files in directories other than the one we are in,
-by specifying that dir as an argument:
+by specifying one or more dirs as arguments:
 
 ``` bash
-ls miRNA
+ls fastq
 ```
 ``` bash-out
-ggo_miR.fasta  hsa_miR.fasta  miR_about.txt  miRNA_about.txt  ppa_miR.fasta  ppy_miR.fasta  ptr_miR.fasta  ssy_miR.fasta
+ERR10802863_R1.fastq.gz  ERR10802867_R1.fastq.gz  ERR10802871_R1.fastq.gz  ERR10802877_R1.fastq.gz  ERR10802881_R1.fastq.gz  ERR10802885_R1.fastq.gz
+ERR10802863_R2.fastq.gz  ERR10802867_R2.fastq.gz  ERR10802871_R2.fastq.gz  ERR10802877_R2.fastq.gz  ERR10802881_R2.fastq.gz  ERR10802885_R2.fastq.gz
+ERR10802864_R1.fastq.gz  ERR10802868_R1.fastq.gz  ERR10802874_R1.fastq.gz  ERR10802878_R1.fastq.gz  ERR10802882_R1.fastq.gz  ERR10802886_R1.fastq.gz
+ERR10802864_R2.fastq.gz  ERR10802868_R2.fastq.gz  ERR10802874_R2.fastq.gz  ERR10802878_R2.fastq.gz  ERR10802882_R2.fastq.gz  ERR10802886_R2.fastq.gz
+ERR10802865_R1.fastq.gz  ERR10802869_R1.fastq.gz  ERR10802875_R1.fastq.gz  ERR10802879_R1.fastq.gz  ERR10802883_R1.fastq.gz
+ERR10802865_R2.fastq.gz  ERR10802869_R2.fastq.gz  ERR10802875_R2.fastq.gz  ERR10802879_R2.fastq.gz  ERR10802883_R2.fastq.gz
+ERR10802866_R1.fastq.gz  ERR10802870_R1.fastq.gz  ERR10802876_R1.fastq.gz  ERR10802880_R1.fastq.gz  ERR10802884_R1.fastq.gz
+ERR10802866_R2.fastq.gz  ERR10802870_R2.fastq.gz  ERR10802876_R2.fastq.gz  ERR10802880_R2.fastq.gz  ERR10802884_R2.fastq.gz
 ```
 
 And like we saw with `cal`, we can combine options and arguments:
 
 ``` bash
-ls -lh miRNA
+ls -lh fastq
 ```
 ``` bash-out
-total 320K
--rw-rw----+ 1 jelmer PAS0471  18K Feb 24 20:30 ggo_miR.fasta
--rw-rw----+ 1 jelmer PAS0471 131K Feb 24 20:30 hsa_miR.fasta
--rw-rw----+ 1 jelmer PAS0471  104 Feb 24 20:30 miR_about.txt
--rw-rw----+ 1 jelmer PAS0471  104 Feb 24 20:30 miRNA_about.txt
--rw-rw----+ 1 jelmer PAS0471 4.0K Feb 24 20:30 ppa_miR.fasta
--rw-rw----+ 1 jelmer PAS0471  33K Feb 24 20:30 ppy_miR.fasta
--rw-rw----+ 1 jelmer PAS0471  29K Feb 24 20:30 ptr_miR.fasta
--rw-rw----+ 1 jelmer PAS0471  495 Feb 24 20:30 ssy_miR.fasta
+total 941M
+-rw-r-----+ 1 jelmer PAS0471 21M Nov 13  2024 ERR10802863_R1.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 22M Nov 13  2024 ERR10802863_R2.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 21M Nov 13  2024 ERR10802864_R1.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 22M Nov 13  2024 ERR10802864_R2.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 22M Nov 13  2024 ERR10802865_R1.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 22M Nov 13  2024 ERR10802865_R2.fastq.gz
+# [...output truncated...]
 ```
 
+Some notes about these FASTQ files:
+
+- The files all have a `.gz` extension, indicating they have been _compressed_ with the gzip utility.
+- There are two files per sample: `_R1` (forward reads) and `_R2` (reverse reads).
+- The files are ~21-22 Mb in size ---
+  considerably smaller than the original file sizes
+  (~1-2 Gb) because they were subsampled.
+  
 ::: exercise
 #### {{< fa user-edit >}} **Exercise**: Listing a single file
 
-Say you wanted to check the size of a single file.
-Then, it is not always convenient to list an entire dir's contents,
-as it could contain many files.
-
-Try to use `ls` to see the file size **only** for the 
-`miRNA_about.txt` file we saw listed above.
+Let's say that you want to check the size of a single file.
+Then, it may be not be convenient to list an entire dir's contents.
+Can you figure out how to use `ls` to show you the file size **only** for the 
+`fastq/ERR10802865_R2.fastq.gz` file?
 
 <details><summary>*Click to see the solution*</summary>
 
@@ -242,33 +291,127 @@ The argument to `ls` can be a path of any kind,
 including to a file rather than to a dir:
 
 ```bash
-ls -lh miRNA/miRNA_about.txt
+ls -lh fastq/ERR10802865_R2.fastq.gz
 ```
 ``` bash-out
--rw-rw----+ 1 jelmer PAS0471  104 Feb 24 20:30 miRNA_about.txt
+-rw-r-----+ 1 jelmer PAS0471 22M Nov 13  2024 fastq/ERR10802865_R2.fastq.gz
 ```
-
 </details>
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
 
-In preparation for the next sections, let's move into the `sandbox` dir:
+### `tree` to recursively list files in "tree" format
+
+By default, `ls` is not recursive,
+which means that it only shows results for one directory level.
+Compare that with the output of the `tree` command,
+which gives a nice recursive overview in a simple tree-like format
+(with the `-C` option adding colors):
 
 ```bash
-cd ../sandbox
-
-ls
+tree -C
 ```
 ```bash-out
-Papers and reviews
+# [colors not shown in this output]
+.
+├── fastq
+│   ├── ERR10802863_R1.fastq.gz
+│   ├── ERR10802863_R2.fastq.gz
+│   ├── ERR10802864_R1.fastq.gz
+│   ├── ERR10802864_R2.fastq.gz
+│   ├── ERR10802865_R1.fastq.gz
+│   ├── ERR10802865_R2.fastq.gz
+├── [...other FASTQ files not shown...]
+├── meta
+│   └── metadata.tsv
+├── README.md
+└── ref
+    └── GCF_016801865.2.gtf.gz
+
+3 directories, 47 files
 ```
 
+Let's take a step back and consider what's in our dataset:
+
+- A `README.md` Markdown file
+- 44 FASTQ files with RNA-Seq reads for 22 samples (in the `fastq` dir)
+- A metadata file with treatment group info for each sample (in the `meta` dir)
+- A GTF annotation file for the reference genome (in the `ref` dir)
+
+We will take a closer look at these files today and in the weeks to come.
+
+<details><summary>Can you think of a file that we need for the analysis that is not present in our dir?
+*(Click to see the answer)*</summary>
+
+We are missing the genome assembly FASTA file.
+We will download that one separately!^[
+It was too large to be included in the GitHub repository.
+]
+</details>
+
+<br>
+
+## `mkdir` and `touch` to create
+
+### `mkdir` to create new directories
+
+The `mkdir` command creates one or more new directories,
+and the `-p` option is needed to enable recursive behavior:
+
+```bash
+mkdir -p ../week03/sandbox 
+```
+
+The above command is recursive because the both the `week03` dir and the
+`sandbox` dir within it need to be created at once.
+
+The name `sandbox` is commonly used for dirs meant for experimentation and testing.
+Let's move into the dir we just created:
+
+```bash
+cd ../week03/sandbox
+```
+
+::: exercise
+#### {{< fa user-edit >}} **Exercise**: `mkdir` and recursiveness
+
+1. What do you think the following command does?
+   Would you consider that recursive? Run the command and see what it did.
+
+   ```bash
+   mkdir testdir1 testdir2
+   ```
+
+   <details><summary>*Click to see the solutions*</summary>
+   This command created two dirs at once.
+   It is **not** recursive but it only operated on one "dir level",
+   i.e. it did not need to create two dir levels
+   (or put another way, it did not create a dir within a dir).
+
+   ```bash
+   ls
+   ```
+   ```bash-out
+   testdir1 testdir2
+   ```
+   </details>
+
+2. We used a bit of complicated relative path to create the `sandbox` dir.
+   What do you think its absolute path is? Use `pwd` to see if you are right.
+
+   <details><summary>*Click to see the solutions*</summary>
+
+   ```bash
+   pwd
+   ```
+   ```bash-out
+   /fs/ess/PAS2880/users/jelmer/week03/sandbox
+   ```
+   </details>
+:::
+
 <hr style="height:1pt; visibility:hidden;" />
-
-### `mkdir` to create a new directory
-
-TBA
 
 ### `touch` to create a new file
 
@@ -285,62 +428,67 @@ touch newfile2.txt newfile3.txt
 
 ::: callout-tip
 #### Operating on multiple files
-It is important to realize that almost all Unix commands that operate on files
-and/or dirs can operate on multiple (many!) files at a time,
-which is one reason using them can be highly efficient.
-In week 6, you'll learn to select many files at once using shortcuts known
-as wildcards.
+We just saw that both `mkdir` and `touch` can take multiple arguments.
+Notably, almost all Unix commands that operate on files and/or dirs
+can operate on multiple (many!) files at a time,
+which is one reason that using them can be highly efficient.
+At the end of this session,
+you'll learn to select many files at once using shortcuts known as wildcards.
 :::
 
 ::: exercise
-#### {{< fa user-edit >}} **Exercise**: file locations
+#### {{< fa user-edit >}} **Exercise**: File locations
 
-1. Using the code above, where were these files created?
-   Can you check their sizes?
+1. Where were these files created? Can you check their sizes?
 
-2. Can you create a create a new file `test.txt` inside a new dir `testdir`?
+   <details><summary>*Click to see the solutions*</summary>
+  
+   The initial files were created in your working dir.
+  
+   ```bash
+   ls -lh
+   ```
+   ```bash-out
+   total 0
+   -rw-rw----+ 1 jelmer PAS0471 0 Jul  3 12:38 newfile1.txt
+   -rw-rw----+ 1 jelmer PAS0471 0 Jul  3 12:38 newfile2.txt
+   -rw-rw----+ 1 jelmer PAS0471 0 Jul  3 12:38 newfile3.txt
+   ```
+   </details>
 
-<details><summary>*Click to see the solutions*</summary>
+2. Can you create a create a new file `monarch.txt` inside a new dir `butterflies`?
 
-1. The initial files were created in your working dir.
+   <details><summary>*Click to see the solutions*</summary>
 
-```bash
-ls -lh
-```
-```bash-out
-TBA
-```
-
-2. To make a new dir and create a file in there,
+   To make a new dir and create a file in there,
    you can't just use the `touch` command,
    as it cannot create the directory for you
    (pay attention to the error, which may seem a bit confusing):
-
-```bash
-touch testdir/test.txt
-```
-```bash-out
-touch: testdir/test.txt: No such file or directory
-```
-
-Instead, we should first create the new dir with `mkdir`,
-and _then_ create the new file in there:
-
-```bash
-mkdir testdir
-touch testdir/test.txt
-```
-
-</details>
+  
+   ```bash
+   touch butterflies/monarch.txt
+   ```
+   ```bash-out
+   touch: butterflies/monarch.txt: No such file or directory
+   ```
+  
+   Instead, you first have create the new dir with `mkdir`,
+   and _then_ create the new file in there:
+  
+   ```bash
+   mkdir butterflies
+   touch butterflies/monarch.txt
+   ```
+   </details>
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### `cp` to copy files and dirs
+## `cp` to copy
 
 The `cp` command copies files and/or dirs from one location to another.
 Just like when copying files in a GUI file browser,
-the copy can have a different name than the original file --
+the copy can have a different name than the original --
 or the same name, as long as it's copied to a different dir.
 
 `cp` has two **required** arguments in the following order:
@@ -348,16 +496,19 @@ or the same name, as long as it's copied to a different dir.
 1. What you want to copy (_source_ path)
 2. Where you want to copy it to (_destination_ path).
 
-That is, its basic syntax is `cp <source path> <destination path>`^[
-Note: when I use `< >` around words in a line of code,
-those are **descriptive** rather than literal.
+That is, its basic syntax is `cp <source path> <destination path>`
+
+::: callout-important
+### The meaning of `<...>` notation
+When I use `< >` around text in a line of code,
+that text is **descriptive** rather than literal, and has to be replaced.
 In this example, `<source>` should be replaced in an actual line of code by
 whatever "source" you want to use, and likewise for the `<destination>`.
-].
+:::
 
 #### Basic examples
 
-Create a copy of one of the files we created above:
+Make a copy of one of the files you created above:
 
 ```bash
 cp newfile3.txt newfile3_copy.txt
@@ -368,13 +519,20 @@ you can always refer to files and dirs that aren't in your current working dir -
 for example:
 
 ```bash
-cp ../data/Buzzard2015_about.txt buzz2.txt
+cp ../../garrigos-data/meta/metadata.tsv meta2.tsv
 ```
 
-The above copied the file `Buzzard2015_about.txt`, which was not in our working dir,
-to a new file with the name `buzz2.txt` in our working dir.
+That copied `metadata.tsv`, which was not in our working dir,
+to a new file `meta2.tsv` in our working dir.
 
-:::callout-note
+:::callout-tip
+#### Make sure to use Tab completion when looking for existing files in case like above!
+You may for example get confused about how many levels you need to go up,
+and you can check by pressing <kbd>Tab</kbd> after the `/`.
+Additionally, you are much less likely to have typos in your paths when you alway
+use Tab completion.
+:::
+
 #### Copying into your working dir without changing the name
 
 When copying something into our working dir, like above,
@@ -383,31 +541,29 @@ To accomplish this,
 we could of course just repeat the original file name in the destination path:
 
 ```bash
-cp ../data/Buzzard2015_about.txt Buzzard2015_about.txt
+cp ../../garrigos-data/meta/metadata.tsv metadata.tsv
 ```
 
 But do we really need to repeat the filename
-(which is not just more typing, but can be error-prone as well)?
-No.
+(which is not just more typing, but can be error-prone as well)? No!
 If the destination path is simply the `.` shortcut that indicates our current
 working dir,
-the file name of the copy will not be changed:
+then the file name of the copy will not be changed:
 
 ```bash
-cp ../data/Buzzard2015_data.csv .
+cp ../../garrigos-data/meta/metadata.tsv metadata.tsv .
 ```
-:::
 
-### Copying dirs and their contents
+#### Copying dirs and their contents
 
 Finally, `cp` will by default refuse to copy directories and their contents ---
-that is, it is not "**recursive**" by default^[
+that is, like `mkdir`, it is not "**recursive**"^[
 For better or worse, non-recursiveness in Unix commands is meant as a sort of safety mechanism,
 as you may otherwise more easily operate on very large amounts of data accidentally.].
 The `-r` option is needed for recursive copying:
 
 ```bash
-cp -r ../data . 
+cp -r ../../garrigos-data/meta .
 ```
 
 Check the contents of the `sandbox` dir again now that we've copied several items there:
@@ -416,40 +572,46 @@ Check the contents of the `sandbox` dir again now that we've copied several item
 ls
 ```
 ```bash-out
-buzz2.txt              data           newfile2.txt        newfile3.txt          test
-Buzzard2015_data.csv   newfile1.txt   newfile3_copy.txt  'Papers and reviews'
+butterflies  meta2.tsv  metadata.tsv  newfile1.txt  newfile2.txt  newfile3.txt  meta
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
+<br>
 
-### `mv` to move and rename files and dirs
+## `mv` to move and rename
 
-Moving files to a different dir and renaming files is
-_fundamentally the same operation_: you are **changing the path**.
+Three notes as a preamble to the `mv` command:
 
-It is important to realize that when talking about files,
-both its file name (e.g. `buzz2.txt`) and the dir it is inside
-(`/fs/ess/PAS2880/users/jelmer/CSB/sandbox`) are part of the path
-(`/fs/ess/PAS2880/users/jelmer/CSB/sandbox/buzz2.txt`) ---
-and, as pointed out before,
-that a mere file name like `buzz2.txt` also represents a path.
+1. Moving files to a different dir and renaming files is
+   _fundamentally the same operation_: you are **changing the path**.
+2. For a file,
+   both its name (e.g. `monarch.txt`) and the dir it is inside
+   (`butterflies/`) are part of the path (`butterflies/monarch.txt`).
+3. A mere file name like `monarch.txt` can also represent a path:
+   it implies that the file is in our current working dir.
 
-The **`mv`** command, then, can be used to move files, rename them,
+As such, the **`mv`** command can be used to move files, rename them,
 or do both at the same time:
 
-```bash
-# Same directory, different file name ("renaming"):
-mv buzz2.txt buzz_copy.txt
+- Same directory, different file name ("renaming"):
 
-# Different directory, same file name ("moving"):
-# (You don't need the trailing slash to data/, but this can be clearer.)
-mv buzz_copy.txt data/
+  ```bash
+  mv meta2.tsv meta_copy.tsv
+  ```
 
-# Different directory, different file name ("moving + renaming"):
-mv Buzzard2015_data.csv data/Buzzard.txt
-```
+- Different directory, same file name ("moving"):
 
-Finally, unlike `cp`, the `mv` command is recursive by default!
+  ```bash
+  # (You don't need the trailing slash to data/, but this can be clearer.)
+  mv meta_copy.tsv meta/
+  ```
+
+- Different directory, different file name ("moving + renaming"):
+
+  ```bash
+  mv metadata.tsv meta/metadata_old.tsv
+  ```
+
+Unlike `cp`, the `mv` command is recursive by default!
 
 ::: callout-tip
 #### Both the `mv` and `cp` commands will by default:
@@ -458,12 +620,11 @@ Finally, unlike `cp`, the `mv` command is recursive by default!
   (use the **`-v` option for _verbose_** to make them report what they do).
 - Overwrite existing files without reporting this
   (use the **`-i` option for _interactive_** to make them ask before overwriting).
-  
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
+<br>
 
-### `rm` to remove files and dirs
+## `rm` to remove
 
 The **`rm`** command removes files and optionally dirs --- here,
 we'll remove the file copy we made above: 
@@ -475,31 +636,30 @@ rm newfile1.txt
 Like with `cp`, the **`-r`** option is needed to make the command work recursively:
 
 ```bash
-rm testdir
+rm butterflies
 ```
 ```bash-out
-rm: cannot remove ‘testdir’: Is a directory
+rm: cannot remove ‘butterflies’: Is a directory
 ```
 
 But it does work (silently!) with the '-r' option:
 
 ```bash
-rm -r testdir
+rm -r butterflies
 ```
 
 ::: {.callout-warning collapse="true"}
 #### There is no thrash bin when deleting files in the shell, so use `rm` with caution! _(Click to expand)_
 
-`rm -r` can be very dangerous --- for example, the command `rm -r /`
-would attempt to remove the entire contents of the computer,
-including the operating system.
+`rm -r` can be very dangerous ---
+for example, the command `rm -r /` would attempt to remove the entire contents
+of the computer, including the operating system.
 
 A couple ways to take precautions:
 
 - You can add the `-i` option, which will have you confirm each individual removal (can be tedious)
 - When you _intend_ to remove an empty dir, you can use the `rmdir` command which will
   do just (and only) that --- that way, if the dir isn't empty after all, you'll get an error.
-
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -507,9 +667,10 @@ A couple ways to take precautions:
 ::: exercise
 #### {{< fa user-edit >}} **Exercise:** Spaces in file names --- what could go wrong?
 
-Say, you have a dir with some raw data in the dir `raw`:
+Say, you have a dir called `raw` that has important raw data:
 
 ```bash
+# [Hypothetical - don't run]
 ls
 ```
 ```bash-out
@@ -520,12 +681,14 @@ Now you create a dir for sequences, with a space in the file name ---
 this is possible as shown below by quoting the full name:
 
 ```bash
+# [Hypothetical - don't run]
 mkdir "raw sequences"
 ```
 
 You don't want this dir after all, and carelessly try to remove it:
   
 ```bash
+# [Hypothetical - don't run]
 rm -r raw sequences
 ```
 
@@ -551,741 +714,226 @@ now your project's data has been erased! 😳
 
 For both `cp` and `mv`, when operating on files (and this works equivalently for dirs):
 
-- If the destination path is an existing dir, the file will go into that dir and keep its original name.
-- If the destination path is _not_ an existing dir, the (last bit of the) destination specifies the new file name.
-- A trailing slash in the destination path makes explicit that you are referring to a dir and not a file.
+- If the destination path is an existing dir,
+  the file will go into that dir and keep its original name.
+- If the destination path is _not_ an existing dir,
+  the (last bit of the) destination specifies the new file name.
+- A trailing slash in the destination path makes explicit that you are referring
+  to a dir and not a file.
 
 -----
 
-With that in mind, try to answer the following questions about this command:
+With that in mind, try to answer these questions about the following command:
 
 ```bash
-cp Buzzard2015_about.txt more_data/
+cp newfile2.txt more_data/
 ```
 
-- What do you think the command would do or attempt to do?
-- Do you think the command will succeed?
-- What would the command have done if we had omitted the trailing forward slash?
+1. What do you think the command would do or attempt to do?
+2. Do you think the command will succeed (given what is in your `sandbox` dir)?
+3. What would the command have done if we had omitted the trailing forward slash?
 
 <details><summary>*Click to see the solution*</summary>
 <hr style="height:1pt; visibility:hidden;" />
 
-- Because we put a trailing forward slash in `more_data/`, we are making clear
-  that we are referring to a directory.
-  So the file should be copied into a dir `more_data`, and keep the same file name.
+1. Because we added a trailing forward slash to `more_data/`,
+   we are making clear that we are referring to a directory.
+   So the command will attempt to copy the file into a dir `more_data`,
+   with the file keeping the same name.
   
-- However, the `more_data/` dir does not exist, and `cp` will not create
-  a dir on the fly, so this will fail:
+2. The `more_data/` dir does not exist,
+   and `cp` will not create a dir on the fly -- so it will fail:
 
-  ```bash
-  cp newfile2.txt more_data/
-  ```
-  ```bash-out
-  cp: cannot create regular file ‘more_data/’: Not a directory
-  ```
+   ```bash
+   cp newfile2.txt more_data/
+   ```
+   ```bash-out
+   cp: cannot create regular file ‘more_data/’: Not a directory
+   ```
 
-- If we had omitted the trailing forward slash, we would have created a copy
-  of the file with *file* name `more_data` (note that no file extension is needed, per se).
+3. If we had omitted the trailing forward slash,
+   we would have created a copy of the file with *file* name `more_data`
+   (if that seems confusing: note that in Unix, files don't need to have a file
+   extension).
 
-- P.S: To make the original intention work, first create the destination dir:
+P.S.: To copy the file according to the original intention,
+first create the destination dir and then copy:
 
-  ```bash
-  mkdir more_data
-  cp newfile2.txt more_data/
-  ```
+```bash
+mkdir more_data
+cp newfile2.txt more_data/
+```
   
-  Note also that once the `more_data` dir exists, it **does not** make a difference
-  whether or not you using a trailing slash (!).
+Note also that once the `more_data` dir exists,
+it **does not** make a difference whether or not you using a trailing slash.
 
 </details>
-
 :::
 
 <br>
 
-## Viewing the contents of text files
+## Wildcard expansion (globbing)
 
-### Plain-text files
+Shell wildcard expansion is a very useful technique to select multiple files,
+where **wildcards** are _characters that have a special meaning_.
 
-In this course,
-we'll be working almost exclusively with so-called "**plain-text**" files
-(files with `.txt` and related extensions).
-These are simple files that can be opened by any text editor on any computer,
-and by Unix commands.
+Let's start by adding some dummy FASTQ files to our `sandbox` dir:
 
-In contrast, so-called "binary" formats like Excel or Word files can only be opened
-in their respective apps and cannot be operated on with Unix commands.
-That can pose many problems: for example, these apps are not always available,
-and version mismatches may make files impossible to open.
-
-While their simplicity may seem limiting,
-**plain-text files are generally preferable for reproducible science**.
-Additionally, many common omics file formats,
-like FASTA, FASTQ, and GFF, are in plain-text.
-
-Therefore, we will be learning a number of Unix commands to _view_ (this section)
-and _process/summarize_ (next section) plain-text files in various formats.
-
-```bash
-cd ../data   # Move to the data dir for the next commands
+```sh
+# (Copy-and-paste this into the shell rather than typing it out) 
+touch sample1_R1.fastq sample1_R2.fastq
+touch sample2_R1.fastq sample2_R2.fastq
+touch sample3_R1.fastq sample3_R2.fastq
 ```
 
-### `cat`
+By far the most commonly used wildcard is `*`,
+which matches **any number of any combination of characters**
+(including "nothing" -- the absence of any characters).
 
-The **`cat`** command will print the entire contents of one or more files to
-screen:
+For example, we can match only the two `sample1` files with a `*` using:
 
 ```bash
-cat Marra2014_about.txt
+# This matches files that start with "sample1"
+ls sample1*
 ```
 ```bash-out
-Data published by:
-Marra NJ, DeWoody JA (2014) Transcriptomic characterization of the immunogenetic repertoires of heteromyid rodents. BMC Genomics 15: 929. http://dx.doi.org/10.1186/1471-2164-15-929
-
-Data description:
-File D_spec_spleen_filtered.fasta (57.01Mb) contains Dipodomys spectabilis spleen transcriptome data. Combined assembly of 454 reads and fragmented Illumina assembly (see methods of associated paper) in gsAssembler version 2.6.
-Note that we truncated the original file to 1% of its original size and named it Marra2014_data.txt
-
-Data taken from:
-Marra NJ, DeWoody JA (2014) Data from: Transcriptomic characterization of the immunogenetic repertoires of heteromyid rodents. Dryad Digital Repository. http://dx.doi.org/10.5061/dryad.qn474
+sample1_R1.fastq  sample1_R2.fastq
 ```
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### `head` and `tail`
-
-Some files, especially when working with omics data, can be huge,
-so printing the whole file with `cat` is not always ideal.
-The twin commands **`head`** and **`tail`** can be useful,
-as they will print only the first (`head`) or last (`tail`) lines of a file.
-
-`head` & `tail`'s defaults are to print 10 lines:
+Selecting files with wildcard expansion is also called **globbing**.
+When globbing, the pattern has to match the entire file name --
+therefore, the following doesn't match anything:
 
 ```bash
-head Gesquiere2011_data.csv
+# This matches files that _end in_ R1, but there are no such files:
+ls *R1
 ```
 ```bash-out
-maleID  GC      T
-1       66.9    64.57
-1       51.09   35.57
-1       65.89   114.28
-1       80.88   137.81
-1       32.65   59.94
-1       60.52   101.83
-1       65.89   65.84
-1       52.72   43.98
-1       84.85   102.31
-```
-
-Use the `-n` option to specify the number of lines to print:
-
-```bash
-head -n 3 Gesquiere2011_data.csv
-```
-```bash-out
-maleID  GC      T
-1       66.9    64.57
-1       51.09   35.57
-```
-
-A neat trick with `tail` is to *start at* a specific line,
-often used to skip the header line,
-like in this example^[We'll see this in action in a bit]:
-
-  ```bash
-  tail -n +2 Gesquiere2011_data.csv
-  ```
-  ```bash-out
-  1       66.9    64.57
-  1       51.09   35.57
-  1       65.89   114.28
-  1       80.88   137.81
-  1       32.65   59.94
-  1       60.52   101.83
-  1       65.89   65.84
-  1       52.72   43.98
-  1       84.85   102.31
-  1       98.25   149.61
-  [...output truncated...]
-  ```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### `less`: A file pager
-
-The `less` command is rather different from the previous commands,
-which simply printed file contents to the screen and gave us our shell prompt back.
-Instead, `less` will open a file for you to browse through,
-and you need to explicitly quit the program to get your prompt back.
-
-Let's try it:
-
-```bash
-less Gesquiere2011_data.csv
-```
-
-You can move around in the file in several ways:
-
-- By scrolling with your mouse
-- With up <kbd>↑</kbd> and down <kbd>↓</kbd> arrows to move line-by-line
-- If you have them, with <kbd>PgUp</kbd> and <kbd>PgDn</kbd> keys to move page-by-page
-- With <kbd>u</kbd> (up) and <kbd>d</kbd> (down) to half a page at a time
-
-To exit/quit `less` and get your shell prompt back, simply type **<kbd>q</kbd>**:
-
-```bash
-q
-```
-
-<br>
-
-## Redirection and pipes
-
-### `wc -l` to count lines
-
-Before we can move on to redirection and pipes,
-we'll learn about a useful little command that the examples below will use.
-The **`wc`** command by default counts the number of lines, words, and characters
-in its input ---
-but it is most commonly used to only **count lines**, with the `-l` option:
-
-```bash
-wc -l Marra2014_about.txt
-```
-```bash-out
-9 Marra2014_about.txt
-```
-
-This can be surprisingly useful,
-as the number of lines in many types of files represent a count of the number
-of entries.
-
-Now, let's move back into the `sandbox` dir:
-
-```bash
-cd ../sandbox
-```
-<hr style="height:1pt; visibility:hidden;" />
-
-### Standard output and redirection
-
-The regular output of a command that is printed to the screen
-(like a list of files by `ls`, or a number of lines by `wc -l`)
-is technically called **"standard out"** or in short "*stdout*".
-
-Sometimes, we may want to do something else with this output,
-like storing it in a file. Luckily, this is easy to do.
-
-With "**`>`**", we **redirect** output to a file:
-
--   If the file doesn't exist, it will be *created*.
--   If the file does exist, any contents will be *overwritten*.
-
-First, let's remind ourselves what `echo` does without redirection ---
-it will simply print the characters we provide it with to the screen:
-
-```bash
-echo "My first line"
-```
-```bash-out
-My first line
-```
-
-Now, let's redirect `echo`'s standard out to a new file `test.txt`:
-
-```bash
-echo "My first line" > test.txt
-```
-
-No output was printed to the screen, as it instead went into the file:
-
-```bash
-cat test.txt
-```
-```bash-out
-My first line
-```
-
-Let's redirect another line into that same file:
-
-```bash
-echo "My second line" > test.txt
-cat test.txt
-```
-```bash-out
-My second line
-```
-
-That may not have been what we intended!
-As explained above, the earlier file contents was _overwritten_. 
-
-With "**`>>`**", however, we **append** the output to a file:
-
-```bash
-echo "My third line" >> test.txt
-cat test.txt
-```
-```bash-out
-My second line
-My third line
+ls: cannot access *R1: No such file or directory
 ```
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### Standard input and pipes
-
-Let's say that we want to use Unix commands to count the number of entries
-(files and "sub"dirs) in a directory. We could do that as follows:
+So, if the string (text) that we use for matching is in the middle of the filename,
+like `R1`, **we need a `*` on both sides of it**:
 
 ```bash
-# First we redirect the ls output to a file
-ls ../data/Saavedra2013 > filelist.txt
-
-# Let's check what that looks like -- note that each file is on its own line:
-head -n 5 filelist.txt
+# This matches files that contain, anywhere in their names, "R1":
+ls *R1*
 ```
 ```bash-out
-n10.txt
-n11.txt
-n12.txt
-n13.txt
-n14.txt
-```
-```bash
-# Then we count the nr. of lines, which is the number of files+dirs in Saavedra2013:
-wc -l filelist.txt
-```
-```bash-out
-59 filelist.txt
-```
-
-That worked, but we needed two separate lines of code,
-and we are left with a file `filelist.txt` that we would probably want to remove
-since it has served its sole purpose.
-
-A more conventient way to do this is with a "**pipe**", as follows:
-
-```bash
-ls ../data/Saavedra2013 | wc -l
-```
-```bash-out
-59
-```
-
-When we use the pipe, the output of the command on the left-hand side
-(a file listing, in this case) is **redirected into the `wc` command**.
-This command (and many others) will gladly accept input that way instead of
-via an file name argument, like in the earlier example.
-
-Pipes are useful because they avoid having to write/read intermediate files ---
-this saves typing, makes the operation quicker, and reduces file clobber.
-In the example above,
-we don't need to make a `filelist.txt` file to count the number of files.
-
-<br>
-
-## Unix data tools
-
-We'll now turn to some commands that may be described as Unix "data tools".
-These commands are very useful when working in the shell generally,
-and when working with omics data specifically.
-
-Their strength is especially in relatively simple data processing and summarizing
-steps, and they are excellent in dealing with very large files. 
-
-Here, we will cover:
-
-- `grep` to search for text in files 
-- `cut` to select one or more columns from tabular data
-- `sort` to sort lines, or tabular data by column
-- `uniq` to remove duplicates
-- `tr` to replace characters
-
-We'll start with taking a look at one of the example data files,
-and discussing tabular plain-text files.
-
-### Tabular plain-text files and file extensions
-
-The examples below will use the file `Pacifici2013_data.csv`,
-so let's have a look at the contents of that file first:
-
-```bash
-cd ../data
-head -n 3 Pacifici2013_data.csv
-```
-```bash-out
-TaxID;Order;Family;Genus;Scientific_name;AdultBodyMass_g;Sources_AdultBodyMass;Max_longevity_d;Sources_Max_longevity;Rspan_d;AFR_d;Data_AFR;Calculated_GL_d;GenerationLength_d;Sources_GL
-7580;Rodentia;Cricetidae;Eligmodontia;Eligmodontia typus;17.37;PanTHERIA;292;PanTHERIA;254.64;73.74;calculated;147.5856;147.5856;Rspan-AFR(SM+Gest)
-42632;Rodentia;Cricetidae;Microtus;Microtus oregoni;20.35;PanTHERIA;456.25;PanTHERIA;445.85;58.06;calculated;187.3565;187.3565;Rspan-AFR(SM+Gest)
-```
-
-This file contains some natural history data on mammals from the paper [_Generation length for mammals_ by Pacifici et al. 2013](https://natureconservation.pensoft.net/article/1343/).
-(In the exercises and assignment, you will also work with sequence data files.)
-
-"**Tabular**" files contain data that is arranged in a rows-and-columns format,
-like a table or an Excel worksheet.
-
-Because plain-text files do not have an intrinsic way to define columns or cells,
-certain characters are used as "delimiters" in  **plain-text tabular** files,
-like `Pacifici2013_data.csv`.
-Most commonly, these are:
-
-- A Tab, and such files are often stored with a **`.tsv`** extension for Tab-Separated Values ("TSV file").
-- A comma, and such files are often stored with a **`.csv`** extension for Comma-Separated Values ("CSV file").
-
-<hr style="height:1pt; visibility:hidden;" />
-
-<details><summary>What delimiter does the `Pacifici2013_data.csv` file appear to contain? _(Click for the answer)_</summary>
-From looking at the first couple of lines that we printed above,
-the delimiter is a semicolon `;`.
-
-</details>
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: callout-important
-#### Plain-text file extensions are flexible and for human-readibility
-In the above example, a file with a semicolon as the delimiter was stored
-with a `.csv` extension --- this may be a bit surprising but is not incorrect.
-More unusual, and technically incorrect,
-is the `Gesquiere2011_data.csv` file we saw earlier,
-which is Tab-delimited yes has a `.csv` extension.
-
-This brings us to an important side note on **plain-text file extensions**
-like `.txt`, `.csv`, `.tsv`, etc.:
-all plain text files, including the tabular files discussed above,
-most sequence data files, and scripts are fundamentally "just plain-text files".
-_Changing the extension does not change the file._
-Instead, different file extensions are used primarily to make it clear
-to humans (as opposed to the computer) what the file contains.
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### `grep` to print lines that match a pattern
-
-The `grep` command is extremely useful and will find specific text or patterns in a file.
-By default, it will **print each line that contains a "match" in full**.
-It's basic syntax is `grep "<pattern>" <file-path>`.
-
-For example, this will print all lines from `Pacifici2013_data.csv` that contain "Vombatidae":
-
-```bash
-grep "Vombatidae" Pacifici2013_data.csv
-```
-```bash-out
-40555;Diprotodontia;Vombatidae;Lasiorhinus;Lasiorhinus latifrons;26163.8;PanTHERIA;9928;"PanTHERIA;AnAge";9317.5;652.24;calculated;3354.315;3354.315;Rspan-AFR(SM+Gest)
-40556;Diprotodontia;Vombatidae;Vombatus;Vombatus ursinus;26000;PanTHERIA;10238.25;"PanTHERIA;AnAge";9511.6;783.65;calculated;3542.014;3542.014;Rspan-AFR(SM+Gest)
-11343;Diprotodontia;Vombatidae;Lasiorhinus;Lasiorhinus krefftii;31849.99;PanTHERIA;10950;"PanTHERIA;AnAge";no information;no information;no information;no information;3354.315;Mean_congenerics_same_body_mass
-```
-
-Instead of printing matching lines, we can also **count** them with the `-c` option:
-
-```bash
-# How many entries for bats (Chiroptera) does the file have?
-grep -c "Chiroptera" Pacifici2013_data.csv
-```
-```bash-out
-1144
-```
-
-The option `-v` **inverts** `grep`'s behavior and will print all lines _not_ matching the pattern ---
-here, we'll combine `-v` and `-c` to count the number of lines that do not contain "Vombatidae":
-
-```bash
-grep -vc "Vombatidae" Pacifici2013_data.csv
-```
-```bash-out
-5424
-```
-
-::: {.callout-note collapse="false"}
-#### Additional `grep` tips
-
-- While not always necessary,
-  it is a good habit to consistently use quotes (`"..."`) around the search pattern.
-- Incomplete matches, including in individual words, work: "`Vombat`" matches `Vombatidae`.
-- `grep` has many other useful options, such as:
-  - `-i` to ignore case
-  - `-r` to search files recursively
-  - `-w` to match "words"
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### Selecting columns using `cut`
-
-The `cut` command will select or we could say "cut out" one or more columns
-from a tabular file:
-
-- We'll always have to use the **`-f`** option to specify the
-  **desired column(s) / "field"(s)**.
-- Because its default column delimiter is a Tab, for this file,
-  we'll have to specify the **delimiter** with **`-d`**.
-
-```bash
-# Select the first column of the file:
-cut -d ";" -f 1 Pacifici2013_data.csv
-```
-```bash-out
-TaxID
-7580
-42632
-42653
-42662
-16652
-[...output truncated...]
-```
-
-That worked, but a ton of output was printed, and we may find ourselves scrolling to
-the top to see the first few lines --
-in many cases, it can be useful to **pipe the output to `head`** to see if our command works:
-
-```bash
-cut -d ";" -f 1 Pacifici2013_data.csv | head -n 3
-```
-```bash-out
-TaxID
-7580
-42632
-```
-
-::: {.callout-tip collapse="true"}
-#### Selecting multiple columns with `cut` _(Click to expand)_
-
-To select **multiple columns**, use a range or comma-delimited list:
-
-```bash
-cut -d ";" -f 1-4 Pacifici2013_data.csv | head -n 3
-```
-```bash-out
-TaxID;Order;Family;Genus
-7580;Rodentia;Cricetidae;Eligmodontia
-42632;Rodentia;Cricetidae;Microtus
-```
-
-```bash
-cut -d ";" -f 2,8 Pacifici2013_data.csv | head -n 3
-```
-```bash-out
-Order;Max_longevity_d
-Rodentia;292
-Rodentia;456.25
-```
-
-However, it is not possible to change the order of columns with `cut`!
-(The more advanced `awk` command can do this.)
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### Combining `cut`, `sort`, and `uniq` to create a list
-
-Let's say we want an alphabetically sorted list of animal *orders* from the
-`Pacifici2013_data.csv` file.
-To do this, we'll need to learn about two new commands:
-
-- **`sort`** to sort/order/arrange rows, by default in alphanumeric order.
-- **`uniq`** to remove duplicates (i.e., keep all distinct/unique) entries
-  _from a sorted file/list_.
-
-We'll build up a small "pipeline" to do this, step-by-step,
-and piping the output into `head` at every step.
-First, we get rid of the header line with our `tail` trick:
-
-```bash
-tail -n +2 Pacifici2013_data.csv | head -n 5
-```
-```bash-out
-7580;Rodentia;Cricetidae;Eligmodontia;Eligmodontia typus;17.37;PanTHERIA;292;PanTHERIA;254.64;73.74;calculated;147.5856;147.5856;Rspan-AFR(SM+Gest)
-42632;Rodentia;Cricetidae;Microtus;Microtus oregoni;20.35;PanTHERIA;456.25;PanTHERIA;445.85;58.06;calculated;187.3565;187.3565;Rspan-AFR(SM+Gest)
-42653;Rodentia;Cricetidae;Peromyscus;Peromyscus gossypinus;27.68;PanTHERIA;471.45833335;PanTHERIA;444.87833335;72.58;calculated;201.59471667;201.5947166715;Rspan-AFR(SM+Gest)
-42662;Macroscelidea;Macroscelididae;Elephantulus;Elephantulus myurus;59.51;PanTHERIA;401.5;PanTHERIA;412.34;90.48;calculated;210.0586;210.0586;Rspan-AFR(SM+Gest)
-16652;Rodentia;Cricetidae;Peromyscus;Peromyscus boylii;23.9;PanTHERIA;547.5;PanTHERIA;514.13;79.97;calculated;229.0677;229.0677;Rspan-AFR(SM+Gest)
-```
-
-Second, we select our column of interest with `cut`:
-
-```bash
-tail -n +2 Pacifici2013_data.csv | cut -d ";" -f 2 | head -n 5
-```
-```bash-out
-Rodentia
-Rodentia
-Rodentia
-Macroscelidea
-Rodentia
-```
-
-Third, we pipe to `sort` to alphabetically sort the result:
-
-```bash
-tail -n +2 Pacifici2013_data.csv | cut -d ";" -f 2 | sort | head -n 5
-```
-```bash-out
-Afrosoricida
-Afrosoricida
-Afrosoricida
-Afrosoricida
-Afrosoricida
-```
-
-Finally, we use `uniq` to only keep unique rows (values):
-
-```bash
-tail -n +2 Pacifici2013_data.csv | cut -d ";" -f 2 | sort | uniq
-```
-```bash-out
-Afrosoricida
-Carnivora
-Cetartiodactyla
-Chiroptera
-Cingulata
-Dasyuromorphia
-Dermoptera
-Didelphimorphia
-[...output truncated...]
-```
-
-Amazingly, with a very small modification to our pipeline,
-we can generate a "count table" instead of a simple list --
-we just have to add `uniq`'s `-c` option (for **c**ount):
-
-```bash
-tail -n +2 Pacifici2013_data.csv | cut -d ";" -f 2 | sort | uniq -c
-```
-```bash-out
-     54 Afrosoricida
-    280 Carnivora
-    325 Cetartiodactyla
-   1144 Chiroptera
-     21 Cingulata
-[...output truncated...]
+sample1_R1.fastq  sample2_R1.fastq  sample3_R1.fastq
 ```
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### Substituting characters using `tr`
+In summary:
 
-`tr` for **`tr`**anslate will substitute all instances of characters –
-here, any `a` for a `b`:
-
-```bash
-echo "aaaaccc" | tr a b
-```
-```bash-out
-bbbbccc
-```
-
-Oddly enough, `tr` does not take a file name as an argument,
-so how can we provide it with input from a file?
-The easiest way is by piping the output of `cat` into `tr` as follows:
-
-```bash
-cat Pacifici2013_data.csv | tr ";" "\t" | head -n 3
-```
-```bash-out
-TaxID   Order   Family  Genus   Scientific_name AdultBodyMass_g Sources_AdultBodyMass   Max_longevity_d Sources_Max_longevity   Rspan_d AFR_d   Data_AFR        Calculated_GL_d   GenerationLength_d      Sources_GL
-7580    Rodentia        Cricetidae      Eligmodontia    Eligmodontia typus      17.37   PanTHERIA       292     PanTHERIA       254.64  73.74   calculated      147.5856  147.5856        Rspan-AFR(SM+Gest)
-42632   Rodentia        Cricetidae      Microtus        Microtus oregoni        20.35   PanTHERIA       456.25  PanTHERIA       445.85  58.06   calculated      187.3565  187.3565        Rspan-AFR(SM+Gest)
-```
-
-The example above converted the `;` delimited to a `Tab` (i.e., a CSV file to a TSV file),
-where **`\t`** is a regular expression meaning Tab^[We'll learn more about regular expressions in Week 4.].
-(Though note that we didn't modify the original file nor saved the output in a new file.)
-
-::: {.callout-note collapse="true"}
-#### Deletion and "squeezing" with `tr` _(Click to expand)_
-
-You can delete characters with the `-d` option -- for example, to delete all a's:
-
-```bash
-echo "aabbccddee" | tr -d a
-```
-```bash-out
-bbccddee
-```
-
-You can "squeeze" i.e. remove consecutive duplicates with the `-s` option --
-for example, to turn variable numbers of spaces into a single space:
-
-```bash
-echo "a     b   c   d" | tr -s " "
-```
-```bash-out
-a b c d
-```
-:::
+| Pattern        | Matches files whose names... 
+|----------------|---------------------------|
+| `sample1*`     | [Start with]{.underline} "sample1"
+| `*fastq`       | [End with]{.underline} ".fastq"
+| `*_R1*`        | [Contain]{.underline} "\_R1"
+| `*`            | _(matches all files in the working dir)_^[Except so-called hidden files.]
 
 <hr style="height:1pt; visibility:hidden;" />
 
 ::: exercise
-#### {{< fa user-edit >}} Exercise: Redirecting `tr` output
+#### {{< fa user-edit >}} **Exercise**: File matching
 
-Modify our command in which we changed the delimiter to a Tab to redirect the output
-to a new file, `Pacifici2013_data.tsv` (note the extension).
-This file should be located in the `sandbox` dir,
-which is not your current working dir.
+1. List only the FASTQ files for sample 3.
 
-<details><summary>*Click to see the solution*</summary>
+   <details><summary>Click for the solution</summary>
+  
+   ```bash
+   ls sample3*
+   ```
+   ```bash-out
+   sample3_R1.fastq  sample3_R2.fastq
+   ```
+   </details>
+
+2. Which files does `ls *samp*le*` match? Make a prediction before you test it.
+
+   <details><summary>Click for the solution</summary>
+   It matches all the FASTQ files, because:
+  
+   - All file names start with `sample`,
+   - Since `*` also matches "zero characters", there is no requirement for the
+     presence of characters at the locations of the "unnecessary" `*`s.
+   </details>
+
+3. Create 2 new files called `sample1.txt` and `sample2.txt` in the current working dir.
+   Then, only match the 2 FASTQ files for sample1.
+
+   <details><summary>Click for the solution</summary>
+  
+   First we create the files:
+  
+   ```bash
+   touch sample1.txt sample2.txt
+   ```
+  
+   Then we match them -- the below code means
+   any file that starts with "sample1" and end with "fastq":
+  
+   ```bash
+   ls sample1*fastq
+   ```
+   ```bash-out
+   sample1_R1.fastq  sample1_R2.fastq
+   ```
+   </details>
+
+:::
+<hr style="height:1pt; visibility:hidden;" />
+
+There are a couple more shell wildcards, but these are much more rarely used:
+check the [advanced shell page](../ref/adv-shell.qmd) if you're curious.
+
+#### Expansion is done by the shell itself
+
+While it may seem like a trivial or odd distinction,
+it is important to realize that the "expansion"
+--of a wildcard to matching file names-- is done *by the shell*
+instead of by `ls` or another command you might be using wildcards with.
+**This means that a command like `ls` will "see"/"receive" the list of files _after_**
+**the expansion has already happened.**
+
+So, when you type...
 
 ```bash
-cat Pacifici2013_data.csv | tr ";" "\t" > ../sandbox/Pacifici2013_data.tsv
+ls sample1*fastq
 ```
 
-</details>
-
-::: {.callout-warning collapse="false"}
-#### Don't redirect back to the input file!
-
-You should never redirect the output of Unix commands "back" to the input file.
-This will corrupt the input file because of the way that Unix commands work,
-which is in "streaming" line-by-line fashion^[
-This is also why they can so easily work with huge files:
-the entire file contents are not loaded into the computer's memory.
-].
-
-Therefore, if you really want to edit/overwrite the original file instead of
-creating a separate edited copy, you will need multiple steps:
-first produce a separate copy and then rename that.
-:::
-:::
-
-<br>
-
-## Wrap-up & the Unix philosophy
-
-### The Unix philosophy
-
-> *This is the Unix philosophy: Write programs that do one thing and do it
-> well.* *Write programs to work together. Write programs to handle text
-> **streams**,* *because that is a universal interface.*<br> — Doug McIlory
-
-**Advantages of a modular approach:**
-
--   Easier to spot errors
--   Easy to swap out components, including in other languages
--   Easier to learn
-
-**Text "streams"?**
-
-Rather than loading entire files into memory, process them one line at a time.
-Very useful with large files!
+...the shell will _first_ do wildcard expansion and will therefore end up running,
+in this particular case:
 
 ```bash
-# This command would combine all files in the working dir ending in `.fa`
-# (i.e. FASTA files) into a single file -- even if that's multiple GBs,
-# this will not be a heavy lift at all!
-cat *.fa > combined.fa
+ls sample1_R1.fastq sample1_R1.fastq
+```
+
+This also means that wildcard expansion works with any command that accepts multiple
+paths as arguments, such as _copy_ (`cp` command), *move* (`mv`) or *delete* (`rm`).
+For example,
+we can remove any stray `.txt` files in our dir for FASTQ files using:
+
+```bash
+# (The -v option will make rm report what it's removing)
+rm -v *txt
+```
+```bash-out
+removed ‘sample1.txt’
+removed ‘sample2.txt’
 ```
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### The Unix shell in the weeks ahead
-
--   A couple of sessions that will be focused on further developing shell skills:
-    - Week 3, Thu session: Advanced file management in the shell
-    - Week 5: Shell scripting and using external CLI tools
-    
--   In many other course weeks, we'll work in the Unix shell,
-    even when our focus is on a specific tool, such as Git in week 4.
+::: {.callout-warning collapse="true"}
+#### In case you have heard of "regular expressions": these are not the same as wildcards _(Click to expand)_
+Don't confuse wildcards with **regular expressions**!
+You may have used regular expressions before, for example with R or a text editor.
+They are similar to but not the same as shell wildcards.
+:::

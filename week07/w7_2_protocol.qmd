@@ -1,0 +1,354 @@
+---
+title: "Project management with batch jobs"
+subtitle: "Week 7 - part II"
+pagetitle: "PRACS25: Multi-step workflow"
+author: Jelmer Poelstra
+date: 2025-10-08
+engine: knitr
+---
+
+----------------------------------------------------------------------------------------------------
+
+<br>
+
+## Introduction
+
+TBA
+
+## Batch jobs in practice
+
+### TrimGalore
+
+TBA
+
+### STAR/Salmon
+
+TBA
+
+<br>
+
+## "Protocol" Markdown files
+
+In the past two weeks of this course,
+you have created a few Markdown files that contain the commands you used to
+run your scripts.
+
+These "protocol" files were useful to store that code,
+especially because we were passing arguments to our script and running loops.
+Alternatively, we could directly type this code in the terminal,
+but this would be tedious and would reduce reproducibility,
+since we wouldn't have a good record of what we did.
+
+However, these files have so far been very short,
+and may not have given you much of a picture of how this would look in the context
+of a research project that would include running a whole series of steps
+with different bioinformatics tools (and perhaps custom scripts).
+
+For larger projects,
+you will probably want to create at least two separate Markdown files that contain
+the code you used to run scripts and other commands:
+
+- A "lab notebook"-style file that has chronological entries with everything of note
+  that you did, including mishaps, dead ends, and things that were redone differently
+  later on.
+
+- A "protocol" (or "recipe" / "workflow")-style file that has the final code in
+  the order needed to run and rerun your entire project's computational work.
+
+### An RNA-Seq example
+
+While thinking about different ways to organize and run your analyses,
+let's have an example in mind with a simple RNA-seq analysis that:
+
+- Trims reads in FASTQ files _(independently for each sample)_
+- Maps (aligns) reads to a reference genome _(independently for each sample)_
+- Creates a gene expression count table from the alignments _(for all samples together)_
+
+![A simple 3-step RNA-seq analysis, with arrows showing the connections<br>between the steps: the output of one step is the input of the next.<br>The example only has 3 samples, and the first two steps are executed separately<br>for each sample, while the last step is executed once for all samples.](../img/schem-workflow.svg){fig-align="center" width="70%"}
+
+Here is a slightly longer example for the RNA-seq analysis described above:
+
+**TBA - ADD REFERENCE INDEXING STEP**
+
+**TBA - CHANGE BELOW TO MARKDOWN**
+
+````markdown
+
+```bash
+# [hypothetical example - don't run any of the code in this document]
+# Define the inputs
+fastq_dir=data/fastq
+ref_assembly=data/ref/assembly.fna
+ref_annotation=data/ref/annotation.gtf
+```
+
+```bash
+# Trim the reads:
+for R1 in "$fastq_dir"/*_R1.fastq.gz; do
+    # (The trim.sh script takes 2 arguments: R1 FASTQ and output dir)
+    sbatch scripts/trim.sh "$R1" results/trim
+done
+```
+
+```bash
+# Align (map) the reads to a reference genome assembly:
+for R1 in results/trim/*_R1.fastq.gz; do
+    # (The map.sh script takes 3 arguments: R1 FASTQ, ref. assembly, and output dir)
+    sbatch scripts/map.sh "$R1" "$ref_assembly" results/map
+done
+```
+
+```bash
+# Count alignments per sample per gene using the annotation:
+# (The count.sh script takes 3 arguments: input dir, ref. annotation, and output dir)
+sbatch scripts/count.sh results/map "$ref_annotation" results/count_table.txt
+```
+````
+
+::: callout-tip
+### Why use variables
+
+Above, we saw that variables are useful to be able to **pass arguments to a script**,
+so you can easily rerun a script with a different input file / settings / etc.
+Let's take a step back and think about variables and their uses once again.
+
+> *"Processing pipelines having numerous settings that should be stored in variables
+(e.g., which directories to store results in, parameter values for commands,
+input files, etc.).*\
+>*Storing these settings in a variable defined at the top of the file makes adjusting
+settings and rerunning your pipelines much easier.*\
+>*Rather than having to change
+numerous hardcoded values in your scripts, using variables to store settings means
+you only have to change one value—the value you’ve assigned to the variable."*  
+&mdash; Buffalo ch. 12
+
+In brief, recall that variables are especially useful for things that
+you refer to repeatedly and/or are subject to change.
+:::
+
+### Why organize our scripts this way?
+
+The protocol above runs a primary shell script for each of the three steps
+(`trim.sh`, `map.sh`, and` count.sh`),
+and each of these _takes arguments_ and runs a bioinformatics tool to perform
+that step (for example, TrimGalore for trimming).
+
+Here are some advantages of using such a script structure with flexible
+(i.e., argument-accepting) scripts,
+and an overarching protocol Markdown file to describe the entire workflow:
+
+- Rerunning everything, including with a modified sample set, or tool settings,
+  is relatively straightforward --- both for yourself and others, improving reproducibility.
+- Re-applying the same set of analyses in a different project is straightforward.
+- The Markdown file documents the steps taken.
+- It (more or less) ensures you are including all necessary steps.
+
+<br>
+
+## Pipelines
+
+What exactly do we mean by a "pipeline"?
+We may informally refer to any consecutive series of analysis steps as a pipeline.
+The above Markdown document, in particular, can informally be called a pipeline.
+But here, I am using pipeline in a stricter sense to mean a series of steps that
+**can be executed from start to finish with a single command**.
+
+An advantage of a true pipeline is increased automation,
+as well as "supercharging" the above-mentioned advantages of our script structure.
+For example, a pipeline _truly_ ensures that you are including all necessary steps.
+
+### Why our Markdown file is not a true pipeline
+
+The way our Markdown file is set up, however,
+we would be running the bits of code block-by-block.
+This makes it hard to run all the steps at once, and that is in fact intentional.
+
+This is because we wouldn't be able to run/submit everything at once anyway,
+given that we have multiple batch job steps,
+and the input of a later step uses the output of an earlier step.
+The problem is that all batch jobs would be submitted at the same time and
+later steps will inevitably start running before the earlier step has finished.
+
+For example, consider the following two consecutive steps,
+in which the second step uses the output of the first step: 
+
+```bash
+# This script would create a genome "index" for STAR, that will be used in the next step
+# ('my_genome.fa' = input genome FASTA, 'results/star_index' = output index dir)
+sbatch scripts/star_index.sh my_genome.fa results/star_index
+
+# This script would align a FASTQ file to the genome index created in the previous step
+# ('results/star_index' = input index dir, 'sampleA.fastq.gz' = input FASTQ file,
+# 'results/star_align' = output dir)
+sbatch scripts/star_align.sh results/star_index sampleA.fastq.gz results/star_align 
+```
+
+If these two lines were included in your runner script,
+and you would run that script in its entirety all at once,
+the script in the second step would be submitted just a split-second after the
+first one
+(when using `sbatch`, you get your prompt back immediately -- there is no waiting).
+As such, it would fail because of the missing output from the first step.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### What can we do, then?
+
+To turn our runner script into a functional pipeline,
+we would first need to overcome the problem of simultaneous batch job submission.
+Additionally, a pipeline worth its salt should also be able to
+**detect and stop upon failure**,
+and to **rerun parts of the pipeline** flexibly.
+The latter may be necessary after, e.g.:
+  
+- Some scripts failed for all or some samples
+- You added or removed a sample
+- You had to modify a script or settings somewhere halfway the pipeline.
+
+So how could we implement all of that?
+
+- **Push the limits of the Bash and Slurm tool set (not recommended)**\
+  Use `if` statements, many script arguments, and Slurm "job dependencies"
+  (see the box below) --- but this is hard to manage for more complex workflows.
+
+- **Use a formal workflow management system (recommended)**\
+  Workflow management systems like
+  [Snakemake](https://snakemake.readthedocs.io/) or
+  [NextFlow](https://www.nextflow.io/)
+  can take care of all these details and more for you ---
+  we will talk about Nextflow later in this course!
+
+
+::: {.callout-warning collapse="true"}
+#### How about writing multi-step scripts? 
+
+Once you get the hang of writing shell scripts,
+it may also seem appealing to string a series of programs/steps together in a single script.
+
+At the extreme, you could solve the simultaneous batch job problem by putting all
+steps in a single script,
+but this would make for a very inefficient pipeline,
+since you'd now be running steps that can be parallelized across samples consecutively^[
+Unless you'd try to hack your way around that, but at that point you run into
+the same problems as mentioned above under "Push the limits of...".
+].
+
+A bit more reasonably,
+you could add multiple consecutive per-sample steps in a single script.
+E.g. a script that would trim and then align reads for a single sample.
+This would reduce the number of times you have to submit scripts and wait for the
+results before moving on.
+In practice, though, this will often end up leading to more difficulties than convenience.
+
+All in all,
+It is a good idea to keep your shell scripts simple
+_in the sense that they should generally **just run one program**_,
+and not a sequence of programs.
+:::
+
+<br>
+
+## Optional reading: Pushing the limits of the Bash and Slurm tool set
+
+### Ad-hoc solutions
+
+First, here are some low-tech, ad-hoc solutions to rerunning parts of the workflow:
+
+#### Comment out part of the workflow
+
+E.g., to skip a step:
+
+```sh
+# Trim:
+#for R1 in data/fastq/*_R1.fastq.gz; do
+#    sbatch scripts/trim.sh "$R1" results/trim
+#done
+  
+# Align (map):
+for R1 in results/trim/*_R1.fastq.gz; do
+  sbatch scripts/map.sh "$R1" results/map
+done
+  
+# Count alignments per sample per gene:
+sbatch scripts/count.sh results/map results/count_table.txt
+```
+
+#### Make temporary changes
+
+E.g., to only run a single added sample:
+
+  ```sh
+  # Trim:
+  #for R1 in data/fastq/*_R1.fastq.gz; do
+      R1=data/fastq/newsample_R1.fastq.gz
+      sbatch scripts/trim.sh "$R1" results/trim
+  #done
+  
+  # Align (map):
+  #for R1 in results/trim/*_R1.fastq.gz; do
+      R1=results/trim/newsample_R1.fastq.gz
+      sbatch scripts/map.sh "$R1" results/map
+  #done
+  
+  # Count - note, this step should be rerun as a whole:
+  sbatch scripts/count.sh results/map results/count_table.txt
+  ```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### A step up
+
+Second, here are some more bespoke code-based solutions:
+
+#### Command-line options and `if`-statements
+
+These will allow you to flexibly run part of the pipeline
+(and perhaps change settings):
+
+```sh
+trim=$1   # true or false
+map=$2    # true or false
+count=$3  # true or false
+  
+if [[ "$trim" == true ]]; then
+    for R1 in data/fastq/*_R1.fastq.gz; do
+        bash scripts/trim.sh "$R1" results/trim
+    done
+fi
+  
+if [[ "$map" == true ]]; then
+    for R1 in results/trim/*_R1.fastq.gz; do
+        bash scripts/map.sh "$R1" results/map
+    done
+fi
+  
+if [[ "$count" == true ]]; then
+    bash scripts/count.sh results/map results/count_table.txt
+fi
+```
+
+#### Slurm job dependencies
+
+In the example below,
+jobs will only start after their "dependencies" (jobs whose outputs they need)
+have finished:
+  
+```sh
+for R1 in data/fastq/*_R1.fastq.gz; do
+    # Submit the trimming job and store its job number:
+    submit_line=$(sbatch scripts/trim.sh "$R1" results/trim)
+    trim_id=$(echo "$submit_line" | sed 's/Submitted batch job //')
+      
+    # Submit the mapping job with the condition that it only starts when the
+    # trimming job is done, using '--dependency=afterok:':
+    R1_trimmed=results/trim/$(basename "$R1")
+    sbatch --dependency=afterok:$trim_id scripts/map.sh "$R1_trimmed" results/map
+done
+  
+# If you give the mapping and counting jobs the same name with `#SBATCH --job-name=`,
+# then you can use '--dependency=singleton': the counting job will only start
+# when ALL the mapping jobs are done:
+sbatch --dependency=singleton scripts/count.sh results/map results/count_table.txt
+```
+
+<br>

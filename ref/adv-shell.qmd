@@ -1,459 +1,410 @@
 ---
-title: "Advanced Unix Shell: while loops, arrays and more"
-subtitle: "Week 5 optional self-study material"
-pagetitle: "PRACS25: while loops and arrays"
+title: "Advanced Unix shell: miscellaneous"
+pagetitle: "PRACS25: Advanced shell"
 author: Jelmer Poelstra
-date: 2025-09-24
+date: 2025-09-01
 editor_options: 
   chunk_output_type: console
 ---
 
-----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 <br>
 
-## While loops
-
-In bash, `while` loops are mostly useful in combination with the `read` command,
-**to loop over each line in a file**.
-If you use `while` loops, you'll very rarely need Bash _arrays_ (next section),
-and conversely, if you like to use arrays, you may not need `while` loops much.
-
-`while` loops will run as long as a condition is true and this condition can include constructs
-such as `read -r` which will read input line-by-line, and be true as long as there is
-a line left to be read from the file.
-In the example below,
-`while read -r` will be true as long as lines are being read from a file `fastq_files.txt` ---
-and in each iteration of the loop, the variable `$fastq_file` contains one line from the file:
-
-```sh
-# [ Don't run this - hypothetical example]
-cat fastq_files.txt
-```
-```bash-out
-seq/zmaysA_R1.fastq
-seq/zmaysA_R2.fastq
-seq/zmaysB_R1.fastq
-```
-
-```sh
-# [ Don't run this - hypothetical example]
-cat fastq_files.txt | while read -r fastq_file; do
-    echo "Processing file: $fastq_file"
-    # More processing...
-done
-```
-```bash-out
-Processing file: seq/zmaysA_R1.fastq
-Processing file: seq/zmaysA_R2.fastq
-Processing file: seq/zmaysB_R1.fastq
-```
-
-A more elegant but perhaps confusing syntax variant used input redirection
-instead of `cat`-ing the file:
-
-```sh
-# [ Don't run this - hypothetical example]
-while read -r fastq_file; do
-    echo "Processing file: $fastq_file"
-    # More processing...
-done < fastq_files.txt
-```
-```bash-out
-Processing file: seq/zmaysA_R1.fastq
-Processing file: seq/zmaysA_R2.fastq
-Processing file: seq/zmaysB_R1.fastq
-```
-
-We can also process each line of the file inside the `while` loop,
-like when we need to select a specific column:
-
-```sh
-# [ Don't run this - hypothetical example]
-head -n 2 samples.txt
-```
-```bash-out
-zmaysA  R1      seq/zmaysA_R1.fastq
-zmaysA  R2      seq/zmaysA_R2.fastq
-```
-
-```sh
-# [ Don't run this - hypothetical example]
-while read -r my_line; do
-    echo "Have read line: $my_line"
-    fastq_file=$(echo "$my_line" | cut -f 3)
-    echo "Processing file: $fastq_file"
-    # More processing...
-done < samples.txt
-```
-```bash-out
-Have read line: zmaysA  R1      seq/zmaysA_R1.fastq
-Processing file: seq/zmaysA_R1.fastq
-Have read line: zmaysA  R2      seq/zmaysA_R2.fastq
-Processing file: seq/zmaysA_R2.fastq
-```
-
-Alternatively, you can operate on file contents before inputting it into the loop:
-
-```bash
-# [ Don't run this - hypothetical example]
-while read -r fastq_file; do
-    echo "Processing file: $fastq_file"
-    # More processing...
-done < <(cut -f 3 samples.txt)
-```
-
-Finally, you can extract columns directly as follows:
-
-```sh
-# [ Don't run this - hypothetical example]
-while read -r sample_name readpair_member fastq_file; do
-    echo "Processing file: $fastq_file"
-    # More processing...
-done < samples.txt
-```
-```bash-out
-Processing file: seq/zmaysA_R1.fastq
-Processing file: seq/zmaysA_R2.fastq
-Processing file: seq/zmaysB_R1.fastq
-```
+## Hidden files
 
 <br>
 
-## Arrays
+## Other shell wildcards
 
-Bash "arrays" are basically lists of items, such as a list of file names or samples IDs.
-If you're familiar with R, they are like R vectors^[
-Or if you're familiar with Python, they are like Python lists.].
+### Create a dummy project folder structure
 
-Arrays are mainly used with `for` loops:
-you create an array and then loop over the individual items in the array.
-This usage represents an alternative to looping over files with a glob.
-Looping over files with a glob is generally easier and preferable,
-but sometimes this is not the case; or you are looping e.g. over samples and not files.
+First, we'll create a set of directories representing a dummy research project:
 
-#### Creating arrays
-
-You can create an array "manually" by typing a space-delimited list of items
-between parentheses:
-
-```bash
-# The array will contain 3 items: 'zmaysA', 'zmaysB', and 'zmaysC'
-sample_names=(zmaysA zmaysB zmaysC)
+```sh
+# (You should be in /fs/ess/PAS2880/users/$USER/week03/sandbox)
+mkdir dummy-project
+cd dummy-project
 ```
 
-More commonly, you would populate an array from a file, in which case you
-also need command substitution:
+```sh
+# The -p option for mkdir will allow for 'recursive' (nested) dir creation
+mkdir -p data/fastq scripts results/figures results/alignments
+```
 
-- Simply reading in an array from a file with `cat` will only work if the file
-  simply contains a list of items:
+We will use the  `touch` command to create empty files that are mock representations
+of FASTQ sequence files with forward ("R1") and reverse ("R2") DNA sequence reads
+for 3 samples:
   
-  ```bash
-  sample_files=($(cat fastq_files.txt))
-  ```
-
-- For tabular files, you can include e.g. a `cut` command to extract the focal column:
-
-  ```bash
-  sample_files=($(cut -f 3 samples.txt))
-  ```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: callout-note
-#### Alternatively, use the `mapfile` command
-TODO
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-#### Accessing arrays
-
-First off, it is useful to realize that arrays are closely related to regular variables,
-and to  recall that the "full" notation to refer to a variable includes curly braces: `${myvar}`.
-When referencing arrays, the curly braces are always needed.
-
-- Using `[@]`, we can access all elements in the array
-  (and arrays are best quoted, like regular variables):
-
-  ```sh
-  echo "${sample_names[@]}"
-  ```
-  ```bash-out
-  zmaysA zmaysB zmaysC
-  ```
-
-- We can also use the `[@]` notation to loop over the elements in an array:
-
-  ```sh
-  for sample_name in "${sample_names[@]}"; do
-      echo "Processing sample: $sample_name"
-  done
-  ```
-  ```bash-out
-  Processing sample: zmaysA
-  Processing sample: zmaysB
-  Processing sample: zmaysC
-  ```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: {.callout-note collapse="true"}
-#### Other array operations _(Click to expand)_
-
-- Extract specific elements (note: Bash arrays are 0-indexed!):
-
-  ```sh
-  # Extract the first item
-  echo ${sample_names[0]}
-  ```
-  ```bash-out
-  zmaysA
-  ```
-    
-  ```bash
-  # Extract the third item
-  echo ${sample_names[2]}
-  ```
-  ```bash-out
-  zmaysC
-  ```
-
-- Count the number of elements in the array:
-
-  ```sh
-  echo ${#sample_names[@]}
-  ```
-  ```bash-out
-  3
-  ```
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-#### Arrays and filenames with spaces
-
-The file `files.txt` contains a short list of file names,
-the last of which has a space in it:
-
 ```sh
-cat files.txt
+# (Copy-and-paste this rather than typing it out) 
+touch data/fastq/sample1_R1.fastq data/fastq/sample1_R2.fastq
+touch data/fastq/sample2_R1.fastq data/fastq/sample2_R2.fastq
+touch data/fastq/sample3_R1.fastq data/fastq/sample3_R2.fastq
+```
+
+For a nice recursive overview of the project directory structure you just created,
+use the **`tree` command** (with option `-C` to show colors):
+
+```bash
+# (Output colors are not shown on this webpage)
+tree -C
 ```
 ```bash-out
-file_A
-file_B
-file_C
-file D
+../..
+├── data
+│   └── fastq
+│       ├── sample1_R1.fastq
+│       ├── sample1_R2.fastq
+│       ├── sample2_R1.fastq
+│       ├── sample2_R2.fastq
+│       ├── sample3_R1.fastq
+│       └── sample3_R2.fastq
+├── results
+│   └── figures
+└── scripts
+
+5 directories, 6 files
 ```
 
-What will happen if we read this list into an array, and then loop over the array?
+### All shell wildcards
 
-```sh
-# Populate an array with the list of files from 'files.txt'
-all_files=($(cat files.txt))
+There are two more shell wildcards --- here is a complete overview of shell wildcards:
 
-# Loop over the array:
-for file in "${all_files[@]}"; do
-    echo "Current file: $file"
-done
+| Wildcard   | Matches |
+|------------|---------------------------|
+| *          | Any number of any character, including nothing |
+| ?          | Any single character 
+| [] and [^] | One or none (`^`) of the "character set" within the brackets   
+
+<hr style="height:1pt; visibility:hidden;" />
+
+Using the more restrictive wildcard **`?`** can be useful to prevent accidental
+matches.
+Here is an example of using the **`?`** wildcard to match both R1 and R2:
+
+```bash
+ls sample1_R?.fastq
 ```
 ```bash-out
-Current file: file_A
-Current file: file_B
-Current file: file_C
-Current file: file
-Current file: D
+sample1_R1.fastq  sample1_R2.fastq
 ```
 
-Uh-oh! The file name with the space in it was split into two items!
-And note that we did quote the array in `"${all_files[@]}"`, so clearly,
-this doesn't solve that problem.
+<hr style="height:1pt; visibility:hidden;" />
 
-For this reason, it's best not to use arrays to loop over filenames with spaces
-(though there are workarounds).
-*Direct globbing* and `while` loops with the `read` function (`while read ...`,
-see below) are easier choices for problematic file names.
+The character class wildcard **`[]`** can be useful when wanting to include or
+exclude multiple files among files with rather similar names.
+For example, 
+to match files for sample1 and sample2 using only a character class with **`[]`**:
 
-Also, this example once again demonstrates you should not have spaces in your file names!
+- Method 1 --- List all possible characters (`1` and `2` in this case):
+
+  ```sh
+  ls sample[12]*
+  ```
+  ```bash-out
+  sample1_R1.fastq  sample1_R2.fastq  sample2_R1.fastq  sample2_R2.fastq
+  ```
+
+- Method 2 -- Use a range like `[0-9]`, `[A-Z]`, `[a-z]`:
+
+  ```bash
+  ls sample[1-2]*
+  ```
+  ```bash-out
+  sample1_R1.fastq  sample1_R2.fastq  sample2_R1.fastq  sample2_R2.fastq
+  ```
+
+- Method 3 -- Exclude the unwanted sample ID:
+
+  ```bash
+  ls sample[^3]*
+  ```
+  ```bash-out
+  sample1_R1.fastq  sample1_R2.fastq  sample2_R1.fastq  sample2_R2.fastq
+  ```
+
+::: callout-warning
+### Note: `[]` works on single character ranges only: 0-9 works but 10-13 does not.
+:::
+
+The examples so far may seem trivial, but you can use these techniques to easily
+operate on selections among 100s or 1000s of files.
+
+<br>
+
+## Brace expansion
+
+Whereas *wildcard expansion* looks for corresponding files and expands to whichever
+files are present, **_brace expansion_** with `{}`, is another type of shell expansion
+that expands to whatever you tell it to.
+
+```bash
+# First move up to zmays-snps
+cd ../..
+```
+
+Use `..` within `{}` to indicate ranges of numbers or letters:
+
+```bash
+# Here we'll create 31 _dirs_ for different dates
+mkdir -p data/obs/2025-09-{01..31}
+
+ls data/obs
+```
+```bash-out
+2025-09-01  2025-09-04  2025-09-07  2025-09-10  2025-09-13  2025-09-16  2025-09-19  2025-09-22  2025-09-25  2025-09-28  2025-09-31
+2025-09-02  2025-09-05  2025-09-08  2025-09-11  2025-09-14  2025-09-17  2025-09-20  2025-09-23  2025-09-26  2025-09-29
+2025-09-03  2025-09-06  2025-09-09  2025-09-12  2025-09-15  2025-09-18  2025-09-21  2025-09-24  2025-09-27  2025-09-30
+```
+
+```bash
+# Here we'll create 6 empty _files_
+touch results/figures/fig-1{A..F}.png
+
+ls results/figures
+```
+```bash-out
+fig-1A.png  fig-1B.png  fig-1C.png  fig-1D.png  fig-1E.png  fig-1F.png
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+Finally, you can also use a comma-separated list, and multiple brace expansions ---
+with the latter, you will get _all combinations_ among values in the expansions:
+
+```sh
+mkdir -p data/obs2/treatment-{Kr,Df,Tr}_temp-{lo,med,hi}
+
+ls data/obs2
+```
+```bash-out
+treatment-Df_temp-hi   treatment-Kr_temp-hi   treatment-Tr_temp-hi
+treatment-Df_temp-lo   treatment-Kr_temp-lo   treatment-Tr_temp-lo
+treatment-Df_temp-med  treatment-Kr_temp-med  treatment-Tr_temp-med
+```
 
 <hr style="height:1pt; visibility:hidden;" />
 
 ::: exercise
-#### {{< fa user-edit >}} Exercise: Bash arrays
+#### {{< fa user-edit >}} Bonus exercise: More file matching
 
-1. Create an array with the first three file names (lines) listed in `samples.txt`.
-2. Loop over the contents of the array with a `for` loop.  
-   Inside the loop, create (`touch`) the file listed in the current array element.
-3. Check whether you created your files.
+1. Move back into `data/fastq/` and remove all (remaining) files in there in one go.
 
-<details><summary>Solutions</summary>
+<details><summary>Click for the solution</summary>
 
-1. Create an array with the first three file names (lines) listed in `samples.txt`.
+```sh
+cd data/fastq/   # Assuming you were still in /fs/ess/PAS2880/users/$USER/week03/zmays-snps
 
-  ```bash
-  good_files=($(head -n 3 files.txt))
-  ```
+# (You don't have to use the -v flag)
+rm -v *fastq
+```
+```bash-out
+removed ‘sample3_R1.fastq’
+removed ‘sample3_R2.fastq’
+```
 
-2. Loop over the contents of the array with a `for` loop.  
-   Inside the loop, create (`touch`) the file listed in the current array element.
-   
-   ```bash
-   for good_file in "${good_files[@]}"; do
-       touch "$good_file"
-   done
-   ```
+</details>
 
-3. Check whether you created your files.
-   
-   ```bash
-   ls
-   ```
-   ```bash-out
-   file_A  file_B  file_C
-   ```
+2. Using *brace expansion* and the **`touch`** command,
+  create empty `R1` and `R2` FASTQ files for 100 samples with IDs from `001` to `100`:
+  `sample<ID>_R1.fastq` and `sample<ID>_R2.fastq`.
+
+<details><summary>Click for the solution</summary>
+
+```bash
+touch sample{001..100}_R{1,2}.fastq
+
+ls
+```
+```bash-out
+sample001_R1.fastq  sample026_R1.fastq  sample051_R1.fastq  sample076_R1.fastq
+sample001_R2.fastq  sample026_R2.fastq  sample051_R2.fastq  sample076_R2.fastq
+sample002_R1.fastq  sample027_R1.fastq  sample052_R1.fastq  sample077_R1.fastq
+sample002_R2.fastq  sample027_R2.fastq  sample052_R2.fastq  sample077_R2.fastq
+sample003_R1.fastq  sample028_R1.fastq  sample053_R1.fastq  sample078_R1.fastq
+sample003_R2.fastq  sample028_R2.fastq  sample053_R2.fastq  sample078_R2.fastq
+sample004_R1.fastq  sample029_R1.fastq  sample054_R1.fastq  sample079_R1.fastq
+sample004_R2.fastq  sample029_R2.fastq  sample054_R2.fastq  sample079_R2.fastq
+sample005_R1.fastq  sample030_R1.fastq  sample055_R1.fastq  sample080_R1.fastq
+sample005_R2.fastq  sample030_R2.fastq  sample055_R2.fastq  sample080_R2.fastq
+sample006_R1.fastq  sample031_R1.fastq  sample056_R1.fastq  sample081_R1.fastq
+sample006_R2.fastq  sample031_R2.fastq  sample056_R2.fastq  sample081_R2.fastq
+sample007_R1.fastq  sample032_R1.fastq  sample057_R1.fastq  sample082_R1.fastq
+sample007_R2.fastq  sample032_R2.fastq  sample057_R2.fastq  sample082_R2.fastq
+sample008_R1.fastq  sample033_R1.fastq  sample058_R1.fastq  sample083_R1.fastq
+sample008_R2.fastq  sample033_R2.fastq  sample058_R2.fastq  sample083_R2.fastq
+sample009_R1.fastq  sample034_R1.fastq  sample059_R1.fastq  sample084_R1.fastq
+sample009_R2.fastq  sample034_R2.fastq  sample059_R2.fastq  sample084_R2.fastq
+sample010_R1.fastq  sample035_R1.fastq  sample060_R1.fastq  sample085_R1.fastq
+sample010_R2.fastq  sample035_R2.fastq  sample060_R2.fastq  sample085_R2.fastq
+sample011_R1.fastq  sample036_R1.fastq  sample061_R1.fastq  sample086_R1.fastq
+sample011_R2.fastq  sample036_R2.fastq  sample061_R2.fastq  sample086_R2.fastq
+sample012_R1.fastq  sample037_R1.fastq  sample062_R1.fastq  sample087_R1.fastq
+sample012_R2.fastq  sample037_R2.fastq  sample062_R2.fastq  sample087_R2.fastq
+sample013_R1.fastq  sample038_R1.fastq  sample063_R1.fastq  sample088_R1.fastq
+sample013_R2.fastq  sample038_R2.fastq  sample063_R2.fastq  sample088_R2.fastq
+sample014_R1.fastq  sample039_R1.fastq  sample064_R1.fastq  sample089_R1.fastq
+sample014_R2.fastq  sample039_R2.fastq  sample064_R2.fastq  sample089_R2.fastq
+sample015_R1.fastq  sample040_R1.fastq  sample065_R1.fastq  sample090_R1.fastq
+sample015_R2.fastq  sample040_R2.fastq  sample065_R2.fastq  sample090_R2.fastq
+sample016_R1.fastq  sample041_R1.fastq  sample066_R1.fastq  sample091_R1.fastq
+sample016_R2.fastq  sample041_R2.fastq  sample066_R2.fastq  sample091_R2.fastq
+sample017_R1.fastq  sample042_R1.fastq  sample067_R1.fastq  sample092_R1.fastq
+sample017_R2.fastq  sample042_R2.fastq  sample067_R2.fastq  sample092_R2.fastq
+sample018_R1.fastq  sample043_R1.fastq  sample068_R1.fastq  sample093_R1.fastq
+sample018_R2.fastq  sample043_R2.fastq  sample068_R2.fastq  sample093_R2.fastq
+sample019_R1.fastq  sample044_R1.fastq  sample069_R1.fastq  sample094_R1.fastq
+sample019_R2.fastq  sample044_R2.fastq  sample069_R2.fastq  sample094_R2.fastq
+sample020_R1.fastq  sample045_R1.fastq  sample070_R1.fastq  sample095_R1.fastq
+sample020_R2.fastq  sample045_R2.fastq  sample070_R2.fastq  sample095_R2.fastq
+sample021_R1.fastq  sample046_R1.fastq  sample071_R1.fastq  sample096_R1.fastq
+sample021_R2.fastq  sample046_R2.fastq  sample071_R2.fastq  sample096_R2.fastq
+sample022_R1.fastq  sample047_R1.fastq  sample072_R1.fastq  sample097_R1.fastq
+sample022_R2.fastq  sample047_R2.fastq  sample072_R2.fastq  sample097_R2.fastq
+sample023_R1.fastq  sample048_R1.fastq  sample073_R1.fastq  sample098_R1.fastq
+sample023_R2.fastq  sample048_R2.fastq  sample073_R2.fastq  sample098_R2.fastq
+sample024_R1.fastq  sample049_R1.fastq  sample074_R1.fastq  sample099_R1.fastq
+sample024_R2.fastq  sample049_R2.fastq  sample074_R2.fastq  sample099_R2.fastq
+sample025_R1.fastq  sample050_R1.fastq  sample075_R1.fastq  sample100_R1.fastq
+sample025_R2.fastq  sample050_R2.fastq  sample075_R2.fastq  sample100_R2.fastq
+```
+</details>
+
+------
+
+3. **_Bonus:_** Count the number of "`R1`" files by first using `ls` with a globbing
+  pattern that only selects R1 files, and then piping the `ls` output into **`wc -l`**.
+
+<details><summary>Click for the solution</summary>
+
+```bash
+# wc -l will count the number of lines, i.e. the number of files
+# (Note that this works properly even though raw ls output may
+# put multiple files on 1 line.)
+ls *R1*fastq | wc -l
+```
+```bash-out
+100
+```
+
+</details>
+
+4. **_Bonus:_** Copy all files *except the two for "`sample100`"* into a new
+  directory called `selection` --- use a wildcard to do the move with a single command.
+  (You will first need to create the new dir separately.)
+
+<details><summary>Click for the solution</summary>
+
+First create the `selection` dir:
+
+```sh
+mkdir selection
+```
+
+Method 1 --- Exclude sample numbers starting with a 1:
+
+```bash
+cp sample[^1]* selection/
+```
+
+Method 2 --- Other way around; include sample numbers starting with a 0:
+
+```bash
+cp sample0* selection/ 
+```
+
 </details>
 :::
 
 <br>
 
-## Miscellaneous
+## Bash configuration files
 
-### More on the `&&` and `||` operators
+Your bash shell is configured using hidden text files in your `$HOME` dir:
 
-Above, we saw that we can combine tests in `if` statements with `&&` and `||`.
-But these shell operators can be used to chain commands together in a more general way,
-as shown below.
+- `~/.bashrc` -- for non-login shells
+- `~/.bash_profile` -- for non-login shells **FIX**
 
-- Only if the first command *succeeds*, also run the second:
-
-  ```sh
-  # Move into the data dir and if that succeeds, then list the files there:
-  cd data && ls data
-  ```
-  ```sh
-  # Stage all changes => commit them => push the commit to remote:
-  git add --all && git commit -m "Add README" && git push
-  ```
-
-- Only if the first command *fails*, also run the second:
-
-  ```sh
-  # Exit the script if you can't change into the output dir:
-  cd "$outdir" || exit 1
-  ```
-  ```sh
-  # Only create the directory if it doesn't already exist:
-  [[ -d "$outdir" ]] || mkdir "$outdir"
-  ```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### Parameter expansion to provide default values
-
-In scripts, it may be useful to have *optional arguments* that have a default
-value if they are not specified on the command line.
-You can use the following "parameter expansion" syntax for this.
-
-- Assign the value of `$1` to `number_of_lines` unless `$1` doesn't exist:
-  in that case, set it to a default value of `10`:
-  
-  ```sh
-  number_of_lines=${1:-10}
-  ```
-
-- Set `true` as the default value for `$3`:
-  
-  ```bash
-  remove_unpaired=${3:-true}
-  ```
-
-As a more worked out example,
-say that your script takes an input dir and an output dir as arguments.
-But if the output dir is not specified, you want it to be the same as the input dir.
-You can do that like so:
-  
-```sh
-input_dir=$1
-output_dir=${2:-$input_dir}
-```
-
-Now you can call the script with or without the second argument, the output dir:
-
-```sh
-# Call the script with 2 args: input and output dir
-sort_bam.sh results/bam results/bam
-```
-```sh
-# Call the script with 1 arg: input dir (which will then also be the output dir)
-sort_bam.sh results/bam
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### Standard output and standard error
-
-As you've seen, when commands run into errors, they will print error messages.
-Error messages are **not** part of "standard out",
-but represent a separate output stream: **"standard error"**.
-
-We can see this when we try to list a non-existing directory and try to redirect
-the output of the `ls` command to a file:
-
-```sh
-ls -lhr solutions/ > solution_files.txt 
-```
-```bash-out
-ls: cannot access solutions.txt: No such file or directory
-```
-
-Evidently, the error was printed to screen rather than redirected to the output file.
-This is because `>` only redirects standard out, and not standard error.
-Was anything at all printed to the file?
-
-```sh
-cat solution_files.txt
-```
-```bash-out
-# We just get our prompt back - the file is empty
-```
-
-No, because there were no files to list, only an error to report.
-
-The figure below draws the in- and output streams without redirection **(a)**
-versus with **`>`** redirection **(b)**:
-
-![Figure from Buffalo.](../img/std-streams.png){fig-align="center" width="70%"}
-
-To *redirect* the standard error, use **`2>`** ^[
-Note that `1>` is the full notation to redirect standard out,
-and the `>` we've been using is merely a shortcut for that.]:
-
-```sh
-ls -lhr solutions/ > solution_files.txt 2> errors.txt
-```
-
-To *combine* standard out and standard error, use **`&>`**:
-
-```sh
-# (&> is a bash shortcut for 2>&1)
-ls -lhr solutions/ &> out.txt
-```
+These can be viewed and edited like normal text files:
 
 ```bash
-cat out.txt
+cat ~/.bashrc    # Or open in VS Code
+```
+
+**Some settings that are / can be stored in these config files:**
+
+- The look of your prompt.
+- `alias`es -- personal, custom shortcuts for (complex) commands.
+- The `$PATH`, a list of directories with binaries (software executables)
+  that the computer is aware of.
+- Other custom settings like running setup scripts.
+
+::: callout-tip
+To not have to deal with the login/non-login shell distinction, it is common
+to put all settings in one of these files (often `.bashrc`) and let the second
+file (often `.bash_profile`) run the first file whenever it itself is being run.
+:::
+
+<br<
+
+## `$PATH`: A list of directories with binaries
+
+`$PATH` is another environment variable like `$HOME` and `$USER`.
+
+It lists the directories that will be searched when you type a program’s name.
+This allows you to run programs without specifying the full path to the executable.
+For example:
+  
+```bash
+vcftools
+#> VCFtools (0.1.16)
+#> (c) Adam Auton and Anthony Marcketta 2009
+  
+# To check where the program's binary is located:
+which vcftools
+#> /usr/bin/vcftools
+```
+
+To check which directories are in your `$PATH`, you can simply `echo` it:
+
+```sh
+echo $PATH
 ```
 ```bash-out
-ls: cannot access solutions.txt: No such file or directory
+/apps/xalt/xalt/bin:/opt/mvapich2/intel/19.0/2.3.3/bin:/apps/gnu/8.4.0/bin:/opt/intel/19.0.5/itac_latest/bin:/opt/intel/19.0.5/advisor/bin64:/opt/intel/19.0.5/vtune_amplifier/bin64:/opt/intel/19.0.5/inspector_2019/bin64:/opt/intel/19.0.5/compilers_and_libraries_2019/linux/bin/intel64:/apps/software_usage:/usr/lib64/qt-3.3/bin:/opt/osc/bin:/opt/moab/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/opt/ddn/ime/bin:/opt/puppetlabs/bin:/users/PAS0471/jelmer/software/bin
 ```
 
-Finally, if you want to "manually" designate an `echo` statement to represent
-standard error instead of standard out in a script, use **`>&2`**:
+That output looks strange and is hard to read,
+because the directories are separated by colons `:`.
+Let's make that a bit more readable:
   
 ```sh
-echo "Error: Invalid line number" >&2
-echo "Number should be >0 and <= the file's nr. of lines" >&2
-echo "File contains $(wc -l < $2) lines; you provided $1." >&2
-exit 1
+echo $PATH | tr ":" "\n" | nl
+```
+```bash-out
+1  /apps/xalt/xalt/bin
+2  /opt/mvapich2/intel/19.0/2.3.3/bin
+3  /apps/gnu/8.4.0/bin
+4  /opt/intel/19.0.5/itac_latest/bin
+5  /opt/intel/19.0.5/advisor/bin64
+[...output-truncated...]
 ```
 
-<br>
+You can easily modify your `$PATH`.
+To add a directory to your `$PATH` in the current session,
+you simply *append* a new dir after a colon:
+
+```bash
+PATH=$PATH:~/new-dir-with-software/
+```
+
+However, this change will not have any effects outside of your current bash sessions.
+  
+**For lasting changes**,
+you should edit your bash configuration files (like `~/.bashrc`),
+from which `$PATH` is loaded whenever you open a terminal:
+  
+```bash
+echo "PATH=$PATH:~/new-dir-with-software/" >> ~/.bashrc
+```

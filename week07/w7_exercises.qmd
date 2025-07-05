@@ -29,7 +29,7 @@ number-sections: false
   ```
 
 You'll be using the Garrigos et al. FASTQ files again, which you should have in
-`/fs/ess/PAS2880/users/$USER/garrigos_data/fastq`.
+`/fs/ess/PAS2880/users/$USER/garrigos-data/fastq`.
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -91,7 +91,7 @@ fastqc --outdir="$outdir" "$fastq_file"
 
 # Final reporting
 echo
-echo "# Done with script fastqc.sh"
+echo "# Successfully finished script fastqc.sh"
 date
 ```
 </details>
@@ -183,7 +183,7 @@ trim_galore \
 
 # Report
 echo
-echo "# Done with script trimgalore.sh"
+echo "# Successfully finished script trimgalore.sh"
 date
 ```
 
@@ -299,7 +299,7 @@ fastqc --threads 8 --outdir "$outdir" "$fastq_file"
 
 <details><summary>5 - Submit the script</summary>
 ```bash
-fastq_file=../../garrigos_data/fastq/ERR10802863_R1.fastq.gz
+fastq_file=../../garrigos-data/fastq/ERR10802863_R1.fastq.gz
 sbatch scripts/fastqc.sh "$fastq_file" results/fastqc
 ```
 ```bash-out
@@ -320,7 +320,7 @@ rm results/fastqc/*
 
 <details><summary>1 - Submit a FastQC batch job for each FASTQ file</summary>
 ```bash
-for fastq_file in ../../garrigos_data/fastq/*fastq.gz; do
+for fastq_file in ../../garrigos-data/fastq/*fastq.gz; do
    sbatch scripts/fastqc.sh "$fastq_file" results/fastqc
 done
 ```
@@ -379,7 +379,7 @@ Approx 95% complete for ERR10802885_R2.fastq.gz
 Approx 100% complete for ERR10802885_R2.fastq.gz
 Analysis complete for ERR10802885_R2.fastq.gz
 
-# Done with script fastqc.sh
+# Successfully finished script fastqc.sh
 Sun Mar 31 16:30:54 EDT 2024
 
 ==> slurm-fastqc-27902564.out <==
@@ -390,7 +390,7 @@ Approx 95% complete for ERR10802886_R1.fastq.gz
 Approx 100% complete for ERR10802886_R1.fastq.gz
 Analysis complete for ERR10802886_R1.fastq.gz
 
-# Done with script fastqc.sh
+# Successfully finished script fastqc.sh
 Sun Mar 31 16:30:54 EDT 2024
 
 ==> slurm-fastqc-27902565.out <==
@@ -401,7 +401,7 @@ Approx 95% complete for ERR10802886_R2.fastq.gz
 Approx 100% complete for ERR10802886_R2.fastq.gz
 Analysis complete for ERR10802886_R2.fastq.gz
 
-# Done with script fastqc.sh
+# Successfully finished script fastqc.sh
 Sun Mar 31 16:30:54 EDT 2024
 
 # [...output truncated...]
@@ -467,7 +467,7 @@ Simply add `--cores 8` to your TrimGalore command.
 <details><summary>4 - Submit the script once, then clean up</summary>
 
 ```bash
-fastq_file=../../garrigos_data/fastq/ERR10802863_R1.fastq.gz
+fastq_file=../../garrigos-data/fastq/ERR10802863_R1.fastq.gz
 sbatch scripts/trimgalore.sh "$fastq_file" results/trimgalore
 ```
 
@@ -485,7 +485,7 @@ rm results/trimgalore/*
 
 <details><summary>5 - Submit the script for all samples</summary>
 ```bash
-for fastq_R1 in ../../garrigos_data/fastq/*R1.fastq.gz; do
+for fastq_R1 in ../../garrigos-data/fastq/*R1.fastq.gz; do
    sbatch scripts/trimgalore.sh "$fastq_R1" results/trimgalore
 done
 ```
