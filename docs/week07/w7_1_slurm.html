@@ -419,7 +419,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#in-closing-making-sure-your-jobs-ran-successfully" id="toc-in-closing-making-sure-your-jobs-ran-successfully" class="nav-link" data-scroll-target="#in-closing-making-sure-your-jobs-ran-successfully"><span class="header-section-number">5</span> In closing: making sure your jobs ran successfully</a></li>
   </ul>
-</nav>
+<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w7_overview.html"><i class="bi bi-book"></i>Week 7 overview</a></li><li><a href="w7_exercises.html"><i class="bi bi-pencil"></i>Week 7 exercises</a></li><li><a href="w7_2_protocol.html"><i class="bi bi-bookmarks"></i>w7-2: Batch jobs II</a></li><li><a href="../ref/adv-slurm.html"><i class="bi bi-book"></i>Optional reading: Advanced batch jobs</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -427,20 +427,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Slurm batch jobs at OSC</h1>
-<p class="subtitle lead">Week 7 - part I</p>
+<p class="subtitle lead">Week 7 – part I</p>
 </div>
 
 
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Jelmer Poelstra <a href="mailto:poelstra.1@osu.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> <a href="https://orcid.org/0000-0002-3514-7462" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="https://mcic.osu.edu">
+            CFAES Bioinformatics Core, Ohio State University
+            </a>
+          </p>
+      </div>
+  </div>
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Jelmer Poelstra </p>
-          </div>
-  </div>
-    
+      
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
@@ -462,7 +471,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
 <section id="background-and-overview" class="level3" data-number="1.1">
 <h3 data-number="1.1" class="anchored" data-anchor-id="background-and-overview"><span class="header-section-number">1.1</span> Background and overview</h3>
-<p>Automated scheduling software allows hundreds of people with different requirements to access supercomputer compute nodes effectively and fairly. OSC uses <strong>Slurm</strong> (Simple Linux Utility for Resource Management) for this.</p>
+<p>Automated scheduling software allows hundreds of people with different requirements to effectively and fairly access compute nodes at supercomputers. OSC uses <strong>Slurm</strong> (Simple Linux Utility for Resource Management) for this.</p>
 <p>As you’ve learned, a reservation of resources on compute nodes is called a <strong>compute job</strong>. Here are the main ways to start a compute job at OSC:</p>
 <ol type="1">
 <li>“<strong>Interactive Apps</strong>” — Run programs with GUIs (e.g.&nbsp;VS Code or RStudio) in your browser through the OnDemand website.</li>
@@ -482,29 +491,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> /fs/ess/PAS2880/users/<span class="va">$USER</span>/week06/scripts/printname.sh scripts/</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> /fs/ess/PAS2880/users/<span class="va">$USER</span>/week06/scripts/fastqc.sh scripts/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul>
+<p><strong>TBA PROVIDE SCRIPTS TO COPY</strong></p>
 <p><br></p>
 </section>
 </section>
 <section id="basics-of-slurm-batch-jobs" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="basics-of-slurm-batch-jobs"><span class="header-section-number">2</span> Basics of Slurm batch jobs</h2>
-<p>When you submit a batch job, you ask the Slurm scheduler to <strong>run a script “out of sight” on a compute node</strong>. While that script runs on a compute node, you will stay in your current shell at your current node (regardless of whether that is on a login or compute node). After you submit a batch job, it will continue to run even if you, for example, log off from OSC and shut down your computer.</p>
-<hr style="height:1pt; visibility:hidden;">
+<p>When you submit a batch job, you ask the Slurm scheduler to <strong>run a script “out of sight” on a compute node</strong>. While that script runs on a compute node, you will stay in your current shell at your current node (regardless of whether that is on a login or compute node). After you submit a batch job, it will continue to run even if you log off from OSC and shut down your computer.</p>
 <section id="the-sbatch-command" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="the-sbatch-command"><span class="header-section-number">2.1</span> The <code>sbatch</code> command</h3>
-<p>You can use Slurm’s <code>sbatch</code> command to submit a batch job. But first, recall from last week that you can simply run a Bash script as follows:</p>
+<p>You can use Slurm’s <code>sbatch</code> command to submit a batch job. But first, recall from last week how we have so far run Bash scripts:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/printname.sh Jane Doe</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>This script will print a first and a last name
 First name: Jane
 Last name: Doe</code></pre>
-<p>The above command ran the script on whatever node you are on, and printed the output to the screen. To instead submit the script to the Slurm queue, simply <strong>replace <code>bash</code> by <code>sbatch</code></strong>:</p>
+<p>The above command ran the script on whatever node you are on, and printed the output to the screen. To instead submit the script to the Slurm queue, start by simply <strong>replacing <code>bash</code> with <code>sbatch</code></strong>:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/printname.sh Jane Doe</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>srun: error: ERROR: Job invalid: Must specify account for job  
 srun: error: Unable to allocate resources: Unspecified error</code></pre>
-<p>However, as the above error message “<em>Must specify account for job</em>” tells us, you need to indicate which OSC Project (or as Slurm puts it, “account”) you want to use for this compute job. Use the <code>--account=</code> option to <code>sbatch</code> to do this:</p>
+<p>However, as the above error message –“<em>Must specify account for job</em>”– informs us, you need to indicate which OSC Project (or as Slurm puts it, “account”) you want to use for this compute job. Use the <code>--account=</code> <code>sbatch</code> option to do this:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="at">--account</span><span class="op">=</span>PAS2880 scripts/printname.sh Jane Doe</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Submitted batch job 12431935</code></pre>
-<p>This output line means your job was successfully submitted (no further output will be printed to your screen — more about that below). The job has a <strong>unique identifier</strong> among all compute jobs by all users at OSC, and you can use this number to monitor and manage it. Each of us will therefore see a different job number pop up.</p>
-<p>After submitting a batch job, you <strong>immediately get your prompt back</strong>. The job will run outside of your immediate view, and you can continue doing other things in the shell while it does (or log off). This behavior allows you to submit many jobs at the same time, because you don’t have to wait for other jobs to finish, or even to start.</p>
+<p>This output line means your job was successfully submitted (no further job output will be printed to your screen — more about that below). The job has a <strong>unique identifier</strong> among all compute jobs by all users at OSC, and you can use this number to monitor and manage it. Each of us will therefore see a different job number pop up.</p>
+<p>After submitting a batch job, you <strong>immediately get your prompt back</strong>. The job will run outside of your immediate view, and you can continue doing other things in the shell while it does, or even log off. This behavior allows you to submit many jobs at the same time: you don’t have to wait for other jobs to finish, or even to start!</p>
 <hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -516,9 +525,9 @@ srun: error: Unable to allocate resources: Unspecified error</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>As you perhaps noticed in the command above, we can use <code>sbatch</code> options <em>and</em> script arguments in one command like so:</p>
+<p>As was implicit in the command above, we can use <code>sbatch</code> options <em>and</em> script arguments in one command like so:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="pp">[</span><span class="ss">sbatch</span><span class="pp">-</span><span class="ss">options</span><span class="pp">]</span> myscript.sh <span class="pp">[</span><span class="ss">script</span><span class="pp">-</span><span class="ss">arguments</span><span class="pp">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>But, depending on the details of the script itself, any combination of using <code>sbatch</code> options and script arguments is possible:</p>
+<p>Depending on the details of the script itself, any combination of using <code>sbatch</code> options and script arguments is possible:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/printname.sh                             <span class="co"># No options/arguments for either</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/printname.sh Jane Doe                    <span class="co"># Script arguments but no sbatch option</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="at">--account</span><span class="op">=</span>PAS2880 scripts/printname.sh           <span class="co"># sbatch option but no script arguments</span></span>
@@ -572,8 +581,7 @@ Running a script with <code>#SBATCH</code> lines elsewhere
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
-<p>Because <code>#SBATCH</code> lines are special <em>comment</em> lines, they will simply be ignored (and not throw any errors) when you run a script with such lines in other contexts: for example, when not running it as a batch job at OSC, or even when running it on a computer without Slurm installed.</p>
-<p>Therefore, you don’t have to worry (much) about decreasing the portability of your scripts by adding such lines.</p>
+<p>Because <code>#SBATCH</code> lines are special <em>comment</em> lines, they will simply be ignored (and not throw any errors) when you run a script with such lines in other contexts: for example, when not running it as a batch job at OSC, or even when running it on a computer without Slurm installed. Therefore, you don’t have to worry (much) about decreasing the portability of your scripts by adding such lines.</p>
 </div>
 </div>
 </div>
@@ -581,16 +589,16 @@ Running a script with <code>#SBATCH</code> lines elsewhere
 </section>
 <section id="where-does-the-scripts-logging-output-go" class="level3" data-number="2.3">
 <h3 data-number="2.3" class="anchored" data-anchor-id="where-does-the-scripts-logging-output-go"><span class="header-section-number">2.3</span> Where does the script’s logging output go?</h3>
-<p>Above, we saw that when you ran <code>printname.sh</code> directly with <code>bash</code>, its logging output was printed to the screen, whereas when you submitted it as a batch job, only <code>Submitted batch job &lt;job-number&gt;</code> was printed to screen. Where did this output go?</p>
-<p>The output ended up in a file called <code>slurm-&lt;job-number&gt;.out</code> (e.g., <code>slurm-12431942.out</code>; since each job number is unique to a given job, each file has a different number). We will call this type of file a <strong>Slurm log file</strong>.</p>
+<p>Above, we saw that when you ran <code>printname.sh</code> “directly” with <code>bash</code>, its logging output was printed to the screen, whereas when you submitted it as a batch job, only <code>Submitted batch job &lt;job-number&gt;</code> was printed to screen. In the latter case, where did the logging output go?</p>
+<p>The output ended up in a file called <code>slurm-&lt;job-number&gt;.out</code> (e.g., <code>slurm-12431942.out</code>; since each job number is unique to a given job, each file has a different number). We’ll call this type of file a <strong>Slurm log file</strong>.</p>
 <details>
 <summary>
-Any idea why we may not want batch job output printed to screen, even if it were possible? <em>(Click for the answer)</em>
+Getting this output in log files instead of printed to screen may seem inconvenient. Can you think of any reasons why we may not want batch job output printed to screen, even if it were possible? <em>(Click for the answer)</em>
 </summary>
 The power of submitting batch jobs is that you can submit many at once — e.g.&nbsp;one per sample, running the same script. If the output from all those scripts ends up on your screen, things become a big mess, and you have no lasting record of what happened.
 </details>
 <hr style="height:1pt; visibility:hidden;">
-<p>You should already have two of these Slurm log files if you ran all the above code – e.g.:</p>
+<p>You should already have two of these Slurm log files if you ran all the above code — e.g.:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>scripts slurm-12431935.out slurm-12431942.out</code></pre>
 <p>Let’s take a look at the contents of one of these:</p>
@@ -599,19 +607,19 @@ The power of submitting batch jobs is that you can submit many at once — e.g.&
 <pre class="bash-out"><code>This script will print a first and a last name
 First name: Jane  
 Last name: Doe</code></pre>
-<p>This file contains the script’s output that was printed to screen when we ran it with <code>bash</code> — nothing more or less.</p>
+<p>This file contains the script’s output that was printed to screen when we ran it with <code>bash</code> — nothing more and nothing less<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 <section id="two-types-of-output-files" class="level4">
 <h4 class="anchored" data-anchor-id="two-types-of-output-files">Two types of output files</h4>
-<p>It’s important to realize the distinction between two broad types of output a script may have:</p>
+<p>There is an important distinction between two general types of output that a script may have:</p>
 <ul>
-<li><p>Output that is <strong>printed to screen</strong> when you directly run a script (<code>bash myscript.sh</code>), and that ends up in the <strong>Slurm log file</strong> when you submit the script as a batch job. This includes output produced by <code>echo</code> statements, by any errors that may occur, and logging output by any program that we run in the script<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p></li>
-<li><p>Output of commands inside the script that is redirected to a file or that a program writes to an output file. This type of output <strong>will end up in the exact same files</strong> regardless of whether we run the script directly (with <code>bash</code>) or as a batch job (with <code>sbatch</code>).</p></li>
+<li><p>Output that is <strong>printed to screen</strong> when you directly run a script (<code>bash myscript.sh</code>), and that ends up in the <strong>Slurm log file</strong> when you submit the script as a batch job. This includes output produced by <code>echo</code> statements, by any errors that may occur, and logging output by any program that we run in the script<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p></li>
+<li><p>Output of commands inside the script that is redirected to a file or that a program writes to an <strong>output file</strong>. This type of output <strong>will end up in the exact same files</strong> regardless of whether we run the script with <code>bash</code> or as a batch job.</p></li>
 </ul>
-<p>Our script above only had the first type of output, but typical scripts have both, and we’ll see examples of this below.</p>
+<p>Our <code>printline.sh</code> script only had the first type of output, but typically, scripts have both, and we’ll see examples of this below.</p>
 </section>
 <section id="cleaning-up-the-slurm-logs" class="level4">
 <h4 class="anchored" data-anchor-id="cleaning-up-the-slurm-logs">Cleaning up the Slurm logs</h4>
-<p>When using batch jobs, your working dir can easily become a confusing mess of anonymous-looking Slurm log files. You can use both of the following strategies to help prevent this:</p>
+<p>When submitting batch jobs, your working dir can easily become a confusing mess of anonymous-looking Slurm log files. Both of the following strategies help to prevent this:</p>
 <ul>
 <li>Changing the default Slurm log file name to include a one- or two-word description of the job/script (see below).</li>
 <li>Cleaning up your Slurm log files, by:
@@ -633,7 +641,7 @@ The working directory stays the same
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Batch jobs start in the directory that they were submitted from: that is, your working directory remains the same.</p>
+<p>When the scripts in batch jobs are running, they start in the directory that they were submitted from: that is, the working directory remains the same, and you shouldn’t have to make special adjustments to paths.</p>
 </div>
 </div>
 <hr style="height:1pt; visibility:hidden;">
@@ -697,7 +705,7 @@ Click for the solutions
 <section id="checking-the-jobs-status" class="level3" data-number="3.2">
 <h3 data-number="3.2" class="anchored" data-anchor-id="checking-the-jobs-status"><span class="header-section-number">3.2</span> Checking the job’s status</h3>
 <p>After you submit a job, it may initially be waiting to get resources allocated to it: i.e., it may be <strong>queued (“pending”)</strong>. Eventually, the job will start running — you’ve seen all of this with the VS Code Interactive App job as well.</p>
-<p>Whereas Interactive App jobs will keep running until they’ve reached the end of the allocated time<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, <strong>batch jobs will stop as soon as the script has finished</strong>. And if the script is still running when the job runs out of its allocated time, <em>it will be killed (stopped) right away</em>.</p>
+<p>Whereas Interactive App jobs will keep running until they’ve reached the end of the allocated time<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, <strong>batch jobs will stop as soon as the script has finished</strong>. And if the script is still running when the job runs out of its allocated time, <em>it will be killed (stopped) right away</em>.</p>
 <section id="the-squeue-command" class="level4">
 <h4 class="anchored" data-anchor-id="the-squeue-command">The <code>squeue</code> command</h4>
 <p>You can check the status of your batch jobs using the <code>squeue</code> Slurm command:</p>
@@ -928,7 +936,7 @@ Click for the solution
 <h3 data-number="4.3" class="anchored" data-anchor-id="cores-nodes-and-tasks"><span class="header-section-number">4.3</span> Cores (&amp; nodes and tasks)</h3>
 <p>There are several options to specify the number of nodes (≈ computers), cores, or “tasks” (processes). These are separate but related options, and this is where things can get confusing! Some background:</p>
 <ul>
-<li>Note that Slurm mostly uses the terms “core” and “CPU” interchangeably<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. More generally with bioinformatics tools, “thread” is also commonly used interchangeably with core/CPU<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. Therefore, as also mentioned in the session on OSC, for our purposes, you can <strong>think of core, CPU, and thread as synonyms</strong> that refer to the sub-parts/components of a node that you can reserve and use separately.</li>
+<li>Note that Slurm mostly uses the terms “core” and “CPU” interchangeably<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. More generally with bioinformatics tools, “thread” is also commonly used interchangeably with core/CPU<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. Therefore, as also mentioned in the session on OSC, for our purposes, you can <strong>think of core, CPU, and thread as synonyms</strong> that refer to the sub-parts/components of a node that you can reserve and use separately.</li>
 </ul>
 <ul>
 <li><p>Running a program with multiple threads/cores/CPUs (“multi-threading”) is very common, and this can make the running time of such programs much shorter. While the specifics depend on the program, using 8-12 cores is often a sweet spot, whereas asking for even more cores can lead to rapidly <strong>diminishing returns</strong>.</p></li>
@@ -1075,7 +1083,7 @@ Alternatively, you could ask for 15 cores, but then instruct the program to use 
 <h3 data-number="4.5" class="anchored" data-anchor-id="output-slurm-log-files"><span class="header-section-number">4.5</span> <code>--output</code>: Slurm log files</h3>
 <p>As we saw above, by default, all output from a script that would normally be printed to screen will end up in a Slurm log file when we submit the script as a batch job. This file will be created in the directory from which you submitted the script, and will be called <code>slurm-&lt;job-number&gt;.out</code>, e.g.&nbsp;<code>slurm-12431942.out</code>.</p>
 <p>But it is possible to change the name of this file. For instance, it can be useful to include the <strong>name of the bioinformatics program</strong> that the script runs, so that it’s easier to recognize this file later. We can do this with the <code>--output</code> option, e.g.&nbsp;<code>--output=slurm-fastqc.out</code> if we were running FastQC.</p>
-<p>But you’ll generally want to keep the batch job number in the file name too<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. Since we won’t know the batch job number in advance, we need a trick here — and that is to use <strong><code>%j</code></strong>, which represents the batch job number:</p>
+<p>But you’ll generally want to keep the batch job number in the file name too<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Since we won’t know the batch job number in advance, we need a trick here — and that is to use <strong><code>%j</code></strong>, which represents the batch job number:</p>
 <div class="sourceCode" id="cb59"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-fastqc-%j.out</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>TBA - talk about outputting to a different dir?</strong></p>
@@ -1253,7 +1261,7 @@ Get warned when your job is close to its time limit <em>(Click to expand)</em>
 <section id="exercise-submit-your-fastqc-script-as-a-batch-job" class="level4 exercise">
 <h4 class="anchored" data-anchor-id="exercise-submit-your-fastqc-script-as-a-batch-job"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Submit your FastQC script as a batch job</h4>
 <p>Last week, we created a shell script to run FastQC, and ran it along these lines:</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_file</span><span class="op">=</span>../../week06/garrigos_data/fastq/ERR10802863_R1.fastq.gz</span>
+<div class="sourceCode" id="cb62"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_file</span><span class="op">=</span>../../week06/garrigos-data/fastq/ERR10802863_R1.fastq.gz</span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/fastqc.sh <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span> results/fastqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Now, try to:</p>
 <ol type="1">
@@ -1268,7 +1276,7 @@ Solution (click here)
 <div class="sourceCode" id="cb63"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2880</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Submit the script as follows:</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_file</span><span class="op">=</span>../../garrigos_data/fastq/ERR10802863_R1.fastq.gz</span>
+<div class="sourceCode" id="cb64"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_file</span><span class="op">=</span>../../garrigos-data/fastq/ERR10802863_R1.fastq.gz</span>
 <span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/fastqc.sh <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span> results/fastqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Submitted batch job 12431988</code></pre></li>
 </ul>
@@ -1320,11 +1328,12 @@ Solution (click here)
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p> This type of output is referred standard out (non-error output) and standard error — see the box in the <a href="#output-slurm-log-files">section on Slurm log files</a> for more<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Unless you actively “Delete” the job on the Ondemand website.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Even though technically, one CPU often contains multiple cores.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>Even though technically, one core often contains multiple threads.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>For instance, we might be running the FastQC script multiple times, and otherwise those Slurm log files would all have the same name and be overwritten!<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p> Unless you explicitly instruct Slurm to print regular output (“standard out”) and error messages (“standard error”) to separate files — see the box in the <a href="#output-slurm-log-files">section on Slurm log files</a> for more.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p> This type of output is referred to as “standard out” (non-error output) and “standard error” — see the box in the <a href="#output-slurm-log-files">section on Slurm log files</a> for more.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Unless you actively “Delete” the job on the Ondemand website.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Even though technically, one CPU often contains multiple cores.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Even though technically, one core often contains multiple threads.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>For instance, we might be running the FastQC script multiple times, and otherwise those Slurm log files would all have the same name and be overwritten!<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

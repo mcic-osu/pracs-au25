@@ -1,9 +1,28 @@
 ---
 title: "Slurm batch jobs at OSC"
-subtitle: "Week 7 - part I"
+subtitle: "Week 7 -- part I"
 pagetitle: "PRACS25: Slurm batch jobs"
-author: Jelmer Poelstra
 date: 2025-10-06
+author:
+  - name: Jelmer Poelstra
+    orcid: 0000-0002-3514-7462
+    email: poelstra.1@osu.edu
+    affiliation: 
+      - name: CFAES Bioinformatics Core, Ohio State University
+        url: https://mcic.osu.edu
+other-links:
+  - text: Week 7 overview
+    icon: book
+    href: w7_overview.html
+  - text: Week 7 exercises
+    icon: pencil
+    href: w7_exercises.html
+  - text: "w7-2: Batch jobs II"
+    icon: bookmarks
+    href: w7_2_protocol.html
+  - text: "Optional reading: Advanced batch jobs"
+    icon: book
+    href: ../ref/adv-slurm.html
 engine: knitr
 ---
 
@@ -16,7 +35,7 @@ engine: knitr
 ### Background and overview
 
 Automated scheduling software allows hundreds of people with different
-requirements to access supercomputer compute nodes effectively and fairly.
+requirements to effectively and fairly access compute nodes at supercomputers.
 OSC uses **Slurm** (Simple Linux Utility for Resource Management) for this.
 
 As you've learned,
@@ -55,6 +74,8 @@ What we'll focus on in this session are **batch jobs**.
   cp /fs/ess/PAS2880/users/$USER/week06/scripts/fastqc.sh scripts/
   ```
 
+**TBA PROVIDE SCRIPTS TO COPY**
+
 <br>
 
 ## Basics of Slurm batch jobs
@@ -65,15 +86,12 @@ While that script runs on a compute node,
 you will stay in your current shell at your current node
 (regardless of whether that is on a login or compute node).
 After you submit a batch job,
-it will continue to run even if you, for example,
-log off from OSC and shut down your computer.
-
-<hr style="height:1pt; visibility:hidden;" />
+it will continue to run even if you log off from OSC and shut down your computer.
 
 ### The `sbatch` command
 
 You can use Slurm's `sbatch` command to submit a batch job.
-But first, recall from last week that you can simply run a Bash script as follows:
+But first, recall from last week how we have so far run Bash scripts:
 
 ```bash
 bash scripts/printname.sh Jane Doe
@@ -87,7 +105,7 @@ Last name: Doe
 The above command ran the script on whatever node you are on,
 and printed the output to the screen.
 To instead submit the script to the Slurm queue,
-simply **replace `bash` by `sbatch`**:
+start by simply **replacing `bash` with `sbatch`**:
 
 ```bash
 sbatch scripts/printname.sh Jane Doe
@@ -97,10 +115,10 @@ srun: error: ERROR: Job invalid: Must specify account for job
 srun: error: Unable to allocate resources: Unspecified error
 ```
 
-However, as the above error message "_Must specify account for job_" tells us,
+However, as the above error message --"_Must specify account for job_"-- informs us,
 you need to indicate which OSC Project (or as Slurm puts it, "account")
 you want to use for this compute job.
-Use the `--account=` option to `sbatch` to do this:
+Use the `--account=` `sbatch` option to do this:
 
 ```bash
 sbatch --account=PAS2880 scripts/printname.sh Jane Doe
@@ -110,30 +128,30 @@ Submitted batch job 12431935
 ```
 
 This output line means your job was successfully submitted 
-(no further output will be printed to your screen --- more about that below).
+(no further job output will be printed to your screen --- more about that below).
 The job has a **unique identifier** among all compute jobs by all users at OSC,
 and you can use this number to monitor and manage it.
 Each of us will therefore see a different job number pop up.
 
 After submitting a batch job, you **immediately get your prompt back**.
 The job will run outside of your immediate view,
-and you can continue doing other things in the shell while it does (or log off).
-This behavior allows you to submit many jobs at the same time,
-because you don't have to wait for other jobs to finish, or even to start.
+and you can continue doing other things in the shell while it does, or even log off.
+This behavior allows you to submit many jobs at the same time:
+you don't have to wait for other jobs to finish, or even to start!
 
 <hr style="height:1pt; visibility:hidden;" />
 
 :::{.callout-note}
 #### `sbatch` options _and_ script arguments
 
-As you perhaps noticed in the command above,
+As was implicit in the command above,
 we can use `sbatch` options _and_ script arguments in one command like so:
 
 ```bash
 sbatch [sbatch-options] myscript.sh [script-arguments]
 ```
 
-But, depending on the details of the script itself,
+Depending on the details of the script itself,
 any combination of using `sbatch` options and script arguments is possible:
 
 ```bash
@@ -209,7 +227,6 @@ they will simply be ignored (and not throw any errors) when you run a script wit
 such lines in other contexts:
 for example, when not running it as a batch job at OSC,
 or even when running it on a computer without Slurm installed.
-
 Therefore, you don't have to worry (much) about decreasing the portability of your
 scripts by adding such lines.
 :::
@@ -218,17 +235,17 @@ scripts by adding such lines.
 
 ### Where does the script's logging output go?
 
-Above, we saw that when you ran `printname.sh` directly with `bash`,
+Above, we saw that when you ran `printname.sh` "directly" with `bash`,
 its logging output was printed to the screen,
 whereas when you submitted it as a batch job,
 only `Submitted batch job <job-number>` was printed to screen.
-Where did this output go?
+In the latter case, where did the logging output go?
 
 The output ended up in a file called `slurm-<job-number>.out` (e.g., `slurm-12431942.out`;
 since each job number is unique to a given job, each file has a different number).
-We will call this type of file a **Slurm log file**.
+We'll call this type of file a **Slurm log file**.
 
-<details><summary>Any idea why we may not want batch job output printed to screen, even if it were possible? _(Click for the answer)_</summary>
+<details><summary>Getting this output in log files instead of printed to screen may seem inconvenient. Can you think of any reasons why we may not want batch job output printed to screen, even if it were possible? _(Click for the answer)_</summary>
 The power of submitting batch jobs is that you can submit many at once ---
 e.g. one per sample, running the same script.
 If the output from all those scripts ends up on your screen,
@@ -237,8 +254,8 @@ things become a big mess, and you have no lasting record of what happened.
 
 <hr style="height:1pt; visibility:hidden;" />
 
-You should already have two of these Slurm log files if you ran all the above code --
-e.g.:
+You should already have two of these Slurm log files if you ran all the above code 
+--- e.g.:
 
 ```bash
 ls
@@ -260,11 +277,14 @@ Last name: Doe
 ```
 
 This file contains the script's output that was printed to screen 
-when we ran it with `bash` --- nothing more or less.
+when we ran it with `bash` --- nothing more and nothing less^[
+Unless you explicitly instruct Slurm to print regular output ("standard out") and
+error messages ("standard error") to separate files --- see the box in the
+[section on Slurm log files](#output-slurm-log-files) for more.].
 
 #### Two types of output files
 
-It's important to realize the distinction between two broad types of output
+There is an important distinction between two general types of output that
 a script may have:
 
 - Output that is **printed to screen** when you directly run a script
@@ -273,23 +293,23 @@ a script may have:
   This includes output produced by `echo` statements,
   by any errors that may occur,
   and logging output by any program that we run in the script^[
-  This type of output is referred standard out (non-error output) and standard error
-  --- see the box in the [section on Slurm log files](#output-slurm-log-files)
-  for more].
+  This type of output is referred to as "standard out" (non-error output) and
+  "standard error" --- see the box in the
+  [section on Slurm log files](#output-slurm-log-files) for more.].
 
 - Output of commands inside the script that is redirected to a file
-  or that a program writes to an output file. This type of output
-  **will end up in the exact same files** regardless of whether we run the script
-  directly (with `bash`) or as a batch job (with `sbatch`). 
+  or that a program writes to an **output file**.
+  This type of output **will end up in the exact same files**
+  regardless of whether we run the script with `bash` or as a batch job.
 
-Our script above only had the first type of output, but typical scripts have both,
-and we'll see examples of this below.
+Our `printline.sh` script only had the first type of output,
+but typically, scripts have both, and we'll see examples of this below.
 
 #### Cleaning up the Slurm logs
 
-When using batch jobs, your working dir can easily become a confusing mess of
-anonymous-looking Slurm log files.
-You can use both of the following strategies to help prevent this:
+When submitting batch jobs,
+your working dir can easily become a confusing mess of anonymous-looking Slurm log files.
+Both of the following strategies help to prevent this:
 
 - Changing the default Slurm log file name to include a one- or two-word description
   of the job/script (see below).
@@ -310,8 +330,10 @@ rm slurm*out
 
 :::{.callout-tip}
 ## The working directory stays the same
-Batch jobs start in the directory that they were submitted from:
-that is, your working directory remains the same.
+When the scripts in batch jobs are running,
+they start in the directory that they were submitted from:
+that is, the working directory remains the same,
+and you shouldn't have to make special adjustments to paths.
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
