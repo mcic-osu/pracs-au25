@@ -36,6 +36,25 @@ TBA
 
 ## Batch jobs in practice
 
+::: callout-tip
+#### See output added to the Slurm log file in real time
+Text will be added to the Slurm log file in real time as the running script
+(or the program ran by the script) outputs it.
+However, the output that commands like `cat` and `less` print are static.
+
+Therefore, if you find yourself opening/printing the contents of the Slurm log
+file again and again to keep track of progress,
+then instead **use `tail -f`**, which will "follow" the file and _will_ print new
+text as it's added to the Slurm log file:
+
+```bash
+# See the last lines of the file, with new contents added in real time
+tail -f slurm-12520046.out
+```
+
+To exit the `tail -f` livestream, press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
+:::
+
 ### TrimGalore
 
 TBA
@@ -43,6 +62,26 @@ TBA
 ### STAR/Salmon
 
 TBA
+
+### Making sure your jobs ran successfully
+
+Here are some summarizing notes on the overall strategy to monitor your batch jobs:
+
+- To see whether your job(s) have started,
+  check the queue (with `squeue`) or check for the appearance of Slurm log files
+  (with `ls`).
+  
+- Once the jobs are no longer listed in the queue,
+  they will have finished: either successfully or because of an error.
+
+- When you've submitted many jobs that run the same script for different samples/files:
+  - For at least 1 one of the jobs,
+    carefully read the full Slurm log file, and check other output files,
+  - Check whether no jobs have failed: via email when using `--mail-type=END`,
+    or by checking the `tail` of each log for messages like
+    "Successfully finished script".
+  - Check that you have the expected number of output files and that no files
+    have size zero (run `ls -lh`).
 
 <br>
 
