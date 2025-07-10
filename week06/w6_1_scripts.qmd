@@ -22,7 +22,7 @@ other-links:
     href: w3_2_shellfiles.html
   - text: "Optional reading: Advanced shell scripting and looping"
     icon: book
-    href: ../ref/while-arrays.html
+    href: ../ref/avd-shell-scripting.html
 ---
 
 -------
@@ -911,8 +911,9 @@ remove the `#` you inserted in the script in step 2 above to reactive the `set` 
 
 ### Copying placeholders to variables with descriptive names
 
-While you can use the `$1`-style placeholder variables throughout your script,
-I find it very useful to copy them to more descriptively named variables --- for example:
+While you could use the `$1`-style placeholder variables throughout your script,
+I highly recommend to always copy them to more descriptively named variables ---
+for example:
 
 ```bash
 #!/bin/bash
@@ -929,14 +930,19 @@ echo "Last name: $last_name"
 Using descriptively named variables in your scripts has several advantages, such as:
 
 - It will make your script easier to understand for others and for your future self.
-- It will make it less likely that you make errors in your script
-  in which you use the wrong variable in the wrong place.
+- It will make it less likely that you accidentally mix up the variables.
+
+{{< fa user-edit >}} _Copy the above code into `printname.sh`, replacing its previous contents._
+
+<hr style="height:1pt; visibility:hidden;" />
 
 :::{.callout-note}
-#### Other variables that are automatically available inside scripts
+#### Other placeholder variables that are automatically available inside scripts:
 
-- **`$0`** contains the script's file name.
-- **`$#`** contains the _number_ of command-line arguments passed to the script.
+- **`$#`** contains the _number_ of command-line arguments passed to the script
+- **`$0`** contains the script's file name^[
+  Though this does not work when you submit scripts as Slurm batch jobs,
+  and we will therefore not use this feature.]
 :::
 
 <br>
@@ -944,6 +950,7 @@ Using descriptively named variables in your scripts has several advantages, such
 ## Command substitution
 
 Command substitution allows you to **store the output of a command in a variable**.
+This is especially useful in scripts and loops.
 
 Let's see an example.
 As you know, the `date` command will print the current date and time:
@@ -983,8 +990,7 @@ One practical example of using command substitution is when you want to
 **automatically include the current date in a file name**
 (with "automatic" meaning that you can use the same command regardless of the date,
 and that you could use it in a script that you could run at any point).
-First, note that we can use `date +%F` to print the date in `YYYY-MM-DD` format,
-and omit the time:
+First, note that we can use `date +%F` to get `YYYY-MM-DD` format without the time:
 
 ```bash
 date +%F
@@ -1074,13 +1080,23 @@ although that shouldn't pose a problem inside `echo` statements.
 
 <br>
 
-## At-home reading: Conditionals
+## Conditionals
 
 With conditionals like `if` statements, we can
 **run one or more commands only if some condition is true**.
-Also, we can run a different set of commands if the condition is _not_ true.
-This can be useful in shell scripts because we may, for instance,
-want to process a file differently depending on its file type.
+We can also run a different set of commands if the condition is _not_ true.
+
+These features are especially useful in shell scripts because we may,
+for instance, check that all the inputs are correct,
+and exit with an informative error if that's not the case.
+
+While this does add some complexity to your shell scripts,
+it can be worth it because:
+
+- The sooner you stop a script from running when there are such problems,
+  the better.
+- If we instead pass erroneous input to the program that our script runs,
+  we sometimes get confusing errors or even worse, no clear errors at all.
  
 ### Basic syntax
 
@@ -1105,20 +1121,18 @@ fi
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### String comparisons
-
-First, an `if` statement that tests the file type of say an input file,
-and runs different code depending on the result:
+In this first example of an `if` statement
+we check the file type of an input file,
+and exit the script if it's not of the correct type:
 
 ```sh
 # [Hypothetical example - don't run this]
 # Say we have a variable $filetype that contains a file's type
-
 if [[ "$filetype" == "fastq" ]]; then
     echo "Processing FASTQ file..."
-    # Commands to process the FASTQ file
+    # [Commands to process the FASTQ file...]
 else
-    echo "Unknown filetype!"
+    echo "Error: unknown filetype!"
     exit 1
 fi
 ```
@@ -1134,49 +1148,32 @@ In the code above, note that:
   this is to contrast it with a single `=`, which is used for variable assignment.
 - When used inside a script, the `exit` command will stop the execution of the script.
   With `exit 1`, the *exit status* of our script is 1:
-  in bash, an exit status of 0 means success --- any other integer, including 1, means failure.  
+  an exit status of 0 means success --- any other integer, including 1, means failure.  
 
 <hr style="height:1pt; visibility:hidden;" />
+
+### String comparisons
+
+The above test, `"$filetype" == "fastq"`, was an example of a string comparison,
+where "string" is basically another term for "text" that is common in programming contexts,
+and mostly serves to distinguish this from numeric data.
+
+The two main string comparisons are:
 
 | String comparison            | Evaluates to true if
 |-------|----------------|
-| `str1 == str2`     | Strings `str1` and `str2` are identical^[A single `=` also works but `==` is clearer.]
-| `str1 != str2` &nbsp; &nbsp; &nbsp; &nbsp; | Strings `str1` and `str2` are different &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-| `-z str`          | String `str` is null/empty (useful with variables)
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### File tests
-
-The code below tests whether an input file exists using the file test **`-f`**
-and if it does _not_ (hence the **`!`**), it will stop the execution of the script:
-
-```sh
-# [Hypothetical example - don't run this]
-
-# '-f' is true if the file exists,
-# and '! -f' is true if the file doesn't exist
-if [[ ! -f "$fastq_file" ]]; then
-    echo "Error: Input file $fastq_file not found!"
-    exit 1
-fi
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-| File/dir test | Evaluates to true if |
-|---------|---------------------|
-| `-f file`       | `file` exists and is a regular file (not a dir or link) |
-| `-d dir`        | `dir` exists and is a directory &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
-| `-e file/dir`   | `file/dir` exists           |
+| `str1 == str2` | Strings `str1` and `str2` are identical^[A single `=` also works but `==` is clearer.]
+| `str1 != str2` | Strings `str1` and `str2` are different
 
 <hr style="height:1pt; visibility:hidden;" />
 
 ### Integer (number) comparisons
 
-To avoid unexpected or hard-to-understand errors later on in a shell script,
-we may choose to test at the beginning whether the correct number of arguments
-was passed to the script, and abort the script if this is not the case:
+It can be a good idea to test at the beginning of a script whether the correct
+number of arguments were passed to it, and simply exit if that's not the case.
+
+The `$#` variable will automatically contain the number of arguments that were
+passed to a script:
 
 ```bash
 # [Hypothetical example - don't run this]
@@ -1224,8 +1221,36 @@ fi
 ```
 :::
 
+<hr style="height:1pt; visibility:hidden;" />
+
+### File tests
+
+We can also test whether files or dirs exist:
+
+| File/dir test | Evaluates to true if |
+|---------|---------------------|
+| `-f file`       | `file` exists and is a regular file (not a dir or link) |
+| `-d dir`        | `dir` exists and is a directory &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
+
+<hr style="height:1pt; visibility:hidden;" />
+
+For example,
+the code below tests whether an input file exists using the file test **`-f`**
+and if it does _not_ (hence the **`!`**), it will stop the execution of the script:
+
+```sh
+# [Hypothetical example - don't run this]
+# '-f' is true if the file exists, so '! -f' is true if the file doesn't exist
+if [[ ! -f "$fastq_file" ]]; then
+    echo "Error: Input file $fastq_file not found!"
+    exit 1
+fi
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
 ::: {.callout-note collapse="true"}
-#### Combining multiple expressions with `&&` and `||` _(Click to expand)_
+#### Combining expressions with `&&` and `||` _(Click to expand)_
 To test for multiple conditions at once,
 use the `&&` ("and") and `||` ("or") shell operators --- for example:
 
@@ -1249,12 +1274,12 @@ use the `&&` ("and") and `||` ("or") shell operators --- for example:
 <hr style="height:1pt; visibility:hidden;" />
 
 ::: exercise
-#### {{< fa user-edit >}} Exercise: No middle names allowed!
+#### {{< fa user-edit >}} Exercise: Number of arguments
 
 In your `printname.sh` script,
 add the `if` statement from above that tests whether the correct number of arguments
 were passed to the script.
-Then, try running the script consecutively with 1, 2, or 3 arguments. 
+Then, try running the script consecutively with 1, 2, and 3 arguments. 
 
 <details><summary>Start with this `printname.sh` script we wrote above.</summary>
 ```bash
@@ -1330,7 +1355,7 @@ Usage: printname.sh <first-name> <last-name>
 ::: exercise
 #### {{< fa user-edit >}} Exercise: Conditionals II
 
-Open a new script `sandbox.sh` and in it,
+In your Markdown notes file,
 write an `if` statement that tests whether the script `scripts/printname.sh` exists
 and is a regular file, and:
 
@@ -1339,14 +1364,9 @@ and is a regular file, and:
 
 Then:
 
-1. Run your `if` statement by pasting the code into the terminal ---
-   it should report that the file is found. 
+1. Run your `if` statement --- it should report that the file is found. 
 2. Introduce a typo in the file name in the `if` statement, and run it again,
    to check that the file is not indeed not found.
-
-_(Note that your new script isn't meant to be run per se,_
-_but it is much easier to write multi-line statements in a text file than directly_
-_in the terminal.)_
 
 <details><summary>Click for the solution</summary>
 ```sh
