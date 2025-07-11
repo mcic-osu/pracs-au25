@@ -45,7 +45,20 @@ engine: knitr
 
 ### Learning goals
 
+In this session about (bioinformatics) software management at OSC and beyond,
+you will learn:
+
+- How to find and load OSC "modules" to use specific programs
+- Why containers and Conda are useful and reproducible alternative ways to use software
+- How to find and run Apptainer/Singularity containers to use specific programs
+- What the program FastQC does and how you can run it
+
 ### Setting up
+
+1. At <https://ondemand.osc.edu>,
+   start a VS Code session in your personal dir within `/fs/ess/PAS2880/users/`.
+2. Open a terminal and navigate to your `week05` dir.
+3. Create a new Markdown file for class notes and save it in your `week05` dir.
 
 <br>
 
@@ -62,39 +75,42 @@ We do need to "**load modules**" containing such programs before we can use them
 In this session, we will first talk about that process.
 
 However, OSC's collection of bioinformatics programs is not comprehensive,
-and the most recent versions are often not available.
-(Additionally, your scripts are somewhat less portable
+and the most recent versions are often not available^[
+Also, your scripts are somewhat less portable
 --as in, less likely to work across different computers/computing environments--
 and therefore less reproducible when they contain `module load` commands
-that will likely not work outside of OSC.)
+that will likely not work outside of OSC.].
+On top of that, installing software the way you are used to on your own computer
+is not really possible at a supercomputer center like OSC.
+
 We therefore need an additional way to use bioinformatics programs at OSC.
 Two common ones are:
 
 - **Containers**, which are self-contained software environments that include
   operating systems, akin to mini virtual machines.
-  Docker containers are the most well-known, but OSC uses Apptainer
-  (formerly known as Singularity).
+  Docker containers are most well-known,
+  but supercomputers like OSC use **Apptainer (formerly known as Singularity)**.
   
 - The **Conda** software management program,
-  which creates software "environments" that you can load.
+  which installs software and its dependencies in "environments" that you can load.
   
 Conda and containers are useful:
 
 - Specifically at supercomputers like OSC,
-  where they bypass issues with dependencies^[
+  where they bypass issues with "dependencies"^[
     Other software upon which the software that you are trying to install depends.]
-  and administrator privileges^[
+  and "administrator privileges"^[
     When your personal computer asks you to "authenticate" while you are
     installing something, you are authenticating yourself as a user with
     administrator privileges. At OSC, you don't have such privileges.]
-  that you may have when trying to install software in other ways.
+  that you may run into when trying to install software in other ways.
 
 - More generally for **reproducible software environments**.
 
 - Because they make it easy to switch between different versions of the same
   software, or to use mutually incompatible software.
 
-In this session, you will learn how to obtain and use Containers,
+In this session, you will learn how to obtain and use containers,
 while [this optional-reading page covers Conda](../ref/conda.qmd).
 
 ::: {.callout-tip}
@@ -109,8 +125,8 @@ while [this optional-reading page covers Conda](../ref/conda.qmd).
   downloading a directly functioning binary (executable),
   but more commonly requires you to "compile" (build) the program.
   This is sometimes straightforward but can also become extremely tricky,
-  especially at OSC where you don't have "administrator privileges"[^2]
-  and will often have difficulties with "dependencies"[^3].
+  especially at OSC where you don't have administrator privileges
+  and will often have difficulties with dependencies.
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -136,8 +152,8 @@ The y-axis shows Phred quality scores (higher is better, see also the color-codi
 ## Loading software at OSC with Lmod modules
 
 OSC administrators manage software with the "Lmod" system of software modules.
-This means that even though a piece of software may be installed,
-**we may only be able to use it after we explicitly load it.**
+This means that a lot of installed software can only be used after its
+**module is explicitly loaded.**
 That may seem like a drag, but on the upside,
 this practice enables the use of different versions of the same software,
 and of mutually incompatible software on a single system.
@@ -149,7 +165,7 @@ We can load, unload, and search for available software modules using the
 #### Not all software has to be loaded
 Not all software has to be loaded:
 besides all the basic Unix commands we have been using,
-very widely used software like Git, Python, and Apptainer (as we'll see below)
+very widely used software like Git, Python, and Apptainer
 is available to us without loading anything.
 :::
 
@@ -186,11 +202,11 @@ module spider fastqc
       A quality control tool for high throughput sequence data.
 ```
 
-We can see that `nextflow` is available, namely version `24.10.4`
-(that is, it is printed as `<software>/<version>`).
+We can see that `fastqc` is available, namely version `24.10.4`
+(that is, the module is printed as `<software>/<version>`).
 
 ::: callout-tip
-#### These two search commands are not case-sensitive, but `module load` (below) _is_
+#### These two search commands are not case-sensitive (but `module load` -below- _is_)
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -200,10 +216,13 @@ We can see that `nextflow` is available, namely version `24.10.4`
 All other Lmod software functionality is also accessed using `module` commands.
 For instance, to make a program available to you, use the `load` command.
 
-But first, let's check that we can indeed not use FastQC before doing so.
-As the command to check whether FastQC is working,
-we will use `fastqc -v`,
-which should print the FastQC _version_ if that program is indeed available.
+But first, let's confirm that it is not possible to use FastQC before doing so:
+
+- The command to run FastQC is `fastqc`
+- Like Unix commands, `fastqc` has many options,
+  and we can pass FASTQ files as arguments.
+- For our inital tests, we will simply run `fastqc -v`,
+  which should print the FastQC _version_ if the command is available.
 
 ```bash
 fastqc -v
@@ -213,14 +232,14 @@ bash: fastqc: command not found...
 Failed to search for file: GDBus.Error:org.freedesktop.DBus.Error.NameHasNoOwner: Could not activate remote peer.
 ```
 
-Now, let's load the modle ---
+Now, load the module ---
 specify the module name _and_ its version exactly as `module spider` printed it:
 
 ```bash
 module load fastqc/0.12.1
 ```
 
-And we check again:
+And then check whether we can use FastQC once again:
 
 ```bash
 fastqc -v
@@ -229,16 +248,18 @@ fastqc -v
 FastQC v0.12.1
 ```
 
-Note that module loading does _not_ persist across shell sessions.
+Success!
+
+#### When to use `module load`
+
+Note that module loading does **not persist across shell sessions**.
 Whenever you get a fresh shell session
 (including but not limited to after logging into OSC again),
 you will have to reload any modules you want to use!
 
-#### Including `module load` in your shell script
-
 When you run a program that is loaded with Lmod in your shell script,
 always include the `module load` command in the script,
-and it is best to do so way at the top of the script:
+and it is best to do so at the top of the script -- for example:
 
 ```bash
 #!/bin/bash
@@ -248,40 +269,46 @@ set -euo pipefail
 module load fastqc/0.12.1
 ```
 
+Here, we only covered the very basics of using `module`.
+To learn a bit more, you can read the boxes below, but in class,
+we will not go into further detail because we will mostly use containers instead.
+(considering the limitations of these modules and the
+advantages of containers discussed above).
+
 ::: {.callout-tip collapse="true"}
 #### Other `module` commands  _(Click to expand)_
 
-To check which modules are loaded, use `module list`.
-Its output also includes _automatically_ loaded modules ---
-for example, after loading `miniconda3/24.1.2-py310`,
-it should list `miniconda3` as the 9^th^ entry^[
-This may vary over time and also depends on whether you run this in the VS Code
-Server terminal --- some of the loaded modules are related to that.]:
+- To **check which modules are loaded**, use `module list`.
+  Its output also includes _automatically_ loaded modules ---
+  for example, after loading `fastqc/0.12.1`,
+  it may show something like the below, with 5 different modules loaded:
 
-```bash
-module list
-```
-```{.bash-out}
-Currently Loaded Modules:
-  1) xalt/latest               3) intel/19.0.5     5) modules/sp2020     7) git/2.18.0              9) miniconda3/24.1.2-py310
-  2) gcc-compatibility/8.4.0   4) mvapich2/2.3.3   6) project/ondemand   8) app_code_server/4.8.3
-```
+  ```bash
+  module list
+  ```
+  ```{.bash-out}
+  Currently Loaded Modules:
+    1) intel-oneapi-mkl/2023.2.0   2) intel/2021.10.0   3) mvapich/3.0   4) modules/sp2024   5) fastqc/0.12.1
+  ```
 
-Occasionally, when you run into conflicting (mutually incompatible) modules,
-it can be useful to unload modules,
-which you can do with `module unload` or `module purge`:
+- Occasionally, when you run into conflicting (mutually incompatible) modules,
+  it can be useful to **unload modules**,
+  which you can do with `module unload` or `module purge`:
 
-```bash
-module unload miniconda3    # Unload a specific module
-module purge                # Unload all modules
-```
+  ```bash
+  # Unload a specific module with 'module unload':
+  module unload fastqc/0.12.1    
+  
+  # Unload all modules with 'module purge':
+  module purge
+  ```
 :::
 
 ::: {.callout-note collapse="true"}
 #### Another `module load` example: different versions with `pandoc` _(Click to expand)_
 
 Say we wanted to use `pandoc`,
-the software that can render Markdown files to e.g. HTML and PDF.
+the program that can for example render Markdown files to HTML and PDF.
 Let's check if it's available:
 
 ```bash
@@ -297,7 +324,7 @@ This is free software; see the source for copying conditions. There is no
 warranty, not even for merchantability or fitness for a particular purpose.
 ```
 
-Hmmm, version 2.14 is [not nearly the most recent one](https://pandoc.org/releases.html).
+Yes, but version 2.14 is [not nearly the most recent one](https://pandoc.org/releases.html).
 Might a more recent one be available in a module?
 
 ```bash
@@ -335,7 +362,7 @@ Excellent!
 ::: {.callout-note collapse="true"}
 #### Another `module load` example: two-step procedure with `R` _(Click to expand)_
 
-We'll start with testing if R doesn't just work out of the box:
+We'll start with testing whether R may be available out of the box:
 
 ```bash
 R
@@ -391,7 +418,19 @@ Lmod has detected the following error:  These module(s) or extension(s) exist bu
    If you need further assistance, please contact oschelp@osc.edu with the subject line "lmod error: R/4.4.0"
 ```
 
-If we carefully read the earlier message printed by `module spider`, ....
+That didn't work.
+If we carefully read the earlier message printed by `module spider`,
+we can see that we first need to load the module `gcc/12.3.0` before R can be loaded.
+Specifically, it said:
+
+```bash-out
+    You will need to load all module(s) on any one of the lines below before the "R/4.4.0" module is available to load.
+
+      gcc/12.3.0
+```
+
+Therefore, let's try to load `gcc` along with `R` --
+we can use the command below to load both at the same time, which should work:
 
 ```bash
 module load gcc/12.3.0 R/4.4.0
@@ -403,6 +442,8 @@ Lmod is automatically replacing "intel/2021.10.0" with "gcc/12.3.0".
 Due to MODULEPATH changes, the following have been reloaded:
   1) mvapich/3.0
 ```
+
+Finally, let's check that R works:
 
 ```bash
 R
@@ -429,7 +470,8 @@ Type 'q()' to quit R.
 > 
 ```
 
-Type `q()` or use the general keyboard short for exiting
+Now you're in the R console --
+type `q()` or use the general keyboard short for exiting
 <kbd>Ctrl/Cmd</kbd>+<kbd>D</kbd> to exit R.
 :::
 
@@ -437,51 +479,60 @@ Type `q()` or use the general keyboard short for exiting
 
 ## Using Apptainer containers
 
-**Containers** are similar to Virtual Machines
-(and different from Modules and Conda environments)
+**Containers** are similar to Virtual Machines,
+and different from Modules and Conda environments,
 in that they come with an entire _operating system_.
+
+That may seem a bit much, but it makes them particularly portable
+(likely to work across computing environments) and using containers improves
+the reproducibility of your research.
+This is particularly true if you use publicly available containers as we will do.
+It's also easier in a way, because you don't need to install anything:
+you will select a container that has the desired software installed,
+and will then simply use that container directly.
 
 Among container platforms, Apptainer (formerly known as Singularity)
 and especially Docker are the most widely used ones.
 At supercomputers like OSC, however, only Apptainer containers can be used^[
 But luckily, the Apptainer program can work with Docker container images:
 it will convert them on the fly.].
-Some container terminology:
+Some Apptainer container terminology:
 
-- **Container image**: File that contains the container application.
-- **Container** (sensu stricto): A _running_ container image.
+- **Container image**: a binary _file_ that contains the container application (`.sif` extension)
+- **Container** (sensu stricto): a _running_ container image
 - **Definition file**:
-  A plain text file that contains the recipe to build a container image.
+  a plain text file that contains the recipe to build a container image
   
-Here, you will learn how to find container "images" online and use them at OSC.
-We will not cover writing Definition files to create your own custom computers,
+Here, you will learn how to find container images online and use them at OSC.
+We will not cover writing Definition files to create your own custom containers,
 as this is very rarely needed especially given recent developments in online
 container availability (covered below).
 
-### Quick overview
+### Quick overview of using containers
 
-The **first step** to using a container is obtaining it: for example,
-we will see how to get a link for a container that is available online.
-Like regularly installing software, obtaining the container is one-time thing:
-once you use or explicitly download it, the container image will remain. 
+The **first step** to using a container is obtaining it:
+you'll see below how to get a link for a container that is available online.
+Similar to when you install software, obtaining the container is one-time thing:
+once you use or explicitly download it,
+the container image will remain until you remove it.
 
-The **second step** is to run an appropriate command to access the software
-in the container.
-To run a command that is installed inside a container, the general syntax is:
+The **second step** is to run an appropriate command to access the desired
+software that is installed inside the container.
+To run a command in a container, the general syntax is:
 
-- Referencing a `.sif` container image on your computer:
+- When referencing a `.sif` container image on your computer:
 
   ```bash
   apptainer exec <my-container.sif> <command>
   ```
   
-- Referencing a container image online (!):
+- When directly referencing a container image online (yes, this is possible!):
 
   ```bash
   apptainer exec <URL> <command>
   ```
 
-This means that if the command in question is `fastqc`,
+This means that if the command we want to run is `fastqc -v`,
 and we had a container image file `fastqc.sif`...
 
 - Instead of running:
@@ -500,31 +551,47 @@ and we had a container image file `fastqc.sif`...
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### Finding container images online
+### Obtaining a container image
 
-There are several online repositories with publicly available container images,
-but I would strongly recommend Seqera Containers.
-This is the most reliable site,
-and also allows you to _very_ easily build custom containers that have a
-combination of software.
+Several online repositories have publicly available container images,
+but I strongly recommend **Seqera Containers**.
 
-Here is a step-by-step procedure to get a container for FastQC:
+#### Seqera Containers
+
+Seqera Containers is currently the most reliable site with containers,
+and it is actually more than just a repository:
+when a container with the program(s) you request is not available in the repository,
+it will build the container for you.
+So, it allows you to select:
+
+- Any version of software that's available
+- Any combination of software that's not mutually incompatible
+
+Then, it will see if a container with your exact requirements is already available
+and if not, it will build it and make it available.
+
+#### Getting a container, step-by-step
+
+Here is a step-by-step procedure to get a container ---
+we will again use FastQC version 0.12.1 as the example,
+but the procedure would be the same for any other program that's available:
 
 1. Go to **<https://seqera.io/containers>**.
 
 2. In the **search box** below "Containers", enter `fastqc`.
 
-3. After waiting for a bit for the list to populate,
+3. After waiting for the list to populate,
    the **top hit** should be `bioconda::fastqc`,
-   showing version `0.12.1` (the most recent version should always be shown).
+   with version `0.12.1` selected
+   (the most recent version is always selected by default).
   
-4. **Add FastQC** by clicking the blue `+ Add` button.
-   At this point, you could add additional software to your container,
-   but we are happy with creating/fetching a container that only has FastQC.
+4. **Add FastQC** to your "container request" by clicking the blue `+ Add` button.
+   At this point, you could add additional programs,
+   but here, we are happy with creating/fetching a container that only has FastQC.
 
 5. In "**Container settings**" below the search box,
    change from `Docker` to `Singularity`
-   (and leave the other dropdown as is - should be `linux/amd64`).
+   (and leave the other dropdown as is -- `linux/amd64` should be selected).
   
 6. **Get a link** to the container image by clicking the blue
    `Get Container` button.
@@ -534,6 +601,12 @@ Here is a step-by-step procedure to get a container for FastQC:
    `oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960`.
   
 <hr style="height:1pt; visibility:hidden;" />
+
+::: callout-note
+#### Screenshots of the above process
+
+**TBA**
+:::
 
 ::: callout-tip
 #### Other tips
@@ -549,18 +622,24 @@ Here is a step-by-step procedure to get a container for FastQC:
   you can only download/use the container once the "Container is ready".
   
 - Always pick the Bioconda ones!
+
+- What is available and what is not?
+
+**TBA**
+
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
 
 ### Running a container image
 
-To recap, running a program in a container is done with a kind-of two-part command:
+To recap, running a program in a container is done with a command that basically
+consists of two parts:
 
-1. `apptainer exec <URL>` (or `apptainer exec <SIF>`) followed by
+1. `apptainer exec <URL>` (or `apptainer exec <my.sif>`) followed by
 2. the "regular" command, e.g. `fastqc -v`
 
-Let's check that we can run run FastQC in the container:
+Let's check that we can run FastQC in the container:
 
 ```bash
 # [Don't run this, we'll need to add a TrimGalore command]
@@ -574,17 +653,20 @@ INFO:    gocryptfs not found, will not be able to use gocryptfs
 FastQC v0.12.1
 ```
 
+::: callout-tip
+#### Breaking up a command across lines with `\` 
 Above, I broke the command up across two lines,
 which can be done by ending the first line with a `\`.
-This helps for readability for really long commands like this one
-(and makes particular sense here given the "two-part structure" of the command
-with the `apptainer prefix`).
+This helps with readability for long commands like this one.
+It also makes particular sense here given the "two-part structure" of the command
+discussed above.
+:::
 
-The first time you run this command,
+The **first time** you run this command,
 the container image will be downloaded to a default location (see box below),
 as you can see in he output above --- this will take a minute or so.
 
-When rerunning the same command,
+When **rerunning** the same command,
 Apptainer will realize that the container image has already been downloaded and
 will automatically use the downloaded version:
 
@@ -594,9 +676,7 @@ apptainer exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9
   fastqc -v
 ```
 ```bash-out
-
-TBA
-
+INFO:    Using cached SIF image
 INFO:    gocryptfs not found, will not be able to use gocryptfs
 FastQC v0.12.1
 ```
@@ -604,7 +684,7 @@ FastQC v0.12.1
 _(You will keep seeing the `gocryptfs not found` message,_
 _but this is nothing to worry about.)_
 
-::: callout-tip
+::: callout-note
 ### The container image cache
 
 (by default it will be downloaded to `~/.apptainer/cache`,
@@ -615,31 +695,23 @@ but you can change this by setting the `$APPTAINER_CACHEDIR` environment variabl
 
 ### Running FastQC
 
-As explained above,
-you'll want to run bioinformatics tools like FastQC using a script that we'll
-submit to the compute job queue at OSC.
-For now, though,
-you will get a feel for using the program by running it directly in the shell 
-(i.e., "interactively"). 
-
-The command `fastqc` will run the FastQC program.
-If you want to analyze a FASTQ file with default FastQC settings,
-a complete FastQC command would simply be `fastqc` followed by the file name:
+To analyze a FASTQ file with default FastQC settings,
+the command would simply be `fastqc` followed by the FASTQ file path:
 
 ``` bash
 # [Don't run this]
 apptainer exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 \
-  fastqc garrigos-data/fastq/ERR10802863_R1.fastq.gz
+  fastqc ../garrigos-data/fastq/ERR10802863_R1.fastq.gz
 ```
 
-However, an annoying FastQC default behavior is that it writes its output files
+However, an annoying default behavior of FastQC is that it writes its output files
 in the same dir that contains the input FASTQ files ---
 this means mixing your raw data with your results, which we don't want!
 
 #### Changing the output directory?
 
 To figure out how to change that behavior,
-first consider that many standard Unix commands and bioinformatics tools alike
+consider that many standard Unix commands and bioinformatics tools alike
 have an **option `-h` and/or `--help`** to print usage information to the screen.
 Let's try that:
 
@@ -648,9 +720,26 @@ apptainer exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9
   fastqc -h
 ```
 ``` bash-out
+INFO:    Using cached SIF image
+INFO:    gocryptfs not found, will not be able to use gocryptfs
 
-TBA
+            FastQC - A high throughput sequence QC analysis tool
 
+SYNOPSIS
+
+        fastqc seqfile1 seqfile2 .. seqfileN
+
+    fastqc [-o output dir] [--(no)extract] [-f fastq|bam|sam] 
+           [-c contaminant file] seqfile1 .. seqfileN
+
+DESCRIPTION
+
+    FastQC reads a set of sequence files and produces from each one a quality
+    control report consisting of a number of different modules, each one of 
+    which will help to identify a different potential type of problem in your
+    data.
+    
+# [...output truncated...]
 ```
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -658,12 +747,11 @@ TBA
 ::: exercise
 #### {{< fa user-edit >}} **Exercise**: FastQC help and output dir
 Look at FastQC's help info,
-and figure out which option you can use to specify a custom output directory.
+and figure out which option can be used to specify a custom output directory.
 
 <details><summary>*Click for the solution*</summary>
-Running `fastqc -h` or `fastqc --help` will work to show the help info.
-You'll get quite a bit of output printed to screen,
-including the snippet about output directories that is reproduced below:
+
+The option to do this is `-o`/`--outdir`:
 
 ``` bash
 fastqc -h
@@ -675,8 +763,6 @@ fastqc -h
                     output file for each sequence file is created in the same
                     directory as the sequence file which was processed.
 ```
-
-So, you can use `-o` or equivalently, `--outdir`, to specify an output dir.
 </details>
 :::
 
@@ -685,15 +771,15 @@ So, you can use `-o` or equivalently, `--outdir`, to specify an output dir.
 #### The final command
 
 With the added `--outdir` (or `-o`) option,
-let's try to run the following FastQC command:
+try to run the following FastQC command:
 
 ``` bash
-# We'll have to first create the outdir ourselves, in this case
+# We'll have to first create the outdir ourselves, in this case:
 mkdir -p results/fastqc
 
-# Now we run FastQC
+# Now we run FastQC:
 apptainer exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 \
-  fastqc --outdir results/fastqc garrigos-data/fastq/ERR10802863_R1.fastq.gz
+  fastqc --outdir results/fastqc ../garrigos-data/fastq/ERR10802863_R1.fastq.gz
 ```
 ``` bash-out
 Started analysis of ERR10802863_R1.fastq.gz
@@ -704,9 +790,14 @@ Approx 15% complete for ERR10802863_R1.fastq.gz
 Analysis complete for ERR10802863_R1.fastq.gz
 ```
 
-In the output dir we specified, we have a `.zip` file,
-which contains tables with FastQC's data summaries,
-and an `.html` (HTML) file, which contains the graphs:
+Success!
+Above, FastQC printed some "logging" information to screen,
+informing us about its progress.
+
+The main output, however, is in the output dir we specified:
+
+- A `.zip` file, which contains tables with FastQC's data summaries
+- An `.html` (HTML) file, which contains the graphs we'd like to see
 
 ``` bash
 ls -lh results/fastqc
@@ -717,33 +808,27 @@ total 512K
 -rw-rw----+ 1 jelmer PAS0471 256K Mar 21 09:53 ERR10802863_R1_fastqc.zip
 ```
 
-::: callout-note
-#### Specifying an output dir vs. output file(s)
-FastQC allows us to specify the output directory, but not the output file names:
-these will be automatically determined based on the input file name(s).
-This kind of behavior is fairly common for bioinformatics programs,
-since they will often produce multiple output files.
-:::
-
 <hr style="height:1pt; visibility:hidden;" />
 
 ::: exercise
 #### {{< fa user-edit >}} **Exercise**: Another FastQC run
 
 Run FastQC for the corresponding R2 FASTQ file.
-Would you use the same output dir or a separate one?
+Would you use the same output dir or a different one?
 
 <details><summary>*Click for the solution*</summary>
 
-Yes, it makes sense to use the same output dir, since as you could see above,
+It makes sense to use the same output dir.
+This is because, as you could see above,
 the output file names have the input file identifiers in them.
-As such, we don't need to worry about overwriting files,
-and it will be more convenient to have all results in a single dir.
+As such, because we don't need to worry about overwriting files,
+it will be more convenient to have all results in a single dir.
 
 To run FastQC for the R2 (reverse-read) file:
 
 ``` bash
-fastqc --outdir results/fastqc garrigos-data/fastq/ERR10802863_R2.fastq.gz
+apptainer exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 \
+  fastqc --outdir results/fastqc ../garrigos-data/fastq/ERR10802863_R2.fastq.gz
 ```
 ``` bash-out
 Started analysis of ERR10802863_R2.fastq.gz
@@ -769,3 +854,35 @@ Now, we have four files: two for each of our preceding successful FastQC runs.
 
 </details>
 :::
+
+::: callout-note
+#### Specifying an output dir vs. output file(s)
+FastQC allows us to specify the output directory, but not the output file names:
+these will be automatically determined based on the input file name(s).
+This kind of behavior is fairly common for bioinformatics programs,
+since they will often produce multiple output files.
+:::
+
+::: exercise
+#### {{< fa user-edit >}} **Exercise**: Download the HTML files and open them
+
+TBA
+
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+#### Closing notes
+
+In our research with full-size datasets,
+we typically don't run bioinformatics programs like FastQC "interactively"
+in the way way we just did.
+It is preferable to instead write small scripts to run such programs and then
+submit those scripts as so-called "batch jobs" at OSC.
+In the next two weeks,
+you will learn why that is the case and how you can do this:
+
+- Next week, you'll learn how to write shell scripts and loop over files
+- In two weeks, you'll learn how submit shell scripts as batch jobs.
+
+<br>

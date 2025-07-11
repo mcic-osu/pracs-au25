@@ -43,9 +43,7 @@ editor_options:
 
 ## Introduction
 
-<br>
-
-## Managing your data and results
+### Managing your data and results
 
 Your raw FASTQ data is extremely invaluable as it contains the result
 of your experiment and was produced by an expensive sequencing process.
@@ -68,9 +66,7 @@ You'll also want to keep at least one copy of the data outside of OSC.
 - Keeping back-ups of raw data
 - Project versus scratch dirs (and avoid your Home dir for research projects)
 
-<br>
-
-## Sharing your data, results, and code
+### Sharing your data, results, and code
 
 - Raw sequences to NCBI
 - Some results can also go to NCBI, e.g. genome assemblies and annotations, GEO
@@ -83,9 +79,10 @@ You'll also want to keep at least one copy of the data outside of OSC.
 
 ### Overview of options
 
-In week 1, you were shown that you can upload and download files from OSC
-in the OnDemand Files menu, but that's only suitable for relatively small transfers.
-Here is a list of methods to transfer files between your computer and OSC:
+In week 1, you learned that you can upload and download files from OSC
+in the OnDemand Files menu.
+However, that method is only suitable for relatively small transfers.
+Here is a table with methods to transfer files between your computer and OSC:
 
 | Method                            | Transfer size         | CLI or GUI        | Ease of use   | Flexibility/options   |
 |-----------------------------------|-----------------------|-------------------|---------------|-----------------------|
@@ -94,14 +91,9 @@ Here is a list of methods to transfer files between your computer and OSC:
 | **SFTP**                          | larger (>1GB)         | Either            | Moderate      | Extensive             |
 | **Globus**                        | larger (>1GB)         | GUI               | Moderate      | Extensive             |
 
-::: legend2
-For more details, see the
-[self-study section at the bottom of this page](#more-details-on-file-transfer-to-and-from-osc).
-:::
-
 <hr style="height:1pt; visibility:hidden;" />
 
-### FileZilla: a GUI-based SFTP client
+### In practice: FileZilla, a GUI-based SFTP client
 
 Here, we'll go over what is probably overall the most convenient and versatile
 way to transfer files to and from OSC,
@@ -227,11 +219,134 @@ so you don't really need to learn to use both of them.
 
 <br>
 
+
+## File compression
+
+Let's start with downloading a file to play around with:
+
+```bash
+wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr22.fa.gz
+```
+
+### Decompress files
+
+When you download data,
+it is often compressed with `gzip` ("gzipped", `.gz` extension).
+
+Many programs can work with gzipped files directly,
+but sometimes you do need to unzip them, which can be done with `gunzip`:
+
+```bash
+# gunzip unzips in place - the original zipped file disappears:
+gunzip chr21.fa.gz
+ls chr21*
+```
+```{bash-out}
+chr21.fa
+```
+```bash
+# To keep the original, output to stdout with "-c" and redirect:
+gunzip -c chr22.fa.gz > chr22.fa
+ls chr22*
+```
+```{bash-out}
+chr22.fa  chr22.fa.gz
+```
+
+### Compress files
+
+Conversely, to zip files, use `gzip`:
+
+```bash
+gzip chr21.fa
+ls chr21*
+```
+```{bash-out}
+chr21.fa.gz
+```
+
+```bash
+# As with unzipping, use -c and redirect to keep the original:
+gzip -c chr22.fa > chr22_copy.fa.gz
+ls chr22*
+```
+```{bash-out}
+chr22_copy.fa.gz  chr22.fa  chr22.fa.gz
+```
+
+Often, a program will *output unzipped data to standard out*,
+which we can immediately pipe to `gzip` so we only need to write the compressed
+file to disk (beneficial because reading/writing to files is time-consuming):
+
+```sh
+trimmer in.fastq.gz | gzip > out.fastq.gz
+```
+  
+*(Note that because the input to `gzip` comes from standard in, the output
+will by default be to standard out!)*
+
+### Working with compressed data directly
+
+Several familiar shell commands have `z` counterparts that can work with
+gzipped files directly, such as `zgrep` and `zcat`.
+
+- `zgrep` is `grep` for gzipped files:
+
+```bash
+zgrep -i -n --color "AGATAGATATAT" chr22.fa.gz
+```
+```{bash-out}
+589810:TATTGCAGGTAAGATGGGGCCACTCAGTACTTTAAAAAGATAGATATATA
+596134:tctatctatatatagatagatatattgtagatatatctatctatatatat
+966248:tatagatagatatataaaggggagtttattaagtattaactcacatgatc
+```
+
+- `zcat` is `cat` for gzipped files:
+
+```bash
+zcat chr22.fa.gz | head
+```
+```{bash-out}
+>chr22
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+```
+
+::: callout-note
+#### Concatenating compressed data
+
+When it is okay to concatenate files
+(losing information about the original file origin of the data), 
+this can be done very easily.
+
+To add a second FASTQ file to an existing gzipped file,  
+we can simply use `>>`:
+
+```bash
+ls
+```
+```{bash-out}
+in.fastq.gz in2.fastq
+```
+```bash
+gzip -c in2.fastq >> in.fastq.gz
+```
+
+Even more conveniently, if we have two gzipped FASTQ file for the same sample
+but from different Illumina lanes:
+  
+```bash
+cat smpA_L001_R1.fastq.gz smpA_L002_R1.fastq.gz > smpA_R1.fastq.gz
+```
+:::
+
+<br>
+
 ## File permissions
 
 File "permissions" are the types of things (e.g. reading, writing) that different
 groups of users (creator, group, anyone else) are permitted to do with files and dirs.
-
 There are a couple of reasons you may occasionally need to view and modify file permissions:
 
 - You may want to make your data read-only to prevent accidental modification or deletion
@@ -303,45 +418,46 @@ ls -l testfile.txt
 This can be done in two different ways with the `chmod` command.
 Here, we'll focus on the method with `=` (set permission to),
 `+` (add permission), and `-` (remove permission).
+For example:
 
-For example, to add read (`r`) permissions for all (`a`):
+- To add read (`r`) permissions for all (`a`):
 
-```bash
-# chmod <who>+<permission-to-add>:
-chmod a+r testfile.txt
+  ```bash
+  # chmod <who>+<permission-to-add>:
+  chmod a+r testfile.txt
+  
+  ls -l testfile.txt
+  ```
+  ```bash-out
+  -rw-rw-r--+ 1 jelmer PAS0471 0 Mar  7 13:40 testfile.txt
+  ```
 
-ls -l testfile.txt
-```
-```bash-out
--rw-rw-r--+ 1 jelmer PAS0471 0 Mar  7 13:40 testfile.txt
-```
+- To set read + write + execute (`rwx`) permissions for all (`a`):
 
-To set read + write + execute (`rwx`) permissions for all (`a`):
+  ```bash
+  # chmod <who>=<permission-to-set>`:
+  chmod a=rwx testfile.txt
+  
+  ls -l testfile.txt
+  ```
+  ```bash-out
+  -rwxrwxrwx+ 1 jelmer PAS2880 0 Mar  7 13:36 testfile.txt
+  ```
 
-```bash
-# chmod <who>=<permission-to-set>`:
-chmod a=rwx testfile.txt
+- To remove write (`w`) permissions for others (`o`):
 
-ls -l testfile.txt
-```
-```bash-out
--rwxrwxrwx+ 1 jelmer PAS2880 0 Mar  7 13:36 testfile.txt
-```
-
-To remove write (`w`) permissions for others (`o`):
-
-```bash
-# chmod <who>-<permission-to-remove>:
-chmod o-w testfile.txt
-
-ls -l testfile.txt
-```
-```bash-out
--rwxrwxr-x+ 1 jelmer PAS2880 0 Mar  7 13:36 testfile.txt
-```
+  ```bash
+  # chmod <who>-<permission-to-remove>:
+  chmod o-w testfile.txt
+  
+  ls -l testfile.txt
+  ```
+  ```bash-out
+  -rwxrwxr-x+ 1 jelmer PAS2880 0 Mar  7 13:36 testfile.txt
+  ```
 
 ::: {.callout-note collapse="true"}
-#### Alternative: changing file permissions with numbers _(Click to expand)_
+#### An alternative method: changing file permissions with numbers _(Click to expand)_
 
 You can also use a series of 3 numbers (for user, group, and others) to set permissions,
 where each number can take on the following values:
@@ -385,26 +501,6 @@ read-only, you can use:
   chmod u-w data/fastq/*
   ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
-::: callout-warning
-#### Read/execute permissions for directories
-
-One tricky and confusing aspect of file permissions is that
-_to list a directory's content, you need execute permissions for the dir!_
-This is something to take into account when you want to grant others
-access to your project e.g. at OSC.
-
-To set execute permissions for everyone but *only for dirs* throughout a dir hierarchy,
-use an `X` (**uppercase x**):
-
-```sh
-chmod -R a+X my-dir
-```
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
 After running one or both of the above commands, let's check the permissions:
   
 ```sh
@@ -433,11 +529,29 @@ If you answer `y` (yes), you can still remove them.
 (But note that people other than the file's owners cannot override file permissions;
 only if they are system administrators.)
 
+<hr style="height:1pt; visibility:hidden;" />
+
+::: callout-warning
+#### Read/execute permissions for directories
+
+One tricky and confusing aspect of file permissions is that
+_to list a directory's content, you need execute permissions for the dir!_
+This is something to take into account when you want to grant others
+access to your project e.g. at OSC.
+
+To set execute permissions for everyone but *only for dirs* throughout a dir hierarchy,
+use an `X` (**uppercase x**):
+
+```sh
+chmod -R a+X my-dir
+```
+:::
+
 <br>
 
 ## Using symbolic links
 
-For example to use files across projects - recall week 2 - RBA
+For example to use files across projects - recall week 2 - TBA
 
 #### Single files
 
@@ -695,128 +809,5 @@ md5sum -c md5sum_for_README.txt
 ```{.bash-out}
 README.md: FAILED
 md5sum: WARNING: 1 computed checksum did NOT match
-```
-:::
-
-<br>
-
-## File compression
-
-Let's start with downloading a file to play around with:
-
-```bash
-wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr22.fa.gz
-```
-
-### Decompress files
-
-When you download data,
-it is often compressed with `gzip` ("gzipped", `.gz` extension).
-
-Many programs can work with gzipped files directly,
-but sometimes you do need to unzip them, which can be done with `gunzip`:
-
-```bash
-# gunzip unzips in place - the original zipped file disappears:
-gunzip chr21.fa.gz
-ls chr21*
-```
-```{bash-out}
-chr21.fa
-```
-```bash
-# To keep the original, output to stdout with "-c" and redirect:
-gunzip -c chr22.fa.gz > chr22.fa
-ls chr22*
-```
-```{bash-out}
-chr22.fa  chr22.fa.gz
-```
-
-### Compress files
-
-Conversely, to zip files, use `gzip`:
-
-```bash
-gzip chr21.fa
-ls chr21*
-```
-```{bash-out}
-chr21.fa.gz
-```
-
-```bash
-# As with unzipping, use -c and redirect to keep the original:
-gzip -c chr22.fa > chr22_copy.fa.gz
-ls chr22*
-```
-```{bash-out}
-chr22_copy.fa.gz  chr22.fa  chr22.fa.gz
-```
-
-Often, a program will *output unzipped data to standard out*,
-which we can immediately pipe to `gzip` so we only need to write the compressed
-file to disk (beneficial because reading/writing to files is time-consuming):
-
-```sh
-trimmer in.fastq.gz | gzip > out.fastq.gz
-```
-  
-*(Note that because the input to `gzip` comes from standard in, the output
-will by default be to standard out!)*
-
-### Working with compressed data directly
-
-Several familiar shell commands have `z` counterparts that can work with
-gzipped files directly, such as `zgrep` and `zcat`.
-
-- `zgrep` is `grep` for gzipped files:
-
-```bash
-zgrep -i -n --color "AGATAGATATAT" chr22.fa.gz
-```
-```{bash-out}
-589810:TATTGCAGGTAAGATGGGGCCACTCAGTACTTTAAAAAGATAGATATATA
-596134:tctatctatatatagatagatatattgtagatatatctatctatatatat
-966248:tatagatagatatataaaggggagtttattaagtattaactcacatgatc
-```
-
-- `zcat` is `cat` for gzipped files:
-
-```bash
-zcat chr22.fa.gz | head
-```
-```{bash-out}
->chr22
-NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
-NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
-NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
-```
-
-::: callout-note
-#### Concatenating compressed data
-
-When it is okay to concatenate files
-(losing information about the original file origin of the data), 
-this can be done very easily.
-
-To add a second FASTQ file to an existing gzipped file,  
-we can simply use `>>`:
-
-```bash
-ls
-```
-```{bash-out}
-in.fastq.gz in2.fastq
-```
-```bash
-gzip -c in2.fastq >> in.fastq.gz
-```
-
-Even more conveniently, if we have two gzipped FASTQ file for the same sample
-but from different Illumina lanes:
-  
-```bash
-cat smpA_L001_R1.fastq.gz smpA_L002_R1.fastq.gz > smpA_R1.fastq.gz
 ```
 :::
