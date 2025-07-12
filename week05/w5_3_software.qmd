@@ -596,7 +596,7 @@ but the procedure would be the same for any other program that's available:
 6. **Get a link** to the container image by clicking the blue
    `Get Container` button.
 
-7. A link to the container image should appear immediately.
+7. **Copy the link** to the container image that should appear immediately
    In this case, the link should be: 
    `oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960`.
   
@@ -642,7 +642,6 @@ consists of two parts:
 Let's check that we can run FastQC in the container:
 
 ```bash
-# [Don't run this, we'll need to add a TrimGalore command]
 apptainer exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 \
   fastqc -v
 ```
@@ -671,7 +670,6 @@ Apptainer will realize that the container image has already been downloaded and
 will automatically use the downloaded version:
 
 ```bash
-# [Don't run this, we'll need to add a TrimGalore command]
 apptainer exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 \
   fastqc -v
 ```
@@ -689,6 +687,9 @@ _but this is nothing to worry about.)_
 
 (by default it will be downloaded to `~/.apptainer/cache`,
 but you can change this by setting the `$APPTAINER_CACHEDIR` environment variable).
+
+TBA command to list containers
+
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -696,7 +697,8 @@ but you can change this by setting the `$APPTAINER_CACHEDIR` environment variabl
 ### Running FastQC
 
 To analyze a FASTQ file with default FastQC settings,
-the command would simply be `fastqc` followed by the FASTQ file path:
+the command would simply be `fastqc` followed by the FASTQ file path --
+and we could use on of the FASTQ files in our Garrigos practice data set:
 
 ``` bash
 # [Don't run this]
@@ -867,6 +869,20 @@ since they will often produce multiple output files.
 #### {{< fa user-edit >}} **Exercise**: Download the HTML files and open them
 
 TBA
+
+:::
+
+
+::: callout-note
+#### An example where the container needs to be built
+
+```bash
+apptainer exec oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f \
+    multiqc -v
+```
+```bash-out
+FATAL:   Unable to handle oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f uri: failed to get checksum for oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f: GET https://community.wave.seqera.io/v2/library/multiqc_trim-galore/manifests/15a1e9f26daf266f: MANIFEST_UNKNOWN: manifest unknown; map[Tag:15a1e9f26daf266f]
+```
 
 :::
 

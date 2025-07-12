@@ -125,7 +125,7 @@ and these are usually randomly selected
 
 . . .
 
--   Other functional sequencing methods like **methylation sequencing, ChIP-seq,** etc.
+-   Other "functional" sequencing methods like **methylation sequencing, ChIP-seq,** etc.
 
 . . .
 
@@ -141,7 +141,7 @@ and these are usually randomly selected
 
 ## Examples of HTS data analyses
 
-**Algorithmic/bioinformatics stage**
+**Stage I: The algorithmic/bioinformatics part**
 
 - Read quality control (QC)
 - Read trimming
@@ -154,7 +154,7 @@ and these are usually randomly selected
 
 . . .
 
-**Biostatistical stage**
+**Stage II: The biostatistical part**
 
 - Differential abundance of gene (RNA-Seq) or taxon (metabarcoding) counts
   among groups
@@ -164,30 +164,17 @@ and these are usually randomly selected
 
 ## The main HTS technologies
 
-::::: columns
-::: {.column width="48%"}
-**Short-read HTS**
+| | Short-read HTS   | Long-read HTS
+|---|-------|-------|
+Summary | Produces up to billions of short highly accurate reads | Produces longer but fewer, less accurate, and more costly reads
+Read length | 50-300 bp | PacBio: 10-50 kbp / ONT: 10-100+ kbp
+Error rates | Mostly <0.1% | **TBA**
+Main companies   | Illumina | Oxford Nanopore Technologies (ONT) and Pacific Biosciences (PacBio)
+Timeline    | Since 2005 — technology fairly stable | Since 2011 — remains under rapid development
+Usage | More common | Less common
+AKA | Next-Generation Sequencing (NGS) |
 
-- Produces up to billions of 50-300 bp highly accurate reads
-- Market dominated by Illumina
-
-- Since 2005 — technology fairly stable
-- _(AKA Next-Generation Sequencing - NGS)_
-:::
-::: {.column width="4%"}
-:::
-::: {.column width="48%"}
-**Long-read HTS**
-
-- Reads much longer than in NGS but fewer, less accurate, and more costly per base
-- Mainly Oxford Nanopore Technologies (ONT) and Pacific Biosciences (PacBio)
-- Since 2011 — remains under rapid development
-:::
-:::::
-
-. . . 
-
-<br>
+## The main HTS technologies (cont.)
 
 ::: callout-note
 ## Short videos explaining the technology (90 s - 5 m each)
@@ -197,79 +184,43 @@ and these are usually randomly selected
 - PacBio: <https://www.youtube.com/watch?v=_lD8JyAbwEo>
 :::
 
-## Read lengths
+## More on read lengths and error rates
 
--   Short-read (Illumina) HTS: 50-300 bp reads
--   Long-read HTS: longer & more variable read lengths (PacBio: 10-50 kbp, ONT: 10-100+ kbp)
+- Choosing between short-read and long-read technology has often involved a
+  trade-off between **accuracy** and **read-length**.
 
-<hr style="height:1pt; visibility:hidden;" />
-
-. . .
-
-<details>
-
-<summary>**When are longer reads useful?**</summary>
-
--   Genome assembly
-
--   Haplotype and large structural variant calling
-
--   Transcript isoform identification
-
--   Taxonomic identification of single reads (microbial metabarcoding)
-
-</details>
-
-. . .
-
-<hr style="height:1pt; visibility:hidden;" />
-
-<details>
-
-<summary>**When does read length not matter (as much)?**</summary>
-
--   SNP variant analysis
-
--   Read-as-a-tag: the goal is just to know a read's origin in a reference genome,
-    like in counting applications such as RNA-seq
-
-</details>
-
-## Error rates
-
-Currently, no sequencing technology is error-free.
-
-- Illumina error rates are mostly below 0.1%
-- **TBA**
-
-::: callout-important
-#### Error rates are changing
-
-Error rates in one recent type of PacBio sequencing where individual fragments
-are sequenced multiple times ("HiFi") *are now lower than in Illumina*.
-
-Error rates of ONT sequencing are also continuously decreasing.
-:::
-
-. . .
+- But: error rates of long-read technologies are rapidly decreasing.
+  **Per-base costs** are still much higher for long-read sequencing.
 
 <br>
 
-::: callout-note
-#### Quality scores in sequence data
+. . .
 
-When you get sequences from a high-throughput sequencer, base calls have typically already been made.
-Every base is also accompanied by a quality score (inversely related to the estimated error probability).
-We'll talk about those in some more detail in a bit.
-:::
+<details><summary>**Can you think of applications where longer reads are useful?**</summary>
+
+- Genome assembly
+- Haplotype and large structural variant calling
+- Transcript isoform identification
+- Taxonomic identification of single reads (microbial metabarcoding)
+</details>
+
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+<details><summary>**Can you think of applications where read length may not matter much?**</summary>
+
+- SNP variant analysis
+- Read-as-a-tag: the goal is just to know a read's origin in a reference genome,
+  like in counting applications such as RNA-seq
+</details>
 
 # Illumina libraries and sequencing {background-color="dimgray"}
 
 ## Libraries and library prep
 
-We will talk a bit about Illumina library prep because this is the most common
-type of sequencing, and because throughout the course,
-we will use Illumina read files as examples.
+We will talk a bit about Illumina library prep because it's the most common
+type of HTS and we'll use Illumina read files as examples throughout the course.
 
 In a sequencing context,
 a "**library**" is a collection of nucleic acid fragments ready for sequencing.
@@ -278,7 +229,9 @@ a "**library**" is a collection of nucleic acid fragments ready for sequencing.
 
 <hr style="height:1pt; visibility:hidden;" />
 
-In Illumina and other HTS libraries, these fragments **number in the millions or billions** and are **often** **randomly generated** from input such as genomic DNA:
+In Illumina and other HTS libraries,
+these fragments **number in the millions or billions** and are
+**often** **randomly generated** from input such as genomic DNA:
 
 . . .
 
@@ -303,7 +256,9 @@ make up the "**adapters**":
 
 ::: callout-note
 #### Multiplexing!
-Using the indices/barcodes in adapters, up to 96 samples can be multiplexed into a single library.
+Using so-called "indices" or "barcodes" that make up part of the adapters,
+up to 96 samples can be combined ("multiplexed") into a single library,
+i.e. into a single tube.
 :::
 
 ## Paired-end vs. single-end sequencing
@@ -323,8 +278,9 @@ When sequencing is instead **single-end (SE)**, no reverse read is produced:
 
 ## Insert size variation
 
-The size of the DNA fragment can vary -- both by design and because of limited
-precision in size selection. In some cases, it is:
+The size of the DNA fragment (the "**insert size**" ) can vary --
+both by design and because of limited precision in size selection.
+In some cases, it is:
 
 - Shorter than the *combined* read length, leading to **overlapping reads** (this can be useful):
 
@@ -336,12 +292,6 @@ precision in size selection. In some cases, it is:
   (i.e., the ends of the resulting reads will consist of adapter sequence, which should be removed):
 
 ![](../img/insert_size_adapter-read-through.png){fig-align="center" width="58%"}
-
-## The sequencing process
-
-![](../img/Poinsignon2023.webp){fig-align="center" width="58%"}
-
-<https://www.youtube.com/watch?v=fCd6B5HRaZ8>
 
 # Reference genomes {background-color="dimgray"}
 
@@ -386,8 +336,7 @@ Some of the most common types, which we will see in the course, are:
 
 -   **FASTA**\
     Simple sequence files, where each entry contains a header and a DNA/AA sequence.\
-    Versatile, can contain a few short sequences, entire genome assemblies, proteomes,
-    and alignments.
+    Versatile: may contain a few short sequences, entire genome assemblies, proteomes, ...
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -395,6 +344,14 @@ Some of the most common types, which we will see in the course, are:
 
 -   **FASTQ**\
     The standard format for **HTS reads** — contains a quality score for each nucleotide.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+- **SAM/BAM**\
+  An _alignment_ format for **HTS reads**.
+  E.g. produced when you align reads to a genome.
+    
+. . .
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -430,8 +387,9 @@ Each entry contains a **header** and the **sequence** itself, where:
 
 ## FASTQ
 
-FASTQ is the standard format for HTS reads.\
-**Each** **read forms** **one FASTQ entry** and is represented by four lines, which contain, respectively:
+FASTQ is the standard format for HTS reads.
+**Each** **read forms** **one FASTQ entry** and is represented by four lines,
+which contain, respectively:
 
 . . .
 
@@ -440,7 +398,7 @@ FASTQ is the standard format for HTS reads.\
 3.  A **`+`** (plus sign)
 4.  One-character **quality scores** for each base (hence FASTQ as in "Q" for "quality")
 
-![One entry (read) in a FASTQ file covers 4 lines. <br>The header line is annotated, with some of the more useful components highlighted in red. <br>For viewing purposes, this read (at only 56 bp) is shorter than what is typical.](../img/fastq_header.png){fig-align="center" width="80%"}
+![](../img/fastq_header.png){fig-align="center" width="80%"}
 
 ## FASTQ quality scores
 
@@ -482,19 +440,13 @@ in the read.
 | **30**              | 1 in 1,000        | `?`             |
 | **40**              | 1 in 10,000       | `I`             |
 
-::: callout-tip
-#### A rule of thumb
-In practice, you almost never have to manually check the quality scores of bases in
-FASTQ files, but if you do, a rule of thumb is that letter characters mean that the
-quality is good (Phred of 32 and up).
-[Complete lookup table](https://www.drive5.com/usearch/manual/quality_score.html)
-:::
-
 ## FASTQ (cont.)
 
 FASTQ files have no size limit, but in paired-end (PE) sequencing,
 forward and reverse reads are **split into two files**:
-forward reads contain `R1` and reverse reads contain `R2` in the file name.
+
+- Forward reads are in files with `R1` in their name
+- Reverse reads are in files with `R2` in their name
 
 For example, having paired-end FASTQ files for 2 samples could look like this:
 
@@ -510,15 +462,12 @@ sample2_R2.fastq.gz
 
 TBA
 
-## SAM/BAM
-
-TBA
-
-# Our practice dataset {background-color="dimgray"}
+# Our example dataset {background-color="dimgray"}
 
 ## Garrigos et al. 2023
 
-Our practice data set is from the paper
+Throughout the course, we will use an example/practice data set,
+which is from the paper
 "*Two avian Plasmodium species trigger different transcriptional responses on their vector Culex pipiens*",
 published in 2023 in Molecular Ecology ([link](https://doi.org/10.1111/mec.17240)):
 
@@ -530,14 +479,14 @@ This paper uses RNA-seq data to study gene expression in *Culex pipiens* mosquit
 infected with malaria-causing *Plasmodium* protozoans ---
 specifically, it compares mosquitos according to:
 
-- Infection status: *Plasmodium cathemerium* vs. *P. relictum* vs. control
-- Time after infection: 24 h vs. 10 days vs. 21 days
+- **Infection status**: *Plasmodium cathemerium* vs. *P. relictum* vs. control
+- **Time after infection**: 24 h vs. 10 days vs. 21 days
 
 _TBA - Table showing sampling grid?_
 
 ## The dataset's files
 
-However, to keep things manageable for our practice,
+However, to keep things manageable while practicing,
 I have **subset** the data to omit the 21-day samples and only keep 500,000
 reads per FASTQ file.
 All in all, our set of files consists of:
@@ -545,7 +494,7 @@ All in all, our set of files consists of:
 - 44 paired-end Illumina FASTQ files for 22 samples.
 - _Culex pipiens_ reference genome file from NCBI:
   assembly in FASTA format and annotation in GTF format.
-- A metadata file in TSV format with sample IDs and treatment & time point info.
+- A metadata file that contains a table with sample IDs and treatment & time point info.
 - A README file describing the data set.
 
 ## Analysis steps
@@ -567,6 +516,10 @@ TBA
 ::: legend2
 Modified after [Pereira et al. 2020](www.ncbi.nlm.nih.gov/pmc/articles/PMC7019349)
 :::
+
+## The sequencing process
+
+![](../img/Poinsignon2023.webp){fig-align="center" width="58%"}
 
 ## Overcoming sequencing errors
 

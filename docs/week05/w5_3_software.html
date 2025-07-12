@@ -827,7 +827,7 @@ Type 'q()' to quit R.
 <li><p><strong>Add FastQC</strong> to your “container request” by clicking the blue <code>+ Add</code> button. At this point, you could add additional programs, but here, we are happy with creating/fetching a container that only has FastQC.</p></li>
 <li><p>In “<strong>Container settings</strong>” below the search box, change from <code>Docker</code> to <code>Singularity</code> (and leave the other dropdown as is – <code>linux/amd64</code> should be selected).</p></li>
 <li><p><strong>Get a link</strong> to the container image by clicking the blue <code>Get Container</code> button.</p></li>
-<li><p>A link to the container image should appear immediately. In this case, the link should be: <code>oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960</code>.</p></li>
+<li><p><strong>Copy the link</strong> to the container image that should appear immediately In this case, the link should be: <code>oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960</code>.</p></li>
 </ol>
 <hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-note callout-titled">
@@ -873,9 +873,8 @@ Other tips
 <li>the “regular” command, e.g.&nbsp;<code>fastqc -v</code></li>
 </ol>
 <p>Let’s check that we can run FastQC in the container:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this, we'll need to add a TrimGalore command]</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>INFO:    Downloading oras image
 384.0MiB / 384.0MiB [======================================================================================================================] 100 % 51.8 MiB/s 0s
 INFO:    gocryptfs not found, will not be able to use gocryptfs
@@ -895,9 +894,8 @@ Breaking up a command across lines with <code>\</code>
 </div>
 <p>The <strong>first time</strong> you run this command, the container image will be downloaded to a default location (see box below), as you can see in he output above — this will take a minute or so.</p>
 <p>When <strong>rerunning</strong> the same command, Apptainer will realize that the container image has already been downloaded and will automatically use the downloaded version:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this, we'll need to add a TrimGalore command]</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>INFO:    Using cached SIF image
 INFO:    gocryptfs not found, will not be able to use gocryptfs
 FastQC v0.12.1</code></pre>
@@ -913,13 +911,14 @@ The container image cache
 </div>
 <div class="callout-body-container callout-body">
 <p>(by default it will be downloaded to <code>~/.apptainer/cache</code>, but you can change this by setting the <code>$APPTAINER_CACHEDIR</code> environment variable).</p>
+<p>TBA command to list containers</p>
 </div>
 </div>
 <hr style="height:1pt; visibility:hidden;">
 </section>
 <section id="running-fastqc" class="level3" data-number="4.4">
 <h3 data-number="4.4" class="anchored" data-anchor-id="running-fastqc"><span class="header-section-number">4.4</span> Running FastQC</h3>
-<p>To analyze a FASTQ file with default FastQC settings, the command would simply be <code>fastqc</code> followed by the FASTQ file path:</p>
+<p>To analyze a FASTQ file with default FastQC settings, the command would simply be <code>fastqc</code> followed by the FASTQ file path – and we could use on of the FASTQ files in our Garrigos practice data set:</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this]</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  fastqc ../garrigos-data/fastq/ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1038,6 +1037,21 @@ Specifying an output dir vs.&nbsp;output file(s)
 <h4 class="anchored" data-anchor-id="exercise-download-the-html-files-and-open-them"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <strong>Exercise</strong>: Download the HTML files and open them</h4>
 <p>TBA</p>
 </section>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+An example where the container needs to be built
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb50"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f <span class="dt">\</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>    multiqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>FATAL:   Unable to handle oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f uri: failed to get checksum for oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f: GET https://community.wave.seqera.io/v2/library/multiqc_trim-galore/manifests/15a1e9f26daf266f: MANIFEST_UNKNOWN: manifest unknown; map[Tag:15a1e9f26daf266f]</code></pre>
+</div>
+</div>
 <hr style="height:1pt; visibility:hidden;">
 <section id="closing-notes" class="level4">
 <h4 class="anchored" data-anchor-id="closing-notes">Closing notes</h4>
