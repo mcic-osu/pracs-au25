@@ -397,6 +397,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#file-transfer-to-and-from-osc" id="toc-file-transfer-to-and-from-osc" class="nav-link" data-scroll-target="#file-transfer-to-and-from-osc">File transfer to and from OSC</a>
   <ul class="collapse">
+  <li><a href="#should-i-keep-my-osc-and-local-directories-synced-and-how" id="toc-should-i-keep-my-osc-and-local-directories-synced-and-how" class="nav-link" data-scroll-target="#should-i-keep-my-osc-and-local-directories-synced-and-how">Should I keep my OSC and local directories synced and how?</a></li>
   <li><a href="#overview-of-options" id="toc-overview-of-options" class="nav-link" data-scroll-target="#overview-of-options">Overview of options</a></li>
   <li><a href="#in-practice-filezilla-a-gui-based-sftp-client" id="toc-in-practice-filezilla-a-gui-based-sftp-client" class="nav-link" data-scroll-target="#in-practice-filezilla-a-gui-based-sftp-client">In practice: FileZilla, a GUI-based SFTP client</a></li>
   </ul></li>
@@ -487,6 +488,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="file-transfer-to-and-from-osc" class="level2">
 <h2 class="anchored" data-anchor-id="file-transfer-to-and-from-osc">File transfer to and from OSC</h2>
+<section id="should-i-keep-my-osc-and-local-directories-synced-and-how" class="level3">
+<h3 class="anchored" data-anchor-id="should-i-keep-my-osc-and-local-directories-synced-and-how">Should I keep my OSC and local directories synced and how?</h3>
+<p>TBA</p>
+</section>
 <section id="overview-of-options" class="level3">
 <h3 class="anchored" data-anchor-id="overview-of-options">Overview of options</h3>
 <p>In week 1, you learned that you can upload and download files from OSC in the OnDemand Files menu. However, that method is only suitable for relatively small transfers. Here is a table with methods to transfer files between your computer and OSC:</p>
@@ -679,16 +684,18 @@ NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN</code></pre>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 Concatenating compressed data
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>When it is okay to concatenate files (losing information about the original file origin of the data), this can be done very easily.</p>
+<p>Concatenating files means you combine them into a single file, simply printing them back-to-back. When it is okay to concatenate files<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> this can be done very easily.</p>
 <p>To add a second FASTQ file to an existing gzipped file,<br>
 we can simply use <code>&gt;&gt;</code>:</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -698,7 +705,12 @@ we can simply use <code>&gt;&gt;</code>:</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> smpA_L001_R1.fastq.gz smpA_L002_R1.fastq.gz <span class="op">&gt;</span> smpA_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
+</div>
+<section id="tar" class="level4">
+<h4 class="anchored" data-anchor-id="tar"><code>tar</code></h4>
+<p>TBA</p>
 <p><br></p>
+</section>
 </section>
 </section>
 <section id="file-permissions" class="level2">
@@ -985,7 +997,7 @@ ce5d444f8f9d87d325dbe9bc09ef0470        X10797_Cruz-MonserrateZ_Miapaca2_RASD1_V
 <p>This file was created by the folks at the sequencing facility, and now that we have the data at OSC and are ready to analyze it, we can check if they are still fully intact and didn’t –for example– get incompletely transferred.</p>
 <p>I have done this check for the original files, but this takes a little while, and for a quick exercise, we can now do so with our subsampled FASTQ files. First, let’s copy a file <code>md5.txt</code> from the <code>demo</code> directory, which has the checksums for the subsampled FASTQ files as I created them:</p>
 <div class="sourceCode" id="cb55"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> /fs/ess/PAS0471/demo/202307_rnaseq/data/fastq/md5sums.txt data/fastq/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To check whether the checksums for one or more files in a file correspond to those for the files, we can run <code>mdsum -c &lt;mdsum-file&gt;</code>, and should do so <em>while inside the dir with the files of interest</em><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. For example:</p>
+<p>To check whether the checksums for one or more files in a file correspond to those for the files, we can run <code>mdsum -c &lt;mdsum-file&gt;</code>, and should do so <em>while inside the dir with the files of interest</em><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. For example:</p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> data/fastq</span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">md5sum</span> <span class="at">-c</span> md5sums.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>ASPC1_A178V_R1.fastq.gz: OK
@@ -1043,7 +1055,8 @@ md5sum: WARNING: 1 computed checksum did NOT match</code></pre>
 <ol>
 <li id="fn1"><p> And has a more intuitive user interface than CyberDuck, another very commonly used program that works both on Mac and Windows.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p> There is a also an icon in the far top-left to access this menu. Additionally, there is a “Quickconnect” bar but I’ve not managed to connect to OSC with that.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>This technically depends on how the file names are shown in the text file with the checksums: if there are just file names without directories (or <code>./&lt;filename&gt;</code>, etc.), you’ll have to be in the dir with the files to run <code>md5sum -c</code>. (This in turn depends on from where the checksums were <em>generated</em>: if you generate them while in the dir with the focal files, which is the only sensible way to do this, that’s how they will be displayed.)<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p> This does mean you’ll lose information about the origin of the original files<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>This technically depends on how the file names are shown in the text file with the checksums: if there are just file names without directories (or <code>./&lt;filename&gt;</code>, etc.), you’ll have to be in the dir with the files to run <code>md5sum -c</code>. (This in turn depends on from where the checksums were <em>generated</em>: if you generate them while in the dir with the focal files, which is the only sensible way to do this, that’s how they will be displayed.)<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
