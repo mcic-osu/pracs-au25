@@ -334,21 +334,21 @@ E.g., if you work with maize, you want a _Zea mays_ reference genome. But:
 Sequences and annotations are mostly stored in **plain-text** formats.
 Some of the most common types, which we will see in the course, are:
 
--   **FASTA**\
-    Simple sequence files, where each entry contains a header and a DNA/AA sequence.\
-    Versatile: may contain a few short sequences, entire genome assemblies, proteomes, ...
+- **FASTA**\
+  Simple sequence files, where each entry contains a header and a DNA/AA sequence.\
+  Versatile: may contain a few short sequences, entire genome assemblies, proteomes, ...
 
 <hr style="height:1pt; visibility:hidden;" />
 
 . . .
 
--   **FASTQ**\
-    The standard format for **HTS reads** — contains a quality score for each nucleotide.
+- **FASTQ**\
+  The standard format for **HTS reads** — has a quality score for each nucleotide.
 
 <hr style="height:1pt; visibility:hidden;" />
 
-- **SAM/BAM**\
-  An _alignment_ format for **HTS reads**.
+- **SAM/BAM**\ _[(not further discussed today)]{style="color:#969696"}_  
+  An alignment format for **HTS reads**.
   E.g. produced when you align reads to a genome.
     
 . . .
@@ -357,10 +357,9 @@ Some of the most common types, which we will see in the course, are:
 
 . . .
 
--   **GTF**/**GFF**\
-    Tables (tab-delimited) with information such as genomic coordinates on
-    "**genomic features**" such as genes and exons.
-    The files contain reference **genome annotations**.
+- **GTF**/**GFF**\
+  A **genome annotation** format:
+  tables with information such as coordinates of genes and exons.
 
 ## FASTA files
 
@@ -385,7 +384,7 @@ Each entry contains a **header** and the **sequence** itself, where:
 - Header lines start with a `>` and provide identifying information for the sequence
 - The sequence is often spread across multiple lines with a fixed width
 
-## FASTQ
+## FASTQ files
 
 FASTQ is the standard format for HTS reads.
 **Each** **read forms** **one FASTQ entry** and is represented by four lines,
@@ -423,15 +422,19 @@ For some specific probabilities and their rough qualitative interpretation for I
 
 ## FASTQ quality scores (cont.)
 
-This numeric quality score is represented in FASTQ files *not by the number itself*,
+To make things a little more complicated:
+the numeric Phred quality score is represented in FASTQ files
+*not by the number itself*,
 but by a corresponding "ASCII character".
 
-This allows for a single-character representation of each possible score —
-as a consequence,
+This is simply to allow for a single-character representation of each possible score —
+because of this,
 **each quality score character can conveniently correspond to (& line up with) a base character**
 in the read.
 
 . . .
+
+For example:
 
 | Phred quality score | Error probability | ASCII character |
 |---------------------|-------------------|-----------------|
@@ -458,9 +461,31 @@ sample2_R1.fastq.gz
 sample2_R2.fastq.gz
 ```
 
-## GFF/GTF
+## GFF/GTF files
 
-TBA
+The very similar GTF and GFF formats are _tabular_ genome annotation files with:
+
+- One row for each annotated "**genomic feature**" (gene, exon, intron, etc.)
+- Columns with information like the genomic coordinates of the features
+
+After a header with metadata, the tabular part looks like this
+(column names are not present in actual GFF/GTF but have been added for clarity):
+
+```{.bash-out-solo}
+seqname     source  feature start   end     score  strand  frame    attributes
+NC_000001   RefSeq  gene    11874   14409   .       +       .       gene_id "DDX11L1"; transcript_id ""; db_xref "GeneID:100287102"; db_xref "HGNC:HGNC:37102"; description "DEAD/H-box helicase 11 like 1 (pseudogene)"; gbkey "Gene"; gene "DDX11L1"; gene_biotype "transcribed_pseudogene"; pseudo "true"; 
+NC_000001   RefSeq  exon    11874   12227   .       +       .       gene_id "DDX11L1"; transcript_id "NR_046018.2"; db_xref "GeneID:100287102"; gene "DDX11L1"; product "DEAD/H-box helicase 11 like 1 (pseudogene)"; pseudo "true"; 
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: callout-note
+#### Details on a few columns:
+
+- _seqname_ -- Name of the chromosome, scaffold, or contig
+- _source_ --- Name of the program that generated this feature, or the data source (e.g. database)
+- _attribute_ --- A semicolon-separated list of tag-value pairs with additional information
+:::
 
 # Our example dataset {background-color="dimgray"}
 
@@ -479,10 +504,17 @@ This paper uses RNA-seq data to study gene expression in *Culex pipiens* mosquit
 infected with malaria-causing *Plasmodium* protozoans ---
 specifically, it compares mosquitos according to:
 
-- **Infection status**: *Plasmodium cathemerium* vs. *P. relictum* vs. control
-- **Time after infection**: 24 h vs. 10 days vs. 21 days
+- **Infection status**: control vs. *Plasmodium cathemerium* vs. *P. relictum*
+- **Time after infection**: 1 vs. 10 vs. 21 days (DAI)
 
-_TBA - Table showing sampling grid?_
+All in all, the experimental design looks like this --
+showing number of samples (replicates) for each treatment combination:
+
+|        | Control | _P. cathemerium_ | _P. relictum_ | 
+|--------|:---------:|:--------:|:---------:|
+| **01 DAI** |    3    |     3  |   4 
+| **10 DAI** |    4    |     4  |   4 
+| **21 DAI** |    4    |     4  |   3
 
 ## The dataset's files
 
@@ -499,7 +531,7 @@ All in all, our set of files consists of:
 
 ## Analysis steps
 
-TBA
+![](../img/rnaseq-analysis-steps.png){fig-align="center" width="100%"}
 
 # Questions? {background-color="dimgray"}
 
@@ -517,22 +549,37 @@ TBA
 Modified after [Pereira et al. 2020](www.ncbi.nlm.nih.gov/pmc/articles/PMC7019349)
 :::
 
-## The sequencing process
+## The sequencing process: Illumina
 
-![](../img/Poinsignon2023.webp){fig-align="center" width="58%"}
+![](../img/Poinsignon2023_sequencing-process_illumina.png){fig-align="center" width="100%"}
 
-## Overcoming sequencing errors
+::: legend2
+From [Poinsignon et al. 2023](https://link-springer-com.proxy.lib.ohio-state.edu/protocol/10.1007/978-1-0716-3195-9_10)
+:::
 
-Sequencing every bases multiple times,
-i.e. having a \>1x so-called "**depth of coverage**" allows to infer the correct sequence:
+## The sequencing process: Oxford Nanopore
 
-![](../img/coverage2.jpg){fig-align="center" width="45%"}
+<br>
+
+![](../img/Poinsignon2023_sequencing-process_ont.png){fig-align="center" width="100%"}
+
+::: legend2
+From [Poinsignon et al. 2023](https://link-springer-com.proxy.lib.ohio-state.edu/protocol/10.1007/978-1-0716-3195-9_10)
+:::
+
+## Correcting sequencing errors
+
+To attempt to infer the correct sequence,
+it is common to sequence every base multiple times,
+i.e. having a so-called "**depth of coverage**" greater than 1:
+
+![](../img/coverage2.jpg){fig-align="center" width="40%"}
 
 . . .
 
 <hr style="height:1pt; visibility:hidden;" />
 
-- Overcoming sequencing errors is made more challenging by natural
+- Identifying and correcting sequencing errors is made more challenging by
   **genetic variation** among and within individuals.
 - Typical depths of coverage: at least 50-100x for genome assembly; 10-30x for resequencing.
 

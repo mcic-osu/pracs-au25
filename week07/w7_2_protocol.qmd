@@ -20,13 +20,21 @@ other-links:
   - text: "w7-1: Batch jobs I"
     icon: bookmarks
     href: w7_1_slurm.html
-  - text: "Bonus: More on batch jobs"
+  - text: "Bonus: Advanced batch jobs"
     icon: book
-    href: ../ref/adv-slurm.html
+    href: ../bonus/slurm.html
 engine: knitr
+execute:
+  eval: false
 ---
 
 ----------------------------------------------------------------------------------------------------
+
+<br>
+
+:::callout-caution
+#### THIS PAGE IS STILL UNDER CONSTRUCTION
+:::
 
 <br>
 
@@ -61,7 +69,56 @@ TBA
 
 ### STAR/Salmon
 
-TBA
+#### Index the genome
+
+First, we need to unzip the FASTA reference genome file:
+
+```{bash}
+gunzip reference/Pvul.fa.gz
+```
+
+```{bash}
+#SBATCH --cpus-per-task=8
+
+# Load the module
+module load gnu/10.3.0
+module load star/2.7.9a
+
+# Copy the placeholder variables
+reference_fasta=$1       # Pvul.fa reference genome FASTA file
+index_dir=$2             # Output dir with the genome index
+
+# Run STAR to index the reference genome
+STAR --runMode genomeGenerate \
+     --genomeDir "$index_dir" \
+     --genomeFastaFiles "$reference_fasta" \
+     --runThreadN "$SLURM_CPUS_PER_TASK"
+```
+
+#### Map
+
+```{bash}
+#SBATCH --cpus-per-task=8
+
+# Load the module
+module load star/2.7.9a
+
+# Copy the placeholder variables
+fastq_file=$1         # A FASTQ file to map to the reference genome
+index_dir=$2          # Dir with the genome index (created in indexing script)
+
+# Extract a sample ID from the filename!
+sample_id=$(basename "$fastq_file" .fastq.gz)
+
+# Run STAR to map the FASTQ file
+STAR \
+  --runThreadN "$SLURM_CPUS_PER_TASK" \
+  --genomeDir "$index_dir" \
+  --readFilesIn $fastq_file \
+  --readFilesCommand zcat \
+  --outFileNamePrefix "$outdir"/"$sample_id" \
+  --outSAMtype BAM Unsorted SortedByCoordinate
+```
 
 ### Making sure your jobs ran successfully
 

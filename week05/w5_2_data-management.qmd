@@ -23,21 +23,24 @@ other-links:
   - text: "w5-3: Software management"
     icon: bookmarks
     href: w5_3_software.html
-  - text: "Optional reading: Conda"
+  - text: "Bonus: Conda"
     icon: book
-    href: ../ref/conda.html
-  - text: "Optional reading: SSH"
+    href: ../bonus/conda.html
+  - text: "Bonus: SSH and file transfer"
     icon: book
-    href: ../ref/ssh.html
-  - text: "Optional reading: More file transfer"
-    icon: book
-    href: ../ref/file-transfer.html
+    href: ../bonus/ssh-and-transfer.html
 number-sections: false
 editor_options: 
   chunk_output_type: console
 ---
 
 ----------------------------------------------------------------------------------------------------
+
+<br>
+
+:::callout-caution
+#### THIS PAGE IS STILL UNDER CONSTRUCTION
+:::
 
 <br>
 
@@ -174,7 +177,7 @@ Then type `wget` and <kbd>Space</kbd> in your terminal and paste the URL:
 wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
 ```
 ```bash-out
---2024-04-13 13:33:16--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
+--2025-04-13 13:33:16--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
 Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.12, 130.14.250.11, 2607:f220:41e:250::12, ...
 Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.12|:443... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -183,7 +186,7 @@ Saving to: ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’
 
 100%[=====================================================================================================================>] 172,895,917 51.7MB/s   in 3.2s   
 
-2024-04-13 13:33:20 (51.7 MB/s) - ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’ saved [172895917/172895917]
+2025-04-13 13:33:20 (51.7 MB/s) - ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’ saved [172895917/172895917]
 ```
 
 Let's list our downloaded file:
@@ -821,4 +824,47 @@ md5sum -c md5sum_for_README.txt
 README.md: FAILED
 md5sum: WARNING: 1 computed checksum did NOT match
 ```
+:::
+
+::: {.callout-note collapse="true"}
+#### Checking the checksums for the downloaded FASTA and GTF (Click to expand)
+
+The [NCBI FTP directory for the human genome](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.40_GRCh38.p14/)
+also contains a file with checksums, `md5checksums.txt`.
+
+Let's download it &mdash;
+we'll use the `-P` option to tell `wget` to put it directly in the `data/ref` dir:
+
+```bash
+wget -P data/ref https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.40_GRCh38.p14/md5checksums.txt
+```
+
+It's a little harder to check the file integrity in these cases because we
+only have two out of the several dozen files listed in this `md5checksums.txt`
+file (namely, all those in the FTP dir),
+and to make matters worse, we renamed them.
+
+```bash
+cd data/ref
+
+grep "GCF_000001405.40_GRCh38.p14_genomic.gtf.gz" md5checksums.txt
+```
+```{.bash-out}
+f573144e507a9fd85150cf6a3c8f8471  ./GCF_000001405.40_GRCh38.p14_genomic.gtf.gz
+```
+```bash
+grep "GCF_000001405.40_GRCh38.p14_genomic.fna.gz" md5checksums.txt
+```
+```{.bash-out}
+c30471567037b2b2389d43c908c653e1  ./GCF_000001405.40_GRCh38.p14_genomic.fna.gz
+```
+
+```bash
+md5sum GCF*
+```
+```{.bash-out}
+689762f267eafe361b6ee4b21638eb51  GCF_000001405.40_GRCh38.p14_genomic.fna
+a5274984906df2cc65319dfc1b307a01  GCF_000001405.40_GRCh38.p14_genomic.gtf
+```
+
 :::

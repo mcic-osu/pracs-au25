@@ -14,18 +14,18 @@ other-links:
   - text: "Week 3 overview"
     icon: book
     href: w3_overview.html
-  - text: Week 3 exercises
+  - text: "Week 3 exercises"
     icon: pencil
     href: w3_exercises.html
   - text: "w3-1: Shell files I"
     icon: bookmarks
     href: w3_1_shellfiles.html
-  - text: "Optional reading: Unix data tools II"
+  - text: "Bonus: Unix data tools II"
     icon: book
-    href: ../ref/adv-shell-data.html
-  - text: "Optional reading: Advanced shell"
+    href: ../bonus/shell-data.html
+  - text: "Bonus: Advanced shell"
     icon: book
-    href: ../ref/adv-shell.html
+    href: ../bonus/shell.html
 editor_options:
   chunk_output_type: console
 ---
@@ -34,7 +34,7 @@ editor_options:
 
 <br>
 
-## Introduction
+## Before we start
 
 ### Learning goals
 
@@ -74,12 +74,6 @@ Start a VS Code session like we've done before.
    
 </details>
 
-#### Change your working dir
-
-```bash
-cd garrigos-data
-```
-
 #### Open a Markdown file for notes
 
 Like before, I also recommend that you create and open a Markdown file to keep
@@ -90,27 +84,11 @@ notes:
    `week03` dir within `/fs/ess/PAS2880/users/$USER`,
    e.g. as `session2.md` (make sure to use a `.md` extension).
 
-<hr style="height:1pt; visibility:hidden;" />
+#### Change your working dir
 
-::: callout-note
-#### More shell keyboard shortcuts
-
-A reminder about a couple of useful keyboard shortcuts:
-
-- **<kbd>Ctrl+U</kbd>** cuts text until the beginning of the line.
-
-- **<kbd>Ctrl</kbd>+<kbd>Y</kbd>** "yanks" the cut text back
-
-- **<kbd>Alt</kbd>+<kbd>.</kbd>** (or **<kbd>Esc</kbd>+<kbd>.</kbd>** on a Mac)
-  will insert the last word (argument) from the last command line --
-  and you can cycle back by pressing it multiple times!
-  
-- When you hold <kbd>Ctrl</kbd> and press the arrow buttons, you will move
-  word-by-word rather than character-by-character.
-    
-- You can also cut (delete) word-by-word by pressing <kbd>Ctrl</kbd>+<kbd>W</kbd>
-  or <kbd>Alt</kbd>+<kbd>Backspace</kbd> (=<kbd>Option</kbd>+<kbd>Delete</kbd>).
-:::
+```bash
+cd garrigos-data
+```
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -199,11 +177,11 @@ ERR10802875     10dpi   cathemerium
 ```
 
 A neat trick with `tail` is to *start at* a specific line,
-`-n +<starting-line>
-
+`-n +<starting-line>`.
 This is often used to skip the header line:
 
 ```bash
+# '-n +2' tells tail to start at line 2:
 tail -n +2 meta/metadata.tsv
 ```
 ```bash-out
@@ -244,14 +222,16 @@ We were directly presented with the contents of the *compressed* file, which isn
 ::: callout-note
 #### When it comes to FASTQ files, no need to decompress
 To get around the problem we just encountered with `head`,
-we might be inclined to decompress these files
-(which we could do with the `gunzip` command).
-However, uncompressed files take up several times as much disk storage space as
-compressed ones and at least when it comes to FASTQ files,
-we can leave them compressed:
+you might be inclined to decompress these files
+(which you could do with the `gunzip` command).
+However, at least when it comes to FASTQ files,
+you are best off leaving them compressed:
 
-- Almost any bioinformatics tool will accept compressed FASTQ files.
-- We _can_ actually view these files in compressed form, as shown below.
+- Uncompressed files take up several times as much disk storage space as
+  compressed ones
+- Almost any bioinformatics tool accepts compressed FASTQ files
+- You _can_ actually view these files while they are in compressed form,
+  as shown below.
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -316,13 +296,14 @@ q
 <hr style="height:1pt; visibility:hidden;" />
 
 ::: {.callout-tip}
-#### The `-S` option to `less` suppresses line-wrapping
+#### The `-S` option to `less` suppresses "line-wrapping"
 
-That way, lines in the file will not be "wrapped" across multiple lines in case
+With `-S`, lines in the file will not be "wrapped" across multiple lines in case
 the line is too long to be shown on the screen.
 Instead, the line will "run out of the screen" on the right-hand side
 (and you can press the rightward arrow <kbd>→</kbd> to see that part).
-With formats like FASTQ as well as tables, line-wrapping can be confusing.
+With formats like FASTQ as well as tables,
+line-wrapping can be confusing and is best turned off.
 
 ``` bash
 less -S garrigos-data/fastq/ERR10802863_R1.fastq.gz
@@ -348,7 +329,7 @@ wc -l meta/metadata.tsv
 This can be surprisingly useful,
 as the number of lines in many file types reflects the number of entries.
 
-<br>
+<hr style="height:1pt; visibility:hidden;" />
 
 ## Redirection and pipes
 
@@ -365,7 +346,6 @@ cd sandbox
 The regular output of a command that is printed to the screen
 (like a list of files by `ls`, or a number of lines by `wc -l`)
 is technically called **"standard out"** or in short "*stdout*".
-
 Sometimes, we may want to do something else with this output,
 like storing it in a file.
 Luckily, this is easy to do with something called "**redirection**".
@@ -434,7 +414,7 @@ in a directory. We could do that as follows:
 # First we redirect the ls output to a file
 ls ../fastq > filelist.txt
 
-# Then we count the nr. of lines, which is the number of files+dirs in Saavedra2013:
+# Then we count the nr. of lines, which is the number of files in ../fastq:
 wc -l filelist.txt
 ```
 ```bash-out
@@ -442,10 +422,10 @@ wc -l filelist.txt
 ```
 
 That worked, but we needed two separate lines of code,
-and we are left with a file `filelist.txt` that we would probably want to remove
+and we are left with a file `filelist.txt` that we probably want to remove
 since it has served its sole purpose.
 
-A more conventient way to do this is with a "**pipe**", as follows:
+A more conventient way to do this kind of thing is with a "**pipe**", as follows:
 
 ```bash
 ls ../fastq | wc -l
@@ -463,8 +443,9 @@ Pipes are useful because they avoid having to write/read intermediate files ---
 this saves typing, makes the operation quicker, and reduces file clobber.
 In the example above,
 we don't need to make a `filelist.txt` file to count the number of files.
+We'll see pipes in action a bunch more in the next section.
 
-<br>
+<hr style="height:1pt; visibility:hidden;" />
 
 ## Unix data tools
 
@@ -472,7 +453,7 @@ We'll now turn to some commands that may be described as Unix "data tools".
 These commands are very useful when working in the shell generally,
 and when working with omics data specifically.
 
-Their strength is especially in relatively simple data processing and summarizing
+Their strengths are especially relatively simple data processing and summarizing
 steps, and they are excellent in dealing with very large files. 
 Here, we will cover:
 
@@ -527,7 +508,6 @@ but also genomics files like `.fastq` and scripts like `.R` or `.sh`:
 because all plain text files are fundamentally the same,
 i.e. "just plain-text files",
 _changing the extension does not change anything about the file._
-
 Instead, different file extensions are used primarily to make it clear
 to humans (as opposed to the computer) what the file contains.
 :::
@@ -539,8 +519,8 @@ to humans (as opposed to the computer) what the file contains.
 The `grep` command is extremely useful and will find specific text 
 (or text patterns) in a file.
 By default, it will **print each line that contains a "match" in full**.
-It's basic syntax is `grep "<pattern>" <file-path>`.
 
+Its basic syntax is `grep "<pattern>" <file-path>`.
 For example,
 this will print all lines from `metadata.tsv` that contain "cathemerium":
 
@@ -586,12 +566,12 @@ grep -vc "control" metadata.tsv
   it is a good habit to consistently use quotes (`"..."`) around the search pattern.
 - Incomplete matches,
   including in individual words, work: "`contr`" will match the `control` lines
-  (compare to globbing with shell wildcards!)
+  (compare this behaviour with globbing using shell wildcards!)
 - `grep` has many other useful options, such as:
   - `-i` to ignore case when searching
   - `-r` to search files recursively 
     (note that even without `-r`, it can operate on multiple files)
-  - `-w` to match whole "words" only
+  - `-w` to make a pattern match whole "words" only
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -601,7 +581,7 @@ grep -vc "control" metadata.tsv
 The `cut` command will select or we could say "cut out" one or more columns
 from a tabular file.
 
-We always have to use the **`-f`** option to specify the
+You always have to use the **`-f`** option to specify the
 **desired column(s) / "field"(s)**.
 
 ```bash
@@ -620,8 +600,8 @@ time
 ```
 
 In many cases, with `cut` and other commands alike,
-it can be useful to **pipe the output to `head`** to see if our command works
-without printing a large number (sometimes thousands) of lines:
+it can be useful to **pipe the output to `head`** to quickly see if your command
+works without printing a large number (sometimes thousands) of lines:
 
 ```bash
 cut -f 1 metadata.tsv | head -n 3
@@ -633,7 +613,7 @@ time
 ```
 
 ::: {.callout-note collapse="true"}
-#### Selecting multiple columns and specifying the delimiter _(Click to expand)_
+#### Selecting multiple columns and specifying the delimiter with `cut` _(Click to expand)_
 
 To select **multiple columns**, use a range or comma-delimited list:
 
@@ -657,23 +637,28 @@ ERR10802875     10dpi
 
 However, it is not possible to change the order of columns with `cut`!
 (The more advanced `awk` command can do this --
-see [this optional reading material](../ref/adv-shell-data.qmd))
+see [this optional reading material](../bonus/shell-data.qmd))
 
 The default cut delimiter is a Tab,
 so we didn't have to specify the delimiter with our current file.
-But when you need to do this, use the `-d` option, e.g. `-d ,` for a CSV file.
+But when you need to do this, use the `-d` option, e.g. `-d ,` for a CSV file:
 
+```bash
+# [Don't run this, hypothetical example]
+# Select the second column in a comma-delimited (CSV) file:
+cut -d, 2 my-data.csv
+```
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
 
 ### Combining `cut`, `sort`, and `uniq` to create a list
 
-Let's say we want an alphabetically sorted list of treatments in `metadata.tsv`.
+Let's say you want an alphabetically sorted list of treatments in `metadata.tsv`.
 (Yes, that's a bit trivial in this case, but you could use the following code
-also to operate on a huge genome annotation file, like you'll do later.)
+also to operate on a huge genome annotation file, as you'll do later.)
 
-To do this, we'll need to learn about two new commands:
+To do this, you need to learn about two new commands:
 
 - **`sort`** to sort/order/arrange rows, by default in alphanumeric order.
 - **`uniq`** to remove duplicates (i.e., keep all distinct/unique) entries
@@ -681,7 +666,7 @@ To do this, we'll need to learn about two new commands:
 
 We'll build up a small "pipeline" to do this, step-by-step,
 and piping the output into `head` at every step.
-First, we get rid of the header line with our `tail` trick:
+First, get rid of the header line with the previously mentioned `tail` trick:
 
 ```bash
 tail -n +2 metadata.tsv | head
@@ -699,7 +684,7 @@ ERR10802876     10dpi   relictum
 ERR10802880     10dpi   relictum
 ```
 
-Second, we select our column of interest with `cut`:
+Second, select the column of interest with `cut`:
 
 ```bash
 tail -n +2 metadata.tsv | cut -f 3 | head
@@ -717,8 +702,7 @@ relictum
 relictum
 ```
 
-Third, we pipe to `sort` to alphabetically sort the result
-
+Third, use `sort` to alphabetically sort the result:
 
 ```bash
 tail -n +2 metadata.tsv | cut -f 3 | sort | head
@@ -736,8 +720,8 @@ control
 control
 ```
 
-Finally, we use `uniq` to only keep unique values
-(and we get rid of the `head` command):
+Finally, use `uniq` to only keep unique (distinct) values ---
+and also get rid of `head` since we now have a final command:
 
 ```bash
 tail -n +2 metadata.tsv | cut -f 3 | sort | uniq
@@ -748,9 +732,9 @@ control
 relictum
 ```
 
-And with a very small modification to our pipeline,
-we can generate a "count table" instead of a simple list!
-We just have to add `uniq`'s `-c` option (for **c**ount):
+And with a very small modification to this pipeline,
+you can generate a "count table" instead of a simple list!
+You just have to add `uniq`'s `-c` option (for **c**ount):
 
 ```bash
 tail -n +2 metadata.tsv | cut -f 3 | sort | uniq -c
@@ -762,7 +746,7 @@ tail -n +2 metadata.tsv | cut -f 3 | sort | uniq -c
 ```
 
 And this count table can in turn be sorted by most frequent occurrence ---
-to do this, we use `sort`'s `-n` option for numeric sorting together with `-r`
+to do this, use `sort`'s `-n` option for numeric sorting together with `-r`
 for reverse sorting so the largest numbers go first:
 
 ```bash
@@ -781,9 +765,28 @@ tail -n +2 metadata.tsv | cut -f 3 | sort | uniq -c | sort -nr
 Above, we used `sort` to simply sort a list.
 More generally, by default,
 `sort` will sort based on the entire contents of a line.
-To sort based on one or more columns, like you'd do in Excel, ....
+To sort based on one or more columns, like you've likely done in Excel,
+use the `-k` option --- for example:
 
-TBA
+```bash
+# Sort based on the third column:
+tail -n +2 metadata.tsv | sort -k3
+```
+
+`-k` takes a start and a stop column to sort by,
+so if you want to strictly sort only based on one column at a time, use this syntax:
+
+```bash
+# Explicitly indicate to sort based on the third column only:
+tail -n +2 metadata.tsv | sort -k3,3
+```
+
+To sort first by one column and _then_ by another, use `-k` multiple times:
+
+```bash
+# Sort first by the first column, then break ties using the second column:
+tail -n +2 metadata.tsv | sort -k3,3 -k2,2
+```
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -816,7 +819,7 @@ By contrast, try to take a peak at such a file with a GUI text editor,
 and your computer will crash.
 
 Here is one other example, combining the `cat` command with globbing and redirection.
-This command would concatenate (combine) all our R1 FASTQ files into a single file
+This command would concatenate (combine) all your R1 FASTQ files into a single file
 -- and this is both elegantly short code,
 and will run quickly and without using much computer memory!
 
@@ -830,9 +833,11 @@ cat fastq/*R1.fastq.gz > all_R1.fastq.gz
 
 - FASTQ files can (in principle) be concatenated freely since every read is a
   "stand-alone" unit of 4 lines.
-
-- Gzipped (`.gz`) files can also be concatened freely (!)
+- Gzipped (`.gz`) files can also be concatened freely!
 :::
+
+If you want to learn more about these and other Unix data tools,
+take a look at [this optional reading page on them](../bonus/shell-data.qmd).
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -841,12 +846,11 @@ cat fastq/*R1.fastq.gz > all_R1.fastq.gz
 
 You should never redirect the output of Unix commands "back" to the input file.
 This will corrupt the input file because of how Unix commands stream input and
-output line by line.
+output line-by-line.
 
 Therefore, if you really want to edit/overwrite the original file instead of
 creating a separate edited copy, you will need multiple steps:
 first produce a separate copy and then rename that.
-
 For example:
 
 ```bash
