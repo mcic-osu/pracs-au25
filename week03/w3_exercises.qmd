@@ -10,6 +10,90 @@ number-sections: false
 
 <br>
 
-Unix data tools on GTF file
+:::callout-caution
+#### THIS PAGE IS STILL UNDER CONSTRUCTION
+:::
+
+<br>
+
+## Exercise 1
+
+1. Unzip (decompress) the GTF file with the `gunzip` command:
+
+```bash
+cd garrigos-data/ref
+
+gunzip -v GCF_016801865.2.gtf.gz
+
+ls -lh
+```
+```bash-out
+-rw-rw----+ 1 jelmer PAS0471 123M Jul  4 21:31 GCF_016801865.2.gtf
+```
+
+2. How many lines does the GTF file contain?
+
+3. The first several lines are not part of the main table that the GTF contains.
+   In that main table, 
+   each line represents a genomic feature for which information is presented.
+   
+   - Combine `grep -v` and `wc -l` to count the number of features in the GTF.
+     Take a peek at the file first, so you can decide on a search pattern for `grep`.
+     
+   - Comparing the linecount from this and the previous exercise,
+     does the difference reflect the number of header lines?
+     If not, can you figure out which other line(s) contain the pattern you used
+     with `grep` above? (Hint: use `grep -n`)
+
+4. The first column of the GTF table has the genomic scaffold that the feature in
+   question is located on.
+   How many distinct scaffolds are represented in the annotation?
+
+5. How many genes does the annotation contain?
+
+6. Produce a 3-column table with the scaffold and start and end position of each
+   start codon, and store it in a file `start_codons.tsv`.
+   (You can safely assume that `start_codon` only occurs in the third column
+   and that all lines with that string therefore contain start codon features.)
+
+7. Which scaffold appears to be the largest?
+
+8. Are features evenly distributed across the `+` and `-` strands?
+
+9. Sort
+
+10. Find genes from a gene family
+
+11. Count snRNAs:
+grep -c 'gene_biotype "snRNA"' "$mus".gtf
+
+12. count numbers of different features for a particular gene:
+
+grep "ENSMUSG00000033793" "$mus".gtf | cut -f3 | sort | uniq -c
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Exercise 2: FASTQ files
+
+- How many reads?
+- Find a pattern
+- Read lengths with `length=` ?
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Solutions
+
+### Exercise 1
+
+2.
+
+The file has 408,402 lines:
+
+```bash
+[jelmer@cardinal-login01 ref]$ wc -l GCF_016801865.2.gtf 
+```
+```bash-out
+408402 GCF_016801865.2.gtf
+```
 
 <hr style="height:1pt; visibility:hidden;" />

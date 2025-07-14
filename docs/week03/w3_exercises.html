@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -261,8 +295,19 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link active" data-scroll-target="#exercise-1">Exercise 1</a></li>
+  <li><a href="#exercise-2-fastq-files" id="toc-exercise-2-fastq-files" class="nav-link" data-scroll-target="#exercise-2-fastq-files">Exercise 2: FASTQ files</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a>
+  <ul class="collapse">
+  <li><a href="#exercise-1-1" id="toc-exercise-1-1" class="nav-link" data-scroll-target="#exercise-1-1">Exercise 1</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -300,10 +345,75 @@ ul.task-list li input[type="checkbox"] {
 
 <hr>
 <p><br></p>
-<p>Unix data tools on GTF file</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+THIS PAGE IS STILL UNDER CONSTRUCTION
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<p><br></p>
+<section id="exercise-1" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1">Exercise 1</h2>
+<ol type="1">
+<li>Unzip (decompress) the GTF file with the <code>gunzip</code> command:</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> garrigos-data/ref</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> <span class="at">-v</span> GCF_016801865.2.gtf.gz</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>-rw-rw----+ 1 jelmer PAS0471 123M Jul  4 21:31 GCF_016801865.2.gtf</code></pre>
+<ol start="2" type="1">
+<li><p>How many lines does the GTF file contain?</p></li>
+<li><p>The first several lines are not part of the main table that the GTF contains. In that main table, each line represents a genomic feature for which information is presented.</p>
+<ul>
+<li><p>Combine <code>grep -v</code> and <code>wc -l</code> to count the number of features in the GTF. Take a peek at the file first, so you can decide on a search pattern for <code>grep</code>.</p></li>
+<li><p>Comparing the linecount from this and the previous exercise, does the difference reflect the number of header lines? If not, can you figure out which other line(s) contain the pattern you used with <code>grep</code> above? (Hint: use <code>grep -n</code>)</p></li>
+</ul></li>
+<li><p>The first column of the GTF table has the genomic scaffold that the feature in question is located on. How many distinct scaffolds are represented in the annotation?</p></li>
+<li><p>How many genes does the annotation contain?</p></li>
+<li><p>Produce a 3-column table with the scaffold and start and end position of each start codon, and store it in a file <code>start_codons.tsv</code>. (You can safely assume that <code>start_codon</code> only occurs in the third column and that all lines with that string therefore contain start codon features.)</p></li>
+<li><p>Which scaffold appears to be the largest?</p></li>
+<li><p>Are features evenly distributed across the <code>+</code> and <code>-</code> strands?</p></li>
+<li><p>Sort</p></li>
+<li><p>Find genes from a gene family</p></li>
+<li><p>Count snRNAs: grep -c ‘gene_biotype “snRNA”’ “$mus”.gtf</p></li>
+<li><p>count numbers of different features for a particular gene:</p></li>
+</ol>
+<p>grep “ENSMUSG00000033793” “$mus”.gtf | cut -f3 | sort | uniq -c</p>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="exercise-2-fastq-files" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2-fastq-files">Exercise 2: FASTQ files</h2>
+<ul>
+<li>How many reads?</li>
+<li>Find a pattern</li>
+<li>Read lengths with <code>length=</code> ?</li>
+</ul>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="solutions" class="level2">
+<h2 class="anchored" data-anchor-id="solutions">Solutions</h2>
+<section id="exercise-1-1" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-1-1">Exercise 1</h3>
+<ol start="2" type="1">
+<li></li>
+</ol>
+<p>The file has 408,402 lines:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[jelmer@cardinal-login01</span> ref]$ wc <span class="at">-l</span> GCF_016801865.2.gtf </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>408402 GCF_016801865.2.gtf</code></pre>
 <hr style="height:1pt; visibility:hidden;">
 
 
+</section>
+</section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

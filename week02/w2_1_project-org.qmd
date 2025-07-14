@@ -64,7 +64,7 @@ cited two principles guiding his set of recommendations on this topic:
 
 Keep those principles in mind while we discuss the recommendations below!
 
-<br>
+<hr style="height:1pt; visibility:hidden;" />
 
 ## File organization and management
 
@@ -105,7 +105,7 @@ When you have a single directory hierarchy for each project, it is easier to:
 
 
 ::: {.callout-note collapse="true"}
-#### How to define and separate your projects? _(Click to expand)_
+#### How to define and separate projects in more complicated scenarios? _(Click to expand)_
 
 From [Wilson et al. 2017 - Good Enough Practices in Scientific Computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510):
 
@@ -159,33 +159,29 @@ you should use subfolders to clearly separate, among others:
 These folders and files within them should also be named consistently,
 following the best practices we'll discuss below.
 
-::: callout-note
+::: callout-tip
 #### Treatment of data versus results
 
-While managing your files, you should also treat raw data and results differently:
+While managing your files,
+you should also conceptually treat raw data and results differently:
 
-- Treat **raw data**, once it has been collected or received,
-  as _read-only_ (never edit the original files!) and _highly valuable_ (make backups!)
-
-- Treat **results** as _essentially disposable_,
+- _Raw data_, once collected or received,
+  should be treated as **read-only** (never edit the original files!) and
+  **highly valuable** (make backups!)
+- _Results_ can be treated as **essentially disposable**,
   because you should be able to regenerate them easily with the skills you will
   learn in this course (see also the section on avoidng manual editing below).
 :::
 
 #### An example project folder structure
 
-Here is one good way of organizing project files with a set of top-level folders:
+Here is one good way of organizing project files with a set of top-level folders
+and some standard documentation files:
 
-![The hierarchical folder structure is indicated with lines and indentation: the top-level project folder is `my-project`, which e.g. contains the `data` folder that in turn contains other folders. Folders are shown in blue and files in black.](../img/proj-ex_annot.png){fig-align="center" width="70%"}
+![In this example project folder hierarchy, the hierarchical folder structure is indicated with lines and indentation: the root (top-level) project folder is `my-project`, which e.g. contains the `data` folder that in turn contains other folders. Folders are shown in blue and files in white.](../img/proj-ex-annot_2025.png){fig-align="center" width="70%"}
 
-::: callout-caution
-#### TBA edit above figure:
-- Use `data/seqs` folder
-- Don't use `data/ref` folder
-- Remove `software` folder?
-- Add `notes` folder
-- Rename `run` folder to `protocol` or `workflow`?
-:::
+Here, we'll go into the _folder structure_, whereas the last section of this session
+will go into the `.md` _documentation files_ that are also shown in the image above.
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -194,15 +190,42 @@ For example, in omics data analysis,
 it often makes sense to create subfolders within `results` for each piece of
 software that you are using:
 
-![_An example showing subfolders within `results` organized by and named after the software that produced the results. Separate runs for a single program (multiqc) are grouped into further subfolders by date._](../img/proj-ex-results.png){fig-align="center" width="30%"}
+::::::: columns
+:::: {.column width="50%"}
+![_An example showing subfolders within `results` mostly organized by the software that produced the results. Separate runs for MultiQC are grouped into further subfolders by date._](../img/proj-ex-results1_2025.png){fig-align="center" width="60%"}
+::::
+:::: {.column width="50%"}
+![Like the example on the left, but here, separate runs for MultiQC are grouped into subfolders using a description.](../img/proj-ex-results2_2025.png){fig-align="center" width="64%"}
+::::
+:::::::
+
+In the above examples:
+
+- Subfolders are mostly organized by and named after the software that produced
+  the results.
+
+- In some cases, other kinds of descriptive names may make more sense.
+  For example, the `01_ref-seqs` represent a folder with reference genome sequences.
+  The `01_` prefix is used to ensure this folder shows up at the top
+  (see the box below for more on file and dir _numbering_).
+
+- Say that the MultiQC program was run multiple times.
+  On the left, these runs are named after the run date, whereas on the right,
+  the names describes what each run was for.
+  Both of these options have pros and cons.
+  For example, always using a date is simple and consistent but is less clear
+  about the purpose of each folder.
+  In general, there are reasonable alternatives to some of the recommendations
+  presented in this session --- see also the box below.
 
 <hr style="height:1pt; visibility:hidden;" />
 
 ::: {.callout-tip collapse="true"}
-#### Some other organization and naming options _(Click to expand)_
+#### Some alternative file organization and naming options _(Click to expand)_
 The above recommendations only go so far,
 and several details can be modified depending on personal preferences and
-project specifics --- for example:
+project specifics.
+For example:
 
 - You can start folder and file names with numbers so that they would automatically
   be sorted in a logical way (i.e. step 1 then step 2, etc.),
@@ -217,25 +240,15 @@ project specifics --- for example:
   |   |-- 03_multiqc/
   |   |-- 04_trimgalore/
   |   |-- 05_star/
+  |   |-- 06_salmon/
   |-- scripts/
   |   |-- 01_download-reference.sh
   |   |-- 02_fastqc.sh
   ```
   
-- Related to the point above, you may choose to add one or more leading zeros
-  to a file or folder name so it is always shown at the top of the file listing:
-
-  ```bash-out
-  |-- results/
-  |   |-- 00_reference-seqs/
-  |   |-- deseq/
-  |   |-- fastqc/
-  |   |-- multiqc/
-  ```
-  
-- Some folders can be named differently, such as:
-  - Some use `analysis` instead of `results`
-  - Some use `src` ("source") instead of `scripts`
+- Several of these folders can be named differently, such as:
+  - Some researchers prefer `analysis` over `results`
+  - Some researchers prefer `src` ("source") over `scripts`
   
 - Some recommendations (such as in the Buffalo book)
   separate data into `data/raw` and `data/processed` folders.
@@ -245,7 +258,7 @@ project specifics --- for example:
 - [Noble (2009)](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424)
   recommends that subfolders within `results` are initially organized by date
   and then by topic/program (e.g: `results/2025-08-30/multiqc`).
-  I personally don't think this works well for most omics analysis.
+  I personally don't think this works well for most omics data analysis.
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -307,8 +320,6 @@ Consistent and informative naming helps you to programmatically find and process
   With such file names,
   you can easily find file from e.g. a certain month or treatment.
   
-<hr style="height:1pt; visibility:hidden;" />
-
 #### Human-readable
 
 While machine-readability in file names is important,
@@ -349,7 +360,7 @@ mmus086_filtered-by-mq30_sorted.bam
 What is most important, however,
 is that once you found a scheme that works for you, you **use that consistently**.
 
-::: {.callout-tip collapse="true"}
+::: {.callout-note collapse="true"}
 #### Exploding file names? _(Click to expand)_
 
 When a file goes through multiple rounds of processing,
@@ -475,9 +486,10 @@ you first need to learn more about paths and folder structures.
 
 <hr style="height:1pt; visibility:hidden;" />
 
-<details><summary>{{< fa user-edit >}} **In the above schematic on the left, what is the path to the file `todo_list.txt`?** _(Click for the solution)_</summary>
+::: {.callout-important collapse="true"}
+#### {{< fa user-edit >}} In the above schematic on the left, what is the path to the file `todo_list.txt`? _(Click for the solution)_
 `/home/oneils/documents/todo_list.txt`
-</details>
+:::
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -498,8 +510,8 @@ that expands to an absolute path to your Home directory.
 
 <hr style="height:1pt; visibility:hidden;" />
 
-<details><summary>{{< fa user-edit >}} **In the examples above, how can the mere file name `todo_list.txt` represent a path?** _(Click for the solution)_</summary>
-
+::: {.callout-important collapse="true"}
+#### {{< fa user-edit >}} In the examples above, how can the mere file name `todo_list.txt` represent a path? _(Click for the solution)_
 A file name like `todo_list.txt`, with no directories included,
 can be seen (and is often used!) as a relative path that implies that the file
 is in our current working dir.
@@ -507,7 +519,7 @@ is in our current working dir.
 (Alternatively, and often equivalently, you can be explicit about the fact that
 a file is in your current working dir by using a `./` preface, e.g.: `./todo_list.txt`.
 We'll talk about the `.` notation next week.)
-</details>
+:::
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -539,10 +551,10 @@ For example:
 
 ::: callout-warning
 #### How does this work when I have files on OSC as well as on my laptop?
-TBA
+This is good question that we'll get back to in [week 5](../week05/w5_2_data-management.qmd).
 :::
 
-<br>
+<hr style="height:1pt; visibility:hidden;" />
 
 ## Documenting your research project
 
@@ -577,7 +589,7 @@ So, how should you do this in practice?
 
 It is common practice to store project documentation in files that are called
 or include the word "README".
-We saw one such file, `README.md`, in the example project folder structure above.
+You saw two such `README.md` files in the example project folder structure above.
 Use README and related text files to document the following:
 
 - Your methods
@@ -591,12 +603,12 @@ depending on the size of your project,
 and how you prefer to structure your documentation.
 
 - For **small projects**,
-  a single README file that contains all of the above may work.
+  one or two README files that contains all of the above may work.
 
 - For **larger projects**, such as those that should produce a stand-alone
   paper and/or a chapter in your dissertation,
-  a single README file may spin a bit out of control,
-  and it often makes sense to split its content into the following types of files.
+  it often makes sense to split documentation into different types of files as
+  described below.
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -605,7 +617,7 @@ and how you prefer to structure your documentation.
 These are not ironclad rules or fixed categories,
 but hopefully provide a good starting point:
 
-#### A) Main README file
+#### A) README file(s)
 
 As mentioned above,
 **you should always have a README(-style) file in the top-level folder of your project**.
@@ -618,6 +630,13 @@ notebook and to create a final workflow/protocol, this file could contain:
 - Details about the data, such as how and when it was obtained
 - How/where to start if wanting to rerun the analyses done as part of the project
 - Who to contact for more information about different topics related to the project
+
+::: callout-tip
+#### Using multiple README files
+Especially for larger projects,
+you may add README files in key subdirectories such as `data`, `results`,
+and `scripts`, each of which describe the files in that dir.
+:::
 
 #### B) Electronic lab notebook (organized by date)
 
@@ -632,6 +651,8 @@ that documents what you did:
   you should not remove entries on say failed experiments and analyses,
   or consideration/testing of methods that you did not include in your final analyses.
 
+In the project folder example above, this file was `doc/diary.md`.
+
 #### C) Final workflow/protocol file (organized in order of execution)
 
 This file should contain all the code and other details needed to **rerun** the
@@ -644,14 +665,18 @@ final data processing and analyses you performed for your project:
   and should not include any steps that you don't consider part of your final
   set of results (e.g., a method you ran but ultimately did not use, because
   an alternative method worked better).
+  
+In the project folder example above, this file was `doc/workflow.md`.
+Let's take another look at that image:
 
-#### Use plain text files
+![](../img/proj-ex-annot_2025.png){fig-align="center" width="60%"}
+
+### Use plain text files
 
 In this course,
 we'll be working almost exclusively with so-called "**plain-text**" files
 (files with `.txt` and related extensions).
-These are files that can be opened by any text editor on any computer,
-can be operated on by Unix shell commands and any other programming language.
+These are files that can be opened by any text editor on any computer.
 
 Plain-text files are different from so-called "binary" and proprietary formats
 like Microsoft Excel (e.g. `.xlsx`) or Word (e.g. `.docx`) that can often 
@@ -664,17 +689,25 @@ And while their simplicity may seem limiting,
 **plain-text files are generally preferable for reproducible science** because they:
 
 - Can be accessed on any computer, including over remote connections
+- Can be operated on by Unix shell commands and any other programming language
 - Are future-proof
 - Allow to be version-controlled
 
 For these reasons,
 it is best-practice to also use a plain-text format to document your research,
-and we will extensively practice that during the course.
+and we will extensively practice with that during the course.
 Specifically, we will use so-called **Markdown** files (`.md`),
 which strike a nice balance between ease of writing and reading on the one hand,
 and formatting options on the other hand.
 In the next session, we will learn the basics of the Markdown "syntax".
 
-#### An example
+<hr style="height:1pt; visibility:hidden;" />
 
-_TBA folder structure with these documentation files_
+::: callout-tip
+#### In closing
+Some of these project organization and documentation recommendations may seem
+a bit abstract this early in the course.
+Therefore, I recommend that you revisit this page later on.
+:::
+
+<br>
