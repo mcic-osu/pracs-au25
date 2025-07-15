@@ -23,7 +23,7 @@ other-links:
   - text: "Bonus: Unix data tools II"
     icon: book
     href: ../bonus/shell-data.html
-  - text: "Bonus: Advanced shell"
+  - text: "Bonus: Misc. advanced shell"
     icon: book
     href: ../bonus/shell.html
 editor_options:
@@ -231,7 +231,9 @@ you are best off leaving them compressed:
   compressed ones
 - Almost any bioinformatics tool accepts compressed FASTQ files
 - You _can_ actually view these files while they are in compressed form,
-  as shown below.
+  as shown below with `less`.
+  Additionally, `cat` and several other commands have a counterpart for compressed
+  files: in the case of `cat`, that's `zcat`.
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -589,9 +591,21 @@ grep -vc "control" metadata.tsv
   (compare this behaviour with globbing using shell wildcards!)
 - `grep` has many other useful options, such as:
   - `-i` to ignore case when searching
+  - `-w` to make a pattern match whole "words" only
+  - `-n` print the line number for each matching line
+  - `-A <n>` and `-B <n>` to print `n` lines after and before each match
   - `-r` to search files recursively 
     (note that even without `-r`, it can operate on multiple files)
-  - `-w` to make a pattern match whole "words" only
+:::
+
+::: {.callout-note collapse="true"}
+#### Operating on compressed files
+
+- `zgrep`
+- `zcat X | grep`
+
+TBA
+
 :::
 
 <hr style="height:1pt; visibility:hidden;" />

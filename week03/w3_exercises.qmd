@@ -1,83 +1,167 @@
 ---
-title: "Week 3 exercises"
+title: "Week 3 exercises: Working with files in the Unix shell"
 pagetitle: "PRACS25: Week 3 exercises"
-author: Jelmer Poelstra
-date: 2025-09-08
 number-sections: false
+date: 2025-09-08
+author:
+  - name: Jelmer Poelstra
+    orcid: 0000-0002-3514-7462
+    email: poelstra.1@osu.edu
+    affiliation: 
+      - name: CFAES Bioinformatics Core, Ohio State University
+        url: https://mcic.osu.edu
+other-links:
+  - text: "Week 3 overview"
+    icon: book
+    href: w3_overview.html
+  - text: "w3-1: Shell files I"
+    icon: bookmarks
+    href: w3_1_shellfiles.html
+  - text: "w3-2: Shell files II"
+    icon: bookmarks
+    href: w3_2_shellfiles.html
+  - text: "Bonus: Unix data tools II"
+    icon: book
+    href: ../bonus/shell-data.html
+  - text: "Bonus: Misc. advanced shell"
+    icon: book
+    href: ../bonus/shell.html
 ---
 
 ---------
 
 <br>
 
-:::callout-caution
-#### THIS PAGE IS STILL UNDER CONSTRUCTION
-:::
-
-<br>
-
-## Exercise 1
-
-1. Unzip (decompress) the GTF file with the `gunzip` command:
-
-```bash
-cd garrigos-data/ref
-
-gunzip -v GCF_016801865.2.gtf.gz
-
-ls -lh
-```
-```bash-out
--rw-rw----+ 1 jelmer PAS0471 123M Jul  4 21:31 GCF_016801865.2.gtf
-```
-
-2. How many lines does the GTF file contain?
-
-3. The first several lines are not part of the main table that the GTF contains.
-   In that main table, 
-   each line represents a genomic feature for which information is presented.
-   
-   - Combine `grep -v` and `wc -l` to count the number of features in the GTF.
-     Take a peek at the file first, so you can decide on a search pattern for `grep`.
-     
-   - Comparing the linecount from this and the previous exercise,
-     does the difference reflect the number of header lines?
-     If not, can you figure out which other line(s) contain the pattern you used
-     with `grep` above? (Hint: use `grep -n`)
-
-4. The first column of the GTF table has the genomic scaffold that the feature in
-   question is located on.
-   How many distinct scaffolds are represented in the annotation?
-
-5. How many genes does the annotation contain?
-
-6. Produce a 3-column table with the scaffold and start and end position of each
-   start codon, and store it in a file `start_codons.tsv`.
-   (You can safely assume that `start_codon` only occurs in the third column
-   and that all lines with that string therefore contain start codon features.)
-
-7. Which scaffold appears to be the largest?
-
-8. Are features evenly distributed across the `+` and `-` strands?
-
-9. Sort
-
-10. Find genes from a gene family
-
-11. Count snRNAs:
-grep -c 'gene_biotype "snRNA"' "$mus".gtf
-
-12. count numbers of different features for a particular gene:
-
-grep "ENSMUSG00000033793" "$mus".gtf | cut -f3 | sort | uniq -c
+To set up, start a VS Code session through OSC OnDemand in the folder
+`/fs/ess/PAS2880/users/$USER`.
 
 <hr style="height:1pt; visibility:hidden;" />
 
-## Exercise 2: FASTQ files
+## Exercise 1: Moving, copyingm and removing
 
-- How many reads?
-- Find a pattern
-- Read lengths with `length=` ?
+<hr style="height:1pt; visibility:hidden;" />
+
+## Exercise 2: Exploring the GTF annotation file
+
+1. Navigate into the dir `garrigos-data/sandbox`
+   you should have created in this week's second session.^[
+   And if it's not there: create it first.
+   Its full path should be `/fs/ess/PAS2880/users/$USER/garrigos-data/sandbox`.]
+
+2. Copy the genome annotation file `garrigos-data/ref/GCF_016801865.2.gtf.gz`
+   to a file called `annot.gtf.gz` inside your `sandbox` working dir.
+   While doing so, make the `cp` command report what it's doing ("verbose").
+
+3. Check the size of the `annot.gtf.gz` file.
+   Then, unzip (decompress) the GTF file with the `gunzip` command as shown below.
+   Finally, check the size of the resulting `annot.gtf` file:
+   how large is the size difference between the compressed and uncompressed file?
+
+   ```bash
+   gunzip annot.gtf.gz
+   ```
+
+4. How many lines does the GTF file contain?
+
+5. The first several lines of the GTF file are not part of its main table.
+   In the main table, each line represents a "genomic feature" (gene, exon, etc.)
+   for which information is presented across the columns.
+   
+   - Combine `grep -v`^[Recall: `-v` will invert the search and print non-matching lines],
+     a pipe, and `wc -l` to count the number of line in the main table.
+     Take a peek at the file first, so you can decide on a search pattern for `grep`.
+   - Comparing the linecount from this and the previous exercise,
+     does the difference reflect the number of header lines?
+   - If not, can you figure out which other line(s) contain the pattern you used
+     with `grep` above?
+     _(Review the "Additional `grep` tips" box in_
+     _[the section on `grep`](week03/w3_2_shellfiles.html#grep-to-print-lines-that-match-a-pattern)_
+     _to find an option that might help you make sense of that.)_
+
+6. The first column of the GTF table has the name of the "sequence" (chromosome,
+   scaffold, or contig) from the corresponding genome assembly FASTA file
+   that the feature in question is located on.
+   How many distinct such sequences are represented in the annotation?
+
+7. Store a list of distinct sequences in the GTF (see the previous exercise)
+   in a file `scaffolds.txt`.
+
+8. The seventh column of the GTF table indicates which strand (`+` or `-`) the
+   feature is on^[
+   Because double-stranded DNA is represented as a single sequence,
+   the `strand` column effectively indicates in which direction a feature should
+   be read along this sequence.].
+   How many features are on the `+` strand and how many are on the `-` strand?
+   _(The easiest way to answer this is to produce a "count table" like we this_
+   _towards the end of [this section](./w3_2_shellfiles.html#combining-cut-sort-and-uniq-to-create-a-list).)_
+
+9. The third column of the GTF table has the feature type (e.g. "gene" or "exon").
+   How many genes does the annotation contain?
+
+   <details><summary>_Click here for a hint_</summary>
+   You want to count the number of lines where the third column is `gene`.
+   However, just `grep`ing for `"gene"` would also turn up other lines that contain
+   this string, and not result in a correct count.
+   Therefore, the easiest solution is to create a count table of this column,
+   and look for the gene count in the resulting table.
+   </details>
+
+10. Each gene can have any number of exons and other features,
+    and you may wonder how may (e.g.) exons a gene of interest has.
+    The GTF files has a hierarchical structure to it such that each exon entry
+    has a reference to the gene that it is a part of in the final column.
+    For gene `XXX - TBA`, create a count table of its features.
+
+11. Produce a 3-column table with the scaffold, start position, and end position
+    of each **start codon**.
+    Store that table in a file `start_codons.tsv`.
+    _(You can safely assume that `start_codon` only occurs in the third column_
+    _and that all lines with that string therefore contain start codon features.)_
+
+12. Count the number of small nuclear RNAs (`snRNA`) in the annotation.
+    You'll want a "gene"-level count, and because the word "snRNA" also occurs
+    for other features, you should use the output of an initial `grep` search to
+    figure out what your final search pattern will be.
+    
+13. Bonus: Which sequence (scaffold) appears to be the largest one?
+
+    <details><summary>_Click here for a hint_</summary>
+    This information is not directly contained in the GTF file,
+    but if you find the single highest number in the (start or) end coordinate
+    column, and check which sequence that is on,
+    you will most likely get the correct answer.
+    
+    To do this, you need to first `cut` the relevant columns and then `sort`
+    specifically by the coordinate column (using the `-k` option).
+    </details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Exercise 3: Exploring the FASTQ files
+
+1. Navigate into the dir with FASTQ files from the Garrigos et al. data.
+
+2. How many reads does the file `ERR10802863_R1.fastq.gz` contain?
+
+3. Bonus: How many reads are in all R1 files combined?
+
+- Using the read length information in the FASTQ header,
+  create a count table of read lengths.
+
+zcat ERR10802863_R1.fastq.gz | grep @ | cut -d= -f2 | sort | uniq -c
+
+- Under the assumption that stretches of N's do not occur in the sequence quality
+  lines (which they don't, in this case),
+  count the number sequences that have at least 10 consecutive Ns.
+  
+- Compare this number with the number of 35-bp reads. What does this tell you?
+  With `grep -A1`, you can print the line _after_ each match.
+  Can you check what the 35-bp reads look like?
+  
+- How many reads contain the sequence `ACGT`?
+  (Again under the assumption that this does not occure in the sequence quality line.)
+
+- SOMETHING WITH COPY/MOVE/REMOVE?
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -85,15 +169,193 @@ grep "ENSMUSG00000033793" "$mus".gtf | cut -f3 | sort | uniq -c
 
 ### Exercise 1
 
-2.
+<hr style="height:1pt; visibility:hidden;" />
 
-The file has 408,402 lines:
+### Exercise 2
+
+<details><summary>\1. Navigate into the dir `garrigos-data/sandbox`</summary>
 
 ```bash
-[jelmer@cardinal-login01 ref]$ wc -l GCF_016801865.2.gtf 
-```
-```bash-out
-408402 GCF_016801865.2.gtf
+# (You should already be in /fs/ess/PAS2880/users/$USER/)
+cd garrigos-data/sandbox
 ```
 
+If you needed to also create the `sandbox` dir:
+
+```bash
+# (You should already be in /fs/ess/PAS2880/users/$USER/)
+mkdir garrigos-data/sandbox
+cd garrigos-data/sandbox
+```
+
+</details>
+
+<details><summary>\2. Copy the genome annotation file `garrigos-data/ref/GCF_016801865.2.gtf.gz`</summary>
+
+We use the `-v` option to make copy report what it's doing:
+
+```bash
+cp -v ../ref/GCF_016801865.2.gtf.gz annot.gtf.gz
+```
+```bash-out
+'../ref/GCF_016801865.2.gtf.gz' -> 'annot.gtf.gz'
+```
+</details>
+
+<details><summary>\3. Unzip (decompress) the GTF file</summary>
+
+- Check the file size:
+  
+  ```bash
+  ls -lh
+  ```
+  ```bash-out
+  -rw-rw----+ 1 jelmer PAS0471 5.1M Jul 14 18:55 annot.gtf.gz
+  ```
+  
+- Unzip:
+
+  ```bash
+  gunzip annot.gtf.gz
+  ```
+
+- Check the file size (and name) again:
+  
+  ```bash
+  ls -lh
+  ```
+  ```bash-out
+  -rw-rw----+ 1 jelmer PAS0471 123M Jul 14 18:55 annot.gtf
+  ```
+  
+- That's a pretty big difference, from 5.1 Mb to 123 Mb!
+  The amount of space saved by file compression varies a lot and depends on the
+  amount of repetition in the uncompressed file.
+  GTF files are highly repetitive, so relatively much space can be saved.
+
+</details>
+
+<details><summary>\4. How many lines does the GTF file contain?</summary>
+
+A simple line count tells you that the file has 408,402 lines:
+
+```bash
+wc -l annot.gtf 
+```
+```bash-out
+408402 annot.gtf 
+```
+</details>
+
+<details><summary>\5. Count the number of line in the GTF table.</summary>
+
+- Since the header lines contain a `#`, we will want to exclude those and then
+  count the resulting number of lines:
+
+  ```bash
+  grep -v "#" annot.gtf | wc -l
+  ```
+  ```bash-out
+  TBA
+  ```
+
+- The file has only 3 header lines, while the line count has decreased by 4.
+  Which other line has a `#`?
+
+  ```bash
+  grep -n "#" annot.gtf
+  ```
+  ```bash-out
+  TBA
+  ```
+
+  Looks like the last line is `##`!
+
+</details>
+
+<details><summary>\6. How many distinct sequences (scaffolds etc.) are represented in the annotation?</summary>
+
+```bash
+grep -v "#" annot.gtf | cut -f 1 | sort | uniq | wc -l
+```
+```bash-out
+TBA
+```
+
+</details>
+
+<details><summary>\7. Store the list of distinct sequences in the GTF in a file `scaffolds.txt`.</summary>
+
+```bash
+grep -v "#" annot.gtf | cut -f 1 | sort > scaffolds.txt
+```
+
+</details>
+
+<details><summary>\8. How many features are on the `+` strand and how many are on the `-` strand?</summary>
+
+```bash
+grep -v "#" annot.gtf | cut -f 7 | sort | uniq -c
+```
+```bash-out
+TBA
+```
+
+</details>
+
+<details><summary>\9. How many genes does the annotation contain?</summary>
+
+```bash
+grep -v "#" annot.gtf | cut -f 3 | sort | uniq -c
+```
+```bash-out
+TBA
+```
+
+You could also `grep` this list for `gene`:
+
+```bash
+grep -v "#" annot.gtf | cut -f 3 | sort | uniq -c | grep "gene"
+```
+```bash-out
+TBA
+```
+
+</details>
+
+<details><summary>\10. Create a count table of features for gene XXX</summary>
+
+```bash
+grep "XXX" annot.gtf | cut -f3 | sort | uniq -c
+```
+
+</details>
+
+<details><summary>\11. Create a start codon coordinate table</summary>
+
+```bash
+grep -v "#" annot.gtf | cut -f 1,4,5 > start_codons.tsv
+```
+</details>
+
+<details><summary>\12. Count the number of snRNAs in the annotation.</summary>
+
+Because the search pattern itself contains double quotes (`"`),
+the easiest way out is to use **single quotes** (`'`) around it:
+
+```bash
+grep -c 'gene_biotype "snRNA"' annot.gtf
+```
+</details>
+
+<details><summary>\13. Which sequence (scaffold) appears to be the largest one?</summary>
+
+```bash
+grep -v "#" annot.gtf | cut -f 1,5 | sort -k2nr | head
+```
+</details>
+
 <hr style="height:1pt; visibility:hidden;" />
+
+### Exercise 3
+

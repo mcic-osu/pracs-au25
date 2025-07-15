@@ -326,7 +326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-unix-philosophy" id="toc-the-unix-philosophy" class="nav-link" data-scroll-target="#the-unix-philosophy"><span class="header-section-number">4.5</span> The Unix philosophy</a></li>
   </ul></li>
   </ul>
-<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w3_overview.html"><i class="bi bi-book"></i>Week 3 overview</a></li><li><a href="w3_exercises.html"><i class="bi bi-pencil"></i>Week 3 exercises</a></li><li><a href="w3_1_shellfiles.html"><i class="bi bi-bookmarks"></i>w3-1: Shell files I</a></li><li><a href="../bonus/shell-data.html"><i class="bi bi-book"></i>Bonus: Unix data tools II</a></li><li><a href="../bonus/shell.html"><i class="bi bi-book"></i>Bonus: Advanced shell</a></li></ul></div></nav>
+<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w3_overview.html"><i class="bi bi-book"></i>Week 3 overview</a></li><li><a href="w3_exercises.html"><i class="bi bi-pencil"></i>Week 3 exercises</a></li><li><a href="w3_1_shellfiles.html"><i class="bi bi-bookmarks"></i>w3-1: Shell files I</a></li><li><a href="../bonus/shell-data.html"><i class="bi bi-book"></i>Bonus: Unix data tools II</a></li><li><a href="../bonus/shell.html"><i class="bi bi-book"></i>Bonus: Misc. advanced shell</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -525,7 +525,7 @@ When it comes to FASTQ files, no need to decompress
 <ul>
 <li>Uncompressed files take up several times as much disk storage space as compressed ones</li>
 <li>Almost any bioinformatics tool accepts compressed FASTQ files</li>
-<li>You <em>can</em> actually view these files while they are in compressed form, as shown below.</li>
+<li>You <em>can</em> actually view these files while they are in compressed form, as shown below with <code>less</code>. Additionally, <code>cat</code> and several other commands have a counterpart for compressed files: in the case of <code>cat</code>, that’s <code>zcat</code>.</li>
 </ul>
 </div>
 </div>
@@ -756,10 +756,32 @@ Additional <code>grep</code> tips
 <li><code>grep</code> has many other useful options, such as:
 <ul>
 <li><code>-i</code> to ignore case when searching</li>
-<li><code>-r</code> to search files recursively (note that even without <code>-r</code>, it can operate on multiple files)</li>
 <li><code>-w</code> to make a pattern match whole “words” only</li>
+<li><code>-n</code> print the line number for each matching line</li>
+<li><code>-A &lt;n&gt;</code> and <code>-B &lt;n&gt;</code> to print <code>n</code> lines after and before each match</li>
+<li><code>-r</code> to search files recursively (note that even without <code>-r</code>, it can operate on multiple files)</li>
 </ul></li>
 </ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Operating on compressed files
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>zgrep</code></li>
+<li><code>zcat X | grep</code></li>
+</ul>
+<p>TBA</p>
 </div>
 </div>
 </div>
@@ -785,7 +807,7 @@ Additional <code>grep</code> tips
 10dpi
 10dpi</code></pre>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -794,7 +816,7 @@ Selecting multiple columns and specifying the delimiter with <code>cut</code> <e
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>To select <strong>multiple columns</strong>, use a range or comma-delimited list:</p>
 <div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f</span> 1,3 metadata.tsv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -876,7 +898,7 @@ relictum</code></pre>
       7 cathemerium</code></pre>
 <hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -885,7 +907,7 @@ Sorting based on one or more columns <em>(Click to expand)</em>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Above, we used <code>sort</code> to simply sort a list. More generally, by default, <code>sort</code> will sort based on the entire contents of a line. To sort based on one or more columns, like you’ve likely done in Excel, use the <code>-k</code> option — for example:</p>
 <div class="sourceCode" id="cb62"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort based on the third column:</span></span>
@@ -921,7 +943,7 @@ Sorting based on one or more columns <em>(Click to expand)</em>
 <div class="sourceCode" id="cb65"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this - for illustration only]</span></span>
 <span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> fastq/<span class="pp">*</span>R1.fastq.gz <span class="op">&gt;</span> all_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -930,7 +952,7 @@ The above will even produce a valid compressed FASTQ file, because:
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse show">
+<div id="callout-9" class="callout-9-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <ul>
 <li>FASTQ files can (in principle) be concatenated freely since every read is a “stand-alone” unit of 4 lines.</li>
@@ -942,7 +964,7 @@ The above will even produce a valid compressed FASTQ file, because:
 <p>If you want to learn more about these and other Unix data tools, take a look at <a href="../bonus/shell-data.html">this optional reading page on them</a>.</p>
 <hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -951,7 +973,7 @@ Don’t redirect back to the input file!
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse show">
+<div id="callout-10" class="callout-10-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <p>You should never redirect the output of Unix commands “back” to the input file. This will corrupt the input file because of how Unix commands stream input and output line-by-line.</p>
 <p>Therefore, if you really want to edit/overwrite the original file instead of creating a separate edited copy, you will need multiple steps: first produce a separate copy and then rename that. For example:</p>
