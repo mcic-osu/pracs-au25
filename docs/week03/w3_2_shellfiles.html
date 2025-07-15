@@ -56,7 +56,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -77,6 +97,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/bootstrap/bootstrap-572447b12a4ba05daececfcf0fd287fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -147,18 +170,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week04/w4_overview.html">
  <span class="dropdown-text">Week 4: Version control with Git and GitHub</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="../week05/w5_overview.html">
- <span class="dropdown-text">Week 5: Data and software management at OSC</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../week06/w6_overview.html">
- <span class="dropdown-text">Week 6: Shell scripts and CLI tools</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../week07/w7_overview.html">
- <span class="dropdown-text">Week 7: Slurm batch jobs at OSC</span></a>
-  </li>  
+        <li class="dropdown-header">Week 5: Data and software management at OSC</li>
+        <li class="dropdown-header">Week 6: Shell scripts and CLI tools</li>
+        <li class="dropdown-header">Week 7: Slurm batch jobs at OSC</li>
         <li class="dropdown-header">Week 8: Using generative AI when coding</li>
         <li class="dropdown-header">Week 9: Automated pipelines with Nextflow</li>
         <li class="dropdown-header">Week 10: Building Nextflow pipelines</li>
@@ -197,7 +211,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week02/w2_ga_markdown.html">
  <span class="dropdown-text">1. Week 2: Markdown and Unix shell basics</span></a>
   </li>  
-        <li class="dropdown-header">2. Week 4: Version control with Git and GitHub</li>
+        <li>
+    <a class="dropdown-item" href="../week04/w4_ga_git.html">
+ <span class="dropdown-text">2. Week 4: Version control with Git and GitHub</span></a>
+  </li>  
         <li class="dropdown-header">3. Week 6: Shell scripting</li>
         <li class="dropdown-header">4. Week 8: Slurm batch jobs</li>
         <li class="dropdown-header">5. Week 10: Nextflow</li>
@@ -273,7 +290,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
     <div class="dropdown">
-      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="The GitHub repo for this website"><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
           <li>
             <a class="dropdown-item quarto-navbar-tools-item" href="https://github.com/mcic-osu/pracs-au25">
@@ -592,13 +609,13 @@ FASTQ format recap <em>(Click to expand)</em>
 <p>Recall that in a FASTQ file, <strong>each read has four lines</strong>, and reads are simply printed back-to-back:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/fastq_dark.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%"></p>
+<p><a href="../img/fastq_dark.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="../img/fastq_dark.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="A screenshot of 8 lines of a FASTQ file."></a></p>
 </figure>
 </div>
-<p>The above screenshot is from one of the Garrigos et al.&nbsp;FASTQ files, which were downloaded from the NCBI Sequence Read Archive (SRA). When you receive FASTQ files from a sequencer, the header may have a lot more information, such as shown below for Illumina:</p>
+<p>The above screenshot is from one of the <span class="citation" data-cites="garrigós2023">Garrigós et al. (<a href="#ref-garrigós2023" role="doc-biblioref">2023</a>)</span> FASTQ files, which were downloaded from the NCBI Sequence Read Archive (SRA). When you receive FASTQ files from a sequencer, the header may have a lot more information, such as shown below for Illumina:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/fastq_header.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+<p><a href="../img/fastq_header.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="../img/fastq_header.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="A screenshot of 8 lines of a FASTQ file, with more information in the header than the previous one."></a></p>
 </figure>
 </div>
 </div>
@@ -1097,11 +1114,16 @@ NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_i
 </div>
 
 
+
 </section>
 </section>
 
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-garrigós2023" class="csl-entry" role="listitem">
+Garrigós, Marta, Guillem Ylla, Josué Martínez-de la Puente, Jordi Figuerola, and María José Ruiz-López. 2023. <span>“Two Avian Plasmodium Species Trigger Different Transcriptional Responses on Their Vector Culex Pipiens.”</span> <em>Molecular Ecology</em> n/a (n/a): e17240. <a href="https://doi.org/10.1111/mec.17240">https://doi.org/10.1111/mec.17240</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
 <li id="fn1"><p> Except, e.g., when you use a shell variable within your search pattern.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -1538,7 +1560,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/mcic-osu/pracs-au25">
-      <i class="bi bi-github" role="img">
+      <i class="bi bi-github" role="img" aria-label="The GitHub repo for this website">
 </i> 
     </a>
   </li>  
@@ -1546,6 +1568,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

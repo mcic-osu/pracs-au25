@@ -77,6 +77,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/bootstrap/bootstrap-572447b12a4ba05daececfcf0fd287fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -147,18 +150,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week04/w4_overview.html">
  <span class="dropdown-text">Week 4: Version control with Git and GitHub</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="../week05/w5_overview.html">
- <span class="dropdown-text">Week 5: Data and software management at OSC</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../week06/w6_overview.html">
- <span class="dropdown-text">Week 6: Shell scripts and CLI tools</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../week07/w7_overview.html">
- <span class="dropdown-text">Week 7: Slurm batch jobs at OSC</span></a>
-  </li>  
+        <li class="dropdown-header">Week 5: Data and software management at OSC</li>
+        <li class="dropdown-header">Week 6: Shell scripts and CLI tools</li>
+        <li class="dropdown-header">Week 7: Slurm batch jobs at OSC</li>
         <li class="dropdown-header">Week 8: Using generative AI when coding</li>
         <li class="dropdown-header">Week 9: Automated pipelines with Nextflow</li>
         <li class="dropdown-header">Week 10: Building Nextflow pipelines</li>
@@ -197,7 +191,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week02/w2_ga_markdown.html">
  <span class="dropdown-text">1. Week 2: Markdown and Unix shell basics</span></a>
   </li>  
-        <li class="dropdown-header">2. Week 4: Version control with Git and GitHub</li>
+        <li>
+    <a class="dropdown-item" href="../week04/w4_ga_git.html">
+ <span class="dropdown-text">2. Week 4: Version control with Git and GitHub</span></a>
+  </li>  
         <li class="dropdown-header">3. Week 6: Shell scripting</li>
         <li class="dropdown-header">4. Week 8: Slurm batch jobs</li>
         <li class="dropdown-header">5. Week 10: Nextflow</li>
@@ -273,7 +270,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
     <div class="dropdown">
-      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="The GitHub repo for this website"><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
           <li>
             <a class="dropdown-item quarto-navbar-tools-item" href="https://github.com/mcic-osu/pracs-au25">
@@ -647,7 +644,11 @@ Sun Mon Tue Wed Thu Fri Sat   Sun Mon Tue Wed Thu Fri Sat
 </ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/w2-3_command-structure.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/w2-3_command-structure.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Command structure visualization. Note that unfortunately, the most common way to refer to this entire line is also “command”. Therefore, the term “command” can either refer to just a command like cal or what a command-line expression that includes options and arguments like cal -j 2020."><img src="../img/w2-3_command-structure.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%" alt="A diagram showing the structure of a command."></a></p>
+</figure>
+</div>
 <figcaption><strong>Command structure visualization</strong>.<br>Note that unfortunately, the most common way to refer to this entire line is also “command”. Therefore, the term “command” can either refer to just a command like <code>cal</code> <strong>or</strong> what a command-line expression that includes options and arguments like <code>cal -j 2020</code>.</figcaption>
 </figure>
 </div>
@@ -1479,7 +1480,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/mcic-osu/pracs-au25">
-      <i class="bi bi-github" role="img">
+      <i class="bi bi-github" role="img" aria-label="The GitHub repo for this website">
 </i> 
     </a>
   </li>  
@@ -1487,6 +1488,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

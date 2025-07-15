@@ -22,7 +22,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -43,6 +63,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/bootstrap/bootstrap-572447b12a4ba05daececfcf0fd287fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -113,18 +136,9 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../week04/w4_overview.html">
  <span class="dropdown-text">Week 4: Version control with Git and GitHub</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="../week05/w5_overview.html">
- <span class="dropdown-text">Week 5: Data and software management at OSC</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../week06/w6_overview.html">
- <span class="dropdown-text">Week 6: Shell scripts and CLI tools</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../week07/w7_overview.html">
- <span class="dropdown-text">Week 7: Slurm batch jobs at OSC</span></a>
-  </li>  
+        <li class="dropdown-header">Week 5: Data and software management at OSC</li>
+        <li class="dropdown-header">Week 6: Shell scripts and CLI tools</li>
+        <li class="dropdown-header">Week 7: Slurm batch jobs at OSC</li>
         <li class="dropdown-header">Week 8: Using generative AI when coding</li>
         <li class="dropdown-header">Week 9: Automated pipelines with Nextflow</li>
         <li class="dropdown-header">Week 10: Building Nextflow pipelines</li>
@@ -163,7 +177,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../week02/w2_ga_markdown.html">
  <span class="dropdown-text">1. Week 2: Markdown and Unix shell basics</span></a>
   </li>  
-        <li class="dropdown-header">2. Week 4: Version control with Git and GitHub</li>
+        <li>
+    <a class="dropdown-item" href="../week04/w4_ga_git.html">
+ <span class="dropdown-text">2. Week 4: Version control with Git and GitHub</span></a>
+  </li>  
         <li class="dropdown-header">3. Week 6: Shell scripting</li>
         <li class="dropdown-header">4. Week 8: Slurm batch jobs</li>
         <li class="dropdown-header">5. Week 10: Nextflow</li>
@@ -239,7 +256,7 @@ ul.task-list li input[type="checkbox"] {
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
     <div class="dropdown">
-      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="The GitHub repo for this website"><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
           <li>
             <a class="dropdown-item quarto-navbar-tools-item" href="https://github.com/mcic-osu/pracs-au25">
@@ -392,7 +409,11 @@ ul.task-list li input[type="checkbox"] {
 <p>For example:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/proj-dirs-1.svg" class="img-fluid figure-img" style="width:60.0%"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/proj-dirs-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Two research project folder hierarchies, nicely separated and self-contained. (The $HOME folder represents your personal Home folder.)"><img src="../img/proj-dirs-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%" alt="A diagram showing two research project folder hierarchies."></a></p>
+</figure>
+</div>
 <figcaption>Two research project folder hierarchies, nicely separated and self-contained.<br>(The <code>$HOME</code> folder represents your personal Home folder.)</figcaption>
 </figure>
 </div>
@@ -419,7 +440,7 @@ How to define and separate projects in more complicated scenarios? <em>(Click to
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>From <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510">Wilson et al.&nbsp;2017 - Good Enough Practices in Scientific Computing</a>:</p>
+<p>From <span class="citation" data-cites="wilson2017">Wilson et al. (<a href="#ref-wilson2017" role="doc-biblioref">2017</a>)</span>:</p>
 <blockquote class="blockquote">
 <p><em>As a rule of thumb, divide work into projects based on the overlap in data and code files:</em></p>
 <ul>
@@ -433,14 +454,22 @@ How to define and separate projects in more complicated scenarios? <em>(Click to
 <p>To access files outside of the project (e.g., shared across projects), it is easiest to create <strong>links</strong> to these files:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/proj-dirs-4.svg" class="img-fluid figure-img" style="width:50.0%"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/proj-dirs-4.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="The data is located in project1 but used in both projects. project2 contains a link to the data."><img src="../img/proj-dirs-4.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%" alt="A diagram showing two research project folder hierarchies, with the data folder from one project being linked to the other project."></a></p>
+</figure>
+</div>
 <figcaption>The data is located in <code>project1</code> but used in both projects.<br><code>project2</code> contains a link to the data.</figcaption>
 </figure>
 </div>
 <p>But shared data or scripts are generally better stored in separate dirs, and then linked to by each project using them:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/proj-dirs-5.svg" class="img-fluid figure-img" style="width:50.0%"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/proj-dirs-5.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Now, the data is in it’s own top-level dir, with links to it in both projects."><img src="../img/proj-dirs-5.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%" alt="A diagram showing two research project folder hierarchies, with a separate shared-data folder that is linked to both projects."></a></p>
+</figure>
+</div>
 <figcaption>Now, the data is in it’s own top-level dir, with links to it in both projects.</figcaption>
 </figure>
 </div>
@@ -448,7 +477,11 @@ How to define and separate projects in more complicated scenarios? <em>(Click to
 <p>A more portable method is to <strong>keep shared (multi-project) files online</strong> — this is especially feasible for <strong>scripts</strong> under version control:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/proj-dirs-6.svg" class="img-fluid figure-img" style="width:70.0%"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/proj-dirs-6.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="A set of scripts shared by two projects is stored in an online repository like at GitHub."><img src="../img/proj-dirs-6.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="A diagram showing two research project folder hierarchies, both of which have a connection to an online script repository."></a></p>
+</figure>
+</div>
 <figcaption>A set of scripts shared by two projects is stored in an online repository like at GitHub.</figcaption>
 </figure>
 </div>
@@ -490,7 +523,11 @@ Treatment of data versus results
 <p>Here is one good way of organizing project files with a set of top-level folders and some standard documentation files:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/proj-ex-annot_2025.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/proj-ex-annot_2025.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="In this example project folder hierarchy, the hierarchical folder structure is indicated with lines and indentation: the root (top-level) project folder is my-project, which e.g.&nbsp;contains the data folder that in turn contains other folders. Folders are shown in blue and files in white."><img src="../img/proj-ex-annot_2025.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="A screenshot showing an example research project folder hierarchy."></a></p>
+</figure>
+</div>
 <figcaption>In this example project folder hierarchy, the hierarchical folder structure is indicated with lines and indentation: the root (top-level) project folder is <code>my-project</code>, which e.g.&nbsp;contains the <code>data</code> folder that in turn contains other folders. Folders are shown in blue and files in white.</figcaption>
 </figure>
 </div>
@@ -501,14 +538,22 @@ Treatment of data versus results
 <div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/proj-ex-results1_2025.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/proj-ex-results1_2025.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="An example showing subfolders within results mostly organized by the software that produced the results. Separate runs for MultiQC are grouped into further subfolders by date."><img src="../img/proj-ex-results1_2025.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%" alt="A screenshot showing an example Results folder in a research project folder, with separate runs for MultiQC grouped into subfolders using dates."></a></p>
+</figure>
+</div>
 <figcaption><em>An example showing subfolders within <code>results</code> mostly organized by the software that produced the results. Separate runs for MultiQC are grouped into further subfolders by date.</em></figcaption>
 </figure>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/proj-ex-results2_2025.png" class="img-fluid figure-img" style="width:64.0%"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/proj-ex-results2_2025.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Like the example on the left, but here, separate runs for MultiQC are grouped into subfolders using a description."><img src="../img/proj-ex-results2_2025.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:64.0%" alt="Another screenshot showing an example research project folder hierarchy, with separate runs for MultiQC grouped into subfolders using a description."></a></p>
+</figure>
+</div>
 <figcaption>Like the example on the left, but here, separate runs for MultiQC are grouped into subfolders using a description.</figcaption>
 </figure>
 </div>
@@ -563,7 +608,7 @@ Some alternative file organization and naming options <em>(Click to expand)</em>
 <section id="avoid-manual-editing-of-data-and-results" class="level3" data-number="3.3">
 <h3 data-number="3.3" class="anchored" data-anchor-id="avoid-manual-editing-of-data-and-results"><span class="header-section-number">3.3</span> Avoid manual editing of data and results</h3>
 <p>As mentioned above, once they have been produced, <strong>raw data files should never be edited</strong>. Instead, any data processing or even correction should be done with <em>separate copies</em> of the data.</p>
-<p>You should avoid <strong><em>manually</em> editing any data and results files</strong>. Instead, such editing should be done using code. As <a href="https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3002815">Abdill et al.&nbsp;(2024)</a> explain:</p>
+<p>You should avoid <strong><em>manually</em> editing any data and results files</strong>. Instead, such editing should be done using code. As <span class="citation" data-cites="abdill2024">Abdill, Talarico, and Grieneisen (<a href="#ref-abdill2024" role="doc-biblioref">2024</a>)</span> explain:</p>
 <blockquote class="blockquote">
 <p>For example, if script A processes raw data into a table of gene expression levels, and script B summarizes this table by pathway, we should be concerned if there is a step after script A that requires a user to open the table and edit fields by hand to prepare the data for script B. Such quick fixes can be tempting, but they also add risk: A researcher could easily add a typo, corrupt a file in unexpected ways, or forget the step altogether.</p>
 </blockquote>
@@ -605,7 +650,7 @@ Some alternative file organization and naming options <em>(Click to expand)</em>
 <p>While machine-readability in file names is important, this should not go at the expense of human readability. For example:</p>
 <blockquote class="blockquote">
 <p><em>“Name all files to reflect their content or function.</em> <em>For example, use names such as bird_count_table.csv, manuscript.md,</em> <em>or sightings_analysis.py.</em>”<br>
-— <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510">Wilson et al.&nbsp;2017</a></p>
+— <span class="citation" data-cites="wilson2017">Wilson et al. (<a href="#ref-wilson2017" role="doc-biblioref">2017</a>)</span></p>
 </blockquote>
 <p>Not only are the above file names informative, they are also readable by virtue of having words separated by an underscore <kbd>_</kbd>. That is, just because you shouldn’t use spaces in file names, doesn’t mean you should name your files like <code>firstattemptatthissequenceanalysis.R</code>!</p>
 <p>Along these lines, there are multiple reasonable methods, but here is one good way that I would recommend:</p>
@@ -702,14 +747,22 @@ preprocess-02_multiqc.sh</code></pre>
 <div class="column">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/oneil_filesystem_ex2.png" class="img-fluid figure-img" style="width:95.0%"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/oneil_filesystem_ex2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Example dir structure on a Mac computer, from O’Neil 2017"><img src="../img/oneil_filesystem_ex2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:95.0%" alt="A diagram of an example dir structure on a Mac computer."></a></p>
+</figure>
+</div>
 <figcaption>Example dir structure on a Mac computer, from <a href="https://open.oregonstate.education/computationalbiology/chapter/the-command-line-and-filesystem/">O’Neil 2017</a></figcaption>
 </figure>
 </div>
 </div><div class="column">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/osc_dirstructure.png" class="img-fluid figure-img" style="width:89.0%"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/osc_dirstructure.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Key directories in OSC’s dir structure"><img src="../img/osc_dirstructure.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:89.0%" alt="A diagram of the high-level dir structure at OSC."></a></p>
+</figure>
+</div>
 <figcaption>Key directories in OSC’s dir structure</figcaption>
 </figure>
 </div>
@@ -822,14 +875,22 @@ Why all this talk of paths? <em>When you code, you always use paths to refer to 
 <hr style="height:1pt; visibility:hidden;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/proj-dirs-2.svg" class="img-fluid figure-img" style="width:70.0%"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/proj-dirs-2.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="Two project dir hierarchies, and the absolute and relative path to a FASTQ file. The relative path starts from the relevant project’s top-level dir, which is good-practice."><img src="../img/proj-dirs-2.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="A diagram of two project dir hierarchies."></a></p>
+</figure>
+</div>
 <figcaption>Two project dir hierarchies, and the absolute and relative path to a FASTQ file.<br>The relative path starts from the relevant project’s top-level dir, which is good-practice.</figcaption>
 </figure>
 </div>
 <hr style="height:1pt; visibility:hidden;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/proj-dirs-3.svg" class="img-fluid figure-img" style="width:70.0%"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/proj-dirs-3.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="Both projects were moved into Dropbox. The absolute path to the FASTQ file has changed, but the relative path from the project’s top-level dir remains the same."><img src="../img/proj-dirs-3.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="A diagram of two project dir hierarchies."></a></p>
+</figure>
+</div>
 <figcaption>Both projects were moved into <code>Dropbox</code>.<br>The absolute path to the FASTQ file has changed,<br>but the relative path from the project’s top-level dir remains the same.</figcaption>
 </figure>
 </div>
@@ -920,7 +981,7 @@ Using multiple README files
 <p>In the project folder example above, this file was <code>doc/workflow.md</code>. Let’s take another look at that image:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/proj-ex-annot_2025.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+<p><a href="../img/proj-ex-annot_2025.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img src="../img/proj-ex-annot_2025.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%" alt="An annotated screenshot of a recommended project dir hierarchy."></a></p>
 </figure>
 </div>
 </section>
@@ -954,11 +1015,19 @@ In closing
 <p><br></p>
 
 
+
 </section>
 </section>
 
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-abdill2024" class="csl-entry" role="listitem">
+Abdill, Richard J., Emma Talarico, and Laura Grieneisen. 2024. <span>“A How-to Guide for Code Sharing in Biology.”</span> <em>PLOS Biology</em> 22 (9): e3002815. <a href="https://doi.org/10.1371/journal.pbio.3002815">https://doi.org/10.1371/journal.pbio.3002815</a>.
+</div>
+<div id="ref-wilson2017" class="csl-entry" role="listitem">
+Wilson, Greg, Jennifer Bryan, Karen Cranston, Justin Kitzes, Lex Nederbragt, and Tracy K. Teal. 2017. <span>“Good Enough Practices in Scientific Computing.”</span> <em>PLOS Computational Biology</em> 13 (6): e1005510. <a href="https://doi.org/10.1371/journal.pcbi.1005510">https://doi.org/10.1371/journal.pcbi.1005510</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
 <li id="fn1"><p> But Windows uses backslashes (<code>\</code>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -1395,7 +1464,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/mcic-osu/pracs-au25">
-      <i class="bi bi-github" role="img">
+      <i class="bi bi-github" role="img" aria-label="The GitHub repo for this website">
 </i> 
     </a>
   </li>  
@@ -1403,6 +1472,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

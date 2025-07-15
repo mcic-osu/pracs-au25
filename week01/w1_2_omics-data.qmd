@@ -23,13 +23,14 @@ format:
     toc-title: Overview
 editor_options: 
   chunk_output_type: console
+bibliography: ../references.bib
 ---
 
 # An overview of omics data {background-color="dimgray"}
 
 ## The main omics data types
 
-![](../img/fisher_omics.avif){fig-align="center" width="70%"}
+![](../img/fisher_omics.avif){fig-align="center" width="70%" fig-alt="A diagram showing the main omics data types." .lightbox}
 
 ::: legend2
 Copyright [ThermoFisher](https://www.thermofisher.com/us/en/home/brands/thermo-scientific/molecular-biology/molecular-biology-learning-center/molecular-biology-resource-library/spotlight-articles/supporting-multi-omics-approaches.html)
@@ -105,7 +106,7 @@ and these are usually randomly selected
 
 ## Sequencing cost through time
 
-![https://www.genome.gov/about-genomics/fact-sheets/Sequencing-Human-Genome-cost](../img/2022_Sequencing_cost_per_Human_Genome.jpg)
+![https://www.genome.gov/about-genomics/fact-sheets/Sequencing-Human-Genome-cost](../img/2022_Sequencing_cost_per_Human_Genome.jpg){fig-align="center" fig-alt="A graph showing falling sequenicng costs over time." .lightbox}}
 
 ## Examples of HTS applications
 
@@ -137,7 +138,7 @@ and these are usually randomly selected
 
 ## HTS applications (cont.)
 
-![](../img/lee2013.gif){fig-align="center" width="73%"}
+![](../img/lee2013.gif){fig-align="center" width="73%" fig-alt="An annotated diagram of omics data types and associated molecular components." .lightbox}
 
 ## Examples of HTS data analyses
 
@@ -235,7 +236,7 @@ these fragments **number in the millions or billions** and are
 
 . . .
 
-![](../img/library_prep.png){fig-align="center"}
+![](../img/library_prep.png){fig-align="center" fig-alt="A diagram showing the main Illumina library preparation steps." .lightbox}
 
 ::: legend2
 An overview of the **library prep** procedure.
@@ -250,7 +251,7 @@ make up the "**adapters**":
 
 <br>
 
-![](../img/adapters2.png){fig-align="center"}
+![](../img/adapters2.png){fig-align="center" fig-alt="A diagram of DNA fragment in a prepared library, with adapters flanking the fragment." .lightbox}
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -266,7 +267,7 @@ i.e. into a single tube.
 DNA fragments can be sequenced from both ends as shown below —   
 this is called **"paired-end" (PE) sequencing**:
 
-![](../img/pairedend.png){fig-align="center"}
+![](../img/pairedend.png){fig-align="center" fig-alt="A diagram showing forward and reverse reads in paired-end sequencing." .lightbox}
 
 . . .
 
@@ -274,7 +275,7 @@ this is called **"paired-end" (PE) sequencing**:
 
 When sequencing is instead **single-end (SE)**, no reverse read is produced:
 
-![](../img/singleend.png){fig-align="center"}
+![](../img/singleend.png){fig-align="center" fig-alt="A diagram showing the forward read in single-end sequencing." .lightbox}
 
 ## Insert size variation
 
@@ -284,14 +285,14 @@ In some cases, it is:
 
 - Shorter than the *combined* read length, leading to **overlapping reads** (this can be useful):
 
-![](../img/insert_size_overlap.png){fig-align="center" width="70%"}
+![](../img/insert_size_overlap.png){fig-align="center" width="70%" fig-alt="A diagram illustrating the scenario when the DNA fragment is shorter than the combined read length" .lightbox}
 
 . . .
 
 - Shorter than the *single* read length, leading to "**adapter read-through**"
   (i.e., the ends of the resulting reads will consist of adapter sequence, which should be removed):
 
-![](../img/insert_size_adapter-read-through.png){fig-align="center" width="58%"}
+![](../img/insert_size_adapter-read-through.png){fig-align="center" width="58%" fig-alt="A diagram illustrating the scenario when the DNA fragment is shorter than the single read length" .lightbox}
 
 # Reference genomes {background-color="dimgray"}
 
@@ -325,6 +326,35 @@ E.g., if you work with maize, you want a _Zea mays_ reference genome. But:
 
 - If needed, it is often possible to work with reference genomes of closely related species
 - Conversely, multiple reference genomes may exist, e.g. for different subspecies
+:::
+
+## Genomes
+
+Many HTS applications either **require a "reference genome"** **or involve its production.**
+
+<hr style="height:1pt; visibility:hidden;" />
+
+What exactly does "reference genome" refer to? It usually includes:
+
+- **An assembly**\
+  A representation of most or all of the genome DNA sequence: the genome assembly
+
+- **An annotation**\
+  This provides, for example, the *locations of genes and other genomic features*
+  in the corresponding genome assembly,
+  as well as functional information on these features
+
+<hr style="height:1pt; visibility:hidden;" />
+
+:::callout-warning
+#### Chromosomes, scaffolds, and contigs
+
+Nearly all genome assemblies are incomplete and fragmented to some extent.
+Therefore, in addition to complete chromosome sequences, they may contain:
+
+- **Contigs**: contiguous stretches of assembled sequence
+- **Scaffolds**: a collection of multiple contigs known to occur on the same chromosome,
+  but with gaps (often of unknown length) between them.
 :::
 
 # Sequence file types {background-color="dimgray"}
@@ -397,7 +427,7 @@ which contain, respectively:
 3.  A **`+`** (plus sign)
 4.  One-character **quality scores** for each base (hence FASTQ as in "Q" for "quality")
 
-![](../img/fastq_dark.png){fig-align="center" width="100%"}
+![](../img/fastq_dark.png){fig-align="center" width="100%" fig-alt="An annotated screenshot of two reads in a FASTQ file." .lightbox}
 
 ## FASTQ quality scores
 
@@ -494,11 +524,13 @@ NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_i
 ## Garrigos et al. 2023
 
 Throughout the course, we will use an example/practice data set,
-which is from the paper
-"*Two avian Plasmodium species trigger different transcriptional responses on their vector Culex pipiens*",
-published in 2023 in Molecular Ecology ([link](https://doi.org/10.1111/mec.17240)):
+which is from the paper:
 
-![](../img/garrigos_paper.png){fig-align="center" width="80%"}
+@garrigós2023 --
+*Two avian Plasmodium species trigger different transcriptional responses on their vector Culex pipiens*
+([link](https://doi.org/10.1111/mec.17240)):
+
+![](../img/garrigos_paper.png){fig-align="center" width="80%" fig-alt="A screenshot of the paper's front matter." .lightbox}
 
 ## Experimental design
 
@@ -533,7 +565,7 @@ All in all, our set of files consists of:
 
 ## Analysis steps
 
-![](../img/rnaseq-analysis-steps.png){fig-align="center" width="100%"}
+![](../img/rnaseq-analysis-steps.png){fig-align="center" width="100%" fig-alt="A diagram showing the steps in an RNA-Seq analysis pipeline." .lightbox}
 
 # Questions? {background-color="dimgray"}
 
@@ -545,28 +577,28 @@ All in all, our set of files consists of:
 
 ## Sequencing technology development timeline
 
-![](../img/seq_timeline2.png){fig-align="center" width="70%"}
+![](../img/seq_timeline2.png){fig-align="center" width="70%" fig-alt="A graphical overview of developments in sequencing technology over time" .lightbox}
 
 ::: legend2
-Modified after [Pereira et al. 2020](www.ncbi.nlm.nih.gov/pmc/articles/PMC7019349)
+Modified after @pereira2020
 :::
 
 ## The sequencing process: Illumina
 
-![](../img/Poinsignon2023_sequencing-process_illumina.png){fig-align="center" width="100%"}
+![](../img/Poinsignon2023_sequencing-process_illumina.png){fig-align="center" width="100%" fig-alt="A figure with an overview of the Illumina sequencing process." .lightbox}
 
 ::: legend2
-From [Poinsignon et al. 2023](https://link-springer-com.proxy.lib.ohio-state.edu/protocol/10.1007/978-1-0716-3195-9_10)
+From @poinsignon2023
 :::
 
 ## The sequencing process: Oxford Nanopore
 
 <br>
 
-![](../img/Poinsignon2023_sequencing-process_ont.png){fig-align="center" width="100%"}
+![](../img/Poinsignon2023_sequencing-process_ont.png){fig-align="center" width="100%" fig-alt="A figure with an overview of the Oxford Nanopore sequencing process." .lightbox}
 
 ::: legend2
-From [Poinsignon et al. 2023](https://link-springer-com.proxy.lib.ohio-state.edu/protocol/10.1007/978-1-0716-3195-9_10)
+From @poinsignon2023
 :::
 
 ## Correcting sequencing errors
@@ -575,7 +607,7 @@ To attempt to infer the correct sequence,
 it is common to sequence every base multiple times,
 i.e. having a so-called "**depth of coverage**" greater than 1:
 
-![](../img/coverage2.jpg){fig-align="center" width="40%"}
+![](../img/coverage2.jpg){fig-align="center" width="40%" fig-alt="A diagram illustraing the concept of depth of coverage." .lightbox}
 
 . . .
 
@@ -587,8 +619,11 @@ i.e. having a so-called "**depth of coverage**" greater than 1:
 
 ## Genome size variation
 
-![<https://en.wikipedia.org/wiki/Genome_size>](../img/Genome_Sizes.png){fig-align="center" width="65%"}
+![<https://en.wikipedia.org/wiki/Genome_size>](../img/Genome_Sizes.png){fig-align="center" width="65%" fig-alt="A graph illustrating genome size differences among major taxonomic groups." .lightbox}
 
 ## Growth of genome databases
 
-![[Konkel & Slot 2023](https://www.biorxiv.org/content/10.1101/2023.09.08.556886v1)](../img/genomes_genbank.png){fig-align="center" width="75%"}
+![[Konkel & Slot 2023](https://www.biorxiv.org/content/10.1101/2023.09.08.556886v1)](../img/genomes_genbank.png){fig-align="center" width="75%" fig-alt="A graph showing the rapid increase in data in genome databases." .lightbox}
+
+## References
+

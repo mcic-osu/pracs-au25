@@ -25,6 +25,7 @@ other-links:
     href: w2_3_shell.html
 editor_options: 
   chunk_output_type: console
+bibliography: ../references.bib
 ---
 
 --------------------------------------------------------------------------------
@@ -88,7 +89,7 @@ you should not store files associated with one project scattered across a comput
 
 For example:
 
-![Two research project folder hierarchies, nicely separated and self-contained.<br>(The `$HOME` folder represents your personal Home folder.)](../img/proj-dirs-1.svg){fig-align="center" width="60%"}
+![Two research project folder hierarchies, nicely separated and self-contained.<br>(The `$HOME` folder represents your personal Home folder.)](../img/proj-dirs-1.svg){fig-align="center" width="60%" fig-alt="A diagram showing two research project folder hierarchies." .lightbox}
 
 Another way to look at this is that for a given research project,
 you should be able to pinpoint a specific folder,
@@ -107,7 +108,7 @@ When you have a single directory hierarchy for each project, it is easier to:
 ::: {.callout-note collapse="true"}
 #### How to define and separate projects in more complicated scenarios? _(Click to expand)_
 
-From [Wilson et al. 2017 - Good Enough Practices in Scientific Computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510):
+From @wilson2017:
 
 > *As a rule of thumb, divide work into projects based on the overlap in data and code files:*
 >
@@ -125,12 +126,12 @@ From [Wilson et al. 2017 - Good Enough Practices in Scientific Computing](https:
 To access files outside of the project (e.g., shared across projects),
 it is easiest to create **links** to these files:
 
-![The data is located in `project1` but used in both projects.<br>`project2` contains a link to the data.](../img/proj-dirs-4.svg){fig-align="center" width="50%"}
+![The data is located in `project1` but used in both projects.<br>`project2` contains a link to the data.](../img/proj-dirs-4.svg){fig-align="center" width="50%" fig-alt="A diagram showing two research project folder hierarchies, with the data folder from one project being linked to the other project." .lightbox}
 
 But shared data or scripts are generally better stored in separate dirs,
 and then linked to by each project using them:
 
-![Now, the data is in it's own top-level dir, with links to it in both projects.](../img/proj-dirs-5.svg){fig-align="center" width="50%"}
+![Now, the data is in it's own top-level dir, with links to it in both projects.](../img/proj-dirs-5.svg){fig-align="center" width="50%"  fig-alt="A diagram showing two research project folder hierarchies, with a separate shared-data folder that is linked to both projects." .lightbox}
 
 These strategies do decrease the portability of your project,
 and moving the shared files even within your own computer will cause links to break.
@@ -138,7 +139,7 @@ and moving the shared files even within your own computer will cause links to br
 A more portable method is to **keep shared (multi-project) files online** ---
 this is especially feasible for **scripts** under version control:  
 
-![A set of scripts shared by two projects is stored in an online repository like at GitHub.](../img/proj-dirs-6.svg){fig-align="center" width="70%"}
+![A set of scripts shared by two projects is stored in an online repository like at GitHub.](../img/proj-dirs-6.svg){fig-align="center" width="70%" fig-alt="A diagram showing two research project folder hierarchies, both of which have a connection to an online script repository." .lightbox}
 
 _(For **data**, this is also possible but often not practical due to file sizes._
 _It's easier after data has been deposited in a public repository._)
@@ -178,7 +179,7 @@ you should also conceptually treat raw data and results differently:
 Here is one good way of organizing project files with a set of top-level folders
 and some standard documentation files:
 
-![In this example project folder hierarchy, the hierarchical folder structure is indicated with lines and indentation: the root (top-level) project folder is `my-project`, which e.g. contains the `data` folder that in turn contains other folders. Folders are shown in blue and files in white.](../img/proj-ex-annot_2025.png){fig-align="center" width="70%"}
+![In this example project folder hierarchy, the hierarchical folder structure is indicated with lines and indentation: the root (top-level) project folder is `my-project`, which e.g. contains the `data` folder that in turn contains other folders. Folders are shown in blue and files in white.](../img/proj-ex-annot_2025.png){fig-align="center" width="70%" fig-alt="A screenshot showing an example research project folder hierarchy." .lightbox}
 
 Here, we'll go into the _folder structure_, whereas the last section of this session
 will go into the `.md` _documentation files_ that are also shown in the image above.
@@ -192,10 +193,10 @@ software that you are using:
 
 ::::::: columns
 :::: {.column width="50%"}
-![_An example showing subfolders within `results` mostly organized by the software that produced the results. Separate runs for MultiQC are grouped into further subfolders by date._](../img/proj-ex-results1_2025.png){fig-align="center" width="60%"}
+![_An example showing subfolders within `results` mostly organized by the software that produced the results. Separate runs for MultiQC are grouped into further subfolders by date._](../img/proj-ex-results1_2025.png){fig-align="center" width="60%" fig-alt="A screenshot showing an example Results folder in a research project folder, with separate runs for MultiQC grouped into subfolders using dates." .lightbox}
 ::::
 :::: {.column width="50%"}
-![Like the example on the left, but here, separate runs for MultiQC are grouped into subfolders using a description.](../img/proj-ex-results2_2025.png){fig-align="center" width="64%"}
+![Like the example on the left, but here, separate runs for MultiQC are grouped into subfolders using a description.](../img/proj-ex-results2_2025.png){fig-align="center" width="64%" fig-alt="Another screenshot showing an example research project folder hierarchy, with separate runs for MultiQC grouped into subfolders using a description." .lightbox}
 ::::
 :::::::
 
@@ -272,8 +273,7 @@ _separate copies_ of the data.
 
 You should avoid **_manually_ editing any data and results files**.
 Instead, such editing should be done using code.
-As [Abdill et al. (2024)](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3002815)
-explain:
+As @abdill2024 explain:
 
 > For example, if script A processes raw data into a table of gene expression levels, and script B summarizes this table by pathway, we should be concerned if there is a step after script A that requires a user to open the table and edit fields by hand to prepare the data for script B. Such quick fixes can be tempting, but they also add risk: A researcher could easily add a typo, corrupt a file in unexpected ways, or forget the step altogether.
 
@@ -328,7 +328,7 @@ this should not go at the expense of human readability. For example:
 > *"Name all files to reflect their content or function.*
 > *For example, use names such as bird_count_table.csv, manuscript.md,*
 > *or sightings_analysis.py.*"  
-> --- [Wilson et al. 2017](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510)
+> --- @wilson2017
 
 Not only are the above file names informative, they are also readable by virtue
 of having words separated by an underscore <kbd>_</kbd>.
@@ -463,10 +463,10 @@ you first need to learn more about paths and folder structures.
 
 ::: columns
 ::: column
-![Example dir structure on a Mac computer, from [O'Neil 2017](https://open.oregonstate.education/computationalbiology/chapter/the-command-line-and-filesystem/)](../img/oneil_filesystem_ex2.png){fig-align="center" width="95%"}
+![Example dir structure on a Mac computer, from [O'Neil 2017](https://open.oregonstate.education/computationalbiology/chapter/the-command-line-and-filesystem/)](../img/oneil_filesystem_ex2.png){fig-align="center" width="95%" fig-alt="A diagram of an example dir structure on a Mac computer." .lightbox}
 :::
 ::: column
-![Key directories in OSC's dir structure](../img/osc_dirstructure.png){fig-align="center" width="89%"}
+![Key directories in OSC's dir structure](../img/osc_dirstructure.png){fig-align="center" width="89%" fig-alt="A diagram of the high-level dir structure at OSC." .lightbox}
 :::
 :::
 
@@ -541,11 +541,11 @@ For example:
 
 <hr style="height:1pt; visibility:hidden;" />
 
-![Two project dir hierarchies, and the absolute and relative path to a FASTQ file.<br>The relative path starts from the relevant project's top-level dir, which is good-practice.](../img/proj-dirs-2.svg){fig-align="center" width="70%"}
+![Two project dir hierarchies, and the absolute and relative path to a FASTQ file.<br>The relative path starts from the relevant project's top-level dir, which is good-practice.](../img/proj-dirs-2.svg){fig-align="center" width="70%" fig-alt="A diagram of two project dir hierarchies." .lightbox}
 
 <hr style="height:1pt; visibility:hidden;" />
 
-![Both projects were moved into `Dropbox`.<br>The absolute path to the FASTQ file has changed,<br>but the relative path from the project's top-level dir remains the same.](../img/proj-dirs-3.svg){fig-align="center" width="70%"}
+![Both projects were moved into `Dropbox`.<br>The absolute path to the FASTQ file has changed,<br>but the relative path from the project's top-level dir remains the same.](../img/proj-dirs-3.svg){fig-align="center" width="70%" fig-alt="A diagram of two project dir hierarchies." .lightbox}
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -669,7 +669,7 @@ final data processing and analyses you performed for your project:
 In the project folder example above, this file was `doc/workflow.md`.
 Let's take another look at that image:
 
-![](../img/proj-ex-annot_2025.png){fig-align="center" width="60%"}
+![](../img/proj-ex-annot_2025.png){fig-align="center" width="60%" fig-alt="An annotated screenshot of a recommended project dir hierarchy." .lightbox}
 
 ### Use plain text files
 

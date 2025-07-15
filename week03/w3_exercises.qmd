@@ -26,28 +26,71 @@ other-links:
   - text: "Bonus: Misc. advanced shell"
     icon: book
     href: ../bonus/shell.html
+bibliography: ../references.bib
 ---
 
 ---------
 
 <br>
 
-#### Introduction
+### Introduction
 
 In these exercises, you will practice with Unix commands,
 especially those that operate on files as seen in this week's classes.
 
 Before you start, I would recommend to reread the pages for this week's sessions
 ([session 1](./w3_1_shellfiles.qmd); [session 2](./w3_2_shellfiles.qmd)).
-At the very least, make sure you have read the contents of all the boxes on those
-pages, many of which we likely skipped over in class!
+At the very least, make sure you have read the contents of all the callout boxes
+on those pages, many of which we likely skipped over in class!
 
-_To get set up, start a VS Code session through OSC OnDemand in the folder_
-_`/fs/ess/PAS2880/users/$USER`._
+#### Setting up
+
+- Start a VS Code session through OSC OnDemand in the folder
+  `/fs/ess/PAS2880/users/$USER`.
+- Create and use a Markdown file to keep notes on what you're doing.
+- You'll be using the @garrigós2023 data files,
+  which you should have in your personal dir.
+
+<details><summary>_Click here for instructions if you need to (re)download these files._</summary>
+```bash
+# Make sure you're in your personal dir:
+cd /fs/ess/PAS2880/users/$USER
+  
+git clone https://github.com/jelmerp/garrigos-data
+```
+</details>
 
 <hr style="height:1pt; visibility:hidden;" />
 
 ## Exercise 1: Moving, copying and removing
+
+_Use Unix commands to complete all the exercises below._
+
+1. Create a dir `week03/ex1` within your personal dir^[
+   `/fs/ess/PAS2880/users/$USER/`], and navigate there.
+   _Use this as the working dir for all followings questions in this exercise,_
+   _so avoid navigating anywhere else._
+
+2. Create a new dir `seqs`,
+   and use the below command to create some dummy FASTQ files in there.
+   Then, check the result with `ls` and get a count of the number of files you
+   created (do so using code!).
+
+   ```bash
+   touch seqs/sample{01..25}_R{1,2}.fastq
+   ```
+
+3. Copy the files for samples `01` through `09` into your working dir with a
+   single command.
+
+4. Remove the files you just copied and when doing so,
+   make the command report what it's doing (i.e. make it verbose).
+
+5. Move all R1 files into a dir `seqs_R1`, and then rename `seqs`,
+   which should now only contain R2 files, to `seqs_R1`.
+
+6. Copy the Garrigos et al. metadata file into your current working dir,
+   giving the copy the name `garrigos_metadata.tsv`.
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -57,13 +100,11 @@ _Before you start, make you sure you have read the box_
 _"GTF file info for this week's exercises" at the bottom of_
 _[the page for this week's second session](./w3_2_shellfiles.qmd)._
 
-1. Navigate into the dir `garrigos-data/sandbox`
-   you should have created in this week's second session^[
-   And if it's not there: create it first.
-   Its full path should be `/fs/ess/PAS2880/users/$USER/garrigos-data/sandbox`.].
+1. Create a dir `week03/ex2` within your personal dir^[
+   `/fs/ess/PAS2880/users/$USER/`], and navigate there.
 
 2. Copy the genome annotation file `garrigos-data/ref/GCF_016801865.2.gtf.gz`
-   to a file called `annot.gtf.gz` inside your `sandbox` working dir.
+   to a file called `annot.gtf.gz` inside your `ex2` working dir.
 
 3. Check the size of the `annot.gtf.gz` file.
    Then, unzip (decompress) the GTF file with the `gunzip` command as shown below.
@@ -102,7 +143,7 @@ _[the page for this week's second session](./w3_2_shellfiles.qmd)._
 
 7. Store a list of these distinct sequences in the GTF in a file `scaffolds.txt`.
 
-8. Produce a "count table"
+8. Print a "count table"
    (like we did towards the end of [this section](./w3_2_shellfiles.html#combining-cut-sort-and-uniq-to-create-a-list))
    of feature types in the annotation:
    i.e. for each feature type, generate a count representing the number of times it occurs.
@@ -113,7 +154,7 @@ _[the page for this week's second session](./w3_2_shellfiles.qmd)._
    GTF files have an implicit hierarchical structure,
    where e.g. each exon row contains a reference to the gene it is a part of
    (its "parent") in the final column.
-   For gene `LOC120427725`, create a count table of its feature types.
+   For gene `LOC120427725`, print a count table of its feature types.
    _(You can assume that this gene's name does not occur in any lines_
    _describing features that are not part of the gene.)_
 
@@ -174,7 +215,7 @@ _file directly (don't decompress it)._
    _(You can assume that this does not occur in the sequence quality lines.)_
    
 4. Using the read length information in the FASTQ header lines,
-   create a count table of read lengths.
+   print a count table of read lengths.
    
    <details><summary>_Click here for some hints_</summary>
    
@@ -216,25 +257,214 @@ _file directly (don't decompress it)._
 
 ### Exercise 1
 
+<details><summary>**1.** Create a new dir and navigate there</summary>
+
+```bash
+# (You should already be in /fs/ess/PAS2880/users/$USER/)
+cd /fs/ess/PAS2880/users/$USER/week03
+mkdir ex2
+cd ex2
+```
+</details>
+
+<details><summary>**2.** Create a dir with dummy sequence files</summary>
+
+- Create the dir:
+
+  ```bash
+  mkdir seqs
+  ```
+
+- Create the dummy files:
+
+  ```bash
+  touch seqs/sample{01..25}_R{1,2}.fastq
+  ```
+  
+  This uses a construct called **brace expansion**, which we won't cover in class.
+  If you want to learn more, check [this section](../bonus/shell.qmd#brace-expansion) 
+  on the optional reading page "Miscellaneous advances shell".
+
+- Check the result:
+
+  ```bash
+  ls seqs
+  ```
+  ```bash-out
+  sample01_R1.fastq  sample03_R1.fastq  sample05_R1.fastq  sample07_R1.fastq  sample09_R1.fastq  sample11_R1.fastq  sample13_R1.fastq  sample15_R1.fastq  sample17_R1.fastq  sample19_R1.fastq  sample21_R1.fastq  sample23_R1.fastq  sample25_R1.fastq
+sample01_R2.fastq  sample03_R2.fastq  sample05_R2.fastq  sample07_R2.fastq  sample09_R2.fastq  sample11_R2.fastq  sample13_R2.fastq  sample15_R2.fastq  sample17_R2.fastq  sample19_R2.fastq  sample21_R2.fastq  sample23_R2.fastq  sample25_R2.fastq
+sample02_R1.fastq  sample04_R1.fastq  sample06_R1.fastq  sample08_R1.fastq  sample10_R1.fastq  sample12_R1.fastq  sample14_R1.fastq  sample16_R1.fastq  sample18_R1.fastq  sample20_R1.fastq  sample22_R1.fastq  sample24_R1.fastq
+sample02_R2.fastq  sample04_R2.fastq  sample06_R2.fastq  sample08_R2.fastq  sample10_R2.fastq  sample12_R2.fastq  sample14_R2.fastq  sample16_R2.fastq  sample18_R2.fastq  sample20_R2.fastq  sample22_R2.fastq  sample24_R2.fastq
+  ```
+
+- Count the number of files:
+
+  ```bash
+  ls seqs | wc -l
+  ```
+  ```bash-out
+  50
+  ```
+
+  Note that this gives the correct count even though when printed to screen,
+  `ls` output typically used multiple columns and therefore shows more than one
+  file per line.
+  
+  In contrast,
+  the count from `ls -l` is _not_ correct, since its output includes a header line:
+  
+  ```bash
+  ls -l seqs | wc -l
+  ```
+  ```bash-out
+  51
+  ```
+
+</details>
+
+<details><summary>**3.** Copy the files for samples 01 through 09 into your working dir with a single command</summary>
+
+- Copy the files --
+  recall to use `.` to indicate your current working dir as the destination path.
+
+  ```bash
+  cp seqs/sample0* .
+  ```
+
+- Let's check the result:
+
+  ```bash
+  ls
+  ```
+  ```bash-out
+  sample01_R1.fastq  sample02_R1.fastq  sample03_R1.fastq  sample04_R1.fastq  sample05_R1.fastq  sample06_R1.fastq  sample07_R1.fastq  sample08_R1.fastq  sample09_R1.fastq  seqs
+sample01_R2.fastq  sample02_R2.fastq  sample03_R2.fastq  sample04_R2.fastq  sample05_R2.fastq  sample06_R2.fastq  sample07_R2.fastq  sample08_R2.fastq  sample09_R2.fastq
+  ```
+
+</details>
+
+<details><summary>**4.** Remove the files you just copied</summary>
+
+```bash
+rm -v sample0*
+```
+```bash-out
+removed 'sample01_R1.fastq'
+removed 'sample01_R2.fastq'
+removed 'sample02_R1.fastq'
+removed 'sample02_R2.fastq'
+removed 'sample03_R1.fastq'
+removed 'sample03_R2.fastq'
+removed 'sample04_R1.fastq'
+removed 'sample04_R2.fastq'
+removed 'sample05_R1.fastq'
+removed 'sample05_R2.fastq'
+removed 'sample06_R1.fastq'
+removed 'sample06_R2.fastq'
+removed 'sample07_R1.fastq'
+removed 'sample07_R2.fastq'
+removed 'sample08_R1.fastq'
+removed 'sample08_R2.fastq'
+removed 'sample09_R1.fastq'
+removed 'sample09_R2.fastq'
+```
+
+</details>
+
+<details><summary>**5.** Move all R1 files into a dir `seqs_R1` and rename `seqs`</summary>
+
+```bash
+# Create the new dir:
+mkdir seqs_R1
+
+# Move the R1 files into the new dir:
+mv seqs/*R1.fastq seqs_R1
+
+# Rename the old dir:
+mv seqs seqs_R2
+
+# Check the result:
+tree -C
+```
+```bash-out
+.
+├── seqs_R1
+│   ├── sample01_R1.fastq
+│   ├── sample02_R1.fastq
+│   ├── sample03_R1.fastq
+│   ├── sample04_R1.fastq
+│   ├── sample05_R1.fastq
+│   ├── sample06_R1.fastq
+│   ├── sample07_R1.fastq
+│   ├── sample08_R1.fastq
+│   ├── sample09_R1.fastq
+│   ├── sample10_R1.fastq
+│   ├── sample11_R1.fastq
+│   ├── sample12_R1.fastq
+│   ├── sample13_R1.fastq
+│   ├── sample14_R1.fastq
+│   ├── sample15_R1.fastq
+│   ├── sample16_R1.fastq
+│   ├── sample17_R1.fastq
+│   ├── sample18_R1.fastq
+│   ├── sample19_R1.fastq
+│   ├── sample20_R1.fastq
+│   ├── sample21_R1.fastq
+│   ├── sample22_R1.fastq
+│   ├── sample23_R1.fastq
+│   ├── sample24_R1.fastq
+│   └── sample25_R1.fastq
+└── seqs_R2
+    ├── sample01_R2.fastq
+    ├── sample02_R2.fastq
+    ├── sample03_R2.fastq
+    ├── sample04_R2.fastq
+    ├── sample05_R2.fastq
+    ├── sample06_R2.fastq
+    ├── sample07_R2.fastq
+    ├── sample08_R2.fastq
+    ├── sample09_R2.fastq
+    ├── sample10_R2.fastq
+    ├── sample11_R2.fastq
+    ├── sample12_R2.fastq
+    ├── sample13_R2.fastq
+    ├── sample14_R2.fastq
+    ├── sample15_R2.fastq
+    ├── sample16_R2.fastq
+    ├── sample17_R2.fastq
+    ├── sample18_R2.fastq
+    ├── sample19_R2.fastq
+    ├── sample20_R2.fastq
+    ├── sample21_R2.fastq
+    ├── sample22_R2.fastq
+    ├── sample23_R2.fastq
+    ├── sample24_R2.fastq
+    └── sample25_R2.fastq
+
+2 directories, 50 files
+```
+
+</details>
+
+<details><summary>**6.** Copy the Garrigos et al. metadata file into your current working dir</summary>
+
+```bash
+cp ../../garrigos-data/meta/metadata.tsv garrigos_metadata.tsv
+```
+</details>
+
 <hr style="height:1pt; visibility:hidden;" />
 
 ### Exercise 2
 
-<details><summary>**1.** Navigate into the dir `garrigos-data/sandbox`</summary>
+<details><summary>**1.** Create a new dir and navigate there</summary>
 
 ```bash
 # (You should already be in /fs/ess/PAS2880/users/$USER/)
-cd garrigos-data/sandbox
+cd /fs/ess/PAS2880/users/$USER/week03
+mkdir ex2
+cd ex2
 ```
-
-If you needed to also create the `sandbox` dir:
-
-```bash
-# (You should already be in /fs/ess/PAS2880/users/$USER/)
-mkdir garrigos-data/sandbox
-cd garrigos-data/sandbox
-```
-
 </details>
 
 <details><summary>**2.** Copy the genome annotation file `garrigos-data/ref/GCF_016801865.2.gtf.gz`</summary>
@@ -378,7 +608,7 @@ grep -v "#" annot.gtf | cut -f 3 | sort | uniq -c
 ```
 </details>
 
-<details><summary>**9.** Create a count table of annotated features for gene `LOC120427725`</summary>
+<details><summary>**9.** Print a count table of annotated features for gene `LOC120427725`</summary>
 
 ```bash
 grep "LOC120427725" annot.gtf | cut -f 3 | sort | uniq -c
@@ -394,7 +624,7 @@ grep "LOC120427725" annot.gtf | cut -f 3 | sort | uniq -c
 
 </details>
 
-<details><summary>**10.** Create a start codon genomic coordinate table</summary>
+<details><summary>**10.** Print a start codon genomic coordinate table</summary>
 
 - After `grep`ing for `start_codon`,
   you need to select (`cut`) the first, fourth, and fifth columns.
@@ -527,7 +757,7 @@ wc -l ERR10802863_R1.fastq.gz
   
 </details>
 
-<details><summary>**4.** Create a count table of read lengths</summary>
+<details><summary>**4.** Print a count table of read lengths</summary>
 
 - First select only header lines with `grep "@"`.
 - Then use `=` as the `cut` delimiter and select the second "column".
