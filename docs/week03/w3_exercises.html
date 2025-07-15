@@ -300,7 +300,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#exercise-1-moving-copyingm-and-removing" id="toc-exercise-1-moving-copyingm-and-removing" class="nav-link active" data-scroll-target="#exercise-1-moving-copyingm-and-removing">Exercise 1: Moving, copyingm and removing</a></li>
+  <li><a href="#exercise-1-moving-copying-and-removing" id="toc-exercise-1-moving-copying-and-removing" class="nav-link active" data-scroll-target="#exercise-1-moving-copying-and-removing">Exercise 1: Moving, copying and removing</a></li>
   <li><a href="#exercise-2-exploring-the-gtf-annotation-file" id="toc-exercise-2-exploring-the-gtf-annotation-file" class="nav-link" data-scroll-target="#exercise-2-exploring-the-gtf-annotation-file">Exercise 2: Exploring the GTF annotation file</a></li>
   <li><a href="#exercise-3-exploring-the-fastq-files" id="toc-exercise-3-exploring-the-fastq-files" class="nav-link" data-scroll-target="#exercise-3-exploring-the-fastq-files">Exercise 3: Exploring the FASTQ files</a></li>
   <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a>
@@ -357,68 +357,102 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <hr>
 <p><br></p>
-<p>To set up, start a VS Code session through OSC OnDemand in the folder <code>/fs/ess/PAS2880/users/$USER</code>.</p>
+<section id="introduction" class="level4">
+<h4 class="anchored" data-anchor-id="introduction">Introduction</h4>
+<p>In these exercises, you will practice with Unix commands, especially those that operate on files as seen in this week’s classes.</p>
+<p>Before you start, I would recommend to reread the pages for this week’s sessions (<a href="../week03/w3_1_shellfiles.html">session 1</a>; <a href="../week03/w3_2_shellfiles.html">session 2</a>). At the very least, make sure you have read the contents of all the boxes on those pages, many of which we likely skipped over in class!</p>
+<p><em>To get set up, start a VS Code session through OSC OnDemand in the folder</em> <em><code>/fs/ess/PAS2880/users/$USER</code>.</em></p>
 <hr style="height:1pt; visibility:hidden;">
-<section id="exercise-1-moving-copyingm-and-removing" class="level2">
-<h2 class="anchored" data-anchor-id="exercise-1-moving-copyingm-and-removing">Exercise 1: Moving, copyingm and removing</h2>
+</section>
+<section id="exercise-1-moving-copying-and-removing" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1-moving-copying-and-removing">Exercise 1: Moving, copying and removing</h2>
 <hr style="height:1pt; visibility:hidden;">
 </section>
 <section id="exercise-2-exploring-the-gtf-annotation-file" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-2-exploring-the-gtf-annotation-file">Exercise 2: Exploring the GTF annotation file</h2>
+<p><em>Before you start, make you sure you have read the box</em> <em>“GTF file info for this week’s exercises” at the bottom of</em> <em><a href="../week03/w3_2_shellfiles.html">the page for this week’s second session</a>.</em></p>
 <ol type="1">
-<li><p>Navigate into the dir <code>garrigos-data/sandbox</code> you should have created in this week’s second session.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p></li>
-<li><p>Copy the genome annotation file <code>garrigos-data/ref/GCF_016801865.2.gtf.gz</code> to a file called <code>annot.gtf.gz</code> inside your <code>sandbox</code> working dir. While doing so, make the <code>cp</code> command report what it’s doing (“verbose”).</p></li>
-<li><p>Check the size of the <code>annot.gtf.gz</code> file. Then, unzip (decompress) the GTF file with the <code>gunzip</code> command as shown below. Finally, check the size of the resulting <code>annot.gtf</code> file: how large is the size difference between the compressed and uncompressed file?</p>
+<li><p>Navigate into the dir <code>garrigos-data/sandbox</code> you should have created in this week’s second session<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p></li>
+<li><p>Copy the genome annotation file <code>garrigos-data/ref/GCF_016801865.2.gtf.gz</code> to a file called <code>annot.gtf.gz</code> inside your <code>sandbox</code> working dir.</p></li>
+<li><p>Check the size of the <code>annot.gtf.gz</code> file. Then, unzip (decompress) the GTF file with the <code>gunzip</code> command as shown below. Finally, check the size of the resulting <code>annot.gtf</code> file. How large is the size difference between the compressed and uncompressed files?</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>How many lines does the GTF file contain?</p></li>
-<li><p>The first several lines of the GTF file are not part of its main table. In the main table, each line represents a “genomic feature” (gene, exon, etc.) for which information is presented across the columns.</p>
+<li><p>The total number of features in a GTF file is simply the number of lines in its table.</p>
 <ul>
-<li>Combine <code>grep -v</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, a pipe, and <code>wc -l</code> to count the number of line in the main table. Take a peek at the file first, so you can decide on a search pattern for <code>grep</code>.</li>
-<li>Comparing the linecount from this and the previous exercise, does the difference reflect the number of header lines?</li>
-<li>If not, can you figure out which other line(s) contain the pattern you used with <code>grep</code> above? <em>(Review the “Additional <code>grep</code> tips” box in</em> <em><a href="week03/w3_2_shellfiles.html#grep-to-print-lines-that-match-a-pattern">the section on <code>grep</code></a></em> <em>to find an option that might help you make sense of that.)</em></li>
+<li><p>Combine <code>grep -v</code> and <code>wc -l</code> to count the number of features. <em>(First, you may want to take a peek at the file with <code>less -S</code> to decide on</em> <em>a search pattern for <code>grep</code>.)</em></p></li>
+<li><p>Comparing the linecount from this and the previous exercise, does the difference reflect the number of header lines?</p></li>
+<li><p>If not, can you figure out which other line(s) contain the pattern you used with <code>grep</code> above? <em>(Review the “Additional <code>grep</code> tips” box in</em> <em><a href="week03/w3_2_shellfiles.html#grep-to-print-lines-that-match-a-pattern">the section on <code>grep</code></a></em> <em>to find an option that might help you make sense of that.)</em></p></li>
 </ul></li>
-<li><p>The first column of the GTF table has the name of the “sequence” (chromosome, scaffold, or contig) from the corresponding genome assembly FASTA file that the feature in question is located on. How many distinct such sequences are represented in the annotation?</p></li>
-<li><p>Store a list of distinct sequences in the GTF (see the previous exercise) in a file <code>scaffolds.txt</code>.</p></li>
-<li><p>The seventh column of the GTF table indicates which strand (<code>+</code> or <code>-</code>) the feature is on<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. How many features are on the <code>+</code> strand and how many are on the <code>-</code> strand? <em>(The easiest way to answer this is to produce a “count table” like we this</em> <em>towards the end of <a href="./w3_2_shellfiles.html#combining-cut-sort-and-uniq-to-create-a-list">this section</a>.)</em></p></li>
-<li><p>The third column of the GTF table has the feature type (e.g.&nbsp;“gene” or “exon”). How many genes does the annotation contain?</p>
+<li><p>How many distinct “sequences” (chromosome/scaffolds/contigs) are represented in the annotation?</p>
 <details>
 <summary>
 <p><em>Click here for a hint</em></p>
 </summary>
-<p>You want to count the number of lines where the third column is <code>gene</code>. However, just <code>grep</code>ing for <code>"gene"</code> would also turn up other lines that contain this string, and not result in a correct count. Therefore, the easiest solution is to create a count table of this column, and look for the gene count in the resulting table.</p>
+<p>In this and all following questions, you’ll only want to consider the table part of the file, so you should start your commands with <code>grep -v</code> as above.</p>
 </details></li>
-<li><p>Each gene can have any number of exons and other features, and you may wonder how may (e.g.) exons a gene of interest has. The GTF files has a hierarchical structure to it such that each exon entry has a reference to the gene that it is a part of in the final column. For gene <code>XXX - TBA</code>, create a count table of its features.</p></li>
-<li><p>Produce a 3-column table with the scaffold, start position, and end position of each <strong>start codon</strong>. Store that table in a file <code>start_codons.tsv</code>. <em>(You can safely assume that <code>start_codon</code> only occurs in the third column</em> <em>and that all lines with that string therefore contain start codon features.)</em></p></li>
-<li><p>Count the number of small nuclear RNAs (<code>snRNA</code>) in the annotation. You’ll want a “gene”-level count, and because the word “snRNA” also occurs for other features, you should use the output of an initial <code>grep</code> search to figure out what your final search pattern will be.</p></li>
-<li><p>Bonus: Which sequence (scaffold) appears to be the largest one?</p>
+<li><p>Store a list of these distinct sequences in the GTF in a file <code>scaffolds.txt</code>.</p></li>
+<li><p>Produce a “count table” (like we did towards the end of <a href="./w3_2_shellfiles.html#combining-cut-sort-and-uniq-to-create-a-list">this section</a>) of feature types in the annotation: i.e.&nbsp;for each feature type, generate a count representing the number of times it occurs. This will allow you to see, for example, how many genes have been annotated in this genome.</p></li>
+<li><p>For a gene of interest, you may wonder how many exons and other annotated features it has. GTF files have an implicit hierarchical structure, where e.g.&nbsp;each exon row contains a reference to the gene it is a part of (its “parent”) in the final column. For gene <code>LOC120427725</code>, create a count table of its feature types. <em>(You can assume that this gene’s name does not occur in any lines</em> <em>describing features that are not part of the gene.)</em></p></li>
+<li><p><strong><em>Bonus</em></strong>: Produce a 3-column table with the sequence name, start position, and end position of each <em>distinct</em> start codon in the GTF file. Store that table in a file <code>start_codons.tsv</code>. <em>(You can assume that the string <code>start_codon</code> occurs only in the third column,</em> <em>so that all lines with that string contain start codon features.)</em></p></li>
+<li><p><strong><em>Bonus</em></strong>: In this genome, which sequence (chromosome/scaffold/contig) appears to be the largest one?</p>
 <details>
 <summary>
 <p><em>Click here for a hint</em></p>
 </summary>
-<p>This information is not directly contained in the GTF file, but if you find the single highest number in the (start or) end coordinate column, and check which sequence that is on, you will most likely get the correct answer.</p>
-<p>To do this, you need to first <code>cut</code> the relevant columns and then <code>sort</code> specifically by the coordinate column (using the <code>-k</code> option).</p>
+<p>This information is not directly contained in this GTF file, but if you are able find the highest number in the (start or) end coordinate column, and check which sequence that is on, you should get the correct answer.</p>
+<p>To do this, you need to first <code>cut</code> the relevant columns, and then <code>sort</code> specifically by the coordinate column (using the <code>-k</code> option).</p>
+</details></li>
+<li><p><strong><em>Bonus</em></strong>: Count the number of small nuclear RNAs (<code>snRNA</code>) in the annotation. You’ll want a “gene”-level count (i.e.&nbsp;a count of the number of <code>gene</code> features annotated as <code>snRNA</code>), but because the word “snRNA” also occurs for other features, the search pattern <code>snRNA</code> would not work. An initial <code>grep</code> search would help to find a good final search pattern — to spare you that trouble, it should be: <code>gene_biotype "snRNA"</code>. But this poses another challenge: the pattern contains double quotes (<code>"</code>), which we’ve been using to indicate where the search pattern begins and ends.</p>
+<details>
+<summary>
+<p><em>Click here for a hint</em></p>
+</summary>
+<p>Use single quotes (<code>'</code>) instead of double quotes around the entire pattern.</p>
 </details></li>
 </ol>
 <hr style="height:1pt; visibility:hidden;">
 </section>
 <section id="exercise-3-exploring-the-fastq-files" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-3-exploring-the-fastq-files">Exercise 3: Exploring the FASTQ files</h2>
+<p><em>For all questions below except the Bonus question,</em> <em>use the FASTQ file <code>ERR10802863_R1.fastq.gz</code>.</em> <em>Also, keep in mind that the file is compressed, and operate on the compressed</em> <em>file directly (don’t decompress it).</em></p>
 <ol type="1">
 <li><p>Navigate into the dir with FASTQ files from the Garrigos et al.&nbsp;data.</p></li>
-<li><p>How many reads does the file <code>ERR10802863_R1.fastq.gz</code> contain?</p></li>
-<li><p>Bonus: How many reads are in all R1 files combined?</p></li>
+<li><p>How many reads does the file contain?</p>
+<details>
+<summary>
+<p><em>Click here for a hint</em></p>
+</summary>
+<p>A linecount of the compressed file will <strong>not</strong> give you the correct answer. Therefore, use the <code>zcat &lt;file.gz&gt; | &lt;...&gt;</code> idiom instead.</p>
+<p>Also, remember that one read covers 4 lines and that FASTQ files only contain lines with reads.</p>
+</details></li>
+<li><p>How many reads contain the sequence <code>ACGT</code>? <em>(You can assume that this does not occur in the sequence quality lines.)</em></p></li>
+<li><p>Using the read length information in the FASTQ header lines, create a count table of read lengths.</p>
+<details>
+<summary>
+<p><em>Click here for some hints</em></p>
+</summary>
+<ul>
+<li><p>First you need to select only the header lines. When doing so, you can assume that no <code>@</code>s occur in the other lines.</p></li>
+<li><p>Next, you’ll need to extract / single out the read length numbers in these header lines, which are in the format <code>length=74</code>. One way to do this is a fun trick: by using <code>=</code> as the delimiter (<code>-d</code> option) to <code>cut</code>!</p></li>
+</ul>
+</details></li>
+<li><p>Count the number of reads that contain at least 10 consecutive <code>N</code>s, i.e.&nbsp;uncalled bases. <em>(You can assume that stretches of N’s do not occur in the sequence quality lines.)</em></p></li>
+<li><p>Compare the number you got in the previous question, with the number of 35-bp reads from the question before that. What does this seem to tell you? To confirm, can you check what a sample of 35-bp reads look like?</p>
+<details>
+<summary>
+<p><em>Click here for a hint</em></p>
+</summary>
+<p>With <code>grep -A1</code>, you can print the line <em>after</em> each match. This will allow you to see the sequences in the 35-bp reads. Pipe to <code>less</code> or <code>head</code> so you don’t get thousands of lines printed to screen.</p>
+</details></li>
+<li><p><strong><em>Bonus</em></strong>: Can you find out, with a single command, what the total number of reads across all R1 files is?</p>
+<details>
+<summary>
+<p><em>Click here for a hint</em></p>
+</summary>
+<p>Use <code>zcat</code> with a globbing (file selection) pattern with a <code>*</code> to operate on all R1 files at once – then pipe that into the familiar line counting command.</p>
+</details></li>
 </ol>
-<ul>
-<li>Using the read length information in the FASTQ header, create a count table of read lengths.</li>
-</ul>
-<p>zcat ERR10802863_R1.fastq.gz | grep @ | cut -d= -f2 | sort | uniq -c</p>
-<ul>
-<li><p>Under the assumption that stretches of N’s do not occur in the sequence quality lines (which they don’t, in this case), count the number sequences that have at least 10 consecutive Ns.</p></li>
-<li><p>Compare this number with the number of 35-bp reads. What does this tell you? With <code>grep -A1</code>, you can print the line <em>after</em> each match. Can you check what the 35-bp reads look like?</p></li>
-<li><p>How many reads contain the sequence <code>ACGT</code>? (Again under the assumption that this does not occure in the sequence quality line.)</p></li>
-<li><p>SOMETHING WITH COPY/MOVE/REMOVE?</p></li>
-</ul>
-<hr style="height:1pt; visibility:hidden;">
+<p><br></p>
 </section>
 <section id="solutions" class="level2">
 <h2 class="anchored" data-anchor-id="solutions">Solutions</h2>
@@ -430,7 +464,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="exercise-2">Exercise 2</h3>
 <details>
 <summary>
-\1. Navigate into the dir <code>garrigos-data/sandbox</code>
+<strong>1.</strong> Navigate into the dir <code>garrigos-data/sandbox</code>
 </summary>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (You should already be in /fs/ess/PAS2880/users/$USER/)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> garrigos-data/sandbox</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -441,109 +475,295 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 <details>
 <summary>
-\2. Copy the genome annotation file <code>garrigos-data/ref/GCF_016801865.2.gtf.gz</code>
+<strong>2.</strong> Copy the genome annotation file <code>garrigos-data/ref/GCF_016801865.2.gtf.gz</code>
 </summary>
-<p>We use the <code>-v</code> option to make copy report what it’s doing:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-v</span> ../ref/GCF_016801865.2.gtf.gz annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>'../ref/GCF_016801865.2.gtf.gz' -&gt; 'annot.gtf.gz'</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../ref/GCF_016801865.2.gtf.gz annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <details>
 <summary>
-\3. Unzip (decompress) the GTF file
+<strong>3.</strong> Unzip (decompress) the GTF file
 </summary>
 <ul>
 <li><p>Check the file size:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>-rw-rw----+ 1 jelmer PAS0471 5.1M Jul 14 18:55 annot.gtf.gz</code></pre></li>
 <li><p>Unzip:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Check the file size (and name) again:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>-rw-rw----+ 1 jelmer PAS0471 123M Jul 14 18:55 annot.gtf</code></pre></li>
 <li><p>That’s a pretty big difference, from 5.1 Mb to 123 Mb! The amount of space saved by file compression varies a lot and depends on the amount of repetition in the uncompressed file. GTF files are highly repetitive, so relatively much space can be saved.</p></li>
 </ul>
 </details>
 <details>
 <summary>
-\4. How many lines does the GTF file contain?
+<strong>4.</strong> How many lines does the GTF file contain?
 </summary>
 <p>A simple line count tells you that the file has 408,402 lines:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> annot.gtf </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> annot.gtf </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>408402 annot.gtf </code></pre>
 </details>
 <details>
 <summary>
-\5. Count the number of line in the GTF table.
+<strong>5.</strong> Count the number of line in the GTF table.
 </summary>
 <ul>
-<li><p>Since the header lines contain a <code>#</code>, we will want to exclude those and then count the resulting number of lines:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>TBA</code></pre></li>
-<li><p>The file has only 3 header lines, while the line count has decreased by 4. Which other line has a <code>#</code>?</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-n</span> <span class="st">"#"</span> annot.gtf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>TBA</code></pre>
-<p>Looks like the last line is <code>##</code>!</p></li>
+<li><p>Since the header lines contain a <code>#</code>, you’ll want to exclude those and then count the remaining number of lines:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>408397</code></pre></li>
+<li><p>The file has only 4 header lines, while the line count has decreased by 5 (from 408402 to 408397). So, which other line in the file has a <code>#</code>?</p>
+<p>Use the <code>-n</code> option to <code>grep</code> to print line numbers along with each match:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-n</span> <span class="st">"#"</span> annot.gtf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>1:#gtf-version 2.2
+2:#!genome-build TS_CPP_V2
+3:#!genome-build-accession NCBI_Assembly:GCF_016801865.2
+4:#!annotation-source NCBI RefSeq GCF_016801865.2-RS_2022_12
+408402:###</code></pre>
+<p>So, it looks like the very last line also has a <code>#</code>: it is simply <code>###</code>, functioning as an end-of-file marker.</p></li>
 </ul>
 </details>
 <details>
 <summary>
-\6. How many distinct sequences (scaffolds etc.) are represented in the annotation?
+<strong>6.</strong> How many distinct sequences are represented in the annotation?
 </summary>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>TBA</code></pre>
+<ul>
+<li>Make sure to first exclude the header lines with <code>grep -v</code></li>
+<li>The first column contains the sequence name (<code>cut -f 1</code>)</li>
+<li>To only keep distinct sequences, use <code>sort | uniq</code></li>
+<li>To get a count of the resulting list of distinct sequences, use <code>wc -l</code>.</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>167</code></pre>
 </details>
 <details>
 <summary>
-\7. Store the list of distinct sequences in the GTF in a file <code>scaffolds.txt</code>.
+<strong>7.</strong> Store a list of distinct sequences in the GTF in a file <code>scaffolds.txt</code>.
 </summary>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="op">&gt;</span> scaffolds.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><p>Same command as above, but we get rid of <code>wc -l</code> and instead redirect the output of <code>uniq</code> to a file:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="op">&gt;</span> scaffolds.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Take a peek at <code>scaffolds.txt</code> for a sanity check:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 3 scaffolds.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>NC_015079.1
+NC_068937.1
+NC_068938.1</code></pre></li>
+</ul>
 </details>
 <details>
 <summary>
-\8. How many features are on the <code>+</code> strand and how many are on the <code>-</code> strand?
+<strong>9.</strong> Produce a “count table” of feature types in the annotation
 </summary>
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 7 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>TBA</code></pre>
+<ul>
+<li>The feature type is in the third column (<code>cut -f 3</code>)</li>
+<li>To produce a count table, use the <code>sort | uniq -c</code> idiom.</li>
+</ul>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 3 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code> 141444 CDS
+ 166177 exon
+  19673 gene
+  25864 start_codon
+  25892 stop_codon
+  29347 transcript</code></pre>
 </details>
 <details>
 <summary>
-\9. How many genes does the annotation contain?
+<strong>9.</strong> Create a count table of annotated features for gene <code>LOC120427725</code>
 </summary>
-<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 3 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>TBA</code></pre>
-<p>You could also <code>grep</code> this list for <code>gene</code>:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 3 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"gene"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>TBA</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"LOC120427725"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 3 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>     15 CDS
+     20 exon
+      1 gene
+      3 start_codon
+      3 stop_codon
+      3 transcript</code></pre>
 </details>
 <details>
 <summary>
-\10. Create a count table of features for gene XXX
+<strong>10.</strong> Create a start codon genomic coordinate table
 </summary>
-<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"XXX"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f3</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><p>After <code>grep</code>ing for <code>start_codon</code>, you need to select (<code>cut</code>) the first, fourth, and fifth columns.</p></li>
+<li><p>Taking a peek at the output, it appears that start codons may duplicated:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"start_codon"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1,4,5 <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>NC_068937.1     70143   70145
+NC_068937.1     70143   70145
+NC_068937.1     70143   70145
+NC_068937.1     49062   49064
+NC_068937.1     160735  160737</code></pre>
+<p>This is because distinct transcripts of a gene (producing different isoforms) may share the same start codon.</p></li>
+<li><p>To get rid of the duplicates, use <code>sort | uniq</code> — and then we can redirect the output to <code>start_codons.tsv</code>:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"start_codon"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1,4,5 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="op">&gt;</span> start_codons.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Take a peek at the output file for a sanity check:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 5 start_codons.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>NC_015079.1     10427   10429
+NC_015079.1     12600   12602
+NC_015079.1     211     213
+NC_015079.1     3055    3057
+NC_015079.1     3898    3900</code></pre></li>
+</ul>
 </details>
 <details>
 <summary>
-\11. Create a start codon coordinate table
+<strong>11.</strong> Which sequence (scaffold) appears to be the largest one?
 </summary>
-<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1,4,5 <span class="op">&gt;</span> start_codons.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>You’ll want to reverse (<code>-r</code>) numerically (<code>-n</code>) sort by the (fourth or) fifth column.</li>
+<li>To only get the feature with the largest end position, add <code>head -n 1</code></li>
+<li>(We could add <code>| cut -f 1</code> to only get the sequence name, not the entire line.)</li>
+</ul>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k5nr</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>NC_068938.1     Gnomon  exon    224093433       224093803       .       +       .       gene_id "LOC120429120"; transcript_id "XM_039594310.2"; db_xref "GeneID:120429120"; experiment "COORDINATES: polyA evidence [ECO:0006239]"; gene "LOC120429120"; model_evidence "Supporting evidence includes similarity to: 6 Proteins"; product "caprin homolog"; transcript_biotype "mRNA"; exon_number "4"; </code></pre>
+<ul>
+<li>So the largest sequence appears to be <code>NC_068938.1</code>.</li>
+</ul>
 </details>
 <details>
 <summary>
-\12. Count the number of snRNAs in the annotation.
+<strong>12.</strong> Count the number of snRNAs in the annotation.
 </summary>
 <p>Because the search pattern itself contains double quotes (<code>"</code>), the easiest way out is to use <strong>single quotes</strong> (<code>'</code>) around it:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">'gene_biotype "snRNA"'</span> annot.gtf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<details>
-<summary>
-\13. Which sequence (scaffold) appears to be the largest one?
-</summary>
-<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1,5 <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k2nr</span> <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">'gene_biotype "snRNA"'</span> annot.gtf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>58</code></pre>
 </details>
 <hr style="height:1pt; visibility:hidden;">
 </section>
 <section id="exercise-3" class="level3">
 <h3 class="anchored" data-anchor-id="exercise-3">Exercise 3</h3>
+<details>
+<summary>
+<strong>1.</strong> Navigate into the dir with FASTQ files
+</summary>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming you are in `garrigos-data/ref` after the previous exercise</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../fastq</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Or:</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="co"># cd /fs/ess/PAS2880/users/$USER/garrigos-data/fastq</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<details>
+<summary>
+<strong>2.</strong> How many reads does the file contain?
+</summary>
+<ul>
+<li>As the hint suggested, use <code>zcat &lt;file&gt; | wc -l</code> to get an “uncompressed count”:</li>
+</ul>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ERR10802863_R1.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>2000000</code></pre>
+<ul>
+<li><p>This means that the number of reads is 2,000,000 / 4 = 500,000.</p></li>
+<li><p>To confirm – a direct line count on the compressed file gives the wrong answer!</p></li>
+</ul>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>101139</code></pre>
+</details>
+<details>
+<summary>
+<strong>3.</strong> How many reads contain the sequence <code>ACGT</code>?
+</summary>
+<ul>
+<li><p>Either use <code>zcat &lt;file&gt; | grep</code>:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ERR10802863_R1.fastq.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-c</span> <span class="st">"ACGT"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>100465</code></pre></li>
+<li><p>Or <code>zgrep</code>:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zgrep</span> <span class="at">-c</span> <span class="st">"ACGT"</span> ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>100465</code></pre></li>
+</ul>
+</details>
+<details>
+<summary>
+<strong>4.</strong> Create a count table of read lengths
+</summary>
+<ul>
+<li>First select only header lines with <code>grep "@"</code>.</li>
+<li>Then use <code>=</code> as the <code>cut</code> delimiter and select the second “column”.</li>
+<li>Finally, use the by now familiar <code>sort | uniq -c</code> idiom to create the count table.</li>
+</ul>
+<div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ERR10802863_R1.fastq.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"@"</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">"="</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>  32678 35
+      4 36
+      7 37
+      2 38
+      3 39
+      4 40
+      4 41
+      3 42
+      6 43
+      6 44
+      4 45
+      8 46
+      6 47
+      3 48
+      2 49
+     11 50
+     14 51
+     14 52
+     12 53
+     11 54
+     18 55
+     13 56
+     13 57
+     17 58
+     21 59
+     27 60
+     28 61
+     28 62
+     47 63
+     90 64
+     61 65
+     49 66
+     78 67
+    276 68
+    620 69
+   1962 70
+   8483 71
+  28617 72
+ 123453 73
+ 303297 74</code></pre>
+</details>
+<details>
+<summary>
+<strong>5.</strong> Count the number of reads that contain at least 10 consecutive <code>N</code>s
+</summary>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ERR10802863_R1.fastq.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-c</span> <span class="st">"NNNNNNNNNN"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>32612</code></pre>
+</details>
+<details>
+<summary>
+<strong>6.</strong> What’s up with the 35-bp reads?
+</summary>
+<p>The number of reads with at least 10 consecutive <code>N</code>s (32,612 – previous question) is rather close to the number of 35-bp reads (32,678 – question before that). Might nearly all 35-bp reads consist of mostly or only <code>N</code>s?</p>
+<p>One way to see a sample of 35-bp reads is by using <code>grep</code>s <code>-A</code> option to also print the line <em>after</em> each match:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ERR10802863_R1.fastq.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-A1</span> <span class="st">"length=35"</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 20</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>@ERR10802863.11918285 11918285 length=35
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+--
+@ERR10802863.6436756 6436756 length=35
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+--
+@ERR10802863.31676291 31676291 length=35
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+--
+@ERR10802863.3768169 3768169 length=35
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+--
+@ERR10802863.4421608 4421608 length=35
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+--
+@ERR10802863.4569065 4569065 length=35
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+--
+@ERR10802863.14070693 14070693 length=35
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN</code></pre>
+<p>They do! Note that this makes some sense because the target length of these reads is 75 bp. Read length variation in Illumina reads is usually very minor, with &gt;99% of reads typically being up to 1 or bases from the target base length. As such, these 35-bp reads are unusual to begin with, and it may not be entirely surprising that they are of very poor quality.</p>
+</details>
+<details>
+<summary>
+<strong>7.</strong> What is the total number of reads across all R1 files?
+</summary>
+<p>We can use <code>zcat</code> with a <code>*</code> wildcard pattern to print the contents of all R1 files, and simply perform a line count on that:</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="pp">*</span>_R1.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>44000000</code></pre>
+<p>So, the total number of reads is 44,000,000 / 4 = 11,000,000. This makes sense because we have 22 R1 FASTQ files, each of which has 500 k reads.</p>
+</details>
 
 
 </section>
@@ -554,8 +774,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <ol>
 <li id="fn1"><p> And if it’s not there: create it first. Its full path should be <code>/fs/ess/PAS2880/users/$USER/garrigos-data/sandbox</code>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Recall: <code>-v</code> will invert the search and print non-matching lines<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p> Because double-stranded DNA is represented as a single sequence, the <code>strand</code> column effectively indicates in which direction a feature should be read along this sequence.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

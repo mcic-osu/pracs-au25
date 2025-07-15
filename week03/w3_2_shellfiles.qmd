@@ -193,9 +193,11 @@ ERR10802878     10dpi   control
 # [...output truncated...]
 ```
 
-Next, let's try to take a peak inside one of our FASTQ files.
-We may want to use `-n 8` with `head` to print the first 8 lines,
-which corresponds to 2 reads:
+-----
+
+Next, let's try to take a peak inside a FASTQ file.
+To print the first 8 lines, corresponding to 2 reads,
+use `-n 8` with `head`:
 
 ``` bash
 head -n 8 fastq/ERR10802863_R1.fastq.gz
@@ -227,13 +229,17 @@ you might be inclined to decompress these files
 However, at least when it comes to FASTQ files,
 you are best off leaving them compressed:
 
-- Uncompressed files take up several times as much disk storage space as
-  compressed ones
-- Almost any bioinformatics tool accepts compressed FASTQ files
-- You _can_ actually view these files while they are in compressed form,
-  as shown below with `less`.
-  Additionally, `cat` and several other commands have a counterpart for compressed
-  files: in the case of `cat`, that's `zcat`.
+- Uncompressed files take up much more disk storage space than compressed ones,
+  and a set of FASTQ files can be a lot of data
+- Almost any bioinformatics program accepts compressed FASTQ files
+- You _can_ view these files in compressed form, as shown below with `less`.
+  Additionally, several commands including `cat` have a counterpart for compressed
+  files (`zcat` in the case of `cat`).
+  
+Other genomic files, like assembly FASTA files and annotation GTF/GFF files,
+are often also compressed when you download them.
+These types of files are more commonly decompressed ---
+for one because they don't take up nearly as much space as a set of FASTQ files.
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -266,12 +272,30 @@ CTCGGCGTTAACTTCATCACGCAGATCATTCCGTTCCAGCAGCTGAAGCAAGACTACCGTCAGTACGAGATGA
 AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 ```
 
-You can move around in the file in several ways:
+::: {.callout-tip}
+#### The `-S` option to `less` suppresses "line-wrapping"
+
+When lines are too long to fit on your computer screen,
+`less` will by default "wrap" them onto a next line on the screen.
+That's convenient for reading,
+but can be confusing for tabular formats and formats like FASTQ,
+because one line on the screen no longer corresponds to one line in the file.
+
+With `-S`, lines will not be wrapped but will "run out of the screen"
+on the right-hand side (press the rightward arrow <kbd>→</kbd> to see that part).
+
+``` bash
+less -S garrigos-data/fastq/ERR10802863_R1.fastq.gz
+```
+:::
+
+When inside the `less` pager, you can move around in the file in several ways:
 
 - By scrolling with your mouse
-- With up <kbd>↑</kbd> and down <kbd>↓</kbd> arrows to move line-by-line
-- If you have them, with <kbd>PgUp</kbd> and <kbd>PgDn</kbd> keys to move page-by-page
-- With <kbd>u</kbd> (up) and <kbd>d</kbd> (down) to half a page at a time
+- With up <kbd>↑</kbd> and down <kbd>↓</kbd> arrows: move line-by-line
+- With <kbd>u</kbd> (up) and <kbd>d</kbd> (down): move half a page at a time
+- If you have them, with <kbd>PgUp</kbd> and <kbd>PgDn</kbd> keys: move page-by-page
+- Press `G` to go the end of the file, and `g` to go (back) to the top
 
 To exit/quit `less` and get your shell prompt back, simply type **<kbd>q</kbd>**:
 
@@ -285,47 +309,30 @@ q
 ::: {.callout-note collapse="true"}
 #### FASTQ format recap _(Click to expand)_
 
-Recall that in a FASTQ file, each read has four lines and the reads are simply
-printed back-to-back:
+Recall that in a FASTQ file, **each read has four lines**,
+and reads are simply printed back-to-back:
 
 ![](../img/fastq_dark.png){width="90%" fig-align="center"}
 
 The above screenshot is from one of the Garrigos et al. FASTQ files,
 which were downloaded from the NCBI Sequence Read Archive (SRA).
-When you receive FASTQ files from the sequencer,
-they will instead have header with a lot more information, such as shown below:
+When you receive FASTQ files from a sequencer,
+the header may have a lot more information, such as shown below for Illumina:
 
 ![](../img/fastq_header.png){width="80%" fig-align="center"}
 :::
 
-<details><summary>{{< fa user-edit >}} Do you notice any unusual-looking reads? _(Click for the solution)_
-</summary>
+::: {.callout-important collapse="true"}
+#### {{< fa user-edit >}} Explore the FASTQ file a bit. Do you notice any unusual-looking reads? _(Click for the solution)_
 
-  There are a number of reads that are much shorter than the others and only consist
-  of `N`, i.e. uncalled bases. For example:
+A number of reads are much shorter than the others,
+and only consist of `N`s, i.e. uncalled bases. For example:
   
-  ```bash-out-solo
-  @ERR10802863.11918285 11918285 length=35
-  NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
-  +
-  ###################################
-  ```
-</details>
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: {.callout-tip}
-#### The `-S` option to `less` suppresses "line-wrapping"
-
-With `-S`, lines in the file will not be "wrapped" across multiple lines in case
-the line is too long to be shown on the screen.
-Instead, the line will "run out of the screen" on the right-hand side
-(and you can press the rightward arrow <kbd>→</kbd> to see that part).
-With formats like FASTQ as well as tables,
-line-wrapping can be confusing and is best turned off.
-
-``` bash
-less -S garrigos-data/fastq/ERR10802863_R1.fastq.gz
+```bash-out-solo
+@ERR10802863.11918285 11918285 length=35
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
++
+###################################
 ```
 :::
 
@@ -333,13 +340,12 @@ less -S garrigos-data/fastq/ERR10802863_R1.fastq.gz
 
 ### `wc -l` to count lines
 
-_(This command doesn't display the contents of files and may better fit_
-_in the section on Unix data tools below, but needs to be introduced for the_
-_next bit.)_
+_(This command doesn't display file contents and fits better in the section_
+_on Unix data tools below, but needs to be introduced for the next bit.)_
 
 The **`wc`** command by default counts the number of lines, words, and characters
 in its input ---
-but it is most commonly used to only **count lines**, with the `-l` option:
+but is most commonly used to only **count lines**, with the `-l` option:
 
 ```bash
 wc -l meta/metadata.tsv
@@ -355,8 +361,8 @@ as the number of lines in many file types reflects the number of entries.
 
 ## Redirection and pipes
 
-Since we'll be creating some dummy files,
-let's create and move into a `sandbox` dir within `garrigos-data`:
+You'll be creating some dummy files for this section,
+so let's first create and move into a `sandbox` dir within `garrigos-data`:
 
 ```bash
 mkdir sandbox
@@ -372,8 +378,8 @@ Sometimes, we may want to do something else with this output,
 like storing it in a file.
 Luckily, this is easy to do with something called "**redirection**".
 
-First, let's remind ourselves what `echo` does without redirection ---
-it will simply print the characters we provide it with to the screen:
+First, a reminder of what `echo` does without redirection ---
+it simply prints the text we provide to the screen:
 
 ```bash
 echo "My first line"
@@ -382,7 +388,8 @@ echo "My first line"
 My first line
 ```
 
-Now, let's redirect `echo`'s standard out to a new file `test.txt`:
+Now, let's redirect `echo`'s standard out to a new file `test.txt` using
+the `>` operator:
 
 ```bash
 echo "My first line" > test.txt
@@ -429,8 +436,8 @@ My third line
 
 ### The pipe
 
-Let's say that we want to count the number of entries (files and "sub"dirs)
-in a directory. We could do that as follows:
+Say that you want to count the number of entries (files and subdirs)
+in a directory. You could do that as follows:
 
 ```bash
 # First we redirect the ls output to a file
@@ -443,8 +450,8 @@ wc -l filelist.txt
 44 filelist.txt
 ```
 
-That worked, but we needed two separate lines of code,
-and we are left with a file `filelist.txt` that we probably want to remove
+That worked, but with two separate lines of code,
+and you are left with a file `filelist.txt` you probably want to remove,
 since it has served its sole purpose.
 
 A more conventient way to do this kind of thing is with a "**pipe**", as follows:
@@ -456,7 +463,7 @@ ls ../fastq | wc -l
 44
 ```
 
-When we use the pipe, the output of the command on the left-hand side
+When you use the pipe, the output of the command on the left-hand side
 (a file listing, in this case) is **redirected into the `wc` command**.
 This command like many others will gladly accept input that way 
 (i.e., via **standard in**) instead of via a file name argument.
@@ -464,7 +471,7 @@ This command like many others will gladly accept input that way
 Pipes are useful because they avoid having to write/read intermediate files ---
 this saves typing, makes the operation quicker, and reduces file clobber.
 In the example above,
-we don't need to make a `filelist.txt` file to count the number of files.
+you don't need to make a `filelist.txt` file to count the number of files.
 We'll see pipes in action a bunch more in the next section.
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -559,9 +566,8 @@ ERR10802867     24hpi   cathemerium
 ERR10802870     24hpi   cathemerium
 ```
 
-Instead of printing matching lines,
-we can also **count** them with the `-c` option --
-for example, how many control samples are in the dataset?
+Instead of printing matching lines, we can also **count** them with the `-c` option.
+For example, how many control samples are in the dataset?
 
 ```bash
 grep -c "control" metadata.tsv
@@ -570,9 +576,9 @@ grep -c "control" metadata.tsv
 7
 ```
 
-The option `-v` **inverts** `grep`'s behavior and will print all lines that
-do _not_ match the pattern --- here,
-we'll combine `-v` and `-c` to count lines that do not contain "control":
+The option `-v` **inverts** `grep`'s behavior and prints all lines that
+do _not_ match the pattern.
+Here, combine `-v` and `-c` to count lines that do not contain the string "control":
 
 ```bash
 grep -vc "control" metadata.tsv
@@ -584,28 +590,51 @@ grep -vc "control" metadata.tsv
 ::: {.callout-note collapse="false"}
 #### Additional `grep` tips
 
-- While not always necessary,
-  it is a good habit to consistently use quotes (`"..."`) around the search pattern.
-- Incomplete matches,
-  including in individual words, work: "`contr`" will match the `control` lines
+- While not always necessary, it's good practice to
+  **use quotes** (`"..."`) around the search pattern.
+  Use _double_ quotes by default, like in the examples above,
+  but _single_ quotes can generally also be used^[
+  Except, e.g., when you use a shell variable within your search pattern.].
+- **Incomplete matches** work, including in individual words:
+  "`contr`" will match the `control` lines
   (compare this behaviour with globbing using shell wildcards!)
 - `grep` has many other useful options, such as:
-  - `-i` to ignore case when searching
-  - `-w` to make a pattern match whole "words" only
+  - `-i` to ignore case (uppercase vs. lowercase) when searching
   - `-n` print the line number for each matching line
   - `-A <n>` and `-B <n>` to print `n` lines after and before each match
-  - `-r` to search files recursively 
-    (note that even without `-r`, it can operate on multiple files)
+  - `-w` to make a pattern match whole "words" only
+  - `-r` to search files in directories recursively 
+    (note that even without `-r`, `grep` can operate on multiple files)
 :::
 
-::: {.callout-note collapse="true"}
-#### Operating on compressed files
+::: {.callout-tip collapse="true"}
+#### Operating on compressed files _(Click to expand)_
 
-- `zgrep`
-- `zcat X | grep`
+`grep` also has a counterpart for compressed files: `zgrep`,
+which otherwise works identically.
 
-TBA
+```bash
+# Search for long non-coding RNAs (lncRNA) in the GTF file:
+zgrep "lncRNA" ../ref/GCF_016801865.2.gtf.gz | head -n 2
+```
+```bash-out
+NC_068937.1     Gnomon  gene    76295   82374   .       -       .       gene_id "LOC128092783"; transcript_id ""; db_xref "GeneID:128092783"; description "uncharacterized LOC128092783"; gbkey "Gene"; gene "LOC128092783"; gene_biotype "lncRNA"; 
+NC_068937.1     Gnomon  gene    82671   86331   .       +       .       gene_id "LOC120427727"; transcript_id ""; db_xref "GeneID:120427727"; description "uncharacterized LOC120427727"; gbkey "Gene"; gene "LOC120427727"; gene_biotype "lncRNA"; 
+```
 
+Another idiom, which would work with any command, is to pipe the output of `zcat`
+to the focal command --- for example:
+
+```bash
+# Search for carbonic anhydrase-related proteins in the GTF file:
+zcat ../ref/GCF_016801865.2.gtf.gz | grep "carbonic anhydrase-related protein" | head -n 2
+```
+```bash-out
+NC_068937.1     Gnomon  gene    398255  486969  .       -       .       gene_id "LOC120422535"; transcript_id ""; db_xref "GeneID:120422535"; description "carbonic anhydrase-related protein 10"; gbkey "Gene"; gene "LOC120422535"; gene_biotype "protein_coding"; 
+NC_068937.1     Gnomon  transcript      398255  486969  .       -       .       gene_id "LOC120422535"; transcript_id "XM_039585997.2"; db_xref "GeneID:120422535"; experiment "COORDINATES: polyA evidence [ECO:0006239]"; gbkey "mRNA"; gene "LOC120422535"; model_evidence "Supporting evidence includes similarity to: 10 Proteins"; product "carbonic anhydrase-related protein 10, transcript variant X1"; transcript_biotype "mRNA"; 
+```
+
+In this week's exercises, you'll further explore this GTF file.
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -795,11 +824,10 @@ tail -n +2 metadata.tsv | cut -f 3 | sort | uniq -c | sort -nr
 <hr style="height:1pt; visibility:hidden;" />
 
 :::{.callout-note collapse="true"}
-#### Sorting based on one or more columns _(Click to expand)_
+#### Sorting based on one or more specific columns _(Click to expand)_
 Above, we used `sort` to simply sort a list.
-More generally, by default,
-`sort` will sort based on the entire contents of a line.
-To sort based on one or more columns, like you've likely done in Excel,
+More generally, `sort` will by default sort based on the entire line.
+To sort based on one or more columns, like you've probably done in Excel,
 use the `-k` option --- for example:
 
 ```bash
@@ -825,9 +853,9 @@ tail -n +2 metadata.tsv | sort -k3,3 -k2,2
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### The Unix philosophy
+## In closing: The Unix philosophy
 
-With these Unix data tool examples, we saw the Unix philosophy in action:
+In particular with these Unix data tool examples, we saw the Unix philosophy in action:
 
 > *This is the Unix philosophy: Write programs that do one thing and do it
 > well.* *Write programs to work together. Write programs to handle text
@@ -873,14 +901,11 @@ cat fastq/*R1.fastq.gz > all_R1.fastq.gz
 If you want to learn more about these and other Unix data tools,
 take a look at [this optional reading page on them](../bonus/shell-data.qmd).
 
-<hr style="height:1pt; visibility:hidden;" />
-
-::: {.callout-warning collapse="false"}
 #### Don't redirect back to the input file!
 
-You should never redirect the output of Unix commands "back" to the input file.
-This will corrupt the input file because of how Unix commands stream input and
-output line-by-line.
+One drawback of the "text streams" mode of operation is that you can never redirect
+the output of Unix commands "back" to the input file.
+This will corrupt the input file.
 
 Therefore, if you really want to edit/overwrite the original file instead of
 creating a separate edited copy, you will need multiple steps:
@@ -900,4 +925,61 @@ sort metadata.tsv > metadata_sorted.tsv
 mv metadata_sorted.tsv metadata.tsv
 rm metadata_sorted.tsv
 ```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+:::{.callout-tip collapse="false"}
+#### GTF file info for this week's exercises
+
+As mentioned in the introductory lecture on omics data,
+the main part of a GTF file is a table with:
+
+- One row for each annotated "**genomic feature**" (gene, exon, intron, etc.)
+- Columns with information like the genomic coordinates of the features
+
+However, the file typically starts with **header lines** that contain metadata
+and start with `#`.
+In some cases, the header can have hundreds of lines,
+including a list of each represented sequence (chromosome/scaffold/contig).
+"Our" GTF file only has a few header lines, though:
+
+```bash
+zcat ../ref/GCF_016801865.2.gtf.gz | head -n 5
+```
+```bash-out
+#gtf-version 2.2
+#!genome-build TS_CPP_V2
+#!genome-build-accession NCBI_Assembly:GCF_016801865.2
+#!annotation-source NCBI RefSeq GCF_016801865.2-RS_2022_12
+NC_068937.1     Gnomon  gene    2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
+NC_068937.1     Gnomon  transcript      2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA";
+```
+
+The last two lines of the snippet above are the first rows of the tabular part.
+There is no line with column names,
+so here's the snippet with aligned columns and added column names
+also shown in the introductory lecture on omics data:
+
+```bash-out-solo
+seqname       source  feature     start   end     score  strand  frame    attributes
+NC_068937.1   Gnomon  gene        2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
+NC_068937.1   Gnomon  transcript  2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; 
+NC_068937.1   Gnomon  exon        2046    2531    .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "1"; 
+NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "2"; 
+```
+
+Some details on what's in each column:
+
+| Column # | Column ID | Explanation
+|--|--|--------------|
+| 1 | **_seqname_** | Name of the chromosome, scaffold, or contig
+| 2 | **_source_** | Name of the program that generated this feature, or the data source (e.g. database)
+| 3 | **_feature_** | Name of the feature type, e.g. "gene", "exon", "intron", "CDS"
+| 4 | **_start_** | Start position of the feature (sequence numbering starts at 1; start position is included)
+| 5 | **_end_** | End position of the feature (end position is also included)
+| 6 | **_score_** | A confidence score for the feature, often absent (in which case it is `.`)
+| 7 | **_strand_** | Whether the feature is on the `+` (forward) or `-` (reverse) strand^[Because double-stranded DNA is represented as a single sequence, the `strand` column effectively indicates in which direction a feature should be read along this sequence.].
+| 8 | **_frame_** | `0`, `1` or `2` (or `.` for no frame). `0` means the first base of the feature is the first base of a codon, etc.
+| 9 | **_attributes_** | A semicolon-separated list of key-value pairs with additional information about each feature. This column can be very long!
+
 :::
