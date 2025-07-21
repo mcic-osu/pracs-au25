@@ -224,37 +224,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bonus--overviews" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Bonus &amp; overviews</span>
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-other" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Other</span>
     </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bonus--overviews">    
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-other">    
+        <li class="dropdown-header">Course glossary</li>
+        <li>
+    <a class="dropdown-item" href="../ref/refs.html">
+ <span class="dropdown-text">References</span></a>
+  </li>  
+        <li class="dropdown-header">Further learning resources</li>
+        <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header">OPTIONAL SELF-STUDY CONTENT</li>
         <li class="dropdown-header">Unix data tools (wk3)</li>
-        <li class="dropdown-header">Misc. advanced Unix shell (wk3)</li>
-        <li class="dropdown-header">Advanced Git (wk4)</li>
+        <li class="dropdown-header">Misc. Unix shell (wk3)</li>
+        <li class="dropdown-header">Git (wk4)</li>
         <li class="dropdown-header">Software management with Conda (wk5)</li>
-        <li class="dropdown-header">Connecting to OSC through SSH (wk5)</li>
-        <li class="dropdown-header">Other OSC file transfer options (wk5)</li>
-        <li class="dropdown-header">Advanced shell scripting and looping (wk6)</li>
-        <li class="dropdown-header">Advanced Slurm batch jobs (wk7)</li>
+        <li class="dropdown-header">SSH connection (wk5)</li>
+        <li class="dropdown-header">OSC file transfer (wk5)</li>
+        <li class="dropdown-header">Shell scripting and looping (wk6)</li>
+        <li class="dropdown-header">Slurm batch jobs (wk7)</li>
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header">TOPIC OVERVIEWS</li>
     </ul>
   </li>
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-miscellaneous" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Miscellaneous</span>
-    </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-miscellaneous">    
-        <li>
-    <a class="dropdown-item" href="../ref/about.html">
- <span class="dropdown-text">About this website</span></a>
+  <li class="nav-item">
+    <a class="nav-link" href="../ref/about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
-        <li class="dropdown-header">Course readings</li>
-        <li class="dropdown-header">Further learning resources</li>
-        <li class="dropdown-header">Course glossary</li>
-    </ul>
-  </li>
   <li class="nav-item">
     <a class="nav-link" href="https://osu.instructure.com/courses/163340"> 
 <span class="menu-text"><i class="fa-solid fa-graduation-cap" aria-label="graduation-cap"></i></span></a>
@@ -467,10 +464,10 @@ More about TrimGalore <em>(Click to expand)</em>
 <p>Write a shell script <code>scripts/trimgalore.sh</code> that runs TrimGalore on paired end-FASTQ files as follows:</p>
 <ul>
 <li><p>The script should only <strong>run TrimGalore once</strong>, i.e.&nbsp;for one sample (two FASTQ files).</p></li>
-<li><p>Your <strong>script should accept and process arguments</strong> that specify the input FASTQ files and the output dir. (For the FASTQ files, I suggest you follow the strategy <a href="w4_2_cli-tools.html#looping-over-samples-rather-than-files">used in class</a> where the script takes only the R1 file name as an argument<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> and infers the name of the corresponding R2 file.)</p></li>
+<li><p>Your <strong>script should accept and process arguments</strong> that specify the input FASTQ files and the output dir.</p></li>
 <li><p>For each of the items below, figure out the relevant TrimGalore option, and use that option:</p>
 <ul>
-<li>Tell the program that the reads are <strong>paired-end</strong><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</li>
+<li>Tell the program that the reads are <strong>paired-end</strong><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</li>
 <li>Set the <strong>output dir</strong>.</li>
 <li>Make the program <strong>run FastQC</strong> on the trimmed FASTQ files.</li>
 </ul></li>
@@ -536,7 +533,7 @@ Warning: Don’t use/adjust TrimGalore’s <code>--cores</code> option here <em>
 <ul>
 <li>In each file (R1 and R2), in what percentage of reads were adapters detected?</li>
 <li>In each file (R1 and R2), what percentage of bases were quality trimmed?</li>
-<li>What percentage of reads were removed because they were too short?<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></li>
+<li>What percentage of reads were removed because they were too short?<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
 </ul></li>
 </ol>
 <hr style="height:1pt; visibility:hidden;">
@@ -907,9 +904,8 @@ Solution <em>(Click to expand)</em>
 
 <ol>
 <li id="fn1"><p> Adapters are always added to DNA/cDNA fragments of interest prior to Illumina sequencing, and the last bases of a read can “read-through” into the adapter if the fragment is shorter than the read length.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p> Alternatively, it could take both R1 and R2 files as arguments.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p> If you don’t do this, TrimGalore will process the two FASTQ files independently.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p> Hint: this info is printed at the very end, and for both files at once.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p> If you don’t do this, TrimGalore will process the two FASTQ files independently.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p> Hint: this info is printed at the very end, and for both files at once.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1336,8 +1332,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <p>2025, Jelmer Poelstra</p>
 </div>   
     <div class="nav-footer-center">
-      &nbsp;
-    </div>
+<p><img src="../img/CFAES-Horiz-RGBHEX.svg" class="img-fluid" style="width:40.0%"></p>
+</div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

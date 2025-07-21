@@ -1,0 +1,655 @@
+---
+title: "Omics data"
+subtitle: "**With a focus on high-throughput sequencing data**"
+author: Jelmer Poelstra
+date: 2025-08-26
+institute: "CFAES Bioinformatics Core, OSU"
+title-slide-attributes:
+  data-background-color: "silver"
+format:
+  revealjs:
+    theme: [default, ../theme_mod.scss]
+    css: ../slides.css
+    smaller: true
+    scrollable: false
+    progress: true
+    incremental: false
+    slide-number: true
+    slide-level: 2
+    highlight-style: pygments
+    embed-resources: true
+    toc: true
+    toc-depth: 1
+    toc-title: Overview
+    footer: "[PRACS25](https://mcic-osu.github.io/pracs-au25)"
+    logo: ../img/CFAES-Horiz-RGBHEX.svg
+    menu:
+      width: wide
+      numbers: true
+editor_options: 
+  chunk_output_type: console
+bibliography: ../references.bib
+---
+
+# An overview of omics data {background-color="silver"}
+
+## The main omics data types
+
+![](../img/fisher_omics.avif){fig-align="center" width="70%" fig-alt="A diagram showing the main omics data types." .lightbox}
+
+::: legend2
+Copyright [ThermoFisher](https://www.thermofisher.com/us/en/home/brands/thermo-scientific/molecular-biology/molecular-biology-learning-center/molecular-biology-resource-library/spotlight-articles/supporting-multi-omics-approaches.html)
+:::
+
+## The main omics data types
+
+- Genomics (including metagenomics) --- _DNA_
+- Epigenomics --- _DNA modifications_
+- Transcriptomics --- _RNA_
+- Proteomics --- _Proteins_
+- Metabolomics --- _Metabolites_
+
+:::callout-note
+#### -omics?
+The "omics" suffix indicates the involvement of large-scale datasets ---
+in the sense that, for example, "genomics" data typically spans much or all 
+of the genome.
+While the boundaries can be fuzzy,
+merely sequencing a single gene in a single organism is not genomics,
+and merely doing qPCR on a handful of genes is not transcriptomics.
+:::
+
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: callout-tip
+#### This course focuses on data produced by High-Throughput Sequencing
+Genomics, epigenomics, and transcriptomics data are produced by
+**High-Throughput Sequencing** (HTS) technologies.
+HTS and the resulting data are the focus of this lecture are used in examples
+throughout the course.
+:::
+
+# High-throughput sequencing (HTS) {background-color="silver"}
+
+## What does "sequencing" refer to?
+
+As is common, I will use the shorthand "sequencing" to refer to the
+**determination of the nucleotide sequence of DNA fragments**.
+
+. . .
+
+<br>
+
+Whereas:
+
+- **RNA** is usually reverse transcribed to DNA (cDNA) prior to sequencing,
+  as in nearly all "RNA-seq".
+  _(Direct RNA sequencing is possible with one of the sequencing technologies we'll discuss,_
+  _but this is under development and not yet widely used.)_
+
+- **Protein** sequencing requires different technology altogether,
+  such as mass spectrometry, and is not further discussed in this lecture.
+
+## Sequencing technologies: overview
+
+**Sanger sequencing (since 1977)**\
+Sequences a single, typically PCR-amplified, short-ish (≤900 bp) DNA fragment at a time
+
+. . .
+
+<br>
+
+**High-throughput sequencing (HTS, since 2005)**\
+Sequences hundreds of thousands to billions DNA fragments at a time,
+which are usually randomly selected
+
+<br>
+
+::: callout-note
+#### All sequencing technologies involve some degree of error
+This has large consequences for ALL analyses TBA
+::::
+
+::: callout-tip
+#### Sequenced DNA fragments are referred to as "reads".
+::::
+
+## Sequencing cost through time
+
+![](../img/2022_Sequencing_cost_per_Human_Genome.jpg){width="80%" fig-align="center" fig-alt="A graph showing falling sequenicng costs over time." .lightbox}
+
+:::legend2
+<https://www.genome.gov/about-genomics/fact-sheets/Sequencing-Human-Genome-cost>
+:::
+
+## Examples of HTS applications
+
+- **Whole-genome assembly**
+
+. . .
+
+- **Variant analysis** (for population genetics/genomics, molecular evolution, GWAS, etc.):
+  - Whole-genome "resequencing"
+  - Reduced-representation libraries (e.g. RAD-Seq, GBS)
+
+. . .
+
+- **RNA-Seq** (transcriptome analysis)
+
+. . .
+
+- Other "functional" sequencing methods like **methylation sequencing, ChIP-Seq,** etc.
+
+. . .
+
+- **Microbial community characterization**
+  - Metabarcoding
+  - Shotgun metagenomics
+
+## HTS applications (cont.)
+
+![](../img/lee2013.gif){fig-align="center" width="67%" fig-alt="An annotated diagram of omics data types and associated molecular components." .lightbox}
+
+::: legend2
+From @lee2023
+:::
+
+## Examples of HTS data analyses
+
+**Stage I: The algorithmic/bioinformatics part**
+
+- Read quality control (QC) and trimming
+- Read alignment to a reference genome
+- Read taxonomic classification against a reference database
+- Read assembly into a genome or transcriptome
+- Variant calling
+
+<hr style="height:1pt; visibility:hidden;" />
+
+. . .
+
+**Stage II: The biostatistical part**
+
+- Differential abundance of gene (RNA-Seq) or taxon (metabarcoding) counts
+  among groups
+- Clustering/ordination and network analyses
+- Genome-wide Association Studies (GWAS)
+- Statistical enrichment of functional gene categories (e.g. Gene Ontology)
+
+## The main HTS technologies
+
+| | Short-read HTS   | Long-read HTS
+|---|-------|-------|
+**Key takeaway** | Produces up to billions of short, highly accurate reads | Produces longer but fewer, less accurate, and more costly reads
+**Main companies**   | Illumina | Oxford Nanopore Technologies (ONT) and Pacific Biosciences (PacBio)
+**Read lengths** | 50-300 bp | PacBio: 10-50 kbp / ONT: 10-100+ kbp
+**Error rates** | Mostly <0.1% | 1-10% (ONT) / <0.1-10% (PacBio)
+
+## The main HTS technologies
+
+| | Short-read HTS   | Long-read HTS
+|---|-------|-------|
+**Key takeaway** | Produces up to billions of short, highly accurate reads | Produces longer but fewer, less accurate, and more costly reads
+**Main companies**   | Illumina | Oxford Nanopore Technologies (ONT) and Pacific Biosciences (PacBio)
+**Read lengths** | 50-300 bp | PacBio: 10-50 kbp / ONT: 10-100+ kbp
+**Error rates** | Mostly <0.1% | 1-10% (ONT) / <0.1-10% (PacBio)
+**Timeline**    | Since 2005 — technology fairly stable | Since 2011 — remains under rapid development
+**Usage** | More common | Less common
+**AKA** | Next-Generation Sequencing (NGS) | Third-generation sequencing
+
+## Video of Illumina technology
+
+{{< video https://www.youtube.com/watch?v=fCd6B5HRaZ8 width="95%" height="81%" >}}
+
+## Video of Oxford Nanopore technology
+
+{{< video https://www.youtube.com/watch?v=RcP85JHLmnI width="95%" height="81%" >}}
+
+## Video of Pacific Biosciences technology
+
+{{< video https://www.youtube.com/watch?v=_lD8JyAbwEo width="95%" height="81%" >}}
+
+## More on read lengths and error rates
+
+- Choosing between short-read and long-read technology has often involved a
+  trade-off between **accuracy** and **read-length**.
+
+- But: error rates of long-read technologies are rapidly decreasing.
+  **Per-base costs** are still much higher for long-read sequencing.
+
+<br>
+
+. . .
+
+<details><summary>**Can you think of applications where longer reads are useful?**</summary>
+
+- Genome assembly
+- Haplotype and large structural variant calling
+- Transcript isoform identification
+- Taxonomic identification of single reads (microbial metabarcoding)
+</details>
+
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+<details><summary>**Can you think of applications where read length may not matter much?**</summary>
+
+- SNP variant analysis
+- Read-as-a-tag: the goal is just to know a read's origin in a reference genome,
+  like in counting applications such as RNA-seq
+</details>
+
+# Illumina libraries and sequencing {background-color="silver"}
+
+## Libraries and library prep
+
+We will talk a bit about Illumina library prep because it's the most common
+type of HTS and we'll use Illumina read files as examples throughout the course.
+
+In a sequencing context,
+a "**library**" is a collection of nucleic acid fragments ready for sequencing.
+
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+In Illumina and other HTS libraries,
+these fragments **number in the millions or billions** and are
+**often** **randomly generated** from input such as genomic DNA:
+
+. . .
+
+![](../img/library_prep.png){fig-align="center" fig-alt="A diagram showing the main Illumina library preparation steps." .lightbox}
+
+::: legend2
+An overview of the **library prep** procedure.
+This is typically done for you by a sequencing facility or company.
+:::
+
+## A closer look at the processed DNA fragments
+
+As shown in the previous slide, after library prep,
+each DNA fragment is flanked by several types of short sequences that together
+make up the "**adapters**":
+
+<br>
+
+![](../img/adapters2.png){fig-align="center" fig-alt="A diagram of DNA fragment in a prepared library, with adapters flanking the fragment." .lightbox}
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: callout-note
+#### Multiplexing!
+Using so-called "indices" or "barcodes" that make up part of the adapters,
+up to 96 samples can be combined ("multiplexed") into a single library,
+i.e. into a single tube.
+:::
+
+## Paired-end vs. single-end sequencing
+
+DNA fragments can be sequenced from both ends as shown below —   
+this is called **"paired-end" (PE) sequencing**:
+
+![](../img/pairedend.png){fig-align="center" fig-alt="A diagram showing forward and reverse reads in paired-end sequencing." .lightbox}
+
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+When sequencing is instead **single-end (SE)**, no reverse read is produced:
+
+![](../img/singleend.png){fig-align="center" fig-alt="A diagram showing the forward read in single-end sequencing." .lightbox}
+
+## Insert size variation
+
+The size of the DNA fragment (the "**insert size**" ) can vary --
+both by design and because of limited precision in size selection.
+In some cases, it is:
+
+- Shorter than the *combined* read length, leading to **overlapping reads** (this can be useful):
+
+![](../img/insert_size_overlap.png){fig-align="center" width="70%" fig-alt="A diagram illustrating the scenario when the DNA fragment is shorter than the combined read length" .lightbox}
+
+. . .
+
+- Shorter than the *single* read length, leading to "**adapter read-through**"
+  (i.e., the ends of the resulting reads will consist of adapter sequence, which should be removed):
+
+![](../img/insert_size_adapter-read-through.png){fig-align="center" width="58%" fig-alt="A diagram illustrating the scenario when the DNA fragment is shorter than the single read length" .lightbox}
+
+# Reference genomes {background-color="silver"}
+
+## Genomes
+
+Many HTS applications either **require a "reference genome"** **or involve its production.**
+
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+What exactly does "reference genome" refer to? It usually includes:
+
+- **An assembly**\
+  A representation of most or all of the genome DNA sequence: the genome assembly
+
+- **An annotation**\
+  This provides, for example, the *locations of genes and other genomic features*
+  in the corresponding genome assembly,
+  as well as functional information on these features
+
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+:::callout-tip
+#### Taxonomic identity
+
+Reference genomes are typically needed and used at the **species level**.
+E.g., if you work with maize, you want a _Zea mays_ reference genome. But:
+
+- If needed, it is often possible to work with reference genomes of closely related species
+- Conversely, multiple reference genomes may exist, e.g. for different subspecies
+:::
+
+## Genomes
+
+Many HTS applications either **require a "reference genome"** **or involve its production.**
+
+<hr style="height:1pt; visibility:hidden;" />
+
+What exactly does "reference genome" refer to? It usually includes:
+
+- **An assembly**\
+  A representation of most or all of the genome DNA sequence: the genome assembly
+
+- **An annotation**\
+  This provides, for example, the *locations of genes and other genomic features*
+  in the corresponding genome assembly,
+  as well as functional information on these features
+
+<hr style="height:1pt; visibility:hidden;" />
+
+:::callout-warning
+#### Chromosomes, scaffolds, and contigs
+
+Nearly all genome assemblies are incomplete and fragmented to some extent.
+Therefore, in addition to complete chromosome sequences, they may contain:
+
+- **Contigs**: contiguous stretches of assembled sequence
+- **Scaffolds**: a collection of multiple contigs known to occur on the same chromosome,
+  but with gaps (often of unknown length) between them.
+:::
+
+# Sequence file types {background-color="silver"}
+
+## Overview
+
+Sequences and annotations are mostly stored in **plain-text** formats.
+Some of the most common types, which we will see in the course, are:
+
+- **FASTA**\
+  Simple sequence files, where each entry contains a header and a DNA/AA sequence.\
+  Versatile: may contain a few short sequences, entire genome assemblies, proteomes, ...
+
+<hr style="height:1pt; visibility:hidden;" />
+
+. . .
+
+- **FASTQ**\
+  The standard format for **HTS reads** — has a quality score for each nucleotide.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+- **SAM/BAM**\ _[(not further discussed today)]{style="color:#969696"}_  
+  An alignment format for **HTS reads**.
+  E.g. produced when you align reads to a genome.
+    
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+. . .
+
+- **GTF**/**GFF**\
+  A **genome annotation** format:
+  tables with information such as coordinates of genes and exons.
+
+## FASTA files
+
+FASTA files contain one or more DNA or amino acid sequences,
+with no limits on the number of sequences or the sequence lengths.
+
+The following example FASTA file contains two entries:
+
+``` bash
+>unique_sequence_ID Optional description
+ATTCATTAAAGCAGTTTATTGGCTTAATGTACATCAGTGAAATCATAAATGCTAAAAA
+>unique_sequence_ID2
+ATTCATTAAAGCAGTTTATTGGCTTAATGTACATCAGTGAAATCATAAATGCTAAATG
+```
+
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+Each entry contains a **header** and the **sequence** itself, where:
+
+- Header lines start with a `>` and provide identifying information for the sequence
+- The sequence is often spread across multiple lines with a fixed width
+
+## FASTQ files
+
+FASTQ is the standard format for HTS reads.
+**Each** **read forms** **one FASTQ entry** and is represented by four lines,
+which contain, respectively:
+
+. . .
+
+1.  A **header** that starts with `@` and e.g. uniquely identifies the read
+2.  The **sequence** itself
+3.  A **`+`** (plus sign)
+4.  One-character **quality scores** for each base (hence FASTQ as in "Q" for "quality")
+
+![](../img/fastq_dark.png){fig-align="center" width="100%" fig-alt="An annotated screenshot of two reads in a FASTQ file." .lightbox}
+
+## FASTQ quality scores
+
+The quality scores we saw in the read on the previous slide represent an estimate of the error probability of the base call.
+
+Specifically, they correspond to a numeric "Phred" quality score (`Q`), which is a function of the estimated probability that a base call is erroneous (`P`):
+
+> **Q = -10 \* log10(P)**
+
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+For some specific probabilities and their rough qualitative interpretation for Illumina data:
+
+| Phred quality score | Error probability | Rough interpretation |
+|---------------------|-------------------|----------------------|
+| **10**              | 1 in 10           | terrible             |
+| **20**              | 1 in 100          | bad                  |
+| **30**              | 1 in 1,000        | good                 |
+| **40**              | 1 in 10,000       | excellent            |
+
+## FASTQ quality scores (cont.)
+
+To make things a little more complicated:
+the numeric Phred quality score is represented in FASTQ files
+*not by the number itself*,
+but by a corresponding "ASCII character".
+
+This is simply to allow for a single-character representation of each possible score —
+because of this,
+**each quality score character can conveniently correspond to (& line up with) a base character**
+in the read.
+
+. . .
+
+For example:
+
+| Phred quality score | Error probability | ASCII character |
+|---------------------|-------------------|-----------------|
+| **10**              | 1 in 10           | `+`             |
+| **20**              | 1 in 100          | `5`             |
+| **30**              | 1 in 1,000        | `?`             |
+| **40**              | 1 in 10,000       | `I`             |
+
+## FASTQ (cont.)
+
+FASTQ files have no size limit, but in paired-end (PE) sequencing,
+forward and reverse reads are **split into two files**:
+
+- Forward reads are in files with `R1` in their name
+- Reverse reads are in files with `R2` in their name
+
+For example, having paired-end FASTQ files for 2 samples could look like this:
+
+``` bash
+# A listing of (unusually simple) file names:
+sample1_R1.fastq.gz
+sample1_R2.fastq.gz
+sample2_R1.fastq.gz
+sample2_R2.fastq.gz
+```
+
+## GTF/GFF files
+
+The very similar GTF and GFF formats are **tabular** genome annotation files with:
+
+- One row for each annotated "**genomic feature**" (gene, exon, intron, etc.)
+- Columns with information like the genomic coordinates of the features
+
+After a metadata header, the tabular part looks like this
+(column names added for clarity):
+
+```{.bash-out-solo}
+seqname       source  feature     start   end     score  strand  frame    attributes
+NC_068937.1   Gnomon  gene        2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
+NC_068937.1   Gnomon  transcript  2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; 
+NC_068937.1   Gnomon  exon        2046    2531    .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "1"; 
+NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "2"; 
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: callout-note
+#### Details for a few columns:
+
+- _seqname_ -- Name of the chromosome, scaffold, or contig
+- _source_ --- Name of the program that generated this feature, or the data source (e.g. database)
+- _attribute_ --- A semicolon-separated list of tag-value pairs with additional information
+:::
+
+# The course's main example dataset {background-color="silver"}
+
+## Garrigos et al. 2023
+
+Throughout the course, we will use an example/practice data set,
+which is from the paper:
+
+@garrigós2023 --
+*Two avian Plasmodium species trigger different transcriptional responses on their vector Culex pipiens*:
+
+![](../img/garrigos_paper.png){fig-align="center" width="80%" fig-alt="A screenshot of the paper's front matter." .lightbox}
+
+## Experimental design
+
+This paper uses RNA-Seq data to study gene expression in *Culex pipiens* mosquitos
+infected with malaria-causing *Plasmodium* protozoans ---
+specifically, it compares mosquitos according to:
+
+- **Infection status**: control vs. *Plasmodium cathemerium* vs. *P. relictum*
+- **Time after infection**: 1 vs. 10 vs. 21 days (DAI)
+
+All in all, the experimental design looks like this --
+showing number of samples (replicates) for each treatment combination:
+
+|        | Control | _P. cathemerium_ | _P. relictum_ | 
+|--------|:---------:|:--------:|:---------:|
+| **01 DAI** |    3    |     3  |   4 
+| **10 DAI** |    4    |     4  |   4 
+| **21 DAI** |    4    |     4  |   3
+
+## The dataset's files
+
+However, to keep things manageable while practicing,
+I have **subset** the data to omit the 21-day samples and only keep 500,000
+reads per FASTQ file.
+
+All in all, the set of files, [available through GitHub](https://github.com/jelmerp/garrigos-data),
+consists of:
+
+- **Sequence data**: 44 paired-end 75-bp Illumina FASTQ files for 22 samples.
+- A **Reference genome annotation** GTF file for _Culex pipiens_
+  (we will download the assembly FASTA file separately)
+- **Metadata** (sample data): A table with e.g. treatment info for each sample
+- A **README** file describing the data set.
+
+## RNA-Seq analysis steps
+
+TBA 
+
+![](../img/rnaseq-analysis-steps.png){fig-align="center" width="60%" fig-alt="A diagram showing the steps in an RNA-Seq analysis pipeline." .lightbox}
+
+# Questions? {background-color="silver"}
+
+<br><br><br><br>
+
+# Bonus slides
+
+## Sequencing technology development timeline
+
+![](../img/seq_timeline2.png){fig-align="center" width="70%" fig-alt="A graphical overview of developments in sequencing technology over time" .lightbox}
+
+::: legend2
+Modified after @pereira2020
+:::
+
+## The sequencing process: Illumina
+
+![](../img/Poinsignon2023_sequencing-process_illumina.png){fig-align="center" width="100%" fig-alt="A figure with an overview of the Illumina sequencing process." .lightbox}
+
+::: legend2
+From @poinsignon2023
+:::
+
+## The sequencing process: Oxford Nanopore
+
+<br>
+
+![](../img/Poinsignon2023_sequencing-process_ont.png){fig-align="center" width="100%" fig-alt="A figure with an overview of the Oxford Nanopore sequencing process." .lightbox}
+
+::: legend2
+From @poinsignon2023
+:::
+
+## Correcting sequencing errors
+
+To attempt to infer the correct sequence,
+it is common to sequence every base multiple times,
+i.e. having a so-called "**depth of coverage**" greater than 1:
+
+![](../img/coverage2.jpg){fig-align="center" width="40%" fig-alt="A diagram illustraing the concept of depth of coverage." .lightbox}
+
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+- Identifying and correcting sequencing errors is made more challenging by
+  **genetic variation** among and within individuals.
+- Typical depths of coverage: at least 50-100x for genome assembly; 10-30x for resequencing.
+
+## Genome size variation
+
+![<https://en.wikipedia.org/wiki/Genome_size>](../img/Genome_Sizes.png){fig-align="center" width="65%" fig-alt="A graph illustrating genome size differences among major taxonomic groups." .lightbox}
+
+## Growth of genome databases
+
+![[Konkel & Slot 2023](https://www.biorxiv.org/content/10.1101/2023.09.08.556886v1)](../img/genomes_genbank.png){fig-align="center" width="75%" fig-alt="A graph showing the rapid increase in data in genome databases." .lightbox}
+
+## References
