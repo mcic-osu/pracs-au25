@@ -32,17 +32,125 @@ execute:
 
 <br>
 
-:::callout-caution
-#### THIS PAGE IS STILL UNDER CONSTRUCTION
-:::
-
-<br>
-
 ## Introduction
 
 TBA
 
 ## Batch jobs in practice
+
+### TrimGalore
+
+In the [week 6 assignment](../week06/w6_ga.qmd), you wrote a script to run TrimGalore,
+and eventually ran that script for all samples using a loop.
+However, this took a while, and considering that these FASTQ files are ~20x smaller
+than the original (and than typical) FASTQ files,
+it would take many hours for that loop to finish if we don't use batch jobs.
+
+Let's practice running that script using batch jobs.
+First, let's get a copy of that script:
+
+```bash
+cp ../week06/assignment/scripts/trimgalore.sh scripts/
+```
+
+::: {.callout-note collapse="true"}
+### ...Or download a version of this script if you don't have it
+```bash
+wget -P scripts <TBA-URL>
+```
+:::
+
+Next, add sbatch options with the following `#SBATCH` lines in the script:
+
+```bash
+#!/bin/bash
+#SBATCH --account=PAS2880
+#SBATCH --cpus-per-task=4
+#SBATCH --mail-type=FAIL
+#SBATCH --name=slurm-trimgalore-%j.out
+```
+
+We will also tell TrimGalore about the number of cores we have at our disposal
+by including `--cores 4`:
+
+```bash
+# [Other TrimGalore options not shows - same as before]
+trim_galore \
+    --cores 4 \
+```
+
+Now, we are ready to submit the script.
+Let's test it for one file first:
+
+```bash
+R1=garrigos-data/fastq/ERR10802863_R1.fastq.gz
+R2=${R1/_R1/_R2}
+sbatch scripts/trimgalore.sh "$R1" "$R2" results/trimgalore
+```
+```bash-out
+submitted batch job TBA
+```
+
+```bash
+for R1 in garrigos-data/fastq/*_R1.fastq.gz; do
+    R2=${R1/_R1/_R2}
+    sbatch scripts/trimgalore.sh "$R1" "$R2" results/trimgalore
+done
+```
+```bash-out
+submitted batch job TBA
+submitted batch job TBA
+submitted batch job TBA
+submitted batch job TBA
+```
+
+### STAR/Salmon
+
+#### Index the genome
+
+First, we need to unzip the FASTA reference genome file:
+
+```{bash}
+gunzip reference/Pvul.fa.gz
+```
+
+```{bash}
+#SBATCH --cpus-per-task=8
+
+# Copy the placeholder variables
+reference_fasta=$1       # Pvul.fa reference genome FASTA file
+index_dir=$2             # Output dir with the genome index
+
+# Run STAR to index the reference genome
+STAR --runMode genomeGenerate \
+     --genomeDir "$index_dir" \
+     --genomeFastaFiles "$reference_fasta" \
+     --runThreadN "$SLURM_CPUS_PER_TASK"
+```
+
+#### Map
+
+```{bash}
+#SBATCH --cpus-per-task=8
+
+# Copy the placeholder variables
+fastq_file=$1         # A FASTQ file to map to the reference genome
+index_dir=$2          # Dir with the genome index (created in indexing script)
+
+# Extract a sample ID from the filename!
+sample_id=$(basename "$fastq_file" .fastq.gz)
+
+# Run STAR to map the FASTQ file
+STAR \
+  --runThreadN "$SLURM_CPUS_PER_TASK" \
+  --genomeDir "$index_dir" \
+  --readFilesIn $fastq_file \
+  --readFilesCommand zcat \
+  --outFileNamePrefix "$outdir"/"$sample_id" \
+  --outSAMtype BAM Unsorted SortedByCoordinate
+```
+
+<hr style="height:1pt; visibility:hidden;" />
 
 ::: callout-tip
 #### See output added to the Slurm log file in real time
@@ -63,62 +171,7 @@ tail -f slurm-12520046.out
 To exit the `tail -f` livestream, press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 :::
 
-### TrimGalore
-
-TBA
-
-### STAR/Salmon
-
-#### Index the genome
-
-First, we need to unzip the FASTA reference genome file:
-
-```{bash}
-gunzip reference/Pvul.fa.gz
-```
-
-```{bash}
-#SBATCH --cpus-per-task=8
-
-# Load the module
-module load gnu/10.3.0
-module load star/2.7.9a
-
-# Copy the placeholder variables
-reference_fasta=$1       # Pvul.fa reference genome FASTA file
-index_dir=$2             # Output dir with the genome index
-
-# Run STAR to index the reference genome
-STAR --runMode genomeGenerate \
-     --genomeDir "$index_dir" \
-     --genomeFastaFiles "$reference_fasta" \
-     --runThreadN "$SLURM_CPUS_PER_TASK"
-```
-
-#### Map
-
-```{bash}
-#SBATCH --cpus-per-task=8
-
-# Load the module
-module load star/2.7.9a
-
-# Copy the placeholder variables
-fastq_file=$1         # A FASTQ file to map to the reference genome
-index_dir=$2          # Dir with the genome index (created in indexing script)
-
-# Extract a sample ID from the filename!
-sample_id=$(basename "$fastq_file" .fastq.gz)
-
-# Run STAR to map the FASTQ file
-STAR \
-  --runThreadN "$SLURM_CPUS_PER_TASK" \
-  --genomeDir "$index_dir" \
-  --readFilesIn $fastq_file \
-  --readFilesCommand zcat \
-  --outFileNamePrefix "$outdir"/"$sample_id" \
-  --outSAMtype BAM Unsorted SortedByCoordinate
-```
+<hr style="height:1pt; visibility:hidden;" />
 
 ### Making sure your jobs ran successfully
 

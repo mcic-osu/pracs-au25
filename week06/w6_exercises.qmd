@@ -1,9 +1,31 @@
 ---
 title: "Week 6 exercises"
 pagetitle: "PRACS25: Week 6 exercises"
-author: Jelmer Poelstra
-date: 2025-09-04
+date: 2025-09-23
 number-sections: false
+author:
+  - name: Jelmer Poelstra
+    orcid: 0000-0002-3514-7462
+    email: poelstra.1@osu.edu
+    affiliation: 
+      - name: CFAES Bioinformatics Core, Ohio State University
+        url: https://mcic.osu.edu/bioinformatics
+other-links:
+  - text: "Week 6 overview"
+    icon: book
+    href: w6_overview.html
+  - text: "w6-1: Shell scripting I"
+    icon: bookmarks
+    href: w6a_scripts.html
+  - text: "w6-2: Shell scripting II"
+    icon: bookmarks
+    href: w6b_cli-tools.html
+  - text: "Week 6 graded assignment"
+    icon: pencil
+    href: w6_ga_shell-scripts.html
+  - text: "Bonus: Advanced shell scripting and looping"
+    icon: book
+    href: ../bonus/shell-scripting.html
 editor_options: 
   chunk_output_type: console
 ---
@@ -18,300 +40,139 @@ editor_options:
 
 <br>
 
-<hr style="height:1pt; visibility:hidden;" />
-
-#### Setting up
-
-Start a VS Code session at OSC in the folder `/fs/ess/PAS2880/users/$USER`.
-In the terminal, create a dir for these exercises and move there:
-
-```bash
-mkdir week06/exercises
-cd week06/exercises
-
-# Also make a scripts subdir:
-mkdir scripts
-```
-
-You'll be creating two main shell scripts in these exercises,
-which you should save in the `scripts` dir you just made,
-and edit in the VS Code editor pane.
-
-Let's also create an accompanying Markdown document straight away,
-which will document what you did and e.g. contain the commands to run the scripts:
-
-```bash
-touch `README.md`
-
-# Then open this file in the VS Code editor pane, e.g. with Ctrl/Cmd-click
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-## Exercise 1: A shell script that prints a specific line
+## A shell script that prints a specific line
 
 Write a shell script that accepts two arguments,
-a _file name_ and a _line number_,
+a _file name_ (file path) and a _line number_,
 and that will print the requested line from the specified file to the screen.
 Save this file as  `scripts/printline.sh`.
 
 Additional instructions:
 
-- Since this is a simple "utility script",
-  I would suggest to make the script not print anything other than the requested
-  line from the file (i.e., no `echo` statements).
+- Don't make the script print anything other than the requested line from the file.
+  (Since this is a simple "utility script" that is kind of like a command,
+  rather than a script that runs a bioformatics program.)
 - Don't forget the best-practice shell script header lines we discussed.
-- With an `if` statement, let the script check whether the correct
-  number of arguments were passed to it, and if not, exit the script.
+- The script should check with an `if` statement whether the correct number of
+  arguments were passed to it -- if not, exit the script.
 - Test your script by printing a couple of different lines from
   `garrigos-data/meta/metadata.tsv`.
-  Also test that your check of the number of arguments works.
-  (Add the lines of code to run the script in these various ways in your
-  `README.md` document.)
+  Also test your script by checking that the test for the number of arguments works.
+  Add the lines of code to run the script in these various ways in your
+  `README.md` document.
 
-<details><summary> Hint 1: an overview of the steps to take _(Click to expand)_</summary>
-- Open a new text file and save it as `scripts/printline.sh`.
-- In the script, start with the _shebang_ and `set` lines.
-- Your script takes two arguments: a file name (`$1`) and a line number (`$2`).
-- Check the number of arguments in an `if` statement.
-- Copy the `$1` and `$2` placeholder variables to descriptively named variables.
-- To print a specific line, think how you might combine `head` and `tail` to do this.
-  If you're at a loss, feel free to check out the next hint.
+<details><summary> Hint </summary>
+Think how you might combine `head` and `tail -n 1` to do print a specific line!
 </details>
 
-<details><summary> Hint 2: how to print a specific line _(Click to expand)_</summary>
-For example, to print line 4 of the Garrigos et al. metadata file:
+<hr style="height:1pt; visibility:hidden;" />
 
-```bash
-head -n 4 garrigos-data/meta/metadata.tsv | tail -n 1
+### 1.10.2 Hormone Levels in Baboons
+
+Gesquiere et al. (2011) studied hormone levels in the blood of baboons.
+Every individual was sampled several times.
+
+Write a script taking as input the file name and the ID of the individual,
+and returning the number of records for that ID.
+
+<details><summary>Show hints</summary>
+
+- You want to turn the solution of part 1 into a script; to do so, open a new
+  file and copy the code you've written.
+
+- In the script, you can use the first two so-called *positional parameters*,
+  `$1` and `$2`, to represent the file name and the `maleID`, respectively.
+  
+- `$1` and `$2` represent the first and the second argument passed to a script
+   like so: `bash myscript.sh arg1 arg2`.
+
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### 1.10.3 Plant–Pollinator Networks
+
+Saavedra and Stouffer (2013) studied several plant–pollinator networks.
+These can be represented as rectangular matrices where the rows are pollinators,
+the columns plants, a 0 indicates the absence and 1 the presence of an interaction
+between the plant and the pollinator.
+
+The data of Saavedra and Stouffer (2013) can be found in the directory
+`CSB/unix/data/Saavedra2013`.
+
+Write a script that takes one of these files and determines the number of
+rows (pollinators) and columns (plants).
+Note that columns are separated by spaces and that there is a space at the
+end of each line. Your script should return:
+
+```sh
+bash netsize.sh ../data/Saavedra2013/n1.txt
+# Filename: ../data/Saavedra2013/n1.txt
+# Number of rows: 97
+# Number of columns: 80
+```
+
+<details><summary>Show hints</summary>
+
+To build the script, you need to combine several commands:
+
+- To find the number of rows, you can use `wc`.
+
+- To find the number of columns, take the first line, remove the spaces,
+  remove the line terminator `\n`, and count *characters*.
+
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### 1.10.4 Data Explorer
+
+Buzzard et al. (2016) collected data on the growth of a forest in Costa Rica.
+In the file `Buzzard2015_data.csv` you will find a subset of their data,
+including taxonomic information, abundance, and biomass of trees.
+
+Write a script that, for a given CSV file and column number, prints:
+
+- The corresponding column name;
+- The number of distinct values in the column;
+- The minimum value;
+- The maximum value.
+
+For example, running the script as below should produce the following output:
+
+```sh
+bash explore.sh ../data/Buzzard2015_data.csv 7
 ```
 ```bash-out
-ERR10802879     10dpi   cathemerium
+Column name:
+biomass
+Number of distinct values:
+285
+Minimum value:
+1.048466198
+Maximum value:
+14897.29471
 ```
 
-How this command works:
+<details><summary>Show hints</summary>
 
-- `head -n 4 garrigos-data/meta/metadata.tsv` prints the first 4 lines of that file.
-- Those 4 lines are then piped into the `tail` command.
-- With `-n 1`, `tail` will only print the last line of its input:
-  this will be line 4 of the original input file.
+1. You can select a given column from a `csv` file using the command `cut`.
+   Then:
+   - The column name is going to be in the first line (*header*); access it
+     with `head`.
+   - The number of distinct values can be found by counting the number of lines
+      when you have sorted them and removed duplicates (using a combination of
+      `tail`, `sort` and `uniq`).
+   - The minimum and maximum values can be found by combining `sort` and
+     `head` (or `tail`),
+   - To write the script, use the positional parameters `$1` and `$2` for the
+     file name and column number, respectively.
+
 </details>
-
-<hr style="height:1pt; visibility:hidden;" />
-
-## Exercise 2: A script to run TrimGalore
-
-#### Introduction to TrimGalore
-
-TrimGalore is a tool that can trim and filter FASTQ files, removing:
-
-- Any adapter sequences that are present in the reads^[
-  Adapters are always added to DNA/cDNA fragments of interest prior to Illumina sequencing,
-  and the last bases of a read can "read-through" into the adapter if the fragment
-  is shorter than the read length.].
-- Poor-quality bases at the start and end of the reads.
-- Reads that have become very short after the prior two steps.
-
-TrimGalore takes FASTQ files as input, and outputs filtered FASTQ files.
-When you have paired-end reads (as you do here),
-_a single TrimGalore run should include both the R1 and R2 file for 1 sample_.
-
-::: {.callout-note collapse="true"}
-#### More about TrimGalore _(Click to expand)_
-Several largely equivalent tools exist for this kind of FASTQ preprocessing ---
-Trimmomatic and fastp are two other commonly used ones.
-TrimGalore itself is "just" a wrapper around yet another tool called Cutadapt,
-but it is simpler to use.
-Two advantages of TrimGalore are:
-
-- It will auto-detect the adapters that are present in your reads.
-- It can automatically run FastQC on the trimmed sequences.
-:::
-
-**TBA CHANGE TO MAKING STUDENTS USE A CONTAINER**
-
-```bash
-# First load OSC's (mini)Conda module
-module load miniconda3/24.1.2-py310
-# Then load ('activate') the Conda environment with TrimGalore
-conda activate /fs/ess/PAS0471/jelmer/conda/trimgalore
-```
-
-After running those two lines, check that you can run TrimGalore
-and which version you're working with, as follows:
-
-```bash
-# Note: the command is 'trim_galore' with an underscore
-trim_galore --version
-```
-```{.bash-out}
-            Quality-/Adapter-/RRBS-/Speciality-Trimming
-                    [powered by Cutadapt]
-                        version 0.6.10
-```
-
-Then print the help info --- you'll be using this below!
-
-```bash
-trim_galore --help
-```
-```bash-out
-[output not shown]
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-#### Your TrimGalore shell script
-
-Write a shell script `scripts/trimgalore.sh` that runs TrimGalore on paired end-FASTQ
-files as follows:
-
-- The script should only **run TrimGalore once**, i.e. for one sample (two FASTQ files).
-- Your **script should accept and process arguments** that specify the input FASTQ
-  files and the output dir.
-
-- For each of the items below, figure out the relevant TrimGalore option,
-  and use that option:
-  - Tell the program that the reads are **paired-end**^[
-    If you don't do this, TrimGalore will process the two FASTQ files independently.].
-  - Set the **output dir**.
-  - Make the program **run FastQC** on the trimmed FASTQ files.
-
-- Check what the default values are for the Phred quality score and read length thresholds.
-  Do you understand what these do?
-  You don't have to change them here, the defaults will work fine for us.
-  
-<details><summary>Hint: See the relevant parts of the TrimGalore help pages _(Click to expand)_</summary>
-<hr style="height:1pt; visibility:hidden;" />
-```bash
-trim_galore --help
-```
-```{.bash-out-solo}
- USAGE:
-trim_galore [options] <filename(s)>
-
---paired                This option performs length trimming of quality/adapter/RRBS trimmed reads for
-                        paired-end files.
-
--o/--output_dir <DIR>   If specified all output will be written to this directory instead of the current
-                        directory. If the directory doesn't exist it will be created for you.
-
--j/--cores INT          Number of cores to be used for trimming [default: 1].
-
---fastqc                Run FastQC in the default mode on the FastQ file once trimming is complete.
-
---fastqc_args "<ARGS>"  Passes extra arguments to FastQC.
-
--a/--adapter <STRING>   Adapter sequence to be trimmed. If not specified explicitly, Trim Galore will
-                        try to auto-detect whether the Illumina universal, Nextera transposase or Illumina
-                        small RNA adapter sequence was used.
-
--q/--quality <INT>      Trim low-quality ends from reads in addition to adapter removal. [...]
-                        Default Phred score: 20.
-
---length <INT>          Discard reads that became shorter than length INT because of either
-                        quality or adapter trimming. A value of '0' effectively disables
-                        this behaviour. Default: 20 bp.
-```
-</details>
-
-::: {.callout-warning collapse="true"}
-#### Warning: Don't use/adjust TrimGalore's `--cores` option here _(Click to expand)_
-Since you're running the program interactively on our single-core VS Code compute job,
-you only have 1 core at your disposal --- and that's TrimGalore's default.
-Next week, we'll be submitting our scripts as batch jobs:
-that will give us the opportunity to use multiple cores with programs like this.
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-## Exercise 3: Run your TrimGalore script once
-
-1. Run your TrimGalore script for just the `ERR10802863` sample in `garrigos-data/fastq`
-   (remember to add the code to run the script to your `README.md` file).
-
-2. Check if everything went well; also take a look at TrimGalore's output files,
-   which should include new (filtered) FASTQ files as well as FastQC outputs and
-   a text file for each sample.
-   If something went wrong, go back to your `trimgalore.sh` script and try to fix it. 
-
-3. Take a closer look at the output that TrimGalore printed to screen
-   (note that most of that is also saved in the `*_trimming_report.txt` file in the
-   output dir):
-   - In each file (R1 and R2), in what percentage of reads were adapters detected?
-   - In each file (R1 and R2), what percentage of bases were quality trimmed?
-   - What percentage of reads were removed because they were too short?^[
-     Hint: this info is printed at the very end, and for both files at once.]
-
-<hr style="height:1pt; visibility:hidden;" />
-
-## Exercise 4: Run your TrimGalore script for all samples
-
-Once your single-sample run works,
-write a `for` loop in your runner script to run your TrimGalore script on all samples
-in the `garrigos-data/fastq` dir, and run that.
-_(Don't forget to take into account that you should loop over samples or R1 FASTQ files,_
-_not over all FASTQ files.)_
-
-::: callout-tip
-#### This will take some time (~20 minutes) to run!
-And note that these FASTQ files are _much_ smaller than regular ones.
-You'll hopefully agree that we need to start using more computing power,
-and have the script run simultaneously rather than consecutively for each sample ---
-we can do all of that by submitting the script as batch jobs, as we'll see next week.
-:::
-
-## Bonus exercise: Modify your TrimGalore script (advanced)
-
-- Annoyingly, the TrimGalore output FASTQ files are oddly named,
-  ending in `_R1_val_1.fq.gz` and `_R2_val_2.fq.gz` ---
-  check the output files from your initial run to see this.
-  This is not _necessarily_ a problem, but could trip you up in a next step with these files.
-  Therefore, in your TrimGalore script (`scripts/trimgalore.sh`),
-  **rename the output files** after you run TrimGalore.
-  
-  I would suggest to rename them to have the exact same file names as the input files
-  (recall: they will be in a different dir so this is OK -- but see also below);
-  alternatively, add a `_trimmed` suffix before the file extension.
-
-<details><summary> Hint _(Click to expand)_</summary>
-
-To do this, you should first extract and store what is basically a sample ID:
-the part of the file name that is shared by the R1 and R2 file.
-
-```bash
-sample_id=$(basename "$R1_in" _R1.fastq.gz)
-```
-
-Based on that ID, you can build up the names of the TrimGalore output files
-as well as the desired final output files. For example:
-
-```bash
-# The name of the initial ('init') TrimGalore R1 output file will be:
-R1_out_init="$outdir"/"$sample_id"_R1_val_1.fq.gz
-```
-</details>
-
-- If you rename the output files to have the exact same file names as the input files,
-  then it is critically important that the output dir is not the same as the input dir.
-  Otherwise, your renaming step would overwrite the original input files!
-  To prevent this from ever happening, **include an `if` statement** in your script
-  that tests whether the input dir is the same as the output dir,
-  and that makes the script `exit` if this is the case.
-
-<details><summary> Hint _(Click to expand)_</summary>
-To test this, you'll need to derive the input dir from the FASTQ path.
-In this week's second lecture, we saw how to do this.
-Use command substitution (`$(...)` to store the input dir in a variable.
-</details>
-
-- Finally, re-run the script for a single sample to check that your changes
-  were successful (and if you want, you can also re-run the loop).
-  _Use a different output dir for the TrimGalore results._
 
 <br>
 
-## Solutions
+### Solutions
 
 ### Exercise 1
 
@@ -383,304 +244,168 @@ head -n "$line_nr" "$input_file" | tail -n 1
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### Exercise 2
+### 1.10.2 Hormone Levels in Baboons
 
-<details><summary> The TrimGalore options you were looking for _(Click to expand)_</summary>
+<details><summary>**2.** Write a script taking as input the file name and the ID of the individual, and returning the number of records for that ID.</summary>
 
-- `--paired` to indicate that the FASTQ files are paired-end.
-- `--output_dir` (or equivalently, `-o`) to specify the output directory.
--  `--fastqc` to run FastQC on the trimmed FASTQ files.
-
-</details>
-
-<details><summary> The TrimGalore shell script _(Click to expand)_</summary>
-
-Save this as e.g. `scripts/trimgalore.sh`:
-
-```bash
-#!/bin/bash
-set -euo pipefail
-
-# Load TrimGalore
-module load miniconda3/24.1.2-py310
-conda activate /fs/ess/PAS0471/jelmer/conda/trimgalore
-
-# Copy the placeholder variables
-R1_in=$1
-outdir=$2
-
-# Infer the R2 FASTQ file name
-R2_in=${R1_in/_R1/_R2}
-
-# Report
-echo "# Starting script trimgalore.sh"
-date
-echo "# Input R1 FASTQ file:      $R1_in"
-echo "# Input R2 FASTQ file:      $R2_in"
-echo "# Output dir:               $outdir"
-echo
-
-# Create the output dir
-mkdir -p "$outdir"
-
-# Run TrimGalore
-trim_galore \
-    --paired \
-    --fastqc \
-    --output_dir "$outdir" \
-    "$R1_in" \
-    "$R2_in"
-
-# Report
-echo
-echo "# Successfully finished script trimgalore.sh"
-date
+- In the script, we just need to incorporate the arguments given when calling the
+  script, using $1 for the file name and $2 for the individual ID, 
+  into the commands that we used above:
+  
+```sh
+cut -f 1 $1 | grep -c -w $2
 ```
-</details>
 
-<details><summary> Quality and length threshold options & interpretation _(Click to expand)_</summary>
+- A slightly more verbose and readable example:
+```sh
+#!/bin/bash
 
-- The option `-q` (short notation) or `--quality` (long notation) can be used
-  to adjust the base quality score threshold, which has the "Phred" unit.
-  The default threshold is 20, which corresponds to an estimated 0.01 error rate.
-  TrimGalore will trim bases with a lower quality score than this threshold
-  from the **ends** of the reads.
-  It will **not** remove or mask bases with lower quality scores elsewhere in the read.
+filename=$1
+ind_ID=$2
+echo "Counting the nr of occurrences of individual ${ind_ID} in file ${filename}:" 
+cut -f 1 ${filename} | grep -c -w ${ind_ID}
+```
 
-- The option `-l` (short notation) or `--length` (long notation) can be used
-  to adjust the read length threshold: any reads that are shorter than this after
-  adapter and quality trimming will be removed.
-  The default threshold is 20 bp.
-  (When the input is paired-end, the corresponding second read will also be removed,
-  regardless of its length: paired-end FASTQ files always need to contain both the
-  R1 and R2 for each pair; orphan reads would need to be stored in a separate file.)
+::: callout-note
+Variables are *assigned* using `name=value` (no dollar sign!),
+and *recalled* using `$name` or `${name}`.
+It is good practice to put curly braces around the variable name.
+We will talk more about bash variables in the next few weeks.
+:::
+
+- To run the script, assuming it is named `count_baboons.sh`:
+```sh
+bash count_baboons.sh ../data/Gesquiere2011_data.csv 27
+# 5
+```
 
 </details>
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### Exercise 3
+### 1.10.3 Plant–Pollinator Networks
 
-<details><summary> 1 - Run the script _(Click to expand)_</summary>
+<details><summary>Solution</summary><p>
+
+**Counting rows:**
+
+- Counting the number of rows amount to counting the number of lines.
+  This is easily done with `wc -l`. For example:
   
-```bash
-# Exercise 2
-R1=garrigos-data/fastq/ERR10802863_R1.fastq.gz
-bash scripts/trimgalore.sh "$R1" results/trimgalore
+```sh
+wc -l ../data/Saavedra2013/n10.txt 
+# 14 ../data/Saavedra2013/n10.txt
 ```
-```bash-out
-# Starting script trimgalore.sh
-Thu Mar 28 10:34:24 EDT 2024
-# Input R1 FASTQ file:      garrigos-data/fastq/ERR10802863_R1.fastq.gz
-# Input R2 FASTQ file:      garrigos-data/fastq/ERR10802863_R2.fastq.gz
-# Output dir:               results/trimgalore
 
-Multicore support not enabled. Proceeding with single-core trimming.
-Path to Cutadapt set as: 'cutadapt' (default)
-Cutadapt seems to be working fine (tested command 'cutadapt --version')
-Cutadapt version: 4.4
+- To avoid printing the file name, we can either use cat or input redirection:
 
-# [...output truncated...]
+```sh
+cat ../data/Saavedra2013/n10.txt | wc -l
+wc -l < ../data/Saavedra2013/n10.txt 
 ```
-</details>
 
-<details><summary> 2 - Check the output files _(Click to expand)_</summary>
+**Counting rows:**
 
-```bash
-ls -lh results/trimgalore
+- Counting the number of columns is more work.
+  First, we need only the first line:
+  
+```sh
+head -n 1 ../data/Saavedra2013/n10.txt
+# 0 1 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0
 ```
-```bash-out
-total 42M
--rw-rw----+ 1 jelmer PAS0471 2.4K Mar 28 10:49 ERR10802863_R1.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 674K Mar 28 10:49 ERR10802863_R1_val_1_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 349K Mar 28 10:49 ERR10802863_R1_val_1_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  20M Mar 28 10:49 ERR10802863_R1_val_1.fq.gz
--rw-rw----+ 1 jelmer PAS0471 2.3K Mar 28 10:49 ERR10802863_R2.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 676K Mar 28 10:50 ERR10802863_R2_val_2_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 341K Mar 28 10:50 ERR10802863_R2_val_2_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  21M Mar 28 10:49 ERR10802863_R2_val_2.fq.gz
+
+- Now we can remove all spaces and the line terminator using `tr`:
+
+```sh
+head -n 1 ../data/Saavedra2013/n10.txt | tr -d ' ' | tr -d '\n'
+# 01000001000000000100
 ```
-</details>
 
-<details><summary> 3 - Check the trimming results _(Click to expand)_</summary>
+- Finally, we can use `wc -c` to count the number of characters in the string:
 
-- Note that the adapter- and quality trimming results summary for the R1 and R2 files
-  are separated widely among all the output that TrimGalore prints ---
-  they are printed below (first for the R1, then for the R2 file), and the answers are:
-  - 13.0% (R1) and 10.1% (R2) of reads had adapters
-  - 3.6% (R1) and 3.5% (R2) of bases were quality-trimmed
-  
-  ```bash-out-solo
-  === Summary ===
-  
-  Total reads processed:                 500,000
-  Reads with adapters:                    65,070 (13.0%)
-  Reads written (passing filters):       500,000 (100.0%)
-  
-  Total basepairs processed:    35,498,138 bp
-  Quality-trimmed:               1,274,150 bp (3.6%)
-  Total written (filtered):     34,138,461 bp (96.2%)
-  ```
-  
-  ```bash-out-solo
-  === Summary ===
-  
-  Total reads processed:                 500,000
-  Reads with adapters:                    50,357 (10.1%)
-  Reads written (passing filters):       500,000 (100.0%)
-  
-  Total basepairs processed:    36,784,563 bp
-  Quality-trimmed:               1,283,793 bp (3.5%)
-  Total written (filtered):     35,440,230 bp (96.3%)
-  ```
-  
-- Just before the FastQC logs is a line that reports how many reads were removed
-  due to the length filter --- the answer is 6.79%.
-  
-  ```bash-out-solo
-  Number of sequence pairs removed because at least one read was shorter than the length cutoff (20 bp): 33955 (6.79%)
-  ```
+```sh
+head -n 1 ../data/Saavedra2013/n10.txt | tr -d ' ' | tr -d '\n' | wc -c
+# 20
+```
 
+**Final script:**
+
+```sh
+#!/bin/bash
+
+filename=$1
+
+echo "Filename:"
+echo ${filename}
+echo "Number of rows:"
+cat ${filename} | wc -l
+echo "Number of columns:"
+head -n 1 ${filename} | tr -d ' ' | tr -d '\n' | wc -c
+```
+
+- To run the script, assuming it is named `counter.sh`:
+
+```sh
+bash counter.sh ../data/Saavedra2013/n10.txt
+# 5
+```
+
+::: callout-note
+#### *We'll learn about a quicker and more general way to count columns in a few weeks.*
+:::
 </details>
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### Exercise 4
+### 1.10.4 Data Explorer
 
-<details><summary> Run the script for all samples _(Click to expand)_</summary>
+<details><summary>Solution</summary>
 
-Add this loop code to your runner script (`run/run_exercises.sh`) and run it:
+- First, we need to extract the column name.
+  For example, for the Buzzard data file, and col 7:
 
-```bash
-for R1 in garrigos-data/fastq/*_R1.fastq.gz; do
-    bash scripts/trimgalore.sh "$R1" results/trimgalore
-done
+```sh
+cut -d ',' -f 7 ../data/Buzzard2015_data.csv | head -n 1
+# biomass
 ```
-```bash-out
-# (Output not shown, same as earlier but should repeat for each sample)
+
+- Second, we need to obtain the number of distinct values.
+  We can sort the results (after removing the header), and use `uniq`:
+
+```sh
+cut -d ',' -f 7 ../data/Buzzard2015_data.csv | tail -n +2 | sort | uniq | wc -l
+# 285
 ```
-</details>
 
-<details><summary> Check the output files _(Click to expand)_</summary>
+- Third, to get the max/min value we can use the code above, sort using `-n`,
+  and either `head` (for min) or `tail` (for max) the result.
 
-```bash
-ls -lh results/trimgalore
+```sh
+# Minimum:
+cut -d ',' -f 7 ../data/Buzzard2015_data.csv | tail -n +2 | sort -n | head -n 1
+# 1.048466198
+
+# Maximum:
+cut -d ',' -f 7 ../data/Buzzard2015_data.csv | tail -n +2 | sort -n | tail -n 1
+# 14897.29471
 ```
-```bash-out
-total 949M
--rw-rw----+ 1 jelmer PAS0471  20M Mar 28 11:18 ERR10802863_R1.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.4K Mar 28 11:17 ERR10802863_R1.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 674K Mar 28 11:18 ERR10802863_R1_val_1_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 349K Mar 28 11:18 ERR10802863_R1_val_1_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  21M Mar 28 11:18 ERR10802863_R2.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.3K Mar 28 11:18 ERR10802863_R2.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 676K Mar 28 11:18 ERR10802863_R2_val_2_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 341K Mar 28 11:18 ERR10802863_R2_val_2_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  21M Mar 28 11:19 ERR10802864_R1.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.7K Mar 28 11:18 ERR10802864_R1.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 675K Mar 28 11:19 ERR10802864_R1_val_1_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 349K Mar 28 11:19 ERR10802864_R1_val_1_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  22M Mar 28 11:19 ERR10802864_R2.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.6K Mar 28 11:19 ERR10802864_R2.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 671K Mar 28 11:19 ERR10802864_R2_val_2_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 336K Mar 28 11:19 ERR10802864_R2_val_2_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  21M Mar 28 11:20 ERR10802865_R1.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.6K Mar 28 11:19 ERR10802865_R1.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 682K Mar 28 11:20 ERR10802865_R1_val_1_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 361K Mar 28 11:20 ERR10802865_R1_val_1_fastqc.zip
-[...output truncated...]
-```
-</details>
 
-### Bonus exercise
+- Here is an example of what the script could look like:
 
-<details><summary> Solution _(Click to expand)_</summary>
-
-The full script:
-
-```bash
+```sh
 #!/bin/bash
-set -euo pipefail
 
-# Load TrimGalore
-module load miniconda3
-source activate /fs/ess/PAS0471/jelmer/conda/trimgalore
+filename=$1
+column_nr=$2
 
-# Copy the placeholder variables
-R1_in=$1
-outdir=$2
-
-# Check that the output dir isn't the same as the input dir
-# This is because we will let the output files have the same name as the input files
-indir=$(dirname "$R1_in")
-if [[ "$indir" == "$outdir" ]]; then
-    echo "ERROR: Input dir is the same as the output dir ($outdir)" 
-    exit 1
-fi
-
-# Infer the R2 FASTQ file name
-R2_in=${R1_in/_R1/_R2}
-
-# Report
-echo "# Starting script trimgalore.sh"
-date
-echo "# Input R1 FASTQ file:      $R1_in"
-echo "# Input R2 FASTQ file:      $R2_in"
-echo "# Output dir:               $outdir"
-echo
-
-# Create the output dir
-mkdir -p "$outdir"
-
-# Run TrimGalore
-trim_galore \
-    --paired \
-    --output_dir "$outdir" \
-    --fastqc \
-    "$R1_in" \
-    "$R2_in"
-
-# Rename output files
-echo
-echo "# Renaming the output files:"
-sample_id=$(basename "$R1_in" _R1.fastq.gz)
-R1_out_init="$outdir"/"$sample_id"_R1_val_1.fq.gz
-R2_out_init="$outdir"/"$sample_id"_R2_val_2.fq.gz
-R1_out_final="$outdir"/"$sample_id"_R1.fastq.gz
-R2_out_final="$outdir"/"$sample_id"_R2.fastq.gz
-mv -v "$R1_out_init" "$R1_out_final"
-mv -v "$R2_out_init" "$R2_out_final"
-
-# Report
-echo
-echo "# Done with script trimgalore.sh"
-date
+echo "Column name"
+cut -d ',' -f ${column_nr} ${filename} | head -n 1
+echo "Number of distinct values:"
+cut -d ',' -f ${column_nr} ${filename} | tail -n +2 | sort | uniq | wc -l
+echo "Minimum value:"
+cut -d ',' -f ${column_nr} ${filename} | tail -n +2 | sort -n | head -n 1
+echo "Maximum value:"
+cut -d ',' -f ${column_nr} ${filename} | tail -n +2 | sort -n | tail -n 1
 ```
-
-Run the script with a different output dir:
-
-```bash
-R1=garrigos-data/fastq/ERR10802863_R1.fastq.gz
-bash scripts/trimgalore.sh "$R1" results/trimgalore_rename
-```
-
-Let's check the output files to see they were successfully renamed:
-
-```bash
-ls -lh results/trimgalore_rename
-```
-```bash-out
-total 42M
--rw-rw----+ 1 jelmer PAS0471  20M Mar 28 10:40 ERR10802863_R1.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.4K Mar 28 10:39 ERR10802863_R1.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 674K Mar 28 10:40 ERR10802863_R1_val_1_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 349K Mar 28 10:40 ERR10802863_R1_val_1_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  21M Mar 28 10:40 ERR10802863_R2.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.3K Mar 28 10:40 ERR10802863_R2.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 676K Mar 28 10:40 ERR10802863_R2_val_2_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 341K Mar 28 10:40 ERR10802863_R2_val_2_fastqc.zip
-```
-
-Looks good --- though note that we only renamed the FASTQ files, not the other files.
 
 </details>
