@@ -1,6 +1,7 @@
 ---
 title: "Graded Assignment III: Shell scripts"
-pagetitle: "PRACS25: GA1"
+subtitle: "Week 6 graded assignment -- due Monday Oct 6 at 10:00 pm"
+pagetitle: "PRACS25: GA3"
 date: 2025-09-21
 author:
   - name: Jelmer Poelstra
@@ -28,49 +29,56 @@ other-links:
 editor_options: 
   chunk_output_type: console
 bibliography: ../references.bib
+number-sections: false
 ---
 
 ------
 
 <br>
 
-## Introduction {-}
-
-In this graded assignment (maximum score: 10 points),
-you will primarily be practicing your shell scripting skills.
-
-The **deadline** is Monday Sept 22 at 10:00 pm.
-You will submit your assignment by tagging the instructor in an Issue in your
-GitHub as per the last exercise below. 
-
-### Setting up {-}
-
-Start a VS Code session at OSC in the folder `/fs/ess/PAS2880/users/$USER`.
-In the terminal, create a dir for these exercises and navigate there:
-
-```bash
-mkdir week06/assignment
-cd week06/assignment
-
-# Also make a scripts subdir:
-mkdir scripts
-```
-
-Below, you'll be creating a couple of shell scripts,
-which you should save in the `scripts` dir you just made,
-and edit in the VS Code editor pane.
-First, create a Markdown document in which you should document what you did
-across all parts of the assignment, and e.g. add the commands to run the scripts:
-
-```bash
-touch README.md
-```
+::: {.callout-tip}
+#### OVERVIEW
+This graded assignment centers around the material for week 6,
+and you will primarily be practicing your shell scripting skills.
+:::
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### Introduction to TrimGalore {-}
+## Directions and grading
 
-TrimGalore (@krueger2021) is a tool that can trim and filter FASTQ files, removing:
+### Submission expectations
+
+The **deadline** is Monday Oct 6^th^ at 10:00 pm.
+You will submit your assignment by tagging the instructor in an Issue in your
+GitHub as per the last step below. 
+
+### Academic integrity
+
+- Use of generative AI Tools (e.g. ChatGPT, Microsoft Copilot, Google Gemini) **is**
+  permitted.
+- Getting help on the assignment is **not** permitted.
+- Collaborating, or completing the assignment with others, is **not** permitted.
+- Copying or reusing previous work is **not** permitted.
+- Open-book research for the assignment **is** permitted.
+- APA Citations and/or formatting for this assignment are **not** required.
+
+### Rubric
+
+You can earn a maximum of 8 points for this assignment,
+1-2 points for each of the 6 parts.
+
+::: {.callout-note collapse="true"}
+#### Detailed rubric _(Click here to view)_
+TBA
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Detailed steps
+
+#### Introduction to TrimGalore
+
+TrimGalore [@krueger2021] is a tool that can trim and filter FASTQ files, removing:
 
 - Any adapter sequences that are present in the reads^[
   Adapters are always added to DNA/cDNA fragments of interest prior to Illumina sequencing,
@@ -96,9 +104,32 @@ Two advantages of TrimGalore are:
 - It can automatically run FastQC on the trimmed sequences.
 :::
 
+### 1. Setting up
+
+Start a VS Code session at OSC in the folder `/fs/ess/PAS2880/users/$USER`.
+In the terminal, create a dir for these exercises and navigate there:
+
+```bash
+mkdir week06/assignment
+cd week06/assignment
+
+# Also make a scripts subdir:
+mkdir scripts
+```
+
+Below, you'll be creating a couple of shell scripts,
+which you should save in the `scripts` dir you just made,
+and edit in the VS Code editor pane.
+First, create a Markdown document in which you should document what you did
+across all parts of the assignment, and e.g. add the commands to run the scripts:
+
+```bash
+touch README.md
+```
+
 <hr style="height:1pt; visibility:hidden;" />
 
-## A container image for TrimGalore
+### 2. A container image for TrimGalore
 
 After running those two lines, check that you can run TrimGalore
 and which version you're working with, as follows:
@@ -124,7 +155,7 @@ trim_galore --help
 
 <hr style="height:1pt; visibility:hidden;" />
 
-## A script to run TrimGalore
+### 3. A script to run TrimGalore
 
 Write a shell script `scripts/trimgalore.sh` that runs TrimGalore on paired end-FASTQ
 files as follows:
@@ -158,7 +189,7 @@ and that will give you the opportunity to use multiple cores.
 
 <hr style="height:1pt; visibility:hidden;" />
 
-## Run your TrimGalore script once
+### 4. Run your TrimGalore script once
 
 1. Run your TrimGalore script for the `ERR10802863` sample in `garrigos-data/fastq`.
 
@@ -177,7 +208,7 @@ and that will give you the opportunity to use multiple cores.
 
 <hr style="height:1pt; visibility:hidden;" />
 
-## Modify the script to rename the output FASTQ files
+### 5. Modify the script to rename the output FASTQ files
 
 The TrimGalore output FASTQ files are oddly named,
 ending in `_R1_val_1.fq.gz` and `_R2_val_2.fq.gz` ---
@@ -214,9 +245,9 @@ Use command substitution (`$(...)` to store the input dir in a variable.
 
 </details>
 
-<br>
+<hr style="height:1pt; visibility:hidden;" />
 
-## Run your TrimGalore script for all samples
+### 6. Run your TrimGalore script for all samples
 
 Write a `for` loop (include this in the README) to run your TrimGalore script for
 all samples in the `garrigos-data/fastq` dir, and run that loop.
@@ -231,3 +262,5 @@ we can do all of that by submitting the script as batch jobs, as we'll see next 
 
 TBA Also talk about output to screen always being saved with batch jobs
 :::
+
+<br>
