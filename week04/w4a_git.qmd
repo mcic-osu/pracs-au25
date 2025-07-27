@@ -20,7 +20,7 @@ other-links:
   - text: "Ungraded assignment: GitHub account"
     icon: pencil
     href: w4_ua_github-account.html
-  - text: "Graded assignment"
+  - text: "Week 4 Graded assignment"
     icon: pencil
     href: w4_ga_git.html
   - text: "Bonus: Advanced Git"
@@ -28,6 +28,7 @@ other-links:
     href: ../bonus/git.html
 editor_options: 
   chunk_output_type: console
+bibliography: ../references.bib
 ---
 
 ----------------------------------------------------------------------------------------------------
@@ -91,11 +92,11 @@ A formal VCS can help you with these challenges. With a VCS:
 
 <hr style="height:1pt; visibility:hidden;" />
 
-Or, as the CSB book puts it:
+Or, as @allesina2019 puts it:
 
 > *Version control is a way to keep your scientific projects tidily organized,*
 > *collaborate on science, and have the whole history of each project at your* *fingertips.*\
-> — CSB Chapter 2
+> — Chapter 2
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -129,8 +130,8 @@ Note that:
 - The Git database is saved in a hidden dir **`.git`** in the dir in which you started the repo.
 - It is typical (& recommended) that you should have one Git repository for each research project.
 - You can also download any public online Git repository.
-  (We already did this in week 1 of the course,
-  when we used `git clone` to download the CSB book's repository.)
+  (You already did this in week 3 of the course,
+  when you used `git clone` to download the course's example data set files.)
 
 ::: callout-tip
 #### Hidden files and dirs
@@ -357,7 +358,7 @@ Git reports that you:
 
 - Are on a "branch" that is called 'main'.
   We won't talk about Git branches in class, but this is discussed in the
-  [optional self-study material](../bonus/git.qmd) and CSB Chapter 2.6.
+  [optional self-study material](../bonus/git.qmd) and @allesina2019 Chapter 2.6.
   Basically, these are "parallel versions" of your repository.
 - Have not created any commits yet.
 - Have "nothing to commit" because there are no files in this dir.
@@ -612,7 +613,7 @@ single commit.
 <hr style="height:1pt; visibility:hidden;" />
 
 ::: exercise
-#### {{< fa user-edit >}} Exercise (CSB Intermezzo 2.1)
+#### {{< fa user-edit >}} Exercise
 
 1.  Create a new file `todo.txt` containing the line: "June 18, 1858: read essay from Wallace".
 
@@ -668,7 +669,7 @@ These three states correspond to the three "trees" of Git:
 -   **Index** (*Stage*): State of the project ready to be committed.
 -   **Working directory** (_Working Tree_): State of the project as currently on your computer.
 
-[^7]: On the current "branch" -- see the optional self-study page or CSB chapter 2.6 to learn about branches.
+[^7]: On the current "branch" -- see the optional self-study page or @allesina2019 Chapter 2.6 to learn about branches.
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -765,7 +766,7 @@ latest version of the file.
 1. Click on the Git symbol in the narrow side bar  (below the search icon)
    to open the *Source Control* side bar.
 2. In the source control sidebar, you should see not just the `originspecies`
-   repository listed, but also the `CSB` repo^[
+   repository listed, but also the `garrigos-data` repo^[
    This is because our VS Code working dir is not `originspecies` but two levels
    up from there. Typically, your VS Code working dir should be your project dir
    which would be the same as the repo dir.].
@@ -1241,25 +1242,6 @@ If you **accidentally deleted a file**, you can similarly retrieve it with `git 
 
 <hr style="height:1pt; visibility:hidden;" />
 
-::: {.callout-note collapse="true"}
-#### Alternative, older command used in the CSB book: `git checkout` _(Click to expand)_
-Until recently, this action used to be done with with the `git checkout` command,
-for example:
-
-```bash
-git checkout -- README.md
-```
-
-`git restore` is a relatively new command designed to avoid confusion with the
-`git checkout` and `git reset` commands, which have multiple functions.
-The CSB book still uses the `git checkout` command for a similar example^[
-In that example, the CSB book example omits the dashes `--`.
-These indicate that the checkout command should operate on a file,
-but since the file name is provided too, this is not strictly necessary.].
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
 ### Unstaging a file
 
 `git restore` can also *unstage* a file, which is most often needed when you
@@ -1312,22 +1294,6 @@ Now, you can go ahead and add these changes to separate commits: see the exercis
 
 (Finally: in case you merely staged a file _prematurely_,
 you can just continue editing the file and re-add it.)
-
-::: {.callout-note collapse="true"}
-#### Alternative, older command used in the CSB book: `git reset` _(Click to expand)_
-Like with discarding changes in the working dir,
-this action used to be done with another command, this time `git reset`.
-For example:
-
-```sh
-git reset HEAD README.md
-```
-
-The CSB book uses this but note that there is a mistake in the book:
-`git reset` will only unstage and **not** revert the file back to its state at the last commit.
-(`git reset --hard` *does* revert things back to the state of a desired commit,
-but only works on commits and not individual files.)
-:::
 
 <hr style="height:1pt; visibility:hidden;" />
 
