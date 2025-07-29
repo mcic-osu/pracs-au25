@@ -24,6 +24,114 @@ editor_options:
 
 <br>
 
+## Makeshift pipelines with shell scripts and Slurm
+
+Creating makeshift pipelines by pushing the limits of the shell script and
+Slurm tool set:
+
+### Ad-hoc solutions
+
+First, here are some low-tech, ad-hoc solutions to rerunning parts of the workflow:
+
+#### Comment out part of the workflow
+
+E.g., to skip a step:
+
+```sh
+# Trim:
+#for R1 in data/fastq/*_R1.fastq.gz; do
+#    sbatch scripts/trim.sh "$R1" results/trim
+#done
+  
+# Align (map):
+for R1 in results/trim/*_R1.fastq.gz; do
+  sbatch scripts/map.sh "$R1" results/map
+done
+  
+# Count alignments per sample per gene:
+sbatch scripts/count.sh results/map results/count_table.txt
+```
+
+#### Make temporary changes
+
+E.g., to only run a single added sample:
+
+  ```sh
+  # Trim:
+  #for R1 in data/fastq/*_R1.fastq.gz; do
+      R1=data/fastq/newsample_R1.fastq.gz
+      sbatch scripts/trim.sh "$R1" results/trim
+  #done
+  
+  # Align (map):
+  #for R1 in results/trim/*_R1.fastq.gz; do
+      R1=results/trim/newsample_R1.fastq.gz
+      sbatch scripts/map.sh "$R1" results/map
+  #done
+  
+  # Count - note, this step should be rerun as a whole:
+  sbatch scripts/count.sh results/map results/count_table.txt
+  ```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### A step up
+
+Second, here are some more bespoke code-based solutions:
+
+#### Command-line options and `if`-statements
+
+These will allow you to flexibly run part of the pipeline
+(and perhaps change settings):
+
+```sh
+trim=$1   # true or false
+map=$2    # true or false
+count=$3  # true or false
+  
+if [[ "$trim" == true ]]; then
+    for R1 in data/fastq/*_R1.fastq.gz; do
+        bash scripts/trim.sh "$R1" results/trim
+    done
+fi
+  
+if [[ "$map" == true ]]; then
+    for R1 in results/trim/*_R1.fastq.gz; do
+        bash scripts/map.sh "$R1" results/map
+    done
+fi
+  
+if [[ "$count" == true ]]; then
+    bash scripts/count.sh results/map results/count_table.txt
+fi
+```
+
+#### Slurm job dependencies
+
+In the example below,
+jobs will only start after their "dependencies" (jobs whose outputs they need)
+have finished:
+  
+```sh
+for R1 in data/fastq/*_R1.fastq.gz; do
+    # Submit the trimming job and store its job number:
+    submit_line=$(sbatch scripts/trim.sh "$R1" results/trim)
+    trim_id=$(echo "$submit_line" | sed 's/Submitted batch job //')
+      
+    # Submit the mapping job with the condition that it only starts when the
+    # trimming job is done, using '--dependency=afterok:':
+    R1_trimmed=results/trim/$(basename "$R1")
+    sbatch --dependency=afterok:$trim_id scripts/map.sh "$R1_trimmed" results/map
+done
+  
+# If you give the mapping and counting jobs the same name with `#SBATCH --job-name=`,
+# then you can use '--dependency=singleton': the counting job will only start
+# when ALL the mapping jobs are done:
+sbatch --dependency=singleton scripts/count.sh results/map results/count_table.txt
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
 ## Slurm environment variables
 
 Inside a shell script that will be submitted as a batch job,
@@ -61,7 +169,7 @@ cores, and don't risk having a mismatch.
 Also, if you need to change the number of cores, you'll only have to modify it
 in one place: in the resource request to Slurm.
 
-<br>
+<hr style="height:1pt; visibility:hidden;" />
 
 ## Interactive shell jobs
 
@@ -212,9 +320,9 @@ If you use this in a script, the result will be printed to the Slurm log file, e
 
 You should use the full path `/usr/bin/time` rather than just `time`.
 
-<br>
+<hr style="height:1pt; visibility:hidden;" />
 
-## SLURM Job arrays
+## Slurm Job arrays
 
 As an alternative to writing a loop script, you can also turn a script
 processing a single file into a job "array", i.e. a series of jobs.

@@ -310,15 +310,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#slurm-environment-variables" id="toc-slurm-environment-variables" class="nav-link active" data-scroll-target="#slurm-environment-variables"><span class="header-section-number">1</span> Slurm environment variables</a></li>
-  <li><a href="#interactive-shell-jobs" id="toc-interactive-shell-jobs" class="nav-link" data-scroll-target="#interactive-shell-jobs"><span class="header-section-number">2</span> Interactive shell jobs</a></li>
-  <li><a href="#additional-commands-for-job-info" id="toc-additional-commands-for-job-info" class="nav-link" data-scroll-target="#additional-commands-for-job-info"><span class="header-section-number">3</span> Additional commands for job info</a>
+  <li><a href="#makeshift-pipelines-with-shell-scripts-and-slurm" id="toc-makeshift-pipelines-with-shell-scripts-and-slurm" class="nav-link active" data-scroll-target="#makeshift-pipelines-with-shell-scripts-and-slurm"><span class="header-section-number">1</span> Makeshift pipelines with shell scripts and Slurm</a>
   <ul class="collapse">
-  <li><a href="#sacct-for-info-mostly-about-finished-jobs" id="toc-sacct-for-info-mostly-about-finished-jobs" class="nav-link" data-scroll-target="#sacct-for-info-mostly-about-finished-jobs"><span class="header-section-number">3.1</span> <code>sacct</code> for info (mostly) about finished jobs</a></li>
-  <li><a href="#aliases-for-long-job-monitoring-commands" id="toc-aliases-for-long-job-monitoring-commands" class="nav-link" data-scroll-target="#aliases-for-long-job-monitoring-commands"><span class="header-section-number">3.2</span> Aliases for long job monitoring commands</a></li>
-  <li><a href="#time" id="toc-time" class="nav-link" data-scroll-target="#time"><span class="header-section-number">3.3</span> <code>time</code></a></li>
+  <li><a href="#ad-hoc-solutions" id="toc-ad-hoc-solutions" class="nav-link" data-scroll-target="#ad-hoc-solutions"><span class="header-section-number">1.1</span> Ad-hoc solutions</a></li>
+  <li><a href="#a-step-up" id="toc-a-step-up" class="nav-link" data-scroll-target="#a-step-up"><span class="header-section-number">1.2</span> A step up</a></li>
   </ul></li>
-  <li><a href="#slurm-job-arrays" id="toc-slurm-job-arrays" class="nav-link" data-scroll-target="#slurm-job-arrays"><span class="header-section-number">4</span> SLURM Job arrays</a></li>
+  <li><a href="#slurm-environment-variables" id="toc-slurm-environment-variables" class="nav-link" data-scroll-target="#slurm-environment-variables"><span class="header-section-number">2</span> Slurm environment variables</a></li>
+  <li><a href="#interactive-shell-jobs" id="toc-interactive-shell-jobs" class="nav-link" data-scroll-target="#interactive-shell-jobs"><span class="header-section-number">3</span> Interactive shell jobs</a></li>
+  <li><a href="#additional-commands-for-job-info" id="toc-additional-commands-for-job-info" class="nav-link" data-scroll-target="#additional-commands-for-job-info"><span class="header-section-number">4</span> Additional commands for job info</a>
+  <ul class="collapse">
+  <li><a href="#sacct-for-info-mostly-about-finished-jobs" id="toc-sacct-for-info-mostly-about-finished-jobs" class="nav-link" data-scroll-target="#sacct-for-info-mostly-about-finished-jobs"><span class="header-section-number">4.1</span> <code>sacct</code> for info (mostly) about finished jobs</a></li>
+  <li><a href="#aliases-for-long-job-monitoring-commands" id="toc-aliases-for-long-job-monitoring-commands" class="nav-link" data-scroll-target="#aliases-for-long-job-monitoring-commands"><span class="header-section-number">4.2</span> Aliases for long job monitoring commands</a></li>
+  <li><a href="#time" id="toc-time" class="nav-link" data-scroll-target="#time"><span class="header-section-number">4.3</span> <code>time</code></a></li>
+  </ul></li>
+  <li><a href="#slurm-job-arrays" id="toc-slurm-job-arrays" class="nav-link" data-scroll-target="#slurm-job-arrays"><span class="header-section-number">5</span> Slurm Job arrays</a></li>
   </ul>
 </nav>
     </div>
@@ -382,8 +387,98 @@ THIS PAGE IS STILL UNDER CONSTRUCTION
 </div>
 </div>
 <p><br></p>
-<section id="slurm-environment-variables" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="slurm-environment-variables"><span class="header-section-number">1</span> Slurm environment variables</h2>
+<section id="makeshift-pipelines-with-shell-scripts-and-slurm" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="makeshift-pipelines-with-shell-scripts-and-slurm"><span class="header-section-number">1</span> Makeshift pipelines with shell scripts and Slurm</h2>
+<p>Creating makeshift pipelines by pushing the limits of the shell script and Slurm tool set:</p>
+<section id="ad-hoc-solutions" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="ad-hoc-solutions"><span class="header-section-number">1.1</span> Ad-hoc solutions</h3>
+<p>First, here are some low-tech, ad-hoc solutions to rerunning parts of the workflow:</p>
+<section id="comment-out-part-of-the-workflow" class="level4">
+<h4 class="anchored" data-anchor-id="comment-out-part-of-the-workflow">Comment out part of the workflow</h4>
+<p>E.g., to skip a step:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Trim:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#for R1 in data/fastq/*_R1.fastq.gz; do</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#    sbatch scripts/trim.sh "$R1" results/trim</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#done</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Align (map):</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> R1 <span class="kw">in</span> results/trim/<span class="pp">*</span>_R1.fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">sbatch</span> scripts/map.sh <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> results/map</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Count alignments per sample per gene:</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/count.sh results/map results/count_table.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="make-temporary-changes" class="level4">
+<h4 class="anchored" data-anchor-id="make-temporary-changes">Make temporary changes</h4>
+<p>E.g., to only run a single added sample:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Trim:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#for R1 in data/fastq/*_R1.fastq.gz; do</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">R1</span><span class="op">=</span>data/fastq/newsample_R1.fastq.gz</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">sbatch</span> scripts/trim.sh <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> results/trim</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#done</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Align (map):</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#for R1 in results/trim/*_R1.fastq.gz; do</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="va">R1</span><span class="op">=</span>results/trim/newsample_R1.fastq.gz</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">sbatch</span> scripts/map.sh <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> results/map</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#done</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Count - note, this step should be rerun as a whole:</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/count.sh results/map results/count_table.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+</section>
+<section id="a-step-up" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="a-step-up"><span class="header-section-number">1.2</span> A step up</h3>
+<p>Second, here are some more bespoke code-based solutions:</p>
+<section id="command-line-options-and-if-statements" class="level4">
+<h4 class="anchored" data-anchor-id="command-line-options-and-if-statements">Command-line options and <code>if</code>-statements</h4>
+<p>These will allow you to flexibly run part of the pipeline (and perhaps change settings):</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">trim</span><span class="op">=</span><span class="va">$1</span>   <span class="co"># true or false</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">map</span><span class="op">=</span><span class="va">$2</span>    <span class="co"># true or false</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="va">count</span><span class="op">=</span><span class="va">$3</span>  <span class="co"># true or false</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="st">"</span><span class="va">$trim</span><span class="st">"</span> <span class="ot">==</span> true <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> R1 <span class="kw">in</span> data/fastq/<span class="pp">*</span>_R1.fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">bash</span> scripts/trim.sh <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> results/trim</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="st">"</span><span class="va">$map</span><span class="st">"</span> <span class="ot">==</span> true <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> R1 <span class="kw">in</span> results/trim/<span class="pp">*</span>_R1.fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">bash</span> scripts/map.sh <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> results/map</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="st">"</span><span class="va">$count</span><span class="st">"</span> <span class="ot">==</span> true <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bash</span> scripts/count.sh results/map results/count_table.txt</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="slurm-job-dependencies" class="level4">
+<h4 class="anchored" data-anchor-id="slurm-job-dependencies">Slurm job dependencies</h4>
+<p>In the example below, jobs will only start after their “dependencies” (jobs whose outputs they need) have finished:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> R1 <span class="kw">in</span> data/fastq/<span class="pp">*</span>_R1.fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Submit the trimming job and store its job number:</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">submit_line</span><span class="op">=</span><span class="va">$(</span><span class="ex">sbatch</span> scripts/trim.sh <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> results/trim<span class="va">)</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">trim_id</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$submit_line</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s/Submitted batch job //'</span><span class="va">)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Submit the mapping job with the condition that it only starts when the</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># trimming job is done, using '--dependency=afterok:':</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">R1_trimmed</span><span class="op">=</span>results/trim/<span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$R1</span><span class="st">"</span><span class="va">)</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">sbatch</span> <span class="at">--dependency</span><span class="op">=</span>afterok:<span class="va">$trim_id</span> scripts/map.sh <span class="st">"</span><span class="va">$R1_trimmed</span><span class="st">"</span> results/map</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># If you give the mapping and counting jobs the same name with `#SBATCH --job-name=`,</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># then you can use '--dependency=singleton': the counting job will only start</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># when ALL the mapping jobs are done:</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="at">--dependency</span><span class="op">=</span>singleton scripts/count.sh results/map results/count_table.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+</section>
+</section>
+<section id="slurm-environment-variables" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="slurm-environment-variables"><span class="header-section-number">2</span> Slurm environment variables</h2>
 <p>Inside a shell script that will be submitted as a batch job, you can use a number of Slurm environment variables that will automatically be available, such as:</p>
 <table class="caption-top table">
 <colgroup>
@@ -433,16 +528,16 @@ THIS PAGE IS STILL UNDER CONSTRUCTION
 </table>
 <hr style="height:1pt; visibility:hidden;">
 <p>As an example of how these environment variables can be useful, the command below uses <code>$SLURM_CPUS_PER_TASK</code> in its call to the program STAR inside the script:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">STAR</span> <span class="at">--runThreadN</span> <span class="st">"</span><span class="va">$SLURM_CPUS_PER_TASK</span><span class="st">"</span> <span class="at">--genomeDir</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">STAR</span> <span class="at">--runThreadN</span> <span class="st">"</span><span class="va">$SLURM_CPUS_PER_TASK</span><span class="st">"</span> <span class="at">--genomeDir</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>With this strategy, you will automatically use the correct (requested) number of cores, and don’t risk having a mismatch. Also, if you need to change the number of cores, you’ll only have to modify it in one place: in the resource request to Slurm.</p>
-<p><br></p>
+<hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="interactive-shell-jobs" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="interactive-shell-jobs"><span class="header-section-number">2</span> Interactive shell jobs</h2>
+<section id="interactive-shell-jobs" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="interactive-shell-jobs"><span class="header-section-number">3</span> Interactive shell jobs</h2>
 <p>Interactive shell jobs will grant you interactive shell access on a compute node. We’ve been working in a shell in VS Code Server, which means that we already have interactive shell access on a compute node!</p>
 <p>However, we only have access to 1 core and 4 GB of memory in this VS Code shell, and there is no way of changing this. If you want an interactive shell job with more resources, you’ll have to start one with Slurm commands.</p>
 <p>A couple of different commands can be used to start an interactive shell job. I prefer the general <code>srun</code> command<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, which we can use with <code>--pty /bin/bash</code> added to get an interactive Bash shell.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">srun</span> <span class="at">--account</span><span class="op">=</span>PAS2880 <span class="at">--pty</span> /bin/bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">srun</span> <span class="at">--account</span><span class="op">=</span>PAS2880 <span class="at">--pty</span> /bin/bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>srun: job 12431932 queued and waiting for resources  
 srun: job 12431932 has been allocated resources
 
@@ -456,48 +551,48 @@ srun: job 12431932 has been allocated resources
 </ul>
 <p><br></p>
 </section>
-<section id="additional-commands-for-job-info" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="additional-commands-for-job-info"><span class="header-section-number">3</span> Additional commands for job info</h2>
+<section id="additional-commands-for-job-info" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="additional-commands-for-job-info"><span class="header-section-number">4</span> Additional commands for job info</h2>
 <section id="sstat-for-information-about-running-jobs" class="level4">
 <h4 class="anchored" data-anchor-id="sstat-for-information-about-running-jobs"><code>sstat</code> for information about running jobs</h4>
 <p>To get information about things like memory usage, the <code>sstat</code> (for running jobs) and <code>sacct</code> (for finished jobs) commands are useful.</p>
 <p>The output of these commands is tabular and by default, too many columns are printed, so very verbose calls are necessary.</p>
 <p>You may want to use an <code>sstat</code> call like the following <strong>at the end of your script</strong>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sstat</span> <span class="at">-j</span> <span class="va">$SLURM_JOB_ID</span> <span class="at">--format</span><span class="op">=</span>jobid,avecpu,averss,maxrss,ntasks</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sstat</span> <span class="at">-j</span> <span class="va">$SLURM_JOB_ID</span> <span class="at">--format</span><span class="op">=</span>jobid,avecpu,averss,maxrss,ntasks</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Which will get you output like:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>       <span class="ex">JobID</span>     AveCPU     MaxRSS   NTasks </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">------------</span> <span class="at">----------</span> <span class="at">----------</span> <span class="at">--------</span> </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">2979576.bat+</span>  01:59.000    244368K        1 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>       <span class="ex">JobID</span>     AveCPU     MaxRSS   NTasks </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">------------</span> <span class="at">----------</span> <span class="at">----------</span> <span class="at">--------</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">2979576.bat+</span>  01:59.000    244368K        1 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>MaxRSS</code> is the maximum amount of memory used by the job.</p>
 </section>
-<section id="sacct-for-info-mostly-about-finished-jobs" class="level3" data-number="3.1">
-<h3 data-number="3.1" class="anchored" data-anchor-id="sacct-for-info-mostly-about-finished-jobs"><span class="header-section-number">3.1</span> <code>sacct</code> for info (mostly) about finished jobs</h3>
+<section id="sacct-for-info-mostly-about-finished-jobs" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="sacct-for-info-mostly-about-finished-jobs"><span class="header-section-number">4.1</span> <code>sacct</code> for info (mostly) about finished jobs</h3>
 <p>Get information about a specific job:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sacct</span> <span class="at">-j</span> 2978487 <span class="at">--format</span><span class="op">=</span>JobID,JobName,NodeList,Elapsed,State,ExitCode,MaxRSS,AllocTRES%32 <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">".extern"</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         JobID    JobName        NodeList    Elapsed      State ExitCode     MaxRSS                        AllocTRES </span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#------------ ---------- --------------- ---------- ---------- -------- ---------- -------------------------------- </span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#2978487       fqtest.sh           p0224   00:01:54  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+ </span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#2978487.bat+      batch           p0224   00:01:54  COMPLETED      0:0    203332K           cpu=1,mem=4556M,node=1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sacct</span> <span class="at">-j</span> 2978487 <span class="at">--format</span><span class="op">=</span>JobID,JobName,NodeList,Elapsed,State,ExitCode,MaxRSS,AllocTRES%32 <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">".extern"</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         JobID    JobName        NodeList    Elapsed      State ExitCode     MaxRSS                        AllocTRES </span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#------------ ---------- --------------- ---------- ---------- -------- ---------- -------------------------------- </span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#2978487       fqtest.sh           p0224   00:01:54  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+ </span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#2978487.bat+      batch           p0224   00:01:54  COMPLETED      0:0    203332K           cpu=1,mem=4556M,node=1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Get information about all jobs – by default those run in the past day:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sacct</span> <span class="at">-u</span> <span class="va">$USER</span> <span class="at">--format</span><span class="op">=</span>JobID,JobName,NodeList,Elapsed,State,ExitCode,MaxRSS,AllocTRES%32 <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">".extern"</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#               JobID    JobName        NodeList    Elapsed      State ExitCode     MaxRSS                        AllocTRES </span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#-------------------- ---------- --------------- ---------- ---------- -------- ---------- -------------------------------- </span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#             2978362 fastqc_si+           p0224   00:01:51  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+ </span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       2978362.batch      batch           p0224   00:01:51  COMPLETED      0:0    200004K           cpu=1,mem=4556M,node=1 </span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#             2978487  fqtest.sh           p0224   00:01:54  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+ </span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#       2978487.batch      batch           p0224   00:01:54  COMPLETED      0:0    203332K           cpu=1,mem=4556M,node=1 </span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#             2978503  fqtest.sh           p0224   00:01:55  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sacct</span> <span class="at">-u</span> <span class="va">$USER</span> <span class="at">--format</span><span class="op">=</span>JobID,JobName,NodeList,Elapsed,State,ExitCode,MaxRSS,AllocTRES%32 <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">".extern"</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#               JobID    JobName        NodeList    Elapsed      State ExitCode     MaxRSS                        AllocTRES </span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#-------------------- ---------- --------------- ---------- ---------- -------- ---------- -------------------------------- </span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#             2978362 fastqc_si+           p0224   00:01:51  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+ </span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       2978362.batch      batch           p0224   00:01:51  COMPLETED      0:0    200004K           cpu=1,mem=4556M,node=1 </span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#             2978487  fqtest.sh           p0224   00:01:54  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+ </span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#       2978487.batch      batch           p0224   00:01:54  COMPLETED      0:0    203332K           cpu=1,mem=4556M,node=1 </span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#             2978503  fqtest.sh           p0224   00:01:55  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="aliases-for-long-job-monitoring-commands" class="level3" data-number="3.2">
-<h3 data-number="3.2" class="anchored" data-anchor-id="aliases-for-long-job-monitoring-commands"><span class="header-section-number">3.2</span> Aliases for long job monitoring commands</h3>
+<section id="aliases-for-long-job-monitoring-commands" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="aliases-for-long-job-monitoring-commands"><span class="header-section-number">4.2</span> Aliases for long job monitoring commands</h3>
 <p>Because you won’t remember all of these formatting options, and even if you do, you don’t want to type them out, this is a case where aliases are really handy. For instance:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> sact=<span class="st">'sacct --format=JobID,JobName,NodeList,Elapsed,State,ExitCode,MaxRSS,AllocTRES%32'</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> stat=<span class="st">'sstat --format=jobid,avecpu,averss,maxrss,ntasks'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> sact=<span class="st">'sacct --format=JobID,JobName,NodeList,Elapsed,State,ExitCode,MaxRSS,AllocTRES%32'</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> stat=<span class="st">'sstat --format=jobid,avecpu,averss,maxrss,ntasks'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>You can then add other options when you use an alias, for example:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sact</span> <span class="at">-j</span> 123456</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sact</span> <span class="at">-j</span> 123456</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -512,13 +607,13 @@ Tip
 </div>
 </div>
 </section>
-<section id="time" class="level3" data-number="3.3">
-<h3 data-number="3.3" class="anchored" data-anchor-id="time"><span class="header-section-number">3.3</span> <code>time</code></h3>
+<section id="time" class="level3" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="time"><span class="header-section-number">4.3</span> <code>time</code></h3>
 <p>To get statistics on a single command, like a memory-intensive program you may be running, use the <code>time</code> utility. To use it, prepend <code>/usr/bin/time</code> to the beginning of a command:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/usr/bin/time</span> fastqc <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/usr/bin/time</span> fastqc <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>If you use this in a script, the result will be printed to the Slurm log file, e.g:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">106.79user</span> 4.10system 1:52.34elapsed 98%CPU <span class="er">(</span><span class="ex">0avgtext+0avgdata</span> 246444maxresident<span class="kw">)</span><span class="ex">k</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">0inputs+1760outputs</span> <span class="er">(</span><span class="ex">0major+35697minor</span><span class="kw">)</span><span class="ex">pagefaults</span> 0swaps</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">106.79user</span> 4.10system 1:52.34elapsed 98%CPU <span class="er">(</span><span class="ex">0avgtext+0avgdata</span> 246444maxresident<span class="kw">)</span><span class="ex">k</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">0inputs+1760outputs</span> <span class="er">(</span><span class="ex">0major+35697minor</span><span class="kw">)</span><span class="ex">pagefaults</span> 0swaps</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ol type="1">
 <li>User time (CPU time spent running your program)</li>
 <li>System time (CPU time spent by your program in system calls)</li>
@@ -528,46 +623,46 @@ Tip
 <li>I/O statistics</li>
 </ol>
 <p>You should use the full path <code>/usr/bin/time</code> rather than just <code>time</code>.</p>
-<p><br></p>
+<hr style="height:1pt; visibility:hidden;">
 </section>
 </section>
-<section id="slurm-job-arrays" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="slurm-job-arrays"><span class="header-section-number">4</span> SLURM Job arrays</h2>
+<section id="slurm-job-arrays" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="slurm-job-arrays"><span class="header-section-number">5</span> Slurm Job arrays</h2>
 <p>As an alternative to writing a loop script, you can also turn a script processing a single file into a job “array”, i.e.&nbsp;a series of jobs.</p>
 <p>Each job in the array gets an ID that you can then use in your script for each job to run with a different value of a certain parameter.</p>
 <p>Most commonly, you may have a file with sample names and then use the array IDs to subset lines from that file – for instance, for our FastQC script:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --array=1-25</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-fastqc-%A-%a.out</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_file</span><span class="op">=</span><span class="va">$(</span><span class="fu">sed</span> <span class="at">-n</span> <span class="st">"</span><span class="va">${SLURM_ARRAY_TASK_ID}</span><span class="st">p"</span> fastq_files.txt<span class="va">)</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --array=1-25</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-fastqc-%A-%a.out</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_file</span><span class="op">=</span><span class="va">$(</span><span class="fu">sed</span> <span class="at">-n</span> <span class="st">"</span><span class="va">${SLURM_ARRAY_TASK_ID}</span><span class="st">p"</span> fastq_files.txt<span class="va">)</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><p>Above, the array was configured using the <code>--array</code> option, simply creating 25 jobs with array IDs from 1 to 25 (assuming 25 FASTQ files).</p></li>
 <li><p>Then, the SLURM environment variable <code>$SLURM_ARRAY_TASK_ID</code> will contain the task ID for each job in the array, and we use that to pull out a line from a file with FASTQ file names with <code>sed</code>.</p></li>
 <li><p>We also use <code>%A</code> (master job ID) and <code>%a</code> (ID that differs for each job in the array) for the log file name.</p></li>
 </ul>
 <p>A full script example is below:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS0471</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=60</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-fastqc-%A-%a.out</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --array=1-25</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load fastqc/0.12.1</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_files_list</span><span class="op">=</span><span class="st">"</span><span class="va">$1</span><span class="st">"</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="va">output_dir</span><span class="op">=</span><span class="st">"</span><span class="va">$2</span><span class="st">"</span> </span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_file</span><span class="op">=</span><span class="va">$(</span><span class="fu">sed</span> <span class="at">-n</span> <span class="st">"</span><span class="va">${SLURM_ARRAY_TASK_ID}</span><span class="st">p"</span> <span class="va">$fastq_files_list)</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Running fastqc for file: </span><span class="va">$fastq_file</span><span class="st">"</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Output dir: </span><span class="va">$output_dir</span><span class="st">"</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">--outdir</span><span class="op">=</span><span class="st">"</span><span class="va">$output_dir</span><span class="st">"</span> <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS0471</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=60</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-fastqc-%A-%a.out</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --array=1-25</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load fastqc/0.12.1</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_files_list</span><span class="op">=</span><span class="st">"</span><span class="va">$1</span><span class="st">"</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="va">output_dir</span><span class="op">=</span><span class="st">"</span><span class="va">$2</span><span class="st">"</span> </span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_file</span><span class="op">=</span><span class="va">$(</span><span class="fu">sed</span> <span class="at">-n</span> <span class="st">"</span><span class="va">${SLURM_ARRAY_TASK_ID}</span><span class="st">p"</span> <span class="va">$fastq_files_list)</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Running fastqc for file: </span><span class="va">$fastq_file</span><span class="st">"</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Output dir: </span><span class="va">$output_dir</span><span class="st">"</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">--outdir</span><span class="op">=</span><span class="st">"</span><span class="va">$output_dir</span><span class="st">"</span> <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><p>The array values can also be a comma separated list like <code>SBATCH --array=8,10,15</code> and can even have a <em>stride</em>, with <code>SBATCH --array=1-7:2</code> producing array tasks 1, 3, 5, and 7.</p></li>
 <li><p>You can also throttle an array of jobs: only run a subset of jobs at a time. This can be done as follows:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="at">--array</span> <span class="pp">[</span><span class="ss">1</span><span class="pp">-</span><span class="ss">100</span><span class="pp">]</span>%10 fastq.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="at">--array</span> <span class="pp">[</span><span class="ss">1</span><span class="pp">-</span><span class="ss">100</span><span class="pp">]</span>%10 fastq.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The above command would only submit 10 jobs at a time. (This can also be specified inside the script.)</p></li>
 </ul>
 

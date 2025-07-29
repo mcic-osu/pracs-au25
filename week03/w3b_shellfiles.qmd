@@ -1,6 +1,6 @@
 ---
 title: "Working with files in the Unix shell II:<br>Viewing, summarizing and manipulating files"
-subtitle: "Week 3 -- part II"
+subtitle: "Week 3 -- lecture II"
 pagetitle: "PRACS25: Shell files II"
 date: 2025-09-04
 author:
@@ -35,27 +35,46 @@ bibliography: ../references.bib
 
 <br>
 
-## Before we start
+## Introduction
+
+### Context & overview
+
+The Unix shell is great for many other tasks that the file browser-like ones
+you learned about in the previous lecture.
+One of those is performing basic viewing, querying, and editing operations on
+text files.
+
+Recall from the [Project File Organization lecture](../week02/w2a_project-org.qmd#use-plain-text-files)
+that you'll work almost exclusively with so-called "**plain-text**" files in this course,
+such as:
+
+- Omics file formats such as FASTA, FASTQ, and GTF
+- Spreadsheet-like/tabular files stored as TSV/CSV
+- Scripts and code notebooks
+- Documentation files such as Markdown
+
+The commands we'll discuss here can be used with plain-text files but not with
+"binary" formats like Excel or Word files.
 
 ### Learning goals
 
-In this session, you will learn to use the Unix shell to:
+In this lecture, you will learn to use the Unix shell to:
 
 - View the contents of text files in various ways
-- Search within, manipulate, and extract information from text files
+- Search within, extract information from, and manipulate text files
 
 ### Getting ready
 
 #### Start a VS Code session
 
-Start a VS Code session like we've done before.
+Start a VS Code session like you've done before.
 
 <details><summary>_Click here to see the instructions_</summary>
 
 1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>.
 2. In the blue top bar, select `Interactive Apps` and near the bottom, click `Code Server`.
 3. In the form on the page that appears, fill out the following:
-   - "_Cluster_": `pitzer-rhel9`
+   - "_Cluster_": `pitzer`
    - "_Account_" (= OSC Project): `PAS2880`.
    - "_Number of hours_": `2`
    - "_Working Directory_": your personal dir in `/fs/ess/PAS2880/users`
@@ -77,14 +96,12 @@ Start a VS Code session like we've done before.
 
 #### Open a Markdown file for notes
 
-Like before, I also recommend that you create and open a Markdown file to keep
-notes:
+Like before, I recommend that you create and open a Markdown file to keep notes:
 
 1. Click <i class="fa fa-bars"></i> => `File` => `New File`.
-2. Save the file (e.g. <kbd>Ctrl/⌘</kbd>+<kbd>S</kbd>) inside the
-   `week03` dir within `/fs/ess/PAS2880/users/$USER`,
-   e.g. as `session2.md` (make sure to use a `.md` extension).
-
+2. Save the file inside `/fs/ess/PAS2880/users/$USER/week03`,
+   e.g. as `lecture2.md` (use a `.md` extension).
+   
 #### Change your working dir
 
 ```bash
@@ -95,15 +112,8 @@ cd garrigos-data
 
 ## Viewing the contents of text files
 
-Recall from the [Project Organization session](../week02/w2a_project-org.qmd#use-plain-text-files)
-that we'll be working almost exclusively with so-called "**plain-text**" files
-in this course.
-Many omics file formats are in plain text, we will code in plain text files,
-and for reproducibility purposes,
-we will also document our research in plain text (Markdown) files.
-
-The commands we'll discuss here work with plain-text files but not with
-"binary" formats like Excel or Word files.
+Several commands exist to view all or part of one or more text files,
+and we'll discuss the most common ones below.
 
 ### `cat`
 
@@ -982,5 +992,7 @@ Some details on what's in each column:
 | 7 | **_strand_** | Whether the feature is on the `+` (forward) or `-` (reverse) strand^[Because double-stranded DNA is represented as a single sequence, the `strand` column effectively indicates in which direction a feature should be read along this sequence.].
 | 8 | **_frame_** | `0`, `1` or `2` (or `.` for no frame). `0` means the first base of the feature is the first base of a codon, etc.
 | 9 | **_attributes_** | A semicolon-separated list of key-value pairs with additional information about each feature. This column can be very long!
+
+: {.striped .hover}
 
 :::

@@ -1,6 +1,6 @@
 ---
 title: "Workflows with batch jobs"
-subtitle: "Week 7 - part II"
+subtitle: "Week 7 - Lecture II"
 pagetitle: "PRACS25: Batch jobs"
 date: 2025-10-08
 author:
@@ -35,11 +35,21 @@ bibliography: ../references.bib
 
 ## Introduction
 
+### Overview
+
 TBA
 
-## Batch jobs in practice
+### Learning goals
 
-### TrimGalore
+TBA
+
+### Setting up
+
+TBA
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Batch job examples with TrimGalore
 
 In the [week 6 assignment](../week06/w6_ga.qmd), you wrote a script to run TrimGalore,
 and eventually ran that script for all samples using a loop.
@@ -55,33 +65,47 @@ cp ../week06/assignment/scripts/trimgalore.sh scripts/
 ```
 
 ::: {.callout-note collapse="true"}
-### ...Or download a version of this script if you don't have it
+### ...Or download a version of this script if you don't have it _(Click to expand)_
 ```bash
 wget -P scripts <TBA-URL>
 ```
 :::
 
-Next, add sbatch options with the following `#SBATCH` lines in the script:
+<hr style="height:1pt; visibility:hidden;" />
+
+#### Modifying the script for usage with Slurm
+
+Next, add Slurm options with the following `#SBATCH` lines in the script ---
+note that you'll be asking for 8 cores:
 
 ```bash
 #!/bin/bash
 #SBATCH --account=PAS2880
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=8
 #SBATCH --mail-type=FAIL
 #SBATCH --name=slurm-trimgalore-%j.out
 ```
 
-We will also tell TrimGalore about the number of cores we have at our disposal
-by including `--cores 4`:
+When you have multiple cores at your disposal in a job,
+you will almost always want to **explicitly tell the program you're running about this**.
+Some programs default to using 1 core while others try to auto-detect the number of cores,
+but any auto-detection tends to be inappropriate:
+the program would detect the total number of cores on the OSC node rather than the
+number that we have reserved.
+Let TrimGalore know how many cores you have reserved by _editing the command_
+to include `--cores 8`:
 
 ```bash
 # [Other TrimGalore options not shows - same as before]
 trim_galore \
-    --cores 4 \
+    --cores 8 \
 ```
 
-Now, we are ready to submit the script.
-Let's test it for one file first:
+<hr style="height:1pt; visibility:hidden;" />
+
+#### Submitting the script as a batch job
+
+Now, you're ready to submit the script. Let's test it for _one sample_ first:
 
 ```bash
 R1=garrigos-data/fastq/ERR10802863_R1.fastq.gz
@@ -91,6 +115,66 @@ sbatch scripts/trimgalore.sh "$R1" "$R2" results/trimgalore
 ```bash-out
 submitted batch job TBA
 ```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+#### Monitoring the batch job
+
+Next, monitor your job by:
+
+- Checking its status in the Slurm queue with `squeue -u $USER`
+- Checking the contents of the Slurm log file that should appear in your working dir
+
+```bash
+squeue -u $USER -l
+```
+```bash-out
+TBA
+```
+
+After a while:
+
+- You will know that your job is no longer running
+  (either due to failure or because it finished succesfully)
+  when it is no longer listed in the `squeue` output
+- If you _additionally_ didn't receive an email from Slurm
+  (you should have gotten one if the job failed due to the `#SBATCH --mail-type=FAIL` line),
+  this implies that it succeeded.
+
+But don't forget to look at the output files:
+
+- **Slurm log file**: Because of our Strict bash `set` settings and an `echo` line
+  at the end of the script,
+  the presence of the marker line "_Succesfully finished [...]_" means that the
+  script encountered no errors.
+  That said, you'll always want to also look at the rest of the contents of this
+  file, as a program's "logging statements" may have useful information,
+  including output summaries but also warnings.
+- **Program output files**: Most bioinformatics tools don't just print logging
+  information, which end up in the Slurm log file, but will also have output files.
+  In the case of TrimGalore, the main output are processed (trimmed) FASTQ files.
+  Therefore, always check the output dir for the presence of output files
+  
+  
+```bash
+ls
+```
+```bash-out
+slurm-trimgalore-TBA.out
+```
+```bash
+tail slurm-trimgalore-TBA.out
+```
+```bash-out
+TBA
+```
+```bash
+less slurm-trimgalore-TBA.out
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+#### Submitting a job for each sample
 
 ```bash
 for R1 in garrigos-data/fastq/*_R1.fastq.gz; do
@@ -103,52 +187,7 @@ submitted batch job TBA
 submitted batch job TBA
 submitted batch job TBA
 submitted batch job TBA
-```
-
-### STAR/Salmon
-
-#### Index the genome
-
-First, we need to unzip the FASTA reference genome file:
-
-```{bash}
-gunzip reference/Pvul.fa.gz
-```
-
-```{bash}
-#SBATCH --cpus-per-task=8
-
-# Copy the placeholder variables
-reference_fasta=$1       # Pvul.fa reference genome FASTA file
-index_dir=$2             # Output dir with the genome index
-
-# Run STAR to index the reference genome
-STAR --runMode genomeGenerate \
-     --genomeDir "$index_dir" \
-     --genomeFastaFiles "$reference_fasta" \
-     --runThreadN "$SLURM_CPUS_PER_TASK"
-```
-
-#### Map
-
-```{bash}
-#SBATCH --cpus-per-task=8
-
-# Copy the placeholder variables
-fastq_file=$1         # A FASTQ file to map to the reference genome
-index_dir=$2          # Dir with the genome index (created in indexing script)
-
-# Extract a sample ID from the filename!
-sample_id=$(basename "$fastq_file" .fastq.gz)
-
-# Run STAR to map the FASTQ file
-STAR \
-  --runThreadN "$SLURM_CPUS_PER_TASK" \
-  --genomeDir "$index_dir" \
-  --readFilesIn $fastq_file \
-  --readFilesCommand zcat \
-  --outFileNamePrefix "$outdir"/"$sample_id" \
-  --outSAMtype BAM Unsorted SortedByCoordinate
+# [...output truncated...]
 ```
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -174,9 +213,9 @@ To exit the `tail -f` livestream, press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### Making sure your jobs ran successfully
+### Recap: Making sure your jobs ran successfully
 
-Here are some summarizing notes on the overall strategy to monitor your batch jobs:
+To recap, here is an overview of basic strategies to monitor your batch jobs:
 
 - To see whether your job(s) have started,
   check the queue (with `squeue`) or check for the appearance of Slurm log files
@@ -194,26 +233,28 @@ Here are some summarizing notes on the overall strategy to monitor your batch jo
   - Check that you have the expected number of output files and that no files
     have size zero (run `ls -lh`).
 
+
+::: callout-tip
+#### TBA Refer to `scontrol` etc for detailed stats
+:::
+
 <br>
 
 ## "Protocol" Markdown files
 
-In the past two weeks of this course,
-you have created a few Markdown files that contain the commands you used to
-run your scripts.
-
-These "protocol" files were useful to store that code,
-especially because we were passing arguments to our script and running loops.
-Alternatively, we could directly type this code in the terminal,
-but this would be tedious and would reduce reproducibility,
-since we wouldn't have a good record of what we did.
+In the past few weeks of this course,
+you've created Markdown files with the commands you used to run your scripts.
+These files were useful to type and store that code:
+alternatively, you could directly type this in the terminal,
+but this would be harder to get right (e.g., with loops)
+and most importantly would reduce reproducibility,
+since you wouldn't have a good record of what you did.
 
 However, these files have so far been very short,
 and may not have given you much of a picture of how this would look in the context
 of a research project that would include running a whole series of steps
 with different bioinformatics tools (and perhaps custom scripts).
-
-For larger projects,
+For **larger projects**,
 you will probably want to create at least two separate Markdown files that contain
 the code you used to run scripts and other commands:
 
@@ -226,53 +267,76 @@ the code you used to run scripts and other commands:
 
 ### An RNA-Seq example
 
-While thinking about different ways to organize and run your analyses,
-let's have an example in mind with a simple RNA-seq analysis that:
+While thinking about ways to organize and run your analyses,
+let's have an example in mind with a simple RNA-Seq analysis that:
 
 - Trims reads in FASTQ files _(independently for each sample)_
 - Maps (aligns) reads to a reference genome _(independently for each sample)_
 - Creates a gene expression count table from the alignments _(for all samples together)_
 
-![A simple 3-step RNA-seq analysis, with arrows showing the connections<br>between the steps: the output of one step is the input of the next.<br>The example only has 3 samples, and the first two steps are executed separately<br>for each sample, while the last step is executed once for all samples.](../img/schem-workflow.svg){fig-align="center" width="70%" fig-alt="A diagram of the steps in a simple RNA-Seq analysis." .lightbox}
+![A simple 3-step RNA-Seq analysis, with arrows showing the connections<br>between the steps: the output of one step is the input of the next.<br>The example only has 3 samples, and the first two steps are executed separately<br>for each sample, while the last step is executed once for all samples.](../img/schem-workflow.svg){fig-align="center" width="70%" fig-alt="A diagram of the steps in a simple RNA-Seq analysis." .lightbox}
 
-Here is a slightly longer example for the RNA-seq analysis described above:
-
-**TBA - ADD REFERENCE INDEXING STEP**
-
-**TBA - CHANGE BELOW TO MARKDOWN**
+Here is an example "protocol-style" Markdown file for this RNA-seq analysis:
 
 ````markdown
 
+## Set up: Define the input files
+
 ```bash
 # [hypothetical example - don't run any of the code in this document]
-# Define the inputs
 fastq_dir=data/fastq
 ref_assembly=data/ref/assembly.fna
 ref_annotation=data/ref/annotation.gtf
 ```
 
+## Step 1: Trim the reads
+
+The `map.sh` script takes 3 arguments -- R1 FASTQ, ref. assembly, and output dir:
+
 ```bash
-# Trim the reads:
 for R1 in "$fastq_dir"/*_R1.fastq.gz; do
     # (The trim.sh script takes 2 arguments: R1 FASTQ and output dir)
     sbatch scripts/trim.sh "$R1" results/trim
 done
 ```
 
+## Step 2: Align (map) the reads to a reference genome assembly
+
+The `map.sh` script takes 3 arguments -- R1 FASTQ, ref. assembly, and output dir:
+
 ```bash
-# Align (map) the reads to a reference genome assembly:
 for R1 in results/trim/*_R1.fastq.gz; do
-    # (The map.sh script takes 3 arguments: R1 FASTQ, ref. assembly, and output dir)
     sbatch scripts/map.sh "$R1" "$ref_assembly" results/map
 done
 ```
 
+## Step 3: Count alignments per sample per gene using the annotation:
+
+The `count.sh` script takes 3 arguments -- input dir, ref. annotation, and output dir:
+
 ```bash
-# Count alignments per sample per gene using the annotation:
-# (The count.sh script takes 3 arguments: input dir, ref. annotation, and output dir)
 sbatch scripts/count.sh results/map "$ref_annotation" results/count_table.txt
 ```
 ````
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### The rationale behind organizing and running scripts this way
+
+The protocol above runs a primary shell script for each of the three steps
+(`trim.sh`, `map.sh`, and` count.sh`),
+and each of these _takes arguments_ and runs a bioinformatics tool to perform
+that step (for example, TrimGalore for trimming).
+
+Here are some advantages of using such a script structure with flexible
+(i.e., argument-accepting) scripts,
+and an overarching protocol Markdown file to describe the entire workflow:
+
+- Rerunning everything, including with a modified sample set, or tool settings,
+  is relatively straightforward --- both for yourself and others, improving reproducibility.
+- Re-applying the same set of analyses in a different project is straightforward.
+- The Markdown file documents the steps taken.
+- It (more or less) ensures you are including all necessary steps.
 
 ::: callout-tip
 ### Why use variables
@@ -296,24 +360,7 @@ In brief, recall that variables are especially useful for things that
 you refer to repeatedly and/or are subject to change.
 :::
 
-### Why organize our scripts this way?
-
-The protocol above runs a primary shell script for each of the three steps
-(`trim.sh`, `map.sh`, and` count.sh`),
-and each of these _takes arguments_ and runs a bioinformatics tool to perform
-that step (for example, TrimGalore for trimming).
-
-Here are some advantages of using such a script structure with flexible
-(i.e., argument-accepting) scripts,
-and an overarching protocol Markdown file to describe the entire workflow:
-
-- Rerunning everything, including with a modified sample set, or tool settings,
-  is relatively straightforward --- both for yourself and others, improving reproducibility.
-- Re-applying the same set of analyses in a different project is straightforward.
-- The Markdown file documents the steps taken.
-- It (more or less) ensures you are including all necessary steps.
-
-<br>
+<hr style="height:1pt; visibility:hidden;" />
 
 ## Pipelines
 
@@ -324,30 +371,30 @@ But here, I am using pipeline in a stricter sense to mean a series of steps that
 **can be executed from start to finish with a single command**.
 
 An advantage of a true pipeline is increased automation,
-as well as "supercharging" the above-mentioned advantages of our script structure.
+as well as "supercharging" the above-mentioned advantages of the discussed script structure.
 For example, a pipeline _truly_ ensures that you are including all necessary steps.
 
-### Why our Markdown file is not a true pipeline
+### Why the above Markdown file is not a true pipeline
 
-The way our Markdown file is set up, however,
-we would be running the bits of code block-by-block.
-This makes it hard to run all the steps at once, and that is in fact intentional.
+The above Markdown file is intentionally set up to run the bits of code block-by-block
+rather than all at once.
 
-This is because we wouldn't be able to run/submit everything at once anyway,
-given that we have multiple batch job steps,
-and the input of a later step uses the output of an earlier step.
-The problem is that all batch jobs would be submitted at the same time and
-later steps will inevitably start running before the earlier step has finished.
+This is because you're not able to run all the code at once in its current form.
+There are multiple batch job steps where the input of a later step uses the output
+of an earlier step.
+Therefore, if you run all code at once,
+all batch jobs will be submitted at the same time,
+and later steps will start running before the earlier step has finished.
 
 For example, consider the following two consecutive steps,
 in which the second step uses the output of the first step: 
 
 ```bash
-# This script would create a genome "index" for STAR, that will be used in the next step
+# This script creates a genome "index" for STAR, that will be used in the next step
 # ('my_genome.fa' = input genome FASTA, 'results/star_index' = output index dir)
 sbatch scripts/star_index.sh my_genome.fa results/star_index
 
-# This script would align a FASTQ file to the genome index created in the previous step
+# This script aligns a FASTQ file to the genome index created in the previous step
 # ('results/star_index' = input index dir, 'sampleA.fastq.gz' = input FASTQ file,
 # 'results/star_align' = output dir)
 sbatch scripts/star_align.sh results/star_index sampleA.fastq.gz results/star_align 
@@ -364,10 +411,11 @@ As such, it would fail because of the missing output from the first step.
 
 ### What can we do, then?
 
-To turn our runner script into a functional pipeline,
-we would first need to overcome the problem of simultaneous batch job submission.
-Additionally, a pipeline worth its salt should also be able to
-**detect and stop upon failure**,
+Having to wait for each step to finish before submitting the next step is a bit
+tedious. How could you automate this and create a true pipeline?
+
+Foremost, you'd need to overcome the problem of simultaneous batch job submission.
+But a decent pipeline **detect failure and then stop**,
 and to **rerun parts of the pipeline** flexibly.
 The latter may be necessary after, e.g.:
   
@@ -375,11 +423,12 @@ The latter may be necessary after, e.g.:
 - You added or removed a sample
 - You had to modify a script or settings somewhere halfway the pipeline.
 
-So how could we implement all of that?
+How could you implement all of that?
 
 - **Push the limits of the Bash and Slurm tool set (not recommended)**\
-  Use `if` statements, many script arguments, and Slurm "job dependencies"
-  (see the box below) --- but this is hard to manage for more complex workflows.
+  Use `if` statements, additional script arguments, and Slurm "job dependencies"
+  (see the [optional reading page](../bonus/slurm.html)) ---
+  but this is hard to manage for more complex workflows.
 
 - **Use a formal workflow management system (recommended)**\
   Workflow management systems like
@@ -415,110 +464,5 @@ It is a good idea to keep your shell scripts simple
 _in the sense that they should generally **just run one program**_,
 and not a sequence of programs.
 :::
-
-<br>
-
-## Optional reading: Pushing the limits of the Bash and Slurm tool set
-
-### Ad-hoc solutions
-
-First, here are some low-tech, ad-hoc solutions to rerunning parts of the workflow:
-
-#### Comment out part of the workflow
-
-E.g., to skip a step:
-
-```sh
-# Trim:
-#for R1 in data/fastq/*_R1.fastq.gz; do
-#    sbatch scripts/trim.sh "$R1" results/trim
-#done
-  
-# Align (map):
-for R1 in results/trim/*_R1.fastq.gz; do
-  sbatch scripts/map.sh "$R1" results/map
-done
-  
-# Count alignments per sample per gene:
-sbatch scripts/count.sh results/map results/count_table.txt
-```
-
-#### Make temporary changes
-
-E.g., to only run a single added sample:
-
-  ```sh
-  # Trim:
-  #for R1 in data/fastq/*_R1.fastq.gz; do
-      R1=data/fastq/newsample_R1.fastq.gz
-      sbatch scripts/trim.sh "$R1" results/trim
-  #done
-  
-  # Align (map):
-  #for R1 in results/trim/*_R1.fastq.gz; do
-      R1=results/trim/newsample_R1.fastq.gz
-      sbatch scripts/map.sh "$R1" results/map
-  #done
-  
-  # Count - note, this step should be rerun as a whole:
-  sbatch scripts/count.sh results/map results/count_table.txt
-  ```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### A step up
-
-Second, here are some more bespoke code-based solutions:
-
-#### Command-line options and `if`-statements
-
-These will allow you to flexibly run part of the pipeline
-(and perhaps change settings):
-
-```sh
-trim=$1   # true or false
-map=$2    # true or false
-count=$3  # true or false
-  
-if [[ "$trim" == true ]]; then
-    for R1 in data/fastq/*_R1.fastq.gz; do
-        bash scripts/trim.sh "$R1" results/trim
-    done
-fi
-  
-if [[ "$map" == true ]]; then
-    for R1 in results/trim/*_R1.fastq.gz; do
-        bash scripts/map.sh "$R1" results/map
-    done
-fi
-  
-if [[ "$count" == true ]]; then
-    bash scripts/count.sh results/map results/count_table.txt
-fi
-```
-
-#### Slurm job dependencies
-
-In the example below,
-jobs will only start after their "dependencies" (jobs whose outputs they need)
-have finished:
-  
-```sh
-for R1 in data/fastq/*_R1.fastq.gz; do
-    # Submit the trimming job and store its job number:
-    submit_line=$(sbatch scripts/trim.sh "$R1" results/trim)
-    trim_id=$(echo "$submit_line" | sed 's/Submitted batch job //')
-      
-    # Submit the mapping job with the condition that it only starts when the
-    # trimming job is done, using '--dependency=afterok:':
-    R1_trimmed=results/trim/$(basename "$R1")
-    sbatch --dependency=afterok:$trim_id scripts/map.sh "$R1_trimmed" results/map
-done
-  
-# If you give the mapping and counting jobs the same name with `#SBATCH --job-name=`,
-# then you can use '--dependency=singleton': the counting job will only start
-# when ALL the mapping jobs are done:
-sbatch --dependency=singleton scripts/count.sh results/map results/count_table.txt
-```
 
 <br>

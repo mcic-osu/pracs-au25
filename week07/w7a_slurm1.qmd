@@ -1,6 +1,6 @@
 ---
 title: "Slurm batch jobs at OSC"
-subtitle: "Week 7 -- part I"
+subtitle: "Week 7 -- Lecture I"
 pagetitle: "PRACS25: Slurm batch jobs"
 date: 2025-10-06
 author:
@@ -558,6 +558,8 @@ The following pieces of information about each job are listed:
 | `NODES`       | The number of nodes reserved for the job |
 | `NODELIST(REASON)` | When running: the ID of the node on which it is running. When pending: why it is pending. |
 
+: {.striped .hover}
+
 <hr style="height:1pt; visibility:hidden;" />
 
 #### `squeue` example
@@ -923,6 +925,9 @@ Here is an overview of the options related to cores, tasks, and nodes:
 | Nr. of "tasks" (processes) | `-n 1`   | `--ntasks=1`            | 1
 | Nr. of tasks per node      | -        | `--ntasks-per-node=1`   | 1
 | Nr. of nodes               | `-N 1`   | `--nodes=1`             | 1
+
+: {.striped .hover}
+
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -1127,7 +1132,7 @@ looks like it may time out, this may well be worth it.
 Here are the main options we discussed above:
 
 | Resource/use        | short      | long                 | default
-|---------------------|---------|------------------|:---------:|
+|---------------|---------|------------------|:---------:|
 | Project to be billed          | `-A PAS2880` | `--account=PAS2880`    | _N/A_
 | Time limit                    | `-t 4:00:00` | `--time=4:00:00`      | 1:00:00
 | Nr of nodes                   | `-N 1`       | `--nodes=1`            | 1
@@ -1136,19 +1141,23 @@ Here are the main options we discussed above:
 | Log output file               | `-o`       |  `--output=slurm-fastqc-%j.out`
 | Get email when job ends<br>/ ends or fails | -        | `--mail-type=END` <br> `--mail-type=END,FAIL`
 
+: {.striped .hover}
+
 <hr style="height:1pt; visibility:hidden;" />
 
 And some additional ones:
 
-| Resource/use            | long option
+| Resource/use            | long option example
 |-----------|------------|
-| Job name (displayed in the queue)    | `--job-name=fastqc`
+| Job name (will e.g. be displayed in `squeue` output)    | `--job-name=fastqc`
 | Partition (=queue type)                      | `--partition=longserial` <br> `--partition=hugemem`
 | Only allow job to begin after a specific time | `--begin=2025-04-05T12:00:00`
 | Only allow job to begin after another job has finished | `--dependency=afterany:123456`
 | Nr of "tasks" (processes)     | `--ntasks=1`
-| Nr of tasks per node          | `--ntasks-per-node`
-| Separate error output (*stderr*)       | `--error=slurm-fastqc-%j.err` |
+| Nr of tasks per node          | `--ntasks-per-node=1`
+| Put error output (*stderr*) from into a separate file. When using this option, only standard (non-error, *stdout*) output will now be put into the file specified with `--output`. | `--error=slurm-fastqc-%j.err` |
+
+: {.striped .hover}
 
 <hr style="height:1pt; visibility:hidden;" />
 

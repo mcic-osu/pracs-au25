@@ -315,7 +315,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a>
   <ul class="collapse">
-  <li><a href="#learning-goals" id="toc-learning-goals" class="nav-link" data-scroll-target="#learning-goals"><span class="header-section-number">1.1</span> Learning goals</a></li>
+  <li><a href="#overview-context" id="toc-overview-context" class="nav-link" data-scroll-target="#overview-context"><span class="header-section-number">1.1</span> Overview &amp; context</a></li>
+  <li><a href="#learning-goals" id="toc-learning-goals" class="nav-link" data-scroll-target="#learning-goals"><span class="header-section-number">1.2</span> Learning goals</a></li>
+  <li><a href="#getting-ready" id="toc-getting-ready" class="nav-link" data-scroll-target="#getting-ready"><span class="header-section-number">1.3</span> Getting ready</a></li>
   </ul></li>
   <li><a href="#remote-repositories" id="toc-remote-repositories" class="nav-link" data-scroll-target="#remote-repositories"><span class="header-section-number">2</span> Remote repositories</a>
   <ul class="collapse">
@@ -334,7 +336,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Version control: Remotes on GitHub</h1>
-<p class="subtitle lead">Week 4 - Part II</p>
+<p class="subtitle lead">Week 4 – Lecture II</p>
 </div>
 
 
@@ -376,31 +378,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><br></p>
 <section id="introduction" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
-<section id="learning-goals" class="level3" data-number="1.1">
-<h3 data-number="1.1" class="anchored" data-anchor-id="learning-goals"><span class="header-section-number">1.1</span> Learning goals</h3>
-<ul>
-<li>Creating and exploring repositories on GitHub</li>
-<li>Setting up GitHub authentication</li>
-<li>Single-user remote repo workflows</li>
-</ul>
-<hr style="height:1pt; visibility:hidden;">
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<section id="overview-context" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="overview-context"><span class="header-section-number">1.1</span> Overview &amp; context</h3>
+<p>In the previous lecture, you learned how to create and maintain version control repositories with Git. One of the advantages of doing so is the ease with which you can then share your code and other relevant files – here, you’ll learn to do so with GitHub.</p>
+<p>In other words, we will cover how can put your local repositories online at GitHub, and how to keep local and online (“remote”) repositories in sync.</p>
+<div class="callout callout-style-simple callout-important no-icon">
+<div class="callout-body d-flex">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-Getting set up at OSC
+<div class="callout-body-container">
+<p>Of course, you always pay attention, but here is some extra incentive to do so today: you’ll be handing in all your assignments for the rest of the course via GitHub.</p>
 </div>
 </div>
-<div class="callout-body-container callout-body">
+</div>
+</section>
+<section id="learning-goals" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="learning-goals"><span class="header-section-number">1.2</span> Learning goals</h3>
+<p>In this lecture, you will learn to:</p>
 <ul>
-<li>Launch VS Code at <a href="https://ondemand.osc.edu" class="uri">https://ondemand.osc.edu</a> as before, at the dir <code>/fs/ess/PAS2880/users/$USER</code>, and open a terminal.</li>
-<li>In the terminal, <code>cd</code> to your <code>week04/originspecies</code> dir.</li>
+<li>Create and explore version control repositories on the GitHub website</li>
+<li>Set up GitHub authentication to connect a local/OSC Git repo to its online counterpart on GitHub</li>
+<li>How to keep your local and online (remote) repositories in sync</li>
 </ul>
-</div>
-</div>
 <hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="getting-ready" class="level3" data-number="1.3">
+<h3 data-number="1.3" class="anchored" data-anchor-id="getting-ready"><span class="header-section-number">1.3</span> Getting ready</h3>
+<section id="start-a-vs-code-session" class="level4">
+<h4 class="anchored" data-anchor-id="start-a-vs-code-session">Start a VS Code session</h4>
+<p>Start a VS Code session like you’ve done before.</p>
+<details>
+<summary>
+<em>Click here to see the instructions</em>
+</summary>
+<ol type="1">
+<li>Log in to OSC’s OnDemand portal at <a href="https://ondemand.osc.edu" class="uri">https://ondemand.osc.edu</a>.</li>
+<li>In the blue top bar, select <code>Interactive Apps</code> and near the bottom, click <code>Code Server</code>.</li>
+<li>In the form on the page that appears, fill out the following:
+<ul>
+<li>“<em>Cluster</em>”: <code>pitzer</code></li>
+<li>“<em>Account</em>” (= OSC Project): <code>PAS2880</code>.</li>
+<li>“<em>Number of hours</em>”: <code>2</code></li>
+<li>“<em>Working Directory</em>”: your personal dir in <code>/fs/ess/PAS2880/users</code> (e.g.&nbsp;<code>/fs/ess/PAS2880/users/jelmer</code>)</li>
+<li>“<em>App Code Server version</em>”: <code>4.8.3</code></li>
+</ul></li>
+<li>Click <code>Launch</code></li>
+<li>Once the blue <em>Connect to VS Code</em> button appears, click that to open VS Code in a new browser tab.</li>
+<li>In VS Code, open a terminal by either:
+<ul>
+<li>Clicking &nbsp; <i class="fa-solid fa-bars" aria-label="bars"></i> &nbsp; =&gt; <code>Terminal</code> =&gt; <code>New Terminal</code></li>
+<li>Using the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd></li>
+</ul></li>
+<li>Check that your are in your dir within <code>/fs/ess/PAS2880/users</code> by typing <code>pwd</code> in the terminal. <em>(If you’re not, that dir may be listed under <code>Recents</code> in the <code>Get Started</code></em> <em>document — if that’s the case, click on that entry.</em> <em>Otherwise, click <code>File</code> =&gt; <code>Open Folder</code> and type/select that dir.)</em></li>
+</ol>
+</details>
+</section>
+<section id="open-a-markdown-file-for-notes" class="level4">
+<h4 class="anchored" data-anchor-id="open-a-markdown-file-for-notes">Open a Markdown file for notes</h4>
+<p>Like before, I recommend that you create and open a Markdown file to keep notes:</p>
+<ol type="1">
+<li>Click <i class="fa fa-bars"></i> =&gt; <code>File</code> =&gt; <code>New File</code>.</li>
+<li>Save the file inside <code>/fs/ess/PAS2880/users/$USER/week04</code>, e.g.&nbsp;as <code>lecture2.md</code> (use a <code>.md</code> extension).</li>
+</ol>
+</section>
+<section id="change-your-working-dir" class="level4">
+<h4 class="anchored" data-anchor-id="change-your-working-dir">Change your working dir</h4>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> week04</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr style="height:1pt; visibility:hidden;">
+</section>
 </section>
 </section>
 <section id="remote-repositories" class="level2" data-number="2">
@@ -425,11 +471,11 @@ Getting set up at OSC
 <p>In order to link your local Git repositories to their online counterparts on GitHub, you need to set up GitHub authentication. There are two options for this (see the box below) but we will use <code>SSH</code> access with an SSH key.</p>
 <ol type="1">
 <li><p>Use the <code>ssh-keygen</code> command to generate a public-private SSH key pair — in the command below, replace <code>your_email@example.com</code> with the email address you used to sign up for a GitHub account:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-keygen</span> <span class="at">-t</span> ed25519 <span class="at">-C</span> <span class="st">"your_email@example.com"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-keygen</span> <span class="at">-t</span> ed25519 <span class="at">-C</span> <span class="st">"your_email@example.com"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>You’ll be asked three questions, and for all three, you can accept the default simply by pressing <kbd>Enter</kbd>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Enter file in which to save the key (&lt;default path&gt;):</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Enter passphrase (empty for no passphrase):</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Enter same passphrase again: </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Enter file in which to save the key (&lt;default path&gt;):</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Enter passphrase (empty for no passphrase):</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Enter same passphrase again: </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Generating public/private ed25519 key pair.
 Enter file in which to save the key (/users/PAS0471/jelmer/.ssh/id_ed25519): 
 Enter passphrase (empty for no passphrase): 
@@ -451,7 +497,7 @@ The key's randomart image is:
 |    o= o..+*   ..|
 +----[SHA256]-----+</code></pre></li>
 <li><p>Now, you have a file <code>~/.ssh/id_ed25519.pub</code>, which is your <strong>public key</strong>. To enable authentication, you will put this public key (which interacts with your private key) on GitHub. Print the public key to your screen using <code>cat</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ~/.ssh/id_ed25519.pub</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ~/.ssh/id_ed25519.pub</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBz4qiqjbNrKPodoGyoF/v7n0GKyvc/vKiW0apaRjba2 your_email@example.com</code></pre></li>
 <li><p>Copy the line that was printed to screen to your clipboard.</p></li>
 <li><p>In your browser, go to <a href="https://github.com" class="uri">https://github.com</a> and log in.</p></li>
@@ -539,11 +585,11 @@ Authentication and GitHub URLs
 </li>
 <li>The <strong>URL</strong> to the GitHub repo (<strong>in SSH format</strong>: click on the <code>HTTPS</code>/<code>SSH</code> button to toggle the URL type).</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># git remote add &lt;remote-nickname&gt; &lt;URL&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add origin git@github.com:<span class="op">&lt;</span>user<span class="op">&gt;</span>/originspecies.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># git remote add &lt;remote-nickname&gt; &lt;URL&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add origin git@github.com:<span class="op">&lt;</span>user<span class="op">&gt;</span>/originspecies.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Second, we upload (“push”) our local repo to remote using <strong><code>git push</code></strong>. When we push a repository for the first time, we need to use the <code>-u</code> option to set up an “<strong>u</strong>pstream” counterpart:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># git push -u &lt;connection&gt; &lt;branch&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># git push -u &lt;connection&gt; &lt;branch&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>You should then get a message like this: type <code>yes</code> and press <kbd>Enter</kbd>.</p>
 <pre class="bash-out-solo"><code>The authenticity of host 'github.com (140.82.114.4)' can't be established.
 ECDSA key fingerprint is SHA256:p2QAMXNIC1TJYWeIOttrVc98/R1BUFWu3/LiyKgUfQM.
@@ -576,10 +622,10 @@ Pushing will be easier from now on
 <li>To &amp; from the <strong>currently active repository <em>“branch”</em></strong> (default: <code>main</code>)<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</li>
 </ul>
 <p>Because we only have one remote connection and one branch, we can from now on simply use the following to push:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 <p>Also, note that you can check your remote connection settings for a repo with <code>git remote -v</code>:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>origin  git@github.com:jelmerp/originspecies.git (fetch)
 origin  git@github.com:jelmerp/originspecies.git (push)</code></pre>
 <hr style="height:1pt; visibility:hidden;">
@@ -731,11 +777,11 @@ When you hand in your final project submissions, you will create an issue simply
 <p>In a single-user workflow with a remote, you commit just like you would without a remote in your day-to-day work, and in addition, <em>push</em> to remote occasionally — let’s run through an example.</p>
 <ul>
 <li><p>Start by creating a <code>README.md</code> file for your repo:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Origin"</span> <span class="op">&gt;</span> README.md</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Repo for book draft on my new **theory**"</span> <span class="op">&gt;&gt;</span> README.md</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Origin"</span> <span class="op">&gt;</span> README.md</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Repo for book draft on my new **theory**"</span> <span class="op">&gt;&gt;</span> README.md</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Add and commit the file:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add README.md</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Added a README file"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add README.md</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Added a README file"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>[main 63ce484] Added a README file
 1 file changed, 2 insertions(+)
 create mode 100644 README.md</code></pre></li>
@@ -746,7 +792,7 @@ Your branch is ahead of 'origin/main' by 1 commit.
 
 nothing to commit, working tree clean</code></pre></li>
 <li><p>But Git will not automatically sync. So now, push to the remote repository:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Counting objects: 4, done.
 Delta compression using up to 40 threads.
 Compressing objects: 100% (3/3), done.

@@ -333,10 +333,11 @@ div.csl-indent {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#before-we-start" id="toc-before-we-start" class="nav-link active" data-scroll-target="#before-we-start"><span class="header-section-number">1</span> Before we start</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a>
   <ul class="collapse">
-  <li><a href="#learning-goals" id="toc-learning-goals" class="nav-link" data-scroll-target="#learning-goals"><span class="header-section-number">1.1</span> Learning goals</a></li>
-  <li><a href="#getting-ready" id="toc-getting-ready" class="nav-link" data-scroll-target="#getting-ready"><span class="header-section-number">1.2</span> Getting ready</a></li>
+  <li><a href="#context-overview" id="toc-context-overview" class="nav-link" data-scroll-target="#context-overview"><span class="header-section-number">1.1</span> Context &amp; overview</a></li>
+  <li><a href="#learning-goals" id="toc-learning-goals" class="nav-link" data-scroll-target="#learning-goals"><span class="header-section-number">1.2</span> Learning goals</a></li>
+  <li><a href="#getting-ready" id="toc-getting-ready" class="nav-link" data-scroll-target="#getting-ready"><span class="header-section-number">1.3</span> Getting ready</a></li>
   </ul></li>
   <li><a href="#viewing-the-contents-of-text-files" id="toc-viewing-the-contents-of-text-files" class="nav-link" data-scroll-target="#viewing-the-contents-of-text-files"><span class="header-section-number">2</span> Viewing the contents of text files</a>
   <ul class="collapse">
@@ -367,7 +368,7 @@ div.csl-indent {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Working with files in the Unix shell II:<br>Viewing, summarizing and manipulating files</h1>
-<p class="subtitle lead">Week 3 – part II</p>
+<p class="subtitle lead">Week 3 – lecture II</p>
 </div>
 
 
@@ -407,21 +408,33 @@ div.csl-indent {
 
 <hr>
 <p><br></p>
-<section id="before-we-start" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="before-we-start"><span class="header-section-number">1</span> Before we start</h2>
-<section id="learning-goals" class="level3" data-number="1.1">
-<h3 data-number="1.1" class="anchored" data-anchor-id="learning-goals"><span class="header-section-number">1.1</span> Learning goals</h3>
-<p>In this session, you will learn to use the Unix shell to:</p>
+<section id="introduction" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
+<section id="context-overview" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="context-overview"><span class="header-section-number">1.1</span> Context &amp; overview</h3>
+<p>The Unix shell is great for many other tasks that the file browser-like ones you learned about in the previous lecture. One of those is performing basic viewing, querying, and editing operations on text files.</p>
+<p>Recall from the <a href="../week02/w2a_project-org.html#use-plain-text-files">Project File Organization lecture</a> that you’ll work almost exclusively with so-called “<strong>plain-text</strong>” files in this course, such as:</p>
+<ul>
+<li>Omics file formats such as FASTA, FASTQ, and GTF</li>
+<li>Spreadsheet-like/tabular files stored as TSV/CSV</li>
+<li>Scripts and code notebooks</li>
+<li>Documentation files such as Markdown</li>
+</ul>
+<p>The commands we’ll discuss here can be used with plain-text files but not with “binary” formats like Excel or Word files.</p>
+</section>
+<section id="learning-goals" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="learning-goals"><span class="header-section-number">1.2</span> Learning goals</h3>
+<p>In this lecture, you will learn to use the Unix shell to:</p>
 <ul>
 <li>View the contents of text files in various ways</li>
-<li>Search within, manipulate, and extract information from text files</li>
+<li>Search within, extract information from, and manipulate text files</li>
 </ul>
 </section>
-<section id="getting-ready" class="level3" data-number="1.2">
-<h3 data-number="1.2" class="anchored" data-anchor-id="getting-ready"><span class="header-section-number">1.2</span> Getting ready</h3>
+<section id="getting-ready" class="level3" data-number="1.3">
+<h3 data-number="1.3" class="anchored" data-anchor-id="getting-ready"><span class="header-section-number">1.3</span> Getting ready</h3>
 <section id="start-a-vs-code-session" class="level4">
 <h4 class="anchored" data-anchor-id="start-a-vs-code-session">Start a VS Code session</h4>
-<p>Start a VS Code session like we’ve done before.</p>
+<p>Start a VS Code session like you’ve done before.</p>
 <details>
 <summary>
 <em>Click here to see the instructions</em>
@@ -431,7 +444,7 @@ div.csl-indent {
 <li>In the blue top bar, select <code>Interactive Apps</code> and near the bottom, click <code>Code Server</code>.</li>
 <li>In the form on the page that appears, fill out the following:
 <ul>
-<li>“<em>Cluster</em>”: <code>pitzer-rhel9</code></li>
+<li>“<em>Cluster</em>”: <code>pitzer</code></li>
 <li>“<em>Account</em>” (= OSC Project): <code>PAS2880</code>.</li>
 <li>“<em>Number of hours</em>”: <code>2</code></li>
 <li>“<em>Working Directory</em>”: your personal dir in <code>/fs/ess/PAS2880/users</code> (e.g.&nbsp;<code>/fs/ess/PAS2880/users/jelmer</code>)</li>
@@ -450,10 +463,10 @@ div.csl-indent {
 </section>
 <section id="open-a-markdown-file-for-notes" class="level4">
 <h4 class="anchored" data-anchor-id="open-a-markdown-file-for-notes">Open a Markdown file for notes</h4>
-<p>Like before, I also recommend that you create and open a Markdown file to keep notes:</p>
+<p>Like before, I recommend that you create and open a Markdown file to keep notes:</p>
 <ol type="1">
 <li>Click <i class="fa fa-bars"></i> =&gt; <code>File</code> =&gt; <code>New File</code>.</li>
-<li>Save the file (e.g.&nbsp;<kbd>Ctrl/⌘</kbd>+<kbd>S</kbd>) inside the <code>week03</code> dir within <code>/fs/ess/PAS2880/users/$USER</code>, e.g.&nbsp;as <code>session2.md</code> (make sure to use a <code>.md</code> extension).</li>
+<li>Save the file inside <code>/fs/ess/PAS2880/users/$USER/week03</code>, e.g.&nbsp;as <code>lecture2.md</code> (use a <code>.md</code> extension).</li>
 </ol>
 </section>
 <section id="change-your-working-dir" class="level4">
@@ -465,8 +478,7 @@ div.csl-indent {
 </section>
 <section id="viewing-the-contents-of-text-files" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="viewing-the-contents-of-text-files"><span class="header-section-number">2</span> Viewing the contents of text files</h2>
-<p>Recall from the <a href="../week02/w2a_project-org.html#use-plain-text-files">Project Organization session</a> that we’ll be working almost exclusively with so-called “<strong>plain-text</strong>” files in this course. Many omics file formats are in plain text, we will code in plain text files, and for reproducibility purposes, we will also document our research in plain text (Markdown) files.</p>
-<p>The commands we’ll discuss here work with plain-text files but not with “binary” formats like Excel or Word files.</p>
+<p>Several commands exist to view all or part of one or more text files, and we’ll discuss the most common ones below.</p>
 <section id="cat" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="cat"><span class="header-section-number">2.1</span> <code>cat</code></h3>
 <p>The <strong><code>cat</code></strong> command will print the entire contents of one or more files to screen:</p>
@@ -1064,7 +1076,7 @@ NC_068937.1   Gnomon  transcript  2046    110808  .       +       .       gene_i
 NC_068937.1   Gnomon  exon        2046    2531    .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "1"; 
 NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "2"; </code></pre>
 <p>Some details on what’s in each column:</p>
-<table class="caption-top table">
+<table class="table-striped table-hover caption-top table">
 <colgroup>
 <col style="width: 11%">
 <col style="width: 11%">

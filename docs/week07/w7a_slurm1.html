@@ -345,7 +345,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Slurm batch jobs at OSC</h1>
-<p class="subtitle lead">Week 7 – part I</p>
+<p class="subtitle lead">Week 7 – Lecture I</p>
 </div>
 
 
@@ -358,7 +358,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   <div class="quarto-title-meta-contents">
         <p class="affiliation">
-            <a href="https://mcic.osu.edu">
+            <a href="https://mcic.osu.edu/bioinformatics">
             CFAES Bioinformatics Core, Ohio State University
             </a>
           </p>
@@ -720,7 +720,7 @@ Click for the solutions
 </ul>
 <p>In the output, after a line with the date and time, and a header line, you should see information about a single compute job, as shown above: this is the Interactive App job that runs VS Code. That’s not a “batch” job, but it <em>is</em> a compute job, and all compute jobs are listed.</p>
 <p>The following pieces of information about each job are listed:</p>
-<table class="caption-top table">
+<table class="table-striped table-hover caption-top table">
 <colgroup>
 <col style="width: 20%">
 <col style="width: 80%">
@@ -993,7 +993,7 @@ What about nodes and tasks? <em>(Click to expand)</em>
 <li><p>For jobs with multiple processes (tasks), you can use <code>--ntasks=n</code> or <code>--ntasks-per-node=n</code> — this is also quite rare! However, note in practice, specifying the number of tasks <code>n</code> with one of these options is equivalent to using <code>--cpus-per-task=n</code>, in the sense that both ask for <code>n</code> cores that can subsequently be used by a program in your script. Therefore, some people use <code>tasks</code> as opposed to <code>cpus</code> for multi-threading, and you may run across this in the OSC documentation too. Yes, this is confusing!</p></li>
 </ul>
 <p>Here is an overview of the options related to cores, tasks, and nodes:</p>
-<table class="caption-top table">
+<table class="table-striped table-hover caption-top table">
 <colgroup>
 <col style="width: 40%">
 <col style="width: 13%">
@@ -1158,12 +1158,12 @@ Get warned when your job is close to its time limit <em>(Click to expand)</em>
 <section id="table-with-sbatch-options" class="level3" data-number="4.6">
 <h3 data-number="4.6" class="anchored" data-anchor-id="table-with-sbatch-options"><span class="header-section-number">4.6</span> Table with <code>sbatch</code> options</h3>
 <p>Here are the main options we discussed above:</p>
-<table class="caption-top table">
+<table class="table-striped table-hover caption-top table">
 <colgroup>
-<col style="width: 35%">
-<col style="width: 15%">
-<col style="width: 30%">
-<col style="width: 18%">
+<col style="width: 28%">
+<col style="width: 16%">
+<col style="width: 33%">
+<col style="width: 20%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1220,7 +1220,7 @@ Get warned when your job is close to its time limit <em>(Click to expand)</em>
 </table>
 <hr style="height:1pt; visibility:hidden;">
 <p>And some additional ones:</p>
-<table class="caption-top table">
+<table class="table-striped table-hover caption-top table">
 <colgroup>
 <col style="width: 47%">
 <col style="width: 52%">
@@ -1228,12 +1228,12 @@ Get warned when your job is close to its time limit <em>(Click to expand)</em>
 <thead>
 <tr class="header">
 <th>Resource/use</th>
-<th>long option</th>
+<th>long option example</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Job name (displayed in the queue)</td>
+<td>Job name (will e.g.&nbsp;be displayed in <code>squeue</code> output)</td>
 <td><code>--job-name=fastqc</code></td>
 </tr>
 <tr class="even">
@@ -1254,10 +1254,10 @@ Get warned when your job is close to its time limit <em>(Click to expand)</em>
 </tr>
 <tr class="even">
 <td>Nr of tasks per node</td>
-<td><code>--ntasks-per-node</code></td>
+<td><code>--ntasks-per-node=1</code></td>
 </tr>
 <tr class="odd">
-<td>Separate error output (<em>stderr</em>)</td>
+<td>Put error output (<em>stderr</em>) from into a separate file. When using this option, only standard (non-error, <em>stdout</em>) output will now be put into the file specified with <code>--output</code>.</td>
 <td><code>--error=slurm-fastqc-%j.err</code></td>
 </tr>
 </tbody>

@@ -1,6 +1,6 @@
 ---
 title: "Working with files in the Unix shell I:<br>The shell as a file browser"
-subtitle: "Week 3 -- part I"
+subtitle: "Week 3 -- lecture I"
 pagetitle: "PRACS25: Shell files I"
 date: 2025-09-04
 author:
@@ -34,30 +34,50 @@ editor_options:
 
 <br>
 
-## Before we start
+## Introduction
 
-### Learning Goals
+### Week overview & learning goals
 
 This week, we continue with basic Unix shell commands,
 focusing on commands that work with files and dirs.
 Specifically, you will learn to use the Unix shell to:
 
-- Create, copy, move, rename and delete directories and files (**this session**)
-- View the contents of text files in various ways (next session)
-- Search within, manipulate, and extract information from text files (next session)
+- Create, copy, move, rename and delete directories and files (**this lecture**)
+- View the contents of text files in various ways ([next lecture](./w3b_shellfiles.qmd))
+- Search within, manipulate, and extract information from text files ([next lecture](./w3b_shellfiles.qmd))
+
+### Lecture context & overview
+
+File browser GUIs
+(such as "Finder" on Mac, "File Explorer" on Windows,
+and the interface we saw in OSC OnDemand's File menu)
+can perform operations like listing, creating, moving, renaming, copying and
+removing files and folders.
+Here, you will learn to use Unix shell commands that can perform these actions.
+
+**Why do I need to learn to do these relatively trivial tasks in the shell?**
+
+- This will help you to get more comfortable with working in the shell.
+- These are good commands to learn how the shell works more generally,
+  and how commands are structured.
+- You will eventually use the shell for data processing,
+  and it is more efficient to stick with the shell for file browser operations,
+  rather than going back and forth all the time.
+- You may run into situations where a GUI file browser is not at all available.
+- ***With practice, using the shell is faster and more powerful than a GUI file browser.***
 
 ### Getting ready
 
 #### Start a VS Code session
 
-Start a VS Code session like we've done before.
+Start a VS Code session like you've done before.
 
 <details><summary>_Click here to see the instructions_</summary>
 
 1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>.
 2. In the blue top bar, select `Interactive Apps` and near the bottom, click `Code Server`.
 3. In the form on the page that appears, fill out the following:
-   - "_Cluster_": `pitzer-rhel9`
+   - "_Cluster_": `pitzer`
    - "_Account_" (= OSC Project): `PAS2880`.
    - "_Number of hours_": `2`
    - "_Working Directory_": your personal dir in `/fs/ess/PAS2880/users`
@@ -79,13 +99,12 @@ Start a VS Code session like we've done before.
 
 #### Open a Markdown file for notes
 
-Like before, I also recommend that you create and open a Markdown file to keep
+Like before, I recommend that you create and open a Markdown file to keep
 notes on what we're doing in this session:
 
-1. Click <i class="fa fa-bars"></i> => `File` => `New File`.
-2. Save the file (e.g. <kbd>Ctrl/⌘</kbd>+<kbd>S</kbd>) inside the
-   `week03` dir within `/fs/ess/PAS2880/users/$USER`,
-   e.g. as `session1.md` (make sure to use a `.md` extension).
+1. Click <i class="fa fa-bars"></i> => `File` => `New File`
+2. Save the file inside `/fs/ess/PAS2880/users/$USER/week03`,
+   e.g. as `lecture1.md` (use a `.md` extension).
 
 #### Add a VS Code keyboard shortcut
 
@@ -94,42 +113,20 @@ That way, you don't have to copy-and-paste code into the terminal when you've
 typed it in the editor^[
 This is the same type of behavior that you may be familiar with from RStudio]:
 
-1. Click <i class="fa fa-cog"></i> (bottom-left) => `Keyboard Shortcuts`.
+1. Click <i class="fa fa-cog"></i> (bottom-left) => `Keyboard Shortcuts`
 2. Enter "Run Selected Text" in the search box,
    and the option in question should pop up:
-   `Terminal: Run Selected Text in Active Terminal`.
+   `Terminal: Run Selected Text in Active Terminal`
 3. Click on that, then add the shortcut <kbd>Ctrl</kbd>+<kbd>Enter</kbd>^[
    Don't worry about the warning that other keybindings exist for this shortcut.].
 
 ::: callout-tip
-### Line selection in VS Code
+### Automatic whole-line selection in VS Code
 In VS Code's editor pane,
 the _entire line that your cursor is on is selected by default_.
-As such, you don't need to select the entire line yourself:
-the keyboard shortcut will send the line that your cursor is in to the terminal.
+As such, you don't need to manually select the entire line when wanting to send
+it to the terminal (or when cutting/copying!).
 :::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-## Introduction
-
-File browser GUIs
-(such as "Finder" on Mac, "File Explorer" on Windows,
-and the interface we saw in OSC OnDemand's File menu)
-can perform operations like listing, creating, moving, renaming, copying and
-removing files and folders.
-Here, we will learn to use Unix shell commands that can perform these actions.
-
-#### Why do I need to learn to do these relatively trivial tasks in the shell?
-
-- This will help you to get more comfortable with working in the shell.
-- These are good commands to learn how the shell works more generally,
-  and how commands are structured.
-- You will eventually use the shell for data processing,
-  and it is more efficient to stick with the shell for file browser operations,
-  rather than going back and forth all the time.
-- You may run into situations where a GUI file browser is not at all available.
-- **With practice, using the shell is faster and more powerful than a GUI file browser.**
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -912,6 +909,8 @@ In summary:
 | `*fastq`       | [End with]{.underline} ".fastq"
 | `*_R1*`        | [Contain]{.underline} "\_R1"
 | `*`            | _(matches all files in the working dir)_^[Except so-called hidden files.]
+
+: {.striped .hover}
 
 <hr style="height:1pt; visibility:hidden;" />
 
