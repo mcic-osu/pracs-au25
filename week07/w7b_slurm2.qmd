@@ -1,6 +1,6 @@
 ---
-title: "Workflows with batch jobs"
-subtitle: "Week 7 - Lecture II"
+title: "Batch jobs in practice and in larger workflows"
+subtitle: "Week 7 -- Lecture II"
 pagetitle: "PRACS25: Batch jobs"
 date: 2025-10-08
 author:
@@ -51,14 +51,24 @@ TBA
 
 ## Batch job examples with TrimGalore
 
-In the [week 6 assignment](../week06/w6_ga.qmd), you wrote a script to run TrimGalore,
+In the [week 6 assignment](../week06/w6_ga.qmd),
+you wrote a script to run TrimGalore,
 and eventually ran that script for all samples using a loop.
-However, this took a while, and considering that these FASTQ files are ~20x smaller
-than the original (and than typical) FASTQ files,
-it would take many hours for that loop to finish if we don't use batch jobs.
+However, this took a while to run -- and consider that these FASTQ files were
+subsamples and ~20x smaller than the original (and than typical) FASTQ files.
+As such, it would take many hours for that loop to finish on full-size files.
 
-Let's practice running that script using batch jobs.
-First, let's get a copy of that script:
+Given that we have access to OSC,
+the best way to speed things up in such cases is by submitting a batch job for
+each sample.
+In most cases^[But keep in mind that batch jobs can be queued/waiting for a while,
+especially if you submit large amounts of jobs.],
+these jobs will then all run simultaneously (in parallel).
+
+Let's practice running the TrimGalore script using batch jobs.
+We'll start with submitting one for a single sample,
+and then we'll loop over all samples.
+First, get a copy of that script:
 
 ```bash
 cp ../week06/assignment/scripts/trimgalore.sh scripts/
@@ -155,26 +165,43 @@ But don't forget to look at the output files:
   In the case of TrimGalore, the main output are processed (trimmed) FASTQ files.
   Therefore, always check the output dir for the presence of output files
   
-  
 ```bash
 ls
 ```
 ```bash-out
 slurm-trimgalore-TBA.out
 ```
+
 ```bash
 tail slurm-trimgalore-TBA.out
 ```
 ```bash-out
 TBA
 ```
+
 ```bash
-less slurm-trimgalore-TBA.out
+less slurm-trimgalore*
+```
+
+```bash
+ls -lh results/trimgalore
+```
+```bash-out
+TBA
+```
+
+Because this was a test-run and we'll now run the loop for each sample,
+we'll remove all outputs:
+
+```bash
+rm -r results/trimgalore slurm-trimgalore*
 ```
 
 <hr style="height:1pt; visibility:hidden;" />
 
 #### Submitting a job for each sample
+
+Now, loop over all R1 files to submit a job for each sample: 
 
 ```bash
 for R1 in garrigos-data/fastq/*_R1.fastq.gz; do
@@ -188,6 +215,41 @@ submitted batch job TBA
 submitted batch job TBA
 submitted batch job TBA
 # [...output truncated...]
+```
+
+As you saw, all these jobs were submitted in very quick succession, ...
+
+Check the queue:
+
+```bash
+squeue -u $USER
+```
+
+Once all jobs have finished (are no longer in the queue), let's:
+
+- Take a close look at one Slurm log file:
+
+  ```bash
+  less slurm-trimgalore-*
+  ```
+
+- Check the last few lines of all of them:
+
+  ```bash
+  tail slurm-trimgalore-*
+  ```
+
+If everything looks good, and we consider the jobs to have succesfully finished,
+all that is left is to clean up the Slurm log files.
+In this case, it makes sense to **keep these files**,
+as they will contain information ... TBA.
+
+But we do want to move them out of the working dir.
+It often makes sense to store them in a subdir of the program's outdir, e.g.:
+
+```bash
+mkdir results/trimgalore/logs
+mv slurm-trimgalore-* logs/
 ```
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -436,7 +498,6 @@ How could you implement all of that?
   [NextFlow](https://www.nextflow.io/)
   can take care of all these details and more for you ---
   we will talk about Nextflow later in this course!
-
 
 ::: {.callout-warning collapse="true"}
 #### How about writing multi-step scripts? 
