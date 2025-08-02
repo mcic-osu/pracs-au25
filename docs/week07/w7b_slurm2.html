@@ -56,27 +56,7 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -97,9 +77,6 @@ div.csl-indent {
 <link href="../site_libs/bootstrap/bootstrap-572447b12a4ba05daececfcf0fd287fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
-<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
-<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
-<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -343,16 +320,6 @@ div.csl-indent {
   <ul class="collapse">
   <li><a href="#recap-making-sure-your-jobs-ran-successfully" id="toc-recap-making-sure-your-jobs-ran-successfully" class="nav-link" data-scroll-target="#recap-making-sure-your-jobs-ran-successfully"><span class="header-section-number">2.1</span> Recap: Making sure your jobs ran successfully</a></li>
   </ul></li>
-  <li><a href="#protocol-markdown-files" id="toc-protocol-markdown-files" class="nav-link" data-scroll-target="#protocol-markdown-files"><span class="header-section-number">3</span> “Protocol” Markdown files</a>
-  <ul class="collapse">
-  <li><a href="#an-rna-seq-example" id="toc-an-rna-seq-example" class="nav-link" data-scroll-target="#an-rna-seq-example"><span class="header-section-number">3.1</span> An RNA-Seq example</a></li>
-  <li><a href="#the-rationale-behind-organizing-and-running-scripts-this-way" id="toc-the-rationale-behind-organizing-and-running-scripts-this-way" class="nav-link" data-scroll-target="#the-rationale-behind-organizing-and-running-scripts-this-way"><span class="header-section-number">3.2</span> The rationale behind organizing and running scripts this way</a></li>
-  </ul></li>
-  <li><a href="#pipelines" id="toc-pipelines" class="nav-link" data-scroll-target="#pipelines"><span class="header-section-number">4</span> Pipelines</a>
-  <ul class="collapse">
-  <li><a href="#why-the-above-markdown-file-is-not-a-true-pipeline" id="toc-why-the-above-markdown-file-is-not-a-true-pipeline" class="nav-link" data-scroll-target="#why-the-above-markdown-file-is-not-a-true-pipeline"><span class="header-section-number">4.1</span> Why the above Markdown file is not a true pipeline</a></li>
-  <li><a href="#what-can-we-do-then" id="toc-what-can-we-do-then" class="nav-link" data-scroll-target="#what-can-we-do-then"><span class="header-section-number">4.2</span> What can we do, then?</a></li>
-  </ul></li>
   </ul>
 <div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w7_overview.html"><i class="bi bi-book"></i>Week 7 overview</a></li><li><a href="w7_exercises.html"><i class="bi bi-pencil"></i>Week 7 exercises</a></li><li><a href="w7a_slurm1.html"><i class="bi bi-bookmarks"></i>w7-1: Batch jobs I</a></li><li><a href="../bonus/slurm.html"><i class="bi bi-book"></i>Bonus: Advanced batch jobs</a></li></ul></div></nav>
     </div>
@@ -361,7 +328,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Batch jobs in practice and in larger workflows</h1>
+<h1 class="title">Batch jobs in practice</h1>
 <p class="subtitle lead">Week 7 – Lecture II</p>
 </div>
 
@@ -566,181 +533,16 @@ TBA Refer to <code>scontrol</code> etc for detailed stats
 
 </div>
 </div>
-<p><br></p>
-</section>
-</section>
-<section id="protocol-markdown-files" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="protocol-markdown-files"><span class="header-section-number">3</span> “Protocol” Markdown files</h2>
-<p>In the past few weeks of this course, you’ve created Markdown files with the commands you used to run your scripts. These files were useful to type and store that code: alternatively, you could directly type this in the terminal, but this would be harder to get right (e.g., with loops) and most importantly would reduce reproducibility, since you wouldn’t have a good record of what you did.</p>
-<p>However, these files have so far been very short, and may not have given you much of a picture of how this would look in the context of a research project that would include running a whole series of steps with different bioinformatics tools (and perhaps custom scripts). For <strong>larger projects</strong>, you will probably want to create at least two separate Markdown files that contain the code you used to run scripts and other commands:</p>
-<ul>
-<li><p>A “lab notebook”-style file that has chronological entries with everything of note that you did, including mishaps, dead ends, and things that were redone differently later on.</p></li>
-<li><p>A “protocol” (or “recipe” / “workflow”)-style file that has the final code in the order needed to run and rerun your entire project’s computational work.</p></li>
-</ul>
-<section id="an-rna-seq-example" class="level3" data-number="3.1">
-<h3 data-number="3.1" class="anchored" data-anchor-id="an-rna-seq-example"><span class="header-section-number">3.1</span> An RNA-Seq example</h3>
-<p>While thinking about ways to organize and run your analyses, let’s have an example in mind with a simple RNA-Seq analysis that:</p>
-<ul>
-<li>Trims reads in FASTQ files <em>(independently for each sample)</em></li>
-<li>Maps (aligns) reads to a reference genome <em>(independently for each sample)</em></li>
-<li>Creates a gene expression count table from the alignments <em>(for all samples together)</em></li>
-</ul>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="../img/schem-workflow.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="A simple 3-step RNA-Seq analysis, with arrows showing the connections between the steps: the output of one step is the input of the next. The example only has 3 samples, and the first two steps are executed separately for each sample, while the last step is executed once for all samples."><img src="../img/schem-workflow.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="A diagram of the steps in a simple RNA-Seq analysis."></a></p>
-</figure>
-</div>
-<figcaption>A simple 3-step RNA-Seq analysis, with arrows showing the connections<br>between the steps: the output of one step is the input of the next.<br>The example only has 3 samples, and the first two steps are executed separately<br>for each sample, while the last step is executed once for all samples.</figcaption>
-</figure>
-</div>
-<p>Here is an example “protocol-style” Markdown file for this RNA-seq analysis:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">## Set up: Define the input files</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># [hypothetical example - don't run any of the code in this document]</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_dir</span><span class="op">=</span>data/fastq</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="va">ref_assembly</span><span class="op">=</span>data/ref/assembly.fna</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="va">ref_annotation</span><span class="op">=</span>data/ref/annotation.gtf</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 1: Trim the reads</span></span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>The <span class="in">`map.sh`</span> script takes 3 arguments -- R1 FASTQ, ref. assembly, and output dir:</span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> R1 <span class="kw">in</span> <span class="st">"</span><span class="va">$fastq_dir</span><span class="st">"</span>/<span class="pp">*</span>_R1.fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># (The trim.sh script takes 2 arguments: R1 FASTQ and output dir)</span></span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    <span class="ex">sbatch</span> scripts/trim.sh <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> results/trim</span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 2: Align (map) the reads to a reference genome assembly</span></span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>The <span class="in">`map.sh`</span> script takes 3 arguments -- R1 FASTQ, ref. assembly, and output dir:</span>
-<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> R1 <span class="kw">in</span> results/trim/<span class="pp">*</span>_R1.fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>    <span class="ex">sbatch</span> scripts/map.sh <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> <span class="st">"</span><span class="va">$ref_assembly</span><span class="st">"</span> results/map</span>
-<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 3: Count alignments per sample per gene using the annotation:</span></span>
-<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>The <span class="in">`count.sh`</span> script takes 3 arguments -- input dir, ref. annotation, and output dir:</span>
-<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/count.sh results/map <span class="st">"</span><span class="va">$ref_annotation</span><span class="st">"</span> results/count_table.txt</span>
-<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="the-rationale-behind-organizing-and-running-scripts-this-way" class="level3" data-number="3.2">
-<h3 data-number="3.2" class="anchored" data-anchor-id="the-rationale-behind-organizing-and-running-scripts-this-way"><span class="header-section-number">3.2</span> The rationale behind organizing and running scripts this way</h3>
-<p>The protocol above runs a primary shell script for each of the three steps (<code>trim.sh</code>, <code>map.sh</code>, and<code>count.sh</code>), and each of these <em>takes arguments</em> and runs a bioinformatics tool to perform that step (for example, TrimGalore for trimming).</p>
-<p>Here are some advantages of using such a script structure with flexible (i.e., argument-accepting) scripts, and an overarching protocol Markdown file to describe the entire workflow:</p>
-<ul>
-<li>Rerunning everything, including with a modified sample set, or tool settings, is relatively straightforward — both for yourself and others, improving reproducibility.</li>
-<li>Re-applying the same set of analyses in a different project is straightforward.</li>
-<li>The Markdown file documents the steps taken.</li>
-<li>It (more or less) ensures you are including all necessary steps.</li>
-</ul>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Why use variables
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Above, we saw that variables are useful to be able to <strong>pass arguments to a script</strong>, so you can easily rerun a script with a different input file / settings / etc. Let’s take a step back and think about variables and their uses once again.</p>
-<blockquote class="blockquote">
-<p><em>“Processing pipelines having numerous settings that should be stored in variables (e.g., which directories to store results in, parameter values for commands, input files, etc.).<em><br>
-</em>Storing these settings in a variable defined at the top of the file makes adjusting settings and rerunning your pipelines much easier.<em><br>
-</em>Rather than having to change numerous hardcoded values in your scripts, using variables to store settings means you only have to change one value—the value you’ve assigned to the variable.”</em></p>
-</blockquote>
-<p><span class="citation" data-cites="buffalo2015">Buffalo (<a href="#ref-buffalo2015" role="doc-biblioref">2015</a>)</span> - Chapter 12</p>
-<p>In brief, recall that variables are especially useful for things that you refer to repeatedly and/or are subject to change.</p>
-</div>
-</div>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-</section>
-<section id="pipelines" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="pipelines"><span class="header-section-number">4</span> Pipelines</h2>
-<p>What exactly do we mean by a “pipeline”? We may informally refer to any consecutive series of analysis steps as a pipeline. The above Markdown document, in particular, can informally be called a pipeline. But here, I am using pipeline in a stricter sense to mean a series of steps that <strong>can be executed from start to finish with a single command</strong>.</p>
-<p>An advantage of a true pipeline is increased automation, as well as “supercharging” the above-mentioned advantages of the discussed script structure. For example, a pipeline <em>truly</em> ensures that you are including all necessary steps.</p>
-<section id="why-the-above-markdown-file-is-not-a-true-pipeline" class="level3" data-number="4.1">
-<h3 data-number="4.1" class="anchored" data-anchor-id="why-the-above-markdown-file-is-not-a-true-pipeline"><span class="header-section-number">4.1</span> Why the above Markdown file is not a true pipeline</h3>
-<p>The above Markdown file is intentionally set up to run the bits of code block-by-block rather than all at once.</p>
-<p>This is because you’re not able to run all the code at once in its current form. There are multiple batch job steps where the input of a later step uses the output of an earlier step. Therefore, if you run all code at once, all batch jobs will be submitted at the same time, and later steps will start running before the earlier step has finished.</p>
-<p>For example, consider the following two consecutive steps, in which the second step uses the output of the first step:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This script creates a genome "index" for STAR, that will be used in the next step</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ('my_genome.fa' = input genome FASTA, 'results/star_index' = output index dir)</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/star_index.sh my_genome.fa results/star_index</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># This script aligns a FASTQ file to the genome index created in the previous step</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ('results/star_index' = input index dir, 'sampleA.fastq.gz' = input FASTQ file,</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 'results/star_align' = output dir)</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/star_align.sh results/star_index sampleA.fastq.gz results/star_align </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If these two lines were included in your runner script, and you would run that script in its entirety all at once, the script in the second step would be submitted just a split-second after the first one (when using <code>sbatch</code>, you get your prompt back immediately – there is no waiting). As such, it would fail because of the missing output from the first step.</p>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="what-can-we-do-then" class="level3" data-number="4.2">
-<h3 data-number="4.2" class="anchored" data-anchor-id="what-can-we-do-then"><span class="header-section-number">4.2</span> What can we do, then?</h3>
-<p>Having to wait for each step to finish before submitting the next step is a bit tedious. How could you automate this and create a true pipeline?</p>
-<p>Foremost, you’d need to overcome the problem of simultaneous batch job submission. But a decent pipeline <strong>detect failure and then stop</strong>, and to <strong>rerun parts of the pipeline</strong> flexibly. The latter may be necessary after, e.g.:</p>
-<ul>
-<li>Some scripts failed for all or some samples</li>
-<li>You added or removed a sample</li>
-<li>You had to modify a script or settings somewhere halfway the pipeline.</li>
-</ul>
-<p>How could you implement all of that?</p>
-<ul>
-<li><p><strong>Push the limits of the Bash and Slurm tool set (not recommended)</strong><br>
-Use <code>if</code> statements, additional script arguments, and Slurm “job dependencies” (see the <a href="../bonus/slurm.html">optional reading page</a>) — but this is hard to manage for more complex workflows.</p></li>
-<li><p><strong>Use a formal workflow management system (recommended)</strong><br>
-Workflow management systems like <a href="https://snakemake.readthedocs.io/">Snakemake</a> or <a href="https://www.nextflow.io/">NextFlow</a> can take care of all these details and more for you — we will talk about Nextflow later in this course!</p></li>
-</ul>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-How about writing multi-step scripts?
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Once you get the hang of writing shell scripts, it may also seem appealing to string a series of programs/steps together in a single script.</p>
-<p>At the extreme, you could solve the simultaneous batch job problem by putting all steps in a single script, but this would make for a very inefficient pipeline, since you’d now be running steps that can be parallelized across samples consecutively<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
-<p>A bit more reasonably, you could add multiple consecutive per-sample steps in a single script. E.g. a script that would trim and then align reads for a single sample. This would reduce the number of times you have to submit scripts and wait for the results before moving on. In practice, though, this will often end up leading to more difficulties than convenience.</p>
-<p>All in all, It is a good idea to keep your shell scripts simple <em>in the sense that they should generally <strong>just run one program</strong></em>, and not a sequence of programs.</p>
-</div>
-</div>
-</div>
-<p><br></p>
-
 
 
 </section>
 </section>
 
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-buffalo2015" class="csl-entry" role="listitem">
-Buffalo, Vince. 2015. <em>Bioinformatics data skills: [reproducible and robust research with open source tools]</em>. First edition. Beijing: O’Reilly.
-</div>
-</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
 <li id="fn1"><p>But keep in mind that batch jobs can be queued/waiting for a while, especially if you submit large amounts of jobs.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p> Unless you’d try to hack your way around that, but at that point you run into the same problems as mentioned above under “Push the limits of…”.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1181,38 +983,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
-(function() {
-  let previousOnload = window.onload;
-  window.onload = () => {
-    if (previousOnload) {
-      previousOnload();
-    }
-    lightboxQuarto.on('slide_before_load', (data) => {
-      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-      const href = trigger.getAttribute('href');
-      if (href !== null) {
-        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
-        if (imgEl !== null) {
-          const srcAttr = imgEl.getAttribute("src");
-          if (srcAttr && srcAttr.startsWith("data:")) {
-            slideConfig.href = srcAttr;
-          }
-        }
-      } 
-    });
-  
-    lightboxQuarto.on('slide_after_load', (data) => {
-      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(slideNode);
-      }
-    });
-  
-  };
-  
-})();
-          </script>
 
 
 

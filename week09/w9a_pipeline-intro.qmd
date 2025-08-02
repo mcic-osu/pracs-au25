@@ -1,6 +1,6 @@
 ---
-title: "Workflow management systems"
-subtitle: "Week 9 - Lecture I"
+title: "Workflow management"
+subtitle: "Week 9 -- Lecture I"
 pagetitle: "PRACS25: Pipelines"
 date: 2025-10-21
 author:
@@ -22,6 +22,226 @@ bibliography: ../references.bib
 ## Introduction
 
 TBA
+
+<hr style="height:1pt; visibility:hidden;" />
+
+
+## Markdown files with your analysis workflow
+
+In the past few weeks of this course,
+you've created Markdown files with the commands you used to run your scripts.
+Alternatively, you can directly type such commands in the terminal,
+but this is harder to do without making mistakes
+(especially with more complex constructs like loops)
+and reduces reproducibility,
+since you don't keep a good record of what you did.
+
+So far, these Markdown files have been short,
+and may not have given you a good picture of what this would look like in the context
+of a larger research project,
+where you'd run a whole series of steps with different bioinformatics tools and perhaps custom scripts.
+As [discussed in week 2](../week02/w2a_project-org.html#types-of-documentation-files-for-larger-projects),
+for larger projects, it is a good idea to create at least two separate Markdown files 
+for the code you used to run scripts and other commands:
+
+- A "lab notebook"-style file that has **chronological entries** and is comprehensive:
+  this should cover everything of note that you did, including mishaps,
+  dead ends, and things that were redone differently later on.
+
+- A "protocol" (or "recipe" / "workflow")-style file that has the
+  **final code in order of execution** needed to run and rerun your entire project's
+  computational work.
+
+### A longer protocol file example
+
+For this example, let's have in mind a simple RNA-Seq analysis for 3 samples that:
+
+- Trims reads in FASTQ files _(independently for each sample)_
+- Maps (aligns) reads to a reference genome _(independently for each sample)_
+- Creates a gene expression count table from the alignments _(for all samples together)_
+
+![A simple 3-step RNA-Seq analysis, with arrows showing the connections<br>between the steps: the output of one step is the input of the next.<br>The example only has 3 samples, and the first two steps are executed separately<br>for each sample, while the last step is executed once for all samples.](../img/schem-workflow.svg){fig-align="center" width="70%" fig-alt="A diagram of the steps in a simple RNA-Seq analysis." .lightbox}
+
+<hr style="height:1pt; visibility:hidden;" />
+
+Here is an example "protocol-style" Markdown file for this RNA-seq analysis:
+
+````markdown
+<!--- [Hypothetical example - don't run any of the code in this document] -->
+
+# RNA-Seq analysis of _Culex pipiens_
+
+- Author: Jelmer Poelstra, MCIC, OSU (poelstra.1@osu.edu)
+- Date: First created on 2025-04-01, last modified on 2025-08-25
+- GitHub repository: <https://github.com/jelmerp/culex>
+- These steps have been run at the Ohio Supercomputer Center (<www.osc.edu>)
+- Working dir at OSC: /fs/ess/PAS2880/users/jelmer
+- More information about the project and its files: `README.md` in the working dir
+
+## Prerequisites
+
+- **Input files**:
+  - The input files are:
+    - Paired-end FASTQ files
+    - Reference genomes files `assembly.fna` and `annotation.gtf`
+  - Input file paths are set below and can be adjusted to your situation.
+    - If you're running this at OSC and have access to project PAS2880,
+      you can copy the files from the working dir specified above,
+      or adjust the input file paths below to directly use these files.
+    - Otherwise:
+      - Reference genome files can be downloaded from <URL>
+      - FASTQ files are available through the SRA via accession number <ACCESSION>
+
+- **Software**:
+  - The scripts will run programs using Singularity/Apptainer containers
+  - If running at OSC, no software installations are needed
+  - If you're not at OSC, you need to have `apptainer` and `Slurm` installed.
+
+- You don't need to create the output dirs because the scripts will do so.
+
+## Set up: Set the input file paths
+
+```bash
+fastq_dir=data/fastq
+ref_assembly=results/01_refseqs/assembly.fna
+ref_annotation=results/01_refseqs/annotation.gtf
+```
+
+## Step 1: Trim the raw reads
+
+The `trim.sh` script runs for one sample at a time and takes 3 arguments -
+input forward-read (R1) FASTQ, reverse-read (R2) FASTQ, and the desired output dir:
+
+```bash
+for R1 in "$fastq_dir"/*_R1.fastq.gz; do
+    R2=${R1/_R1/_R2}
+    sbatch scripts/trim.sh "$R1" "$R2" results/trim
+done
+```
+
+## Step 2: Align the trimmed reads to a reference genome
+
+The `map.sh` script runs for one sample at a time and takes 4 arguments -
+input trimmed R1 and R2 FASTQs produced by `trim.sh`, a reference FASTA file,
+and the desired output dir:
+
+```bash
+for R1 in results/trim/*_R1.fastq.gz; do
+    R2=${R1/_R1/_R2}
+    sbatch scripts/map.sh "$R1" "$R2" "$ref_assembly" results/map
+done
+```
+
+## Step 3: Count gene-level alignments
+
+The `count.sh` script runs for all samples at once and takes 3 arguments -
+input dir with alignments produced by `map.sh`, a reference GTF file,
+and the desired output dir:
+
+```bash
+sbatch scripts/count.sh results/map "$ref_annotation" results/count_table.txt
+```
+````
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### The rationale behind organizing and running scripts this way
+
+The protocol above submits a shell script one or more times for each of the three steps
+(`trim.sh`, `map.sh`, and` count.sh`),
+with each script _taking arguments_ to specify the in- and output files,
+and running an (unspecified) bioinformatics program to perform that step.
+
+Here are some advantages of using such a script structure with single-step,
+flexible (argument-accepting) scripts,
+and an overarching protocol Markdown file to describe the entire workflow:
+
+- Rerunning everything, including with a modified sample set, or tool settings,
+  is relatively straightforward --- both for yourself and others, improving reproducibility.
+- Re-applying the same set of analyses in a different project is straightforward.
+- The Markdown file documents the steps taken.
+- It (more or less) ensures you are including all necessary steps.
+
+However, in the example above,
+it is import to realize that you **cannot** run all the code at once.
+This is because there are three batch job steps,
+with both the second and third steps using the output of an earlier step as their input.
+Therefore, if you run all code at once, all batch jobs will be submitted at the same time:
+this means that later steps will start running before the earlier step has finished,
+i.e. before their input files are available, and will fail.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+### How to further automate this?
+
+Waiting for each step to finish before submitting the next step is a bit tedious,
+and means the above protocol is not a fully automated pipeline.
+Therefore, you may want to find ways to:
+
+- Reduce the number of steps and/or
+- Avoid having to wait for each step to finish before moving on to the next
+
+#### Combining scripts to reduce the number of steps
+
+Once you get the hang of writing shell scripts,
+it may be appealing to string a series of programs/steps together in a single script,
+rather than having "single-step scripts" like in the example above.
+
+At the extreme, you could completely solve the problem of simultaneous batch job
+submission by including all steps (trimming, mapping, counting) in a single script:
+i.e., you'd submit a **single batch job to run all steps**.
+
+<details><summary>Can you see a potential problem with this approach?</summary>
+
+but this would make for a very inefficient pipeline,
+since you'd now be running steps that can be parallelized across samples consecutively.
+
+TBA
+
+</details>
+
+Even if combining steps that run multiple times versus steps that run once,
+why not at least combine in a single script, trimming and mapping in the example above?
+Since both of those steps will be run for each sample separately.
+While this is not unreasonable, in practice,
+this kind of strategy often ends up leading to more difficulties than convenience.
+
+For example, what if you realize that the mapping needs to redone because you
+want to change some settings.
+Now you have a script that both trims and maps, and you're forced to rerun both.
+Well, not entirely: you could add an option to your script to only run one step,
+and/or to have the script check for the presence of output files.
+But now things are starting to get pretty complicated,
+and they will increasingly more complicated if you try to combine even more steps.
+After all, a real RNA-Seq analysis typically contains several more steps.
+
+All in all, my recommendation is to keep your shell scripts simple
+_in the sense that they should generally **just run one program**_,
+and not a sequence of programs.
+
+#### Automate batch job submission 
+
+Foremost, you'd need to overcome the problem of simultaneous batch job submission.
+But a decent pipeline **detect failure and then stop**,
+and to **rerun parts of the pipeline** flexibly.
+The latter may be necessary after, e.g.:
+  
+- Some scripts failed for all or some samples
+- You added or removed a sample
+- You had to modify a script or settings somewhere halfway the pipeline.
+
+How could you implement all of that?
+
+- **Push the limits of the Bash and Slurm tool set (not recommended)**\
+  Use `if` statements, additional script arguments, and Slurm "job dependencies"
+  (see the [optional reading page](../bonus/slurm.html)) ---
+  but this is hard to manage for more complex workflows.
+
+#### A better solution
+
+Use a formal workflow management system like
+[Snakemake](https://snakemake.readthedocs.io) or [NextFlow](https://www.nextflow.io),
+which can take care of all these details and more for you.
 
 <hr style="height:1pt; visibility:hidden;" />
 
