@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head>
+<link href="../img/favicon.png" rel="icon" type="image/png">
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-html/tabby.min.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -262,6 +263,9 @@ Jelmer Poelstra
 <p><a href="../img/fisher-omics.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img data-src="../img/fisher-omics.png" class="quarto-figure quarto-figure-center" style="width:70.0%" alt="A diagram showing the main omics data types."></a></p>
 </figure>
 </div>
+<div class="legend2">
+<p>Copyright <a href="https://www.thermofisher.com/us/en/home/brands/thermo-scientific/molecular-biology/molecular-biology-learning-center/molecular-biology-resource-library/spotlight-articles/supporting-multi-omics-approaches.html">ThermoFisher</a></p>
+</div>
 </section>
 <section id="the-main-omics-data-types-1" class="slide level2">
 <h2>The main omics data types</h2>
@@ -421,10 +425,12 @@ Jelmer Poelstra
 <h2>An overview of sequencing technologies</h2>
 <p><strong>Sanger sequencing (since 1977)</strong><br>
 Sequencing of a single, short-ish (≤900 bp) DNA fragment at a time. The fragment is typically PCR-amplified and therefore specifically targeted.</p>
+<div class="fragment">
 <hr style="height:1pt; visibility:hidden;">
 <p><strong>High-throughput sequencing (HTS, since 2005)</strong><br>
 Sequencing of hundreds of thousands to billions of DNA fragments at a time. These sequences are typically randomly “selected”.</p>
 <hr style="height:1pt; visibility:hidden;">
+</div>
 <div class="fragment">
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
@@ -451,14 +457,15 @@ Sequencing of hundreds of thousands to billions of DNA fragments at a time. Thes
 <p><strong>All sequencing technologies involve some degree of error</strong></p>
 </div>
 <div class="callout-content">
-<p>The sequences in reads are not 100% accurate, and this has large consequences for downstream analyses.</p>
+<p>The sequences in reads are never 100% accurate, and this has large consequences for downstream analyses.</p>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="sequencing-cost-through-time" class="slide level2">
-<h2>Sequencing cost through time</h2>
+<section id="sequencing-costs-have-declined-sharply" class="slide level2">
+<h2>Sequencing costs have declined sharply</h2>
+<p>…with the advent of HTS.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><a href="../img/2022_Sequencing_cost_per_Human_Genome.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img data-src="../img/2022_Sequencing_cost_per_Human_Genome.jpg" class="quarto-figure quarto-figure-center" style="width:80.0%" alt="A graph showing falling sequenicng costs over time."></a></p>
@@ -518,7 +525,7 @@ Sequencing of hundreds of thousands to billions of DNA fragments at a time. Thes
 </section>
 <section id="examples-of-hts-data-analyses" class="slide level2">
 <h2>Examples of HTS data analyses</h2>
-<p><strong>Stage I: The algorithmic/bioinformatics part</strong></p>
+<p><strong>Stage I: The algorithmic/bioinformatic parts</strong></p>
 <ul>
 <li>Read quality control (QC) and trimming</li>
 <li>Read alignment to a reference genome</li>
@@ -703,6 +710,14 @@ Sequencing of hundreds of thousands to billions of DNA fragments at a time. Thes
 </ul>
 </details>
 </div>
+</section>
+<section id="hts-recap" class="slide level2">
+<h2>HTS recap</h2>
+<ul>
+<li><p>High-throughput sequencing produces the two most prevalent kinds of omics data: genomics and transcriptomics (as well as epigenomics data)</p></li>
+<li><p>Many different applications exist, several of which are functional in nature</p></li>
+<li><p>Three HTS technologies are most commonly used, and these produce either short (Illumina) or long (ONT and PacBio) reads</p></li>
+</ul>
 </section></section>
 <section>
 <section id="illumina-libraries-and-sequencing" class="title-slide slide level1 center" data-background-color="silver">
@@ -719,11 +734,11 @@ Sequencing of hundreds of thousands to billions of DNA fragments at a time. Thes
 <i class="callout-icon"></i>
 </div>
 <div class="callout-content">
-<p><em>We’ll go into some specifics of Illumina library prep:</em> <em>this is the most common type of HTS,</em> <em>and we’ll use Illumina read files as examples throughout the course.</em></p>
+<p>We’ll go into some specifics of Illumina library prep because this is the most common type of HTS, and we’ll use Illumina read files as examples throughout the course.</p>
 </div>
 </div>
 </div>
-<hr style="height:1pt; visibility:hidden;">
+<p><br></p>
 <div class="fragment">
 <p>In Illumina and other HTS libraries, these fragments <strong>number in the millions or billions</strong> and are <strong>often randomly generated</strong> from input such as genomic DNA:</p>
 <div style="margin-bottom: 0px;">
@@ -748,6 +763,7 @@ Sequencing of hundreds of thousands to billions of DNA fragments at a time. Thes
 </figure>
 </div>
 <hr style="height:1pt; visibility:hidden;">
+<div class="fragment">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -757,7 +773,8 @@ Sequencing of hundreds of thousands to billions of DNA fragments at a time. Thes
 <p><strong>Multiplexing!</strong></p>
 </div>
 <div class="callout-content">
-<p>Using so-called “indices” or “barcodes” that make up part of the adapters, up to 96 samples can be combined (“multiplexed”) into a single library, i.e.&nbsp;into a single tube.</p>
+<p>Adapters can include so-called “indices” or “barcodes” that identify individual samples. That way, up to 96 samples can be combined (<em>multiplexed</em>) into a single library, i.e.&nbsp;into a single tube.</p>
+</div>
 </div>
 </div>
 </div>
@@ -870,6 +887,19 @@ This provides, for example, the <em>locations of genes and other genomic feature
 </div>
 </div>
 </div>
+</section>
+<section id="illumina-and-reference-genome-recap" class="slide level2">
+<h2>Illumina and reference genome recap</h2>
+<ul>
+<li><p><strong>Library prep</strong> makes nucleic acid molecules ready for sequencing, e.g.&nbsp;by attaching adapter and sample barcode sequences</p></li>
+<li><p><strong>Illumina sequencing</strong> is often done with paired-end reads, and with multiple/many samples at a time (<em>multiplexing</em>)</p></li>
+</ul>
+<div class="fragment">
+<hr style="height:1pt; visibility:hidden;">
+<ul>
+<li>For many omics analyses, you need a <strong>reference genome</strong> assembly and annotation for your species or intraspecific variant of interest. If you don’t have one, your first step may be to generate one.</li>
+</ul>
+</div>
 </section></section>
 <section>
 <section id="sequence-file-types" class="title-slide slide level1 center" data-background-color="silver">
@@ -933,6 +963,8 @@ A <strong>genome annotation</strong> format: tables with information such as coo
 <li>A <strong><code>+</code></strong> (plus sign)</li>
 <li>One-character <strong>quality scores</strong> for each base (hence FASTQ as in “Q” for “quality”)</li>
 </ol>
+</div>
+<div class="fragment">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><a href="../img/fastq_dark.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img data-src="../img/fastq_dark.png" class="quarto-figure quarto-figure-center" style="width:100.0%" alt="An annotated screenshot of two reads in a FASTQ file."></a></p>
@@ -942,14 +974,27 @@ A <strong>genome annotation</strong> format: tables with information such as coo
 </section>
 <section id="fastq-quality-scores" class="slide level2">
 <h2>FASTQ quality scores</h2>
-<p>The quality scores we saw in the read on the previous slide represent an estimate of the error probability of the base call.</p>
-<p>Specifically, they correspond to a numeric “Phred” quality score (<code>Q</code>), which is a function of the estimated probability that a base call is erroneous (<code>P</code>):</p>
-<blockquote>
-<p><strong>Q = -10 * log10(P)</strong></p>
-</blockquote>
+<p>The quality scores in the reads represent an estimate of the error probability of the base call.</p>
+<p>Specifically, they correspond to a numeric “Phred” quality score (<span class="math inline">\(Q\)</span>), which is a function of the estimated probability that a base call is erroneous (<span class="math inline">\(P\)</span> ):</p>
+<p><span class="math display">\[
+Q = -10 * log_{10}(P)
+\]</span></p>
 <div class="fragment">
-<hr style="height:1pt; visibility:hidden;">
-<p>For some specific probabilities and their rough qualitative interpretation for Illumina data:</p>
+<p>For example:</p>
+<p><span class="math display">\[
+-10 * log_{10}(0.1) = 10
+\]</span></p>
+</div>
+</section>
+<section id="fastq-quality-scores-1" class="slide level2">
+<h2>FASTQ quality scores</h2>
+<p>The quality scores in the reads represent an estimate of the error probability of the base call.</p>
+<p>Specifically, they correspond to a numeric “Phred” quality score (<span class="math inline">\(Q\)</span>), which is a function of the estimated probability that a base call is erroneous (<span class="math inline">\(P\)</span> ):</p>
+<p><span class="math display">\[
+Q = -10 * log_{10}(P)
+\]</span></p>
+<p><br></p>
+<p>Some specific probabilities and their rough qualitative interpretation for Illumina data:</p>
 <table class="table-striped caption-top">
 <thead>
 <tr class="header">
@@ -981,7 +1026,6 @@ A <strong>genome annotation</strong> format: tables with information such as coo
 </tr>
 </tbody>
 </table>
-</div>
 </section>
 <section id="fastq-quality-scores-cont." class="slide level2">
 <h2>FASTQ quality scores (cont.)</h2>
@@ -1024,7 +1068,7 @@ A <strong>genome annotation</strong> format: tables with information such as coo
 </section>
 <section id="fastq-cont." class="slide level2">
 <h2>FASTQ (cont.)</h2>
-<p>FASTQ files have no size limit — but in paired-end (PE) sequencing, forward and reverse reads are typically <strong>in two separate files</strong>:</p>
+<p>FASTQ files have no size limit – but in paired-end (PE) sequencing, forward and reverse reads are typically <strong>in two separate files</strong>:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -1083,6 +1127,14 @@ A <strong>genome annotation</strong> format: tables with information such as coo
 </div>
 </div>
 </div>
+</section>
+<section id="sequence-file-types-1" class="slide level2">
+<h2>Sequence file types</h2>
+<ul>
+<li><p>FASTA</p></li>
+<li><p>FASTQ</p></li>
+<li><p>GTF/GFF</p></li>
+</ul>
 </section></section>
 <section>
 <section id="the-courses-main-example-dataset" class="title-slide slide level1 center" data-background-color="silver">

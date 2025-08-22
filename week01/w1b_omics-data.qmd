@@ -39,6 +39,10 @@ bibliography: ../references.bib
 
 ![](../img/fisher-omics.png){fig-align="center" width="70%" fig-alt="A diagram showing the main omics data types." .lightbox}
 
+::: legend2
+Copyright [ThermoFisher](https://www.thermofisher.com/us/en/home/brands/thermo-scientific/molecular-biology/molecular-biology-learning-center/molecular-biology-resource-library/spotlight-articles/supporting-multi-omics-approaches.html)
+:::
+
 ## The main omics data types
 
 ::::::: columns
@@ -111,6 +115,8 @@ throughout the course.
 Sequencing of a single, short-ish (≤900 bp) DNA fragment at a time.
 The fragment is typically PCR-amplified and therefore specifically targeted.
 
+. . .
+
 <hr style="height:1pt; visibility:hidden;" />
 
 **High-throughput sequencing (HTS, since 2005)**\
@@ -134,11 +140,13 @@ Sequenced DNA fragments are referred to as "reads".
 
 ::: callout-important
 #### All sequencing technologies involve some degree of error
-The sequences in reads are not 100% accurate,
+The sequences in reads are never 100% accurate,
 and this has large consequences for downstream analyses.
 ::::
 
-## Sequencing cost through time
+## Sequencing costs have declined sharply
+
+...with the advent of HTS.
 
 ![](../img/2022_Sequencing_cost_per_Human_Genome.jpg){width="80%" fig-align="center" fig-alt="A graph showing falling sequenicng costs over time." .lightbox}
 
@@ -183,7 +191,7 @@ From @lee2023
 
 ## Examples of HTS data analyses
 
-**Stage I: The algorithmic/bioinformatics part**
+**Stage I: The algorithmic/bioinformatic parts**
 
 - Read quality control (QC) and trimming
 - Read alignment to a reference genome
@@ -280,6 +288,16 @@ From @lee2023
   like in counting applications such as RNA-seq
 </details>
 
+## HTS recap
+
+- High-throughput sequencing produces the two most prevalent kinds of omics data:
+  genomics and transcriptomics (as well as epigenomics data)
+  
+- Many different applications exist, several of which are functional in nature
+
+- Three HTS technologies are most commonly used,
+  and these produce either short (Illumina) or long (ONT and PacBio) reads
+
 # Illumina libraries and sequencing {background-color="silver"}
 
 ## Libraries and library prep
@@ -290,12 +308,12 @@ a "**library**" is a collection of nucleic acid fragments ready for sequencing.
 <hr style="height:1pt; visibility:hidden;" />
 
 ::: {.callout-note appearance="simple"}
-_We'll go into some specifics of Illumina library prep:_
-_this is the most common type of HTS,_
-_and we'll use Illumina read files as examples throughout the course._
+We'll go into some specifics of Illumina library prep
+because this is the most common type of HTS,
+and we'll use Illumina read files as examples throughout the course.
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
+<br>
 
 . . .
 
@@ -324,10 +342,13 @@ make up the "**adapters**":
 
 <hr style="height:1pt; visibility:hidden;" />
 
+. . .
+
 ::: callout-note
 #### Multiplexing!
-Using so-called "indices" or "barcodes" that make up part of the adapters,
-up to 96 samples can be combined ("multiplexed") into a single library,
+Adapters can include so-called "indices" or "barcodes" that identify individual
+samples.
+That way, up to 96 samples can be combined (_multiplexed_) into a single library,
 i.e. into a single tube.
 :::
 
@@ -370,7 +391,8 @@ In some cases, it is:
 
 ## Reference genomes
 
-Many HTS applications either **require a "reference genome"** _or_ **involve its production.**
+Many HTS applications either **require a "reference genome"** _or_
+**involve its production.**
 What exactly does reference genome refer to? It usually includes:
 
 . . .
@@ -422,6 +444,22 @@ Therefore, in addition to complete chromosome sequences, assemblies may contain:
 - **Scaffolds**: a collection of multiple contigs known to occur on the same chromosome,
   but with gaps (often of unknown length) between them.
 :::
+
+## Illumina and reference genome recap
+
+- **Library prep** makes nucleic acid molecules ready for sequencing,
+  e.g. by attaching adapter and sample barcode sequences
+  
+- **Illumina sequencing** is often done with paired-end reads,
+  and with multiple/many samples at a time (_multiplexing_)
+
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+- For many omics analyses, you need a **reference genome** assembly and annotation
+  for your species or intraspecific variant of interest.
+  If you don't have one, your first step may be to generate one.
 
 # Sequence file types {background-color="silver"}
 
@@ -493,21 +531,45 @@ which contain, respectively:
 3.  A **`+`** (plus sign)
 4.  One-character **quality scores** for each base (hence FASTQ as in "Q" for "quality")
 
+. . .
+
 ![](../img/fastq_dark.png){fig-align="center" width="100%" fig-alt="An annotated screenshot of two reads in a FASTQ file." .lightbox}
 
 ## FASTQ quality scores
 
-The quality scores we saw in the read on the previous slide represent an estimate of the error probability of the base call.
+The quality scores in the reads represent an estimate of the error probability of
+the base call.
 
-Specifically, they correspond to a numeric "Phred" quality score (`Q`), which is a function of the estimated probability that a base call is erroneous (`P`):
+Specifically, they correspond to a numeric "Phred" quality score ($Q$),
+which is a function of the estimated probability that a base call is erroneous ($P$ ):
 
-> **Q = -10 \* log10(P)**
+$$
+Q = -10 * log_{10}(P)
+$$
 
 . . .
 
-<hr style="height:1pt; visibility:hidden;" />
+For example:
 
-For some specific probabilities and their rough qualitative interpretation for Illumina data:
+$$
+-10 * log_{10}(0.1) = 10
+$$
+
+## FASTQ quality scores
+
+The quality scores in the reads represent an estimate of the error probability of
+the base call.
+
+Specifically, they correspond to a numeric "Phred" quality score ($Q$),
+which is a function of the estimated probability that a base call is erroneous ($P$ ):
+
+$$
+Q = -10 * log_{10}(P)
+$$
+
+<br>
+
+Some specific probabilities and their rough qualitative interpretation for Illumina data:
 
 | Phred quality score | Error probability | Rough interpretation |
 |:---------------------:|-------------------|----------------------|
@@ -545,7 +607,7 @@ For example:
 
 ## FASTQ (cont.)
 
-FASTQ files have no size limit --- but in paired-end (PE) sequencing,
+FASTQ files have no size limit -- but in paired-end (PE) sequencing,
 forward and reverse reads are typically **in two separate files**:
 
 | Read direction | File name identifier |
@@ -596,6 +658,14 @@ NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_i
 - _attribute_ --- A semicolon-separated list of tag-value pairs with additional information
 :::
 
+## Sequence file types
+
+- FASTA
+
+- FASTQ
+
+- GTF/GFF
+  
 # The course's main example dataset {background-color="silver"}
 
 ## Garrigos et al. 2025
