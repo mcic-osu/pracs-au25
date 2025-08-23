@@ -9,7 +9,7 @@
 <meta name="author" content="Jelmer Poelstra">
 <meta name="dcterms.date" content="2025-10-02">
 
-<title>PRACS25: software at OSC – PRACS-AU25</title>
+<title>software at OSC – PRACS-AU25</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -168,8 +168,8 @@ div.csl-indent {
         <li class="dropdown-header">Week 8: Using generative AI when coding [TBA]</li>
         <li class="dropdown-header">Week 9: Automated pipelines with Nextflow [TBA]</li>
         <li class="dropdown-header">Week 10: Building Nextflow pipelines [TBA]</li>
-        <li class="dropdown-header">Week 11: R – basics and Quarto [TBA]</li>
-        <li class="dropdown-header">Week 12: R – data wrangling [TBA]</li>
+        <li class="dropdown-header">Week 11: R – basics [TBA]</li>
+        <li class="dropdown-header">Week 12: R – Quarto [TBA]</li>
         <li class="dropdown-header">Week 13: R – data visualization [TBA]</li>
         <li class="dropdown-header">Week 14: R – omics data [TBA]</li>
         <li class="dropdown-header">Week 15: Nextflow nf-core pipelines [TBA]</li>
@@ -185,7 +185,7 @@ div.csl-indent {
         <li class="dropdown-header">Week 7: Slurm batch jobs [TBA]</li>
         <li class="dropdown-header">Week 9: Nextflow [TBA]</li>
         <li class="dropdown-header">Week 11: R basics [TBA]</li>
-        <li class="dropdown-header">Week 12: R data wrangling [TBA]</li>
+        <li class="dropdown-header">Week 12: Quarto [TBA]</li>
         <li class="dropdown-header">Week 14: R for omics data [TBA]</li>
         <li class="dropdown-header">Week 15: nf-core pipelines [TBA]</li>
         <li><hr class="dropdown-divider"></li>
@@ -200,9 +200,9 @@ div.csl-indent {
         <li class="dropdown-header">GA 1: Markdown and Unix shell basics (Week 2) [TBA]</li>
         <li class="dropdown-header">GA 2: Version control with Git and GitHub (Week 4) [TBA]</li>
         <li class="dropdown-header">GA 3: Shell scripting (Week 6) [TBA]</li>
-        <li class="dropdown-header">GA 4: Slurm batch jobs (Week 8) [TBA]</li>
+        <li class="dropdown-header">GA 4: Slurm batch jobs at OSC (Week 8) [TBA]</li>
         <li class="dropdown-header">GA 5: Nextflow (Week 10) [TBA]</li>
-        <li class="dropdown-header">GA 6: R (Week 14) [TBA]</li>
+        <li class="dropdown-header">GA 6: Data analysis with R (Week 13) [TBA]</li>
         <li><hr class="dropdown-divider"></li>
         <li class="dropdown-header">UNGRADED</li>
         <li>
@@ -304,10 +304,9 @@ div.csl-indent {
   <li><a href="#learning-goals" id="toc-learning-goals" class="nav-link" data-scroll-target="#learning-goals"><span class="header-section-number">1.1</span> Learning goals</a></li>
   <li><a href="#setting-up" id="toc-setting-up" class="nav-link" data-scroll-target="#setting-up"><span class="header-section-number">1.2</span> Setting up</a></li>
   </ul></li>
-  <li><a href="#introduction-1" id="toc-introduction-1" class="nav-link" data-scroll-target="#introduction-1"><span class="header-section-number">2</span> Introduction</a>
+  <li><a href="#software-management-at-osc" id="toc-software-management-at-osc" class="nav-link" data-scroll-target="#software-management-at-osc"><span class="header-section-number">2</span> Software management (at OSC)</a>
   <ul class="collapse">
-  <li><a href="#software-management-at-osc" id="toc-software-management-at-osc" class="nav-link" data-scroll-target="#software-management-at-osc"><span class="header-section-number">2.1</span> Software management (at OSC)</a></li>
-  <li><a href="#the-fastqc-software" id="toc-the-fastqc-software" class="nav-link" data-scroll-target="#the-fastqc-software"><span class="header-section-number">2.2</span> The FastQC software</a></li>
+  <li><a href="#the-fastqc-software" id="toc-the-fastqc-software" class="nav-link" data-scroll-target="#the-fastqc-software"><span class="header-section-number">2.1</span> The FastQC software</a></li>
   </ul></li>
   <li><a href="#loading-software-at-osc-with-lmod-modules" id="toc-loading-software-at-osc-with-lmod-modules" class="nav-link" data-scroll-target="#loading-software-at-osc-with-lmod-modules"><span class="header-section-number">3</span> Loading software at OSC with Lmod modules</a>
   <ul class="collapse">
@@ -392,10 +391,8 @@ div.csl-indent {
 <p><br></p>
 </section>
 </section>
-<section id="introduction-1" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="introduction-1"><span class="header-section-number">2</span> Introduction</h2>
-<section id="software-management-at-osc" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="software-management-at-osc"><span class="header-section-number">2.1</span> Software management (at OSC)</h3>
+<section id="software-management-at-osc" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="software-management-at-osc"><span class="header-section-number">2</span> Software management (at OSC)</h2>
 <p>To analyze omics data sets, especially in genomics and transcriptomics, a typical workflow includes running a sequence of specialized bioinformatics software/programs/tools (I will use these terms interchangeably).</p>
 <p>At OSC, there are system-wide installations of a number of bioinformatics programs. We do need to “<strong>load modules</strong>” containing such programs before we can use them. In this session, we will first talk about that process.</p>
 <p>However, OSC’s collection of bioinformatics programs is not comprehensive, and the most recent versions are often not available<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. On top of that, installing software the way you are used to on your own computer is not really possible at a supercomputer center like OSC.</p>
@@ -428,9 +425,8 @@ Other options to install software / get it installed at OSC
 </div>
 </div>
 <hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="the-fastqc-software" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="the-fastqc-software"><span class="header-section-number">2.2</span> The FastQC software</h3>
+<section id="the-fastqc-software" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="the-fastqc-software"><span class="header-section-number">2.1</span> The FastQC software</h3>
 <p>As an example piece of bioinformatics software, we will use FastQC (<span class="citation" data-cites="andrews2010">Andrews (<a href="#ref-andrews2010" role="doc-biblioref">2010</a>)</span>) in this session.</p>
 <p>FastQC is a ubiquitous tool for <strong>quality control of FASTQ files</strong>. Running FastQC or a similar program is the first step in nearly any high-throughput sequencing project. FastQC is also a good introductory example of a tool with a command-line interface.</p>
 <p>For each FASTQ file, FastQC outputs an <strong>HTML file</strong> that you can open in your browser with about a dozen graphs showing different QC metrics. The most important one is the <em>per-base quality score</em> graph:</p>
