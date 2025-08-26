@@ -34,28 +34,35 @@ editor_options:
 bibliography: ../references.bib
 ---
 
+# Goals for this lecture {background-color="silver"}
+
+## In this lecture, you will get:
+
+- A brief general overview of omics data
+- An intro to high-throughput sequencing, a key technology producing omics data
+- An intro to Illumina sequencing, a key HTS technology
+- An idea of what reference genomes are and what they are for
+- An overview of key sequence file types (FASTA, FASTQ, etc.)
+- An intro to the course's main example dataset
+
 # An overview of omics data {background-color="silver"}
 
 ## The main omics data types
 
-![](../img/fisher-omics.png){fig-align="center" width="70%" fig-alt="A diagram showing the main omics data types." .lightbox}
+| Omics type       | Molecule type      |               |
+|------------------|--------------------|:-----------------------------:|
+| Genomics         | DNA                | |
+| Epigenomics      | DNA modifications  | |
+| Transcriptomics  | RNA                | |
+| Proteomics       | Proteins           | |
+| Metabolomics     | Metabolites        | |
 
-::: legend2
-Copyright [ThermoFisher](https://www.thermofisher.com/us/en/home/brands/thermo-scientific/molecular-biology/molecular-biology-learning-center/molecular-biology-resource-library/spotlight-articles/supporting-multi-omics-approaches.html)
-:::
+: {.striped}
 
-## The main omics data types
+. . .
 
-::::::: columns
-:::: {.column width="65%"}
-![](../img/fisher-omics.png){fig-align="center" width="100%" fig-alt="A diagram showing the main omics data types." .lightbox}
+<br>
 
-::: legend2
-Copyright [ThermoFisher](https://www.thermofisher.com/us/en/home/brands/thermo-scientific/molecular-biology/molecular-biology-learning-center/molecular-biology-resource-library/spotlight-articles/supporting-multi-omics-approaches.html)
-:::
-
-::::
-:::: {.column width="35%"}
 :::callout-note
 #### -omics {{< fa question >}}
 The "omics" suffix indicates the involvement of large-scale datasets ---
@@ -66,47 +73,36 @@ While the boundaries can be fuzzy,
 sequencing a single gene in a single organism is not genomics,
 and running qPCR for a handful of genes is not transcriptomics.
 :::
-::::
-
-:::::::
 
 ## The main omics data types
 
-| Omics type       | Molecule type      |               |  |
-|------------------|--------------------|-----------------------------|:-------------:|
-| Genomics         | DNA                | |
-| Epigenomics      | DNA modifications  | |
-| Transcriptomics  | RNA                | |
-| Proteomics       | Proteins           | |
-| Metabolomics     | Metabolites        | |
-
-: {.striped}
-
-## The main omics data types
-
-| Omics type       | Molecule type      | Main data type              | This course |
-|------------------|--------------------|-----------------------------|:-------------:|
-| Genomics         | DNA                | "HTS" data (DNA sequences)  | <i class="fa fa-check" style="font-size:25px;color:green"></i> |
-| Epigenomics      | DNA modifications  | "HTS" data (DNA sequences)  | <i class="fa fa-check" style="font-size:25px;color:orange"></i> |
-| Transcriptomics  | RNA                | "HTS" data (DNA sequences)  | <i class="fa fa-check" style="font-size:25px;color:green"></i> |
-| Proteomics       | Proteins           | Mass Spectometry data       | <i class="fa fa-xmark" style="font-size:25px;color:red"></i> |
-| Metabolomics     | Metabolites        | Mass Spectometry data       | <i class="fa fa-xmark" style="font-size:25px;color:red"></i>  |
+| Omics type       | Molecule type      | Data mainly produced by              |
+|------------------|--------------------|-----------------------------|
+| Genomics         | DNA                | High-throughput sequencing  |
+| Epigenomics      | DNA modifications  | High-throughput sequencing  |
+| Transcriptomics  | RNA                | High-throughput sequencing  |
+| Proteomics       | Proteins           | Mass Spectometry       |
+| Metabolomics     | Metabolites        | Mass Spectometry       |
 
 : {.striped}
 
 <br>
 
 ::: callout-tip
-#### This course focuses on data produced by nucleic-acid based methods
+#### This course focuses on data produced by high-througput sequencing
 Genomics, epigenomics, and transcriptomics data are produced by
 **High-Throughput Sequencing** (HTS) technologies.
 HTS and the resulting data are the focus of this lecture are used in examples
 throughout the course.
 
-- _Note that **RNA** is usually reverse transcribed to DNA (cDNA) prior to sequencing,_
-  _as in nearly all "RNA-Seq"._
-- _We won't see examples of epigenomic data in the course._
+Note also that nearly all HTS currently involves **DNA** sequencing,
+including epigenomics and transcriptomics data
+(e.g., RNA is reverse-transcribed before sequencing).
 :::
+
+## Learn more in this week's first reading
+
+> @poinsignon2023: *Working with omics data: An interdisciplinary challenge at the crossroads of biology and computer science*
 
 # High-throughput sequencing (HTS) {background-color="silver"}
 
@@ -122,7 +118,7 @@ The fragment is typically PCR-amplified and therefore specifically targeted.
 
 **High-throughput sequencing (HTS, since 2005)**\
 Sequencing of hundreds of thousands to billions of DNA fragments at a time.
-These sequences are typically randomly "selected".
+Fragments can be targeted or randomly selected.
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -161,9 +157,7 @@ and this has large consequences for downstream analyses.
 
 . . .
 
-- **Variant analysis** (for population genetics/genomics, molecular evolution, GWAS, etc.):
-  - Whole-genome "resequencing"
-  - Reduced-representation libraries (e.g. RAD-Seq, GBS)
+- **Variant analysis** (for population genetics/genomics, molecular evolution, GWAS, etc.)
 
 . . .
 
@@ -179,17 +173,29 @@ and this has large consequences for downstream analyses.
   - Metabarcoding
   - Shotgun metagenomics
 
-## HTS applications (cont.)
+## The two stages of many omics analyses
 
-![](../img/lee2013.gif){fig-align="center" width="67%" fig-alt="An annotated diagram of omics data types and associated molecular components." .lightbox}
+Omics data analysis can often be divided into **two consecutive stages**:
 
-::: legend2
-From @lee2023
-:::
+<hr style="height:1pt; visibility:hidden;" />
 
-::: footer
-:::
+. . .
 
+1. **Algorithmic/bioinformatic data processing**
+   - [_For example: alignment of reads to a genome_]{style="color:olive"}
+   - This is typically done in a **Unix shell** environment using a **supercomputer**
+   - These steps are often relatively standardized, automatable, and "non-interactive"
+
+. . . 
+
+<hr style="height:1pt; visibility:hidden;" />
+
+2. **Biostatistical downstream analysis**
+   - [_For example: comparing expression levels of genes between treatments_]{style="color:olive"}
+   - This is typically done in **R** and is typically possible to do on a laptop
+   - This is often highly interactive and iterative,
+     and less standardized and automatable than the previous stage.
+     
 ## Examples of HTS data analyses
 
 **Stage I: The algorithmic/bioinformatic parts**
@@ -242,6 +248,19 @@ From @lee2023
 **Error rates**     | Mostly <0.1%            | 1-10% (ONT) / <0.1-10% (PacBio)
 **Timeline**        | Since 2005 — technology fairly stable | Since 2011 — remains under rapid development
 **Usage**           | More common             | Less common
+
+: {.striped}
+
+## The main HTS technologies
+
+|                   | Short-read HTS          | Long-read HTS
+|---|-------|-------|
+**Overview**    | Produces up to billions of short, highly accurate reads | Produces longer but fewer, less accurate, and more costly reads
+**Main companies**  | Illumina                | Oxford Nanopore Technologies (ONT) and Pacific Biosciences (PacBio)
+**Read lengths**    | 50-300 bp               | PacBio: 10-50 kbp / ONT: 10-100+ kbp
+**Error rates**     | Mostly <0.1%            | 1-10% (ONT) / <0.1-10% (PacBio)
+**Timeline**        | Since 2005 — technology fairly stable | Since 2011 — remains under rapid development
+**Usage**           | More common             | Less common
 **AKA**             | Next-Generation Sequencing (NGS) | Third-generation sequencing
 
 : {.striped}
@@ -272,10 +291,11 @@ From @lee2023
 
 <details><summary>**Can you think of applications where longer reads are useful?**</summary>
 
+For example:
+
 - Genome assembly
-- Haplotype and large structural variant calling
-- Transcript isoform identification
 - Taxonomic identification of single reads (microbial metabarcoding)
+- Transcript isoform identification
 </details>
 
 . . .
@@ -283,6 +303,8 @@ From @lee2023
 <hr style="height:1pt; visibility:hidden;" />
 
 <details><summary>**Can you think of applications where read length may not matter much?**</summary>
+
+For example:
 
 - SNP variant analysis
 - Read-as-a-tag: the goal is just to know a read's origin in a reference genome,
@@ -293,8 +315,13 @@ From @lee2023
 
 - High-throughput sequencing produces the two most prevalent kinds of omics data:
   genomics and transcriptomics (as well as epigenomics data)
-  
-- Many different applications exist, several of which are functional in nature
+
+<hr style="height:1pt; visibility:hidden;" />
+
+- Many different applications exist;
+  some are not just about determining the exact DNA sequence
+
+<hr style="height:1pt; visibility:hidden;" />
 
 - Three HTS technologies are most commonly used,
   and these produce either short (Illumina) or long (ONT and PacBio) reads
@@ -319,8 +346,8 @@ and we'll use Illumina read files as examples throughout the course.
 . . .
 
 In Illumina and other HTS libraries,
-these fragments **number in the millions or billions** and are
-**often randomly generated** from input such as genomic DNA:
+these fragments **number in the millions or billions** and are in some applications
+simply randomly generated from input such as genomic DNA:
 
 ::: {style="margin-bottom: 0px;"}
 ![](../img/library-prep_cropped.png){fig-align="center" fig-alt="A diagram showing the main Illumina library preparation steps." .lightbox}
@@ -595,6 +622,8 @@ in the read.
 
 . . .
 
+<hr style="height:1pt; visibility:hidden;" />
+
 For example:
 
 | Phred quality score | Error probability | ASCII character |
@@ -606,20 +635,42 @@ For example:
 
 : {.striped}
 
+## FASTQ quality scores (cont.)
+
+To make things a little more complicated:
+the numeric Phred quality score is represented in FASTQ files
+*not by the number itself*,
+but by a corresponding "ASCII character".
+
+This allows for a single-character representation of each possible score —
+therefore,
+**each quality score character can conveniently correspond to (& line up with) a base character**
+in the read.
+
+<hr style="height:1pt; visibility:hidden;" />
+
+![](../img/fastq_dark.png){fig-align="center" width="100%" fig-alt="An annotated screenshot of two reads in a FASTQ file." .lightbox}
+
 ## FASTQ (cont.)
 
-FASTQ files have no size limit -- but in paired-end (PE) sequencing,
-forward and reverse reads are typically **in two separate files**:
+How are reads organized into different FASTQ files?
+While FASTQ files can be any size, they are usually split by:
 
-| Read direction | File name identifier |
-|----|--------------|
-| Forward | `_R1` |
-| Reverse | `_R2` |
+- **Read direction**\
+  In paired-end (PE) sequencing,
+  forward and reverse reads are typically in two separate files:
 
-<br>
+  | Read direction | File name identifier |
+  |----|--------------|
+  | Forward | `_R1` |
+  | Reverse | `_R2` |
 
-Additionally, reads are normally "demultiplexed" into separate files for each sample. 
-All in all,
+- **Sample**\
+  Reads are normally "demultiplexed" into separate files for each sample.
+
+. . .
+
+With that,
 having paired-end FASTQ files for 2 samples typically looks something like this:
 
 ``` bash
@@ -659,7 +710,7 @@ NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_i
 - _attribute_ --- A semicolon-separated list of tag-value pairs with additional information
 :::
 
-## Sequence file types
+## Recap: Sequence file types
 
 - FASTA
 
@@ -732,12 +783,31 @@ consists of:
 
 # Bonus slides
 
+## Omics data types
+
+![](../img/fisher-omics.png){fig-align="center" width="70%" fig-alt="A diagram showing the main omics data types." .lightbox}
+
+::: legend2
+Copyright [ThermoFisher](https://www.thermofisher.com/us/en/home/brands/thermo-scientific/molecular-biology/molecular-biology-learning-center/molecular-biology-resource-library/spotlight-articles/supporting-multi-omics-approaches.html)
+:::
+
 ## Sequencing technology development timeline
 
 ![](../img/seq_timeline2.png){fig-align="center" width="70%" fig-alt="A graphical overview of developments in sequencing technology over time" .lightbox}
 
 ::: legend2
 Modified after @pereira2020
+:::
+
+## HTS applications
+
+![](../img/lee2013.gif){fig-align="center" width="67%" fig-alt="An annotated diagram of omics data types and associated molecular components." .lightbox}
+
+::: legend2
+From @lee2023
+:::
+
+::: footer
 :::
 
 ## The sequencing process: Illumina

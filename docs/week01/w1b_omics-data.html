@@ -240,6 +240,7 @@ Jelmer Poelstra
 <nav role="doc-toc"> 
 <h2 id="toc-title">Overview</h2>
 <ul>
+<li><a href="#/goals-for-this-lecture" id="/toc-goals-for-this-lecture">Goals for this lecture</a></li>
 <li><a href="#/an-overview-of-omics-data" id="/toc-an-overview-of-omics-data">An overview of omics data</a></li>
 <li><a href="#/high-throughput-sequencing-hts" id="/toc-high-throughput-sequencing-hts">High-throughput sequencing (HTS)</a></li>
 <li><a href="#/illumina-libraries-and-sequencing" id="/toc-illumina-libraries-and-sequencing">Illumina libraries and sequencing</a></li>
@@ -252,34 +253,71 @@ Jelmer Poelstra
 </nav>
 </section>
 <section>
+<section id="goals-for-this-lecture" class="title-slide slide level1 center" data-background-color="silver">
+<h1>Goals for this lecture</h1>
+
+</section>
+<section id="in-this-lecture-you-will-get" class="slide level2">
+<h2>In this lecture, you will get:</h2>
+<ul>
+<li>A brief general overview of omics data</li>
+<li>An intro to high-throughput sequencing, a key technology producing omics data</li>
+<li>An intro to Illumina sequencing, a key HTS technology</li>
+<li>An idea of what reference genomes are and what they are for</li>
+<li>An overview of key sequence file types (FASTA, FASTQ, etc.)</li>
+<li>An intro to the course’s main example dataset</li>
+</ul>
+</section></section>
+<section>
 <section id="an-overview-of-omics-data" class="title-slide slide level1 center" data-background-color="silver">
 <h1>An overview of omics data</h1>
 
 </section>
 <section id="the-main-omics-data-types" class="slide level2">
 <h2>The main omics data types</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><a href="../img/fisher-omics.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img data-src="../img/fisher-omics.png" class="quarto-figure quarto-figure-center" style="width:70.0%" alt="A diagram showing the main omics data types."></a></p>
-</figure>
-</div>
-<div class="legend2">
-<p>Copyright <a href="https://www.thermofisher.com/us/en/home/brands/thermo-scientific/molecular-biology/molecular-biology-learning-center/molecular-biology-resource-library/spotlight-articles/supporting-multi-omics-approaches.html">ThermoFisher</a></p>
-</div>
-</section>
-<section id="the-main-omics-data-types-1" class="slide level2">
-<h2>The main omics data types</h2>
-<div class="columns">
-<div class="column" style="width:65%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><a href="../img/fisher-omics.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img data-src="../img/fisher-omics.png" class="quarto-figure quarto-figure-center" style="width:100.0%" alt="A diagram showing the main omics data types."></a></p>
-</figure>
-</div>
-<div class="legend2">
-<p>Copyright <a href="https://www.thermofisher.com/us/en/home/brands/thermo-scientific/molecular-biology/molecular-biology-learning-center/molecular-biology-resource-library/spotlight-articles/supporting-multi-omics-approaches.html">ThermoFisher</a></p>
-</div>
-</div><div class="column" style="width:35%;">
+<table class="table-striped caption-top">
+<colgroup>
+<col style="width: 26%">
+<col style="width: 28%">
+<col style="width: 44%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Omics type</th>
+<th>Molecule type</th>
+<th style="text-align: center;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Genomics</td>
+<td>DNA</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td>Epigenomics</td>
+<td>DNA modifications</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td>Transcriptomics</td>
+<td>RNA</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td>Proteomics</td>
+<td>Proteins</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td>Metabolomics</td>
+<td>Metabolites</td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><br></p>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -294,106 +332,48 @@ Jelmer Poelstra
 </div>
 </div>
 </div>
-</div></div>
+</div>
 </section>
-<section id="the-main-omics-data-types-2" class="slide level2">
+<section id="the-main-omics-data-types-1" class="slide level2">
 <h2>The main omics data types</h2>
 <table class="table-striped caption-top">
 <colgroup>
-<col style="width: 21%">
-<col style="width: 24%">
-<col style="width: 35%">
-<col style="width: 18%">
+<col style="width: 26%">
+<col style="width: 29%">
+<col style="width: 43%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Omics type</th>
 <th>Molecule type</th>
-<th></th>
-<th style="text-align: center;"></th>
+<th>Data mainly produced by</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Genomics</td>
 <td>DNA</td>
-<td></td>
-<td style="text-align: center;"></td>
+<td>High-throughput sequencing</td>
 </tr>
 <tr class="even">
 <td>Epigenomics</td>
 <td>DNA modifications</td>
-<td></td>
-<td style="text-align: center;"></td>
+<td>High-throughput sequencing</td>
 </tr>
 <tr class="odd">
 <td>Transcriptomics</td>
 <td>RNA</td>
-<td></td>
-<td style="text-align: center;"></td>
+<td>High-throughput sequencing</td>
 </tr>
 <tr class="even">
 <td>Proteomics</td>
 <td>Proteins</td>
-<td></td>
-<td style="text-align: center;"></td>
+<td>Mass Spectometry</td>
 </tr>
 <tr class="odd">
 <td>Metabolomics</td>
 <td>Metabolites</td>
-<td></td>
-<td style="text-align: center;"></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="the-main-omics-data-types-3" class="slide level2">
-<h2>The main omics data types</h2>
-<table class="table-striped caption-top">
-<colgroup>
-<col style="width: 21%">
-<col style="width: 24%">
-<col style="width: 35%">
-<col style="width: 18%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Omics type</th>
-<th>Molecule type</th>
-<th>Main data type</th>
-<th style="text-align: center;">This course</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Genomics</td>
-<td>DNA</td>
-<td>“HTS” data (DNA sequences)</td>
-<td style="text-align: center;"><i class="fa fa-check" style="font-size:25px;color:green"></i></td>
-</tr>
-<tr class="even">
-<td>Epigenomics</td>
-<td>DNA modifications</td>
-<td>“HTS” data (DNA sequences)</td>
-<td style="text-align: center;"><i class="fa fa-check" style="font-size:25px;color:orange"></i></td>
-</tr>
-<tr class="odd">
-<td>Transcriptomics</td>
-<td>RNA</td>
-<td>“HTS” data (DNA sequences)</td>
-<td style="text-align: center;"><i class="fa fa-check" style="font-size:25px;color:green"></i></td>
-</tr>
-<tr class="even">
-<td>Proteomics</td>
-<td>Proteins</td>
-<td>Mass Spectometry data</td>
-<td style="text-align: center;"><i class="fa fa-xmark" style="font-size:25px;color:red"></i></td>
-</tr>
-<tr class="odd">
-<td>Metabolomics</td>
-<td>Metabolites</td>
-<td>Mass Spectometry data</td>
-<td style="text-align: center;"><i class="fa fa-xmark" style="font-size:25px;color:red"></i></td>
+<td>Mass Spectometry</td>
 </tr>
 </tbody>
 </table>
@@ -404,17 +384,20 @@ Jelmer Poelstra
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>This course focuses on data produced by nucleic-acid based methods</strong></p>
+<p><strong>This course focuses on data produced by high-througput sequencing</strong></p>
 </div>
 <div class="callout-content">
 <p>Genomics, epigenomics, and transcriptomics data are produced by <strong>High-Throughput Sequencing</strong> (HTS) technologies. HTS and the resulting data are the focus of this lecture are used in examples throughout the course.</p>
-<ul>
-<li><em>Note that <strong>RNA</strong> is usually reverse transcribed to DNA (cDNA) prior to sequencing,</em> <em>as in nearly all “RNA-Seq”.</em></li>
-<li><em>We won’t see examples of epigenomic data in the course.</em></li>
-</ul>
+<p>Note also that nearly all HTS currently involves <strong>DNA</strong> sequencing, including epigenomics and transcriptomics data (e.g., RNA is reverse-transcribed before sequencing).</p>
 </div>
 </div>
 </div>
+</section>
+<section id="learn-more-in-this-weeks-first-reading" class="slide level2">
+<h2>Learn more in this week’s first reading</h2>
+<blockquote>
+<p><span class="citation" data-cites="poinsignon2023">Poinsignon et al. (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span>: <em>Working with omics data: An interdisciplinary challenge at the crossroads of biology and computer science</em></p>
+</blockquote>
 </section></section>
 <section>
 <section id="high-throughput-sequencing-hts" class="title-slide slide level1 center" data-background-color="silver">
@@ -428,7 +411,7 @@ Sequencing of a single, short-ish (≤900 bp) DNA fragment at a time. The fragme
 <div class="fragment">
 <hr style="height:1pt; visibility:hidden;">
 <p><strong>High-throughput sequencing (HTS, since 2005)</strong><br>
-Sequencing of hundreds of thousands to billions of DNA fragments at a time. These sequences are typically randomly “selected”.</p>
+Sequencing of hundreds of thousands to billions of DNA fragments at a time. Fragments can be targeted or randomly selected.</p>
 <hr style="height:1pt; visibility:hidden;">
 </div>
 <div class="fragment">
@@ -468,7 +451,7 @@ Sequencing of hundreds of thousands to billions of DNA fragments at a time. Thes
 <p>…with the advent of HTS.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="../img/2022_Sequencing_cost_per_Human_Genome.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img data-src="../img/2022_Sequencing_cost_per_Human_Genome.jpg" class="quarto-figure quarto-figure-center" style="width:80.0%" alt="A graph showing falling sequenicng costs over time."></a></p>
+<p><a href="../img/2022_Sequencing_cost_per_Human_Genome.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img data-src="../img/2022_Sequencing_cost_per_Human_Genome.jpg" class="quarto-figure quarto-figure-center" style="width:80.0%" alt="A graph showing falling sequenicng costs over time."></a></p>
 </figure>
 </div>
 <div class="legend2">
@@ -482,11 +465,7 @@ Sequencing of hundreds of thousands to billions of DNA fragments at a time. Thes
 </ul>
 <div class="fragment">
 <ul>
-<li><strong>Variant analysis</strong> (for population genetics/genomics, molecular evolution, GWAS, etc.):
-<ul>
-<li>Whole-genome “resequencing”</li>
-<li>Reduced-representation libraries (e.g.&nbsp;RAD-Seq, GBS)</li>
-</ul></li>
+<li><strong>Variant analysis</strong> (for population genetics/genomics, molecular evolution, GWAS, etc.)</li>
 </ul>
 </div>
 <div class="fragment">
@@ -509,18 +488,30 @@ Sequencing of hundreds of thousands to billions of DNA fragments at a time. Thes
 </ul>
 </div>
 </section>
-<section id="hts-applications-cont." class="slide level2">
-<h2>HTS applications (cont.)</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><a href="../img/lee2013.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img data-src="../img/lee2013.gif" class="quarto-figure quarto-figure-center" style="width:67.0%" alt="An annotated diagram of omics data types and associated molecular components."></a></p>
-</figure>
+<section id="the-two-stages-of-many-omics-analyses" class="slide level2">
+<h2>The two stages of many omics analyses</h2>
+<p>Omics data analysis can often be divided into <strong>two consecutive stages</strong>:</p>
+<hr style="height:1pt; visibility:hidden;">
+<div class="fragment">
+<ol type="1">
+<li><strong>Algorithmic/bioinformatic data processing</strong>
+<ul>
+<li><span style="color:olive"><em>For example: alignment of reads to a genome</em></span></li>
+<li>This is typically done in a <strong>Unix shell</strong> environment using a <strong>supercomputer</strong></li>
+<li>These steps are often relatively standardized, automatable, and “non-interactive”</li>
+</ul></li>
+</ol>
 </div>
-<div class="legend2">
-<p>From <span class="citation" data-cites="lee2023">Lee (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span></p>
-</div>
-<div class="footer">
-
+<div class="fragment">
+<hr style="height:1pt; visibility:hidden;">
+<ol start="2" type="1">
+<li><strong>Biostatistical downstream analysis</strong>
+<ul>
+<li><span style="color:olive"><em>For example: comparing expression levels of genes between treatments</em></span></li>
+<li>This is typically done in <strong>R</strong> and is typically possible to do on a laptop</li>
+<li>This is often highly interactive and iterative, and less standardized and automatable than the previous stage.</li>
+</ul></li>
+</ol>
 </div>
 </section>
 <section id="examples-of-hts-data-analyses" class="slide level2">
@@ -658,6 +649,55 @@ Sequencing of hundreds of thousands to billions of DNA fragments at a time. Thes
 <td>More common</td>
 <td>Less common</td>
 </tr>
+</tbody>
+</table>
+</section>
+<section id="the-main-hts-technologies-3" class="slide level2">
+<h2>The main HTS technologies</h2>
+<table class="table-striped caption-top">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 41%">
+<col style="width: 41%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Short-read HTS</th>
+<th>Long-read HTS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Overview</strong></td>
+<td>Produces up to billions of short, highly accurate reads</td>
+<td>Produces longer but fewer, less accurate, and more costly reads</td>
+</tr>
+<tr class="even">
+<td><strong>Main companies</strong></td>
+<td>Illumina</td>
+<td>Oxford Nanopore Technologies (ONT) and Pacific Biosciences (PacBio)</td>
+</tr>
+<tr class="odd">
+<td><strong>Read lengths</strong></td>
+<td>50-300 bp</td>
+<td>PacBio: 10-50 kbp / ONT: 10-100+ kbp</td>
+</tr>
+<tr class="even">
+<td><strong>Error rates</strong></td>
+<td>Mostly &lt;0.1%</td>
+<td>1-10% (ONT) / &lt;0.1-10% (PacBio)</td>
+</tr>
+<tr class="odd">
+<td><strong>Timeline</strong></td>
+<td>Since 2005 — technology fairly stable</td>
+<td>Since 2011 — remains under rapid development</td>
+</tr>
+<tr class="even">
+<td><strong>Usage</strong></td>
+<td>More common</td>
+<td>Less common</td>
+</tr>
 <tr class="odd">
 <td><strong>AKA</strong></td>
 <td>Next-Generation Sequencing (NGS)</td>
@@ -690,11 +730,11 @@ Sequencing of hundreds of thousands to billions of DNA fragments at a time. Thes
 <summary>
 <strong>Can you think of applications where longer reads are useful?</strong>
 </summary>
+<p>For example:</p>
 <ul>
 <li>Genome assembly</li>
-<li>Haplotype and large structural variant calling</li>
-<li>Transcript isoform identification</li>
 <li>Taxonomic identification of single reads (microbial metabarcoding)</li>
+<li>Transcript isoform identification</li>
 </ul>
 </details>
 </div>
@@ -704,6 +744,7 @@ Sequencing of hundreds of thousands to billions of DNA fragments at a time. Thes
 <summary>
 <strong>Can you think of applications where read length may not matter much?</strong>
 </summary>
+<p>For example:</p>
 <ul>
 <li>SNP variant analysis</li>
 <li>Read-as-a-tag: the goal is just to know a read’s origin in a reference genome, like in counting applications such as RNA-seq</li>
@@ -714,9 +755,15 @@ Sequencing of hundreds of thousands to billions of DNA fragments at a time. Thes
 <section id="hts-recap" class="slide level2">
 <h2>HTS recap</h2>
 <ul>
-<li><p>High-throughput sequencing produces the two most prevalent kinds of omics data: genomics and transcriptomics (as well as epigenomics data)</p></li>
-<li><p>Many different applications exist, several of which are functional in nature</p></li>
-<li><p>Three HTS technologies are most commonly used, and these produce either short (Illumina) or long (ONT and PacBio) reads</p></li>
+<li>High-throughput sequencing produces the two most prevalent kinds of omics data: genomics and transcriptomics (as well as epigenomics data)</li>
+</ul>
+<hr style="height:1pt; visibility:hidden;">
+<ul>
+<li>Many different applications exist; some are not just about determining the exact DNA sequence</li>
+</ul>
+<hr style="height:1pt; visibility:hidden;">
+<ul>
+<li>Three HTS technologies are most commonly used, and these produce either short (Illumina) or long (ONT and PacBio) reads</li>
 </ul>
 </section></section>
 <section>
@@ -740,11 +787,11 @@ Sequencing of hundreds of thousands to billions of DNA fragments at a time. Thes
 </div>
 <p><br></p>
 <div class="fragment">
-<p>In Illumina and other HTS libraries, these fragments <strong>number in the millions or billions</strong> and are <strong>often randomly generated</strong> from input such as genomic DNA:</p>
+<p>In Illumina and other HTS libraries, these fragments <strong>number in the millions or billions</strong> and are in some applications simply randomly generated from input such as genomic DNA:</p>
 <div style="margin-bottom: 0px;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="../img/library-prep_cropped.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img data-src="../img/library-prep_cropped.png" class="quarto-figure quarto-figure-center" alt="A diagram showing the main Illumina library preparation steps."></a></p>
+<p><a href="../img/library-prep_cropped.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img data-src="../img/library-prep_cropped.png" class="quarto-figure quarto-figure-center" alt="A diagram showing the main Illumina library preparation steps."></a></p>
 </figure>
 </div>
 </div>
@@ -759,7 +806,7 @@ Sequencing of hundreds of thousands to billions of DNA fragments at a time. Thes
 <p><br></p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="../img/adapters2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img data-src="../img/adapters2.png" class="quarto-figure quarto-figure-center" alt="A diagram of DNA fragment in a prepared library, with adapters flanking the fragment."></a></p>
+<p><a href="../img/adapters2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img data-src="../img/adapters2.png" class="quarto-figure quarto-figure-center" alt="A diagram of DNA fragment in a prepared library, with adapters flanking the fragment."></a></p>
 </figure>
 </div>
 <hr style="height:1pt; visibility:hidden;">
@@ -785,7 +832,7 @@ Sequencing of hundreds of thousands to billions of DNA fragments at a time. Thes
 this is called <strong>“paired-end” (PE) sequencing</strong>:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="../img/pairedend.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img data-src="../img/pairedend.png" class="quarto-figure quarto-figure-center" alt="A diagram showing forward and reverse reads in paired-end sequencing."></a></p>
+<p><a href="../img/pairedend.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img data-src="../img/pairedend.png" class="quarto-figure quarto-figure-center" alt="A diagram showing forward and reverse reads in paired-end sequencing."></a></p>
 </figure>
 </div>
 <div class="fragment">
@@ -793,7 +840,7 @@ this is called <strong>“paired-end” (PE) sequencing</strong>:</p>
 <p>When sequencing is instead <strong>single-end (SE)</strong>, no reverse read is produced:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="../img/singleend.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img data-src="../img/singleend.png" class="quarto-figure quarto-figure-center" alt="A diagram showing the forward read in single-end sequencing."></a></p>
+<p><a href="../img/singleend.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img data-src="../img/singleend.png" class="quarto-figure quarto-figure-center" alt="A diagram showing the forward read in single-end sequencing."></a></p>
 </figure>
 </div>
 </div>
@@ -806,7 +853,7 @@ this is called <strong>“paired-end” (PE) sequencing</strong>:</p>
 </ul>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="../img/insert_size_overlap.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img data-src="../img/insert_size_overlap.png" class="quarto-figure quarto-figure-center" style="width:70.0%" alt="A diagram illustrating the scenario when the DNA fragment is shorter than the combined read length"></a></p>
+<p><a href="../img/insert_size_overlap.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img data-src="../img/insert_size_overlap.png" class="quarto-figure quarto-figure-center" style="width:70.0%" alt="A diagram illustrating the scenario when the DNA fragment is shorter than the combined read length"></a></p>
 </figure>
 </div>
 <div class="fragment">
@@ -815,7 +862,7 @@ this is called <strong>“paired-end” (PE) sequencing</strong>:</p>
 </ul>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="../img/insert_size_adapter-read-through.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img data-src="../img/insert_size_adapter-read-through.png" class="quarto-figure quarto-figure-center" style="width:58.0%" alt="A diagram illustrating the scenario when the DNA fragment is shorter than the single read length"></a></p>
+<p><a href="../img/insert_size_adapter-read-through.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img data-src="../img/insert_size_adapter-read-through.png" class="quarto-figure quarto-figure-center" style="width:58.0%" alt="A diagram illustrating the scenario when the DNA fragment is shorter than the single read length"></a></p>
 </figure>
 </div>
 <div class="footer">
@@ -967,7 +1014,7 @@ A <strong>genome annotation</strong> format: tables with information such as coo
 <div class="fragment">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="../img/fastq_dark.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img data-src="../img/fastq_dark.png" class="quarto-figure quarto-figure-center" style="width:100.0%" alt="An annotated screenshot of two reads in a FASTQ file."></a></p>
+<p><a href="../img/fastq_dark.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img data-src="../img/fastq_dark.png" class="quarto-figure quarto-figure-center" style="width:100.0%" alt="An annotated screenshot of two reads in a FASTQ file."></a></p>
 </figure>
 </div>
 </div>
@@ -1032,6 +1079,7 @@ Q = -10 * log_{10}(P)
 <p>To make things a little more complicated: the numeric Phred quality score is represented in FASTQ files <em>not by the number itself</em>, but by a corresponding “ASCII character”.</p>
 <p>This allows for a single-character representation of each possible score — therefore, <strong>each quality score character can conveniently correspond to (&amp; line up with) a base character</strong> in the read.</p>
 <div class="fragment">
+<hr style="height:1pt; visibility:hidden;">
 <p>For example:</p>
 <table class="table-striped caption-top">
 <thead>
@@ -1066,9 +1114,23 @@ Q = -10 * log_{10}(P)
 </table>
 </div>
 </section>
+<section id="fastq-quality-scores-cont.-1" class="slide level2">
+<h2>FASTQ quality scores (cont.)</h2>
+<p>To make things a little more complicated: the numeric Phred quality score is represented in FASTQ files <em>not by the number itself</em>, but by a corresponding “ASCII character”.</p>
+<p>This allows for a single-character representation of each possible score — therefore, <strong>each quality score character can conveniently correspond to (&amp; line up with) a base character</strong> in the read.</p>
+<hr style="height:1pt; visibility:hidden;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><a href="../img/fastq_dark.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img data-src="../img/fastq_dark.png" class="quarto-figure quarto-figure-center" style="width:100.0%" alt="An annotated screenshot of two reads in a FASTQ file."></a></p>
+</figure>
+</div>
+</section>
 <section id="fastq-cont." class="slide level2">
 <h2>FASTQ (cont.)</h2>
-<p>FASTQ files have no size limit – but in paired-end (PE) sequencing, forward and reverse reads are typically <strong>in two separate files</strong>:</p>
+<p>How are reads organized into different FASTQ files? While FASTQ files can be any size, they are usually split by:</p>
+<ul>
+<li><p><strong>Read direction</strong><br>
+In paired-end (PE) sequencing, forward and reverse reads are typically in two separate files:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -1086,13 +1148,17 @@ Q = -10 * log_{10}(P)
 <td><code>_R2</code></td>
 </tr>
 </tbody>
-</table>
-<p><br></p>
-<p>Additionally, reads are normally “demultiplexed” into separate files for each sample. All in all, having paired-end FASTQ files for 2 samples typically looks something like this:</p>
+</table></li>
+<li><p><strong>Sample</strong><br>
+Reads are normally “demultiplexed” into separate files for each sample.</p></li>
+</ul>
+<div class="fragment">
+<p>With that, having paired-end FASTQ files for 2 samples typically looks something like this:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a></a><span class="ex">sample1_R1.fastq.gz</span></span>
 <span id="cb2-2"><a></a><span class="ex">sample1_R2.fastq.gz</span></span>
 <span id="cb2-3"><a></a><span class="ex">sample2_R1.fastq.gz</span></span>
 <span id="cb2-4"><a></a><span class="ex">sample2_R2.fastq.gz</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="gtfgff-files" class="slide level2">
 <h2>GTF/GFF files</h2>
@@ -1128,8 +1194,8 @@ Q = -10 * log_{10}(P)
 </div>
 </div>
 </section>
-<section id="sequence-file-types-1" class="slide level2">
-<h2>Sequence file types</h2>
+<section id="recap-sequence-file-types" class="slide level2">
+<h2>Recap: Sequence file types</h2>
 <ul>
 <li><p>FASTA</p></li>
 <li><p>FASTQ</p></li>
@@ -1147,7 +1213,7 @@ Q = -10 * log_{10}(P)
 <p><span class="citation" data-cites="garrigós2025">Garrigós et al. (<a href="#/references" role="doc-biblioref" onclick="">2025</a>)</span> – <em>Two avian Plasmodium species trigger different transcriptional responses on their vector Culex pipiens</em>:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="../img/garrigos_paper.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img data-src="../img/garrigos_paper.png" class="quarto-figure quarto-figure-center" style="width:80.0%" alt="A screenshot of the paper's front matter."></a></p>
+<p><a href="../img/garrigos_paper.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img data-src="../img/garrigos_paper.png" class="quarto-figure quarto-figure-center" style="width:80.0%" alt="A screenshot of the paper's front matter."></a></p>
 </figure>
 </div>
 </section>
@@ -1205,7 +1271,7 @@ Q = -10 * log_{10}(P)
 <h2>RNA-Seq analysis steps</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="../img/rnaseq-wf-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13"><img data-src="../img/rnaseq-wf-1.png" class="quarto-figure quarto-figure-center" style="width:60.0%" alt="A diagram showing the steps in an RNA-Seq analysis pipeline."></a></p>
+<p><a href="../img/rnaseq-wf-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img data-src="../img/rnaseq-wf-1.png" class="quarto-figure quarto-figure-center" style="width:60.0%" alt="A diagram showing the steps in an RNA-Seq analysis pipeline."></a></p>
 </figure>
 </div>
 </section>
@@ -1213,7 +1279,7 @@ Q = -10 * log_{10}(P)
 <h2>RNA-Seq analysis steps (cont.)</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="../img/rnaseq-wf-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14"><img data-src="../img/rnaseq-wf-2.png" class="quarto-figure quarto-figure-center" style="width:60.0%" alt="A diagram showing the steps in an RNA-Seq analysis pipeline."></a></p>
+<p><a href="../img/rnaseq-wf-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img data-src="../img/rnaseq-wf-2.png" class="quarto-figure quarto-figure-center" style="width:60.0%" alt="A diagram showing the steps in an RNA-Seq analysis pipeline."></a></p>
 </figure>
 </div>
 </section>
@@ -1221,7 +1287,7 @@ Q = -10 * log_{10}(P)
 <h2>RNA-Seq analysis steps (cont.)</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="../img/rnaseq-wf-3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15"><img data-src="../img/rnaseq-wf-3.png" class="quarto-figure quarto-figure-center" style="width:60.0%" alt="A diagram showing the steps in an RNA-Seq analysis pipeline."></a></p>
+<p><a href="../img/rnaseq-wf-3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13"><img data-src="../img/rnaseq-wf-3.png" class="quarto-figure quarto-figure-center" style="width:60.0%" alt="A diagram showing the steps in an RNA-Seq analysis pipeline."></a></p>
 </figure>
 </div>
 </section></section>
@@ -1235,15 +1301,40 @@ Q = -10 * log_{10}(P)
 <h1>Bonus slides</h1>
 
 </section>
+<section id="omics-data-types" class="slide level2">
+<h2>Omics data types</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><a href="../img/fisher-omics.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14"><img data-src="../img/fisher-omics.png" class="quarto-figure quarto-figure-center" style="width:70.0%" alt="A diagram showing the main omics data types."></a></p>
+</figure>
+</div>
+<div class="legend2">
+<p>Copyright <a href="https://www.thermofisher.com/us/en/home/brands/thermo-scientific/molecular-biology/molecular-biology-learning-center/molecular-biology-resource-library/spotlight-articles/supporting-multi-omics-approaches.html">ThermoFisher</a></p>
+</div>
+</section>
 <section id="sequencing-technology-development-timeline" class="slide level2">
 <h2>Sequencing technology development timeline</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="../img/seq_timeline2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-16"><img data-src="../img/seq_timeline2.png" class="quarto-figure quarto-figure-center" style="width:70.0%" alt="A graphical overview of developments in sequencing technology over time"></a></p>
+<p><a href="../img/seq_timeline2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15"><img data-src="../img/seq_timeline2.png" class="quarto-figure quarto-figure-center" style="width:70.0%" alt="A graphical overview of developments in sequencing technology over time"></a></p>
 </figure>
 </div>
 <div class="legend2">
 <p>Modified after <span class="citation" data-cites="pereira2020">Pereira, Oliveira, and Sousa (<a href="#/references" role="doc-biblioref" onclick="">2020</a>)</span></p>
+</div>
+</section>
+<section id="hts-applications" class="slide level2">
+<h2>HTS applications</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><a href="../img/lee2013.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-16"><img data-src="../img/lee2013.gif" class="quarto-figure quarto-figure-center" style="width:67.0%" alt="An annotated diagram of omics data types and associated molecular components."></a></p>
+</figure>
+</div>
+<div class="legend2">
+<p>From <span class="citation" data-cites="lee2023">Lee (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span></p>
+</div>
+<div class="footer">
+
 </div>
 </section>
 <section id="the-sequencing-process-illumina" class="slide level2">
