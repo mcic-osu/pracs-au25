@@ -34,9 +34,7 @@ editor_options:
 bibliography: ../references.bib
 ---
 
-# Goals for this lecture {background-color="silver"}
-
-## In this lecture, you will get:
+## Goals for this lecture
 
 - A brief general overview of **omics data**
 
@@ -48,9 +46,7 @@ bibliography: ../references.bib
 
 - An idea of what **reference genomes** are and what they are for
 
-- An overview of key sequence **file types** (FASTA, FASTQ, etc.)
-
-- An intro to the course's main **example dataset**
+- An overview of the course's main **example dataset**
 
 # An overview of omics data {background-color="silver"}
 
@@ -65,9 +61,9 @@ Copyright [ThermoFisher](https://www.thermofisher.com/us/en/home/brands/thermo-s
 ## The main omics data types (cont.)
 
 | Omics type       | Molecule type      |               |
-|------------------|--------------------|:-----------------------------:|
+|------------------|--------------------|-----------------------------|
 | Genomics         | DNA                | |
-| Epigenomics      | DNA modifications  | |
+| Epigenomics      | DNA modifications  | [**High-throughput sequencing (HTS)**]{style="color:white"} |
 | Transcriptomics  | RNA                | |
 | Proteomics       | Proteins           | |
 | Metabolomics     | Metabolites        | |
@@ -93,20 +89,18 @@ and running qPCR for a handful of genes is not transcriptomics.
 
 | Omics type       | Molecule type      | Data mainly produced by              |
 |------------------|--------------------|-----------------------------|
-| Genomics         | DNA                | High-throughput sequencing  |
-| Epigenomics      | DNA modifications  | High-throughput sequencing  |
-| Transcriptomics  | RNA                | High-throughput sequencing  |
-| Proteomics       | Proteins           | Mass Spectometry       |
-| Metabolomics     | Metabolites        | Mass Spectometry       |
+| Genomics         | DNA                | [**High-throughput sequencing (HTS)**]{style="color:#00A087FF"}  |
+| Epigenomics      | DNA modifications  | [**High-throughput sequencing (HTS)**]{style="color:#00A087FF"}  |
+| Transcriptomics  | RNA                | [**High-throughput sequencing (HTS)**]{style="color:#00A087FF"}  |
+| Proteomics       | Proteins           | [**Mass Spectometry**]{style="color:#3C5488FF"}       |
+| Metabolomics     | Metabolites        | [**Mass Spectometry**]{style="color:#3C5488FF"}       |
 
 : {.striped}
 
 <br>
 
-Genomics, epigenomics, and transcriptomics data are produced by
-**High-Throughput Sequencing** (HTS) technologies.
-HTS and the resulting data are the focus of this lecture are used in examples
-throughout the course.
+HTS and the resulting data are the focus of the rest of this lecture,
+and used in examples throughout the course.
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -120,14 +114,24 @@ including epigenomics and transcriptomics data
 
 ## Learn more in this week's first reading
 
-> @poinsignon2023: *Working with omics data: An interdisciplinary challenge at the crossroads of biology and computer science*
+@poinsignon2023: *Working with omics data: An interdisciplinary challenge at the crossroads of biology and computer science*
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: {style="margin-bottom: 0px;"}
+![](../img/poinsignon2023_Fig2.webp){width="65%" fig-align="center" fig-alt="A diagram showing how different kinds of omics data are produced and analyzed." .lightbox}
+:::
+
+::: legend2
+Figure 2 from the paper.
+:::
 
 # High-throughput sequencing (HTS) {background-color="silver"}
 
-## An overview of sequencing technologies
+## Sanger vs. high-throughput sequencing
 
 **Sanger sequencing (since 1977)**\
-Sequencing of a single, short-ish (≤900 bp) DNA fragment at a time.
+Sequencing of a single, short DNA fragment at a time.
 The fragment is typically PCR-amplified and therefore specifically targeted.
 
 . . .
@@ -136,38 +140,75 @@ The fragment is typically PCR-amplified and therefore specifically targeted.
 
 **High-throughput sequencing (HTS, since 2005)**\
 Sequencing of hundreds of thousands to billions of DNA fragments at a time.
-Fragments can be targeted or randomly selected.
-
-<hr style="height:1pt; visibility:hidden;" />
-
-. . .
-
-::: callout-tip
-#### "Sequencing" and "reads"
-Here, the shorthand "sequencing" refers to the
-**determination of the nucleotide sequence of DNA fragments**.
-Sequenced DNA fragments are referred to as "reads".
-::::
+Fragments can be targeted in various ways or randomly generated from input DNA.
 
 <hr style="height:1pt; visibility:hidden;" />
 
 . . .
 
 ::: callout-important
-#### All sequencing technologies involve some degree of error
-The sequences in reads are never 100% accurate,
+#### Reads and sequencing errors
+Sequenced DNA fragments are referred to as "**reads**".
+With current technologies, reads are never 100% accurate,
 and this has large consequences for downstream analyses.
 ::::
 
-## Sequencing costs have declined sharply
+## The main HTS technologies
 
-...with the advent of HTS.
+| | Short-read HTS   | Long-read HTS
+|---|-------|-------|
+[**Main companies**]{style="color:white"}  | [Illumina]{style="color:white"}                | [Oxford Nanopore Technologies (ONT) & Pacific Biosciences (PacBio)]{style="color:white"}
 
-![](../img/2022_Sequencing_cost_per_Human_Genome.jpg){width="80%" fig-align="center" fig-alt="A graph showing falling sequenicng costs over time." .lightbox}
+## The main HTS technologies
 
-:::legend2
-<https://www.genome.gov/about-genomics/fact-sheets/Sequencing-Human-Genome-cost>
-:::
+| | Short-read HTS   | Long-read HTS
+|---|-------|-------|
+**Usage**           | Most common                    | Less common (but increasing)
+**Main companies**  | Illumina                | Oxford Nanopore Technologies (ONT) & Pacific Biosciences (PacBio)
+**Timeline**        | Since 2005 — [technology fairly stable]{style="color:crimson"} | Since 2011 — [still rapid development]{style="color:green"}
+
+: {.striped}
+
+## The main HTS technologies
+
+|                   | Short-read HTS          | Long-read HTS
+|---|-------|-------|
+**Usage**           | Most common                    | Less common (but increasing)
+**Main companies**  | Illumina                | Oxford Nanopore Technologies (ONT) & Pacific Biosciences (PacBio)
+**Timeline**        | Since 2005 — [technology fairly stable]{style="color:crimson"} | Since 2011 — [still rapid development]{style="color:green"}
+**Read lengths**    | [50-300 bp]{style="color:crimson"}               | [10-100+ kbp]{style="color:green"}
+**Error rates**     | [Mostly <0.1%]{style="color:green"}            | [1-10% (ONT) / <0.1-10% (PacBio)]{style="color:crimson"}
+**Throughput**    | [Higher]{style="color:green"} | [Lower]{style="color:crimson"}
+**Cost per base**    | [Lower]{style="color:green"} | [Higher]{style="color:crimson"}
+
+: {.striped}
+
+## The main HTS technologies
+
+|                   | Short-read HTS          | Long-read HTS
+|---|-------|-------|
+**Usage**           | Most common                    | Less common (but increasing)
+**Main companies**  | Illumina                | Oxford Nanopore Technologies (ONT) & Pacific Biosciences (PacBio)
+**Timeline**        | Since 2005 — [technology fairly stable]{style="color:crimson"} | Since 2011 — [still rapid development]{style="color:green"}
+**Read lengths**    | [50-300 bp]{style="color:crimson"}               | [10-100+ kbp]{style="color:green"}
+**Error rates**     | [Mostly <0.1%]{style="color:green"}            | [1-10% (ONT) / <0.1-10% (PacBio)]{style="color:crimson"}
+**Throughput**    | [Higher]{style="color:green"} | [Lower]{style="color:crimson"}
+**Cost per base**    | [Lower]{style="color:green"} | [Higher]{style="color:crimson"}
+**AKA**             | Next-Generation Sequencing (NGS) | Third-generation sequencing
+
+: {.striped}
+
+## Video of Illumina technology
+
+{{< video https://www.youtube.com/watch?v=fCd6B5HRaZ8 width="95%" height="81%" >}}
+
+## Video of Oxford Nanopore technology
+
+{{< video https://www.youtube.com/watch?v=RcP85JHLmnI width="95%" height="81%" >}}
+
+## Video of Pacific Biosciences technology
+
+{{< video https://www.youtube.com/watch?v=_lD8JyAbwEo width="95%" height="81%" >}}
 
 ## Examples of HTS applications
 
@@ -191,15 +232,39 @@ and this has large consequences for downstream analyses.
   - Metabarcoding
   - Shotgun metagenomics
 
-## The two stages of many omics analyses
+## Read lengths
 
-Omics data analysis can often be divided into **two consecutive stages**:
+<details><summary>**Can you think of applications where longer reads are useful?**</summary>
+
+For example:
+
+- Genome assembly
+- Taxonomic identification of single reads (microbial metabarcoding)
+</details>
+
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+<details><summary>**Can you think of applications where read length may not matter much?**</summary>
+
+For example:
+
+- (SNP) variant analysis
+- Read-as-a-tag: the goal is just to know a read's origin in a reference genome,
+  like in counting applications such as RNA-seq.
+</details>
+
+## The two stages of many HTS analyses
+
+HTS and other omics data analysis can often be roughly divided into
+**two consecutive stages**:
 
 <hr style="height:1pt; visibility:hidden;" />
 
 . . .
 
-1. **Algorithmic/bioinformatic data processing**
+1. **Algorithm-heavy initial data processing**
    - [_For example: alignment of reads to a genome_]{style="color:olive"}
    - This is typically done in a **Unix shell** environment using a **supercomputer**
    - These steps are often relatively standardized, automatable, and "non-interactive"
@@ -208,15 +273,15 @@ Omics data analysis can often be divided into **two consecutive stages**:
 
 <hr style="height:1pt; visibility:hidden;" />
 
-2. **Biostatistical downstream analysis**
-   - [_For example: comparing expression levels of genes between treatments_]{style="color:olive"}
+2. **Downstream statistical analysis and visualization**
+   - [_For example: comparing expression levels of genes between groups_]{style="color:olive"}
    - This is typically done in **R** and is typically possible to do on a laptop
    - This is often highly interactive and iterative,
      and less standardized and automatable than the previous stage.
      
 ## Examples of HTS data analyses
 
-**Stage I: The algorithmic/bioinformatic parts**
+**Stage I**
 
 - Read quality control (QC) and trimming
 - Read alignment to a reference genome
@@ -228,106 +293,13 @@ Omics data analysis can often be divided into **two consecutive stages**:
 
 . . .
 
-**Stage II: The biostatistical part**
+**Stage II**
 
 - Differential abundance of gene (RNA-Seq) or taxon (metabarcoding) counts
   among groups
 - Clustering/ordination and network analyses
 - Genome-wide Association Studies (GWAS)
 - Statistical enrichment of functional gene categories (e.g. Gene Ontology)
-
-## The main HTS technologies
-
-| | Short-read HTS   | Long-read HTS
-|---|-------|-------|
-**Overview**    | Produces up to billions of short, highly accurate reads | Produces longer but fewer, less accurate, and more costly reads
-**Main companies**  | Illumina                | Oxford Nanopore Technologies (ONT) and Pacific Biosciences (PacBio)
-
-: {.striped}
-
-## The main HTS technologies
-
-| | Short-read HTS   | Long-read HTS
-|---|-------|-------|
-**Overview**    | Produces up to billions of short, highly accurate reads | Produces longer but fewer, less accurate, and more costly reads
-**Main companies**  | Illumina                | Oxford Nanopore Technologies (ONT) and Pacific Biosciences (PacBio)
-**Read lengths**    | 50-300 bp               | PacBio: 10-50 kbp / ONT: 10-100+ kbp
-**Error rates**     | Mostly <0.1%            | 1-10% (ONT) / <0.1-10% (PacBio)
-
-: {.striped}
-
-## The main HTS technologies
-
-|                   | Short-read HTS          | Long-read HTS
-|---|-------|-------|
-**Overview**    | Produces up to billions of short, highly accurate reads | Produces longer but fewer, less accurate, and more costly reads
-**Main companies**  | Illumina                | Oxford Nanopore Technologies (ONT) and Pacific Biosciences (PacBio)
-**Read lengths**    | 50-300 bp               | PacBio: 10-50 kbp / ONT: 10-100+ kbp
-**Error rates**     | Mostly <0.1%            | 1-10% (ONT) / <0.1-10% (PacBio)
-**Timeline**        | Since 2005 — technology fairly stable | Since 2011 — remains under rapid development
-**Usage**           | More common             | Less common
-
-: {.striped}
-
-## The main HTS technologies
-
-|                   | Short-read HTS          | Long-read HTS
-|---|-------|-------|
-**Overview**    | Produces up to billions of short, highly accurate reads | Produces longer but fewer, less accurate, and more costly reads
-**Main companies**  | Illumina                | Oxford Nanopore Technologies (ONT) and Pacific Biosciences (PacBio)
-**Read lengths**    | 50-300 bp               | PacBio: 10-50 kbp / ONT: 10-100+ kbp
-**Error rates**     | Mostly <0.1%            | 1-10% (ONT) / <0.1-10% (PacBio)
-**Timeline**        | Since 2005 — technology fairly stable | Since 2011 — remains under rapid development
-**Usage**           | More common             | Less common
-**AKA**             | Next-Generation Sequencing (NGS) | Third-generation sequencing
-
-: {.striped}
-
-## Video of Illumina technology
-
-{{< video https://www.youtube.com/watch?v=fCd6B5HRaZ8 width="95%" height="81%" >}}
-
-## Video of Oxford Nanopore technology
-
-{{< video https://www.youtube.com/watch?v=RcP85JHLmnI width="95%" height="81%" >}}
-
-## Video of Pacific Biosciences technology
-
-{{< video https://www.youtube.com/watch?v=_lD8JyAbwEo width="95%" height="81%" >}}
-
-## More on read lengths and error rates
-
-- Choosing between short-read and long-read technology has often involved a
-  trade-off between **accuracy** and **read-length**.
-
-- However: error rates of long-read technologies are rapidly decreasing.
-  (While _per-base costs_ remain much higher for long-read sequencing.)
-
-<br>
-
-. . .
-
-<details><summary>**Can you think of applications where longer reads are useful?**</summary>
-
-For example:
-
-- Genome assembly
-- Taxonomic identification of single reads (microbial metabarcoding)
-- Transcript isoform identification
-</details>
-
-. . .
-
-<hr style="height:1pt; visibility:hidden;" />
-
-<details><summary>**Can you think of applications where read length may not matter much?**</summary>
-
-For example:
-
-- SNP variant analysis
-- Read-as-a-tag: the goal is just to know a read's origin in a reference genome,
-  like in counting applications such as RNA-seq
-</details>
 
 ## HTS recap
 
@@ -336,14 +308,14 @@ For example:
 
 <hr style="height:1pt; visibility:hidden;" />
 
-- Many different applications exist;
-  some are not just about determining the exact DNA sequence
-
-<hr style="height:1pt; visibility:hidden;" />
-
 - Three HTS technologies are most commonly used,
   and these produce either short (Illumina) or long (ONT and PacBio) reads
 
+<hr style="height:1pt; visibility:hidden;" />
+
+- Many different applications exist;
+  some are not just about determining the exact DNA sequence
+  
 # Illumina libraries and sequencing {background-color="silver"}
 
 ## Libraries and library prep
@@ -364,7 +336,7 @@ and we'll use Illumina read files as examples throughout the course.
 . . .
 
 In Illumina and other HTS libraries,
-these fragments **number in the millions or billions** and are in some applications
+these fragments **number in the millions or billions** and are often
 simply randomly generated from input such as genomic DNA:
 
 ::: {style="margin-bottom: 0px;"}
@@ -415,23 +387,30 @@ When sequencing is instead **single-end (SE)**, no reverse read is produced:
 
 ## Insert size variation
 
-The size of the DNA fragment (the "**insert size**" ) can vary --
-both by design and because of limited precision in size selection.
+The DNA fragment's size ("**insert size**" ) can vary --
+by design, but also because of limited precision in size selection.
 In some cases, it is:
 
-- Shorter than the *combined* read length, leading to **overlapping reads** (this can be useful):
+<hr style="height:1pt; visibility:hidden;" />
+
+<details><summary>Shorter than the *combined* read length, which leads to?</summary>
+
+- **Overlapping reads** (this can be useful!):
 
 ![](../img/insert_size_overlap.png){fig-align="center" width="70%" fig-alt="A diagram illustrating the scenario when the DNA fragment is shorter than the combined read length" .lightbox}
 
+</details>
+
 . . .
 
-- Shorter than the *single* read length, leading to "**adapter read-through**"
-  (i.e., the ends of the resulting reads will consist of adapter sequence, which should be removed):
+<details><summary>Shorter than the *single* read length, which leads to?</summary>
+
+- "**Adapter read-through**": the final bases in the resulting reads will consist of
+  adapter sequence, which should be removed before moving on.
 
 ![](../img/insert_size_adapter-read-through.png){fig-align="center" width="58%" fig-alt="A diagram illustrating the scenario when the DNA fragment is shorter than the single read length" .lightbox}
 
-::: footer
-:::
+</details>
 
 # Reference genomes {background-color="silver"}
 
@@ -447,9 +426,8 @@ What exactly does reference genome refer to? It usually includes:
   A representation of most or all of the genome DNA sequence: the genome assembly
 
 - **An annotation**\
-  This provides, for example, the *locations of genes and other genomic features*
-  in the corresponding genome assembly,
-  as well as functional information on these features
+  Provides e.g. *locations of genes and other genomic "features"*
+  in the corresponding genome assembly, and functional information for these features
 
 . . .
 
@@ -474,9 +452,8 @@ What exactly does reference genome refer to? It usually includes:
   A representation of most or all of the genome DNA sequence: the genome assembly
 
 - **An annotation**\
-  This provides, for example, the *locations of genes and other genomic features*
-  in the corresponding genome assembly,
-  as well as functional information on these features
+  Provides e.g. *locations of genes and other genomic "features"*
+  in the corresponding genome assembly, and functional information for these features
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -493,7 +470,7 @@ Therefore, in addition to complete chromosome sequences, assemblies may contain:
 
 ## Illumina and reference genome recap
 
-- **Library prep** makes nucleic acid molecules ready for sequencing,
+- **Library prep** makes nucleic acid fragments ready to be sequenced,
   e.g. by attaching adapter and sample barcode sequences
   
 - **Illumina sequencing** is often done with paired-end reads,
@@ -507,307 +484,57 @@ Therefore, in addition to complete chromosome sequences, assemblies may contain:
   for your species or intraspecific variant of interest.
   If you don't have one, your first step may be to generate one.
 
-# Sequence file types {background-color="silver"}
-
-## Overview
-
-Sequences and annotations are mostly stored in **plain-text** formats.
-Some of the most common types, which you'll work with in this course, are:
-
-- **FASTA**\
-  Simple sequence files, where each entry contains a header and a DNA/AA sequence.\
-  Versatile: may contain a few short sequences, entire genome assemblies, proteomes, ...
-
-<hr style="height:1pt; visibility:hidden;" />
-
-. . .
-
-- **FASTQ**\
-  The standard format for **HTS reads** — has a quality score for each nucleotide.
-
-<hr style="height:1pt; visibility:hidden;" />
-
-- **SAM/BAM**\ _[(not further discussed today)]{style="color:#969696"}_  
-  An alignment format for **HTS reads**.
-  E.g. produced when you align reads to a genome.
-    
-. . .
-
-<hr style="height:1pt; visibility:hidden;" />
-
-. . .
-
-- **GTF**/**GFF**\
-  A **genome annotation** format:
-  tables with information such as coordinates of genes and exons.
-
-## FASTA files
-
-FASTA files contain one or more DNA or amino acid sequences,
-with no limits on the number of sequences or the sequence lengths.
-
-The following example FASTA file contains two entries:
-
-``` bash
->unique_sequence_ID Optional description
-ATTCATTAAAGCAGTTTATTGGCTTAATGTACATCAGTGAAATCATAAATGCTAAAAA
->unique_sequence_ID2
-ATTCATTAAAGCAGTTTATTGGCTTAATGTACATCAGTGAAATCATAAATGCTAAATG
-```
-
-. . .
-
-<hr style="height:1pt; visibility:hidden;" />
-
-Each entry contains a **header** and the **sequence** itself, where:
-
-- Header lines start with a "`>`" and provide identifying information for the sequence
-- The sequence is often spread across multiple lines (with a fixed line width like 50 characters)
-
-## FASTQ files
-
-FASTQ is the standard format for HTS reads.
-**Each** **read forms** **one FASTQ entry** and is represented by four lines,
-which contain, respectively:
-
-. . .
-
-1.  A **header** that starts with `@` and e.g. uniquely identifies the read
-2.  The **sequence** itself
-3.  A **`+`** (plus sign)
-4.  One-character **quality scores** for each base (hence FASTQ as in "Q" for "quality")
-
-. . .
-
-![](../img/fastq_dark.png){fig-align="center" width="100%" fig-alt="An annotated screenshot of two reads in a FASTQ file." .lightbox}
-
-## FASTQ quality scores
-
-The quality scores in the reads represent an estimate of the error probability of
-the base call.
-
-Specifically, they correspond to a numeric "Phred" quality score ($Q$),
-which is a function of the estimated probability that a base call is erroneous ($P$ ):
-
-$$
-Q = -10 * log_{10}(P)
-$$
-
-. . .
-
-For example:
-
-$$
--10 * log_{10}(0.1) = 10
-$$
-
-## FASTQ quality scores
-
-The quality scores in the reads represent an estimate of the error probability of
-the base call.
-
-Specifically, they correspond to a numeric "Phred" quality score ($Q$),
-which is a function of the estimated probability that a base call is erroneous ($P$ ):
-
-$$
-Q = -10 * log_{10}(P)
-$$
-
-<br>
-
-Some specific probabilities and their rough qualitative interpretation for Illumina data:
-
-| Phred quality score | Error probability | Rough interpretation |
-|:---------------------:|-------------------|----------------------|
-| **10**              | 1 in 10           | terrible             |
-| **20**              | 1 in 100          | bad                  |
-| **30**              | 1 in 1,000        | good                 |
-| **40**              | 1 in 10,000       | excellent            |
-
-: {.striped}
-
-## FASTQ quality scores (cont.)
-
-To make things a little more complicated:
-the numeric Phred quality score is represented in FASTQ files
-*not by the number itself*,
-but by a corresponding "ASCII character".
-
-This allows for a single-character representation of each possible score —
-therefore,
-**each quality score character can conveniently correspond to (& line up with) a base character**
-in the read.
-
-. . .
-
-<hr style="height:1pt; visibility:hidden;" />
-
-For example:
-
-| Phred quality score | Error probability | ASCII character |
-|:----:|--------------|:----:|
-| **10**              | 1 in 10           | `+`             |
-| **20**              | 1 in 100          | `5`             |
-| **30**              | 1 in 1,000        | `?`             |
-| **40**              | 1 in 10,000       | `I`             |
-
-: {.striped}
-
-## FASTQ quality scores (cont.)
-
-To make things a little more complicated:
-the numeric Phred quality score is represented in FASTQ files
-*not by the number itself*,
-but by a corresponding "ASCII character".
-
-This allows for a single-character representation of each possible score —
-therefore,
-**each quality score character can conveniently correspond to (& line up with) a base character**
-in the read.
-
-<hr style="height:1pt; visibility:hidden;" />
-
-![](../img/fastq_dark.png){fig-align="center" width="100%" fig-alt="An annotated screenshot of two reads in a FASTQ file." .lightbox}
-
-## FASTQ (cont.)
-
-How are reads organized into different FASTQ files?
-While FASTQ files can be any size, they are usually split by:
-
-- **Read direction**\
-  In paired-end (PE) sequencing,
-  forward and reverse reads are typically in two separate files:
-
-  | Read direction | File name identifier |
-  |----|--------------|
-  | Forward | `_R1` |
-  | Reverse | `_R2` |
-
-- **Sample**\
-  Reads are normally "demultiplexed" into separate files for each sample.
-
-. . .
-
-With that,
-having paired-end FASTQ files for 2 samples typically looks something like this:
-
-``` bash
-sample1_R1.fastq.gz
-sample1_R2.fastq.gz
-sample2_R1.fastq.gz
-sample2_R2.fastq.gz
-```
-
-## GTF/GFF files
-
-The very similar GTF and GFF formats are **tabular** genome annotation files with:
-
-- One row for each annotated "**genomic feature**" (gene, exon, etc.)
-- Columns with information like the genomic coordinates of the features
-
-. . .
-
-After a metadata header, the tabular part looks like this
-(column names added for clarity):
-
-```bash
-#seqname      source  feature     start   end     score  strand  frame    attributes
-NC_068937.1   Gnomon  gene        2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
-NC_068937.1   Gnomon  transcript  2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; 
-NC_068937.1   Gnomon  exon        2046    2531    .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "1"; 
-NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "2"; 
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: callout-note
-#### Details for a few columns:
-
-- _seqname_ -- Name of the chromosome, scaffold, or contig
-- _source_ --- Name of the program that generated this feature, or the data source (e.g. database)
-- _attribute_ --- A semicolon-separated list of tag-value pairs with additional information
-:::
-
-## Recap: Sequence file types
-
-- FASTA
-
-- FASTQ
-
-- GTF/GFF
-  
 # The course's main example dataset {background-color="silver"}
 
-## Garrigos et al. 2025
+## Garrigós et al. 2025
 
-Throughout the course, we will use an example/practice data set,
-which is from the paper:
+Throughout the course, we'll use an example/practice data set from 
+@garrigós2025:
 
-@garrigós2025 --
-*Two avian Plasmodium species trigger different transcriptional responses on their vector Culex pipiens*:
+![](../img/garrigos_paper.png){fig-align="center" width="75%" fig-alt="A screenshot of the paper's front matter." .lightbox}
 
-![](../img/garrigos_paper.png){fig-align="center" width="80%" fig-alt="A screenshot of the paper's front matter." .lightbox}
+This paper uses **paired-end Illumina RNA-Seq data** to study gene expression in
+*Culex pipiens* mosquitos infected with two different malaria-causing *Plasmodium*
+protozoans.
 
-## Experimental design
+## Stage I of the RNA-Seq analysis
 
-This paper uses RNA-Seq data to study gene expression in *Culex pipiens* mosquitos
-infected with malaria-causing *Plasmodium* protozoans ---
-specifically, it compares mosquitos according to:
+The first stage involves going from **reads to gene counts**:
 
-- **Infection status**: control vs. *Plasmodium cathemerium* vs. *P. relictum*
-- **Time after infection**: 1 vs. 10 vs. 21 days (DAI)
+TBA
 
-All in all, the experimental design contains the following number of samples
-(biological replicates) for each treatment combination:
+## Stage I of the RNA-Seq analysis (cont.)
 
-|        | Control | _P. cathemerium_ | _P. relictum_ | 
-|--------|:---------:|:--------:|:---------:|
-| **01 DAI** |    3    |     3  |   4 
-| **10 DAI** |    4    |     4  |   4 
-| **21 DAI** |    4    |     4  |   3
+This is what the Adobe Firefly AI came up with when I tried to get
+it to help me with producing the diagram on the previous slide 👌 💯
 
-: {.striped}
+![](../img/firefly_diagram.png){fig-align="center" width="45%" fig-alt="Adobe Firefly's image when asking it create a diagram of RNA-Seq analysis steps." .lightbox}
 
-## The dataset's files
+## Stage II of the RNA-Seq analysis
 
-However, to keep things manageable while practicing,
-I have **subset** the data to omit the 21-day samples and only keep 500,000
-reads per FASTQ file.
+The second stage is the **analysis of the gene counts**.
+It compares them between treatments to see e.g. which genes (and functions)
+are upregulated by a certain treatment.
 
-All in all, the set of files, [available through GitHub](https://github.com/jelmerp/garrigos-data),
-consists of:
+![](../img/geneplot.png){fig-align="center" width="55%" fig-alt="A plot comparing gene expression levels for a single gene between two treatments." .lightbox}
 
-- **Sequence data**: 44 paired-end 75-bp Illumina FASTQ files for 22 samples.
-- A **Reference genome annotation** GTF file for _Culex pipiens_
-  (we will download the assembly FASTA file separately)
-- **Metadata** (sample data): A table with e.g. treatment info for each sample
-- A **README** file describing the data set.
+## What's next?
 
-## RNA-Seq analysis steps
+At the beginning of week 3,
+we'll discuss some related and follow-up material to today's lecture:
 
-![](../img/rnaseq-wf-1.png){fig-align="center" width="60%" fig-alt="A diagram showing the steps in an RNA-Seq analysis pipeline." .lightbox}
+- Sequence file types (like the FASTQ format that contains HTS reads)
 
-## RNA-Seq analysis steps (cont.)
+- More details on the Garrigós dataset (and the paper will be reading material for that week)
 
-![](../img/rnaseq-wf-2.png){fig-align="center" width="60%" fig-alt="A diagram showing the steps in an RNA-Seq analysis pipeline." .lightbox}
-
-## RNA-Seq analysis steps (cont.)
-
-![](../img/rnaseq-wf-3.png){fig-align="center" width="60%" fig-alt="A diagram showing the steps in an RNA-Seq analysis pipeline." .lightbox}
+- A more detailed overview of the data processing and analysis steps we will
+  perform on the Garrigós dataset
 
 # Questions? {background-color="silver"}
 
 <br><br><br><br>
 
 # Bonus slides
-
-## Omics data types
-
-![](../img/fisher-omics.png){fig-align="center" width="70%" fig-alt="A diagram showing the main omics data types." .lightbox}
-
-::: legend2
-Copyright [ThermoFisher](https://www.thermofisher.com/us/en/home/brands/thermo-scientific/molecular-biology/molecular-biology-learning-center/molecular-biology-resource-library/spotlight-articles/supporting-multi-omics-approaches.html)
-:::
 
 ## Sequencing technology development timeline
 
@@ -816,6 +543,17 @@ Copyright [ThermoFisher](https://www.thermofisher.com/us/en/home/brands/thermo-s
 ::: legend2
 Modified after @pereira2020
 :::
+
+## Sequencing costs have declined sharply
+
+...with the advent of HTS.
+
+![](../img/2022_Sequencing_cost_per_Human_Genome.jpg){width="80%" fig-align="center" fig-alt="A graph showing falling sequenicng costs over time." .lightbox}
+
+:::legend2
+<https://www.genome.gov/about-genomics/fact-sheets/Sequencing-Human-Genome-cost>
+:::
+
 
 ## HTS applications
 
@@ -883,5 +621,21 @@ _Typical depths of coverage: ~50-100x for genome assembly; 10-30x for resequenci
 ::: legend2
 @konkel2023
 :::
+
+## From samples to reads for RNA-Seq
+
+![](../img/samples2reads.png)
+
+## Overview of all key RNA-Seq analysis steps
+
+![](../img/rnaseq-wf-1.png){fig-align="center" width="60%" fig-alt="A diagram showing the steps in an RNA-Seq analysis pipeline." .lightbox}
+
+## Overview of all key RNA-Seq analysis steps (cont.)
+
+![](../img/rnaseq-wf-2.png){fig-align="center" width="60%" fig-alt="A diagram showing the steps in an RNA-Seq analysis pipeline." .lightbox}
+
+## Overview of all key RNA-Seq analysis steps (cont.)
+
+![](../img/rnaseq-wf-3.png){fig-align="center" width="60%" fig-alt="A diagram showing the steps in an RNA-Seq analysis pipeline." .lightbox}
 
 ## References

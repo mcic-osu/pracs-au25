@@ -1,6 +1,6 @@
 ---
 title: "The Ohio Supercomputer Center (OSC)"
-subtitle: "Week 1 -- Lecture III"
+subtitle: "Week 1 -- Lecture C"
 pagetitle: "w1c: OSC Intro"
 date: 2025-08-22
 author:
@@ -45,15 +45,15 @@ editor_options:
 
 ### Overview
 
-This session introduces high-performance computing in general
-and the Ohio Supercomputer Center (OSC) more specifically. 
+This session introduces high-performance computing 
+and the Ohio Supercomputer Center (OSC).
 
 This is only meant as a brief overview to give you some context about
 the working environment that you will start using next week:
-you will do all your coding and computing at OSC during this course.
-During the course, then,
-you'll learn a lot more about most topics that we will touch on here.
-Also, a [deeper dive into OSC will follow in week 5](../week05/w5a_osc.qmd).
+**you will do all your coding and computing at OSC during this course**.
+
+Along the way, you'll learn a lot more about most topics that we will touch on here.
+Specifically, a deeper dive into OSC will follow in week 5.
 
 ### Learning goals
 
@@ -68,8 +68,12 @@ In this session, you will learn:
 A **supercomputer** (also known as a "compute cluster" or simply a "**cluster**")
 consists of many computers that are connected by a high-speed network,
 and that can be _accessed remotely_ by its users.
-In more general terms,
-supercomputers provide high-performance computing (**HPC**) resources.
+
+Supercomputers provide high-performance computing (**HPC**) resources,
+which consists of two main aspects:
+
+- "Compute": computing power to run your data processing and analysis
+- Storage: space for (long-term) storage of your data and results
 
 This is what Cardinal, one of the OSC supercomputers, physically looks like:
 
@@ -85,35 +89,33 @@ Here are some possible reasons to use a supercomputer instead of your own laptop
 - Your analyses require specialized hardware, such as GPUs (Graphical Processing Units).
 
 **When you're working with omics data, many of these reasons typically apply.**
-This can make it hard or sometimes simply impossible to run all your analyses on your
+This can make it hard or impossible to run all your analyses on your
 personal workstation, and supercomputers provide a solution.
 
-#### The Ohio Supercomputer Center (OSC)
+## The Ohio Supercomputer Center (OSC)
 
 The Ohio Supercomputer Center (OSC) is a facility provided by the state of Ohio.
 It has several supercomputers, lots of storage space,
 and an excellent infrastructure for accessing these resources.
 
-::: {.callout-note}
-#### OSC websites and "Projects"
+Access to OSC's compute and storage goes through **OSC "Projects"**:
 
-OSC has **three main websites** --- we will nearly exclusively use the first here:
+- A project can be tied to a research project or lab, or be educational like this course's project, `PAS2880`.
+- Each project has a budget in terms of "compute hours" and storage space^[
+  Though we don't have to pay anything for educational projects like this one!]
+- As a user, it's possible to be a member of multiple different projects.
+- OSC projects are typically requested and managed by PIs.
+
+::: {.callout-note}
+#### OSC websites
+
+OSC has **three main websites** ---
+in this course, we will almost exclusively use the first:
 
 - **<https://ondemand.osc.edu>**: A web portal to use OSC resources through your browser (*login needed*).
 - <https://my.osc.edu>: Account and project management (*login needed*).
 - <https://osc.edu>: General website with information about the supercomputers, installed software, and usage.
 
-----
-
-Access to OSC's computing power and storage space goes through **OSC "Projects"**:
-
-- A project can be tied to a research project or lab, or be educational like this course's project, `PAS2880`.
-- Each project has a budget in terms of "compute hours" and storage space^[
-  But we don't have to pay anything for educational projects like this one.
-  Otherwise, for OSC's rates for academic research,
-  see [this page](https://www.osc.edu/content/academic_fee_model_faq).].
-- As a user, it's possible (and common) to be a member of multiple different projects.
-- PIs typically request OSC projects.
 :::
 
 ## The structure of a supercomputer center
@@ -172,22 +174,23 @@ Login nodes are an initial landing spot for everyone who logs in to a supercompu
 There are only a handful of them on each supercomputer,
 they are shared among everyone, and cannot be reserved for exclusive usage.
 
-Therefore, login nodes are meant only to do things like organizing your files and
-creating scripts for compute jobs,
-and are ***not*** **meant for any serious computing**,
-which should be done on the next type of node, compute nodes.
+Therefore, login nodes are meant only for things like organizing files and
+creating scripts for compute jobs.
+They are ***not*** **meant for serious computing** -- in other words,
+they don't provide compute, which is the function of compute nodes.
 
 #### Compute Nodes
 
 Data processing and analysis is done on compute nodes.
 You can only use compute nodes after putting in a **request for compute resources**
 (a "compute job").
-The Slurm *job scheduler*, which you'll learn to use later in this course,
-then assigns the requested resources:
+
+A *job scheduler* program called _Slurm_,
+which you'll learn to use later in this course, then assigns the requested resources:
 you may, for example, get exclusive access to a specific compute node for two hours.
 
 ::: {.callout-caution collapse="true"}
-## What works differently on a supercomputer like at OSC? _(Click to expand)_
+## When using scripts, what works differently on a supercomputer like OSC? _(Click to expand)_
 
 The processing and analysis of data on a supercomputer is typically done by running
 code through scripts.
@@ -199,9 +202,10 @@ You'll learn much more about these later on in the course, but here is an overvi
 - **"Non-interactive" computing is common**\
   It is common to write and then submit scripts to a queue instead of running programs interactively.
 - **Software**\
-  You generally can't install "the regular way", and a lot of installed software needs to be "loaded".
+  You generally can't install software like on a personal computer,
+  and a lot of installed software needs to be "loaded" before you can use it.
 - **Operating system**\
-  Supercomputers run on the Linux operating system.
+  Supercomputers run on the Linux operating system rather than on Windows or MacOS.
 - **Login versus compute nodes**\
   As mentioned, the nodes you end up on after logging in are not meant for heavy computing
   and you have to *request access to compute nodes* to run most analyses.    
@@ -209,14 +213,16 @@ You'll learn much more about these later on in the course, but here is an overvi
 
 ## OSC OnDemand
 
-The OSC OnDemand web portal allows you to use a web browser to access OSC resources such as:
+The OSC OnDemand web portal is an amazing recourse that allows you to use a
+web browser to access OSC resources. For example, it offers access to:
 
 - A **file browser/explorer**
 - A **Unix shell**
 - "**Interactive Apps**": programs such as RStudio and VS Code
 
-{{< fa user-edit >}} **Go to <https://ondemand.osc.edu> and log in** (use the boxes on the left-hand side).
+-----
 
+{{< fa user-edit >}} **Go to <https://ondemand.osc.edu> and log in** (use the boxes on the left-hand side).
 Once logged in, you should see a landing page similar to the one below:
 
 ![_The OSC OnDemand landing page_](../img/ondemand_home.png){fig-align="center" width="95%" fig-alt="A screenshot of the OSC OnDemand landing page" .lightbox}
@@ -227,7 +233,7 @@ We will now go through some of the dropdown menus in the **blue bar along the to
 
 Hovering over the **Files** dropdown menu gives a list of folders that you have access to.
 If your account is brand new, and you were added to `PAS2880`,
-you should only have three folders listed:
+you should only see three folders listed:
 
 1.  A **Home** folder (starts with `/users/`)
 2.  The `PAS2880` project's "**project**" folder (`/fs/ess/PAS2880`)
@@ -235,16 +241,19 @@ you should only have three folders listed:
 
 You will only ever have one Home folder at OSC,
 but for every additional project you are a member of,
-you should usually see additional `/fs/ess` and `/fs/scratch` folders appear.
+you will usually see additional `/fs/ess` and `/fs/scratch` folders appear.
+
+-----
 
 {{< fa user-edit >}} **Click on our project folder `/fs/ess/PAS2880`**.
-
 Once there, you should see the folders and files are present at the selected location,
 and you can click on folders to explore their contents:
 
-![_The OnDemand file browser_](../img/ondemand_files_PAS2700.png){fig-align="center" width="95%" fig-alt="A screenshot of the OSC OnDemand file browser." .lightbox}
+![_The OnDemand file browser_](../img/ondemand_files_PAS2880.png){fig-align="center" width="95%" fig-alt="A screenshot of the OSC OnDemand file browser." .lightbox}
 
 This interface is **much like the file browser on your own computer**, so you can also create, delete, move and copy files and folders, and even upload (from your computer to OSC) and download (from OSC your computer) files^[Though this is not meant for large (\>1 GB) transfers. Different methods are available --- we'll talk about those later on.] --- see the buttons across the top.
+
+---- 
 
 {{< fa user-edit >}} **Create a personal folder** inside `/fs/ess/PAS2880/users`:
 
@@ -259,7 +268,7 @@ This interface is **much like the file browser on your own computer**, so you ca
 
 ### Interactive Apps menu
 
-We can access programs with Graphical User Interfaces (**GUI**s; point-and-click interfaces)
+You can access programs with Graphical User Interfaces (**GUI**s; point-and-click interfaces)
 via the **Interactive Apps** dropdown menu:
 
 ![_Options in the OSC Ondemand Interactive Apps dropdown menu_](../img/ondemand_apps.png){fig-align="center" width="20%" fig-alt="A screenshot of the options in the OSC Ondemand Interactive Apps dropdown menu." .lightbox}
@@ -291,7 +300,7 @@ the "queues" (these contain jobs that are waiting to start) are at any given tim
 #### Direct Unix shell acccess _(Click to expand)_
 
 Interacting with a supercomputer is most commonly done using a so-called "Unix shell",
-which is a command-line interface to a computer that we'll use throughout the course.
+which is a command-line interface to a computer that you'll use throughout the course.
 Still under the **Clusters** dropdown menu (see the screenshot above),
 you can access a Unix shell on Ascend, Cardinal, or Pitzer.
 
@@ -301,8 +310,8 @@ a new browser tab will open where the bottom of the page looks like this:
 ![A Unix shell on the Cardinal cluster as accessed through OSC OnDemand. OSC prints some information like file usage quota, and at the bottom of the screen is the prompt where you can type commands.](../img/ondemand_shell-cardinal.png){fig-align="center" width="95%"fig-alt="A screenshot of a Unix shell opened via the Clusters menu on OSC OnDemand." .lightbox}
 
 During the course,
-you will instead access a Unix shell via the Code Server Interactive App,
-but the abovementioned method can occasionally be useful as a more rapid access point.
+you will instead access a Unix shell via the Code Server Interactive App.
+Still, the abovementioned method can occasionally be useful as a more rapid access point.
 :::
 
-<br>
+<hr style="height:1pt; visibility:hidden;" />
