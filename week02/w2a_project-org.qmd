@@ -14,15 +14,15 @@ other-links:
   - text: "Week 2 overview"
     icon: book
     href: w2_overview.html
-  - text: "Week 2 graded assignment"
-    icon: pencil
-    href: w2_ga_markdown.html
   - text: "w2b: VS Code & Markdown"
     icon: bookmarks
     href: w2b_vscode-markdown.html
   - text: "w2c: Unix shell intro"
     icon: bookmarks
     href: w2c_shell.html
+  - text: "Week 2 graded assignment"
+    icon: pencil
+    href: w2_ga.html
 editor_options: 
   chunk_output_type: console
 bibliography: ../references.bib
@@ -42,8 +42,8 @@ Why is this needed? Proper project documentation and organization facilitates:
 
 - Collaboration with others and your future self
 - Reproducibility
-- Being able to automate some of your work
-- Being able to use version control (week 3)
+- Automation of your work
+- The usage of version control (week 4)
 
 Relatedly, [Noble (2009)](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424)
 cited two principles guiding his set of recommendations on this topic:
@@ -64,8 +64,6 @@ Keep those principles in mind while we discuss the recommendations below!
   - Get to know the text editor you'll use throughout the course: *VS Code*.
 - [This week's second session](w2c_shell.qmd):
   - Learn the basics of working in the Unix shell.
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ## File organization and management
 
@@ -144,8 +142,6 @@ _(For **data**, this is also possible but often not practical due to file sizes.
 _It's easier after data has been deposited in a public repository._)
 
 :::
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### Separate different kinds of files using a consistent folder structure
 
@@ -261,8 +257,6 @@ For example:
   I personally don't think this works well for most omics data analysis.
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### Avoid manual editing of data and results
 
 As mentioned above, once they have been produced,
@@ -281,8 +275,6 @@ it can be included as part of your project's "workflow" and make these fixes
 reproducible.
 That also makes them much easier to repeat if needed
 (recall the second of Noble's guiding principles mentioned above!).
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### Use machine- and human-readable file names
 
@@ -374,8 +366,6 @@ while keeping the file names themselves stable and short,
 e.g. just sample ID + file type (`mmus001.bam`).
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
 #### File names that are automatically ordered appropriately
 
 - **Dates** should be written as `YYYY-MM-DD`: for example, `2020-10-11`.
@@ -437,8 +427,6 @@ preprocess-02_multiqc.sh
 :::
 ::::
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### Use relative paths
 
 To understand this recommendation,
@@ -479,16 +467,13 @@ you first need to learn more about paths and folder structures.
   This means: the dir `PAS2880` is located inside the dir `ess`, which in turn is
   inside the dir `fs`, which in turn is in the computer's root directory.
 
-::: callout-tip
+::: callout-note
 #### Why all this talk of paths? _When you code, you always use paths to refer to files and dirs._
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
-::: {.callout-important collapse="true"}
-#### {{< fa user-edit >}} In the above schematic on the left, what is the path to the file `todo_list.txt`? _(Click for the solution)_
+<details><summary> {{< fa user-edit >}} In the left-hand schematic above, what is the path to the file `todo_list.txt`? _(Click for the solution)_ </summary>
 `/home/oneils/documents/todo_list.txt`
-:::
+</details>
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -501,7 +486,7 @@ using either:
 |---|-------|-------|
 | Meaning       | Start from the computer's root dir | Start from your working dir
 | Recognized by | A leading `/`   [^1] | No leading `/`
-| Examples      | `/fs/ess/PAS2880` |  `data/meta/metadata.tsv` <br> `todo_list.txt`
+| Examples      | `/fs/ess/PAS2880` |  -- `data/meta/metadata.tsv` <br> -- `todo_list.txt`
 | Analogy       | GPS coordinates for a geographical location: valid regardless of where you are | Directions along the lines of "take the second left": validity depends on your current location
 
 : {.striped .hover}
@@ -511,8 +496,7 @@ that expands to an absolute path to your Home directory.
 
 <hr style="height:1pt; visibility:hidden;" />
 
-::: {.callout-important collapse="true"}
-#### {{< fa user-edit >}} In the examples above, how can the mere file name `todo_list.txt` represent a path? _(Click for the solution)_
+<details><summary> {{< fa user-edit >}} In the examples above, how can the mere file name `todo_list.txt` represent a path? _(Click for the solution)_ </summary>
 A file name like `todo_list.txt`, with no directories included,
 can be seen (and is often used!) as a relative path that implies that the file
 is in our current working dir.
@@ -520,7 +504,7 @@ is in our current working dir.
 (Alternatively, and often equivalently, you can be explicit about the fact that
 a file is in your current working dir by using a `./` preface, e.g.: `./todo_list.txt`.
 We'll talk about the `.` notation next week.)
-:::
+</details>
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -551,11 +535,9 @@ For example:
 <hr style="height:1pt; visibility:hidden;" />
 
 ::: callout-warning
-#### How does this work when I have files on OSC as well as on my laptop?
-This is good question that we'll get back to in [week 5](../week05/w5b_data-management.qmd).
+#### _But how does this work when I have files on OSC as well as on my laptop?_
+This is a question we'll get back to in week 5!
 :::
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ## Documenting your research project
 
@@ -584,8 +566,6 @@ did with explanatory text altogether.
 I have hopefully conveyed the importance of project documentation.
 So, how should you do this in practice?
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### Documentation files
 
 It is common practice to store project documentation in files that are called
@@ -610,8 +590,6 @@ and how you prefer to structure your documentation.
   paper and/or a chapter in your dissertation,
   it often makes sense to split documentation into different types of files as
   described below.
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### Types of documentation files for larger projects
 
@@ -711,4 +689,4 @@ a bit abstract this early in the course.
 Therefore, I recommend that you revisit this page later on.
 :::
 
-<br>
+<hr style="height:1pt; visibility:hidden;" />
