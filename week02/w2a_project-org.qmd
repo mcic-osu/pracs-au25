@@ -35,6 +35,17 @@ number-depth: 4
 
 ## Introduction
 
+### Learning goals
+
+- **This lecture** -- learn best practices for:
+  - Organization and management of your research project files
+  - Documentation of your research project
+- [This week's second lecture](w2b_vscode-markdown.qmd):
+  - Learn how to use *Markdown* for documentation.
+  - Get to know the text editor you'll use throughout the course: *VS Code*.
+- [This week's third lecture](w2c_shell.qmd):
+  - Learn the basics of working in the Unix shell.
+  
 ### Lecture context & overview
 
 This lecture covers the principles behind, and practice of,
@@ -43,7 +54,7 @@ Why is this important?
 Thoughtful and systematic project documentation and organization facilitates:
 
 - Collaboration with others and your future self
-- Better reproducibility of your research
+- Reproducibility of your research
 - Your ability to automate your work
 - Your ability to use version control (week 4)
 
@@ -56,50 +67,40 @@ recommendations on this topic:
 
 Keep those principles in mind while we discuss the recommendations below!
 
-### Learning goals
-
-- **This page** -- learn best practices for:
-  - Organization and management of your research project files
-  - Documentation of your research project
-- [This week's second lecture](w2b_vscode-markdown.qmd):
-  - Learn how to use *Markdown* for documentation.
-  - Get to know the text editor you'll use throughout the course: *VS Code*.
-- [This week's third lecture](w2c_shell.qmd):
-  - Learn the basics of working in the Unix shell.
-
 ## File organization and management
 
-We will discuss the following set of best practices and recommendations for
-research project file organization and management:
+I will recommend the following set of practices for research project file
+organization and management:
 
 - Use one folder (folder hierarchy) for one project
-- Separate different kinds of files using a consistent folder structure
-- Avoid manual editing of both your data and your results
-- Have good file and folder naming practices that favor machine- _and_
-  human-readability
+- Within your project folder,
+  separate different kinds of files using a consistent subfolder structure
+- Avoid manual editing of your data and your results
+- Follow file and folder naming practices that favor machine- _and_ human-readability
 - Use so-called "relative paths" to refer to files and folders within your project
+
+Let's get into these!
 
 ### Use one folder for one project
 
 For one research project, all files should be contained in one folder ---
 or we should perhaps say one _hierarchy_ of folders,
 since you can -and should!- make liberal use of "subfolders".
-This means that you should not store files associated with one project
-scattered across a computer.
+Regardless, this recommendation entails that you should not store files associated
+with one project scattered across a computer.
 
 Here is a minimal example diagram of two properly separated and systematically
 organized research project folders:
 
-![Two research project folder hierarchies. Each box is a folder.<br>The way to read this is that the blue `data` folder is contained within the `project1` folder,<br>which in turn is contained within the `$HOME` folder that represents your personal Home location.](../img/proj-dirs-1.svg){fig-align="center" width="60%" fig-alt="A diagram showing two research project folder hierarchies." .lightbox}
+![Two research project folder hierarchies. Each box is a folder.<br>The way to read this is that the blue `data` folder is contained within the `project1` folder,<br>which in turn is contained within the Home folder (your personal Home location on the computer).](../img/proj-dirs-1-2025.svg){fig-align="center" width="60%" fig-alt="A diagram showing two research project folder hierarchies." .lightbox}
 
-Another way to look at this is that for a given research project,
-you should be able to pinpoint a specific folder,
-like the `project1` folder in the image above...
+This means that for a given research project,
+you can pinpoint a specific folder, like `project1` in the image above...
 
-- that contains _all_ files related to that project..
-- while not containing _any_ files unrelated to that project.
+1. that contains _all_ files related to that project,
+2. while not containing _any_ files unrelated to that project.
 
-When you have a single directory hierarchy for each project, it is easier to:
+When you have a single folder hierarchy for each project, it is easier to:
 
 - Find files
 - Share or back up your entire project
@@ -128,10 +129,10 @@ it is easiest to create **links** (i.e. shortcuts/aliases) to these files:
 
 ![The data is located in `project1` but used in both projects.<br>`project2` contains a link to the data.](../img/proj-dirs-4.svg){fig-align="center" width="50%" fig-alt="A diagram showing two research project folder hierarchies, with the data folder from one project being linked to the other project." .lightbox}
 
-But shared data or scripts are generally better stored in separate dirs,
+But shared data or scripts are generally better stored in separate folders,
 and then linked to by each project using them:
 
-![Now, the data is in it's own top-level dir, with links to it in both projects.](../img/proj-dirs-5.svg){fig-align="center" width="50%"  fig-alt="A diagram showing two research project folder hierarchies, with a separate shared-data folder that is linked to both projects." .lightbox}
+![Now, the data is in it's own top-level folder, with links to it in both projects.](../img/proj-dirs-5.svg){fig-align="center" width="50%"  fig-alt="A diagram showing two research project folder hierarchies, with a separate shared-data folder that is linked to both projects." .lightbox}
 
 These strategies do decrease the portability of your project,
 and moving the shared files even within your own computer will cause links/shortcuts to break.
@@ -148,21 +149,21 @@ It's easier after data has been deposited in a public repository._
 ### Separate different kinds of files using a consistent folder structure
 
 Within your project's folder hierarchy,
-you should use subfolders to clearly separate different kinds of files,
+use subfolders to separate different kinds of files,
 such as files that contain:
 
 - Code
 - Data
 - Results (of data processing and analysis)
 
-These folders and the files within them should also be named consistently,
+These folders and the files within them should be named consistently,
 following best practices we'll discuss below.
 
 ::: callout-tip
 #### Treatment of data versus results
 
 While managing your files,
-you should also conceptually treat raw data and results differently:
+you should conceptually treat raw data and results differently:
 
 - _Raw data_, once collected or received,
   should be treated as **read-only** (never edit the original files!) and
@@ -177,39 +178,30 @@ you should also conceptually treat raw data and results differently:
 Here is one good way of organizing project files with a set of top-level folders
 and some standard documentation files:
 
-![In this example project folder hierarchy, the hierarchical folder structure is indicated with lines and indentation: the root (top-level) project folder is `my-project`, which e.g. contains the `data` folder that in turn contains other folders. Folders are shown in blue and files in white.](../img/proj-ex-annot_2025.png){fig-align="center" width="70%" fig-alt="A screenshot showing an example research project folder hierarchy." .lightbox}
+![In this example project folder hierarchy, the hierarchical folder structure is indicated with lines and indentation: the root (top-level) project folder is `my-project`, which e.g. contains the `data` folder that in turn contains other folders. Folders are shown in blue and files in white. The last section of this page will cover the `.md` documentation files shown.](../img/proj-ex-annot_2025.png){fig-align="center" width="70%" fig-alt="A screenshot showing an example research project folder hierarchy." .lightbox}
 
-First, we'll talk more about the _folder structure_ suggested in the image above
-whereas the last section of this session will cover the `.md` _documentation files_
-also shown in the image above.
-
-----
-
-Another important good practice is to **use subfolders** liberally and hierarchically.
-For example, in omics data analysis,
-it often makes sense to create subfolders within `results` for each piece of
-software that you are using:
+Another important good practice is to use subfolders liberally and hierarchically.
+For example, **create subfolders within `results` for each step in your project**.
+At least in in omics data analysis, it is often most convenient to mostly name these
+subfolders after the tool (piece of software) it uses:
 
 ::::::: columns
 :::: {.column width="50%"}
-![_An example showing subfolders within `results` mostly organized by the software that produced the results. Separate runs for MultiQC are grouped into further subfolders by date._](../img/proj-ex-results1_2025.png){fig-align="center" width="60%" fig-alt="A screenshot showing an example Results folder in a research project folder, with separate runs for MultiQC grouped into subfolders using dates." .lightbox}
+![_An example showing subfolders within `results` mostly organized by the software that produced the results. Separate runs for MultiQC are grouped into further subfolders by date._](../img/proj-ex-results1_2025.png){fig-align="center" width="60%" fig-alt="A screenshot showing an example Results folder in a research project folder, with separate folders for different MultiQC runs named after the run date." .lightbox}
 ::::
 :::: {.column width="50%"}
-![Like the example on the left, but here, separate runs for MultiQC are grouped into subfolders using a description.](../img/proj-ex-results2_2025.png){fig-align="center" width="64%" fig-alt="Another screenshot showing an example research project folder hierarchy, with separate runs for MultiQC grouped into subfolders using a description." .lightbox}
+![Like the example on the left, but here, separate runs for MultiQC are grouped into subfolders using a description.](../img/proj-ex-results2_2025.png){fig-align="center" width="64%" fig-alt="Another screenshot showing an example research project folder hierarchy, but here with descriptive naming for the separate folders for different MultiQC runs." .lightbox}
 ::::
 :::::::
 
 In the above examples:
 
-- Subfolders are mostly organized by and named after the
-  **software (tool) that produced each set of results**.
-  Depending on the type of project,
-  subfolders could similarly be organized by topic or by data analysis step.
-
-- However, other kinds of descriptive names may make more sense in some cases.
-  For example, the `01_ref-seqs` represent a folder with reference genome sequences.
+- While most subfolders are organized by and named after the software that produced
+  each set of results,
+  other kinds of categories and names make more sense in some cases.
+  For example, `01_ref-seqs` represents a folder with reference genome sequences.
   The `01_` prefix is used to ensure this folder shows up at the top
-  (see the box below for more on file and dir _numbering_).
+  (see the box below, and the section on file naming, for more on file/folder _numbering_).
 
 - Say that the MultiQC program was run multiple times.
   On the left, these folders are named after the run date, whereas on the right,
@@ -218,9 +210,8 @@ In the above examples:
   always using a date is simple and consistent but is less clear about the
   purpose of each folder.
   
-The two different treatments of `multiqc` subfolders illustrates that for many
-of the recommendations, multiple reasonable alternatives do exist.
-For more, see the box below.
+The two different treatments of `multiqc` subfolders illustrates that
+**for many of the recommendations presented here, multiple reasonable alternatives do exist.**
 
 ::: {.callout-tip collapse="true"}
 #### Some alternative file organization and naming options _(Click to expand)_
@@ -249,17 +240,17 @@ For example:
   ```
   
 - Several of these folders could be named differently, such as:
-  - Some researchers prefer `analysis` over `results`
-  - Some researchers prefer `src` ("source") over `scripts`
+  - Some researchers prefer `analysis` instead of `results`
+  - Some researchers prefer `src` ("source") instead of `scripts`
   
 - Some recommendations, such as by @buffalo2015,
-  separate data into `data/raw` and `data/processed` folders.
+  use `data/raw` and `data/processed` folders.
   However, this blurs the line between data and analysis results,
   and I much prefer to put "processed data" within `results`.
 
 - @noble2009
   recommends that subfolders within `results` are initially organized by date
-  and then by topic/program (e.g: `results/2025-08-30/multiqc`).
+  and then by topic/software (e.g: `results/2025-08-30/multiqc`).
   I personally don't think this works well for most omics data analysis.
 :::
 
@@ -282,9 +273,9 @@ project's "workflow" and therefore be reproducible.
 That also makes these fixes much easier to repeat if needed.
 Recall the second of @noble2009's guiding principles mentioned above:
 _"Everything you do, you will probably have to do over again."_
-While a manual fix may be quicker if it would really only needed to be done twice,
-in practice, it is common to have to repeat them,
-such that writing code to do the fix can end up saving time.
+While a manual fix may be quicker if it really only needed to be done once,
+it is common to have to repeat things in practice,
+such that writing code to do the fix can also end up saving time.
 
 ### Use machine- and human-readable file names
 
@@ -312,8 +303,8 @@ Consistent and informative naming helps you to programmatically find and process
   - Hyphens (AKA dashes, <kbd>-</kbd>)
   - Periods (AKA dots, <kbd>.</kbd>)
   
-- Where appropriate, you can provide **metadata** like Sample ID, date, and treatment
-  in file names:
+- Where appropriate,
+  you can provide **metadata** like Sample ID, date, and treatment in file names:
   
   - `sample032_2016-05-03_low.txt`  
   - `samples_soil_treatmentA_2019-01.txt`
@@ -361,13 +352,14 @@ you **use that scheme consistently**.
 
 #### File names that are automatically ordered appropriately
 
-In file listings in file explorers (and the Unix Shell, as you'll see),
-default file ordering is typically alphanumerical.
-With that in mind:
+Within file listings in computer's file browsers
+(and in the Unix Shell, as you'll see),
+default file ordering is typically alphanumerical. With that in mind:
 
 - **Dates** should be written as `YYYY-MM-DD`: for example, `2020-10-11`.
   Not only does this lead to files being ordered correctly,
-  this format is also unambiguous.
+  this format is also unambiguous,
+  preventing confusion between month and day in particular.
   
 - Use **leading zeros** for correct alphanumeric sorting: `sample005`. 
   If you don't do this, `sample10` will appear before `sample2`, etc.:
@@ -432,15 +424,15 @@ you first need to learn more about paths and folder structures.
 
 #### Terminology and concepts related to paths
 
-- "Directory" (or "**dir**" for short) is another term for *folder*,
+- "Directory" (or "**dir**" for short) is another term for *folder*
   that is commonly used e.g. in coding contexts.
 
-- The "**working dir**" is the dir that you are currently located in.
+- A "**working dir**" is the dir that you are currently located in.
   In a command-line interface, like the Unix shell you'll learn after this,
   you are _always_ in a certain working dir
   (and the same is basically true in a regular file browser).
 
-- "Unix-based" operating systems include Mac and Linux (note: OSC uses Linux),
+- "Unix-based" operating systems include MacOS and Linux (note: OSC uses Linux),
   and these have a single starting point to the directory structure: 
   **the root directory, depicted as `/`**^[
   Windows computers often contain multiple dir structures instead,
@@ -519,103 +511,75 @@ This is the case as long as you
 i.e. as the starting point of your relative paths.
 For example:
 
-<hr style="height:1pt; visibility:hidden;" />
-
-![Two project dir hierarchies, and the absolute and relative path to a FASTQ file.<br>The relative path starts from the relevant project's top-level dir, which is good-practice.](../img/proj-dirs-2.svg){fig-align="center" width="70%" fig-alt="A diagram of two project dir hierarchies." .lightbox}
+![Two project dir hierarchies, and the absolute and relative paths to a FASTQ file (FASTQ files contain HTS reads).<br>Following best practices, the relative path starts from the relevant project's top-level dir.<br>(Note that `~` is a way to refer to your Home folder.)](../img/proj-dirs-2-2025.png){fig-align="center" width="80%" fig-alt="A diagram of two project dir hierarchies." .lightbox}
 
 <hr style="height:1pt; visibility:hidden;" />
 
-![Both projects were moved into `Dropbox`.<br>The absolute path to the FASTQ file has changed,<br>but the relative path from the project's top-level dir remains the same.](../img/proj-dirs-3.svg){fig-align="center" width="70%" fig-alt="A diagram of two project dir hierarchies." .lightbox}
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: callout-warning
-#### _But how does this work when I have files on OSC as well as on my laptop?_
-This is a question we'll get back to in week 5!
-:::
+![Now, both projects were moved into `OneDrive`.<br>The absolute path to the FASTQ file has changed,<br>but the relative path from the project's top-level dir remains the same.](../img/proj-dirs-3-2025.png){fig-align="center" width="80%" fig-alt="A diagram of two project dir hierarchies." .lightbox}
 
 ## Documenting your research project
 
-Documenting what you are doing while working on your research project is of
-key importance.
-And this is not always easy!
+It is essential to document what you are doing while working on your research
+project. This is not always easy!
 It can be much more appealing to just keep chugging along.
-In the moment, it may even seem like a waste of time to make notes on what
+In the moment, it may seem like a waste of time to make notes on what
 _then and there_ is obvious:
 you will likely have a clear picture of what you did, say, this morning.
 
 However, you won't have such a clear picture a month later,
-and a collaborator would never automatically do.
+and a collaborator won't either.
 Therefore, you should often make a
 **conscious effort at taking a step back, slowing down,**
-**and writing down what you did and why** ---
-including in cases where you have reached a dead end.
+**and writing down what you did and why**.
 
 An important advantage of using code to do your analyses,
 like you will learn in this course,
-is that it is _self-documenting_ to a much larger extent than is pointing and
+is that _code is self-documenting_ to a much larger extent than pointing and
 clicking in a program with a Graphical User Interface (GUI).
-**However**, this should not make you complacent and skip documenting what you did.
+However, this should not make you complacent and skip documenting what you did.
 
-I have hopefully conveyed the importance of project documentation.
-So, how should you do this in practice?
+How should you do this in practice?
 
-### Documentation files
+### Always maintain README and other documentation files
+
+Your documentation files should contain all information needed to reproduce your
+research. Some specific examples:
+
+- Where/when/how each data and metadata file originated
+- Versions of software, databases, reference genomes
 
 In computational work,
 it is common practice to store project documentation in files that are called
-(or include the word) "README".
-You saw two such `README.md` files in the example project folder structure above.
-Use README and related text files to document the following:
+(or include the word) "README", e.g. `README.md`.
+Additionally, it often makes sense to use a few kinds of other documentation files as well,
+like in the example we saw earlier:
 
-- Your methods
-- Where/when/how each data and metadata file originated
-- Versions of software, databases, reference genomes
-- *...Basically, everything needed to rerun whole project*
+![](../img/proj-ex-annot_2025.png){fig-align="center" width="60%" fig-alt="An annotated screenshot of a recommended project folder hierarchy." .lightbox}
 
-You should always have a README file in the top-level folder of your project,
-and you may use additional README files elsewhere,
-depending on the size of your project,
-and how you prefer to structure your documentation.
-
-- For **small projects**,
-  one or two README files that contains all of the above may work.
-
-- For **larger projects**, such as those that should produce a stand-alone
-  paper and/or a chapter in your dissertation,
-  it often makes sense to split documentation into different types of files as
-  described below.
-
-### Types of documentation files for larger projects
-
-These are not ironclad rules or fixed categories,
-but hopefully provide a good starting point:
+Below, we'll discuss the three types of documentation files shown in the image above.
+While **you should always have a README file in the top-level folder of your project**,
+you may end up wanting to organize other files differently,
+but take this as a starting point:
 
 #### README file(s)
 
-As mentioned above,
-**you should always have a README file in the top-level folder of your project**.
-For larger projects, where you use separate files to keep your electronic lab
-notebook and to create a final workflow/protocol, this file could contain:
+Assuming that you keep separate "lab notebook" and "protocol" files (see below),
+this README file does not need to be very long, but should for example contain:
 
 - A brief overview of the project
 - An explanation of your project's folder structure.
   What can be found where? How are the files named?
 - Details about the data, such as how and when it was obtained
-- How/where to start to rerun the analyses done as part of the project
-- Who to contact for more information about different topics related to the project
+- Contact information
 
-::: callout-tip
-#### Using multiple README files
-Especially for larger projects,
-you may add README files in key subdirectories such as `data`, `results`,
-and `scripts`, each of which describe the files in that dir.
-:::
+You may choose to use multiple README files,
+including ones in key subfolders such as `data`, `results`, and `scripts`,
+each of which describe the files in that folder.
 
 #### Electronic lab notebook (organized by date)
 
-You should keep an electronic lab notebook or "diary" that has chronological entries,
-that documents what you did:
+Keep an electronic lab notebook or "diary" with chronological entries
+that documents everything you did (`doc/diary.md` in the example above):
 
 - This file should include things like what code you ran and why,
   quick interpretations of results, and so on.
@@ -625,24 +589,15 @@ that documents what you did:
   you should not remove entries on say failed experiments and analyses,
   or consideration/testing of methods that you did not include in your final analyses.
 
-In the project folder example above, this file was `doc/diary.md`.
-
 #### Final workflow/protocol file (organized in order of execution)
 
-This file should contain all the code and other details needed to **rerun** the
-final data processing and analyses you performed for your project:
+Write a separate file (`doc/workflow.md` in the example above)
+that contains the code and other details needed to **rerun**
+the final analyses you performed for your project:
 
 - Entries should be organized by the most sensible _final_ order of execution
-  (which may be somewhat different from the order you used).
 - This _should_ be a "clean" document,
-  and should not include steps you don't consider part of your final results^[
-  E.g., a method you ran but ultimately did not use,
-  because an alternative method worked better.].
-  
-In the project folder example above, this file was `doc/workflow.md`.
-Let's take another look at that image:
-
-![](../img/proj-ex-annot_2025.png){fig-align="center" width="60%" fig-alt="An annotated screenshot of a recommended project dir hierarchy." .lightbox}
+  and omit any steps you don't consider part of your final results.
 
 ### Use plain text files
 
@@ -657,7 +612,7 @@ which can often be opened and edited only in their respective programs.
 That can pose many problems: for example, these programs are not always available,
 and version mismatches may make files impossible to open.
 
-Many common omics file formats, like FASTA, FASTQ, and GFF, are plain-text.
+Many common sequence file formats are also plain-text.
 And while their simplicity may seem limiting,
 **plain-text files are generally preferable for reproducible science** because they:
 
@@ -667,14 +622,27 @@ And while their simplicity may seem limiting,
 - Can be version-controlled appropriately
 
 For these reasons,
-it is best-practice to also use a plain-text format to document your research,
-and you will practice that during the course.
-Specifically, you will use so-called **Markdown** files (`.md`),
+I recommend to also use a plain-text format to document your research,
+and you will practice with that during the course.
+Specifically, you'll use so-called **Markdown** files (`.md`),
 which strike a nice balance between ease of writing and reading on the one hand,
 and formatting options on the other hand.
-In the next session, you will learn the basics of the Markdown "syntax".
+In the next lecture, you will learn the basics of the Markdown "syntax".
+
+::: exercise
+#### {{< fa comments >}} Discussion: Do you have a note-keeping/documentation system? {-}
+
+- What kinds of files do you use?
+- How do you organize these files?
+- Do you use any specialized electronic lab notebook systems?
+:::
 
 ## In closing
+
 Some of these project organization and documentation recommendations may seem
 a bit abstract this early in the course.
-Therefore, I recommend that you revisit this page later on.
+Therefore, I recommend that you revisit this page later on in the course.
+
+You may also wonder how file organization works when your work is done on multiple
+computers, like your own laptop in addition to OSC.
+This is a question we'll get back to in weeks 4 and 5.
