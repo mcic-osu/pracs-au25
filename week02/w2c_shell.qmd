@@ -35,9 +35,8 @@ editor_options:
 
 ### Context & overview
 
-You'll be using the Unix shell almost constantly throughout this course,
-and we have several lectures devoted to learning it, starting with this one.
-We'll start with a conceptual introduction and why it useful to learn the shell.
+You'll be using the Unix shell very regularly throughout the rest of this course.
+Several lectures focus on learning different aspects of the shell, starting with this one.
 
 ### Learning goals
 
@@ -54,16 +53,20 @@ In this lecture, you'll learn:
 
 #### Unix (vs. Linux)
 
-Unix-like or Unix-based operating systems include Linux and Mac but not Windows.
+Unix-like or Unix-based operating systems include MacOS and Linux but not Windows.
 
 For scientific computing, Unix-based operating systems are generally preferable.
-While not as familiar to the general public,
-supercomputers like the Ohio Supercomputer Center (OSC),
-and most servers throughout the world all run on Linux, specifically.
+Linux specifically, while not as familiar to the general public,
+is what supercomputers like those of OSC,
+and most servers throughout the world run on.
 
-That said, don't be alarmed if you have a Windows laptop/desktop.
-For the purposes of this course, your computer can run on any operating system,
-because we will connect to OSC and do our work there.
+::: {.callout-note appearance="simple"}
+Don't be alarmed if you have a Windows laptop/desktop.
+Certainly for the purposes of this course,
+and in principle for your other research,
+your computer can run on any operating system,
+because you can connect to OSC and do your work there.
+:::
 
 #### Unix shell-related terms
 
@@ -82,9 +85,9 @@ Let's run by these terms going from more general ones to more specific ones:
 
 <hr style="height:1pt; visibility:hidden;" />
 
-Also related is the term **terminal**:
+Also related is the word **terminal**:
 the program/app/window in which the shell is run.
-While all these terms are clearly not synonyms, then,
+Finally, while all these terms are not synonyms, 
 they are often used interchangeably in day-to-day computing.
 
 ### Why use the Unix shell?
@@ -92,7 +95,8 @@ they are often used interchangeably in day-to-day computing.
 The Unix shell has been around for a long time and may seem a bit archaic.
 But astonishingly, a system largely built decades ago in an era with very
 different computers and datasets has stood the test of time,
-and the ability to use it is a crucial skill in applied bioinformatics.
+and the ability to use it is a crucial skill for example when working with HTS 
+(high-throughput sequencing) data.
 
 Specifically, you may want to or need to use the Unix shell as opposed to
 programs with GUIs because of:
@@ -100,8 +104,8 @@ programs with GUIs because of:
 - **Software needs**\
   When working with omics data, we don't code our entire analysis from scratch --
   for example, we don't build our own genome assembly or read alignment algorithm.
-  Many of the external software that we use for such tasks are run in the shell
-  using a command-line interface.
+  Many of the external software used for such tasks are run using a command-line
+  interface from the Unix shell.
 - **Automation and fewer errors**\
   The shell allows you to repeat and automate tasks easily and without
   introducing errors.
@@ -129,34 +133,9 @@ so why do we need to know the Unix shell on top of R and/or Python?
 
 ## First steps in the shell
 
-### Accessing a shell within VS Code
-
-If you don't already have a VS Code session with a Unix shell ---
-follow these steps:
-
-1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>.
-2. In the blue top bar, select `Interactive Apps` and near the bottom, click `Code Server`.
-3. In the form on the page that appears, fill out the following:
-   - "_Cluster_": `pitzer`
-   - "_Account_" (= OSC Project): `PAS2880`.
-   - "_Number of hours_": `2`
-   - "_Working Directory_": your personal dir in `/fs/ess/PAS2880/users`
-     (e.g. `/fs/ess/PAS2880/users/jelmer`;
-     [this differs from what you did last time!]{style="color:#bb0000"})
-   - "_App Code Server version_": `4.8.3`
-4. Click `Launch`
-5. Once the blue *Connect to VS Code* button appears,
-   click that to open VS Code in a new browser tab.
-6. In VS Code, open a terminal with a Unix shell by either:
-   - Clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal`
-   - Using the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>
-
-I also recommend that you create and open a Markdown file to keep notes on
-what we're doing in this session:
-
-1. Click <i class="fa fa-bars"></i> => `File` => `New File`.
-2. Save the file (e.g. <kbd>Ctrl/⌘</kbd>+<kbd>S</kbd>) inside the `week02` subdir,
-   e.g. as `session3_shell-intro.md`.
+<details><summary>You should already have a VS Code session with a Unix shell open! If not, click here to see instructions.</summary>
+TBA
+</details>
 
 ### The shell's prompt
 
@@ -174,7 +153,7 @@ For example:
 
 The `<working-dir>` part only shows the name of the directory you are directly
 located in (e.g. `jelmer`),
-and doesn't give the entire path (e.g `/fs/ess/PAS2880/users/jelmer`).
+and doesn't give the entire path (e.g. `/fs/ess/PAS2880/users/jelmer`).
 
 **You type your commands after the dollar sign `$`,**
 **and then press <kbd>Enter</kbd> to execute the command.**
@@ -184,14 +163,13 @@ you'll "get your prompt back" and can type and execute a new command.
 ::: callout-tip
 #### Code notation, clearing the screen, and the Home dir
 
-- Code-formatted text between `<` and `>` (such as `<username>` above),
-  is commonly used to indicate not literal code but something that needs to be
-  or will be replaced by something context-specific
-  (such as your personal user name in the `<username>` example).
+- Code-formatted text between `<` and `>` (such as `<username>` above)
+  is commonly used to indicate not literal code but something that should be
+  be replaced (such as by your personal user name in the `<username>` example).
 
 - OSC prints welcome messages and storage quota information when you open a shell.
   To reduce the amount of text on the screen,
-  I will **clear** the screen now and regularly throughout.
+  I will **clear the screen** now, and regularly throughout.
   This can be done with the keyboard shortcut **<kbd>Ctrl</kbd>+<kbd>L</kbd>**.
   
 - If you see a `~` as the working-dir-part of your prompt,
@@ -291,7 +269,7 @@ Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa
 31  
 ```
 
-We can combine multiple options -- for example:
+You can use multiple options at once -- for example:
 
 ```bash
 cal -j -3
@@ -328,13 +306,12 @@ cal # If you run this line, 'cal' will be executed but everything after the '#' 
 
 #### Options summary
 
-As you've seen above, options are specified with a dash `-`
-(or two dashes `--`, as you'll see later).
-So far, you've only worked with the kind of options that are also called "**flags**",
-_which change some functionality in an ON/OFF type way_, such as:
+Options are specified with a dash `-` (or two dashes `--`, as you'll see later).
+So far, you've only worked with the kind of option that is also called a **flag**,
+_which changes functionality in an ON/OFF way_, such as:
 
-- Turning a Julian calender display ON with `-j`
-- Turning a 3-month display ON with `-3`.
+- Turning a Julian calender display **on** with `-j`
+- Turning a 3-month display **on** with `-3`.
 
 Generally speaking, we can say that options **change the behavior** of a command.
 
@@ -345,7 +322,7 @@ arguments typically tell the command **what to operate on**.
 Most commonly, these are file or directory paths.
 
 Admittedly, the `cal` command is not the best illustration of this pattern ---
-when you give it one argument, this should be the year to show a calendar for:
+when you give it one argument, this is the year to show a calendar for:
 
 ```bash
 cal 2020
@@ -365,7 +342,7 @@ Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa
 ```
 
 You'll see some examples of commands operating on files or dirs soon.
-Finally, you can also _combine_ options and arguments:
+Finally, you can also combine options and arguments:
 
 ```bash
 cal -j 2020
@@ -386,8 +363,8 @@ Sun Mon Tue Wed Thu Fri Sat   Sun Mon Tue Wed Thu Fri Sat
   
 To summarize, different from options, _arguments_ to a command:
 
-- Are not preceded by a `-` (or `--`)
-- If options and arguments are combined, arguments **come after** options^[
+- Are not preceded by a letter with `-` (or a keyword with `--`)
+- If options and arguments are combined, arguments **go after** options^[
   Though some commands are flexible and accept either order.].
 
 ![**Command structure visualization**.<br>Note that unfortunately, the most common way to refer to this entire line is also "command". Therefore, the term "command" can either refer to just a command like `cal` **or** what a command-line expression that includes options and arguments like `cal -j 2020`.](../img/w2-3_command-structure.png){width="50%" fig-align="center" fig-alt="A diagram showing the structure of a command." .lightbox}
@@ -550,7 +527,7 @@ Hello, my name is jelmer
 </details>
 :::
 
-## Navigation and keyboard shortcuts
+## Navigation
 
 ### `cd` and command "actions"
 
@@ -610,137 +587,6 @@ Let's also see what happens when `cd` does not succeed — it gives an error:
 
 ::: callout-note
 #### Case-sensitivity: Everything in the shell (and in coding in general) is **case-sensitive**, including commands and file names --- hence the error above.
-:::
-
-### Keyboard shortcuts
-
-Using keyboard shortcuts help you work much more efficiently in the shell.
-Here are some of the most useful ones:
-
-- **Command history** ---
-  `Up` / `Down` arrow keys to cycle through your command history.
-
-- **Tab completion** ---
-  The shell will auto-complete partial commands or file paths when you press <kbd>Tab</kbd>.
-
-- **Cancel/stop/abort** --- If your prompt is "missing", the shell is still
-  busy executing your command, *or* you typed an incomplete command. To abort,
-  press <kbd>Ctrl</kbd>+<kbd>C</kbd> and you will get your prompt back.
-
-::: exercise
-#### {{< fa user-edit >}} Exercise: Tab completion & command history
-
-- Type **`/f`** and press <kbd>Tab</kbd> (will autocomplete to */fs/*)
-
-- Add **`e`** (*/fs/e*) and press <kbd>Tab</kbd> (will autocomplete to */fs/ess/*).
-
-- Add **`PAS`** (*/fs/ess/PAS*) and press <kbd>Tab</kbd>. Nothing should
-  happen: there are multiple (many!) options.
-
-- Press <kbd>Tab</kbd> <kbd>Tab</kbd> (i.e., twice in quick succession) and it should say:
-
-  ``` bash-out
-  Display all 619 possibilities? (y or n)
-  ```
-
-- Type `n` to answer no: we don't need to see all the dirs starting with `PAS`.
-
-- Add **`288`** (*/fs/ess/PAS27*) and press <kbd>Tab</kbd>
-  **twice in quick succession** (a single Tab won't do anything):
-  you should see at least four dirs that start with `PAS288`.
-
-- Add `0` so your line reads `/fs/ess/PAS2880`. Press <kbd>Enter</kbd>.
-  You will get the following output, which is an error.
-  Can you think of any reason why this you may have gotten an error here?
-
-  ```bash-out-solo
-  bash: /fs/ess/PAS2880/: Is a directory
-  ```
-
-<details><summary>*Click to see the solution*</summary>
-Basically, everything you type in the shell should start with a command.
-Just typing a path will not make the shell print some info about, or the contents of,
-this dir or file.
-Instead, since a path is not a command, you will get an error.
-</details>
-
-- Press **<kbd>⇧</kbd>** to get the previous "command" back on the prompt.
-
-- Press **<kbd>Ctrl</kbd>+<kbd>A</kbd>** to move to the beginning of the line at once.
-
-- Add `cd` and a space in front of the dir, and press <kbd>Enter</kbd> again.
-
-  ```bash
-  cd /fs/ess/PAS2880/
-  ```
-  
-:::callout-tip  
-#### Your **cursor** can be anywhere on a line (not just at the end) when you press <kbd>Enter</kbd> to execute a command!
-:::
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: exercise
-#### {{< fa user-edit >}} Exercise: canceling
-
-To simulate a long-running command that you may want to abort,
-we'll use the `sleep` command,
-which makes the computer wait for a specified amount of time before it gives your
-prompt back (or, e.g. moves to the next command in the context of a script).
-
-Run the below command and instead of waiting for the full 60 seconds,
-**press <kbd>Ctrl</kbd> + <kbd>C</kbd>** to get your prompt back sooner!
-
-``` bash
-sleep 60s
-```
-
-As another example of a situation where you might have to use
-<kbd>Ctrl</kbd> + <kbd>C</kbd>,
-simply type an opening parenthesis `(` and press <kbd>Enter</kbd>:
-
-``` bash
-(
-```
-
-When you do this, nothing is executed and you are not getting your prompt back:
-you should see a `>` on the next line.
-This is the shell wanting you to "complete" you command. Why would that be?
-
-<details><summary>*Click to see the solution*</summary>
-This is an incomplete command by definition because any opening parenthesis
-should have a matching closing parenthesis.
-</details>
-
-Press <kbd>Ctrl</kbd> + <kbd>C</kbd> to get your regular prompt back.
-:::
-
-::: {.callout-note collapse="false"}
-#### Table with useful keyboard shortcuts
-
-_(Note that even on Macs, you should use <kbd>Ctrl</kbd> instead of switching them_
-_out for <kbd>Cmd</kbd> as you may be used to doing --_
-_though in some cases, like copy/paste, both keys work)._
-
-| Shortcut | Function |
-|-----|------------|
-| <kbd>Tab</kbd> | Tab completion |
-| <kbd>⇧</kbd> / <kbd>⇩</kbd> | Cycle through previously issued commands | |
-| <kbd>Ctrl</kbd>+<kbd>C</kbd> | Copy selected text | |
-| <kbd>Ctrl</kbd>+<kbd>V</kbd> | Paste text from clipboard |
-| <kbd>Ctrl</kbd>+<kbd>A</kbd> / <kbd>Ctrl</kbd>+<kbd>E</kbd> | Go to beginning/end of line |
-| <kbd>Ctrl</kbd>+<kbd>U</kbd> /<kbd>Ctrl</kbd>+<kbd>K</kbd> | Cut from cursor to beginning / end of line |
-| <kbd>Ctrl</kbd>+<kbd>W</kbd> | Cut word before before cursor |
-| <kbd>Ctrl</kbd>+<kbd>Y</kbd> | Paste ("yank") text that was cut with one of the shortcuts above |
-| <kbd>Alt</kbd>+<kbd>.</kbd> / <kbd>Esc</kbd>+<kbd>.</kbd>  | Retrieve last argument of previous command (very useful!) (<kbd>Esc</kbd>+<kbd>.</kbd> for Mac) |
-| <kbd>Ctrl</kbd>+<kbd>R</kbd> | Search history: press <kbd>Ctrl</kbd>+<kbd>R</kbd> again to cycle through matches, <kbd>Enter</kbd> to put command in prompt. |
-| <kbd>Ctrl</kbd>+<kbd>C</kbd> | Cancel (kill/stop/abort) currently active command |
-| <kbd>Ctrl</kbd>+<kbd>D</kbd> | Exit (a program or the shell, depending on the context) (same as `exit` command) |
-| <kbd>Ctrl</kbd>+<kbd>L</kbd> | Clear the screen (same as `clear` command) |
-
-: {.striped .hover}
-
 :::
 
 ### Path shortcuts
@@ -835,4 +681,135 @@ a path/file name, and not just with `cd`.
    cd ../../share
    ```
    </details>
+:::
+
+## Keyboard shortcuts
+
+Using keyboard shortcuts help you work much more efficiently in the shell.
+Here are some of the most useful ones:
+
+- **Command history** ---
+  `Up` / `Down` arrow keys to cycle through your command history.
+
+- **Tab completion** ---
+  The shell will auto-complete partial commands or file paths when you press <kbd>Tab</kbd>.
+
+- **Cancel/stop/abort** --- If your prompt is "missing", the shell is still
+  busy executing your command, *or* you typed an incomplete command. To abort,
+  press <kbd>Ctrl</kbd>+<kbd>C</kbd> and you will get your prompt back.
+
+::: exercise
+#### {{< fa user-edit >}} Exercise: Tab completion & command history
+
+- Type **`/f`** and press <kbd>Tab</kbd> (will autocomplete to */fs/*)
+
+- Add **`e`** (*/fs/e*) and press <kbd>Tab</kbd> (will autocomplete to */fs/ess/*).
+
+- Add **`PAS`** (*/fs/ess/PAS*) and press <kbd>Tab</kbd>. Nothing should
+  happen: there are multiple (many!) options.
+
+- Press <kbd>Tab</kbd> <kbd>Tab</kbd> (i.e., twice in quick succession) and it should say:
+
+  ``` bash-out
+  Display all 619 possibilities? (y or n)
+  ```
+
+- Type `n` to answer no: we don't need to see all the dirs starting with `PAS`.
+
+- Add **`288`** (*/fs/ess/PAS288*) and press <kbd>Tab</kbd>
+  **twice in quick succession** (a single Tab won't do anything):
+  you should see at least four dirs that start with `PAS288`.
+
+- Add `0` so your line reads `/fs/ess/PAS2880`. Press <kbd>Enter</kbd>.
+  You will get the following output, which is an error.
+  Can you think of any reason why this you may have gotten an error here?
+
+  ```bash-out-solo
+  bash: /fs/ess/PAS2880/: Is a directory
+  ```
+
+<details><summary>*Click to see the solution*</summary>
+Basically, everything you type in the shell should start with a command.
+Just typing a path will not make the shell print some info about, or the contents of,
+this dir or file.
+Instead, since a path is not a command, you will get an error.
+</details>
+
+- Press **<kbd>⇧</kbd>** to get the previous "command" back on the prompt.
+
+- Press **<kbd>Ctrl</kbd>+<kbd>A</kbd>** to move to the beginning of the line at once.
+
+- Add `cd` and a space in front of the dir, and press <kbd>Enter</kbd> again.
+
+  ```bash
+  cd /fs/ess/PAS2880/
+  ```
+  
+:::callout-tip  
+#### Your **cursor** can be anywhere on a line (not just at the end) when you press <kbd>Enter</kbd> to execute a command!
+:::
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: exercise
+#### {{< fa user-edit >}} Exercise: canceling
+
+To simulate a long-running command that you may want to abort,
+we'll use the `sleep` command,
+which makes the computer wait for a specified amount of time before it gives your
+prompt back (or, e.g. moves to the next command in the context of a script).
+
+Run the below command and instead of waiting for the full 60 seconds,
+**press <kbd>Ctrl</kbd> + <kbd>C</kbd>** to get your prompt back sooner!
+
+``` bash
+sleep 60s
+```
+
+As another example of a situation where you might have to use
+<kbd>Ctrl</kbd> + <kbd>C</kbd>,
+simply type an opening parenthesis `(` and press <kbd>Enter</kbd>:
+
+``` bash
+(
+```
+
+When you do this, nothing is executed and you are not getting your prompt back:
+you should see a `>` on the next line.
+This is the shell wanting you to "complete" you command. Why would that be?
+
+<details><summary>*Click to see the solution*</summary>
+This is an incomplete command by definition because any opening parenthesis
+should have a matching closing parenthesis.
+</details>
+
+Press <kbd>Ctrl</kbd> + <kbd>C</kbd> to get your regular prompt back.
+:::
+
+::: {.callout-note collapse="true"}
+#### Table with useful keyboard shortcuts _(Click to expand)_
+
+_(Note that even on Macs, you should use <kbd>Ctrl</kbd> instead of switching them_
+_out for <kbd>Cmd</kbd> as you may be used to doing --_
+_though in some cases, like copy/paste, both keys work)._
+
+| Shortcut | Function |
+|-----|------------|
+| <kbd>Tab</kbd> | Tab completion |
+| <kbd>⇧</kbd> / <kbd>⇩</kbd> | Cycle through previously issued commands | |
+| <kbd>Ctrl</kbd>+<kbd>C</kbd> | Copy selected text | |
+| <kbd>Ctrl</kbd>+<kbd>V</kbd> | Paste text from clipboard |
+| <kbd>Ctrl</kbd>+<kbd>A</kbd> / <kbd>Ctrl</kbd>+<kbd>E</kbd> | Go to beginning/end of line |
+| <kbd>Ctrl</kbd>+<kbd>U</kbd> /<kbd>Ctrl</kbd>+<kbd>K</kbd> | Cut from cursor to beginning / end of line |
+| <kbd>Ctrl</kbd>+<kbd>W</kbd> | Cut word before before cursor |
+| <kbd>Ctrl</kbd>+<kbd>Y</kbd> | Paste ("yank") text that was cut with one of the shortcuts above |
+| <kbd>Alt</kbd>+<kbd>.</kbd> / <kbd>Esc</kbd>+<kbd>.</kbd>  | Retrieve last argument of previous command (very useful!) (<kbd>Esc</kbd>+<kbd>.</kbd> for Mac) |
+| <kbd>Ctrl</kbd>+<kbd>R</kbd> | Search history: press <kbd>Ctrl</kbd>+<kbd>R</kbd> again to cycle through matches, <kbd>Enter</kbd> to put command in prompt. |
+| <kbd>Ctrl</kbd>+<kbd>C</kbd> | Cancel (kill/stop/abort) currently active command |
+| <kbd>Ctrl</kbd>+<kbd>D</kbd> | Exit (a program or the shell, depending on the context) (same as `exit` command) |
+| <kbd>Ctrl</kbd>+<kbd>L</kbd> | Clear the screen (same as `clear` command) |
+
+: {.striped .hover}
+
 :::
