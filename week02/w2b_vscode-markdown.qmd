@@ -36,14 +36,14 @@ editor_options:
 
 ### Context & overview
 
-The [previous session](./w2a_project-org.qmd) emphasized the importance of good
-documentation of your research, and advised to use plain-text files to do so.
-During this lecture, you will learn how to use *Markdown*,
-which is the simple plain-text markup language we recommend using for documentation.
+The [previous lecture](./w2a_project-org.qmd) emphasized the importance of research
+documentation, and recommended using plain-text files to do so.
+Now, you will learn to use **Markdown**,
+a simple plain-text markup language that is a great option for writing your documentation.
 
-But before you can start using Markdown, you'll need to be introduced to *VS Code*,
+But first, you'll need to be introduced to **VS Code**,
 the text editor you'll use to write Markdown --
-and to write Unix shell code throughout the course.
+as well as to write Unix shell code throughout the course.
 
 ## VS Code
 
@@ -66,27 +66,27 @@ Some advantages of VS Code -- it:
 
 ### Starting VS Code at OSC
 
-- Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>.
+- Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>
 
 - In the blue top bar, select `Interactive Apps` and near the bottom, click `Code Server`.
 
 - Interactive Apps like VS Code and RStudio **run on compute nodes** (not login nodes).
   Because compute nodes always need to be "reserved",
   we have to fill out a form and specify the following details:
-  - The "_Cluster_" that we want to use: `pitzer`
-  - The "_Account_", i.e. the OSC Project that we want to bill for the compute node usage: `PAS2880`.
-  - The "_Number of hours_" we want to make a reservation for: `2`
-  - This time, you can leave the "_Working Directory_" (starting pount) for the program
-    blank.
-  - The "_App Code Server version_": `4.8.3` (should be the only one)
+  - The "**Cluster**" that we want to use: `pitzer`
+  - The "**Account**", the OSC Project to be billed for the compute node usage: `PAS2880`
+  - The "**Number of hours**" we want to make a reservation for: `2`
+  - This time,
+    you can leave the "**Working Directory**" (starting point) for the program blank
+  - The "**App Code Server version**": `4.8.3` (this should be the only available option)
 
-- Click `Launch` --- you will be sent to the "My Interactive Sessions" page
-  with a box for your job at the top.
+- Click `Launch` and you'll be sent to the _My Interactive Sessions_ page
+  with a "card" for your job at the top.
 
-- First, your job may be "*Queued*" for some seconds
+- First, your job may be *Queued* for some seconds
   (i.e., waiting for computing resources to be assigned to it),
-  but it should soon switch to "*Starting*" and then
-  be ready for usage ("*Running*") in another couple of seconds:
+  but it should soon switch to *Starting* and then
+  be ready for usage (*Running*) in another couple of seconds:
 
 ![](../img/ondemand_vscode_running2.png){fig-align="center" width="75%" fig-alt="A screenshot of the OSC OnDemand page shown when the Code Server job has started running." .lightbox}
 
@@ -98,16 +98,18 @@ Some advantages of VS Code -- it:
 
 ::: columns
 ::: {.column width="52%"}
-![](../img/vscode-trust2.png){fig-align="center" width="90%" fig-alt="A screenshot of a popup you may get when first opening a folder in VS Code." .lightbox}
+![](../img/vscode-trust2.png){fig-align="center" width="85%" fig-alt="A screenshot of a popup you may get when first opening a folder in VS Code." .lightbox}
 :::
 
 ::: {.column width="48%"}
-![](../img/vscode-git.png){fig-align="center" width="90%" fig-alt="A screenshot of a popup you may get when first opening VS Code." .lightbox}
+![](../img/vscode-git.png){fig-align="center" width="85%" fig-alt="A screenshot of a popup you may get when first opening VS Code." .lightbox}
 :::
 :::
 
 - You'll also see a Get Started page ---
   you don't have to go through any steps that may be suggested there.
+
+_Congratulations: you have started your first compute job at OSC!_ 🥳
 
 ### The VS Code User Interface
 
@@ -115,136 +117,83 @@ Some advantages of VS Code -- it:
 
 #### Side bars
 
+By default, the (wide) **Side Bar** will show a file explorer,
+where you see your files, create new folders and files, and so on.
+
 The **Activity Bar** (narrow side bar) on the far left has:
 
 - A {{< fa bars >}} ("hamburger menu"), which has menu items like `File` that you often find in a top bar.
-
 - A {{< fa cog >}} (cog wheel icon) in the bottom, through which you can mainly access *settings*.
-
-- Icons to toggle **(wide/Primary) Side Bar** options:
-  - ***Explorer***: File browser & outline for the active file.
-  - ***Search***: To search recursively across all files in the active folder.
-  - ***Source Control***: To work with Git (*in two weeks*).
-  - Debugger
-  - ***Extensions***: To install extensions (*next week*).
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: exercise
-#### {{< fa user-edit >}} Exercise: Try a few color themes
-
-1.  Access the "Color Themes" option by clicking <i class="fa fa-cog"></i> =\> `Color Theme`.
-2.  Try out a few themes and see pick one you like!
-:::
-
+- Icons to toggle between options for the wide Side Bar:
+  we'll talk about those in a later session.
+  
 ### A folder as a starting point
 
-Very conveniently, VS Code takes a specific folder as a
-**starting point in all parts of the program**:
+Very conveniently, VS Code takes a specific
+**folder as a starting point in all parts of the program**:
 
 - In its file explorer
 - When saving files
 - In the Unix shell its terminal
 
-{{< fa user-edit >}}  Switch to the personal dir within `/fs/ess/PAS2880/users`
-that you made last week.
-Click `File` => `Open Folder` and then type/select that dir
-(for example, I will select the dir `/fs/ess/PAS2880/users/jelmer`).
+{{< fa user-edit >}} Click `File` > `Open Folder` and then type/select the
+personal dir within `/fs/ess/PAS2880/users` you made last week
+(for example, I will select `/fs/ess/PAS2880/users/jelmer`).
 _This will cause the program to reload._
+
+::: {.callout-tip appearance="simple"}
+Remember all the talk of using relative paths that are supposed to start at a
+(research) project's top-level dir?
+Opening a folder like this in VS Code will help you with this,
+and makes it easy to switch between projects!
+:::
 
 #### Terminal (with a Unix shell)
 
-{{< fa user-edit >}} **Open a terminal** by clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal`.
-We will start using this terminal next week!
-For now, try to _resize panes_ (terminal vs. editor, and the side bar)
-by hovering your cursor over the borders and then dragging.
+{{< fa user-edit >}} **Open a terminal** by clicking
+{{< fa bars >}}   > `Terminal` > `New Terminal`.
+We'll start using this terminal very soon.
+For now, practice _resizing panes_
+(terminal vs. editor, and the width of the side bar)
+by hovering your cursor over the lines dividing them and then dragging.
 
 #### Editor pane and `Get Started` document
 
 The main part of the VS Code is the **editor pane**.
-Here, we can open files like scripts and other types of text files, and images.
-(Whenever you open VS Code, an editor tab with a `Get Started` document is automatically opened.
-This provides some help and some shortcuts like to recently opened files and folders.)
+Here, you can open scripts and other types of text files, images, and so on.
+Like in a web browser, you can have multiple tabs open.
 
-{{< fa user-edit >}} Create and save a new file:
+Whenever you open VS Code,
+an editor tab with a `Get Started` document is automatically opened.
+This provides some help and shortcuts to recently opened files and folders.
 
-1. **Open a new file:**
+{{< fa user-edit >}} **Create and save a new file:**
+
+1. _Open a new file_:
    Click the hamburger menu <i class="fa fa-bars"></i>, then `File` > `New File`.
-2. **Save the file** (<kbd>Ctrl/⌘</kbd>+<kbd>S</kbd>) within your `week02` dir
+2. _Save the file_ (<kbd>Ctrl/⌘</kbd>+<kbd>S</kbd>) within your `week02` dir
    as a Markdown file, e.g. `markdown-intro.md`.
-   (Markdown files have the extension `.md`.)
    
-:::{.callout-note collapse="false"}
-### Some VS Code tips and tricks
-
-- **Auto Save**\
-  To turn on the auto-saving of documents in the editor,
-  click {{< fa bars >}} > `File` => "Auto Save"
-  (should show a checkmark when activated).
-
-- **The Command Palette**\
-  To access any menu option that is available in VS Code,
-  the so-called "Command Palette" can be handy,
-  especially if you know what you are looking for.
-  To access the Command Palette, click   <i class="fa fa-cog"></i>   and then
-  `Command Palette` (or press <kbd>F1</kbd> or <kbd>Ctrl/⌘</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>).
-  To use it, start typing something to search for an option.
-    
-- **Toggling (hiding/showing) the side bars**\
-  If you want to save some screen space while coding along in class,
-  you may want to occasionally hide the side bars:
-  - In {{< fa bars >}} > `View` > `Appearance` you can toggle both the `Activity Bar`
-    and the `Primary Side Bar`.
-  - Or use keyboard shortcuts:
-    - <kbd>Ctrl/⌘</kbd>+<kbd>B</kbd> for the primary/wide side bar
-    - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> for the activity/narrow side bar
-
-- **Keyboard shortcuts**\
-  For a single-page PDF overview of keyboard shortcuts for your operating system:
-  {{< fa bars >}}   =\>   `Help`   =\>   `Keyboard Shortcut Reference`.
-  (Or for direct links to these PDFs:
-  [Windows](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf) /
-  [Mac](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf) /
-  [Linux](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-linux.pdf).)
-:::
-
 ## Markdown
 
-Markdown is a very lightweight text markup language that can be used in
-plain-text files.
-A _source_ Markdown file can be "rendered" to produce an output file
-in a variety of formats like HTML and PDF.
+Markdown is a lightweight text "markup language" that provides formatting
+options for plain-text files.
+Think of it as a much simpler version of HTML,
+which also comes in plain-text source code/format and a rendered counterpart.
+A _source_ Markdown file can be "**rendered**" to produce an output file
+in a variety of formats like PDF and (rendered) HTML.
 
-As a first example of the kind of markup you can do,
+As a first example of the kind of markup you can do:
 surrounding one or more characters by single or double asterisks
-(**`*`**) will produce italic and bold characters, respectively:
+(**`*`**) will apply italic and bold formatting, respectively:
 
 - When you write `*italic example*` this will be rendered as: *italic example*.
 - When you write `**bold example**`this will be rendered as: **bold example**.
 
-Markdown is:
-
-- *Easy to write* ---
-  a dozen or so syntax constructs, like the two above, is nearly all you use.
-- *Easy to read* in source ("non-rendered") form,
-  and VS Code will apply some formatting even in source files.
-
-I recommend that you use Markdown files (with a `.md` extension) instead of regular
-text (`.txt`) files to write the kind of documentation of your research projects
-that was discussed in the previous session.
-
-::: callout-note
-##### Markdown documentation
-Learn more about Markdown and its syntax on this excellent documentation site:
-<https://www.markdownguide.org>.
-:::
-
 ### Markdown in VS Code
 
-Below, we'll try some Markdown syntax in the `markdown-intro.md` file you created earlier.
-
-First off, note that when you save a file in VS Code with an `.md` extension,
-as you have done:
+When you save a file in VS Code with the extension `.md`
+(short for Markdown) extension, as you have done:
 
 ::::::: columns
 :::: {.column width="80%"}
@@ -257,13 +206,19 @@ as you have done:
 :::
 :::::::
 
-That preview looks something like this:
+Type the following in your `markdown-intro.md` file:
+
+````markdown
+This is an *italic example*
+
+This is a **bold example**
+````
+
+Then click the Preview icon:
 
 ![_A source Markdown file on the left, and a Preview of its rendered form on the right._](../img/markdown_in_vscode.png){fig-align="center" width="90%" fig-alt="A side-by-side screenshot of a source Markdown document and its VS Code preview." .lightbox}
 
 ### Syntax practice
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ::::::: columns
 :::: {.column width="48%"}
@@ -324,46 +279,31 @@ ls -lh
 
 ### Most common Markdown syntax
 
-Here is an overview of the most commonly used Markdown syntax:
+Here is an overview of the most commonly used Markdown syntax --
+we used most of these constructs above:
 
 | Syntax            | Result
 |-------------------|-------|
 | \*italic\*        | *italic* text (or use one underscore: \_italic\_)
 | \*\*bold\*\*      | **bold** text (or use two underscores: \_\_bold\_\_)
-| \[link text\]\(website.com\)   | Clickable link with hidded URL [link text](https://website.com)
+| \[link text\]\(website.com\)   | Clickable link with "hidden" URL: [link text](https://website.com)
 | `<https://website.com>`   | Clickable link with visible URL: <https://website.com>
 | # My Title        | Header level 1 (largest)
-| ## My Section     | Header level 2
-| ### My Subsection | Header level 3 -- and so forth for additional header levels
+| ## My Section     | Header level 2 (smaller -- and so forth for additional header levels)
 | - List item       | Unordered (bulleted) list
 | 1. List item      | Ordered (numbered) list
 | \`inline code\`   | "Code-formatted" text: `inline code`
-| ```` ``` ````     | Start/end of multi-line code block (put each on its own line)
-| ```` ```bash ```` | Start of multi-line `bash` code block (end with ```` ``` ````)
+| ```` ``` ````     | Start/end of generic multi-line code block (put both their own lines)
+| ```` ```bash ```` | Start of multi-line `bash`-language code block (end with ```` ``` ````) ^[This will apply language-specific code formatting]
 | `---`             | Horizontal rule (line)
 | > Text                    | Blockquote (like quoted text in emails)
-| \!\[\](path/to/figure.png)   | Insert the figure that is at the specified path
 
 : {.striped .hover}
 
 ### Whitespace
 
-You may have noticed above that Markdown doesn't show always show whitespace
-(spaces, newlines, etc.) the way that you type them.
-
-- It's recommended (and sometimes necessary) to leave a
-  *blank line between different sections*, such as lists and headers:
-
-  ```markdown
-  ## Section 2: List of ...
-  
-  - Item 1
-  - Item 2
-  
-  For example, ....
-  ```
-
-<hr style="height:1pt; visibility:hidden;" />
+Above, you may have noticed above that Markdown doesn't show always show whitespace
+(spaces, newlines, etc.) the way you type it.
 
 - A **blank line** between regular text will start a new paragraph,
   with some whitespace between the two:
@@ -393,7 +333,7 @@ Paragraph 2.
 :::
 :::
 
-- Whereas a **single newline** will be completely ignored!:
+- Whereas a **single newline** will be completely ignored!
 
 ::: columns
 ::: {.column width="10%"}
@@ -503,8 +443,21 @@ blank lines
 :::
 :::
 
-::: callout-tip
-#### Forcing whitespace
+- Also, note that it's highly recommended
+  (and in some cases necessary for correct rendering)
+  to **leave a blank line between different sections**, such as lists and headers:
+
+  ```markdown
+  ## Chapter 2: List of ...
+  
+  - Item 1
+  - Item 2
+  
+  For example, ....
+  ```
+  
+::: {.callout-tip collapse="true"}
+#### Forcing additional whitespace _(Click to expand)_
 
 - If you want **more vertical whitespace** than what is provided between paragraphs,
   you'll have to resort to HTML (you can use any HTML markup in Markdown!) ---
@@ -571,22 +524,27 @@ My second sentence.
 
 ### Tables
 
-Tables are not all that convenient to create in Markdown,
-but you can do it as follows.
+Tables are a bit of a pain to make, but you can do so with vertical bars <kbd>|</kbd>
+and dashes/hyphens <kbd>-</kbd> as follows:
 
 ::: columns
-::: {.column width="10%"}
+::: {.column width="5%"}
 :::
-::: {.column width="40%"}
+::: {.column width="35%"}
 _This:_
 
-\| city &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; \| inhabitants   \|  
-\|------------------\|------------------\|  
-\| Columbus &nbsp; \| 906 K &nbsp; &nbsp; &nbsp; \|\
-\| Cleveland &nbsp; \| 368 K &nbsp; &nbsp; &nbsp; \|\
-\| Cincinnati &nbsp;  \| 308 K &nbsp; &nbsp; &nbsp; \|  
-
+````markdown
+| city       | inhabitants |  
+|------------|-------------|  
+| Columbus   | 906 K       |
+| Cleveland  | 368 K       |
+| Cincinnati | 308 K       |
+````
 :::
+
+::: {.column width="10%"}
+:::
+
 ::: {.column width="40%"}
 _Will be rendered as:_
 
@@ -599,29 +557,48 @@ _Will be rendered as:_
 :::
 :::
 
-### Markdown extensions -- Markdown for everything!
-
-Several Markdown *extensions* allow Markdown documents to
-**contain code that *runs***, and whose output can be included in rendered documents:
-
-- R Markdown (`.Rmd`) and the follow-up [Quarto](https://quarto.org/) ---
-  you will learn Quarto later in this course.
-- Jupyter Notebooks (for Python)
-
-There are many possibilities with Markdown! For instance, consider that:
-
-- This entire website, including last week's slides, are written using Quarto.
-- R Markdown/Quarto also has support for citations, journal-specific formatting, etc.,
-  so you can even write manuscripts with it.
-
 ::: callout-note
 ### *Pandoc* to render Markdown files
 
-In practice, I rarely render Markdown files "manually", because:
+So far, we have seen _previews_ of Markdown rendering,
+but haven't produced a rendered output file like a HTML or PDF.
+In fact, in practice, I rarely render Markdown files "manually", because:
 
-- Markdown source is so well readable (and you can also see rendered previews in VS Code)
+- Markdown source is so well readable, and VS Code applies quite some formatting to it
 - GitHub will render Markdown files for you (as we'll see next week)
 
 That said, if you do need to render a Markdown file to e.g. HTML or PDF,
 use [*Pandoc*](https://pandoc.org/installing.html).
+:::
+
+### In closing
+
+In summary, Markdown is useful for documentation because it is:
+
+- *Easy to write* --
+  you only need to know a dozen or so syntax constructs to be able to write Markdown.
+- *Easy to read* in source ("non-rendered") form.
+  And VS Code will apply some formatting even in source files!
+
+I recommend that you use Markdown files (with a `.md` extension) instead of regular
+text (`.txt`) files to write the kind of documentation of your research projects
+that was discussed in the previous session.
+
+------
+
+Also worth noting is that several **Markdown extensions** allow Markdown documents to
+*contain code that runs*, and whose output can be included in rendered documents.
+For example, R Markdown (`.Rmd`) and the follow-up [Quarto](https://quarto.org/) ---
+you will learn Quarto later in this course!
+
+All in all, there are many possibilities with Markdown and its extensions!
+For instance, consider that:
+
+- This entire website, including last week's slides, are written using Quarto.
+- Quarto also has support for citations and journal-specific formatting,
+  so you can even write manuscripts with it.
+
+::: {.callout-tip appearance="minimal"}
+Learn more about Markdown and its syntax on this excellent documentation site:
+<https://www.markdownguide.org>.
 :::
