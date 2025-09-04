@@ -36,7 +36,9 @@ editor_options:
 ### Context & overview
 
 You'll be using the Unix shell very regularly throughout the rest of this course.
-Several lectures focus on learning different aspects of the shell, starting with this one.
+This is the first of several lectures that focus on learning to work in it.
+We'll start with a conceptual introduction,
+and then you'll take your first steps in the Unix shell!
 
 ### Learning goals
 
@@ -51,14 +53,11 @@ In this lecture, you'll learn:
 
 ### Some terminology and concepts
 
-#### Unix (vs. Linux)
-
-Unix-like or Unix-based operating systems include MacOS and Linux but not Windows.
-
+**Unix-based (or Unix-like) operating systems include MacOS and Linux** but not Windows.
 For scientific computing, Unix-based operating systems are generally preferable.
 Linux specifically, while not as familiar to the general public,
 is what supercomputers like those of OSC,
-and most servers throughout the world run on.
+and most servers throughout the world, run on.
 
 ::: {.callout-note appearance="simple"}
 Don't be alarmed if you have a Windows laptop/desktop.
@@ -68,18 +67,16 @@ your computer can run on any operating system,
 because you can connect to OSC and do your work there.
 :::
 
-#### Unix shell-related terms
-
 This session introduces the "Unix shell".
 How does that relate to some other terms you may have heard of?
 Let's run by these terms going from more general ones to more specific ones:
 
 | Term | Explanation
 |----|----------|
-| **Command Line** /<br>**Command Line Interface (CLI)** |   A user interface where you **type commands** rather than clicking-and pointing like you would in a _Graphical User Interface (GUI)_. This could "interface" to anything from a specific program to your computer. |
+| **Command Line** /<br>**Command Line Interface (CLI)** |   A user interface where you **type commands** rather than clicking-and pointing like you would in a _Graphical User Interface (GUI)_. This "interface" can be from anything from a specific bioinformatics program to your computer's operating system. |
 | **Shell** | A more specific and technical term for a command line interface _to your computer_
-| **Unix shell** |The type of shell on Unix-based (Linux + Mac) computers
-| **Bash** | A specific Unix shell _language_ (the most common one)
+| **Unix shell** |The type of shell found on Unix-based (Linux + Mac) computers
+| **Bash** | A specific Unix shell _language_ (the most common one and the one we'll use)
 
 : {.striped .hover}
 
@@ -87,73 +84,80 @@ Let's run by these terms going from more general ones to more specific ones:
 
 Also related is the word **terminal**:
 the program/app/window in which the shell is run.
-Finally, while all these terms are not synonyms, 
-they are often used interchangeably in day-to-day computing.
+A general observation is that while all these terms are not synonyms, 
+they are in practice often used interchangeably.
 
 ### Why use the Unix shell?
+
+The Unix shell can be used for a wide variety of tasks,
+from "file browser" functionality to running specialized software.
 
 The Unix shell has been around for a long time and may seem a bit archaic.
 But astonishingly, a system largely built decades ago in an era with very
 different computers and datasets has stood the test of time,
-and the ability to use it is a crucial skill for example when working with HTS 
-(high-throughput sequencing) data.
+and the ability to use it is a crucial skill in computational biology.
 
-Specifically, you may want to or need to use the Unix shell as opposed to
-programs with GUIs because of:
+Using the Unix shell rather than programs with GUIs has some of the general
+advantages of using code we've discussed: 
 
-- **Software needs**\
-  When working with omics data, we don't code our entire analysis from scratch --
-  for example, we don't build our own genome assembly or read alignment algorithm.
-  Many of the external software used for such tasks are run using a command-line
-  interface from the Unix shell.
 - **Automation and fewer errors**\
   The shell allows you to repeat and automate tasks easily and without
   introducing errors.
 - **Reproducibility**\
-  It's more straightforward to keep a detailed record of what you have done.
-- **Working with large files**\
-  Shell commands are really good at processing _large, plain-text files_,
-  which are very common in omics data.
-- **Remote computing – especially supercomputers**\
-  When doing remote computing, working in the shell may be your only option.
+  When working in the shell,
+  it's straightforward to keep a detailed record of what you have done.
+  
+There are also specific reasons to use the Unix shell as opposed to
+(other) coding languages like R and Python:
 
-Some of these advantages, like automation and reproducibility,
-also apply to other coding languages --
-so why do we need to know the Unix shell on top of R and/or Python?
-
+- **Software needs**\
+  Many programs used for omics data analysis
+  have a CLI and are most easily run from the Unix shell.
+- **Viewing and processing large files**\
+  Shell commands are excellent at viewing and processing
+  _large, plain-text files_, which are common in omics data.
 - **Efficiency**\
-  For many _simpler_ tasks, built-in shell tools are faster ---
-  in terms of coding time, processing time,
-  and the ease of working with very large files.
-- **Running external software**\
-  As mentioned above,
-  we need to use many external programs with a CLI in omics data analysis.
-  While those _can_ be called from within other languages,
-  the shell has a _direct_ interface to them and is therefore often preferred.
+  Built-in shell tools are often faster in terms of coding and processing time,
+  especially for simpler tasks.
+- **Remote computing -- especially supercomputers**\
+  When doing remote computing, your point of entry is commonly the Unix shell.
 
 ## First steps in the shell
 
 <details><summary>You should already have a VS Code session with a Unix shell open! If not, click here to see instructions.</summary>
-TBA
+
+1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>
+2. In the blue top bar, select `Interactive Apps` and near the bottom, click `Code Server`
+3. Fill out the form as follows:
+   - **Cluster**: `pitzer`
+   - **Account**: `PAS2880`
+   - **Number of hours**: `2`
+   - **Working Directory**:" `/fs/ess/PAS2880/user/<username>` (replace `<username>` with your actual user name)
+   - **App Code Server version**: `4.8.3`
+4. Click `Launch`
+5. Click the `Connect to VS Code` button once it appears
+  
 </details>
 
 ### The shell's prompt
 
 Inside your terminal, the "prompt" indicates that the shell is ready for a
 command. What is shown exactly varies across shells and can also be customized,
-but our prompts at OSC should show the following information:
-
-`[<username>@<node-name> <working-dir>]$`
-
-For example:
+but our prompts at OSC should show something like this:
 
 ``` bash-in-nocolor
 [jelmer@p0362 jelmer]$ 
 ```
 
+Which represents the following pieces of information:
+
+``` bash-in-nocolor
+[<username>@<node-name> <working-dir>]$
+```
+
 The `<working-dir>` part only shows the name of the directory you are directly
-located in (e.g. `jelmer`),
-and doesn't give the entire path (e.g. `/fs/ess/PAS2880/users/jelmer`).
+located in (e.g. `jelmer`) rather than the entire path
+(e.g. `/fs/ess/PAS2880/users/jelmer`).
 
 **You type your commands after the dollar sign `$`,**
 **and then press <kbd>Enter</kbd> to execute the command.**
@@ -161,7 +165,7 @@ When the command has finished executing,
 you'll "get your prompt back" and can type and execute a new command.
 
 ::: callout-tip
-#### Code notation, clearing the screen, and the Home dir
+#### Code notation and clearing the screen
 
 - Code-formatted text between `<` and `>` (such as `<username>` above)
   is commonly used to indicate not literal code but something that should be
@@ -171,21 +175,23 @@ you'll "get your prompt back" and can type and execute a new command.
   To reduce the amount of text on the screen,
   I will **clear the screen** now, and regularly throughout.
   This can be done with the keyboard shortcut **<kbd>Ctrl</kbd>+<kbd>L</kbd>**.
-  
-- If you see a `~` as the working-dir-part of your prompt,
-  you are instead in your Home directory in `/users/` and you will need to go
-  to `/fs/ess/PAS2880/users/<user>` instead.
-  To do so: click `File` => `Open Folder` in VS Code and then type/select that dir.
-  When you then open a Terminal again, the correct dir should be displayed.
 :::
 
-### A few simple commands: `date` and `pwd`
+::: {.callout-warning}
+#### In case the printed directory is not your username
+If you see a `~` as the working-dir-part of your prompt,
+you are instead in your Home directory in `/users/` and you will need to go
+to `/fs/ess/PAS2880/users/<user>` instead.
+To do so: click `File` > `Open Folder` in VS Code and then type/select that dir.
+When you then open a Terminal again, the correct dir should be displayed.
+:::
 
-The Unix shell comes with hundreds of "commands":
-small programs that perform specific actions.
-(If you're familiar with R or Python,
-a Unix *command* is like an R/Python *function*.)
+### A few simple commands
 
+The Unix shell comes with hundreds of **commands**:
+small programs that perform specific actions^[
+If you're familiar with R or Python,
+a Unix command is like an R/Python *function*.].
 Let's start with a few simple commands:
 
 - The `date` command prints the current date and time:
@@ -207,9 +213,24 @@ Let's start with a few simple commands:
   /fs/ess/PAS2880/users/jelmer
   ```
 
-Both of those commands provided us with some output.
+- The `echo` command simply prints the text you provide it with,
+  typically between double quotes <kbd>"</kbd> ^[
+  While these aren't always strictly necessary, I recommend to always use them
+  for clarity].
+    
+  ```bash
+  echo "Welcome to PLNTPTH 5006"
+  ```
+  ```bash-out
+  Welcome to PLNTPTH 5006
+  ```
+
+All the above commands provided us with some output.
 That output was **printed to screen**,
 which is the default behavior for nearly every Unix command.
+
+{{< fa user-edit >}} _Does `echo` seem useless, or can you think of ways in which it could be useful?_
+_We'll get back to this later._
 
 ## Options, arguments, and help
 
@@ -234,10 +255,10 @@ Su Mo Tu We Th Fr Sa
 28 29 30
 ```
 
-#### Option examples
+#### Examples of using command options
 
-Use the *option* `-j` (a dash `-` and then `j`) to instead get a Julian calendar,
-in which day numbering is continuous instead of restarting each month:
+Use the *option* `-j` (a dash `-` and then a `j`) to instead print a Julian calendar,
+which has year-wise instead of month-wise numbering of days:
 
 ```bash
 # Make sure to leave a space between `cal` and `-j`!
@@ -310,17 +331,15 @@ Options are specified with a dash `-` (or two dashes `--`, as you'll see later).
 So far, you've only worked with the kind of option that is also called a **flag**,
 _which changes functionality in an ON/OFF way_, such as:
 
-- Turning a Julian calender display **on** with `-j`
-- Turning a 3-month display **on** with `-3`.
+- Turning a Julian calender display ***on*** with `-j`
+- Turning a 3-month display ***on*** with `-3`.
 
-Generally speaking, we can say that options **change the behavior** of a command.
+Generally speaking, options **change the behavior** of a command.
 
 #### Arguments
 
-Whereas options change the behavior of a command,
-arguments typically tell the command **what to operate on**.
+Arguments typically tell a command **what to operate on**.
 Most commonly, these are file or directory paths.
-
 Admittedly, the `cal` command is not the best illustration of this pattern ---
 when you give it one argument, this is the year to show a calendar for:
 
@@ -361,20 +380,20 @@ Sun Mon Tue Wed Thu Fri Sat   Sun Mon Tue Wed Thu Fri Sat
 # [...output truncated, entire year is shown...]
 ```
   
-To summarize, different from options, _arguments_ to a command:
+To summarize how command _arguments_ differ from options -- arguments:
 
-- Are not preceded by a letter with `-` (or a keyword with `--`)
+- Usually tell the command _what_ to operate on, instead of changing _how_ it operates
+- Are not preceded by `-` and a letter (or `--` with a keyword)
 - If options and arguments are combined, arguments **go after** options^[
   Though some commands are flexible and accept either order.].
 
-![**Command structure visualization**.<br>Note that unfortunately, the most common way to refer to this entire line is also "command". Therefore, the term "command" can either refer to just a command like `cal` **or** what a command-line expression that includes options and arguments like `cal -j 2020`.](../img/w2-3_command-structure.png){width="50%" fig-align="center" fig-alt="A diagram showing the structure of a command." .lightbox}
+![**Command structure visualization**<br>Note that regrettably, the most common way to refer to this entire line is also "command". Therefore, the term "command" can either refer to just a command like `cal` **or** a full command-line expression that includes options and arguments like `cal -j 2020`.](../img/w2-3_command-structure.png){width="50%" fig-align="center" fig-alt="A diagram showing the structure of a command." .lightbox}
 
 ### Getting help
 
-Many basic Unix commands –*and other command-line programs!* –
-have a **`-h`** option for help,
+Many Unix commands have a **`-h`** option for help,
 which usually gives a concise summary of the command's "syntax",
-i.e. its available options and arguments:
+such as its available options and arguments:
 
 ```bash
 cal -h
@@ -395,10 +414,10 @@ Options:
  -h, --help       display this help text and exit
 ```
 
-In this case, each option can be referred to in two ways:
+In this case, we learn that each option to `cal` can be referred to in one of two ways:
 
 - A short-form notation: a single dash followed by a single character (e.g. `-s`)
-- A long-form notation: two dashes followed by a word (e.g. `--sunday`)
+- A long-form notation: two dashes followed by a keyword (e.g. `--sunday`)
 
 ::: {.callout-note collapse="true"}
 ### Another way to see documentation: the `man` command _(Click to expand)_
@@ -473,14 +492,21 @@ type **<kbd>q</kbd>** to exit the pager that `man` launches.
 You may be familiar with the concept of **variables** from previous experience
 with perhaps R or another language.
 Either way, variables can hold values and other pieces of data,
-and are essential when coding.
+and they are essential in coding.
 
-More specifically, **environment variables** are pre-existing variables that
-have been automatically assigned values by the computer.
-Two examples:
+While you can create variables yourself, **environment variables**
+are _pre-existing_ variables that have been automatically created by the computer.
+Two examples are:
+
+- `$HOME`, which contains the path to your Home dir
+- `$USER`, which contains your user name
+
+Note that in the Unix shell, *variables are always referenced using a leading `$`.*
+This helps you recognize them as variables.
+Additionally, if you want to print the values of variables,
+you need the `echo` command:
 
 ```bash
-# $HOME contains the path to your Home dir:
 echo $HOME
 ```
 ```bash-out
@@ -488,32 +514,18 @@ echo $HOME
 ```
 
 ```bash
-# $USER contains your user name:
 echo $USER
 ```
 ```bash-out
 jelmer
 ```
 
-In the Unix shell, variables are referenced using a leading `$`,
-and to print their values to screen like above, you need the `echo` command.
-`echo` is a very common command that can also just print literal text (as shown below)
-or combinations of literals and variables (next exercise).
-    
-```bash
-# (The quotes "..." aren't always necessary but are recommended for clarity)
-echo "Welcome to PLNTPTH 5006"
-```
-```bash-out
-Welcome to PLNTPTH 5006
-```
-
 ::: exercise
 #### {{< fa user-edit >}} Exercise: environment variables and `echo`
 
 Using an environment variable,
-get the Unix shell to print "_Hello, my name is \<your username\>_"
-(e.g. "Hello, my name is natalie") to the screen.
+get the Unix shell to print `Hello, my name is <username>`
+(e.g. `Hello, my name is natalie`) to the screen.
 
 <details><summary>*Click for the solution*</summary>
 
@@ -531,15 +543,12 @@ Hello, my name is jelmer
 
 ### `cd` and command "actions"
 
-All the commands so far "merely" provided some information,
+All commands so far "merely" provided some information,
 which was printed to the screen.
-
 But many commands perform another kind of **action**.
-For example, the command **`cd`** will change your *working* directory.
-And like many commands that perform a potentially invisible action,
-`cd` normally has **no output** at all.
 
-First, check again where you are ---
+For example, the command **`cd`** will change your *working* directory.
+But first, check again where you are ---
 you should be in your personal dir within `/fs/ess/PAS2880/users`:
 
 ```bash
@@ -549,8 +558,8 @@ pwd
 /fs/ess/PAS2880/users/jelmer
 ```
 
-Now, let's use `cd` to move to another directory by specifying the *path* to that
-directory as an argument:
+Now, use `cd` to move to another directory by specifying the *path* to that
+dir as an argument:
 
 ``` bash
 cd /fs/ess/PAS2880
@@ -583,10 +592,8 @@ Let's also see what happens when `cd` does not succeed — it gives an error:
   -bash: cd: /fs/ess/PAs2880: No such file or directory
   ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
-::: callout-note
-#### Case-sensitivity: Everything in the shell (and in coding in general) is **case-sensitive**, including commands and file names --- hence the error above.
+::: callout-important
+#### Everything in the shell is **case-sensitive**, including commands and file names --- hence the error above.
 :::
 
 ### Path shortcuts
@@ -699,6 +706,43 @@ Here are some of the most useful ones:
   press <kbd>Ctrl</kbd>+<kbd>C</kbd> and you will get your prompt back.
 
 ::: exercise
+#### {{< fa user-edit >}} Exercise: canceling
+
+To simulate a long-running command that you may want to abort,
+we'll use the `sleep` command,
+which makes the computer wait for a specified amount of time before it gives your
+prompt back (or, e.g. moves to the next command in the context of a script).
+
+Run the below command and instead of waiting for the full 60 seconds,
+**press <kbd>Ctrl</kbd> + <kbd>C</kbd>** to get your prompt back sooner!
+
+``` bash
+sleep 60s
+```
+
+As another example of a situation where you might have to use
+<kbd>Ctrl</kbd> + <kbd>C</kbd>,
+simply type an opening parenthesis `(` and press <kbd>Enter</kbd>:
+
+``` bash
+(
+```
+
+When you do this, nothing is executed and you are not getting your prompt back:
+you should see a `>` on the next line.
+This is the shell wanting you to "complete" you command. Why would that be?
+
+<details><summary>*Click to see the solution*</summary>
+This is an incomplete command by definition because any opening parenthesis
+should have a matching closing parenthesis.
+</details>
+
+Press <kbd>Ctrl</kbd> + <kbd>C</kbd> to get your regular prompt back.
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: exercise
 #### {{< fa user-edit >}} Exercise: Tab completion & command history
 
 - Type **`/f`** and press <kbd>Tab</kbd> (will autocomplete to */fs/*)
@@ -750,45 +794,8 @@ Instead, since a path is not a command, you will get an error.
 :::
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
-::: exercise
-#### {{< fa user-edit >}} Exercise: canceling
-
-To simulate a long-running command that you may want to abort,
-we'll use the `sleep` command,
-which makes the computer wait for a specified amount of time before it gives your
-prompt back (or, e.g. moves to the next command in the context of a script).
-
-Run the below command and instead of waiting for the full 60 seconds,
-**press <kbd>Ctrl</kbd> + <kbd>C</kbd>** to get your prompt back sooner!
-
-``` bash
-sleep 60s
-```
-
-As another example of a situation where you might have to use
-<kbd>Ctrl</kbd> + <kbd>C</kbd>,
-simply type an opening parenthesis `(` and press <kbd>Enter</kbd>:
-
-``` bash
-(
-```
-
-When you do this, nothing is executed and you are not getting your prompt back:
-you should see a `>` on the next line.
-This is the shell wanting you to "complete" you command. Why would that be?
-
-<details><summary>*Click to see the solution*</summary>
-This is an incomplete command by definition because any opening parenthesis
-should have a matching closing parenthesis.
-</details>
-
-Press <kbd>Ctrl</kbd> + <kbd>C</kbd> to get your regular prompt back.
-:::
-
 ::: {.callout-note collapse="true"}
-#### Table with useful keyboard shortcuts _(Click to expand)_
+#### Table with useful Unix shell keyboard shortcuts _(Click to expand)_
 
 _(Note that even on Macs, you should use <kbd>Ctrl</kbd> instead of switching them_
 _out for <kbd>Cmd</kbd> as you may be used to doing --_
