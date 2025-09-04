@@ -3,6 +3,7 @@ title: "Unix shell basics"
 subtitle: "Week 2 -- Lecture C"
 pagetitle: "w2c: Shell Basics"
 date: 2025-08-29
+date-modified: today
 author:
   - name: Jelmer Poelstra
     orcid: 0000-0002-3514-7462
@@ -177,8 +178,8 @@ you'll "get your prompt back" and can type and execute a new command.
   This can be done with the keyboard shortcut **<kbd>Ctrl</kbd>+<kbd>L</kbd>**.
 :::
 
-::: {.callout-warning}
-#### In case the printed directory is not your username
+::: {.callout-warning collapse="true"}
+#### Is the printed directory not your username? _(Click to expand)_
 If you see a `~` as the working-dir-part of your prompt,
 you are instead in your Home directory in `/users/` and you will need to go
 to `/fs/ess/PAS2880/users/<user>` instead.
@@ -229,8 +230,8 @@ All the above commands provided us with some output.
 That output was **printed to screen**,
 which is the default behavior for nearly every Unix command.
 
-{{< fa user-edit >}} _Does `echo` seem useless, or can you think of ways in which it could be useful?_
-_We'll get back to this later._
+{{< fa comments >}} _Does `echo` seem useless, or can you think of ways in which it could be useful?_
+_(We'll get back to this later.)_
 
 ## Options, arguments, and help
 
@@ -238,9 +239,11 @@ _We'll get back to this later._
 
 The `cal` command is another example of a command that simply prints some
 information to the screen, in this case a calendar.
-We'll use it to learn about command *options* and *arguments*.
+It's not a particularly useful command in this day and age,
+but we'll use it as a low-stakes example to learn about command
+*options* and *arguments*.
 
-Invoking `cal` without options or arguments will show a calendar for the current month:
+Just running `cal` will print a calendar for the current month:
 
 ```bash
 cal
@@ -328,19 +331,20 @@ cal # If you run this line, 'cal' will be executed but everything after the '#' 
 #### Options summary
 
 Options are specified with a dash `-` (or two dashes `--`, as you'll see later).
-So far, you've only worked with the kind of option that is also called a **flag**,
-_which changes functionality in an ON/OFF way_, such as:
+The examples so far have involved the kind of option that is also called a **flag**,
+which changes functionality in an ON/OFF way, such as:
 
 - Turning a Julian calender display ***on*** with `-j`
 - Turning a 3-month display ***on*** with `-3`.
 
+We'll see more complex types of options later.
 Generally speaking, options **change the behavior** of a command.
 
 #### Arguments
 
 Arguments typically tell a command **what to operate on**.
 Most commonly, these are file or directory paths.
-Admittedly, the `cal` command is not the best illustration of this pattern ---
+Admittedly, `cal` is not the best illustration of this pattern ---
 when you give it one argument, this is the year to show a calendar for:
 
 ```bash
@@ -360,7 +364,7 @@ Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa
 # [...output truncated, entire year is shown...]
 ```
 
-You'll see some examples of commands operating on files or dirs soon.
+You'll see examples of commands operating on files or dirs soon.
 Finally, you can also combine options and arguments:
 
 ```bash
@@ -380,11 +384,11 @@ Sun Mon Tue Wed Thu Fri Sat   Sun Mon Tue Wed Thu Fri Sat
 # [...output truncated, entire year is shown...]
 ```
   
-To summarize how command _arguments_ differ from options -- arguments:
+To summarize how command _arguments_ differ from options --- arguments...
 
-- Usually tell the command _what_ to operate on, instead of changing _how_ it operates
-- Are not preceded by `-` and a letter (or `--` with a keyword)
-- If options and arguments are combined, arguments **go after** options^[
+- usually tell the command _what_ to operate on, instead of changing _how_ it operates
+- are not preceded by `-` and a letter (or `--` and a keyword)
+- if options and arguments are combined, arguments **go after** options^[
   Though some commands are flexible and accept either order.].
 
 ![**Command structure visualization**<br>Note that regrettably, the most common way to refer to this entire line is also "command". Therefore, the term "command" can either refer to just a command like `cal` **or** a full command-line expression that includes options and arguments like `cal -j 2020`.](../img/w2-3_command-structure.png){width="50%" fig-align="center" fig-alt="A diagram showing the structure of a command." .lightbox}
@@ -392,7 +396,7 @@ To summarize how command _arguments_ differ from options -- arguments:
 ### Getting help
 
 Many Unix commands have a **`-h`** option for help,
-which usually gives a concise summary of the command's "syntax",
+which usually gives a concise summary of the command's syntax,
 such as its available options and arguments:
 
 ```bash
@@ -498,7 +502,7 @@ While you can create variables yourself, **environment variables**
 are _pre-existing_ variables that have been automatically created by the computer.
 Two examples are:
 
-- `$HOME`, which contains the path to your Home dir
+- `$HOME`, which contains the path to your Home directory
 - `$USER`, which contains your user name
 
 Note that in the Unix shell, *variables are always referenced using a leading `$`.*

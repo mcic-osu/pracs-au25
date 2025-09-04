@@ -1,8 +1,8 @@
 ---
-title: "Working with files in the Unix shell II:<br>Viewing, summarizing and manipulating files"
-subtitle: "Week 3 -- lecture II"
-pagetitle: "Shell files II"
-date: 2025-09-06
+title: "Working with files in the Unix shell I:<br>The shell as a file browser"
+subtitle: "Week 3 -- lecture I"
+pagetitle: "Shell files I"
+date: 2025-09-05
 author:
   - name: Jelmer Poelstra
     orcid: 0000-0002-3514-7462
@@ -14,21 +14,20 @@ other-links:
   - text: "Week 3 overview"
     icon: book
     href: w3_overview.html
+  - text: "w3b: Shell files II"
+    icon: bookmarks
+    href: w3b_shellfiles.html
   - text: "Week 3 exercises"
     icon: pencil
     href: w3_exercises.html
-  - text: "w3a: Shell files I"
-    icon: bookmarks
-    href: w3a_shellfiles.html
-  - text: "Bonus: Unix data tools II"
+  - text: "Bonus: Unix data tools"
     icon: book
     href: ../bonus/shell-data.html
   - text: "Bonus: Misc. advanced shell"
-    icon: book
+    icon: bookmarks
     href: ../bonus/shell.html
-editor_options:
+editor_options: 
   chunk_output_type: console
-bibliography: ../references.bib
 ---
 
 --------------------------------------------------------------------------------
@@ -37,31 +36,35 @@ bibliography: ../references.bib
 
 ## Introduction
 
-### Context & overview
+### Week overview & learning goals
 
-The Unix shell is great for many other tasks that the file browser-like ones
-you learned about in the previous lecture.
-One of those is performing basic viewing, querying, and editing operations on
-text files.
+This week, we continue with basic Unix shell commands,
+focusing on commands that work with files and dirs.
+Specifically, you will learn to use the Unix shell to:
 
-Recall from the [Project File Organization lecture](../week02/w2a_project-org.qmd#use-plain-text-files)
-that you'll work almost exclusively with so-called "**plain-text**" files in this course,
-such as:
+- Create, copy, move, rename and delete directories and files (**this lecture**)
+- View the contents of text files in various ways ([next lecture](./w3c_shellfiles.qmd))
+- Search within, manipulate, and extract information from text files ([next lecture](./w3c_shellfiles.qmd))
 
-- Omics file formats such as FASTA, FASTQ, and GTF
-- Spreadsheet-like/tabular files stored as TSV/CSV
-- Scripts and code notebooks
-- Documentation files such as Markdown
+### Lecture context & overview
 
-The commands we'll discuss here can be used with plain-text files but not with
-"binary" formats like Excel or Word files.
+File browser GUIs
+(such as "Finder" on Mac, "File Explorer" on Windows,
+and the interface we saw in OSC OnDemand's File menu)
+can perform operations like listing, creating, moving, renaming, copying and
+removing files and folders.
+Here, you will learn to use Unix shell commands that can perform these actions.
 
-### Learning goals
+**Why do I need to learn to do these relatively trivial tasks in the shell?**
 
-In this lecture, you will learn to use the Unix shell to:
-
-- View the contents of text files in various ways
-- Search within, extract information from, and manipulate text files
+- This will help you to get more comfortable with working in the shell.
+- These are good commands to learn how the shell works more generally,
+  and how commands are structured.
+- You will eventually use the shell for data processing,
+  and it is more efficient to stick with the shell for file browser operations,
+  rather than going back and forth all the time.
+- You may run into situations where a GUI file browser is not at all available.
+- ***With practice, using the shell is faster and more powerful than a GUI file browser.***
 
 ### Getting ready
 
@@ -96,13 +99,132 @@ Start a VS Code session like you've done before.
 
 #### Open a Markdown file for notes
 
-Like before, I recommend that you create and open a Markdown file to keep notes:
+Like before, I recommend that you create and open a Markdown file to keep
+notes on what we're doing in this session:
 
-1. Click <i class="fa fa-bars"></i> => `File` => `New File`.
+1. Click <i class="fa fa-bars"></i> => `File` => `New File`
 2. Save the file inside `/fs/ess/PAS2880/users/$USER/week03`,
-   e.g. as `lecture2.md` (use a `.md` extension).
-   
-#### Change your working dir
+   e.g. as `lecture1.md` (use a `.md` extension).
+
+## Additional VS Code setup
+
+#### Add a VS Code keyboard shortcut
+
+Add a keyboard shortcut to send code from your editor pane to the terminal.
+That way, you don't have to copy-and-paste code into the terminal when you've
+typed it in the editor^[
+This is the same type of behavior that you may be familiar with from RStudio]:
+
+1. Click <i class="fa fa-cog"></i> (bottom-left) => `Keyboard Shortcuts`
+2. Enter "Run Selected Text" in the search box,
+   and the option in question should pop up:
+   `Terminal: Run Selected Text in Active Terminal`
+3. Click on that, then add the shortcut <kbd>Ctrl</kbd>+<kbd>Enter</kbd>^[
+   Don't worry about the warning that other keybindings exist for this shortcut.].
+
+#### Options for the Side Bar
+
+- Icons to toggle **(wide/Primary) Side Bar** options:
+  - ***Explorer***: File browser & outline for the active file.
+  - ***Search***: To search recursively across all files in the active folder.
+  - ***Source Control***: To work with Git (*in two weeks*).
+  - Debugger
+  - ***Extensions***: To install extensions (*next week*).
+  
+#### Install two VS Code extensions
+
+Click the gear icon <i class="fa fa-cog"></i> and then `Extensions`,
+and search for and then install:
+
+- **shellcheck** (by *simonwong*) --- this will check our shell scripts later on!
+- **Rainbow CSV** (by *mechatroner*) ---
+  make CSV/TSV files easier to view with column-based colors
+
+::: callout-tip
+### Automatic whole-line selection in VS Code
+In VS Code's editor pane,
+the _entire line that your cursor is on is selected by default_.
+As such, you don't need to manually select the entire line when wanting to send
+it to the terminal (or when cutting/copying!).
+:::
+
+::: exercise
+#### {{< fa user-edit >}} Exercise: Try a few color themes
+
+1.  Access the "Color Themes" option by clicking <i class="fa fa-cog"></i> =\> `Color Theme`.
+2.  Try out a few themes and see pick one you like!
+:::
+
+SHOW DOWNLOAD RIGHT-CLICK OPTION?
+
+:::{.callout-note collapse="false"}
+### Some VS Code tips and tricks
+
+- **Auto Save**\
+  To turn on the auto-saving of documents in the editor,
+  click {{< fa bars >}} > `File` => "Auto Save"
+  (should show a checkmark when activated).
+
+- **The Command Palette**\
+  To access any menu option that is available in VS Code,
+  the so-called "Command Palette" can be handy,
+  especially if you know what you are looking for.
+  To access the Command Palette, click   <i class="fa fa-cog"></i>   and then
+  `Command Palette` (or press <kbd>F1</kbd> or <kbd>Ctrl/⌘</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>).
+  To use it, start typing something to search for an option.
+    
+- **Toggling (hiding/showing) the side bars**\
+  If you want to save some screen space while coding along in class,
+  you may want to occasionally hide the side bars:
+  - In {{< fa bars >}} > `View` > `Appearance` you can toggle both the `Activity Bar`
+    and the `Primary Side Bar`.
+  - Or use keyboard shortcuts:
+    - <kbd>Ctrl/⌘</kbd>+<kbd>B</kbd> for the primary/wide side bar
+    - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> for the activity/narrow side bar
+
+- **Keyboard shortcuts**\
+  For a single-page PDF overview of keyboard shortcuts for your operating system:
+  {{< fa bars >}}   =\>   `Help`   =\>   `Keyboard Shortcut Reference`.
+  (Or for direct links to these PDFs:
+  [Windows](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf) /
+  [Mac](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf) /
+  [Linux](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-linux.pdf).)
+:::
+
+## Downloading the practice dataset
+
+You will now download the practice/example dataset that was
+[briefly introduced in the first week](../week01/w1b_omics-data.qmd#/our-example-dataset),
+which we'll use throughout the course.
+
+First, make sure you are in `/fs/ess/PAS2880/users/$USER`:
+
+```bash
+pwd
+```
+```bash-out
+/fs/ess/PAS2880/users/jelmer
+```
+
+Then, use the `git clone` command (there is a space between `git` and `clone`^[
+`git` is a type of command that has "subcommands",
+such as `clone` and many others. You will learn much more about Git next week.
+])
+to download a repository on GitHub that has our practice dataset:
+
+```bash
+git clone https://github.com/jelmerp/garrigos-data
+```
+```bash-out
+Cloning into 'garrigos-data'...
+remote: Enumerating objects: 52, done.
+remote: Total 52 (delta 0), reused 0 (delta 0), pack-reused 52 (from 1)
+Receiving objects: 100% (52/52), 945.76 MiB | 132.14 MiB/s, done.
+Updating files: 100% (47/47), done.
+```
+
+This may take 10 or so seconds, since it will download almost 1 GB of data.
+Finally, move into the downloaded dir:
 
 ```bash
 cd garrigos-data
@@ -110,889 +232,855 @@ cd garrigos-data
 
 <hr style="height:1pt; visibility:hidden;" />
 
-## Viewing the contents of text files
+## `ls` and `tree` to list
 
-Several commands exist to view all or part of one or more text files,
-and we'll discuss the most common ones below.
+### `ls`
 
-### `cat`
-
-The **`cat`** command will print the entire contents of one or more files to
-screen:
-
-```bash
-cat README.md
-```
-```bash-out
-sample_id       time    treatment
-ERR10802882     10dpi   cathemerium
-ERR10802875     10dpi   cathemerium
-ERR10802879     10dpi   cathemerium
-ERR10802883     10dpi   cathemerium
-ERR10802878     10dpi   control
-ERR10802884     10dpi   control
-ERR10802877     10dpi   control
-ERR10802881     10dpi   control
-ERR10802876     10dpi   relictum
-ERR10802880     10dpi   relictum
-ERR10802885     10dpi   relictum
-ERR10802886     10dpi   relictum
-ERR10802864     24hpi   cathemerium
-ERR10802867     24hpi   cathemerium
-ERR10802870     24hpi   cathemerium
-ERR10802866     24hpi   control
-ERR10802869     24hpi   control
-ERR10802863     24hpi   control
-ERR10802871     24hpi   relictum
-ERR10802874     24hpi   relictum
-ERR10802865     24hpi   relictum
-ERR10802868     24hpi   relictum
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### `head` and `tail`
-
-Some files, especially when working with omics data, can be huge,
-so printing the whole file with `cat` is not always ideal.
-The twin commands **`head`** and **`tail`** can be useful,
-as they will print only the first (`head`) or last (`tail`) lines of a file.
-
-`head` & `tail`'s defaults are to print 10 lines:
-
-```bash
-head meta/metadata.tsv
-```
-```bash-out
-sample_id       time    treatment
-ERR10802882     10dpi   cathemerium
-ERR10802875     10dpi   cathemerium
-ERR10802879     10dpi   cathemerium
-ERR10802883     10dpi   cathemerium
-ERR10802878     10dpi   control
-ERR10802884     10dpi   control
-ERR10802877     10dpi   control
-ERR10802881     10dpi   control
-ERR10802876     10dpi   relictum
-```
-
-Use the `-n` option to specify the number of lines to print:
-
-```bash
-head -n 3 meta/metadata.tsv
-```
-```bash-out
-sample_id       time    treatment
-ERR10802882     10dpi   cathemerium
-ERR10802875     10dpi   cathemerium
-```
-
-A neat trick with `tail` is to *start at* a specific line,
-`-n +<starting-line>`.
-This is often used to skip the header line:
-
-```bash
-# '-n +2' tells tail to start at line 2:
-tail -n +2 meta/metadata.tsv
-```
-```bash-out
-ERR10802882     10dpi   cathemerium
-ERR10802875     10dpi   cathemerium
-ERR10802879     10dpi   cathemerium
-ERR10802883     10dpi   cathemerium
-ERR10802878     10dpi   control
-# [...output truncated...]
-```
-
------
-
-Next, let's try to take a peak inside a FASTQ file.
-To print the first 8 lines, corresponding to 2 reads,
-use `-n 8` with `head`:
+The `ls` command, short for "list", will list files and directories ---
+by default those in your current working dir:
 
 ``` bash
-head -n 8 fastq/ERR10802863_R1.fastq.gz
+ls
 ```
 ``` bash-out
-�
-Խے�8�E��_1f�"�QD�J��D�fs{����Yk����d��*��
-|��x���l޴�j�N������?������ٔ�bUs�Ng�Ǭ���i;_��������������|<�v����3��������|���ۧ��3ĐHyƕ�bIΟD�%����Sr#~��7��ν��1y�Ai,4
-w\]"b�#Q����8��+[e�3d�4H���̒�l�9LVMX��U*�M����_?���\["��7�s\<_���:�$���N��v�}^����sw�|�n;<�<�oP����
-i��k��q�ְ(G�ϫ��L�^��=��<���K��j�_/�[ۭV�ns:��U��G�z�ݎ�j����&��~�F��٤ZN�'��r2z}�f\#��:�9$�����H�݂�"�@M����H�C�
-�0�pp���1�O��I�H�P됄�.Ȣe��Q�>���
-�'�;@D8���#��St�7k�g��|�A䉻���_���d�_c������a\�|�_�mn�]�9N������l�٢ZN�c�9u�����n��n�`��
-"gͺ�
-    ���H�?2@�FC�S$n���Ԓh�       nԙj��望��f      �?N@�CzUlT�&�h�Pt!�r|��9~)���e�A�77�h{��~��     ��
-# [...output truncated...]
+fastq  meta  README.md  ref
 ```
 
-<details><summary>Ouch! 😳 What went wrong here? *(Click for the solution)*</summary>
-We were directly presented with the contents of the *compressed* file, which isn't human-readable.
+::: {.callout-tip collapse="false"}
+#### `ls` output colors
+
+The `ls` output above does not show the different colors you should see in your shell —
+the most common ones are:
+
+- Entries in **[blue]{style="color: #0328fc"}** are directories (`fastq`, `meta`, and `ref` above)
+- Entries in **black** are regular files (`README.md` above)
+- Entries in **[red]{style="color: #d92118"}** are compressed files (we'll see examples of this soon).
+
+_(Some of these colors depend on the color scheme of your terminal / VS Code._
+_For example, in dark themes, regular text files are in white.)_
+:::
+
+You can use an **argument** to change the dir (or file) that `ls` operates on, 
+and you can use **options** to change how it shows the output.
+Let's start with *options* --- for example, the option **`-l`** (lowercase L):
+
+``` bash
+ls -l 
+```
+``` bash-out
+total 2
+drwxr-x---+ 2 jelmer PAS0471 4096 Nov 24  2024 fastq
+drwxr-x---+ 2 jelmer PAS0471 4096 Nov 13  2024 meta
+-rw-rw----+ 1 jelmer PAS0471 1539 Nov 13  2024 README.md
+drwxr-x---+ 2 jelmer PAS0471 4096 Jul  4 20:52 ref
+```
+
+It lists the same items as earlier, but **printed in a different format**:
+one item per line, with additional information such as the date and time each file was last modified,
+and file sizes in bytes (to the left of the date).
+
+Let's add another option, **`-h`**:
+
+``` bash
+ls -lh
+```
+``` bash-out
+total 2.0K
+drwxr-x---+ 2 jelmer PAS0471 4.0K Nov 24  2024 fastq
+drwxr-x---+ 2 jelmer PAS0471 4.0K Nov 13  2024 meta
+-rw-rw----+ 1 jelmer PAS0471 1.6K Nov 13  2024 README.md
+drwxr-x---+ 2 jelmer PAS0471 4.0K Jul  4 20:52 ref
+```
+
+<details><summary>How does the output differ after adding `-h`, and what do you think that means? *(Click to see the answer)*</summary>
+  The only difference is in the format of the column reporting the sizes of the items listed.
+  
+  We now have "Human-readable filesizes" (hence `-h`),
+  where sizes on the scale of kilobytes will be shown  with `K`s,
+  of megabytes with `M`s, and of gigabytes with `G`s.
+  That can be useful especially for large files.
 </details>
 
 <hr style="height:1pt; visibility:hidden;" />
 
-::: callout-note
-#### When it comes to FASTQ files, no need to decompress
-To get around the problem we just encountered with `head`,
-you might be inclined to decompress these files
-(which you could do with the `gunzip` command).
-However, at least when it comes to FASTQ files,
-you are best off leaving them compressed:
-
-- Uncompressed files take up much more disk storage space than compressed ones,
-  and a set of FASTQ files can be a lot of data
-- Almost any bioinformatics program accepts compressed FASTQ files
-- You _can_ view these files in compressed form, as shown below with `less`.
-  Additionally, several commands including `cat` have a counterpart for compressed
-  files (`zcat` in the case of `cat`).
-  
-Other genomic files, like assembly FASTA files and annotation GTF/GFF files,
-are often also compressed when you download them.
-These types of files are more commonly decompressed ---
-for one because they don't take up nearly as much space as a set of FASTQ files.
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### `less`: A file pager
-
-The `less` command is rather different from the previous commands,
-which simply printed file contents to the screen and gave us our shell prompt back.
-Instead, `less` will open a file for you to browse through,
-and you need to explicitly quit the program to get your prompt back.
-
-Also, `less` will automatically display gzip-compressed files in
-human-readable form:
-
-``` bash
-less garrigos-data/fastq/ERR10802863_R1.fastq.gz
-```
-```bash-out
-@ERR10802863.8435456 8435456 length=74
-CAACGAATACATCATGTTTGCGAAACTACTCCTCCTCGCCTTGGTGGGGATCAGTACTGCGTACCAGTATGAGT
-+
-AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-@ERR10802863.27637245 27637245 length=74
-GCCACACTTTTGAAGAACAGCGTCATTGTTCTTAATTTTGTCGGCAACGCCTGCACGAGCCTTCCACGTAAGTT
-+
-AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEE<EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-@ERR10802863.10009244 10009244 length=73
-CTCGGCGTTAACTTCATCACGCAGATCATTCCGTTCCAGCAGCTGAAGCAAGACTACCGTCAGTACGAGATGA
-+
-AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-```
-
-::: {.callout-tip}
-#### The `-S` option to `less` suppresses "line-wrapping"
-
-When lines are too long to fit on your computer screen,
-`less` will by default "wrap" them onto a next line on the screen.
-That's convenient for reading,
-but can be confusing for tabular formats and formats like FASTQ,
-because one line on the screen no longer corresponds to one line in the file.
-
-With `-S`, lines will not be wrapped but will "run out of the screen"
-on the right-hand side (press the rightward arrow <kbd>→</kbd> to see that part).
-
-``` bash
-less -S garrigos-data/fastq/ERR10802863_R1.fastq.gz
-```
-:::
-
-When inside the `less` pager, you can move around in the file in several ways:
-
-- By scrolling with your mouse
-- With up <kbd>↑</kbd> and down <kbd>↓</kbd> arrows: move line-by-line
-- With <kbd>u</kbd> (up) and <kbd>d</kbd> (down): move half a page at a time
-- If you have them, with <kbd>PgUp</kbd> and <kbd>PgDn</kbd> keys: move page-by-page
-- Press `G` to go the end of the file, and `g` to go (back) to the top
-
-To exit/quit `less` and get your shell prompt back, simply type **<kbd>q</kbd>**:
-
-```bash
-# Type 'q' to exit the less pager:
-q
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: {.callout-note collapse="true"}
-#### FASTQ format recap _(Click to expand)_
-
-Recall that in a FASTQ file, **each read has four lines**,
-and reads are simply printed back-to-back:
-
-![](../img/fastq_dark.png){width="90%" fig-align="center" fig-alt="A screenshot of 8 lines of a FASTQ file." .lightbox}
-
-The above screenshot is from one of the @garrigós2025 FASTQ files,
-which were downloaded from the NCBI Sequence Read Archive (SRA).
-When you receive FASTQ files from a sequencer,
-the header may have a lot more information, such as shown below for Illumina:
-
-![](../img/fastq_header.png){width="80%" fig-align="center" fig-alt="A screenshot of 8 lines of a FASTQ file, with more information in the header than the previous one." .lightbox}
-:::
-
-::: {.callout-important collapse="true"}
-#### {{< fa user-edit >}} Explore the FASTQ file a bit. Do you notice any unusual-looking reads? _(Click for the solution)_
-
-A number of reads are much shorter than the others,
-and only consist of `N`s, i.e. uncalled bases. For example:
-  
-```bash-out-solo
-@ERR10802863.11918285 11918285 length=35
-NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
-+
-###################################
-```
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### `wc -l` to count lines
-
-_(This command doesn't display file contents and fits better in the section_
-_on Unix data tools below, but needs to be introduced for the next bit.)_
-
-The **`wc`** command by default counts the number of lines, words, and characters
-in its input ---
-but is most commonly used to only **count lines**, with the `-l` option:
-
-```bash
-wc -l meta/metadata.tsv
-```
-```bash-out
-23 meta/metadata.tsv
-```
-
-This can be surprisingly useful,
-as the number of lines in many file types reflects the number of entries.
-
-<hr style="height:1pt; visibility:hidden;" />
-
-## Redirection and pipes
-
-You'll be creating some dummy files for this section,
-so let's first create and move into a `sandbox` dir within `garrigos-data`:
-
-```bash
-mkdir sandbox
-cd sandbox
-```
-
-### Redirection
-
-The regular output of a command that is printed to the screen
-(like a list of files by `ls`, or a number of lines by `wc -l`)
-is technically called **"standard out"** or in short "*stdout*".
-Sometimes, we may want to do something else with this output,
-like storing it in a file.
-Luckily, this is easy to do with something called "**redirection**".
-
-First, a reminder of what `echo` does without redirection ---
-it simply prints the text we provide to the screen:
-
-```bash
-echo "My first line"
-```
-```bash-out
-My first line
-```
-
-Now, let's redirect `echo`'s standard out to a new file `test.txt` using
-the `>` operator:
-
-```bash
-echo "My first line" > test.txt
-```
-
-No output was printed to the screen, as it instead went into the file:
-
-```bash
-cat test.txt
-```
-```bash-out
-My first line
-```
-
-The "**`>`**" operator will redirect output to a file with the following rules:
-
-- If the file doesn't exist, it will be *created*.
-- If the file does exist, any contents will be *overwritten*.
-
-Let's redirect another line into that same file:
-
-```bash
-echo "My second line" > test.txt
-cat test.txt
-```
-```bash-out
-My second line
-```
-
-That may not have been what we intended!
-As explained above, the earlier file contents was _overwritten_. 
-With "**`>>`**", however, we **append** the output to a file:
-
-```bash
-echo "My third line" >> test.txt
-cat test.txt
-```
-```bash-out
-My second line
-My third line
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### The pipe
-
-Say that you want to count the number of entries (files and subdirs)
-in a directory. You could do that as follows:
-
-```bash
-# First we redirect the ls output to a file
-ls ../fastq > filelist.txt
-
-# Then we count the nr. of lines, which is the number of files in ../fastq:
-wc -l filelist.txt
-```
-```bash-out
-44 filelist.txt
-```
-
-That worked, but with two separate lines of code,
-and you are left with a file `filelist.txt` you probably want to remove,
-since it has served its sole purpose.
-
-A more conventient way to do this kind of thing is with a "**pipe**", as follows:
-
-```bash
-ls ../fastq | wc -l
-```
-```bash-out
-44
-```
-
-When you use the pipe, the output of the command on the left-hand side
-(a file listing, in this case) is **redirected into the `wc` command**.
-This command like many others will gladly accept input that way 
-(i.e., via **standard in**) instead of via a file name argument.
-
-Pipes are useful because they avoid having to write/read intermediate files ---
-this saves typing, makes the operation quicker, and reduces file clobber.
-In the example above,
-you don't need to make a `filelist.txt` file to count the number of files.
-We'll see pipes in action a bunch more in the next section.
-
-<hr style="height:1pt; visibility:hidden;" />
-
-## Unix data tools
-
-We'll now turn to some commands that may be described as Unix "data tools".
-These commands are very useful when working in the shell generally,
-and when working with omics data specifically.
-
-Their strengths are especially relatively simple data processing and summarizing
-steps, and they are excellent in dealing with very large files. 
-Here, we will cover:
-
-- `grep` to search for text in files 
-- `cut` to select one or more columns from tabular data
-- `sort` to sort lines, or tabular data by column
-- `uniq` to remove duplicates
-
-We'll start with taking a look at one of the example data files,
-and discussing tabular plain-text files.
-
-### Tabular plain-text files and file extensions
-
-The examples below will use the file `meta/metadata.tsv`,
-so let's take another look at the first lines of that file first:
-
-```bash
-cd meta
-head metadata.tsv
-```
-```bash-out
-sample_id       time    treatment
-ERR10802882     10dpi   cathemerium
-ERR10802875     10dpi   cathemerium
-ERR10802879     10dpi   cathemerium
-ERR10802883     10dpi   cathemerium
-ERR10802878     10dpi   control
-ERR10802884     10dpi   control
-ERR10802877     10dpi   control
-ERR10802881     10dpi   control
-ERR10802876     10dpi   relictum
-```
-
-"_Tabular_" files like this one contain data that is arranged in a
-rows-and-columns format, i.e. as in a table or an Excel spreadsheet.
-Because plain-text files do not have an intrinsic way to define columns,
-certain characters are used as column "delimiters" in **plain-text tabular** files.
-Most commonly, these are:
-
-- A Tab, and such files are often stored with a **`.tsv`** extension for
-  Tab-Separated Values ("**TSV** file").
-- A comma, and such files are often stored with a **`.csv`** extension for
-  Comma-Separated Values ("**CSV** file").
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: callout-important
-#### Plain-text file extensions are flexible and mostly for human-readibility
-
-A side note on **plain-text file extensions** like `.txt`, `.csv`, and `.tsv`,
-but also genomics files like `.fastq` and scripts like `.R` or `.sh`:
-because all plain text files are fundamentally the same,
-i.e. "just plain-text files",
-_changing the extension does not change anything about the file._
-Instead, different file extensions are used primarily to make it clear
-to humans (as opposed to the computer) what the file contains.
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### `grep` to print lines that match a pattern
-
-The `grep` command is extremely useful and will find specific text 
-(or text patterns) in a file.
-By default, it will **print each line that contains a "match" in full**.
-
-Its basic syntax is `grep "<pattern>" <file-path>`.
-For example,
-this will print all lines from `metadata.tsv` that contain "cathemerium":
-
-```bash
-grep "cathemerium" metadata.tsv
-```
-```bash-out
-ERR10802882     10dpi   cathemerium
-ERR10802875     10dpi   cathemerium
-ERR10802879     10dpi   cathemerium
-ERR10802883     10dpi   cathemerium
-ERR10802864     24hpi   cathemerium
-ERR10802867     24hpi   cathemerium
-ERR10802870     24hpi   cathemerium
-```
-
-Instead of printing matching lines, we can also **count** them with the `-c` option.
-For example, how many control samples are in the dataset?
-
-```bash
-grep -c "control" metadata.tsv
-```
-```bash-out
-7
-```
-
-The option `-v` **inverts** `grep`'s behavior and prints all lines that
-do _not_ match the pattern.
-Here, combine `-v` and `-c` to count lines that do not contain the string "control":
-
-```bash
-grep -vc "control" metadata.tsv
-```
-```bash-out
-16
-```
-
 ::: {.callout-note collapse="false"}
-#### Additional `grep` tips
+#### More info about the columns in long-format `ls` output
 
-- While not always necessary, it's good practice to
-  **use quotes** (`"..."`) around the search pattern.
-  Use _double_ quotes by default, like in the examples above,
-  but _single_ quotes can generally also be used^[
-  Except, e.g., when you use a shell variable within your search pattern.].
-- **Incomplete matches** work, including in individual words:
-  "`contr`" will match the `control` lines
-  (compare this behaviour with globbing using shell wildcards!)
-- `grep` has many other useful options, such as:
-  - `-i` to ignore case (uppercase vs. lowercase) when searching
-  - `-n` print the line number for each matching line
-  - `-A <n>` and `-B <n>` to print `n` lines after and before each match
-  - `-w` to make a pattern match whole "words" only
-  - `-r` to search files in directories recursively 
-    (note that even without `-r`, `grep` can operate on multiple files)
+The following image shows what each column in long-format `ls` represents:
+
+![](../img/long-ls2.png){fig-align="center" width="90%" fig-alt="An annotated screenshot of long-format ls output." .lightbox}
+Some notes about this:
+
+- We will talk about file "permissions" in week 5 of the course.
+- You can ignore the column with the "number of links",
+  as this is not informative for regular users.
+- Sizes shown for _directories_ do (unfortunately) not correspond to the total
+  size of the dir and its contents.
+  Basically, you should only pay attention to sizes of _files_ when looking at
+  long-format `ls` output (see the next box to get dir sizes).
 :::
 
 ::: {.callout-tip collapse="true"}
-#### Operating on compressed files _(Click to expand)_
+#### Use the `du` command to see the total size of a dir _(Click to expand)_
 
-`grep` also has a counterpart for compressed files: `zgrep`,
-which otherwise works identically.
+Given that the `ls` size output is not informative for dirs,
+how can you find out the total size of a dir and all its contents?
+Use the `du` (**d**isk **u**sage) command -- for example:
+
+- Get the total size for a single dir:
+
+  ```bash
+  # -h: human-readable file sizes / -s: specify a dir
+  du -hs fastq/
+  ```
+  ```bash-out
+  941M    fastq/
+  ```
+
+- Get the total size for all top-level dirs as well as the current working dir:
+
+  ```bash
+  # -d 1: summarize sizes at a depth of 1 (= top-level dirs below current)
+  du -h -d 1
+  ```
+  ```bash-out
+  1.0K    ./meta
+  5.1M    ./ref
+  941M    ./fastq
+  946M    ./.git
+  1.9G    .
+  ```
+:::
+
+Moving on to **argument(s)** --
+we can list the contents of dirs other than our working dir
+by specifying one or more as arguments:
+
+``` bash
+# [Your output should show file names in red]
+ls fastq
+```
+``` bash-out
+ERR10802863_R1.fastq.gz  ERR10802867_R1.fastq.gz  ERR10802871_R1.fastq.gz  ERR10802877_R1.fastq.gz  ERR10802881_R1.fastq.gz  ERR10802885_R1.fastq.gz
+ERR10802863_R2.fastq.gz  ERR10802867_R2.fastq.gz  ERR10802871_R2.fastq.gz  ERR10802877_R2.fastq.gz  ERR10802881_R2.fastq.gz  ERR10802885_R2.fastq.gz
+ERR10802864_R1.fastq.gz  ERR10802868_R1.fastq.gz  ERR10802874_R1.fastq.gz  ERR10802878_R1.fastq.gz  ERR10802882_R1.fastq.gz  ERR10802886_R1.fastq.gz
+ERR10802864_R2.fastq.gz  ERR10802868_R2.fastq.gz  ERR10802874_R2.fastq.gz  ERR10802878_R2.fastq.gz  ERR10802882_R2.fastq.gz  ERR10802886_R2.fastq.gz
+ERR10802865_R1.fastq.gz  ERR10802869_R1.fastq.gz  ERR10802875_R1.fastq.gz  ERR10802879_R1.fastq.gz  ERR10802883_R1.fastq.gz
+ERR10802865_R2.fastq.gz  ERR10802869_R2.fastq.gz  ERR10802875_R2.fastq.gz  ERR10802879_R2.fastq.gz  ERR10802883_R2.fastq.gz
+ERR10802866_R1.fastq.gz  ERR10802870_R1.fastq.gz  ERR10802876_R1.fastq.gz  ERR10802880_R1.fastq.gz  ERR10802884_R1.fastq.gz
+ERR10802866_R2.fastq.gz  ERR10802870_R2.fastq.gz  ERR10802876_R2.fastq.gz  ERR10802880_R2.fastq.gz  ERR10802884_R2.fastq.gz
+```
+
+And like we saw with `cal`, we can combine options and arguments:
+
+``` bash
+ls -lh fastq
+```
+``` bash-out
+total 941M
+-rw-r-----+ 1 jelmer PAS0471 21M Nov 13  2024 ERR10802863_R1.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 22M Nov 13  2024 ERR10802863_R2.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 21M Nov 13  2024 ERR10802864_R1.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 22M Nov 13  2024 ERR10802864_R2.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 22M Nov 13  2024 ERR10802865_R1.fastq.gz
+-rw-r-----+ 1 jelmer PAS0471 22M Nov 13  2024 ERR10802865_R2.fastq.gz
+# [...output truncated...]
+```
+
+Some notes about these FASTQ files:
+
+- The files have a `.gz` extension and should be printed in **[red]{style="color:#bb0000"}**,
+  indicating they have been _compressed_ with the gzip utility.
+- There are two files per sample: `_R1` (forward reads) and `_R2` (reverse reads).
+- The files are ~21-22 Mb in size ---
+  considerably smaller than the original file sizes
+  (~1-2 Gb) because they were subsampled.
+  
+::: exercise
+#### {{< fa user-edit >}} **Exercise**: Listing a single file
+
+Say you want to check the size of a single file.
+Then, it may be always not be convenient to list an entire dir's contents.
+
+Can you figure out how to use `ls` to show you the file size **only** for the 
+`fastq/ERR10802865_R2.fastq.gz` file?
+
+<details><summary>*Click to see the solution*</summary>
+
+The argument to `ls` can be a path of any kind,
+including to a file rather than to a dir:
 
 ```bash
-# Search for long non-coding RNAs (lncRNA) in the GTF file:
-zgrep "lncRNA" ../ref/GCF_016801865.2.gtf.gz | head -n 2
+ls -lh fastq/ERR10802865_R2.fastq.gz
 ```
-```bash-out
-NC_068937.1     Gnomon  gene    76295   82374   .       -       .       gene_id "LOC128092783"; transcript_id ""; db_xref "GeneID:128092783"; description "uncharacterized LOC128092783"; gbkey "Gene"; gene "LOC128092783"; gene_biotype "lncRNA"; 
-NC_068937.1     Gnomon  gene    82671   86331   .       +       .       gene_id "LOC120427727"; transcript_id ""; db_xref "GeneID:120427727"; description "uncharacterized LOC120427727"; gbkey "Gene"; gene "LOC120427727"; gene_biotype "lncRNA"; 
+``` bash-out
+-rw-r-----+ 1 jelmer PAS0471 22M Nov 13  2024 fastq/ERR10802865_R2.fastq.gz
 ```
-
-Another idiom, which would work with any command, is to pipe the output of `zcat`
-to the focal command --- for example:
-
-```bash
-# Search for carbonic anhydrase-related proteins in the GTF file:
-zcat ../ref/GCF_016801865.2.gtf.gz | grep "carbonic anhydrase-related protein" | head -n 2
-```
-```bash-out
-NC_068937.1     Gnomon  gene    398255  486969  .       -       .       gene_id "LOC120422535"; transcript_id ""; db_xref "GeneID:120422535"; description "carbonic anhydrase-related protein 10"; gbkey "Gene"; gene "LOC120422535"; gene_biotype "protein_coding"; 
-NC_068937.1     Gnomon  transcript      398255  486969  .       -       .       gene_id "LOC120422535"; transcript_id "XM_039585997.2"; db_xref "GeneID:120422535"; experiment "COORDINATES: polyA evidence [ECO:0006239]"; gbkey "mRNA"; gene "LOC120422535"; model_evidence "Supporting evidence includes similarity to: 10 Proteins"; product "carbonic anhydrase-related protein 10, transcript variant X1"; transcript_biotype "mRNA"; 
-```
-
-In this week's exercises, you'll further explore this GTF file.
+</details>
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### Selecting columns using `cut`
+### `tree` to recursively list files in "tree" format
 
-The `cut` command will select or we could say "cut out" one or more columns
-from a tabular file.
-
-You always have to use the **`-f`** option to specify the
-**desired column(s) / "field"(s)**.
+By default, `ls` is not recursive,
+which means that it only shows results for one directory level.
+Compare that with the output of the `tree` command,
+which gives a nice recursive overview in a simple tree-like format
+(with the `-C` option adding colors):
 
 ```bash
-# Select the second column of the file:
-cut -f 1 metadata.tsv
+tree -C
 ```
 ```bash-out
-time
-10dpi
-10dpi
-10dpi
-10dpi
-10dpi
-10dpi
-[...output truncated...]
+# [colors not shown in this output]
+.
+├── fastq
+│   ├── ERR10802863_R1.fastq.gz
+│   ├── ERR10802863_R2.fastq.gz
+│   ├── ERR10802864_R1.fastq.gz
+│   ├── ERR10802864_R2.fastq.gz
+│   ├── ERR10802865_R1.fastq.gz
+│   ├── ERR10802865_R2.fastq.gz
+├── [...other FASTQ files not shown...]
+├── meta
+│   └── metadata.tsv
+├── README.md
+└── ref
+    └── GCF_016801865.2.gtf.gz
+
+3 directories, 47 files
 ```
 
-In many cases, with `cut` and other commands alike,
-it can be useful to **pipe the output to `head`** to quickly see if your command
-works without printing a large number (sometimes thousands) of lines:
+Let's take a step back and consider what's in our dataset:
+
+- A `README.md` Markdown file
+- 44 FASTQ files with RNA-Seq reads for 22 samples (in the `fastq` dir)
+- A metadata file with treatment group info for each sample (in the `meta` dir)
+- A GTF annotation file for the reference genome (in the `ref` dir)
+
+We will take a closer look at these files today and in the weeks to come.
+
+<details><summary>Can you think of a file that we need for the analysis that is not present in our dir?
+*(Click to see the answer)*</summary>
+
+We are missing the genome assembly FASTA file.
+We will download that one separately later on!^[
+The reason for this is simply that tt was too large to be included in the
+GitHub repository.
+]
+</details>
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## `mkdir` and `touch` to create
+
+### `mkdir` to create new directories
+
+The `mkdir` command creates one or more new directories,
+and the `-p` option is needed to enable recursive behavior:
 
 ```bash
-cut -f 1 metadata.tsv | head -n 3
-```
-```bash-out
-time
-10dpi
-10dpi
+mkdir -p ../week03/sandbox 
 ```
 
-::: {.callout-note collapse="true"}
-#### Selecting multiple columns and specifying the delimiter with `cut` _(Click to expand)_
+The above command is recursive because the both the `week03` dir and the
+`sandbox` dir within it need to be created at once.
 
-To select **multiple columns**, use a range or comma-delimited list:
+The name `sandbox` is commonly used for dirs meant for experimentation and testing.
+Let's move into the dir we just created:
 
 ```bash
-cut -f 1,3 metadata.tsv | head -n 3
-```
-```bash-out
-sample_id       treatment
-ERR10802882     cathemerium
-ERR10802875     cathemerium
+cd ../week03/sandbox
 ```
 
-```bash
-cut -f 1-2 metadata.tsv | head -n 3
-```
-```bash-out
-sample_id       time
-ERR10802882     10dpi
-ERR10802875     10dpi
-```
+::: exercise
+#### {{< fa user-edit >}} **Exercise**: `mkdir` and recursiveness
 
-However, it is not possible to change the order of columns with `cut`!
-(The more advanced `awk` command can do this --
-see [this optional reading material](../bonus/shell-data.qmd))
+1. What do you think the following command does?
+   Would you consider that recursive? Run the command and see what it did.
 
-The default cut delimiter is a Tab,
-so we didn't have to specify the delimiter with our current file.
-But when you need to do this, use the `-d` option, e.g. `-d ,` for a CSV file:
+   ```bash
+   mkdir testdir1 testdir2
+   ```
 
-```bash
-# [Don't run this, hypothetical example]
-# Select the second column in a comma-delimited (CSV) file:
-cut -d, 2 my-data.csv
-```
+   <details><summary>*Click to see the solutions*</summary>
+   This command created two dirs at once.
+   It is **not** recursive but it only operated on one "dir level",
+   i.e. it did not need to create two dir levels
+   (or put another way, it did not create a dir within a dir).
+
+   ```bash
+   ls
+   ```
+   ```bash-out
+   testdir1 testdir2
+   ```
+   </details>
+
+2. Above, we used a bit of complicated relative path to create the `sandbox` dir.
+   What do you think its absolute path is? Use `pwd` to see if you are right.
+
+   <details><summary>*Click to see the solutions*</summary>
+
+   ```bash
+   pwd
+   ```
+   ```bash-out
+   /fs/ess/PAS2880/users/jelmer/week03/sandbox
+   ```
+   </details>
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
 
-### Combining `cut`, `sort`, and `uniq` to create a list
+### `touch` to create a new file
 
-Let's say you want an alphabetically sorted list of treatments in `metadata.tsv`.
-(Yes, that's a bit trivial in this case, but you could use the following code
-also to operate on a huge genome annotation file, as you'll do later.)
-
-To do this, you need to learn about two new commands:
-
-- **`sort`** to sort/order/arrange rows, by default in alphanumeric order.
-- **`uniq`** to remove duplicates (i.e., keep all distinct/unique) entries
-  _from a sorted file/list_.
-
-We'll build up a small "pipeline" to do this, step-by-step,
-and piping the output into `head` at every step.
-First, get rid of the header line with the previously mentioned `tail` trick:
+To create new, empty files, we can use the `touch` command,
+specifiying the file name as the argument(s):
 
 ```bash
-tail -n +2 metadata.tsv | head
-```
-```bash-out
-ERR10802882     10dpi   cathemerium
-ERR10802875     10dpi   cathemerium
-ERR10802879     10dpi   cathemerium
-ERR10802883     10dpi   cathemerium
-ERR10802878     10dpi   control
-ERR10802884     10dpi   control
-ERR10802877     10dpi   control
-ERR10802881     10dpi   control
-ERR10802876     10dpi   relictum
-ERR10802880     10dpi   relictum
+# Create a single new file called newfile1.txt
+touch newfile1.txt
+
+# Create two additional files:
+touch newfile2.txt newfile3.txt
 ```
 
-Second, select the column of interest with `cut`:
+::: callout-tip
+#### Operating on multiple files
+We just saw that both `mkdir` and `touch` can take multiple arguments.
+Notably, almost all Unix commands that operate on files and/or dirs
+can operate on multiple (many!) files at a time,
+which is one reason that using them can be highly efficient.
+Additionally, at the end of this session,
+you'll learn to select many files at once using shortcuts known as wildcards.
+:::
 
-```bash
-tail -n +2 metadata.tsv | cut -f 3 | head
-```
-```bash-out
-cathemerium
-cathemerium
-cathemerium
-cathemerium
-control
-control
-control
-control
-relictum
-relictum
-```
+::: exercise
+#### {{< fa user-edit >}} **Exercise**: File locations
 
-Third, use `sort` to alphabetically sort the result:
+1. Where were these `newfile` files created? Can you check their sizes?
 
-```bash
-tail -n +2 metadata.tsv | cut -f 3 | sort | head
-```
-```bash-out
-cathemerium
-cathemerium
-cathemerium
-cathemerium
-cathemerium
-cathemerium
-cathemerium
-control
-control
-control
-```
+   <details><summary>*Click to see the solutions*</summary>
+  
+   The initial files were created in your working dir.
+  
+   ```bash
+   ls -lh
+   ```
+   ```bash-out
+   total 0
+   -rw-rw----+ 1 jelmer PAS0471 0 Jul  3 12:38 newfile1.txt
+   -rw-rw----+ 1 jelmer PAS0471 0 Jul  3 12:38 newfile2.txt
+   -rw-rw----+ 1 jelmer PAS0471 0 Jul  3 12:38 newfile3.txt
+   ```
+   </details>
 
-Finally, use `uniq` to only keep unique (distinct) values ---
-and also get rid of `head` since we now have a final command:
+2. Can you create a create a new file `monarch.txt` inside a new dir `butterflies`?
 
-```bash
-tail -n +2 metadata.tsv | cut -f 3 | sort | uniq
-```
-```bash-out
-cathemerium
-control
-relictum
-```
+   <details><summary>*Click to see the solutions*</summary>
 
-And with a very small modification to this pipeline,
-you can generate a "count table" instead of a simple list!
-You just have to add `uniq`'s `-c` option (for **c**ount):
-
-```bash
-tail -n +2 metadata.tsv | cut -f 3 | sort | uniq -c
-```
-```bash-out
-      7 cathemerium
-      7 control
-      8 relictum
-```
-
-And this count table can in turn be sorted by most frequent occurrence ---
-to do this, use `sort`'s `-n` option for numeric sorting together with `-r`
-for reverse sorting so the largest numbers go first:
-
-```bash
-tail -n +2 metadata.tsv | cut -f 3 | sort | uniq -c | sort -nr
-```
-```bash-out
-      8 relictum
-      7 control
-      7 cathemerium
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-:::{.callout-note collapse="true"}
-#### Sorting based on one or more specific columns _(Click to expand)_
-Above, we used `sort` to simply sort a list.
-More generally, `sort` will by default sort based on the entire line.
-To sort based on one or more columns, like you've probably done in Excel,
-use the `-k` option --- for example:
-
-```bash
-# Sort based on the third column:
-tail -n +2 metadata.tsv | sort -k3
-```
-
-`-k` takes a start and a stop column to sort by,
-so if you want to strictly sort only based on one column at a time, use this syntax:
-
-```bash
-# Explicitly indicate to sort based on the third column only:
-tail -n +2 metadata.tsv | sort -k3,3
-```
-
-To sort first by one column and _then_ by another, use `-k` multiple times:
-
-```bash
-# Sort first by the first column, then break ties using the second column:
-tail -n +2 metadata.tsv | sort -k3,3 -k2,2
-```
+   To make a new dir and create a file in there,
+   you can't just use the `touch` command,
+   as it cannot create the directory for you
+   (pay attention to the error, which may seem a bit confusing):
+  
+   ```bash
+   touch butterflies/monarch.txt
+   ```
+   ```bash-out
+   touch: butterflies/monarch.txt: No such file or directory
+   ```
+  
+   Instead, you first have create the new dir with `mkdir`,
+   and _then_ create the new file in there:
+  
+   ```bash
+   mkdir butterflies
+   touch butterflies/monarch.txt
+   ```
+   </details>
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
 
-## In closing: The Unix philosophy
+## `cp` to copy
 
-In particular with these Unix data tool examples, we saw the Unix philosophy in action:
+The `cp` command copies files and/or dirs from one location to another.
+Just like when copying files in a GUI file browser,
+the copy can have a different name than the original --
+or the same name, as long as it's copied to a different dir.
 
-> *This is the Unix philosophy: Write programs that do one thing and do it
-> well.* *Write programs to work together. Write programs to handle text
-> **streams**,* *because that is a universal interface.*<br> — Doug McIlory
+`cp` has two **required** arguments in the following order:
 
-Here are some advantages of a modular approach:
+1. What you want to copy (_source_ path)
+2. Where you want to copy it to (_destination_ path).
 
-- Easier to spot errors
-- Easy to swap out components, including in other languages
-- Easier to learn
+That is, its basic syntax is `cp <source path> <destination path>`
 
-#### Text/data streaming
-
-What about those **text "streams"** mentioned in the quote above?
-Rather than loading entire files into memory,
-Unix tools process them one line at a time.
-
-This is very useful when working with large files in particular!
-For example,
-_`head` will print results instantly even for a 10 TB file_
-that could never be loaded into memory.
-By contrast, try to take a peak at such a file with a GUI text editor,
-and your computer will crash.
-
-Here is one other example, combining the `cat` command with globbing and redirection.
-This command would concatenate (combine) all your R1 FASTQ files into a single file
--- and this is both elegantly short code,
-and will run quickly and without using much computer memory!
-
-```bash
-# [Don't run this - for illustration only]
-cat fastq/*R1.fastq.gz > all_R1.fastq.gz
-```
-
-::: {.callout-tip collapse="false"}
-#### The above will even produce a valid compressed FASTQ file, because:
-
-- FASTQ files can (in principle) be concatenated freely since every read is a
-  "stand-alone" unit of 4 lines.
-- Gzipped (`.gz`) files can also be concatened freely!
+::: callout-tip
+### Recap: The meaning of `<...>` notation
+Recall that when I use `< >` around text in a line of code,
+that text is **descriptive** rather than literal, and has to be replaced.
+In this example, `<source>` should be replaced in an actual line of code by
+whatever "source" you want to use, and likewise for the `<destination>`.
 :::
 
-If you want to learn more about these and other Unix data tools,
-take a look at [this optional reading page on them](../bonus/shell-data.qmd).
+#### Basic examples
 
-#### Don't redirect back to the input file!
-
-One drawback of the "text streams" mode of operation is that you can never redirect
-the output of Unix commands "back" to the input file.
-This will corrupt the input file.
-
-Therefore, if you really want to edit/overwrite the original file instead of
-creating a separate edited copy, you will need multiple steps:
-first produce a separate copy and then rename that.
-For example:
+Make a copy of one of the files you created above:
 
 ```bash
-# [Don't run any of this - for illustration only]
+cp newfile3.txt newfile3_copy.txt
+```
 
-# You should NEVER run something like this:
-sort metadata.tsv > metadata.tsv
+Importantly, _like with any Unix command_, 
+you can always refer to files and dirs that aren't in your current working dir --
+for example:
 
-# Instead, you would use:
-sort metadata.tsv > metadata_sorted.tsv
+```bash
+cp ../../garrigos-data/meta/metadata.tsv meta2.tsv
+```
 
-# Possibly followed by (if you really needed to edit the original file):
-mv metadata_sorted.tsv metadata.tsv
-rm metadata_sorted.tsv
+That copied `metadata.tsv`, which was not in our working dir,
+to a new file `meta2.tsv` in our working dir.
+
+:::callout-tip
+#### Make sure to use Tab completion when looking for existing files in case like above!
+You may for example get confused about how many levels you need to go up,
+and you can check by pressing <kbd>Tab</kbd> after the `/`.
+Additionally, you are much less likely to have typos in your paths when you alway
+use Tab completion.
+:::
+
+#### Copying into your working dir without changing the name
+
+When copying something into our working dir, like above,
+you may not actually want to change the file name like we did above.
+To accomplish this,
+you could of course just repeat the original file name in the destination path:
+
+```bash
+cp ../../garrigos-data/meta/metadata.tsv metadata.tsv
+```
+
+But do we really need to repeat the filename
+(which is not just more typing, but can be error-prone as well)? No!
+If the destination path is simply the `.` shortcut that indicates your current
+working dir,
+then the file name of the copy will not be changed:
+
+```bash
+cp ../../garrigos-data/meta/metadata.tsv metadata.tsv .
+```
+
+#### Copying dirs and their contents
+
+Finally, `cp` will by default refuse to copy directories and their contents ---
+that is, like `mkdir`, it is not "**recursive**"^[
+For better or worse, non-recursiveness in Unix commands is meant as a sort of safety mechanism,
+as you may otherwise more easily operate on very large amounts of data accidentally.].
+The `-r` option is needed for recursive copying:
+
+```bash
+cp -r ../../garrigos-data/meta .
+```
+
+Check the contents of the `sandbox` dir again now that we've copied several items there:
+
+```bash
+ls
+```
+```bash-out
+butterflies  meta2.tsv  metadata.tsv  newfile1.txt  newfile2.txt  newfile3.txt  meta
 ```
 
 <hr style="height:1pt; visibility:hidden;" />
 
-:::{.callout-tip collapse="false"}
-#### GTF file info for this week's exercises
+## `mv` to move and rename
 
-As mentioned in the introductory lecture on omics data,
-the main part of a GTF file is a table with:
+Three notes as a preamble to the `mv` command:
 
-- One row for each annotated "**genomic feature**" (gene, exon, intron, etc.)
-- Columns with information like the genomic coordinates of the features
+1. Moving files to a different dir and renaming files is
+   _fundamentally the same operation_: you are **changing the path**.
+2. For a file,
+   both its name (e.g. `monarch.txt`) and the dir it is inside
+   (`butterflies/`) are part of the path (`butterflies/monarch.txt`).
+3. A mere file name like `monarch.txt` can also represent a path:
+   it implies that the file is in our current working dir.
 
-However, the file typically starts with **header lines** that contain metadata
-and start with `#`.
-In some cases, the header can have hundreds of lines,
-including a list of each represented sequence (chromosome/scaffold/contig).
-"Our" GTF file only has a few header lines, though:
+As such, the **`mv`** command can be used to move files, rename them,
+or do both at the same time:
+
+- Same directory, different file name ("renaming"):
+
+  ```bash
+  mv meta2.tsv meta_copy.tsv
+  ```
+
+- Different directory, same file name ("moving"):
+
+  ```bash
+  # (You don't need the trailing slash to data/, but this can be clearer.)
+  mv meta_copy.tsv meta/
+  ```
+
+- Different directory, different file name ("moving + renaming"):
+
+  ```bash
+  mv metadata.tsv meta/metadata_old.tsv
+  ```
+
+Unlike `cp`, the `mv` command is recursive by default!
+
+::: callout-note
+#### Operating on multiple files with `mv` and `cp`
+
+You can move or copy multiple files at once with `mv` and `cp`.
+If you give these commands three or more arguments,
+only the **last** argument is taken to be the destination --- for example:
 
 ```bash
-zcat ../ref/GCF_016801865.2.gtf.gz | head -n 5
+cp <source1> <source2> <destination>
+mv <source1> <source2> <source3> <source4> <destination>
+```
+:::
+
+::: callout-tip
+#### Both the `mv` and `cp` commands will by default:
+
+- Not report what they do: no output = success
+  (use the **`-v` option for _verbose_** to make them report what they do).
+- Overwrite existing files without reporting this
+  (use the **`-i` option for _interactive_** to make them ask before overwriting).
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## `rm` to remove
+
+The **`rm`** command removes files and optionally dirs --- here,
+we'll remove the file copy we made above: 
+
+```bash
+rm newfile1.txt
+```
+
+Like with `cp`, the **`-r`** option is needed to make the command work recursively:
+
+```bash
+rm butterflies
 ```
 ```bash-out
-#gtf-version 2.2
-#!genome-build TS_CPP_V2
-#!genome-build-accession NCBI_Assembly:GCF_016801865.2
-#!annotation-source NCBI RefSeq GCF_016801865.2-RS_2022_12
-NC_068937.1     Gnomon  gene    2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
-NC_068937.1     Gnomon  transcript      2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA";
+rm: cannot remove ‘butterflies’: Is a directory
 ```
 
-The last two lines of the snippet above are the first rows of the tabular part.
-There is no line with column names,
-so here's the snippet with aligned columns and added column names
-also shown in the introductory lecture on omics data:
+But it does work (silently!) with the '-r' option:
 
-```bash-out-solo
-seqname       source  feature     start   end     score  strand  frame    attributes
-NC_068937.1   Gnomon  gene        2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
-NC_068937.1   Gnomon  transcript  2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; 
-NC_068937.1   Gnomon  exon        2046    2531    .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "1"; 
-NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "2"; 
+```bash
+rm -r butterflies
 ```
 
-Some details on what's in each column:
+::: {.callout-warning collapse="true"}
+#### There is no thrash bin when deleting files in the shell, so use `rm` with caution! _(Click to expand)_
 
-| Column # | Column ID | Explanation
-|--|--|--------------|
-| 1 | **_seqname_** | Name of the chromosome, scaffold, or contig
-| 2 | **_source_** | Name of the program that generated this feature, or the data source (e.g. database)
-| 3 | **_feature_** | Name of the feature type, e.g. "gene", "exon", "intron", "CDS"
-| 4 | **_start_** | Start position of the feature (sequence numbering starts at 1; start position is included)
-| 5 | **_end_** | End position of the feature (end position is also included)
-| 6 | **_score_** | A confidence score for the feature, often absent (in which case it is `.`)
-| 7 | **_strand_** | Whether the feature is on the `+` (forward) or `-` (reverse) strand^[Because double-stranded DNA is represented as a single sequence, the `strand` column effectively indicates in which direction a feature should be read along this sequence.].
-| 8 | **_frame_** | `0`, `1` or `2` (or `.` for no frame). `0` means the first base of the feature is the first base of a codon, etc.
-| 9 | **_attributes_** | A semicolon-separated list of key-value pairs with additional information about each feature. This column can be very long!
+`rm -r` can be very dangerous ---
+for example, the command `rm -r /` would attempt to remove the entire contents
+of the computer, including the operating system.
+A couple ways to take precautions:
+
+- You can add the `-i` option, which will have you confirm each individual removal (can be tedious)
+- When you _intend_ to remove an empty dir, you can use the `rmdir` command which will
+  do just (and only) that --- that way, if the dir isn't empty after all, you'll get an error.
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: exercise
+#### {{< fa user-edit >}} **Exercise:** Spaces in file names --- what could go wrong?
+
+- Say, you have a dir called `raw` that has important raw data:
+
+  ```bash
+  # [Hypothetical - don't run]
+  ls
+  ```
+  ```bash-out
+  raw
+  ```
+
+- Next, you create a dir for sequences, with a space in the file name
+  (this is possible by quoting the full name as shown below):
+
+  ```bash
+  # [Hypothetical - don't run]
+  mkdir "raw sequences"
+  ```
+
+- Finally, you don't need this dir after all, and carelessly try to remove it:
+  
+  ```bash
+  # [Hypothetical - don't run]
+  rm -r raw sequences
+  ```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+<details><summary>What would happen when that last command is run? _(Click for the answer)_</summary>
+Because the `"..."` quotes were omitted with the `rm` command,
+it will interpret `raw` and `sequences` as two separate arguments,
+i.e. as two separate files/dirs to remove.
+
+Therefore, the `rm` command will not remove the `raw sequences` dir,
+but it will remove the "earlier" `raw` dir ---
+now your project's data has been erased! 😳
+
+(Additionally, it will produce an error because it cannot find the `sequences` dir.)
+</details>
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: exercise
+#### {{< fa user-edit >}} Bonus exercise: `cp` and `mv` behavior
+
+For both `cp` and `mv`, when operating on files (and this works equivalently for dirs):
+
+- If the destination path is an existing dir,
+  the file will go into that dir and keep its original name.
+- If the destination path is _not_ an existing dir,
+  the (last bit of the) destination specifies the new file name.
+- A trailing slash in the destination path makes explicit that you are referring
+  to a dir and not a file.
+
+-----
+
+With that in mind, try to answer these questions about the following command:
+
+```bash
+cp newfile2.txt more_data/
+```
+
+1. What do you think the command would do or attempt to do?
+2. Do you think the command will succeed (given what is in your `sandbox` dir)?
+3. What would the command have done if we had omitted the trailing forward slash?
+
+<details><summary>*Click to see the solution*</summary>
+<hr style="height:1pt; visibility:hidden;" />
+
+1. Because we added a trailing forward slash to `more_data/`,
+   we are making clear that we are referring to a directory.
+   So the command will attempt to copy the file into a dir `more_data`,
+   with the file keeping the same name.
+  
+2. The `more_data/` dir does not exist,
+   and `cp` will not create a dir on the fly -- so it will fail:
+
+   ```bash
+   cp newfile2.txt more_data/
+   ```
+   ```bash-out
+   cp: cannot create regular file ‘more_data/’: Not a directory
+   ```
+
+3. If we had omitted the trailing forward slash,
+   we would have created a copy of the file with *file* name `more_data`
+   (if that seems confusing: note that in Unix, files don't need to have a file
+   extension).
+
+P.S.: To copy the file according to the original intention,
+first create the destination dir and then copy:
+
+```bash
+mkdir more_data
+cp newfile2.txt more_data/
+```
+  
+Note also that once the `more_data` dir exists,
+it **does not** make a difference whether or not you using a trailing slash.
+
+</details>
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+## Wildcard expansion (globbing)
+
+Shell wildcard expansion is a very useful technique to select multiple files,
+where **wildcards** are _characters that have a special meaning_.
+
+Let's start by adding some dummy FASTQ files to our `sandbox` dir:
+
+```sh
+# (Copy-and-paste this into the shell rather than typing it out) 
+touch sample1_R1.fastq sample1_R2.fastq
+touch sample2_R1.fastq sample2_R2.fastq
+touch sample3_R1.fastq sample3_R2.fastq
+```
+
+By far the most commonly used wildcard is `*`,
+which matches **any number of any combination of characters**
+(including "nothing" -- the absence of any characters).
+
+For example, we can match only the two `sample1` files with a `*` using:
+
+```bash
+# This matches files that start with "sample1"
+ls sample1*
+```
+```bash-out
+sample1_R1.fastq  sample1_R2.fastq
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+Selecting files with wildcard expansion is also called **globbing**.
+When globbing, the pattern has to match the entire file name --
+therefore, the following doesn't match anything:
+
+```bash
+# This matches files that _end in_ R1, but there are no such files:
+ls *R1
+```
+```bash-out
+ls: cannot access *R1: No such file or directory
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+So, if the string (text) that we use for matching is in the middle of the filename,
+like `R1`, **we need a `*` on both sides of it**:
+
+```bash
+# This matches files that contain, anywhere in their names, "R1":
+ls *R1*
+```
+```bash-out
+sample1_R1.fastq  sample2_R1.fastq  sample3_R1.fastq
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+In summary:
+
+| Pattern        | Matches files whose names... 
+|----------------|---------------------------|
+| `sample1*`     | [Start with]{.underline} "sample1"
+| `*fastq`       | [End with]{.underline} ".fastq"
+| `*_R1*`        | [Contain]{.underline} "\_R1"
+| `*`            | _(matches all files in the working dir)_^[Except so-called hidden files.]
 
 : {.striped .hover}
 
+<hr style="height:1pt; visibility:hidden;" />
+
+::: exercise
+#### {{< fa user-edit >}} **Exercise**: File matching
+
+1. List only the FASTQ files for sample 3.
+
+   <details><summary>Click for the solution</summary>
+  
+   ```bash
+   ls sample3*
+   ```
+   ```bash-out
+   sample3_R1.fastq  sample3_R2.fastq
+   ```
+   </details>
+
+2. Which files does `ls *samp*le*` match? Make a prediction before you test it.
+
+   <details><summary>Click for the solution</summary>
+   It matches all the FASTQ files, because:
+  
+   - All file names start with `sample`,
+   - Since `*` also matches "zero characters", there is no requirement for the
+     presence of characters at the locations of the "unnecessary" `*`s.
+   </details>
+
+3. Create 2 new files called `sample1.txt` and `sample2.txt` in the current working dir.
+   Then, only match the 2 FASTQ files for sample1.
+
+   <details><summary>Click for the solution</summary>
+  
+   First we create the files:
+  
+   ```bash
+   touch sample1.txt sample2.txt
+   ```
+  
+   Then we match them -- the below code means
+   any file that starts with "sample1" and end with "fastq":
+  
+   ```bash
+   ls sample1*fastq
+   ```
+   ```bash-out
+   sample1_R1.fastq  sample1_R2.fastq
+   ```
+   </details>
+
+:::
+<hr style="height:1pt; visibility:hidden;" />
+
+There are a couple more shell wildcards, but these are much more rarely used:
+check the [optional self-study content on the Unix shell](../bonus/shell.qmd)
+if you're curious.
+
+#### Expansion is done by the shell itself
+
+While it may seem like a trivial or odd distinction,
+it is important to realize that the "expansion"
+--of a wildcard to matching file names-- is done by the shell
+instead of by `ls` or another command you might be using wildcards with.
+**This means that a command like `ls` will "see"/"receive" the list of files _after_**
+**the expansion has already happened.**
+
+So, when you type...
+
+```bash
+ls sample1*fastq
+```
+
+...the shell will _first_ do wildcard expansion and will therefore end up running,
+in this particular case:
+
+```bash
+ls sample1_R1.fastq sample1_R1.fastq
+```
+
+#### Practical examples
+
+Because the expansion is done by the shell,
+wildcard expansion works with any command that accepts multiple paths as arguments,
+such as _copy_ (`cp` command), *move* (`mv`) or *delete* (`rm`).
+For example, we can:
+
+- Remove any stray `.txt` files using:
+
+```bash
+# (The -v option will make rm report what it's removing)
+rm -v *txt
+```
+```bash-out
+removed ‘sample1.txt’
+removed ‘sample2.txt’
+```
+
+- Move all FASTQ files using:
+
+```bash
+mkdir fastq_files
+mv *fastq fastq_files/
+```
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: {.callout-warning collapse="true"}
+#### In case you have heard of "regular expressions": these are not the same as wildcards _(Click to expand)_
+Don't confuse wildcards with **regular expressions**!
+You may have used regular expressions before, for example with R or a text editor.
+They are similar to but not the same as shell wildcards.
 :::
