@@ -1,5 +1,5 @@
 ---
-title: "Week 3 exercises: Working with files in the Unix shell"
+title: "Week 3 exercises: Files in the Unix shell"
 pagetitle: "Week 3 exercises"
 number-sections: false
 date: 2025-09-05
@@ -23,12 +23,6 @@ other-links:
   - text: "w3c: Shell files II"
     icon: bookmarks
     href: w3c_shellfiles.html
-  - text: "Bonus: Unix data tools II"
-    icon: book
-    href: ../bonus/shell-data.html
-  - text: "Bonus: Misc. advanced shell"
-    icon: book
-    href: ../bonus/shell.html
 bibliography: ../references.bib
 ---
 
@@ -36,12 +30,12 @@ bibliography: ../references.bib
 
 <br>
 
-### Introduction
+## Introduction
 
 In these exercises, you will practice with Unix commands,
 especially those that operate on files as seen in this week's classes.
 
-#### Setting up
+### Setting up
 
 - Start a VS Code session through OSC OnDemand in the folder
   `/fs/ess/PAS2880/users/$USER`.
@@ -58,7 +52,60 @@ git clone https://github.com/jelmerp/garrigos-data
 ```
 </details>
 
-<hr style="height:1pt; visibility:hidden;" />
+### GTF file info
+
+As mentioned in this week's first lecture,
+the main part of a GTF file is a table with:
+
+- One row for each annotated "**genomic feature**" (gene, exon, intron, etc.)
+- Columns with information like the genomic coordinates of the features
+
+However, the file typically starts with **header lines** that contain metadata
+and start with `#`.
+In some cases, the header can have hundreds of lines,
+including a list of each represented sequence (chromosome/scaffold/contig).
+"Our" GTF file only has a few header lines, though:
+
+```bash
+zcat ../ref/GCF_016801865.2.gtf.gz | head -n 5
+```
+```bash-out
+#gtf-version 2.2
+#!genome-build TS_CPP_V2
+#!genome-build-accession NCBI_Assembly:GCF_016801865.2
+#!annotation-source NCBI RefSeq GCF_016801865.2-RS_2022_12
+NC_068937.1     Gnomon  gene    2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
+NC_068937.1     Gnomon  transcript      2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA";
+```
+
+The last two lines of the snippet above are the first rows of the tabular part.
+There is no line with column names,
+so here's the snippet with aligned columns and added column names
+also shown in the lecture:
+
+```bash-out-solo
+seqname       source  feature     start   end     score  strand  frame    attributes
+NC_068937.1   Gnomon  gene        2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
+NC_068937.1   Gnomon  transcript  2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; 
+NC_068937.1   Gnomon  exon        2046    2531    .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "1"; 
+NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "2"; 
+```
+
+Some details on what's in each column:
+
+| Column # | Column ID | Explanation
+|---|---|----------------|
+| 1 | **_seqname_** | Name of the chromosome, scaffold, or contig
+| 2 | **_source_** | Name of the program that generated this feature, or the data source (e.g. database)
+| 3 | **_feature_** | Name of the feature type, e.g. "gene", "exon", "intron", "CDS"
+| 4 | **_start_** | Start position of the feature (sequence numbering starts at 1; start position is included)
+| 5 | **_end_** | End position of the feature (end position is also included)
+| 6 | **_score_** | A confidence score for the feature, often absent (in which case it is `.`)
+| 7 | **_strand_** | Whether the feature is on the `+` (forward) or `-` (reverse) strand^[Because double-stranded DNA is represented as a single sequence, the `strand` column effectively indicates in which direction a feature should be read along this sequence.].
+| 8 | **_frame_** | `0`, `1` or `2` (or `.` for no frame). E.g. `0` means the first base of the feature is the first base of a codon
+| 9 | **_attributes_** | A semicolon-separated list of key-value pairs with additional information. Can be very wide!
+
+: {.striped .hover}
 
 ## Exercise 1: Moving, copying and removing
 
@@ -89,8 +136,6 @@ _Use Unix commands to complete all the exercises below._
 
 6. Copy the Garrigos et al. metadata file into your current working dir,
    giving the copy the name `garrigos_metadata.tsv`.
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ## Exercise 2: Exploring the GTF annotation file
 
@@ -188,8 +233,6 @@ _[the page for this week's second session](./w3b_shellfiles.qmd)._
     Use single quotes (`'`) instead of double quotes around the entire pattern.
     </details>
     
-<hr style="height:1pt; visibility:hidden;" />
-
 ## Exercise 3: Exploring the FASTQ files
 
 _For all questions below except the Bonus question,_
@@ -249,8 +292,6 @@ _file directly (don't decompress it)._
    all R1 files at once -- then pipe that into the familiar line counting command.
    </details>
    
-<br>
-
 ## Solutions
 
 ### Exercise 1
@@ -280,8 +321,6 @@ cd ex2
   ```
   
   This uses a construct called **brace expansion**, which we won't cover in class.
-  If you want to learn more, check [this section](../bonus/shell.qmd#brace-expansion) 
-  on the optional reading page "Miscellaneous advances shell".
 
 - Check the result:
 
@@ -450,8 +489,6 @@ tree -C
 cp ../../garrigos-data/meta/metadata.tsv garrigos_metadata.tsv
 ```
 </details>
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### Exercise 2
 
@@ -693,8 +730,6 @@ grep -c 'gene_biotype "snRNA"' annot.gtf
 58
 ```
 </details>
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### Exercise 3
 

@@ -14,21 +14,15 @@ other-links:
   - text: "Week 3 overview"
     icon: book
     href: w3_overview.html
-  - text: "Week 3 exercises"
-    icon: pencil
-    href: w3_exercises.html
   - text: "w3a: Sequence file types"
     icon: bookmarks
     href: w3a_file-overview.html
   - text: "w3b: Shell files I"
     icon: bookmarks
     href: w3b_shellfiles.html
-  - text: "Bonus: Unix data tools II"
-    icon: book
-    href: ../bonus/shell-data.html
-  - text: "Bonus: Misc. advanced shell"
-    icon: book
-    href: ../bonus/shell.html
+  - text: "Week 3 exercises"
+    icon: pencil
+    href: w3_exercises.html
 editor_options:
   chunk_output_type: console
 bibliography: ../references.bib
@@ -51,7 +45,7 @@ Recall from the [Project File Organization lecture](../week02/w2a_project-org.qm
 that you'll work almost exclusively with so-called "**plain-text**" files in this course,
 such as:
 
-- Omics file formats such as FASTA, FASTQ, and GTF
+- Sequence file formats such as FASTA, FASTQ, and GTF
 - Spreadsheet-like/tabular files stored as TSV/CSV
 - Scripts and code notebooks
 - Documentation files such as Markdown
@@ -68,59 +62,52 @@ In this lecture, you will learn to use the Unix shell to:
 
 ### Getting ready
 
-#### Start a VS Code session
+- Start a VS Code session:\
 
-Start a VS Code session like you've done before.
+  <details><summary>_Click here to see the instructions_</summary>
+  
+  1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>
+  2. In the blue top bar, select `Interactive Apps` and near the bottom, click `Code Server`
+  3. Fill out the form as follows:
+     - **Cluster**: `pitzer`
+     - **Account**: `PAS2880`
+     - **Number of hours**: `2`
+     - **Working Directory**: `/fs/ess/PAS2880/user/<username>` (replace `<username>` with your user name)
+     - **App Code Server version**: `4.8.3`
+  4. Click `Launch`
+  5. Click the `Connect to VS Code` button once it appears
+  6. In VS Code, open a terminal by either:
+     - Clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal`
+     - Using the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>
+  7. Check that your are in `/fs/ess/PAS2880/users/$USER`
+     (recall: `$USER` is a variable that represents your username!)
+     by typing `pwd` in the terminal.
+     _(If you're not, that dir may be listed under `Recents` in the `Get Started`_
+     _document --- if that's the case, click on that entry._
+     _Otherwise, click `File` > `Open Folder` and type/select that dir.)_
+     
+  </details>
 
-<details><summary>_Click here to see the instructions_</summary>
+- Open a Markdown file for notes:
 
-1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>.
-2. In the blue top bar, select `Interactive Apps` and near the bottom, click `Code Server`.
-3. In the form on the page that appears, fill out the following:
-   - "_Cluster_": `pitzer`
-   - "_Account_" (= OSC Project): `PAS2880`.
-   - "_Number of hours_": `2`
-   - "_Working Directory_": your personal dir in `/fs/ess/PAS2880/users`
-     (e.g. `/fs/ess/PAS2880/users/jelmer`)
-   - "_App Code Server version_": `4.8.3`
-4. Click `Launch`
-5. Once the blue *Connect to VS Code* button appears,
-   click that to open VS Code in a new browser tab.
-6. In VS Code, open a terminal by either:
-   - Clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal`
-   - Using the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>
-7. Check that your are in your dir within `/fs/ess/PAS2880/users` by typing `pwd`
-   in the terminal.
-   _(If you're not, that dir may be listed under `Recents` in the `Get Started`_
-   _document --- if that's the case, click on that entry._
-   _Otherwise, click `File` => `Open Folder` and type/select that dir.)_
-   
-</details>
+  1. Click <i class="fa fa-bars"></i> > `File` > `New File`
+  2. Save the file inside `/fs/ess/PAS2880/users/$USER/week03`,
+     e.g. as `lectureC.md`
+     
+- Change your working dir:
 
-#### Open a Markdown file for notes
-
-Like before, I recommend that you create and open a Markdown file to keep notes:
-
-1. Click <i class="fa fa-bars"></i> => `File` => `New File`.
-2. Save the file inside `/fs/ess/PAS2880/users/$USER/week03`,
-   e.g. as `lecture2.md` (use a `.md` extension).
-   
-#### Change your working dir
-
-```bash
-cd garrigos-data
-```
-
-<hr style="height:1pt; visibility:hidden;" />
+  ```bash
+  cd garrigos-data
+  ```
 
 ## Viewing the contents of text files
 
-Several commands exist to view all or part of one or more text files,
+Several commands can view all or part of one or more text files,
 and we'll discuss the most common ones below.
 
 ### `cat`
 
-The **`cat`** command will print the entire contents of one or more files to
+The **`cat`** command prints the entire contents of one or more files to
 screen:
 
 ```bash
@@ -152,14 +139,12 @@ ERR10802865     24hpi   relictum
 ERR10802868     24hpi   relictum
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### `head` and `tail`
 
-Some files, especially when working with omics data, can be huge,
-so printing the whole file with `cat` is not always ideal.
+Some files, especially when working with omics data, can be huge --
+then, printing the whole file with `cat` is not typically desired.
 The twin commands **`head`** and **`tail`** can be useful,
-as they will print only the first (`head`) or last (`tail`) lines of a file.
+as they print only the first (`head`) or last (`tail`) lines of a file.
 
 `head` & `tail`'s defaults are to print 10 lines:
 
@@ -243,20 +228,18 @@ you might be inclined to decompress these files
 However, at least when it comes to FASTQ files,
 you are best off leaving them compressed:
 
-- Uncompressed files take up much more disk storage space than compressed ones,
-  and a set of FASTQ files can be a lot of data
+- Uncompressed files take up much more disk storage space than compressed ones
 - Almost any bioinformatics program accepts compressed FASTQ files
 - You _can_ view these files in compressed form, as shown below with `less`.
   Additionally, several commands including `cat` have a counterpart for compressed
   files (`zcat` in the case of `cat`).
   
-Other genomic files, like assembly FASTA files and annotation GTF/GFF files,
+Other sequence files, like assembly FASTA files and annotation GTF/GFF files,
 are often also compressed when you download them.
 These types of files are more commonly decompressed ---
-for one because they don't take up nearly as much space as a set of FASTQ files.
+for one because they don't take up nearly as much space as a set of FASTQ files
+(you'll learn how to do this later).
 :::
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### `less`: A file pager
 
@@ -318,26 +301,7 @@ To exit/quit `less` and get your shell prompt back, simply type **<kbd>q</kbd>**
 q
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
-::: {.callout-note collapse="true"}
-#### FASTQ format recap _(Click to expand)_
-
-Recall that in a FASTQ file, **each read has four lines**,
-and reads are simply printed back-to-back:
-
-![](../img/fastq_dark.png){width="90%" fig-align="center" fig-alt="A screenshot of 8 lines of a FASTQ file." .lightbox}
-
-The above screenshot is from one of the @garrigós2025 FASTQ files,
-which were downloaded from the NCBI Sequence Read Archive (SRA).
-When you receive FASTQ files from a sequencer,
-the header may have a lot more information, such as shown below for Illumina:
-
-![](../img/fastq_header.png){width="80%" fig-align="center" fig-alt="A screenshot of 8 lines of a FASTQ file, with more information in the header than the previous one." .lightbox}
-:::
-
-::: {.callout-important collapse="true"}
-#### {{< fa user-edit >}} Explore the FASTQ file a bit. Do you notice any unusual-looking reads? _(Click for the solution)_
+<details><summary> {{< fa user-edit >}} Explore the FASTQ file a bit. Do you notice any unusual-looking reads? _(Click for the solution)_ </summary>
 
 A number of reads are much shorter than the others,
 and only consist of `N`s, i.e. uncalled bases. For example:
@@ -348,9 +312,7 @@ NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 +
 ###################################
 ```
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
+</details>
 
 ### `wc -l` to count lines
 
@@ -369,13 +331,11 @@ wc -l meta/metadata.tsv
 ```
 
 This can be surprisingly useful,
-as the number of lines in many file types reflects the number of entries.
-
-<hr style="height:1pt; visibility:hidden;" />
+because the number of lines in many file types reflects the number of entries.
 
 ## Redirection and pipes
 
-You'll be creating some dummy files for this section,
+You'll create some dummy files for this section,
 so let's first create and move into a `sandbox` dir within `garrigos-data`:
 
 ```bash
@@ -388,7 +348,7 @@ cd sandbox
 The regular output of a command that is printed to the screen
 (like a list of files by `ls`, or a number of lines by `wc -l`)
 is technically called **"standard out"** or in short "*stdout*".
-Sometimes, we may want to do something else with this output,
+Sometimes, you may want to do something else with this output,
 like storing it in a file.
 Luckily, this is easy to do with something called "**redirection**".
 
@@ -402,14 +362,14 @@ echo "My first line"
 My first line
 ```
 
-Now, let's redirect `echo`'s standard out to a new file `test.txt` using
+Now, redirect `echo`'s standard out to a new file `test.txt` using
 the `>` operator:
 
 ```bash
 echo "My first line" > test.txt
 ```
 
-No output was printed to the screen, as it instead went into the file:
+No output was printed to the screen, because it instead went into the file!:
 
 ```bash
 cat test.txt
@@ -418,7 +378,7 @@ cat test.txt
 My first line
 ```
 
-The "**`>`**" operator will redirect output to a file with the following rules:
+The **`>`** operator will redirect output to a file with the following rules:
 
 - If the file doesn't exist, it will be *created*.
 - If the file does exist, any contents will be *overwritten*.
@@ -435,7 +395,7 @@ My second line
 
 That may not have been what we intended!
 As explained above, the earlier file contents was _overwritten_. 
-With "**`>>`**", however, we **append** the output to a file:
+With **`>>`**, however, output is **appended** (added) to a file:
 
 ```bash
 echo "My third line" >> test.txt
@@ -446,29 +406,27 @@ My second line
 My third line
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### The pipe
 
 Say that you want to count the number of entries (files and subdirs)
 in a directory. You could do that as follows:
 
 ```bash
-# First we redirect the ls output to a file
+# First redirect 'ls' output to a file:
 ls ../fastq > filelist.txt
 
-# Then we count the nr. of lines, which is the number of files in ../fastq:
+# Then count the nr. of lines, which is the number of files in ../fastq:
 wc -l filelist.txt
 ```
 ```bash-out
 44 filelist.txt
 ```
 
-That worked, but with two separate lines of code,
-and you are left with a file `filelist.txt` you probably want to remove,
+That worked, but you needed two separate lines of code,
+and are left with a file `filelist.txt` that you probably want to remove,
 since it has served its sole purpose.
 
-A more conventient way to do this kind of thing is with a "**pipe**", as follows:
+A more conventient way to perform this kind of operation is with a "**pipe**", as follows:
 
 ```bash
 ls ../fastq | wc -l
@@ -477,9 +435,10 @@ ls ../fastq | wc -l
 44
 ```
 
-When you use the pipe, the output of the command on the left-hand side
-(a file listing, in this case) is **redirected into the `wc` command**.
-This command like many others will gladly accept input that way 
+With the pipe, the output of the command on the left-hand side
+(a file listing, in this case) is **redirected into the command on the right-hand side**
+(`wc` in this case).
+Like many others, the `wc` command will gladly accept input that way 
 (i.e., via **standard in**) instead of via a file name argument.
 
 Pipes are useful because they avoid having to write/read intermediate files ---
@@ -488,17 +447,14 @@ In the example above,
 you don't need to make a `filelist.txt` file to count the number of files.
 We'll see pipes in action a bunch more in the next section.
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ## Unix data tools
 
 We'll now turn to some commands that may be described as Unix "data tools".
 These commands are very useful when working in the shell generally,
 and when working with omics data specifically.
 
-Their strengths are especially relatively simple data processing and summarizing
-steps, and they are excellent in dealing with very large files. 
-Here, we will cover:
+These command are especially helpful for relatively simple data processing and summarizing
+steps, and they are excellent in dealing with very large files. We will cover:
 
 - `grep` to search for text in files 
 - `cut` to select one or more columns from tabular data
@@ -541,21 +497,17 @@ Most commonly, these are:
 - A comma, and such files are often stored with a **`.csv`** extension for
   Comma-Separated Values ("**CSV** file").
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ::: callout-important
 #### Plain-text file extensions are flexible and mostly for human-readibility
 
 A side note on **plain-text file extensions** like `.txt`, `.csv`, and `.tsv`,
-but also genomics files like `.fastq` and scripts like `.R` or `.sh`:
-because all plain text files are fundamentally the same,
-i.e. "just plain-text files",
-_changing the extension does not change anything about the file._
+but also those for sequence files like `.fastq` as well as script files like `.R` or `.sh`:
+
+Because all plain text files are fundamentally the same, i.e. "just plain-text files",
+**changing the extension does not change anything about the file.**
 Instead, different file extensions are used primarily to make it clear
 to humans (as opposed to the computer) what the file contains.
 :::
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### `grep` to print lines that match a pattern
 
@@ -565,7 +517,7 @@ By default, it will **print each line that contains a "match" in full**.
 
 Its basic syntax is `grep "<pattern>" <file-path>`.
 For example,
-this will print all lines from `metadata.tsv` that contain "cathemerium":
+to print all lines from `metadata.tsv` that contain "cathemerium":
 
 ```bash
 grep "cathemerium" metadata.tsv
@@ -580,7 +532,7 @@ ERR10802867     24hpi   cathemerium
 ERR10802870     24hpi   cathemerium
 ```
 
-Instead of printing matching lines, we can also **count** them with the `-c` option.
+Instead of printing matching lines, you can also **count** them with the `-c` option.
 For example, how many control samples are in the dataset?
 
 ```bash
@@ -651,11 +603,9 @@ NC_068937.1     Gnomon  transcript      398255  486969  .       -       .       
 In this week's exercises, you'll further explore this GTF file.
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### Selecting columns using `cut`
 
-The `cut` command will select or we could say "cut out" one or more columns
+The `cut` command selects or we could say "cuts out" one or more columns
 from a tabular file.
 
 You always have to use the **`-f`** option to specify the
@@ -690,7 +640,7 @@ time
 ```
 
 ::: {.callout-note collapse="true"}
-#### Selecting multiple columns and specifying the delimiter with `cut` _(Click to expand)_
+#### Selecting multiple columns, and specifying the delimiter, with `cut` _(Click to expand)_
 
 To select **multiple columns**, use a range or comma-delimited list:
 
@@ -713,8 +663,6 @@ ERR10802875     10dpi
 ```
 
 However, it is not possible to change the order of columns with `cut`!
-(The more advanced `awk` command can do this --
-see [this optional reading material](../bonus/shell-data.qmd))
 
 The default cut delimiter is a Tab,
 so we didn't have to specify the delimiter with our current file.
@@ -726,8 +674,6 @@ But when you need to do this, use the `-d` option, e.g. `-d ,` for a CSV file:
 cut -d, 2 my-data.csv
 ```
 :::
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### Combining `cut`, `sort`, and `uniq` to create a list
 
@@ -865,11 +811,10 @@ tail -n +2 metadata.tsv | sort -k3,3 -k2,2
 ```
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
+## The Unix philosophy and data streaming
 
-## In closing: The Unix philosophy
-
-In particular with these Unix data tool examples, we saw the Unix philosophy in action:
+Today, and in particular with these Unix data tool examples,
+we saw the Unix philosophy in action:
 
 > *This is the Unix philosophy: Write programs that do one thing and do it
 > well.* *Write programs to work together. Write programs to handle text
@@ -912,9 +857,6 @@ cat fastq/*R1.fastq.gz > all_R1.fastq.gz
 - Gzipped (`.gz`) files can also be concatened freely!
 :::
 
-If you want to learn more about these and other Unix data tools,
-take a look at [this optional reading page on them](../bonus/shell-data.qmd).
-
 #### Don't redirect back to the input file!
 
 One drawback of the "text streams" mode of operation is that you can never redirect
@@ -939,63 +881,3 @@ sort metadata.tsv > metadata_sorted.tsv
 mv metadata_sorted.tsv metadata.tsv
 rm metadata_sorted.tsv
 ```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-:::{.callout-tip collapse="false"}
-#### GTF file info for this week's exercises
-
-As mentioned in the introductory lecture on omics data,
-the main part of a GTF file is a table with:
-
-- One row for each annotated "**genomic feature**" (gene, exon, intron, etc.)
-- Columns with information like the genomic coordinates of the features
-
-However, the file typically starts with **header lines** that contain metadata
-and start with `#`.
-In some cases, the header can have hundreds of lines,
-including a list of each represented sequence (chromosome/scaffold/contig).
-"Our" GTF file only has a few header lines, though:
-
-```bash
-zcat ../ref/GCF_016801865.2.gtf.gz | head -n 5
-```
-```bash-out
-#gtf-version 2.2
-#!genome-build TS_CPP_V2
-#!genome-build-accession NCBI_Assembly:GCF_016801865.2
-#!annotation-source NCBI RefSeq GCF_016801865.2-RS_2022_12
-NC_068937.1     Gnomon  gene    2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
-NC_068937.1     Gnomon  transcript      2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA";
-```
-
-The last two lines of the snippet above are the first rows of the tabular part.
-There is no line with column names,
-so here's the snippet with aligned columns and added column names
-also shown in the introductory lecture on omics data:
-
-```bash-out-solo
-seqname       source  feature     start   end     score  strand  frame    attributes
-NC_068937.1   Gnomon  gene        2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
-NC_068937.1   Gnomon  transcript  2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; 
-NC_068937.1   Gnomon  exon        2046    2531    .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "1"; 
-NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "2"; 
-```
-
-Some details on what's in each column:
-
-| Column # | Column ID | Explanation
-|--|--|--------------|
-| 1 | **_seqname_** | Name of the chromosome, scaffold, or contig
-| 2 | **_source_** | Name of the program that generated this feature, or the data source (e.g. database)
-| 3 | **_feature_** | Name of the feature type, e.g. "gene", "exon", "intron", "CDS"
-| 4 | **_start_** | Start position of the feature (sequence numbering starts at 1; start position is included)
-| 5 | **_end_** | End position of the feature (end position is also included)
-| 6 | **_score_** | A confidence score for the feature, often absent (in which case it is `.`)
-| 7 | **_strand_** | Whether the feature is on the `+` (forward) or `-` (reverse) strand^[Because double-stranded DNA is represented as a single sequence, the `strand` column effectively indicates in which direction a feature should be read along this sequence.].
-| 8 | **_frame_** | `0`, `1` or `2` (or `.` for no frame). `0` means the first base of the feature is the first base of a codon, etc.
-| 9 | **_attributes_** | A semicolon-separated list of key-value pairs with additional information about each feature. This column can be very long!
-
-: {.striped .hover}
-
-:::

@@ -160,7 +160,10 @@ div.csl-indent {
     <a class="dropdown-item" href="../week02/w2_overview.html">
  <span class="dropdown-text">Week 2: Project organization and Unix shell basics</span></a>
   </li>  
-        <li class="dropdown-header">Week 3: Working with files in the Unix shell [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week03/w3_overview.html">
+ <span class="dropdown-text">Week 3: Working with files in the Unix shell</span></a>
+  </li>  
         <li class="dropdown-header">Week 4: Version control with Git and GitHub [TBA]</li>
         <li class="dropdown-header">Week 5: Data and software management at OSC [TBA]</li>
         <li class="dropdown-header">Week 6: Shell scripts and CLI tools [TBA]</li>
@@ -180,7 +183,10 @@ div.csl-indent {
  <span class="menu-text">Exercises</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-exercises">    
-        <li class="dropdown-header">Week 3: Unix shell [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week03/w3_exercises.html">
+ <span class="dropdown-text">Week 3: Unix shell</span></a>
+  </li>  
         <li class="dropdown-header">Week 5: OSC data and software [TBA]</li>
         <li class="dropdown-header">Week 7: Slurm batch jobs [TBA]</li>
         <li class="dropdown-header">Week 9: Nextflow [TBA]</li>
@@ -216,8 +222,8 @@ div.csl-indent {
     <a class="dropdown-item" href="../week01/w1_ua_osc-setup.html">
  <span class="dropdown-text">UA 2: OSC account setup (week 1)</span></a>
   </li>  
-        <li class="dropdown-header">UA 3: GitHub account setup (week 4)</li>
-        <li class="dropdown-header">UA 4: Post-course survey (week 16)</li>
+        <li class="dropdown-header">UA 3: GitHub account setup (week 4) [TBA]</li>
+        <li class="dropdown-header">UA 4: Post-course survey (week 16) [TBA]</li>
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -318,25 +324,25 @@ div.csl-indent {
   <li><a href="#looping-over-all-files" id="toc-looping-over-all-files" class="nav-link" data-scroll-target="#looping-over-all-files"><span class="header-section-number">4.3</span> Looping over all files</a></li>
   <li><a href="#exercise-renaming-files-with-a-loop" id="toc-exercise-renaming-files-with-a-loop" class="nav-link" data-scroll-target="#exercise-renaming-files-with-a-loop"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Renaming files with a loop</a></li>
   </ul></li>
-  <li><a href="#bash-configuration-files" id="toc-bash-configuration-files" class="nav-link" data-scroll-target="#bash-configuration-files"><span class="header-section-number">5</span> Bash configuration files</a>
+  <li><a href="#the-find-command-to-find-files" id="toc-the-find-command-to-find-files" class="nav-link" data-scroll-target="#the-find-command-to-find-files"><span class="header-section-number">5</span> The <code>find</code> command to find files</a>
   <ul class="collapse">
-  <li><a href="#hidden-files" id="toc-hidden-files" class="nav-link" data-scroll-target="#hidden-files"><span class="header-section-number">5.1</span> Hidden files</a></li>
-  <li><a href="#bash-configuration-files-1" id="toc-bash-configuration-files-1" class="nav-link" data-scroll-target="#bash-configuration-files-1"><span class="header-section-number">5.2</span> Bash configuration files</a></li>
+  <li><a href="#two-problems-you-may-run-into" id="toc-two-problems-you-may-run-into" class="nav-link" data-scroll-target="#two-problems-you-may-run-into"><span class="header-section-number">5.1</span> Two problems you may run into</a></li>
+  <li><a href="#find-basics" id="toc-find-basics" class="nav-link" data-scroll-target="#find-basics"><span class="header-section-number">5.2</span> <code>find</code> basics</a></li>
+  <li><a href="#find-functionality-beyond-that-of-ls" id="toc-find-functionality-beyond-that-of-ls" class="nav-link" data-scroll-target="#find-functionality-beyond-that-of-ls"><span class="header-section-number">5.3</span> <code>find</code> functionality beyond that of <code>ls</code></a></li>
+  <li><a href="#examples-selecting-based-on-file-size-and-last-modified-data" id="toc-examples-selecting-based-on-file-size-and-last-modified-data" class="nav-link" data-scroll-target="#examples-selecting-based-on-file-size-and-last-modified-data"><span class="header-section-number">5.4</span> Examples selecting based on file size and last-modified data</a></li>
+  <li><a href="#running-commands-on-finds-results" id="toc-running-commands-on-finds-results" class="nav-link" data-scroll-target="#running-commands-on-finds-results"><span class="header-section-number">5.5</span> Running commands on <code>find</code>’s results</a></li>
   </ul></li>
-  <li><a href="#path-a-list-of-directories-with-binaries" id="toc-path-a-list-of-directories-with-binaries" class="nav-link" data-scroll-target="#path-a-list-of-directories-with-binaries"><span class="header-section-number">6</span> <code>$PATH</code>: A list of directories with binaries</a></li>
-  <li><a href="#the-find-command-to-find-files" id="toc-the-find-command-to-find-files" class="nav-link" data-scroll-target="#the-find-command-to-find-files"><span class="header-section-number">7</span> The <code>find</code> command to find files</a>
+  <li><a href="#the-xargs-command-to-repeat-commands-without-loops" id="toc-the-xargs-command-to-repeat-commands-without-loops" class="nav-link" data-scroll-target="#the-xargs-command-to-repeat-commands-without-loops"><span class="header-section-number">6</span> The <code>xargs</code> command to repeat commands without loops</a>
   <ul class="collapse">
-  <li><a href="#two-problems-you-may-run-into" id="toc-two-problems-you-may-run-into" class="nav-link" data-scroll-target="#two-problems-you-may-run-into"><span class="header-section-number">7.1</span> Two problems you may run into</a></li>
-  <li><a href="#find-basics" id="toc-find-basics" class="nav-link" data-scroll-target="#find-basics"><span class="header-section-number">7.2</span> <code>find</code> basics</a></li>
-  <li><a href="#find-functionality-beyond-that-of-ls" id="toc-find-functionality-beyond-that-of-ls" class="nav-link" data-scroll-target="#find-functionality-beyond-that-of-ls"><span class="header-section-number">7.3</span> <code>find</code> functionality beyond that of <code>ls</code></a></li>
-  <li><a href="#examples-selecting-based-on-file-size-and-last-modified-data" id="toc-examples-selecting-based-on-file-size-and-last-modified-data" class="nav-link" data-scroll-target="#examples-selecting-based-on-file-size-and-last-modified-data"><span class="header-section-number">7.4</span> Examples selecting based on file size and last-modified data</a></li>
-  <li><a href="#running-commands-on-finds-results" id="toc-running-commands-on-finds-results" class="nav-link" data-scroll-target="#running-commands-on-finds-results"><span class="header-section-number">7.5</span> Running commands on <code>find</code>’s results</a></li>
+  <li><a href="#xargs-versus-find--exec" id="toc-xargs-versus-find--exec" class="nav-link" data-scroll-target="#xargs-versus-find--exec"><span class="header-section-number">6.1</span> <code>xargs</code> versus <code>find -exec</code></a></li>
+  <li><a href="#find-xargs-and-spaces-in-file-names" id="toc-find-xargs-and-spaces-in-file-names" class="nav-link" data-scroll-target="#find-xargs-and-spaces-in-file-names"><span class="header-section-number">6.2</span> <code>find</code> =&gt; <code>xargs</code> and spaces in file names</a></li>
   </ul></li>
-  <li><a href="#the-xargs-command-to-repeat-commands-without-loops" id="toc-the-xargs-command-to-repeat-commands-without-loops" class="nav-link" data-scroll-target="#the-xargs-command-to-repeat-commands-without-loops"><span class="header-section-number">8</span> The <code>xargs</code> command to repeat commands without loops</a>
+  <li><a href="#bash-configuration-files" id="toc-bash-configuration-files" class="nav-link" data-scroll-target="#bash-configuration-files"><span class="header-section-number">7</span> Bash configuration files</a>
   <ul class="collapse">
-  <li><a href="#xargs-versus-find--exec" id="toc-xargs-versus-find--exec" class="nav-link" data-scroll-target="#xargs-versus-find--exec"><span class="header-section-number">8.1</span> <code>xargs</code> versus <code>find -exec</code></a></li>
-  <li><a href="#find-xargs-and-spaces-in-file-names" id="toc-find-xargs-and-spaces-in-file-names" class="nav-link" data-scroll-target="#find-xargs-and-spaces-in-file-names"><span class="header-section-number">8.2</span> <code>find</code> =&gt; <code>xargs</code> and spaces in file names</a></li>
+  <li><a href="#hidden-files" id="toc-hidden-files" class="nav-link" data-scroll-target="#hidden-files"><span class="header-section-number">7.1</span> Hidden files</a></li>
+  <li><a href="#bash-configuration-files-1" id="toc-bash-configuration-files-1" class="nav-link" data-scroll-target="#bash-configuration-files-1"><span class="header-section-number">7.2</span> Bash configuration files</a></li>
   </ul></li>
+  <li><a href="#path-a-list-of-directories-with-binaries" id="toc-path-a-list-of-directories-with-binaries" class="nav-link" data-scroll-target="#path-a-list-of-directories-with-binaries"><span class="header-section-number">8</span> <code>$PATH</code>: A list of directories with binaries</a></li>
   </ul>
 <div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w3_overview.html"><i class="bi bi-book"></i>Week 3 overview</a></li><li><a href="../bonus/shell-data.html"><i class="bi bi-book"></i>Bonus: Unix data tools</a></li></ul></div></nav>
     </div>
@@ -407,8 +413,7 @@ THIS PAGE IS STILL UNDER CONSTRUCTION
 </section>
 <section id="other-shell-wildcards" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="other-shell-wildcards"><span class="header-section-number">2</span> Other shell wildcards</h2>
-<p>In the first session on working with files in the Unix shell, you learned about <a href="week03/w3b_shellfiles.html#wildcard-expansion-globbing">globbing (selecting files) with the <code>*</code> wildcard</a>. While not as frequently used as the <code>*</code>, a few other shell wildcards exist and these can occasionally be very useful too.</p>
-<p>Here is a complete overview of shell wildcards:</p>
+<p>In the first session on working with files in the Unix shell, you learned about <a href="week03/w3b_shellfiles.html#wildcard-expansion-globbing">globbing (selecting files) with the <code>*</code> wildcard</a>. While not as frequently used as <code>*</code>, a few other shell wildcards exist. Here is a complete overview of shell wildcards:</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 30%">
@@ -431,7 +436,7 @@ THIS PAGE IS STILL UNDER CONSTRUCTION
 </tr>
 <tr class="odd">
 <td>[] and [^]</td>
-<td>One or none (<code>^</code>) of the “character set” within the brackets</td>
+<td>One or none (<code>^</code>) of the “character class” within the brackets</td>
 </tr>
 </tbody>
 </table>
@@ -444,17 +449,19 @@ THIS PAGE IS STILL UNDER CONSTRUCTION
 <p>Using the more restrictive wildcard <strong><code>?</code></strong> can be useful to prevent accidental matches. Here is an example of using the <strong><code>?</code></strong> wildcard to match both R1 and R2:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> sample1_R<span class="pp">?</span>.fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>sample1_R1.fastq  sample1_R2.fastq</code></pre>
-<hr style="height:1pt; visibility:hidden;">
-<p>The character class wildcard <strong><code>[]</code></strong> can be useful when wanting to include or exclude multiple files among files with rather similar names. For example, to match files for sample1 and sample2 using only a character class with <strong><code>[]</code></strong>:</p>
+<p>The character class wildcard <strong><code>[]</code></strong> can be useful when you want to include or exclude multiple files among a set of files with rather similar names. For example, to match files for <code>sample1</code> and <code>sample2</code> using only a character class with <strong><code>[]</code></strong>:</p>
 <ul>
-<li><p>Method 1 — List all possible characters (<code>1</code> and <code>2</code> in this case):</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> sample<span class="pp">[</span><span class="ss">12</span><span class="pp">]*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<li><p>Method 1 – List all possible characters (<code>1</code> and <code>2</code> in this case):</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is saying: after 'sample', there should be a 1 OR a 2 ('[12]'),</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># followed by any character (*):</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> sample<span class="pp">[</span><span class="ss">12</span><span class="pp">]*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>sample1_R1.fastq  sample1_R2.fastq  sample2_R1.fastq  sample2_R2.fastq</code></pre></li>
 <li><p>Method 2 – Use a range like <code>[0-9]</code>, <code>[A-Z]</code>, <code>[a-z]</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> sample<span class="pp">[</span><span class="ss">1</span><span class="pp">-</span><span class="ss">2</span><span class="pp">]*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>sample1_R1.fastq  sample1_R2.fastq  sample2_R1.fastq  sample2_R2.fastq</code></pre></li>
-<li><p>Method 3 – Exclude the unwanted sample ID:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> sample<span class="pp">[^</span><span class="ss">3</span><span class="pp">]*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<li><p>Method 3 – Exclude the unwanted sample ID by prefacing the character class with a <code>^</code>, which results in inverted behaviour:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is saying: after 'sample', there should be anything EXCEPT a '3':</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> sample<span class="pp">[^</span><span class="ss">3</span><span class="pp">]*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>sample1_R1.fastq  sample1_R2.fastq  sample2_R1.fastq  sample2_R2.fastq</code></pre></li>
 </ul>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -463,7 +470,7 @@ THIS PAGE IS STILL UNDER CONSTRUCTION
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note: <code>[]</code> works on single character ranges only: 0-9 works but 10-13 does not.
+Note: <code>[]</code> works on “single-character” ranges only: <code>[0-9]</code> works but <code>[10-13]</code> does not.
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -471,7 +478,6 @@ Note: <code>[]</code> works on single character ranges only: 0-9 works but 10-13
 </div>
 </div>
 <p>These examples may seem trivial, but you can use these techniques to easily operate on selections among 100s or 1000s of files.</p>
-<hr style="height:1pt; visibility:hidden;">
 </section>
 <section id="brace-expansion" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="brace-expansion"><span class="header-section-number">3</span> Brace expansion</h2>
@@ -495,7 +501,7 @@ Note: <code>[]</code> works on single character ranges only: 0-9 works but 10-13
 <hr style="height:1pt; visibility:hidden;">
 <p>As the example below shows, you can also:</p>
 <ul>
-<li>Use a comma-separated list</li>
+<li>Use a comma-separated list, <em>and</em></li>
 <li>Combine multiple brace expansions to get <em>all combinations</em> among values in the expansions</li>
 </ul>
 <div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> treatment-<span class="dt">{Kr</span><span class="op">,</span><span class="dt">Df</span><span class="op">,</span><span class="dt">Tr}</span>_temp-<span class="dt">{lo</span><span class="op">,</span><span class="dt">med</span><span class="op">,</span><span class="dt">hi}</span></span>
@@ -611,20 +617,18 @@ Click for the solution
 <div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> sample0<span class="pp">*</span> selection/ </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </section>
-<hr style="height:1pt; visibility:hidden;">
 </section>
 <section id="renaming-files-with-loops" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="renaming-files-with-loops"><span class="header-section-number">4</span> Renaming files with loops</h2>
 <p>Sometimes, you need to rename many files in a systematic/repetitive way. This is relatively common with omics data files, as you will often have separate files for each sample, and you may have many dozens of samples.</p>
-<p>Manually renaming these one-by-one is tedious as well as extremely error-prone and not-reproducible, while doing this with code is a good example of a general task that you can apply your coding skills to. For example, maybe you have a few thousand photos that you want to rename in a systematic way?</p>
+<p>Manually renaming these one-by-one is tedious as well as extremely error-prone and irreproducible. So, yhis is a good example of a general task that you can apply your coding skills to. For example, maybe you have a few thousand photos you want to rename in a systematic way?</p>
 <p>There are many different ways to rename many files in a programmatic way in the shell – admittedly none as easy as one might have hoped. Here, we’ll use the <code>basename</code> command and a <code>for</code> loop. <code>for</code> loops are a verbose method for tasks like renaming, but are relatively intuitive and good to get practice with because you will use them in other contexts throughout the course.</p>
 <section id="creating-a-set-of-dummy-files-to-work-with" class="level3" data-number="4.1">
 <h3 data-number="4.1" class="anchored" data-anchor-id="creating-a-set-of-dummy-files-to-work-with"><span class="header-section-number">4.1</span> Creating a set of dummy files to work with</h3>
-<p>We will start with creating some dummy files that represent alignments (the results of aligning reads in FASTQ files to a reference genome). These are stored in <code>.sam</code> or <code>.bam</code> files.</p>
-<p>To create many files at once, we will use a trick called “brace expansion” (because this is not a commonly used technique, I will only explain it in the optional bonus reading at the bottom of the page):</p>
+<p>Start with creating some dummy files that represent alignments (the results of aligning reads in FASTQ files to a reference genome, stored in <code>.sam</code> or <code>.bam</code> files):</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/alignments</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> results/alignments/sample{01..50}.sam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Let’s check the names of the files we created and how many there are:</p>
+<p>Check the names of the files you created and how many there are:</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> results/alignments</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>results/alignments/sample01.sam
 results/alignments/sample02.sam
@@ -635,36 +639,35 @@ results/alignments/sample06.sam
 # [...output truncated...]</code></pre>
 <div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> results/alignments/ <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>50</code></pre>
-<p>Now, let’s say that we noticed these files somehow have the wrong extension: they are saved as <code>.sam</code> (SAM files) but are really <code>.bam</code> (BAM files). We’ll have to rename them before moving on the next step in our analysis, but it would be tedious (and error-prone! and not-reproducible!) to do this by hand. We will therefore use a loop.</p>
-<hr style="height:1pt; visibility:hidden;">
+<p>Now, say that you noticed these files somehow ended up with the wrong file extension: they are saved as <code>.sam</code> (SAM files) but are really <code>.bam</code> (BAM files). You’ll have to rename them before moving on the next step in your analysis, but it would be tedious, error-prone, and irreproducible to do this by hand. Therefore, let’s use a loop.</p>
 </section>
 <section id="renaming-a-single-file-using-variables" class="level3" data-number="4.2">
 <h3 data-number="4.2" class="anchored" data-anchor-id="renaming-a-single-file-using-variables"><span class="header-section-number">4.2</span> Renaming a single file using variables</h3>
-<p>To go step-by-step, I will start by showing how we could rename a single file in the way that we would have to do this in a loop — using variables.</p>
-<p>We will actually make a <em>separate copy</em> of the files in a separate directory, just to be safe.</p>
+<p>To go step-by-step, I will start by showing how you could rename a single file like you would when using a loop, which is using <em>variables</em>. You will also make a <em>separate copy</em> of the files in a separate directory, just to be safe.</p>
 <p>To start with, the original file name will be contained in a variable…</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="va">oldname</span><span class="op">=</span>results/alignments/sample01.sam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>…and we can also save the new name in a variable:</p>
+<p>…and you can also save the new name in a variable:</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="va">newname</span><span class="op">=</span>results/alignments_bam/<span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$oldname</span><span class="st">"</span> .sam<span class="va">)</span>.bam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Before actually renaming, note the following trick with <code>echo</code> to just print the command instead of executing it — that can be a really useful way to check what you’re doing is correct when you’re about to run a command you may be nervous about with variables:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> mv <span class="at">-v</span> <span class="st">"</span><span class="va">$oldname</span><span class="st">"</span> <span class="st">"</span><span class="va">$newname</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This will not execute the 'mv' command, it just prints it!</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This technique is useful as a sanity check when using variables.</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> mv <span class="at">-v</span> <span class="st">"</span><span class="va">$oldname</span><span class="st">"</span> <span class="st">"</span><span class="va">$newname</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>mv -v results/alignments/sample01.sam results/alignments_bam/sample01.bam</code></pre>
-<p>Looks good? Then we remove <code>echo</code> and rename the file (we’re using the <code>-v</code> to make <code>mv</code> report what it’s doing):</p>
+<p>Looks good? Then remove <code>echo</code> and rename the file (using the <code>-v</code> option to make <code>mv</code> report what it’s doing):</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> <span class="at">-v</span> <span class="st">"</span><span class="va">$oldname</span><span class="st">"</span> <span class="st">"</span><span class="va">$newname</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>results/alignments/sample01.sam -&gt; results/alignments_bam/sample01.bam</code></pre>
-<hr style="height:1pt; visibility:hidden;">
 </section>
 <section id="looping-over-all-files" class="level3" data-number="4.3">
 <h3 data-number="4.3" class="anchored" data-anchor-id="looping-over-all-files"><span class="header-section-number">4.3</span> Looping over all files</h3>
-<p>Here’s how we can loop over these files, saving each file name (one at a time) in the variable <code>$oldname</code>:</p>
+<p>Here’s how you can loop over these files, saving each file name (one at a time) in the variable <code>$oldname</code>:</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> oldname <span class="kw">in</span> results/alignments/<span class="pp">*</span>.sam<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ...</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># [renaming code...]</span></span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Next, we assign a new name for each file:</p>
+<p>Next, inside the loop, assign a new name for each file:</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> oldname <span class="kw">in</span> results/alignments/<span class="pp">*</span>.sam<span class="kw">;</span> <span class="cf">do</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">newname</span><span class="op">=</span>results/alignments_bam/<span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$oldname</span><span class="st">"</span> .sam<span class="va">)</span>.bam</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We build and check the renaming command:</p>
+<p>Now, build and check the renaming command:</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> oldname <span class="kw">in</span> <span class="pp">*</span>.fastq<span class="kw">;</span> <span class="cf">do</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">newname</span><span class="op">=</span>results/alignments_bam/<span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$oldname</span><span class="st">"</span> .sam<span class="va">)</span>.bam</span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> cp <span class="at">-v</span> <span class="st">"</span><span class="va">$oldname</span><span class="st">"</span> <span class="st">"</span><span class="va">$newname</span><span class="st">"</span></span>
@@ -674,7 +677,7 @@ cp -v results/alignments/sample02.sam results/alignments_bam/sample02.bam
 cp -v results/alignments/sample03.sam results/alignments_bam/sample03.bam
 cp -v results/alignments/sample04.sam results/alignments_bam/sample04.bam
 # [...output truncated...]</code></pre>
-<p>Finally, we actually copy and rename by removing <code>echo</code>:</p>
+<p>Finally, actually create the renamed copies by removing <code>echo</code>:</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> oldname <span class="kw">in</span> <span class="pp">*</span>.fastq<span class="kw">;</span> <span class="cf">do</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">newname</span><span class="op">=</span>results/alignments_bam/<span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$oldname</span><span class="st">"</span> .sam<span class="va">)</span>.bam</span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cp</span> <span class="at">-v</span> <span class="st">"</span><span class="va">$oldname</span><span class="st">"</span> <span class="st">"</span><span class="va">$newname</span><span class="st">"</span></span>
@@ -837,23 +840,196 @@ You now realize that your date format is suboptimal (<code>MM-DD-YYYY</code>; wh
 </details></li>
 </ol>
 </section>
-<hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="bash-configuration-files" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="bash-configuration-files"><span class="header-section-number">5</span> Bash configuration files</h2>
-<section id="hidden-files" class="level3" data-number="5.1">
-<h3 data-number="5.1" class="anchored" data-anchor-id="hidden-files"><span class="header-section-number">5.1</span> Hidden files</h3>
+<section id="the-find-command-to-find-files" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="the-find-command-to-find-files"><span class="header-section-number">5</span> The <code>find</code> command to find files</h2>
+<section id="two-problems-you-may-run-into" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="two-problems-you-may-run-into"><span class="header-section-number">5.1</span> Two problems you may run into</h3>
+<p>Consider the following examples from <span class="citation" data-cites="buffalo2015">Buffalo (<a href="#ref-buffalo2015" role="doc-biblioref">2015</a>)</span> of problems you may run into. Say that you try to pipe <code>ls</code> output into the imaginary program <code>process_fastq</code>, which can operate on multiple FASTQ files at once, taking each as an argument:</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="pp">*</span>.fastq <span class="kw">|</span> <span class="ex">process_fastq</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Any spaces in the listed file names would lead to trouble here, since those file names would be erroneously split into separate arguments. A solution would be to use direct globbing:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="ex">process_fastq</span> <span class="pp">*</span>.fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>However, a different problem could occur here: if the number of globbed files is very high, you may get an error that the “<em>argument list is too long</em>”.</p>
+<p><strong>The <code>find</code> and <code>xargs</code> commands can deal with both of these problems.</strong> More generally, these commands are useful for:</p>
+<ul>
+<li><code>find</code>: file searching and processing beyond <code>ls</code>’s capabilities</li>
+<li><code>xargs</code>: multi-file and parallel processing without loops.</li>
+</ul>
+<p>Let’s create some files to try these commands:</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> zmays-snps/<span class="dt">{data/seqs</span><span class="op">,</span><span class="dt">scripts</span><span class="op">,</span><span class="dt">analysis}</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> zmays-snps/data/seqs/zmays<span class="dt">{A</span><span class="op">,</span><span class="dt">B</span><span class="op">,</span><span class="dt">C}</span>_R<span class="dt">{1</span><span class="op">,</span><span class="dt">2}</span>.fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="find-basics" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="find-basics"><span class="header-section-number">5.2</span> <code>find</code> basics</h3>
+<p>The basic syntax for <code>find</code> is:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> <span class="pp">[</span><span class="ss">path</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">expression</span><span class="pp">-</span><span class="ss">1</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">expression</span><span class="pp">-</span><span class="ss">2</span><span class="pp">]</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>find</code> will print all files by default, like <code>ls</code> – but unlike <code>ls</code>, it is recursive by default:</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> zmays-snps</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>zmays-snps/
+zmays-snps/data
+zmays-snps/data/seqs
+zmays-snps/data/seqs/zmaysC_R1.fastq
+zmays-snps/data/seqs/zmaysA_R1.fastq
+zmays-snps/data/seqs/zmaysB_R1.fastq
+zmays-snps/data/seqs/zmaysB_R2.fastq
+zmays-snps/data/seqs/zmaysC_R2.fastq
+zmays-snps/data/seqs/zmaysA_R2.fastq
+zmays-snps/scripts
+zmays-snps/analysis</code></pre>
+<p>Compare this with the corresponding <code>ls</code> output:</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> zmays-snps</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>analysis  data  scripts</code></pre>
+<p>Using the <code>-name</code> option, you can also <em>glob</em> like with <code>ls</code>:</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> zmays-snps</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"zmaysB*fastq"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>data/seqs/zmaysB_R1.fastq
+data/seqs/zmaysB_R2.fastq</code></pre>
+</section>
+<section id="find-functionality-beyond-that-of-ls" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="find-functionality-beyond-that-of-ls"><span class="header-section-number">5.3</span> <code>find</code> functionality beyond that of <code>ls</code></h3>
+<p>First, you can use <code>-type</code> as an expression to limit results by file type:</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># "-type f" to only match regular files (not, e.g., dirs)</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"zmaysB*fastq"</span> <span class="at">-type</span> f </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the previous command, the two expressions were implicitly connected with a logical <em>and</em>: the resulting matches had to be regular files and also had to have <code>_zmaysB*fastq_</code> in the name. You can connect expressions <em>explicitly</em> using the <code>-and</code> operator…</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"zmaysB*fastq"</span> <span class="at">-and</span> <span class="at">-type</span> f </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>TBA</code></pre>
+<p>…or the <code>-or</code> operator:</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"zmaysA*fastq"</span> <span class="at">-or</span> <span class="at">-name</span> <span class="st">"zmaysC*fastq"</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>TBA</code></pre>
+<p>You can negate expressions with <code>!</code> — though you must quote the <code>!</code> so it doesn’t get evaluated by the shell:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find regular fies that do NOT match "zmaysC*fastq"</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-type</span> f <span class="st">"!"</span> <span class="at">-name</span> <span class="st">"zmaysC*fastq"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>TBA</code></pre>
+<p>As another negation example, say you have some files with <em>temp</em> in their names that you don’t want to include in the <code>find</code> output:</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> data/seqs/zmays<span class="dt">{A</span><span class="op">,</span><span class="dt">C}</span>_R<span class="dt">{1</span><span class="op">,</span><span class="dt">2}</span>-temp.fastq</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-type</span> f <span class="st">"!"</span> <span class="at">-name</span> <span class="st">"zmaysC*fastq"</span> <span class="at">-and</span> <span class="st">"!"</span> <span class="at">-name</span> <span class="st">"*-temp*"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>TBA</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+If <code>!</code> gets evaluated by the shell, then what does it do?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>So what does a <code>!</code> mean to the shell? It accesses past commands — for example, to re-execute your most recent command, use the following:</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="ex">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="examples-selecting-based-on-file-size-and-last-modified-data" class="level3" data-number="5.4">
+<h3 data-number="5.4" class="anchored" data-anchor-id="examples-selecting-based-on-file-size-and-last-modified-data"><span class="header-section-number">5.4</span> Examples selecting based on file size and last-modified data</h3>
 <p>TBA</p>
 </section>
-<section id="bash-configuration-files-1" class="level3" data-number="5.2">
-<h3 data-number="5.2" class="anchored" data-anchor-id="bash-configuration-files-1"><span class="header-section-number">5.2</span> Bash configuration files</h3>
+<section id="running-commands-on-finds-results" class="level3" data-number="5.5">
+<h3 data-number="5.5" class="anchored" data-anchor-id="running-commands-on-finds-results"><span class="header-section-number">5.5</span> Running commands on <code>find</code>’s results</h3>
+<p>Now, say that you instead want to remove the temporary files we saw above. We can do this using <code>-exec</code> followed by the <code>rm</code> command (in this case, using <code>rm -i</code> for interactive removal):</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"*-temp.fastq"</span> <span class="at">-exec</span> rm <span class="at">-i</span> {} <span class="dt">\;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Here, <code>{}</code> is the placeholder for the file names we are passing on, and you have to indicate the end of our command with an escaped semicolon: <code>\;</code>.</p>
+<p><code>-exec</code> can be very useful to <em>process file queries</em> that are more complicated than what a simple globbing pattern allows for. With <code>-exec</code>, you can use any command to operate on the files that you found.</p>
+<p>Finally, note that for the common operation of deleting files, a shortcut exists:</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> zmays-snps/data/seqs <span class="at">-name</span> <span class="st">"*-temp.fastq"</span> <span class="at">-delete</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="the-xargs-command-to-repeat-commands-without-loops" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="the-xargs-command-to-repeat-commands-without-loops"><span class="header-section-number">6</span> The <code>xargs</code> command to repeat commands without loops</h2>
+<p><code>xargs</code> is to be read/pronounced as <code>x-args</code>, where “<em>args</em>” means “<em>arguments</em>”.</p>
+<p>This command passes arguments, supplied via standard in, on to another command. For example…</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"*-temp.fastq"</span> <span class="kw">|</span> <span class="fu">xargs</span> rm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>…is equivalent to the following, where <code>rm</code> receives the very same list of files as its arguments:</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> data/seqs/<span class="pp">*</span>-temp.fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>However, with <code>xargs</code>, you can bypass the problem of a <em>maximum number of arguments</em> to <code>rm</code>. Specifically, you can easily pass one argument at a time with <code>-n 1</code>:</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"*-temp.fastq"</span> <span class="kw">|</span> <span class="fu">xargs</span> <span class="at">-n</span> 1 rm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This command runs <code>rm</code> as many times as there are <code>*-temp.fastq</code> files.</p>
+<section id="xargs-versus-find--exec" class="level3" data-number="6.1">
+<h3 data-number="6.1" class="anchored" data-anchor-id="xargs-versus-find--exec"><span class="header-section-number">6.1</span> <code>xargs</code> versus <code>find -exec</code></h3>
+<p>By using <code>xargs</code> instead of <code>find -exec</code>, you separate the process that finds the files you want to operate on, from the actual operations.</p>
+<p>This can be beneficial, such as when you want to carefully inspect a list of files doing anything — for example:</p>
+<ul>
+<li><p>Create some dummy files to practice on:</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> data/seqs/zmays<span class="dt">{A</span><span class="op">,</span><span class="dt">C}</span>_R<span class="dt">{1</span><span class="op">,</span><span class="dt">2}</span>-temp.fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Save the <code>find</code> results in a text file:</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"*-temp.fastq"</span> <span class="op">&gt;</span> files-to-delete.txt</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> files-to-delete.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>data/seqs/zmaysC_R1-temp.fastq
+data/seqs/zmaysA_R1-temp.fastq
+data/seqs/zmaysA_R2-temp.fastq
+data/seqs/zmaysC_R2-temp.fastq</code></pre></li>
+<li><p>Now pass that list of files to <code>rm</code>:</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> files-to-delete.txt <span class="kw">|</span> <span class="fu">xargs</span> rm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+</section>
+<section id="find-xargs-and-spaces-in-file-names" class="level3" data-number="6.2">
+<h3 data-number="6.2" class="anchored" data-anchor-id="find-xargs-and-spaces-in-file-names"><span class="header-section-number">6.2</span> <code>find</code> =&gt; <code>xargs</code> and spaces in file names</h3>
+<p>As always, spaces in file names can trip you up – but you were promised a solution with <code>find</code> and <code>xargs</code>!</p>
+<p>However, out of the box, the below does in fact fail:</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> <span class="st">"samples A.txt"</span>  <span class="st">"samples B.txt"</span> </span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">"samples [AB].txt"</span> <span class="kw">|</span> <span class="fu">xargs</span> rm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>rm: cannot remove './samples': No such file or directory
+rm: cannot remove 'A.txt': No such file or directory
+rm: cannot remove './samples': No such file or directory
+rm: cannot remove 'B.txt': No such file or directory</code></pre>
+<p>The solution is to use <code>-print0</code> with <code>find</code>, so it prints files with a “null byte” as the delimiter. Then, you also need to tell <code>xargs</code> about this, using <code>-0</code>:</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">"samples [AB].txt"</span> <span class="at">-print0</span> <span class="kw">|</span> <span class="fu">xargs</span> <span class="at">-0</span> rm <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>removed './samples A.txt'
+removed './samples B.txt'</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<code>xargs</code> as an alternative to loops
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>With <code>xargs</code>, you can also specify where you want to insert the arguments that are being passed on:</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"*.fastq"</span> <span class="kw">|</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xargs</span> basename <span class="at">-s</span> <span class="st">".fastq"</span> <span class="kw">|</span></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xargs</span> <span class="at">-I{}</span> fastq_stat <span class="at">--in</span> {}.fastq <span class="at">--out</span> results/{}.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Above, <code>-I{}</code> specified that the arguments were passed on with the placeholder <code>{}</code>. We were then also able to use <code>{}</code> multiple times. The above code does something that you may be otherwise be inclined to do in a loop — the above is equivalent to:</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fastq_file <span class="kw">in</span> data/seqs/<span class="pp">*</span>fastq<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">id</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span> .fastq<span class="va">)</span></span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">fastq_stat</span> <span class="at">--in</span> <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span> <span class="at">--out</span> results/<span class="st">"</span><span class="va">$id</span><span class="st">"</span>.txt</span>
+<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p>One advantage of using <code>xargs</code> instead of a <code>for</code> loop is that you have control over parallelization.</p>
+<ul>
+<li><p>To parallelize, i.e.&nbsp;to spawn multiple simultaneous process, you can send each process to the background in the <code>for</code> loop using <code>&amp;</code>:</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fastq_file <span class="kw">in</span> <span class="pp">*</span>fastq<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">fastq_short</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="va">$fastq_file</span> .fastq<span class="va">)</span> </span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">fastq_stat</span> <span class="at">--in</span> <span class="va">$fastq_file</span> <span class="at">--out</span> results/<span class="va">$fastq_short</span>.txt <span class="kw">&amp;</span></span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>However, this would spawn exactly as many processes as there are input files, which could be way more than what we want.</p></li>
+<li><p>With <code>xargs</code>, you can control the number of simultaneous processes that are spawned using <code>-P</code> (here set to 6):</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"*.fastq"</span> <span class="kw">|</span></span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xargs</span> basename <span class="at">-s</span> <span class="st">".fastq"</span> <span class="kw">|</span></span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xargs</span> <span class="at">-P</span> 6 <span class="at">-I{}</span> fastq_stat <span class="at">--in</span> {}.fastq <span class="at">--out</span> results/{}.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+<p>If you like the <code>xargs</code> approach to running multiple processes, you may also be interested in the <code>parallel</code> command, which is even more powerful than <code>xargs</code>. I personally don’t do this very much because I tend to submit separate batch jobs for each file, which can easily be done with simple <code>for</code> loops.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="bash-configuration-files" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="bash-configuration-files"><span class="header-section-number">7</span> Bash configuration files</h2>
+<section id="hidden-files" class="level3" data-number="7.1">
+<h3 data-number="7.1" class="anchored" data-anchor-id="hidden-files"><span class="header-section-number">7.1</span> Hidden files</h3>
+<p>TBA</p>
+</section>
+<section id="bash-configuration-files-1" class="level3" data-number="7.2">
+<h3 data-number="7.2" class="anchored" data-anchor-id="bash-configuration-files-1"><span class="header-section-number">7.2</span> Bash configuration files</h3>
 <p>Your bash shell is configured using hidden text files in your <code>$HOME</code> dir:</p>
 <ul>
 <li><code>~/.bashrc</code> – for non-login shells</li>
 <li><code>~/.bash_profile</code> – for non-login shells <strong>FIX</strong></li>
 </ul>
 <p>These can be viewed and edited like normal text files:</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ~/.bashrc    <span class="co"># Or open in VS Code</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ~/.bashrc    <span class="co"># Or open in VS Code</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>Some settings that are / can be stored in these config files:</strong></p>
 <ul>
 <li>The look of your prompt.</li>
@@ -874,25 +1050,24 @@ Tip
 <p>To not have to deal with the login/non-login shell distinction, it is common to put all settings in one of these files (often <code>.bashrc</code>) and let the second file (often <code>.bash_profile</code>) run the first file whenever it itself is being run.</p>
 </div>
 </div>
-<hr style="height:1pt; visibility:hidden;">
 </section>
 </section>
-<section id="path-a-list-of-directories-with-binaries" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="path-a-list-of-directories-with-binaries"><span class="header-section-number">6</span> <code>$PATH</code>: A list of directories with binaries</h2>
+<section id="path-a-list-of-directories-with-binaries" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="path-a-list-of-directories-with-binaries"><span class="header-section-number">8</span> <code>$PATH</code>: A list of directories with binaries</h2>
 <p><code>$PATH</code> is another environment variable like <code>$HOME</code> and <code>$USER</code>.</p>
 <p>It lists the directories that will be searched when you type a program’s name. This allows you to run programs without specifying the full path to the executable. For example:</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="ex">vcftools</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; VCFtools (0.1.16)</span></span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (c) Adam Auton and Anthony Marcketta 2009</span></span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="co"># To check where the program's binary is located:</span></span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> vcftools</span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; /usr/bin/vcftools</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="ex">vcftools</span></span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; VCFtools (0.1.16)</span></span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (c) Adam Auton and Anthony Marcketta 2009</span></span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a><span class="co"># To check where the program's binary is located:</span></span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> vcftools</span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; /usr/bin/vcftools</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To check which directories are in your <code>$PATH</code>, you can simply <code>echo</code> it:</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$PATH</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$PATH</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>/apps/xalt/xalt/bin:/opt/mvapich2/intel/19.0/2.3.3/bin:/apps/gnu/8.4.0/bin:/opt/intel/19.0.5/itac_latest/bin:/opt/intel/19.0.5/advisor/bin64:/opt/intel/19.0.5/vtune_amplifier/bin64:/opt/intel/19.0.5/inspector_2019/bin64:/opt/intel/19.0.5/compilers_and_libraries_2019/linux/bin/intel64:/apps/software_usage:/usr/lib64/qt-3.3/bin:/opt/osc/bin:/opt/moab/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/opt/ddn/ime/bin:/opt/puppetlabs/bin:/users/PAS0471/jelmer/software/bin</code></pre>
 <p>That output looks strange and is hard to read, because the directories are separated by colons <code>:</code>. Let’s make that a bit more readable:</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$PATH</span> <span class="kw">|</span> <span class="fu">tr</span> <span class="st">":"</span> <span class="st">"\n"</span> <span class="kw">|</span> <span class="fu">nl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$PATH</span> <span class="kw">|</span> <span class="fu">tr</span> <span class="st">":"</span> <span class="st">"\n"</span> <span class="kw">|</span> <span class="fu">nl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>1  /apps/xalt/xalt/bin
 2  /opt/mvapich2/intel/19.0/2.3.3/bin
 3  /apps/gnu/8.4.0/bin
@@ -900,197 +1075,13 @@ Tip
 5  /opt/intel/19.0.5/advisor/bin64
 [...output-truncated...]</code></pre>
 <p>You can easily modify your <code>$PATH</code>. To add a directory to your <code>$PATH</code> in the current session, you simply <em>append</em> a new dir after a colon:</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="va">PATH</span><span class="op">=</span><span class="va">$PATH</span>:~/new-dir-with-software/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="va">PATH</span><span class="op">=</span><span class="va">$PATH</span>:~/new-dir-with-software/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>However, this change will not have any effects outside of your current bash sessions.</p>
 <p><strong>For lasting changes</strong>, you should edit your bash configuration files (like <code>~/.bashrc</code>), from which <code>$PATH</code> is loaded whenever you open a terminal:</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"PATH=</span><span class="va">$PATH</span><span class="st">:~/new-dir-with-software/"</span> <span class="op">&gt;&gt;</span> ~/.bashrc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><br></p>
-</section>
-<section id="the-find-command-to-find-files" class="level2" data-number="7">
-<h2 data-number="7" class="anchored" data-anchor-id="the-find-command-to-find-files"><span class="header-section-number">7</span> The <code>find</code> command to find files</h2>
-<section id="two-problems-you-may-run-into" class="level3" data-number="7.1">
-<h3 data-number="7.1" class="anchored" data-anchor-id="two-problems-you-may-run-into"><span class="header-section-number">7.1</span> Two problems you may run into</h3>
-<p>Consider the following examples from <span class="citation" data-cites="buffalo2015">Buffalo (<a href="#ref-buffalo2015" role="doc-biblioref">2015</a>)</span> of problems you may run into. Say that you try to pipe <code>ls</code> output into the imaginary program <code>process_fastq</code>, which can run with FASTQ files at once, taking each as an argument:</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="pp">*</span>.fastq <span class="kw">|</span> <span class="ex">process_fastq</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Any spaces in the listed file names would lead to trouble here, since those file names would be erroneously split into separate arguments. A solution would be to use direct globbing:</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="ex">process_fastq</span> <span class="pp">*</span>.fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>However, a different problem could occur here: if the number of globbed files is very high, you may get an error that the “<em>argument list is too long</em>”.</p>
-<p><strong>The <code>find</code> and <code>xargs</code> commands can deal with both of these problems.</strong> More generally, these commands are useful for:</p>
-<ul>
-<li><code>find</code>: file searching and processing beyond <code>ls</code>’s capabilities</li>
-<li><code>xargs</code>: multi-file and parallel processing without loops.</li>
-</ul>
-<p>Let’s create some files to try these commands:</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> zmays-snps/<span class="dt">{data/seqs</span><span class="op">,</span><span class="dt">scripts</span><span class="op">,</span><span class="dt">analysis}</span></span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> zmays-snps/data/seqs/zmays<span class="dt">{A</span><span class="op">,</span><span class="dt">B</span><span class="op">,</span><span class="dt">C}</span>_R<span class="dt">{1</span><span class="op">,</span><span class="dt">2}</span>.fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="find-basics" class="level3" data-number="7.2">
-<h3 data-number="7.2" class="anchored" data-anchor-id="find-basics"><span class="header-section-number">7.2</span> <code>find</code> basics</h3>
-<p>The basic syntax for <code>find</code> is:</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> <span class="pp">[</span><span class="ss">path</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">expression</span><span class="pp">-</span><span class="ss">1</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">expression</span><span class="pp">-</span><span class="ss">2</span><span class="pp">]</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>find</code> will print all files by default, like <code>ls</code> – but unlike <code>ls</code>, it is recursive by default:</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> zmays-snps</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>zmays-snps/
-zmays-snps/data
-zmays-snps/data/seqs
-zmays-snps/data/seqs/zmaysC_R1.fastq
-zmays-snps/data/seqs/zmaysA_R1.fastq
-zmays-snps/data/seqs/zmaysB_R1.fastq
-zmays-snps/data/seqs/zmaysB_R2.fastq
-zmays-snps/data/seqs/zmaysC_R2.fastq
-zmays-snps/data/seqs/zmaysA_R2.fastq
-zmays-snps/scripts
-zmays-snps/analysis</code></pre>
-<p>Compare this with the corresponding <code>ls</code> output:</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> zmays-snps</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>analysis  data  scripts</code></pre>
-<p>Using the <code>-name</code> option, you can also <em>glob</em> like with <code>ls</code>:</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> zmays-snps</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"zmaysB*fastq"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>data/seqs/zmaysB_R1.fastq
-data/seqs/zmaysB_R2.fastq</code></pre>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="find-functionality-beyond-that-of-ls" class="level3" data-number="7.3">
-<h3 data-number="7.3" class="anchored" data-anchor-id="find-functionality-beyond-that-of-ls"><span class="header-section-number">7.3</span> <code>find</code> functionality beyond that of <code>ls</code></h3>
-<p>First, you can use <code>-type</code> as an expression to limit results by file type:</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># "-type f" to only match regular files (not, e.g., dirs)</span></span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"zmaysB*fastq"</span> <span class="at">-type</span> f </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In the previous command, the two expressions were implicitly connected with a logical <em>and</em>: the resulting matches had to be regular files and also had to have <code>_zmaysB*fastq_</code> in the name. You can connect expressions <em>explicitly</em> using the <code>-and</code> operator…</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"zmaysB*fastq"</span> <span class="at">-and</span> <span class="at">-type</span> f </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>TBA</code></pre>
-<p>…or the <code>-or</code> operator:</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"zmaysA*fastq"</span> <span class="at">-or</span> <span class="at">-name</span> <span class="st">"zmaysC*fastq"</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>TBA</code></pre>
-<p>You can negate expressions with <code>!</code> — though you must quote the <code>!</code> so it doesn’t get evaluated by the shell:</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find regular fies that do NOT match "zmaysC*fastq"</span></span>
-<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-type</span> f <span class="st">"!"</span> <span class="at">-name</span> <span class="st">"zmaysC*fastq"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>TBA</code></pre>
-<p>As another negation example, say you have some files with <em>temp</em> in their names that you don’t want to include in the <code>find</code> output:</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> data/seqs/zmays<span class="dt">{A</span><span class="op">,</span><span class="dt">C}</span>_R<span class="dt">{1</span><span class="op">,</span><span class="dt">2}</span>-temp.fastq</span>
-<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-type</span> f <span class="st">"!"</span> <span class="at">-name</span> <span class="st">"zmaysC*fastq"</span> <span class="at">-and</span> <span class="st">"!"</span> <span class="at">-name</span> <span class="st">"*-temp*"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>TBA</code></pre>
-<hr style="height:1pt; visibility:hidden;">
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-If <code>!</code> gets evaluated by the shell, then what does it do?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>So what does a <code>!</code> mean to the shell? It accesses past commands — for example, to re-execute your most recent command, use the following:</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="ex">!!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="examples-selecting-based-on-file-size-and-last-modified-data" class="level3" data-number="7.4">
-<h3 data-number="7.4" class="anchored" data-anchor-id="examples-selecting-based-on-file-size-and-last-modified-data"><span class="header-section-number">7.4</span> Examples selecting based on file size and last-modified data</h3>
-<p>TBA</p>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="running-commands-on-finds-results" class="level3" data-number="7.5">
-<h3 data-number="7.5" class="anchored" data-anchor-id="running-commands-on-finds-results"><span class="header-section-number">7.5</span> Running commands on <code>find</code>’s results</h3>
-<p>Now, say that you instead want to remove the temporary files we saw above. We can do this using <code>-exec</code> followed by the <code>rm</code> command (in this case, using <code>rm -i</code> for interactive removal):</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"*-temp.fastq"</span> <span class="at">-exec</span> rm <span class="at">-i</span> {} <span class="dt">\;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Here, <code>{}</code> is the placeholder for the file names we are passing on, and you have to indicate the end of our command with an escaped semicolon: <code>\;</code>.</p>
-<p><code>-exec</code> can be very useful to <em>process file queries</em> that are more complicated than what a simple globbing pattern allows for. With <code>-exec</code>, you can use any command to operate on the files that you found.</p>
-<p>Finally, note that for the common operation of deleting files, a shortcut exists:</p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> zmays-snps/data/seqs <span class="at">-name</span> <span class="st">"*-temp.fastq"</span> <span class="at">-delete</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-</section>
-<section id="the-xargs-command-to-repeat-commands-without-loops" class="level2" data-number="8">
-<h2 data-number="8" class="anchored" data-anchor-id="the-xargs-command-to-repeat-commands-without-loops"><span class="header-section-number">8</span> The <code>xargs</code> command to repeat commands without loops</h2>
-<p><code>xargs</code> is to be read/pronounced as <code>x-args</code>, where “<em>args</em>” means “<em>arguments</em>”.</p>
-<p>This command passes arguments, supplied via standard in, on to another command. For example…</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"*-temp.fastq"</span> <span class="kw">|</span> <span class="fu">xargs</span> rm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>…is equivalent to the following, where <code>rm</code> receives the very same list of files as its arguments:</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> data/seqs/<span class="pp">*</span>-temp.fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>However, with <code>xargs</code>, you can bypass the problem of a <em>maximum number of arguments</em> to <code>rm</code>. Specifically, you can easily pass one argument at a time with <code>-n 1</code>:</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"*-temp.fastq"</span> <span class="kw">|</span> <span class="fu">xargs</span> <span class="at">-n</span> 1 rm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This command runs <code>rm</code> as many times as there are <code>*-temp.fastq</code> files.</p>
-<hr style="height:1pt; visibility:hidden;">
-<section id="xargs-versus-find--exec" class="level3" data-number="8.1">
-<h3 data-number="8.1" class="anchored" data-anchor-id="xargs-versus-find--exec"><span class="header-section-number">8.1</span> <code>xargs</code> versus <code>find -exec</code></h3>
-<p>By using <code>xargs</code> instead of <code>find -exec</code>, you separate the process that finds the files you want to operate on, from the actual operations.</p>
-<p>This can be beneficial, such as when you want to carefully inspect a list of files doing anything — for example:</p>
-<ul>
-<li><p>Create some dummy files to practice on:</p>
-<div class="sourceCode" id="cb83"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> data/seqs/zmays<span class="dt">{A</span><span class="op">,</span><span class="dt">C}</span>_R<span class="dt">{1</span><span class="op">,</span><span class="dt">2}</span>-temp.fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p>Save the <code>find</code> results in a text file:</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"*-temp.fastq"</span> <span class="op">&gt;</span> files-to-delete.txt</span>
-<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> files-to-delete.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>data/seqs/zmaysC_R1-temp.fastq
-data/seqs/zmaysA_R1-temp.fastq
-data/seqs/zmaysA_R2-temp.fastq
-data/seqs/zmaysC_R2-temp.fastq</code></pre></li>
-<li><p>Now pass that list of files to <code>rm</code>:</p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> files-to-delete.txt <span class="kw">|</span> <span class="fu">xargs</span> rm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-</ul>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="find-xargs-and-spaces-in-file-names" class="level3" data-number="8.2">
-<h3 data-number="8.2" class="anchored" data-anchor-id="find-xargs-and-spaces-in-file-names"><span class="header-section-number">8.2</span> <code>find</code> =&gt; <code>xargs</code> and spaces in file names</h3>
-<p>As always, spaces in file names can trip you up – but you were promised a solution with <code>find</code> and <code>xargs</code>!</p>
-<p>However, out of the box, the below does in fact fail:</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> <span class="st">"samples A.txt"</span>  <span class="st">"samples B.txt"</span> </span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">"samples [AB].txt"</span> <span class="kw">|</span> <span class="fu">xargs</span> rm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>rm: cannot remove './samples': No such file or directory
-rm: cannot remove 'A.txt': No such file or directory
-rm: cannot remove './samples': No such file or directory
-rm: cannot remove 'B.txt': No such file or directory</code></pre>
-<p>The solution is to use <code>-print0</code> with <code>find</code>, so it prints files with a “null byte” as the delimiter. Then, you also need to tell <code>xargs</code> about this, using <code>-0</code>:</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">"samples [AB].txt"</span> <span class="at">-print0</span> <span class="kw">|</span> <span class="fu">xargs</span> <span class="at">-0</span> rm <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>removed './samples A.txt'
-removed './samples B.txt'</code></pre>
-<hr style="height:1pt; visibility:hidden;">
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<code>xargs</code> as an alternative to loops
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>With <code>xargs</code>, you can also specify where you want to insert the arguments that are being passed on:</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"*.fastq"</span> <span class="kw">|</span></span>
-<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xargs</span> basename <span class="at">-s</span> <span class="st">".fastq"</span> <span class="kw">|</span></span>
-<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xargs</span> <span class="at">-I{}</span> fastq_stat <span class="at">--in</span> {}.fastq <span class="at">--out</span> results/{}.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Above, <code>-I{}</code> specified that the arguments were passed on with the placeholder <code>{}</code>. We were then also able to use <code>{}</code> multiple times. The above code does something that you may be otherwise be inclined to do in a loop — the above is equivalent to:</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fastq_file <span class="kw">in</span> data/seqs/<span class="pp">*</span>fastq<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">id</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span> .fastq<span class="va">)</span></span>
-<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">fastq_stat</span> <span class="at">--in</span> <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span> <span class="at">--out</span> results/<span class="st">"</span><span class="va">$id</span><span class="st">"</span>.txt</span>
-<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
-<p>One advantage of using <code>xargs</code> instead of a <code>for</code> loop is that you have control over parallelization.</p>
-<ul>
-<li><p>To parallelize, i.e.&nbsp;to spawn multiple simultaneous process, you can send each process to the background in the <code>for</code> loop using <code>&amp;</code>:</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fastq_file <span class="kw">in</span> <span class="pp">*</span>fastq<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">fastq_short</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="va">$fastq_file</span> .fastq<span class="va">)</span> </span>
-<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">fastq_stat</span> <span class="at">--in</span> <span class="va">$fastq_file</span> <span class="at">--out</span> results/<span class="va">$fastq_short</span>.txt <span class="kw">&amp;</span></span>
-<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>However, this would spawn exactly as many processes as there are input files, which could be way more than what we want.</p></li>
-<li><p>With <code>xargs</code>, you can control the number of simultaneous processes that are spawned using <code>-P</code> (here set to 6):</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> data/seqs <span class="at">-name</span> <span class="st">"*.fastq"</span> <span class="kw">|</span></span>
-<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xargs</span> basename <span class="at">-s</span> <span class="st">".fastq"</span> <span class="kw">|</span></span>
-<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xargs</span> <span class="at">-P</span> 6 <span class="at">-I{}</span> fastq_stat <span class="at">--in</span> {}.fastq <span class="at">--out</span> results/{}.txt </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-</ul>
-<p>If you like the <code>xargs</code> approach to running multiple processes, you may also be interested in the <code>parallel</code> command, which is even more powerful than <code>xargs</code>. I personally don’t do this very much because I tend to submit separate batch jobs for each file, which can easily be done with simple <code>for</code> loops.</p>
-</div>
-</div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"PATH=</span><span class="va">$PATH</span><span class="st">:~/new-dir-with-software/"</span> <span class="op">&gt;&gt;</span> ~/.bashrc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 
-</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">

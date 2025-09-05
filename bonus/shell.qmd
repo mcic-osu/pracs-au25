@@ -43,16 +43,14 @@ TBA
 In the first session on working with files in the Unix shell,
 you learned about
 [globbing (selecting files) with the `*` wildcard](week03/w3b_shellfiles.html#wildcard-expansion-globbing).
-While not as frequently used as the `*`,
-a few other shell wildcards exist and these can occasionally be very useful too.
-
+While not as frequently used as `*`, a few other shell wildcards exist.
 Here is a complete overview of shell wildcards:
 
 | Wildcard   | Matches |
 |------------|---------------------------|
 | *          | Any number of any character, including nothing |
 | ?          | Any single character 
-| [] and [^] | One or none (`^`) of the "character set" within the brackets   
+| [] and [^] | One or none (`^`) of the "character class" within the brackets   
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -76,16 +74,16 @@ ls sample1_R?.fastq
 sample1_R1.fastq  sample1_R2.fastq
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
-The character class wildcard **`[]`** can be useful when wanting to include or
-exclude multiple files among files with rather similar names.
+The character class wildcard **`[]`** can be useful when you want to include or
+exclude multiple files among a set of files with rather similar names.
 For example, 
-to match files for sample1 and sample2 using only a character class with **`[]`**:
+to match files for `sample1` and `sample2` using only a character class with **`[]`**:
 
-- Method 1 --- List all possible characters (`1` and `2` in this case):
+- Method 1 -- List all possible characters (`1` and `2` in this case):
 
   ```sh
+  # This is saying: after 'sample', there should be a 1 OR a 2 ('[12]'),
+  # followed by any character (*):
   ls sample[12]*
   ```
   ```bash-out
@@ -101,9 +99,11 @@ to match files for sample1 and sample2 using only a character class with **`[]`*
   sample1_R1.fastq  sample1_R2.fastq  sample2_R1.fastq  sample2_R2.fastq
   ```
 
-- Method 3 -- Exclude the unwanted sample ID:
+- Method 3 -- Exclude the unwanted sample ID by prefacing the character class
+  with a `^`, which results in inverted behaviour:
 
   ```bash
+  # This is saying: after 'sample', there should be anything EXCEPT a '3':
   ls sample[^3]*
   ```
   ```bash-out
@@ -111,14 +111,12 @@ to match files for sample1 and sample2 using only a character class with **`[]`*
   ```
 
 ::: callout-warning
-### Note: `[]` works on single character ranges only: 0-9 works but 10-13 does not.
+### Note: `[]` works on "single-character" ranges only: `[0-9]` works but `[10-13]` does not.
 :::
 
 These examples may seem trivial,
 but you can use these techniques to easily operate on selections among 100s or
 1000s of files.
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ## Brace expansion
 
@@ -158,7 +156,7 @@ For example, use `..` within `{}` to indicate ranges of numbers or letters:
 
 As the example below shows, you can also:
 
-- Use a comma-separated list
+- Use a comma-separated list, _and_
 - Combine multiple brace expansions to get _all combinations_ among values in the
   expansions
 
@@ -306,8 +304,6 @@ cp sample0* selection/
 </details>
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ## Renaming files with loops
 
 Sometimes, you need to rename many files in a systematic/repetitive way.
@@ -316,10 +312,9 @@ as you will often have separate files for each sample,
 and you may have many dozens of samples.
 
 Manually renaming these one-by-one is tedious as well as extremely error-prone
-and not-reproducible,
-while doing this with code is a good example of a general task that you
-can apply your coding skills to.
-For example, maybe you have a few thousand photos that you want to rename in
+and irreproducible.
+So, yhis is a good example of a general task that you can apply your coding skills to.
+For example, maybe you have a few thousand photos you want to rename in
 a systematic way?
 
 There are many different ways to rename many files in a programmatic way in the shell &ndash;
@@ -331,20 +326,16 @@ them in other contexts throughout the course.
 
 ### Creating a set of dummy files to work with
 
-We will start with creating some dummy files that represent alignments
-(the results of aligning reads in FASTQ files to a reference genome).
-These are stored in `.sam` or `.bam` files.
-
-To create many files at once, we will use a trick called "brace expansion"
-(because this is not a commonly used technique, I will only explain it in the
-optional bonus reading at the bottom of the page):
+Start with creating some dummy files that represent alignments
+(the results of aligning reads in FASTQ files to a reference genome,
+stored in `.sam` or `.bam` files):
 
 ```bash
 mkdir -p results/alignments
 touch results/alignments/sample{01..50}.sam
 ```
 
-Let's check the names of the files we created and how many there are:
+Check the names of the files you created and how many there are:
 
 ```bash
 ls results/alignments
@@ -365,20 +356,17 @@ ls results/alignments/ | wc -l
 50
 ```
 
-Now, let's say that we noticed these files somehow have the wrong extension:
+Now, say that you noticed these files somehow ended up with the wrong file extension:
 they are saved as `.sam` (SAM files) but are really `.bam` (BAM files).
-We'll have to rename them before moving on the next step in our analysis,
-but it would be tedious (and error-prone! and not-reproducible!) to do this by hand.
-We will therefore use a loop.
-
-<hr style="height:1pt; visibility:hidden;" />
+You'll have to rename them before moving on the next step in your analysis,
+but it would be tedious, error-prone, and irreproducible to do this by hand.
+Therefore, let's use a loop.
 
 ### Renaming a single file using variables
 
-To go step-by-step, I will start by showing how we could rename a single
-file in the way that we would have to do this in a loop --- using variables.
-
-We will actually make a _separate copy_ of the files in a separate directory,
+To go step-by-step, I will start by showing how you could rename a single
+file like you would when using a loop, which is using _variables_.
+You will also make a _separate copy_ of the files in a separate directory,
 just to be safe.
 
 To start with, the original file name will be contained in a variable...
@@ -387,7 +375,7 @@ To start with, the original file name will be contained in a variable...
 oldname=results/alignments/sample01.sam
 ```
 
-...and we can also save the new name in a variable:
+...and you can also save the new name in a variable:
 
 ```bash
 newname=results/alignments_bam/$(basename "$oldname" .sam).bam
@@ -399,14 +387,16 @@ that can be a really useful way to check what you're doing is correct when you'r
 about to run a command you may be nervous about with variables:
 
 ```bash
+# This will not execute the 'mv' command, it just prints it!
+# This technique is useful as a sanity check when using variables.
 echo mv -v "$oldname" "$newname"
 ```
 ```bash-out
 mv -v results/alignments/sample01.sam results/alignments_bam/sample01.bam
 ```
 
-Looks good? Then we remove `echo` and rename the file
-(we're using the `-v` to make `mv` report what it's doing):
+Looks good? Then remove `echo` and rename the file
+(using the `-v` option to make `mv` report what it's doing):
 
 ```bash
 mv -v "$oldname" "$newname"
@@ -415,20 +405,18 @@ mv -v "$oldname" "$newname"
 results/alignments/sample01.sam -> results/alignments_bam/sample01.bam
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### Looping over all files
 
-Here's how we can loop over these files, saving each file name (one at a time)
-in the variable `$oldname`:
+Here's how you can loop over these files,
+saving each file name (one at a time) in the variable `$oldname`:
 
 ```bash
 for oldname in results/alignments/*.sam; do
-    # ...
+    # [renaming code...]
 done
 ```
 
-Next, we assign a new name for each file:
+Next, inside the loop, assign a new name for each file:
   
 ```sh
 for oldname in results/alignments/*.sam; do
@@ -436,7 +424,7 @@ for oldname in results/alignments/*.sam; do
 done
 ```
 
-We build and check the renaming command:
+Now, build and check the renaming command:
 
 ```sh
 for oldname in *.fastq; do
@@ -452,7 +440,7 @@ cp -v results/alignments/sample04.sam results/alignments_bam/sample04.bam
 # [...output truncated...]
 ```
 
-Finally, we actually copy and rename by removing `echo`:
+Finally, actually create the renamed copies by removing `echo`:
 
 ```bash
 for oldname in *.fastq; do
@@ -650,7 +638,335 @@ done
 </details>
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
+## The `find` command to find files
+
+### Two problems you may run into
+
+Consider the following examples from @buffalo2015 of problems you may run into.
+Say that you try to pipe `ls` output into the imaginary program `process_fastq`,
+which can operate on multiple FASTQ files at once, taking each as an argument:
+
+```sh
+ls *.fastq | process_fastq
+```
+
+Any spaces in the listed file names would lead to trouble here,
+since those file names would be erroneously split into separate arguments.
+A solution would be to use direct globbing:
+
+```sh
+process_fastq *.fastq
+```
+
+However, a different problem could occur here:
+if the number of globbed files is very high, you may get an error that the
+"*argument list is too long*".
+
+**The `find` and `xargs` commands can deal with both of these problems.**
+More generally, these commands are useful for:
+
+- `find`: file searching and processing beyond `ls`'s capabilities
+- `xargs`: multi-file and parallel processing without loops.
+
+Let's create some files to try these commands:
+
+```sh
+mkdir -p zmays-snps/{data/seqs,scripts,analysis}
+touch zmays-snps/data/seqs/zmays{A,B,C}_R{1,2}.fastq
+```
+
+### `find` basics
+
+The basic syntax for `find` is:
+
+```bash
+find [path] [expression-1] [expression-2] ...
+```
+
+`find` will print all files by default, like `ls` --
+but unlike `ls`, it is recursive by default:
+  
+```sh
+find zmays-snps
+```
+```bash-out
+zmays-snps/
+zmays-snps/data
+zmays-snps/data/seqs
+zmays-snps/data/seqs/zmaysC_R1.fastq
+zmays-snps/data/seqs/zmaysA_R1.fastq
+zmays-snps/data/seqs/zmaysB_R1.fastq
+zmays-snps/data/seqs/zmaysB_R2.fastq
+zmays-snps/data/seqs/zmaysC_R2.fastq
+zmays-snps/data/seqs/zmaysA_R2.fastq
+zmays-snps/scripts
+zmays-snps/analysis
+```
+
+Compare this with the corresponding `ls` output:
+
+```bash
+ls zmays-snps
+```
+```bash-out
+analysis  data  scripts
+```
+
+Using the `-name` option, you can also *glob* like with `ls`:
+
+```sh
+cd zmays-snps
+find data/seqs -name "zmaysB*fastq"
+```
+```bash-out
+data/seqs/zmaysB_R1.fastq
+data/seqs/zmaysB_R2.fastq
+```
+
+### `find` functionality beyond that of `ls`
+
+First, you can use `-type` as an expression to limit results by file type:
+
+```sh
+# "-type f" to only match regular files (not, e.g., dirs)
+find data/seqs -name "zmaysB*fastq" -type f 
+```
+
+In the previous command, the two expressions were implicitly connected with
+a logical *and*:
+the resulting matches had to be regular files and also had to have
+`_zmaysB*fastq_` in the name.
+You can connect expressions _explicitly_ using the `-and` operator...
+
+```sh
+find data/seqs -name "zmaysB*fastq" -and -type f 
+```
+```bash-out
+TBA
+```
+
+...or the `-or` operator:
+
+```sh
+find data/seqs -name "zmaysA*fastq" -or -name "zmaysC*fastq" 
+```
+```bash-out
+TBA
+```
+
+You can negate expressions with `!` ---
+though you must quote the `!` so it doesn't get evaluated by the shell:
+
+```sh
+# Find regular fies that do NOT match "zmaysC*fastq"
+find data/seqs -type f "!" -name "zmaysC*fastq"
+```
+```bash-out
+TBA
+```
+
+As another negation example,
+say you have some files with *temp* in their names that you don't want to include
+in the `find` output:
+
+```sh
+touch data/seqs/zmays{A,C}_R{1,2}-temp.fastq
+  
+find data/seqs -type f "!" -name "zmaysC*fastq" -and "!" -name "*-temp*"
+```
+```bash-out
+TBA
+```
+
+:::callout-note
+#### If `!` gets evaluated by the shell, then what does it do?
+
+So what does a `!` mean to the shell?
+It accesses past commands ---
+for example, to re-execute your most recent command, use the following:
+
+```sh
+!!
+```
+:::
+
+### Examples selecting based on file size and last-modified data
+
+TBA
+
+### Running commands on `find`'s results
+
+Now, say that you instead want to remove the temporary files we saw above.
+We can do this using `-exec` followed by the `rm` command
+(in this case, using `rm -i` for interactive removal): 
+
+```sh
+find data/seqs -name "*-temp.fastq" -exec rm -i {} \;
+```
+
+Here, `{}` is the placeholder for the file names we are passing on,
+and you have to indicate the end of our command with an escaped semicolon: `\;`.
+
+`-exec` can be very useful to *process file queries* that are more
+complicated than what a simple globbing pattern allows for.
+With `-exec`, you can use any command to operate on the files that you found. 
+
+Finally, note that for the common operation of deleting files, a shortcut exists:
+
+```sh
+find zmays-snps/data/seqs -name "*-temp.fastq" -delete
+```
+
+## The `xargs` command to repeat commands without loops
+
+`xargs` is to be read/pronounced as `x-args`, where "*args*" means "*arguments*".
+
+This command passes arguments, supplied via standard in, on to another command.
+For example...
+  
+```sh
+find data/seqs -name "*-temp.fastq" | xargs rm
+```
+
+...is equivalent to the following,
+where `rm` receives the very same list of files as its arguments:
+
+```sh
+rm data/seqs/*-temp.fastq
+```
+
+However, with `xargs`, you can bypass the problem of a *maximum number of arguments* to `rm`.
+Specifically, you can easily pass one argument at a time with `-n 1`:
+
+```sh
+find data/seqs -name "*-temp.fastq" | xargs -n 1 rm
+```
+
+This command runs `rm` as many times as there are `*-temp.fastq` files.
+
+### `xargs` versus `find -exec`
+
+By using `xargs` instead of `find -exec`,
+you separate the process that finds the files you want to operate on,
+from the actual operations.
+
+This can be beneficial, such as when you want to carefully inspect a list of files
+doing anything --- for example:
+
+- Create some dummy files to practice on:
+
+  ```bash
+  touch data/seqs/zmays{A,C}_R{1,2}-temp.fastq
+  ```
+
+- Save the `find` results in a text file:
+  
+  ```bash
+  find data/seqs -name "*-temp.fastq" > files-to-delete.txt
+  cat files-to-delete.txt
+  ```
+  ```bash-out
+  data/seqs/zmaysC_R1-temp.fastq
+  data/seqs/zmaysA_R1-temp.fastq
+  data/seqs/zmaysA_R2-temp.fastq
+  data/seqs/zmaysC_R2-temp.fastq
+  ```
+
+- Now pass that list of files to `rm`:
+
+  ```bash
+  cat files-to-delete.txt | xargs rm
+  ```
+
+### `find` => `xargs` and spaces in file names
+
+As always, spaces in file names can trip you up --
+but you were promised a solution with `find` and `xargs`!
+
+However, out of the box, the below does in fact fail:
+
+```sh
+touch "samples A.txt"  "samples B.txt" 
+  
+find . -name "samples [AB].txt" | xargs rm
+```
+```bash-out
+rm: cannot remove './samples': No such file or directory
+rm: cannot remove 'A.txt': No such file or directory
+rm: cannot remove './samples': No such file or directory
+rm: cannot remove 'B.txt': No such file or directory
+```
+
+The solution is to use `-print0` with `find`,
+so it prints files with a "null byte" as the delimiter.
+Then, you also need to tell `xargs` about this, using `-0`:
+
+```sh
+find . -name "samples [AB].txt" -print0 | xargs -0 rm -v
+```
+```bash-out
+removed './samples A.txt'
+removed './samples B.txt'
+```
+
+::: callout-note
+#### `xargs` as an alternative to loops
+
+With `xargs`, you can also specify where you want to insert the arguments that
+are being passed on:
+
+```sh
+find data/seqs -name "*.fastq" |
+    xargs basename -s ".fastq" |
+    xargs -I{} fastq_stat --in {}.fastq --out results/{}.txt 
+```
+
+Above, `-I{}` specified that the arguments were passed on with the placeholder `{}`.
+We were then also able to use `{}` multiple times. 
+The above code does something that you may be otherwise be inclined to do in a loop
+--- the above is equivalent to:
+
+```sh
+for fastq_file in data/seqs/*fastq; do
+    id=$(basename "$fastq_file" .fastq)
+    fastq_stat --in "$fastq_file" --out results/"$id".txt
+done
+```
+
+------
+
+One advantage of using `xargs` instead of a `for` loop is that you have control
+over parallelization.
+
+- To parallelize, i.e. to spawn multiple simultaneous process,
+  you can send each process to the background in the `for` loop using `&`:
+
+  ```sh
+  for fastq_file in *fastq; do
+      fastq_short=$(basename $fastq_file .fastq) 
+      fastq_stat --in $fastq_file --out results/$fastq_short.txt &
+  done
+  ```
+
+  However, this would spawn exactly as many processes as there are input files,
+  which could be way more than what we want.
+
+- With `xargs`, you can control the number of simultaneous processes that
+  are spawned using `-P` (here set to 6):
+
+  ```sh
+  find data/seqs -name "*.fastq" |
+      xargs basename -s ".fastq" |
+      xargs -P 6 -I{} fastq_stat --in {}.fastq --out results/{}.txt 
+  ```
+
+If you like the `xargs` approach to running multiple processes,
+you may also be interested in the `parallel` command,
+which is even more powerful than `xargs`.
+I personally don't do this very much because I tend to submit separate batch jobs
+for each file, which can easily be done with simple `for` loops.
+
+:::
 
 ## Bash configuration files
 
@@ -684,9 +1000,6 @@ To not have to deal with the login/non-login shell distinction, it is common
 to put all settings in one of these files (often `.bashrc`) and let the second
 file (often `.bash_profile`) run the first file whenever it itself is being run.
 :::
-
-<hr style="height:1pt; visibility:hidden;" />
-
 
 ## `$PATH`: A list of directories with binaries
 
@@ -748,353 +1061,3 @@ from which `$PATH` is loaded whenever you open a terminal:
 ```bash
 echo "PATH=$PATH:~/new-dir-with-software/" >> ~/.bashrc
 ```
-
-<br>
-
-## The `find` command to find files
-
-### Two problems you may run into
-
-Consider the following examples from @buffalo2015 of problems you may run into.
-Say that you try to pipe `ls` output into the imaginary program `process_fastq`,
-which can run with FASTQ files at once, taking each as an argument:
-
-```sh
-ls *.fastq | process_fastq
-```
-
-Any spaces in the listed file names would lead to trouble here,
-since those file names would be erroneously split into separate arguments.
-A solution would be to use direct globbing:
-
-```sh
-process_fastq *.fastq
-```
-
-However, a different problem could occur here:
-if the number of globbed files is very high, you may get an error that the
-"*argument list is too long*".
-
-**The `find` and `xargs` commands can deal with both of these problems.**
-More generally, these commands are useful for:
-
-- `find`: file searching and processing beyond `ls`'s capabilities
-- `xargs`: multi-file and parallel processing without loops.
-
-Let's create some files to try these commands:
-
-```sh
-mkdir -p zmays-snps/{data/seqs,scripts,analysis}
-touch zmays-snps/data/seqs/zmays{A,B,C}_R{1,2}.fastq
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### `find` basics
-
-The basic syntax for `find` is:
-
-```bash
-find [path] [expression-1] [expression-2] ...
-```
-
-`find` will print all files by default, like `ls` --
-but unlike `ls`, it is recursive by default:
-  
-```sh
-find zmays-snps
-```
-```bash-out
-zmays-snps/
-zmays-snps/data
-zmays-snps/data/seqs
-zmays-snps/data/seqs/zmaysC_R1.fastq
-zmays-snps/data/seqs/zmaysA_R1.fastq
-zmays-snps/data/seqs/zmaysB_R1.fastq
-zmays-snps/data/seqs/zmaysB_R2.fastq
-zmays-snps/data/seqs/zmaysC_R2.fastq
-zmays-snps/data/seqs/zmaysA_R2.fastq
-zmays-snps/scripts
-zmays-snps/analysis
-```
-
-Compare this with the corresponding `ls` output:
-
-```bash
-ls zmays-snps
-```
-```bash-out
-analysis  data  scripts
-```
-
-Using the `-name` option, you can also *glob* like with `ls`:
-
-```sh
-cd zmays-snps
-find data/seqs -name "zmaysB*fastq"
-```
-```bash-out
-data/seqs/zmaysB_R1.fastq
-data/seqs/zmaysB_R2.fastq
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### `find` functionality beyond that of `ls`
-
-First, you can use `-type` as an expression to limit results by file type:
-
-```sh
-# "-type f" to only match regular files (not, e.g., dirs)
-find data/seqs -name "zmaysB*fastq" -type f 
-```
-
-In the previous command, the two expressions were implicitly connected with
-a logical *and*:
-the resulting matches had to be regular files and also had to have
-`_zmaysB*fastq_` in the name.
-You can connect expressions _explicitly_ using the `-and` operator...
-
-```sh
-find data/seqs -name "zmaysB*fastq" -and -type f 
-```
-```bash-out
-TBA
-```
-
-...or the `-or` operator:
-
-```sh
-find data/seqs -name "zmaysA*fastq" -or -name "zmaysC*fastq" 
-```
-```bash-out
-TBA
-```
-
-You can negate expressions with `!` ---
-though you must quote the `!` so it doesn't get evaluated by the shell:
-
-```sh
-# Find regular fies that do NOT match "zmaysC*fastq"
-find data/seqs -type f "!" -name "zmaysC*fastq"
-```
-```bash-out
-TBA
-```
-
-As another negation example,
-say you have some files with *temp* in their names that you don't want to include
-in the `find` output:
-
-```sh
-touch data/seqs/zmays{A,C}_R{1,2}-temp.fastq
-  
-find data/seqs -type f "!" -name "zmaysC*fastq" -and "!" -name "*-temp*"
-```
-```bash-out
-TBA
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-:::callout-note
-#### If `!` gets evaluated by the shell, then what does it do?
-
-So what does a `!` mean to the shell?
-It accesses past commands ---
-for example, to re-execute your most recent command, use the following:
-
-```sh
-!!
-```
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### Examples selecting based on file size and last-modified data
-
-TBA
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### Running commands on `find`'s results
-
-Now, say that you instead want to remove the temporary files we saw above.
-We can do this using `-exec` followed by the `rm` command
-(in this case, using `rm -i` for interactive removal): 
-
-```sh
-find data/seqs -name "*-temp.fastq" -exec rm -i {} \;
-```
-
-Here, `{}` is the placeholder for the file names we are passing on,
-and you have to indicate the end of our command with an escaped semicolon: `\;`.
-
-`-exec` can be very useful to *process file queries* that are more
-complicated than what a simple globbing pattern allows for.
-With `-exec`, you can use any command to operate on the files that you found. 
-
-Finally, note that for the common operation of deleting files, a shortcut exists:
-
-```sh
-find zmays-snps/data/seqs -name "*-temp.fastq" -delete
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-## The `xargs` command to repeat commands without loops
-
-`xargs` is to be read/pronounced as `x-args`, where "*args*" means "*arguments*".
-
-This command passes arguments, supplied via standard in, on to another command.
-For example...
-  
-```sh
-find data/seqs -name "*-temp.fastq" | xargs rm
-```
-
-...is equivalent to the following,
-where `rm` receives the very same list of files as its arguments:
-
-```sh
-rm data/seqs/*-temp.fastq
-```
-
-However, with `xargs`, you can bypass the problem of a *maximum number of arguments* to `rm`.
-Specifically, you can easily pass one argument at a time with `-n 1`:
-
-```sh
-find data/seqs -name "*-temp.fastq" | xargs -n 1 rm
-```
-
-This command runs `rm` as many times as there are `*-temp.fastq` files.
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### `xargs` versus `find -exec`
-
-By using `xargs` instead of `find -exec`,
-you separate the process that finds the files you want to operate on,
-from the actual operations.
-
-This can be beneficial, such as when you want to carefully inspect a list of files
-doing anything --- for example:
-
-- Create some dummy files to practice on:
-
-  ```bash
-  touch data/seqs/zmays{A,C}_R{1,2}-temp.fastq
-  ```
-
-- Save the `find` results in a text file:
-  
-  ```bash
-  find data/seqs -name "*-temp.fastq" > files-to-delete.txt
-  cat files-to-delete.txt
-  ```
-  ```bash-out
-  data/seqs/zmaysC_R1-temp.fastq
-  data/seqs/zmaysA_R1-temp.fastq
-  data/seqs/zmaysA_R2-temp.fastq
-  data/seqs/zmaysC_R2-temp.fastq
-  ```
-
-- Now pass that list of files to `rm`:
-
-  ```bash
-  cat files-to-delete.txt | xargs rm
-  ```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### `find` => `xargs` and spaces in file names
-
-As always, spaces in file names can trip you up --
-but you were promised a solution with `find` and `xargs`!
-
-However, out of the box, the below does in fact fail:
-
-```sh
-touch "samples A.txt"  "samples B.txt" 
-  
-find . -name "samples [AB].txt" | xargs rm
-```
-```bash-out
-rm: cannot remove './samples': No such file or directory
-rm: cannot remove 'A.txt': No such file or directory
-rm: cannot remove './samples': No such file or directory
-rm: cannot remove 'B.txt': No such file or directory
-```
-
-The solution is to use `-print0` with `find`,
-so it prints files with a "null byte" as the delimiter.
-Then, you also need to tell `xargs` about this, using `-0`:
-
-```sh
-find . -name "samples [AB].txt" -print0 | xargs -0 rm -v
-```
-```bash-out
-removed './samples A.txt'
-removed './samples B.txt'
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: callout-note
-#### `xargs` as an alternative to loops
-
-With `xargs`, you can also specify where you want to insert the arguments that
-are being passed on:
-
-```sh
-find data/seqs -name "*.fastq" |
-    xargs basename -s ".fastq" |
-    xargs -I{} fastq_stat --in {}.fastq --out results/{}.txt 
-```
-
-Above, `-I{}` specified that the arguments were passed on with the placeholder `{}`.
-We were then also able to use `{}` multiple times. 
-The above code does something that you may be otherwise be inclined to do in a loop
---- the above is equivalent to:
-
-```sh
-for fastq_file in data/seqs/*fastq; do
-    id=$(basename "$fastq_file" .fastq)
-    fastq_stat --in "$fastq_file" --out results/"$id".txt
-done
-```
-
-------
-
-One advantage of using `xargs` instead of a `for` loop is that you have control
-over parallelization.
-
-- To parallelize, i.e. to spawn multiple simultaneous process,
-  you can send each process to the background in the `for` loop using `&`:
-
-  ```sh
-  for fastq_file in *fastq; do
-      fastq_short=$(basename $fastq_file .fastq) 
-      fastq_stat --in $fastq_file --out results/$fastq_short.txt &
-  done
-  ```
-
-  However, this would spawn exactly as many processes as there are input files,
-  which could be way more than what we want.
-
-- With `xargs`, you can control the number of simultaneous processes that
-  are spawned using `-P` (here set to 6):
-
-  ```sh
-  find data/seqs -name "*.fastq" |
-      xargs basename -s ".fastq" |
-      xargs -P 6 -I{} fastq_stat --in {}.fastq --out results/{}.txt 
-  ```
-
-If you like the `xargs` approach to running multiple processes,
-you may also be interested in the `parallel` command,
-which is even more powerful than `xargs`.
-I personally don't do this very much because I tend to submit separate batch jobs
-for each file, which can easily be done with simple `for` loops.
-
-:::

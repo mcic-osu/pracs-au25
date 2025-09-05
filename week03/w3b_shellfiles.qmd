@@ -14,18 +14,15 @@ other-links:
   - text: "Week 3 overview"
     icon: book
     href: w3_overview.html
-  - text: "w3b: Shell files II"
+  - text: "w3a: Sequence file types"
     icon: bookmarks
-    href: w3b_shellfiles.html
+    href: w3a_file-overview.html
+  - text: "w3c: Shell files II"
+    icon: bookmarks
+    href: w3c_shellfiles.html
   - text: "Week 3 exercises"
     icon: pencil
     href: w3_exercises.html
-  - text: "Bonus: Unix data tools"
-    icon: book
-    href: ../bonus/shell-data.html
-  - text: "Bonus: Misc. advanced shell"
-    icon: bookmarks
-    href: ../bonus/shell.html
 editor_options: 
   chunk_output_type: console
 ---
@@ -80,14 +77,15 @@ Here, you will learn to use Unix shell commands that can perform these actions.
      - **Cluster**: `pitzer`
      - **Account**: `PAS2880`
      - **Number of hours**: `2`
-     - **Working Directory**:" `/fs/ess/PAS2880/user/<username>` (replace `<username>` with your actual user name)
+     - **Working Directory**: `/fs/ess/PAS2880/user/<username>` (replace `<username>` with your user name)
      - **App Code Server version**: `4.8.3`
   4. Click `Launch`
   5. Click the `Connect to VS Code` button once it appears
   6. In VS Code, open a terminal by either:
      - Clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal`
      - Using the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>
-  7. Check that your are in your personal dir within `/fs/ess/PAS2880/users`
+  7. Check that your are in `/fs/ess/PAS2880/users/$USER`
+     (recall: `$USER` is a variable that represents your username!)
      by typing `pwd` in the terminal.
      _(If you're not, that dir may be listed under `Recents` in the `Get Started`_
      _document --- if that's the case, click on that entry._
@@ -105,6 +103,29 @@ Here, you will learn to use Unix shell commands that can perform these actions.
 
 ## Additional VS Code functionality and setup
 
+#### Try a few color themes
+
+1. Access the "Color Themes" option by clicking <i class="fa fa-cog"></i> > `Color Theme`.
+2. Try out a few themes and see pick one you like!
+
+#### Options for the Side Bar
+
+- Icons to toggle **(wide/Primary) Side Bar** options:
+  - ***Explorer***: File browser & outline for the active file.
+  - ***Search***: To search recursively across all files in the active folder.
+  - ***Source Control***: To work with Git (*next week*).
+  - Debugger
+  - ***Extensions***: To install extensions (*next week*).
+
+#### Install two VS Code extensions
+
+Click the gear icon <i class="fa fa-cog"></i> and then `Extensions`,
+and search for and then install:
+
+- **shellcheck** (by *simonwong*) --- this will check our shell scripts later on!
+- **Rainbow CSV** (by *mechatroner*) ---
+  make CSV/TSV files easier to view with column-based colors
+  
 #### Add a VS Code keyboard shortcut
 
 Add a keyboard shortcut to send code from your editor pane to the terminal.
@@ -127,34 +148,13 @@ As such, you don't need to manually select the entire line when wanting to send
 it to the terminal (or when cutting/copying!).
 :::
 
-#### Options for the Side Bar
-
-- Icons to toggle **(wide/Primary) Side Bar** options:
-  - ***Explorer***: File browser & outline for the active file.
-  - ***Search***: To search recursively across all files in the active folder.
-  - ***Source Control***: To work with Git (*in two weeks*).
-  - Debugger
-  - ***Extensions***: To install extensions (*next week*).
-  
-#### Install two VS Code extensions
-
-Click the gear icon <i class="fa fa-cog"></i> and then `Extensions`,
-and search for and then install:
-
-- **shellcheck** (by *simonwong*) --- this will check our shell scripts later on!
-- **Rainbow CSV** (by *mechatroner*) ---
-  make CSV/TSV files easier to view with column-based colors
-
-#### Try a few color themes
-
-1. Access the "Color Themes" option by clicking <i class="fa fa-cog"></i> > `Color Theme`.
-2. Try out a few themes and see pick one you like!
-
 :::{.callout-note collapse="true"}
-### Some VS Code tips and tricks
+### Some more VS Code tips and tricks _(Click to expand)_
 
 - **Downloading files**\
-  TBA
+  In the Explorer in the side bar, you can right click on any file,
+  and among the options shown, you should see "**Download...**".
+  Click on that to download the file to your compyter!
 
 - **Auto Save**\
   To turn on the auto-saving of documents in the editor,
@@ -190,7 +190,8 @@ and search for and then install:
 ## Downloading the practice dataset
 
 You will now download the practice/example dataset we've discussed.
-First, make sure you are in `/fs/ess/PAS2880/users/$USER`:
+First, make sure you are in `/fs/ess/PAS2880/users/$USER`
+(recall: `$USER` is an environment variable whose value is your user name).
 
 ```bash
 pwd
@@ -445,7 +446,7 @@ This command was recursive because both the `week03` dir and the
 `sandbox` dir within it were created at once.
 
 The name `sandbox` is common for dirs meant for experimentation and testing.
-Let's move into the dir we just created:
+Now, move into the `sandbox` dir you just created:
 
 ```bash
 cd ../week03/sandbox
@@ -619,15 +620,15 @@ you could just repeat the original file name in the destination path:
 cp ../../garrigos-data/meta/metadata.tsv metadata.tsv
 ```
 
-But do we really need to repeat the filename
-(which is not just more typing, but can be error-prone as well)? No!
+But do you really need to repeat the filename --
+which is not just more typing, but can be error-prone as well? No!
 
 If the destination path is simply the `.` shortcut that indicates your current
 working dir,
 then the file name of the copy will not be changed:
 
 ```bash
-cp ../../garrigos-data/meta/metadata.tsv metadata.tsv .
+cp ../../garrigos-data/meta/metadata.tsv .
 ```
 
 #### Copying dirs and their contents
@@ -695,7 +696,7 @@ Unlike `cp`, the `mv` command is recursive by default!
 
 You can move or copy multiple files at once with `mv` and `cp`.
 If you give these commands three or more arguments,
-only the **last** argument is taken to be the destination --- for example:
+only the **last argument is interpreted as the destination** --- for example:
 
 ```bash
 cp <source1> <source2> <destination>
@@ -730,9 +731,8 @@ rm butterflies
 rm: cannot remove ‘butterflies’: Is a directory
 ```
 
-But it does work (silently!) with the `-r` option:
-
 ```bash
+# (This produces no output if it works) 
 rm -r butterflies
 ```
 
@@ -969,17 +969,12 @@ In summary:
    </details>
 
 :::
-<hr style="height:1pt; visibility:hidden;" />
-
-There are a couple more shell wildcards, but these are much more rarely used:
-check the [optional self-study content on the Unix shell](../bonus/shell.qmd)
-if you're curious.
 
 #### Expansion is done by the shell itself
 
 While it may seem like a trivial or odd distinction,
 it is important to realize that the "expansion"
---of a wildcard to matching file names-- is done by the shell
+--of a wildcard to matching file names-- is done by the shell itself
 instead of by `ls` or another command you might be using wildcards with.
 **This means that a command like `ls` will "see"/"receive" the list of files _after_**
 **the expansion has already happened.**
