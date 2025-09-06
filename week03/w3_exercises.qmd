@@ -54,6 +54,8 @@ git clone https://github.com/jelmerp/garrigos-data
 
 ### GTF file info
 
+Exercise 2 will work with the GTF file in the example dataset,
+so we'll start with some more info about GTF files.
 As mentioned in this week's first lecture,
 the main part of a GTF file is a table with:
 
@@ -63,7 +65,8 @@ the main part of a GTF file is a table with:
 However, the file typically starts with **header lines** that contain metadata
 and start with `#`.
 In some cases, the header can have hundreds of lines,
-including a list of each represented sequence (chromosome/scaffold/contig).
+including a list of all chromosomes and/or scaffolds and/or contigs (depending on
+the assembly quality) that are represented in the file.
 "Our" GTF file only has a few header lines, though:
 
 ```bash
@@ -80,10 +83,11 @@ NC_068937.1     Gnomon  transcript      2046    110808  .       +       .       
 
 The last two lines of the snippet above are the first rows of the tabular part.
 There is no line with column names,
-so here's the snippet with aligned columns and added column names
+so here's the snippet with aligned columns, and the manually added column names
 also shown in the lecture:
 
 ```bash-out-solo
+# [Column names are not present in the file! They are shown for informational purposes.]
 seqname       source  feature     start   end     score  strand  frame    attributes
 NC_068937.1   Gnomon  gene        2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
 NC_068937.1   Gnomon  transcript  2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; 
@@ -97,12 +101,12 @@ Some details on what's in each column:
 |---|---|----------------|
 | 1 | **_seqname_** | Name of the chromosome, scaffold, or contig
 | 2 | **_source_** | Name of the program that generated this feature, or the data source (e.g. database)
-| 3 | **_feature_** | Name of the feature type, e.g. "gene", "exon", "intron", "CDS"
-| 4 | **_start_** | Start position of the feature (sequence numbering starts at 1; start position is included)
-| 5 | **_end_** | End position of the feature (end position is also included)
+| 3 | **_feature_** | Name of the genomic feature type, e.g. "gene", "exon", "intron", "CDS"
+| 4 | **_start_** | Start position of the feature
+| 5 | **_end_** | End position of the feature
 | 6 | **_score_** | A confidence score for the feature, often absent (in which case it is `.`)
-| 7 | **_strand_** | Whether the feature is on the `+` (forward) or `-` (reverse) strand^[Because double-stranded DNA is represented as a single sequence, the `strand` column effectively indicates in which direction a feature should be read along this sequence.].
-| 8 | **_frame_** | `0`, `1` or `2` (or `.` for no frame). E.g. `0` means the first base of the feature is the first base of a codon
+| 7 | **_strand_** | Whether the feature is on the `+` (forward) or `-` (reverse) strand^[Because double-stranded DNA is represented as a single sequence, the `strand` column effectively indicates in which direction a feature should be read along this sequence.]
+| 8 | **_frame_** | The "frame" for coding features, either `0`, `1` or `2` (or `.` for no frame). E.g. `0` means the first base of the feature is the first base of a codon
 | 9 | **_attributes_** | A semicolon-separated list of key-value pairs with additional information. Can be very wide!
 
 : {.striped .hover}
@@ -111,25 +115,26 @@ Some details on what's in each column:
 
 _Use Unix commands to complete all the exercises below._
 
-1. Create a dir `week03/ex1` within your personal dir^[
-   `/fs/ess/PAS2880/users/$USER/`], and navigate there.
-   _Use this as the working dir for all followings questions in this exercise,_
+1. Create a dir `week03/ex1` within `/fs/ess/PAS2880/users/$USER/`, and navigate there.
+   _Use this as the working dir for all following questions in this exercise,_
    _so avoid navigating anywhere else._
 
 2. Create a new dir `seqs`,
    and use the below command to create some dummy FASTQ files in there.
-   Then, check the result with `ls` and get a count of the number of files you
-   created (do so using code!).
+   Then, check the result with `ls` and use a command to get a count of the number
+   of files you created.
 
    ```bash
+   # [This command uses a trick called 'brace expansion' to create many files at once.]
+   # [You don't need to understand how this works.]
    touch seqs/sample{01..25}_R{1,2}.fastq
    ```
 
-3. Copy the files for samples `01` through `09` into your working dir with a
-   single command.
+3. Copy the dummy FASTA files for samples `01` through `09` into your working dir
+   with a single command.
 
 4. Remove the files you just copied and when doing so,
-   make the command report what it's doing (i.e. make it verbose).
+   make the command report what it's doing.
 
 5. Move all R1 files into a dir `seqs_R1`, and then rename `seqs`,
    which should now only contain R2 files, to `seqs_R1`.
@@ -139,12 +144,7 @@ _Use Unix commands to complete all the exercises below._
 
 ## Exercise 2: Exploring the GTF annotation file
 
-_Before you start, make you sure you have read the box_
-_"GTF file info for this week's exercises" at the bottom of_
-_[the page for this week's second session](./w3b_shellfiles.qmd)._
-
-1. Create a dir `week03/ex2` within your personal dir^[
-   `/fs/ess/PAS2880/users/$USER/`], and navigate there.
+1. Create a dir `week03/ex2` within `/fs/ess/PAS2880/users/$USER`, and navigate there.
 
 2. Copy the genome annotation file `garrigos-data/ref/GCF_016801865.2.gtf.gz`
    to a file called `annot.gtf.gz` inside your `ex2` working dir.
@@ -160,15 +160,15 @@ _[the page for this week's second session](./w3b_shellfiles.qmd)._
 
 4. How many lines does the GTF file contain?
 
-5. The total number of features in a GTF file is simply the number of lines in
-   its table.
+5. The total number of genomic features that are listed in a GTF file is simply
+   the number of lines in its table section.
    
    - Combine `grep -v` and `wc -l` to count the number of features.
      _(First, you may want to take a peek at the file with `less -S` to decide on_
      _a search pattern for `grep`.)_
    
    - Comparing the linecount from this and the previous exercise,
-     does the difference reflect the number of header lines?
+     does the difference correspond to the number of header lines?
    
    - If not, can you figure out which other line(s) contain the pattern you used
      with `grep` above?
@@ -187,17 +187,20 @@ _[the page for this week's second session](./w3b_shellfiles.qmd)._
 7. Store a list of these distinct sequences in the GTF in a file `scaffolds.txt`.
 
 8. Print a "count table"
-   (like we did towards the end of [this section](./w3c_shellfiles.html#combining-cut-sort-and-uniq-to-create-a-list))
+   (like we did towards the end of
+   [this section](./w3c_shellfiles.html#combining-cut-sort-and-uniq-to-create-a-list))
    of feature types in the annotation:
-   i.e. for each feature type, generate a count representing the number of times it occurs.
-   This will allow you to see, for example, how many genes have been annotated in this genome.
+   i.e. for each feature type,
+   generate a count representing the number of times it occurs.
+   This will allow you to see, for example,
+   how many genes have been annotated in this genome.
 
 9. For a gene of interest,
    you may wonder how many exons and other annotated features it has.
    GTF files have an implicit hierarchical structure,
-   where e.g. each exon row contains a reference to the gene it is a part of
-   (its "parent") in the final column.
-   For gene `LOC120427725`, print a count table of its feature types.
+   where e.g. each exon row contains a reference to the gene that the exon is a
+   part of (i.e., its "parent") in the final column.
+   With that in mind: for gene `LOC120427725`, print a count table of its feature types.
    _(You can assume that this gene's name does not occur in any lines_
    _describing features that are not part of the gene.)_
 
@@ -246,7 +249,9 @@ _file directly (don't decompress it)._
 
    <details><summary>_Click here for a hint_</summary>
    A linecount of the compressed file will **not** give you the correct answer.
-   Therefore, use the `zcat <file.gz> | <...>` idiom instead.
+   Therefore, use the `zcat <file.gz> | <...>` idiom instead that is described
+   in the "Operating on compressed files" box in
+   [this section](./w3c_shellfiles.html#grep-to-print-lines-that-match-a-pattern).
    
    Also, remember that one read covers 4 lines and that FASTQ files only contain
    lines with reads.
@@ -301,8 +306,8 @@ _file directly (don't decompress it)._
 ```bash
 # (You should already be in /fs/ess/PAS2880/users/$USER/)
 cd /fs/ess/PAS2880/users/$USER/week03
-mkdir ex2
-cd ex2
+mkdir ex1
+cd ex1
 ```
 </details>
 
@@ -410,76 +415,86 @@ removed 'sample09_R2.fastq'
 
 <details><summary>**5.** Move all R1 files into a dir `seqs_R1` and rename `seqs`</summary>
 
-```bash
-# Create the new dir:
-mkdir seqs_R1
+- Create the new dir:
 
-# Move the R1 files into the new dir:
-mv seqs/*R1.fastq seqs_R1
+  ```bash
+  mkdir seqs_R1
+  ```
 
-# Rename the old dir:
-mv seqs seqs_R2
+- Move the R1 files into the new dir:
 
-# Check the result:
-tree -C
-```
-```bash-out
-.
-├── seqs_R1
-│   ├── sample01_R1.fastq
-│   ├── sample02_R1.fastq
-│   ├── sample03_R1.fastq
-│   ├── sample04_R1.fastq
-│   ├── sample05_R1.fastq
-│   ├── sample06_R1.fastq
-│   ├── sample07_R1.fastq
-│   ├── sample08_R1.fastq
-│   ├── sample09_R1.fastq
-│   ├── sample10_R1.fastq
-│   ├── sample11_R1.fastq
-│   ├── sample12_R1.fastq
-│   ├── sample13_R1.fastq
-│   ├── sample14_R1.fastq
-│   ├── sample15_R1.fastq
-│   ├── sample16_R1.fastq
-│   ├── sample17_R1.fastq
-│   ├── sample18_R1.fastq
-│   ├── sample19_R1.fastq
-│   ├── sample20_R1.fastq
-│   ├── sample21_R1.fastq
-│   ├── sample22_R1.fastq
-│   ├── sample23_R1.fastq
-│   ├── sample24_R1.fastq
-│   └── sample25_R1.fastq
-└── seqs_R2
-    ├── sample01_R2.fastq
-    ├── sample02_R2.fastq
-    ├── sample03_R2.fastq
-    ├── sample04_R2.fastq
-    ├── sample05_R2.fastq
-    ├── sample06_R2.fastq
-    ├── sample07_R2.fastq
-    ├── sample08_R2.fastq
-    ├── sample09_R2.fastq
-    ├── sample10_R2.fastq
-    ├── sample11_R2.fastq
-    ├── sample12_R2.fastq
-    ├── sample13_R2.fastq
-    ├── sample14_R2.fastq
-    ├── sample15_R2.fastq
-    ├── sample16_R2.fastq
-    ├── sample17_R2.fastq
-    ├── sample18_R2.fastq
-    ├── sample19_R2.fastq
-    ├── sample20_R2.fastq
-    ├── sample21_R2.fastq
-    ├── sample22_R2.fastq
-    ├── sample23_R2.fastq
-    ├── sample24_R2.fastq
-    └── sample25_R2.fastq
+  ```bash
+  mv seqs/*R1.fastq seqs_R1
+  ```
 
-2 directories, 50 files
-```
+- Rename the old dir:
+
+  ```bash
+  mv seqs seqs_R2
+  ```
+
+- Check the result:
+
+  ```bash
+  tree -C
+  ```
+  ```bash-out
+  .
+  ├── seqs_R1
+  │   ├── sample01_R1.fastq
+  │   ├── sample02_R1.fastq
+  │   ├── sample03_R1.fastq
+  │   ├── sample04_R1.fastq
+  │   ├── sample05_R1.fastq
+  │   ├── sample06_R1.fastq
+  │   ├── sample07_R1.fastq
+  │   ├── sample08_R1.fastq
+  │   ├── sample09_R1.fastq
+  │   ├── sample10_R1.fastq
+  │   ├── sample11_R1.fastq
+  │   ├── sample12_R1.fastq
+  │   ├── sample13_R1.fastq
+  │   ├── sample14_R1.fastq
+  │   ├── sample15_R1.fastq
+  │   ├── sample16_R1.fastq
+  │   ├── sample17_R1.fastq
+  │   ├── sample18_R1.fastq
+  │   ├── sample19_R1.fastq
+  │   ├── sample20_R1.fastq
+  │   ├── sample21_R1.fastq
+  │   ├── sample22_R1.fastq
+  │   ├── sample23_R1.fastq
+  │   ├── sample24_R1.fastq
+  │   └── sample25_R1.fastq
+  └── seqs_R2
+      ├── sample01_R2.fastq
+      ├── sample02_R2.fastq
+      ├── sample03_R2.fastq
+      ├── sample04_R2.fastq
+      ├── sample05_R2.fastq
+      ├── sample06_R2.fastq
+      ├── sample07_R2.fastq
+      ├── sample08_R2.fastq
+      ├── sample09_R2.fastq
+      ├── sample10_R2.fastq
+      ├── sample11_R2.fastq
+      ├── sample12_R2.fastq
+      ├── sample13_R2.fastq
+      ├── sample14_R2.fastq
+      ├── sample15_R2.fastq
+      ├── sample16_R2.fastq
+      ├── sample17_R2.fastq
+      ├── sample18_R2.fastq
+      ├── sample19_R2.fastq
+      ├── sample20_R2.fastq
+      ├── sample21_R2.fastq
+      ├── sample22_R2.fastq
+      ├── sample23_R2.fastq
+      ├── sample24_R2.fastq
+      └── sample25_R2.fastq
+  
+  2 directories, 50 files
+  ```
 
 </details>
 
@@ -505,7 +520,7 @@ cd ex2
 <details><summary>**2.** Copy the genome annotation file `garrigos-data/ref/GCF_016801865.2.gtf.gz`</summary>
 
 ```bash
-cp ../ref/GCF_016801865.2.gtf.gz annot.gtf.gz
+cp ../../garrigos-data/ref/GCF_016801865.2.gtf.gz annot.gtf.gz
 ```
 </details>
 
@@ -736,10 +751,9 @@ grep -c 'gene_biotype "snRNA"' annot.gtf
 <details><summary>**1.** Navigate into the dir with FASTQ files</summary>
 
 ```bash
-# Assuming you are in `garrigos-data/ref` after the previous exercise
-cd ../fastq
+cd ../../garrigos-data/fastq/
 
-# Or:
+# Or, with an absolute path:
 # cd /fs/ess/PAS2880/users/$USER/garrigos-data/fastq
 ```
 </details>
@@ -902,7 +916,7 @@ surprising that they are of very poor quality.
 <details><summary>**7.** What is the total number of reads across all R1 files?</summary>
 
 We can use `zcat` with a `*` wildcard pattern to print the contents of all R1
-files, and simply perform a line count on that:
+files, and simply perform a line count on that (this takes some seconds to run):
 
 ```bash
 zcat *_R1.fastq.gz | wc -l

@@ -369,7 +369,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
 <section id="overview-learning-goals-for-the-rest-of-the-week" class="level3" data-number="1.1">
 <h3 data-number="1.1" class="anchored" data-anchor-id="overview-learning-goals-for-the-rest-of-the-week"><span class="header-section-number">1.1</span> Overview &amp; learning goals for the rest of the week</h3>
-<p>We’ll now pick up where we left off last week, continuing with basic Unix shell commands, focusing on those that work with files and dirs. Specifically, you will learn to use the Unix shell to:</p>
+<p>We’ll now pick up where we left off last week, continuing with basic Unix shell commands, with a focus on commands that operate on files and dirs. Specifically, you will learn to use the Unix shell to:</p>
 <ul>
 <li>Create, copy, move, rename and delete directories and files (<strong>this lecture</strong>)</li>
 <li>View the contents of text files in various ways (<a href="../week03/w3c_shellfiles.html">next lecture</a>)</li>
@@ -379,23 +379,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="lecture-context-overview" class="level3" data-number="1.2">
 <h3 data-number="1.2" class="anchored" data-anchor-id="lecture-context-overview"><span class="header-section-number">1.2</span> Lecture context &amp; overview</h3>
 <p>File browser GUIs (such as “Finder” on Mac, “File Explorer” on Windows, and the interface we saw in OSC OnDemand’s File menu) can perform operations like listing, creating, moving, renaming, copying and removing files and folders. Here, you will learn to use Unix shell commands that can perform these actions.</p>
-<p><strong>Why do I need to learn to do these relatively trivial tasks in the shell?</strong></p>
+<p><strong>Why do I need to learn to do these relatively trivial tasks in the shell?</strong> 🤨</p>
 <ul>
 <li>This will help you to get more comfortable with working in the shell.</li>
-<li>These are good commands to learn how the shell works more generally, and how commands are structured.</li>
-<li>You will eventually use the shell for data processing, and it is more efficient to stick with the shell for file browser operations, rather than going back and forth all the time.</li>
-<li>You may run into situations where a GUI file browser is not at all available.</li>
-<li><strong><em>With practice, using the shell is faster and more powerful than a GUI file browser</em></strong> (certainly at OSU).</li>
+<li>These commands are useful to learn how the shell works generally, and how commands are structured.</li>
+<li><strong><em>With practice, using the shell is faster and more powerful than a GUI file</em></strong> <strong><em>browser</em></strong> (certainly at OSU).</li>
+<li>You may eventually run into situations where a GUI file browser is not available.</li>
 </ul>
 </section>
 <section id="getting-ready" class="level3" data-number="1.3">
 <h3 data-number="1.3" class="anchored" data-anchor-id="getting-ready"><span class="header-section-number">1.3</span> Getting ready</h3>
-<ul>
-<li><p><strong>Start a VS Code session like you’ve done before</strong></p>
-<details>
-<summary>
-<p><em>Click here to see the instructions</em></p>
-</summary>
+<section id="start-a-vs-code-session" class="level4">
+<h4 class="anchored" data-anchor-id="start-a-vs-code-session">Start a VS Code session</h4>
 <ol type="1">
 <li>Log in to OSC’s OnDemand portal at <a href="https://ondemand.osc.edu" class="uri">https://ondemand.osc.edu</a></li>
 <li>In the blue top bar, select <code>Interactive Apps</code> and near the bottom, click <code>Code Server</code></li>
@@ -409,21 +404,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 <li>Click <code>Launch</code></li>
 <li>Click the <code>Connect to VS Code</code> button once it appears</li>
-<li>In VS Code, open a terminal by either:
-<ul>
-<li>Clicking &nbsp; <i class="fa-solid fa-bars" aria-label="bars"></i> &nbsp; =&gt; <code>Terminal</code> =&gt; <code>New Terminal</code></li>
-<li>Using the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd></li>
-</ul></li>
-<li>Check that your are in <code>/fs/ess/PAS2880/users/$USER</code> (recall: <code>$USER</code> is a variable that represents your username!) by typing <code>pwd</code> in the terminal. <em>(If you’re not, that dir may be listed under <code>Recents</code> in the <code>Get Started</code></em> <em>document — if that’s the case, click on that entry.</em> <em>Otherwise, click <code>File</code> &gt; <code>Open Folder</code> and type/select that dir.)</em></li>
+<li>In VS Code, open a terminal by clicking &nbsp; <i class="fa-solid fa-bars" aria-label="bars"></i> &nbsp; =&gt; <code>Terminal</code> =&gt; <code>New Terminal</code> <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+<li>Check that your are in <code>/fs/ess/PAS2880/users/$USER</code> by typing <code>pwd</code> in the terminal.<br>
+<em>(Recall that <code>$USER</code> is a variable that represents your username.</em> <em>If you’re not in that dir, it may be listed under <code>Recents</code> in the</em> <em><code>Get Started</code> document – if so, click on that entry.</em> <em>Otherwise, click <code>File</code> &gt; <code>Open Folder</code> and type/select</em> <em><code>/fs/ess/PAS2880/users/$USER</code>.)</em></li>
 </ol>
-</details></li>
-<li><p><strong>Open a Markdown file for notes</strong><br>
-I recommend that you create and open a Markdown file to keep notes on what we’re doing in this session:</p>
+</section>
+<section id="open-a-markdown-file-for-notes" class="level4">
+<h4 class="anchored" data-anchor-id="open-a-markdown-file-for-notes">Open a Markdown file for notes</h4>
+<p>I recommend that you create and open a Markdown file to keep notes on what we’re doing in this session:</p>
 <ol type="1">
 <li>Click <i class="fa fa-bars"></i> &gt; <code>File</code> &gt; <code>New File</code></li>
 <li>Save the file inside <code>/fs/ess/PAS2880/users/$USER/week03</code>, e.g.&nbsp;as <code>lectureB.md</code></li>
-</ol></li>
-</ul>
+</ol>
+</section>
 </section>
 </section>
 <section id="additional-vs-code-functionality-and-setup" class="level2" data-number="2">
@@ -431,38 +424,36 @@ I recommend that you create and open a Markdown file to keep notes on what we’
 <section id="try-a-few-color-themes" class="level4">
 <h4 class="anchored" data-anchor-id="try-a-few-color-themes">Try a few color themes</h4>
 <ol type="1">
-<li>Access the “Color Themes” option by clicking <i class="fa fa-cog"></i> &gt; <code>Color Theme</code>.</li>
+<li>Access the “Color Themes” option by clicking <i class="fa fa-cog"></i> (bottom left) &gt; <code>Color Theme</code>.</li>
 <li>Try out a few themes and see pick one you like!</li>
 </ol>
 </section>
 <section id="options-for-the-side-bar" class="level4">
 <h4 class="anchored" data-anchor-id="options-for-the-side-bar">Options for the Side Bar</h4>
+<p>The activity bar or narrow side bar contains the following icons to toggle <strong>(wide/Primary) Side Bar</strong> options:</p>
 <ul>
-<li>Icons to toggle <strong>(wide/Primary) Side Bar</strong> options:
-<ul>
-<li><strong><em>Explorer</em></strong>: File browser &amp; outline for the active file.</li>
-<li><strong><em>Search</em></strong>: To search recursively across all files in the active folder.</li>
-<li><strong><em>Source Control</em></strong>: To work with Git (<em>next week</em>).</li>
-<li>Debugger</li>
-<li><strong><em>Extensions</em></strong>: To install extensions (<em>next week</em>).</li>
-</ul></li>
+<li><strong><em>Explorer</em></strong>: File browser &amp; outline for the active file</li>
+<li><strong><em>Search</em></strong>: To search recursively across all files in the active folder</li>
+<li><strong><em>Source Control</em></strong>: To work with Git (<em>next week</em>)</li>
+<li><strong><em>Debugger</em></strong> (we won’t work with this)</li>
+<li><strong><em>Extensions</em></strong>: To install extensions (<em>up next!</em>)</li>
 </ul>
 </section>
 <section id="install-two-vs-code-extensions" class="level4">
 <h4 class="anchored" data-anchor-id="install-two-vs-code-extensions">Install two VS Code extensions</h4>
-<p>Click the gear icon <i class="fa fa-cog"></i> and then <code>Extensions</code>, and search for and then install:</p>
+<p>In the narrow side bar, click the <code>Extensions</code> icon. In the Extensions pane that now makes up the wide side bar, search for and then install the following two extensions:</p>
 <ul>
-<li><strong>shellcheck</strong> (by <em>simonwong</em>) — this will check our shell scripts later on!</li>
+<li><strong>shellcheck</strong> (by <em>simonwong</em>) — this will check your shell scripts later on!</li>
 <li><strong>Rainbow CSV</strong> (by <em>mechatroner</em>) — make CSV/TSV files easier to view with column-based colors</li>
 </ul>
 </section>
 <section id="add-a-vs-code-keyboard-shortcut" class="level4">
 <h4 class="anchored" data-anchor-id="add-a-vs-code-keyboard-shortcut">Add a VS Code keyboard shortcut</h4>
-<p>Add a keyboard shortcut to send code from your editor pane to the terminal. That way, you don’t have to copy-and-paste code into the terminal when you’ve typed it in the editor<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>:</p>
+<p>Add a keyboard shortcut to send code from your editor pane to the terminal. That way, you don’t have to copy-and-paste code into the terminal when you’ve typed it in the editor<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
 <ol type="1">
 <li>Click <i class="fa fa-cog"></i> (bottom-left) &gt; <code>Keyboard Shortcuts</code></li>
 <li>Enter “Run Selected Text” in the search box, and the option in question should pop up: <code>Terminal: Run Selected Text in Active Terminal</code></li>
-<li>Click on that, then add the shortcut <kbd>Ctrl</kbd>+<kbd>Enter</kbd><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</li>
+<li>Click on that, then add the shortcut <kbd>Ctrl</kbd>+<kbd>Enter</kbd><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</li>
 </ol>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -519,7 +510,7 @@ For a single-page PDF overview of keyboard shortcuts for your operating system: 
 <p>You will now download the practice/example dataset we’ve discussed. First, make sure you are in <code>/fs/ess/PAS2880/users/$USER</code> (recall: <code>$USER</code> is an environment variable whose value is your user name).</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>/fs/ess/PAS2880/users/jelmer</code></pre>
-<p>Then, use the <code>git clone</code> command (there is a space between <code>git</code> and <code>clone</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>) to download a repository on GitHub that has our practice dataset:</p>
+<p>Then, use the <code>git clone</code> command (there is a space between <code>git</code> and <code>clone</code><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>) to download a repository on GitHub that has our practice dataset:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/jelmerp/garrigos-data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Cloning into 'garrigos-data'...
 remote: Enumerating objects: 52, done.
@@ -555,18 +546,18 @@ Updating files: 100% (47/47), done.</code></pre>
 <li>Entries in <strong>black</strong> are regular files (<code>README.md</code> above)</li>
 <li>Entries in <strong><span style="color: #d92118">red</span></strong> are compressed files (we’ll see examples of this soon).</li>
 </ul>
-<p><em>(Some of these colors depend on the color scheme of your terminal / VS Code.</em> <em>For example, in dark themes, regular text files are in white.)</em></p>
+<p><em>(Some of these depend on the color scheme of your terminal / VS Code.</em> <em>E.g., in dark themes, regular text files are in white.)</em></p>
 </div>
 </div>
 </div>
-<p>You can use an <strong>argument</strong> to change the dir (or file) that <code>ls</code> operates on, and you can use <strong>options</strong> to change how it shows the output. Let’s start with <em>options</em> — for example, the option <strong><code>-l</code></strong> (lowercase L):</p>
+<p>You can use an <strong>argument</strong> to change the dir (or file) that <code>ls</code> operates on, and you can use <strong>options</strong> to change how it shows the output. Let’s start with <em>options</em> – specifically, the option <strong><code>-l</code></strong> (lowercase L):</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>total 2
 drwxr-x---+ 2 jelmer PAS0471 4096 Nov 24  2024 fastq
 drwxr-x---+ 2 jelmer PAS0471 4096 Nov 13  2024 meta
 -rw-rw----+ 1 jelmer PAS0471 1539 Nov 13  2024 README.md
 drwxr-x---+ 2 jelmer PAS0471 4096 Jul  4 20:52 ref</code></pre>
-<p>It lists the same items as earlier, but <strong>printed in a different format</strong>: one item per line, with additional information such as the date and time each file was last modified, and file sizes in bytes (to the left of the date).</p>
+<p>It lists the same items as earlier, but <strong>printed in a different format</strong>: one item per line, with additional information such as the date and time that each file was last modified, and the file sizes in bytes directly to the left of the date.</p>
 <p>Let’s add another option, <strong><code>-h</code></strong>:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>total 2.0K
@@ -581,18 +572,17 @@ How does the output differ after adding <code>-h</code>, and what do you think t
 <p>The only difference is in the format of the column reporting the sizes of the items listed.</p>
 We now have “Human-readable filesizes” (hence <code>-h</code>), where sizes on the scale of kilobytes will be shown with <code>K</code>s, of megabytes with <code>M</code>s, and of gigabytes with <code>G</code>s. That can be useful especially for large files.
 </details>
-<hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-More info about the columns in long-format <code>ls</code> output
+More info about the columns in long-format <code>ls</code> output <em>(Click to expand)</em>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse show">
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>The following image shows what each column in long-format <code>ls</code> represents:</p>
 <div class="quarto-figure quarto-figure-center">
@@ -606,6 +596,7 @@ More info about the columns in long-format <code>ls</code> output
 <li>You can ignore the column with the “number of links”, as this is not informative for regular users.</li>
 <li>Sizes shown for <em>directories</em> do (unfortunately) not correspond to the total size of the dir and its contents. Basically, you should only pay attention to sizes of <em>files</em> when looking at long-format <code>ls</code> output (see the next box to get dir sizes).</li>
 </ul>
+<p>Finally, the first line of long-format <code>ls</code> output (<code>total 2</code> / <code>total 2k</code> in the examples above) gives an indication of the total size of files that are directly located in this folder, i.e.&nbsp;not including those in subdirs.</p>
 </div>
 </div>
 </div>
@@ -620,7 +611,7 @@ ERR10802865_R1.fastq.gz  ERR10802869_R1.fastq.gz  ERR10802875_R1.fastq.gz  ERR10
 ERR10802865_R2.fastq.gz  ERR10802869_R2.fastq.gz  ERR10802875_R2.fastq.gz  ERR10802879_R2.fastq.gz  ERR10802883_R2.fastq.gz
 ERR10802866_R1.fastq.gz  ERR10802870_R1.fastq.gz  ERR10802876_R1.fastq.gz  ERR10802880_R1.fastq.gz  ERR10802884_R1.fastq.gz
 ERR10802866_R2.fastq.gz  ERR10802870_R2.fastq.gz  ERR10802876_R2.fastq.gz  ERR10802880_R2.fastq.gz  ERR10802884_R2.fastq.gz</code></pre>
-<p>And like you saw with <code>cal</code>, options and arguments can be combined:</p>
+<p>And like you saw last week with <code>cal</code>, options and arguments can be combined:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>total 941M
 -rw-r-----+ 1 jelmer PAS0471 21M Nov 13  2024 ERR10802863_R1.fastq.gz
@@ -651,7 +642,7 @@ ERR10802866_R2.fastq.gz  ERR10802870_R2.fastq.gz  ERR10802876_R2.fastq.gz  ERR10
 </section>
 <section id="tree-to-recursively-list-files-in-tree-like-format" class="level3" data-number="4.2">
 <h3 data-number="4.2" class="anchored" data-anchor-id="tree-to-recursively-list-files-in-tree-like-format"><span class="header-section-number">4.2</span> <code>tree</code> to recursively list files in tree-like format</h3>
-<p>By default, <code>ls</code> is not recursive, which means that it only shows results for one directory level. Compare that with the output of the <code>tree</code> command, which gives a nice recursive overview in a simple tree-like format (with the <code>-C</code> option additionally adding colors):</p>
+<p>By default, <code>ls</code> is <strong>not recursive</strong>, <strong>which means that it only shows results for one directory level</strong>. Compare that with the output of the <code>tree</code> command, which gives a nice recursive overview in a simple tree-like format (with the <code>-C</code> option additionally adding colors):</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-C</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code># [colors not shown in this output]
 .
@@ -682,7 +673,7 @@ ERR10802866_R2.fastq.gz  ERR10802870_R2.fastq.gz  ERR10802876_R2.fastq.gz  ERR10
 <summary>
 Can you think of a file that we need for the analysis that is not present in our dir? <em>(Click to see the answer)</em>
 </summary>
-We are missing the genome assembly FASTA file. We will download that one separately later on!<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>
+We are missing the genome assembly FASTA file. We will download that one separately later on!<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>
 </details>
 </section>
 </section>
@@ -737,8 +728,8 @@ Operating on multiple files
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>We just saw that both <code>mkdir</code> and <code>touch</code> can take multiple arguments. Notably, almost all Unix commands that operate on files and/or dirs can operate on multiple (many!) files at a time, which is one reason that using them can be highly efficient.</p>
-<p>That’s especially true once you learn how to select/specify may files at once using shortcuts known as wildcards, as will later in this lecture.</p>
+<p>As you just saw, both <code>mkdir</code> and <code>touch</code> can take multiple arguments. Notably, almost all Unix commands that operate on files and/or dirs can operate on multiple (many!) files at a time, which is one reason that using these commands can be highly efficient.</p>
+<p>That’s especially true once you know how to select/specify many files at once using shortcuts known as wildcards: we will look at that later in this lecture.</p>
 </div>
 </div>
 <section id="exercise-file-locations" class="level4 exercise">
@@ -749,14 +740,14 @@ Operating on multiple files
 <summary>
 <p><em>Click to see the solutions</em></p>
 </summary>
-<p>The initial files were created in your working dir.</p>
+<p>The files were created in your working dir.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>total 0
 -rw-rw----+ 1 jelmer PAS0471 0 Jul  3 12:38 newfile1.txt
 -rw-rw----+ 1 jelmer PAS0471 0 Jul  3 12:38 newfile2.txt
 -rw-rw----+ 1 jelmer PAS0471 0 Jul  3 12:38 newfile3.txt</code></pre>
 </details></li>
-<li><p>Can you create a create a new file <code>monarch.txt</code> inside a new dir <code>butterflies</code>?</p>
+<li><p>Can you create a create a new file <code>monarch.txt</code> inside a new dir <code>butterflies</code>? Don’t change your working dir while you’re doing this.</p>
 <details>
 <summary>
 <p><em>Click to see the solutions</em></p>
@@ -774,7 +765,7 @@ Operating on multiple files
 </section>
 <section id="cp-to-copy" class="level2" data-number="6">
 <h2 data-number="6" class="anchored" data-anchor-id="cp-to-copy"><span class="header-section-number">6</span> <code>cp</code> to copy</h2>
-<p>The <code>cp</code> command copies files and/or dirs from one location to another. Just like when copying files in a GUI file browser, the copy can have a different name than the original – or the same name, as long as it’s copied to a different dir.</p>
+<p>The <code>cp</code> command copies files and/or dirs from one location to another. Just like when copying files in a GUI file browser, the new copy can have a different name than the original. It can also have the same name, as long as it’s copied to a different dir.</p>
 <p><code>cp</code> has two <strong>required</strong> arguments in the following order:</p>
 <ol type="1">
 <li>What you want to copy (<em>source</em> path)</li>
@@ -825,7 +816,7 @@ Make sure to use Tab completion when looking for existing files in case like abo
 </section>
 <section id="copying-dirs-and-their-contents" class="level4">
 <h4 class="anchored" data-anchor-id="copying-dirs-and-their-contents">Copying dirs and their contents</h4>
-<p>Finally, <code>cp</code> will by default refuse to copy directories and their contents — that is, like <code>mkdir</code>, it is not <strong>recursive</strong><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. The <code>-r</code> option is needed for recursive copying:</p>
+<p>Finally, <code>cp</code> will by default refuse to copy directories and their contents — that is, like <code>mkdir</code>, it is not <strong>recursive</strong><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. The <code>-r</code> option is needed for recursive copying:</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> ../../garrigos-data/meta .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Check the contents of the <code>sandbox</code> dir again now that you’ve copied several items there:</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -835,12 +826,8 @@ Make sure to use Tab completion when looking for existing files in case like abo
 </section>
 <section id="mv-to-move-and-rename" class="level2" data-number="7">
 <h2 data-number="7" class="anchored" data-anchor-id="mv-to-move-and-rename"><span class="header-section-number">7</span> <code>mv</code> to move and rename</h2>
-<p>Three notes as a preamble to the <code>mv</code> command, in part a recap from before:</p>
-<ol type="1">
-<li>Moving files versus renaming them is fundamentally the same operation: you are <strong>changing the path</strong>.</li>
-<li>For a file, both its name (e.g.&nbsp;<code>monarch.txt</code>) and the dir it is inside (<code>butterflies/</code>) are part of the path (<code>butterflies/monarch.txt</code>).</li>
-<li>A mere file name like <code>monarch.txt</code> can also represent a path: it implies that the file is in your current working dir.</li>
-</ol>
+<p>First off, recall from last week that a mere file name like <code>monarch.txt</code> can represent a path, implying that the file is in your current working dir. More generally, both a file’s name (e.g.&nbsp;<code>monarch.txt</code>) and the dir it is inside (<code>butterflies/</code>) are part of the path (<code>butterflies/monarch.txt</code>).</p>
+<p>With that in mind, it becomes apparent that <em>moving</em> a file versus <em>renaming</em> it is fundamentally the same operation: you are <strong>changing the path</strong> to the file.</p>
 <p>As such, the <strong><code>mv</code></strong> command can be used to move files, rename them, or do both at the same time:</p>
 <ul>
 <li><p>Same directory, different file name (“renaming”):</p>
@@ -851,7 +838,7 @@ Make sure to use Tab completion when looking for existing files in case like abo
 <li><p>Different directory, different file name (“moving + renaming”):</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> metadata.tsv meta/metadata_old.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul>
-<p>Unlike <code>cp</code>, the <code>mv</code> command is recursive by default!</p>
+<p>Finally, not that unlike <code>cp</code>, the <code>mv</code> command is recursive by default!</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -977,13 +964,12 @@ What would happen when that last command is run? <em>(Click for the answer)</em>
 <section id="wildcard-expansion-globbing" class="level2" data-number="9">
 <h2 data-number="9" class="anchored" data-anchor-id="wildcard-expansion-globbing"><span class="header-section-number">9</span> Wildcard expansion (globbing)</h2>
 <p>Shell wildcard expansion is a very useful technique to select multiple files, where <strong>wildcards</strong> are <em>characters that have a special meaning</em>.</p>
-<p>Start by creating some dummy FASTQ files in your <code>sandbox</code> dir:</p>
+<p>To practice with this, start by creating some dummy FASTQ files in your <code>sandbox</code> dir:</p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Copy-and-paste this into the shell rather than typing it out) </span></span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> sample1_R1.fastq sample1_R2.fastq</span>
 <span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> sample2_R1.fastq sample2_R2.fastq</span>
 <span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> sample3_R1.fastq sample3_R2.fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>By far the most commonly used wildcard is <code>*</code>, which matches <strong>any number of any combination of characters</strong> (including “nothing” – the absence of any characters).</p>
-<p>For example, you can match only the two <code>sample1</code> files with a <code>*</code> using:</p>
+<p>By far the most commonly used wildcard is <code>*</code>, which matches <strong>any number of any combination of characters</strong> (including “nothing” – the absence of any characters). For example, you can match only the two <code>sample1</code> files with a <code>*</code> using:</p>
 <div class="sourceCode" id="cb57"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This matches files that start with "sample1"</span></span>
 <span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> sample1<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>sample1_R1.fastq  sample1_R2.fastq</code></pre>
@@ -1022,7 +1008,7 @@ What would happen when that last command is run? <em>(Click for the answer)</em>
 </tr>
 <tr class="even">
 <td><code>*</code></td>
-<td><em>(matches all files in the working dir)</em><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></td>
+<td><em>(matches all files in the working dir)</em><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></td>
 </tr>
 </tbody>
 </table>
@@ -1077,29 +1063,21 @@ What would happen when that last command is run? <em>(Click for the answer)</em>
 <li><p>Remove any stray <code>.txt</code> files using:</p>
 <div class="sourceCode" id="cb70"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (The -v option will make rm report what it's removing)</span></span>
 <span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-v</span> <span class="pp">*</span>.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>removed ‘sample1.txt’
-removed ‘sample2.txt’</code></pre></li>
+<pre class="bash-out"><code>removed 'newfile2.txt'
+removed 'newfile3_copy.txt'
+removed 'newfile3.txt'
+removed 'sample1.txt'
+removed 'sample2.txt'</code></pre></li>
 <li><p>Move all FASTQ files using:</p>
 <div class="sourceCode" id="cb72"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> fastq_files</span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> <span class="pp">*</span>fastq fastq_files/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> <span class="at">-v</span> <span class="pp">*</span>fastq fastq_files/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>renamed 'sample1_R1.fastq' -&gt; 'fastq_files/sample1_R1.fastq'
+renamed 'sample1_R2.fastq' -&gt; 'fastq_files/sample1_R2.fastq'
+renamed 'sample2_R1.fastq' -&gt; 'fastq_files/sample2_R1.fastq'
+renamed 'sample2_R2.fastq' -&gt; 'fastq_files/sample2_R2.fastq'
+renamed 'sample3_R1.fastq' -&gt; 'fastq_files/sample3_R1.fastq'
+renamed 'sample3_R2.fastq' -&gt; 'fastq_files/sample3_R2.fastq'</code></pre></li>
 </ul>
-<hr style="height:1pt; visibility:hidden;">
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-In case you have heard of “regular expressions”: these are not the same as wildcards <em>(Click to expand)</em>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-11" class="callout-11-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Don’t confuse wildcards with <strong>regular expressions</strong>! You may have used regular expressions before, for example with R or a text editor. They are similar to but not the same as shell wildcards.</p>
-</div>
-</div>
-</div>
 
 
 </section>
@@ -1109,12 +1087,13 @@ In case you have heard of “regular expressions”: these are not the same as w
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p> This is the same type of behavior that you may be familiar with from RStudio<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p> Don’t worry about the warning that other keybindings exist for this shortcut.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p> <code>git</code> is a type of command that has “subcommands”, such as <code>clone</code> and many others. You will learn much more about Git next week.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p> The reason for this is simply that tt was too large to be included in the GitHub repository.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p> For better or worse, non-recursiveness in Unix commands is meant as a sort of safety mechanism, as you may otherwise more easily operate on very large amounts of data accidentally.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>Except so-called hidden files.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p> Or use the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p> This is the same type of behavior that you may be familiar with from RStudio<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p> Don’t worry about the warning that other keybindings exist for this shortcut.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p> <code>git</code> is a type of command that has “subcommands”, such as <code>clone</code> and many others. You will learn much more about Git next week.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p> The reason for this is simply that tt was too large to be included in the GitHub repository.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p> For better or worse, non-recursiveness in Unix commands is meant as a sort of safety mechanism, as you may otherwise more easily operate on very large amounts of data accidentally.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Except so-called hidden files.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

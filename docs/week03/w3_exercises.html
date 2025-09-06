@@ -395,12 +395,12 @@ div.csl-indent {
 </section>
 <section id="gtf-file-info" class="level3">
 <h3 class="anchored" data-anchor-id="gtf-file-info">GTF file info</h3>
-<p>As mentioned in this week’s first lecture, the main part of a GTF file is a table with:</p>
+<p>Exercise 2 will work with the GTF file in the example dataset, so we’ll start with some more info about GTF files. As mentioned in this week’s first lecture, the main part of a GTF file is a table with:</p>
 <ul>
 <li>One row for each annotated “<strong>genomic feature</strong>” (gene, exon, intron, etc.)</li>
 <li>Columns with information like the genomic coordinates of the features</li>
 </ul>
-<p>However, the file typically starts with <strong>header lines</strong> that contain metadata and start with <code>#</code>. In some cases, the header can have hundreds of lines, including a list of each represented sequence (chromosome/scaffold/contig). “Our” GTF file only has a few header lines, though:</p>
+<p>However, the file typically starts with <strong>header lines</strong> that contain metadata and start with <code>#</code>. In some cases, the header can have hundreds of lines, including a list of all chromosomes and/or scaffolds and/or contigs (depending on the assembly quality) that are represented in the file. “Our” GTF file only has a few header lines, though:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ../ref/GCF_016801865.2.gtf.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>#gtf-version 2.2
 #!genome-build TS_CPP_V2
@@ -408,8 +408,9 @@ div.csl-indent {
 #!annotation-source NCBI RefSeq GCF_016801865.2-RS_2022_12
 NC_068937.1     Gnomon  gene    2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
 NC_068937.1     Gnomon  transcript      2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA";</code></pre>
-<p>The last two lines of the snippet above are the first rows of the tabular part. There is no line with column names, so here’s the snippet with aligned columns and added column names also shown in the lecture:</p>
-<pre class="bash-out-solo"><code>seqname       source  feature     start   end     score  strand  frame    attributes
+<p>The last two lines of the snippet above are the first rows of the tabular part. There is no line with column names, so here’s the snippet with aligned columns, and the manually added column names also shown in the lecture:</p>
+<pre class="bash-out-solo"><code># [Column names are not present in the file! They are shown for informational purposes.]
+seqname       source  feature     start   end     score  strand  frame    attributes
 NC_068937.1   Gnomon  gene        2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
 NC_068937.1   Gnomon  transcript  2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; 
 NC_068937.1   Gnomon  exon        2046    2531    .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "1"; 
@@ -442,17 +443,17 @@ NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_i
 <tr class="odd">
 <td>3</td>
 <td><strong><em>feature</em></strong></td>
-<td>Name of the feature type, e.g.&nbsp;“gene”, “exon”, “intron”, “CDS”</td>
+<td>Name of the genomic feature type, e.g.&nbsp;“gene”, “exon”, “intron”, “CDS”</td>
 </tr>
 <tr class="even">
 <td>4</td>
 <td><strong><em>start</em></strong></td>
-<td>Start position of the feature (sequence numbering starts at 1; start position is included)</td>
+<td>Start position of the feature</td>
 </tr>
 <tr class="odd">
 <td>5</td>
 <td><strong><em>end</em></strong></td>
-<td>End position of the feature (end position is also included)</td>
+<td>End position of the feature</td>
 </tr>
 <tr class="even">
 <td>6</td>
@@ -462,12 +463,12 @@ NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_i
 <tr class="odd">
 <td>7</td>
 <td><strong><em>strand</em></strong></td>
-<td>Whether the feature is on the <code>+</code> (forward) or <code>-</code> (reverse) strand<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</td>
+<td>Whether the feature is on the <code>+</code> (forward) or <code>-</code> (reverse) strand<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></td>
 </tr>
 <tr class="even">
 <td>8</td>
 <td><strong><em>frame</em></strong></td>
-<td><code>0</code>, <code>1</code> or <code>2</code> (or <code>.</code> for no frame). E.g. <code>0</code> means the first base of the feature is the first base of a codon</td>
+<td>The “frame” for coding features, either <code>0</code>, <code>1</code> or <code>2</code> (or <code>.</code> for no frame). E.g. <code>0</code> means the first base of the feature is the first base of a codon</td>
 </tr>
 <tr class="odd">
 <td>9</td>
@@ -482,28 +483,29 @@ NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_i
 <h2 class="anchored" data-anchor-id="exercise-1-moving-copying-and-removing">Exercise 1: Moving, copying and removing</h2>
 <p><em>Use Unix commands to complete all the exercises below.</em></p>
 <ol type="1">
-<li><p>Create a dir <code>week03/ex1</code> within your personal dir<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, and navigate there. <em>Use this as the working dir for all followings questions in this exercise,</em> <em>so avoid navigating anywhere else.</em></p></li>
-<li><p>Create a new dir <code>seqs</code>, and use the below command to create some dummy FASTQ files in there. Then, check the result with <code>ls</code> and get a count of the number of files you created (do so using code!).</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> seqs/sample{01..25}_R<span class="dt">{1</span><span class="op">,</span><span class="dt">2}</span>.fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p>Copy the files for samples <code>01</code> through <code>09</code> into your working dir with a single command.</p></li>
-<li><p>Remove the files you just copied and when doing so, make the command report what it’s doing (i.e.&nbsp;make it verbose).</p></li>
+<li><p>Create a dir <code>week03/ex1</code> within <code>/fs/ess/PAS2880/users/$USER/</code>, and navigate there. <em>Use this as the working dir for all following questions in this exercise,</em> <em>so avoid navigating anywhere else.</em></p></li>
+<li><p>Create a new dir <code>seqs</code>, and use the below command to create some dummy FASTQ files in there. Then, check the result with <code>ls</code> and use a command to get a count of the number of files you created.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [This command uses a trick called 'brace expansion' to create many files at once.]</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># [You don't need to understand how this works.]</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> seqs/sample{01..25}_R<span class="dt">{1</span><span class="op">,</span><span class="dt">2}</span>.fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Copy the dummy FASTA files for samples <code>01</code> through <code>09</code> into your working dir with a single command.</p></li>
+<li><p>Remove the files you just copied and when doing so, make the command report what it’s doing.</p></li>
 <li><p>Move all R1 files into a dir <code>seqs_R1</code>, and then rename <code>seqs</code>, which should now only contain R2 files, to <code>seqs_R1</code>.</p></li>
 <li><p>Copy the Garrigos et al.&nbsp;metadata file into your current working dir, giving the copy the name <code>garrigos_metadata.tsv</code>.</p></li>
 </ol>
 </section>
 <section id="exercise-2-exploring-the-gtf-annotation-file" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-2-exploring-the-gtf-annotation-file">Exercise 2: Exploring the GTF annotation file</h2>
-<p><em>Before you start, make you sure you have read the box</em> <em>“GTF file info for this week’s exercises” at the bottom of</em> <em><a href="../week03/w3b_shellfiles.html">the page for this week’s second session</a>.</em></p>
 <ol type="1">
-<li><p>Create a dir <code>week03/ex2</code> within your personal dir<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, and navigate there.</p></li>
+<li><p>Create a dir <code>week03/ex2</code> within <code>/fs/ess/PAS2880/users/$USER</code>, and navigate there.</p></li>
 <li><p>Copy the genome annotation file <code>garrigos-data/ref/GCF_016801865.2.gtf.gz</code> to a file called <code>annot.gtf.gz</code> inside your <code>ex2</code> working dir.</p></li>
 <li><p>Check the size of the <code>annot.gtf.gz</code> file. Then, unzip (decompress) the GTF file with the <code>gunzip</code> command as shown below. Finally, check the size of the resulting <code>annot.gtf</code> file. How large is the size difference between the compressed and uncompressed files?</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>How many lines does the GTF file contain?</p></li>
-<li><p>The total number of features in a GTF file is simply the number of lines in its table.</p>
+<li><p>The total number of genomic features that are listed in a GTF file is simply the number of lines in its table section.</p>
 <ul>
 <li><p>Combine <code>grep -v</code> and <code>wc -l</code> to count the number of features. <em>(First, you may want to take a peek at the file with <code>less -S</code> to decide on</em> <em>a search pattern for <code>grep</code>.)</em></p></li>
-<li><p>Comparing the linecount from this and the previous exercise, does the difference reflect the number of header lines?</p></li>
+<li><p>Comparing the linecount from this and the previous exercise, does the difference correspond to the number of header lines?</p></li>
 <li><p>If not, can you figure out which other line(s) contain the pattern you used with <code>grep</code> above? <em>(Review the “Additional <code>grep</code> tips” box in</em> <em><a href="week03/w3c_shellfiles.html#grep-to-print-lines-that-match-a-pattern">the section on <code>grep</code></a></em> <em>to find an option that might help you make sense of that.)</em></p></li>
 </ul></li>
 <li><p>How many distinct “sequences” (chromosome/scaffolds/contigs) are represented in the annotation?</p>
@@ -515,7 +517,7 @@ NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_i
 </details></li>
 <li><p>Store a list of these distinct sequences in the GTF in a file <code>scaffolds.txt</code>.</p></li>
 <li><p>Print a “count table” (like we did towards the end of <a href="./w3c_shellfiles.html#combining-cut-sort-and-uniq-to-create-a-list">this section</a>) of feature types in the annotation: i.e.&nbsp;for each feature type, generate a count representing the number of times it occurs. This will allow you to see, for example, how many genes have been annotated in this genome.</p></li>
-<li><p>For a gene of interest, you may wonder how many exons and other annotated features it has. GTF files have an implicit hierarchical structure, where e.g.&nbsp;each exon row contains a reference to the gene it is a part of (its “parent”) in the final column. For gene <code>LOC120427725</code>, print a count table of its feature types. <em>(You can assume that this gene’s name does not occur in any lines</em> <em>describing features that are not part of the gene.)</em></p></li>
+<li><p>For a gene of interest, you may wonder how many exons and other annotated features it has. GTF files have an implicit hierarchical structure, where e.g.&nbsp;each exon row contains a reference to the gene that the exon is a part of (i.e., its “parent”) in the final column. With that in mind: for gene <code>LOC120427725</code>, print a count table of its feature types. <em>(You can assume that this gene’s name does not occur in any lines</em> <em>describing features that are not part of the gene.)</em></p></li>
 <li><p><strong><em>Bonus</em></strong>: Produce a 3-column table with the sequence name, start position, and end position of each <em>distinct</em> start codon in the GTF file. Store that table in a file <code>start_codons.tsv</code>. <em>(You can assume that the string <code>start_codon</code> occurs only in the third column,</em> <em>so that all lines with that string contain start codon features.)</em></p></li>
 <li><p><strong><em>Bonus</em></strong>: In this genome, which sequence (chromosome/scaffold/contig) appears to be the largest one?</p>
 <details>
@@ -544,7 +546,7 @@ NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_i
 <summary>
 <p><em>Click here for a hint</em></p>
 </summary>
-<p>A linecount of the compressed file will <strong>not</strong> give you the correct answer. Therefore, use the <code>zcat &lt;file.gz&gt; | &lt;...&gt;</code> idiom instead.</p>
+<p>A linecount of the compressed file will <strong>not</strong> give you the correct answer. Therefore, use the <code>zcat &lt;file.gz&gt; | &lt;...&gt;</code> idiom instead that is described in the “Operating on compressed files” box in <a href="./w3c_shellfiles.html#grep-to-print-lines-that-match-a-pattern">this section</a>.</p>
 <p>Also, remember that one read covers 4 lines and that FASTQ files only contain lines with reads.</p>
 </details></li>
 <li><p>How many reads contain the sequence <code>ACGT</code>? <em>(You can assume that this does not occur in the sequence quality lines.)</em></p></li>
@@ -585,8 +587,8 @@ NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_i
 </summary>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (You should already be in /fs/ess/PAS2880/users/$USER/)</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /fs/ess/PAS2880/users/<span class="va">$USER</span>/week03</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ex2</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ex2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ex1</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ex1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <details>
 <summary>
@@ -654,17 +656,15 @@ removed 'sample09_R2.fastq'</code></pre>
 <summary>
 <strong>5.</strong> Move all R1 files into a dir <code>seqs_R1</code> and rename <code>seqs</code>
 </summary>
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the new dir:</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> seqs_R1</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Move the R1 files into the new dir:</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> seqs/<span class="pp">*</span>R1.fastq seqs_R1</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename the old dir:</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> seqs seqs_R2</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the result:</span></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-C</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><p>Create the new dir:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> seqs_R1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Move the R1 files into the new dir:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> seqs/<span class="pp">*</span>R1.fastq seqs_R1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Rename the old dir:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> seqs seqs_R2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Check the result:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-C</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>.
 ├── seqs_R1
 │   ├── sample01_R1.fastq
@@ -719,13 +719,14 @@ removed 'sample09_R2.fastq'</code></pre>
     ├── sample24_R2.fastq
     └── sample25_R2.fastq
 
-2 directories, 50 files</code></pre>
+2 directories, 50 files</code></pre></li>
+</ul>
 </details>
 <details>
 <summary>
 <strong>6.</strong> Copy the Garrigos et al.&nbsp;metadata file into your current working dir
 </summary>
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../../garrigos-data/meta/metadata.tsv garrigos_metadata.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../../garrigos-data/meta/metadata.tsv garrigos_metadata.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </section>
 <section id="exercise-2" class="level3">
@@ -734,16 +735,16 @@ removed 'sample09_R2.fastq'</code></pre>
 <summary>
 <strong>1.</strong> Create a new dir and navigate there
 </summary>
-<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (You should already be in /fs/ess/PAS2880/users/$USER/)</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /fs/ess/PAS2880/users/<span class="va">$USER</span>/week03</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ex2</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ex2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (You should already be in /fs/ess/PAS2880/users/$USER/)</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /fs/ess/PAS2880/users/<span class="va">$USER</span>/week03</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ex2</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ex2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <details>
 <summary>
 <strong>2.</strong> Copy the genome annotation file <code>garrigos-data/ref/GCF_016801865.2.gtf.gz</code>
 </summary>
-<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../ref/GCF_016801865.2.gtf.gz annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../../garrigos-data/ref/GCF_016801865.2.gtf.gz annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <details>
 <summary>
@@ -751,12 +752,12 @@ removed 'sample09_R2.fastq'</code></pre>
 </summary>
 <ul>
 <li><p>Check the file size:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>-rw-rw----+ 1 jelmer PAS0471 5.1M Jul 14 18:55 annot.gtf.gz</code></pre></li>
 <li><p>Unzip:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Check the file size (and name) again:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>-rw-rw----+ 1 jelmer PAS0471 123M Jul 14 18:55 annot.gtf</code></pre></li>
 <li><p>That’s a pretty big difference, from 5.1 Mb to 123 Mb! The amount of space saved by file compression varies a lot and depends on the amount of repetition in the uncompressed file. GTF files are highly repetitive, so relatively much space can be saved.</p></li>
 </ul>
@@ -766,7 +767,7 @@ removed 'sample09_R2.fastq'</code></pre>
 <strong>4.</strong> How many lines does the GTF file contain?
 </summary>
 <p>A simple line count tells you that the file has 408,402 lines:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> annot.gtf </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> annot.gtf </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>408402 annot.gtf </code></pre>
 </details>
 <details>
@@ -775,11 +776,11 @@ removed 'sample09_R2.fastq'</code></pre>
 </summary>
 <ul>
 <li><p>Since the header lines contain a <code>#</code>, you’ll want to exclude those and then count the remaining number of lines:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>408397</code></pre></li>
 <li><p>The file has only 4 header lines, while the line count has decreased by 5 (from 408402 to 408397). So, which other line in the file has a <code>#</code>?</p>
 <p>Use the <code>-n</code> option to <code>grep</code> to print line numbers along with each match:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-n</span> <span class="st">"#"</span> annot.gtf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-n</span> <span class="st">"#"</span> annot.gtf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>1:#gtf-version 2.2
 2:#!genome-build TS_CPP_V2
 3:#!genome-build-accession NCBI_Assembly:GCF_016801865.2
@@ -798,7 +799,7 @@ removed 'sample09_R2.fastq'</code></pre>
 <li>To only keep distinct sequences, use <code>sort | uniq</code></li>
 <li>To get a count of the resulting list of distinct sequences, use <code>wc -l</code>.</li>
 </ul>
-<div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>167</code></pre>
 </details>
 <details>
@@ -807,9 +808,9 @@ removed 'sample09_R2.fastq'</code></pre>
 </summary>
 <ul>
 <li><p>Same command as above, but we get rid of <code>wc -l</code> and instead redirect the output of <code>uniq</code> to a file:</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="op">&gt;</span> scaffolds.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="op">&gt;</span> scaffolds.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Take a peek at <code>scaffolds.txt</code> for a sanity check:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 3 scaffolds.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 3 scaffolds.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>NC_015079.1
 NC_068937.1
 NC_068938.1</code></pre></li>
@@ -823,7 +824,7 @@ NC_068938.1</code></pre></li>
 <li>The feature type is in the third column (<code>cut -f 3</code>)</li>
 <li>To produce a count table, use the <code>sort | uniq -c</code> idiom.</li>
 </ul>
-<div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 3 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 3 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code> 141444 CDS
  166177 exon
   19673 gene
@@ -835,7 +836,7 @@ NC_068938.1</code></pre></li>
 <summary>
 <strong>9.</strong> Print a count table of annotated features for gene <code>LOC120427725</code>
 </summary>
-<div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"LOC120427725"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 3 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"LOC120427725"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 3 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>     15 CDS
      20 exon
       1 gene
@@ -850,7 +851,7 @@ NC_068938.1</code></pre></li>
 <ul>
 <li><p>After <code>grep</code>ing for <code>start_codon</code>, you need to select (<code>cut</code>) the first, fourth, and fifth columns.</p></li>
 <li><p>Taking a peek at the output, it appears that start codons may duplicated:</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"start_codon"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1,4,5 <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"start_codon"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1,4,5 <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>NC_068937.1     70143   70145
 NC_068937.1     70143   70145
 NC_068937.1     70143   70145
@@ -858,9 +859,9 @@ NC_068937.1     49062   49064
 NC_068937.1     160735  160737</code></pre>
 <p>This is because distinct transcripts of a gene (producing different isoforms) may share the same start codon.</p></li>
 <li><p>To get rid of the duplicates, use <code>sort | uniq</code> — and then we can redirect the output to <code>start_codons.tsv</code>:</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"start_codon"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1,4,5 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="op">&gt;</span> start_codons.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb51"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"start_codon"</span> annot.gtf <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1,4,5 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="op">&gt;</span> start_codons.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Take a peek at the output file for a sanity check:</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 5 start_codons.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 5 start_codons.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>NC_015079.1     10427   10429
 NC_015079.1     12600   12602
 NC_015079.1     211     213
@@ -877,7 +878,7 @@ NC_015079.1     3898    3900</code></pre></li>
 <li>To only get the feature with the largest end position, add <code>head -n 1</code></li>
 <li>(We could add <code>| cut -f 1</code> to only get the sequence name, not the entire line.)</li>
 </ul>
-<div class="sourceCode" id="cb51"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k5nr</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">"#"</span> annot.gtf <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k5nr</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>NC_068938.1     Gnomon  exon    224093433       224093803       .       +       .       gene_id "LOC120429120"; transcript_id "XM_039594310.2"; db_xref "GeneID:120429120"; experiment "COORDINATES: polyA evidence [ECO:0006239]"; gene "LOC120429120"; model_evidence "Supporting evidence includes similarity to: 6 Proteins"; product "caprin homolog"; transcript_biotype "mRNA"; exon_number "4"; </code></pre>
 <ul>
 <li>So the largest sequence appears to be <code>NC_068938.1</code>.</li>
@@ -888,7 +889,7 @@ NC_015079.1     3898    3900</code></pre></li>
 <strong>12.</strong> Count the number of snRNAs in the annotation.
 </summary>
 <p>Because the search pattern itself contains double quotes (<code>"</code>), the easiest way out is to use <strong>single quotes</strong> (<code>'</code>) around it:</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">'gene_biotype "snRNA"'</span> annot.gtf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">'gene_biotype "snRNA"'</span> annot.gtf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>58</code></pre>
 </details>
 </section>
@@ -898,11 +899,10 @@ NC_015079.1     3898    3900</code></pre></li>
 <summary>
 <strong>1.</strong> Navigate into the dir with FASTQ files
 </summary>
-<div class="sourceCode" id="cb55"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming you are in `garrigos-data/ref` after the previous exercise</span></span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../fastq</span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Or:</span></span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="co"># cd /fs/ess/PAS2880/users/$USER/garrigos-data/fastq</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../../garrigos-data/fastq/</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Or, with an absolute path:</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="co"># cd /fs/ess/PAS2880/users/$USER/garrigos-data/fastq</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <details>
 <summary>
@@ -911,13 +911,13 @@ NC_015079.1     3898    3900</code></pre></li>
 <ul>
 <li>As the hint suggested, use <code>zcat &lt;file&gt; | wc -l</code> to get an “uncompressed count”:</li>
 </ul>
-<div class="sourceCode" id="cb56"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ERR10802863_R1.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ERR10802863_R1.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>2000000</code></pre>
 <ul>
 <li><p>This means that the number of reads is 2,000,000 / 4 = 500,000.</p></li>
 <li><p>To confirm – a direct line count on the compressed file gives the wrong answer!</p></li>
 </ul>
-<div class="sourceCode" id="cb58"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>101139</code></pre>
 </details>
 <details>
@@ -926,10 +926,10 @@ NC_015079.1     3898    3900</code></pre></li>
 </summary>
 <ul>
 <li><p>Either use <code>zcat &lt;file&gt; | grep</code>:</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ERR10802863_R1.fastq.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-c</span> <span class="st">"ACGT"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ERR10802863_R1.fastq.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-c</span> <span class="st">"ACGT"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>100465</code></pre></li>
 <li><p>Or <code>zgrep</code>:</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zgrep</span> <span class="at">-c</span> <span class="st">"ACGT"</span> ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zgrep</span> <span class="at">-c</span> <span class="st">"ACGT"</span> ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>100465</code></pre></li>
 </ul>
 </details>
@@ -942,7 +942,7 @@ NC_015079.1     3898    3900</code></pre></li>
 <li>Then use <code>=</code> as the <code>cut</code> delimiter and select the second “column”.</li>
 <li>Finally, use the by now familiar <code>sort | uniq -c</code> idiom to create the count table.</li>
 </ul>
-<div class="sourceCode" id="cb64"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ERR10802863_R1.fastq.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"@"</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">"="</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ERR10802863_R1.fastq.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"@"</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">"="</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>  32678 35
       4 36
       7 37
@@ -988,7 +988,7 @@ NC_015079.1     3898    3900</code></pre></li>
 <summary>
 <strong>5.</strong> Count the number of reads that contain at least 10 consecutive <code>N</code>s
 </summary>
-<div class="sourceCode" id="cb66"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ERR10802863_R1.fastq.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-c</span> <span class="st">"NNNNNNNNNN"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ERR10802863_R1.fastq.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-c</span> <span class="st">"NNNNNNNNNN"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>32612</code></pre>
 </details>
 <details>
@@ -997,7 +997,7 @@ NC_015079.1     3898    3900</code></pre></li>
 </summary>
 <p>The number of reads with at least 10 consecutive <code>N</code>s (32,612 – previous question) is rather close to the number of 35-bp reads (32,678 – question before that). Might nearly all 35-bp reads consist of mostly or only <code>N</code>s?</p>
 <p>One way to see a sample of 35-bp reads is by using <code>grep</code>s <code>-A</code> option to also print the line <em>after</em> each match:</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ERR10802863_R1.fastq.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-A1</span> <span class="st">"length=35"</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 20</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> ERR10802863_R1.fastq.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-A1</span> <span class="st">"length=35"</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 20</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>@ERR10802863.11918285 11918285 length=35
 NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 --
@@ -1024,8 +1024,8 @@ NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN</code></pre>
 <summary>
 <strong>7.</strong> What is the total number of reads across all R1 files?
 </summary>
-<p>We can use <code>zcat</code> with a <code>*</code> wildcard pattern to print the contents of all R1 files, and simply perform a line count on that:</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="pp">*</span>_R1.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can use <code>zcat</code> with a <code>*</code> wildcard pattern to print the contents of all R1 files, and simply perform a line count on that (this takes some seconds to run):</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="pp">*</span>_R1.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>44000000</code></pre>
 <p>So, the total number of reads is 44,000,000 / 4 = 11,000,000. This makes sense because we have 22 R1 FASTQ files, each of which has 500 k reads.</p>
 </details>
@@ -1044,8 +1044,6 @@ Garrigós, Marta, Guillem Ylla, Josué Martínez-de la Puente, Jordi Figuerola, 
 
 <ol>
 <li id="fn1"><p>Because double-stranded DNA is represented as a single sequence, the <code>strand</code> column effectively indicates in which direction a feature should be read along this sequence.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p> <code>/fs/ess/PAS2880/users/$USER/</code><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p> <code>/fs/ess/PAS2880/users/$USER/</code><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

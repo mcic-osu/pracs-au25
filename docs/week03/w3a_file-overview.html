@@ -250,7 +250,7 @@ Jelmer Poelstra
 </section>
 <section id="overview" class="slide level2">
 <h2>Overview</h2>
-<p>Sequences and annotations are mostly stored in <strong>plain-text</strong> formats. Some of the most common types, which you’ll work with in this course, are:</p>
+<p>DNA/RNA/protein sequences and sequence annotations are mostly stored in <strong>plain-text</strong> formats. Some of the most common types, which you’ll work with in this course, are:</p>
 <ul>
 <li><strong>FASTA</strong><br>
 Simple sequence files, where each entry contains a header and a DNA/AA sequence.<br>
@@ -260,7 +260,7 @@ Versatile: may contain a few short sequences, entire genome assemblies, proteome
 <div class="fragment">
 <ul>
 <li><strong>FASTQ</strong><br>
-The standard format for <strong>HTS reads</strong> — has a quality score for each nucleotide.</li>
+The standard format for <strong>HTS reads</strong> — includes a quality score for each nucleotide.</li>
 </ul>
 <hr style="height:1pt; visibility:hidden;">
 <ul>
@@ -274,7 +274,7 @@ An alignment format for <strong>HTS reads</strong>. E.g. produced when you align
 <div class="fragment">
 <ul>
 <li><strong>GTF</strong>/<strong>GFF</strong><br>
-A <strong>genome annotation</strong> format: tables with information such as coordinates of genes and exons.</li>
+A <strong>(genome) annotation</strong> format: table with information such as coordinates of genes and exons.</li>
 </ul>
 </div>
 </section>
@@ -294,15 +294,28 @@ A <strong>genome annotation</strong> format: tables with information such as coo
 <li>The sequence is often spread across multiple lines (with a fixed line width like 50 characters)</li>
 </ul>
 </div>
+<div class="fragment">
+<hr style="height:1pt; visibility:hidden;">
+<div class="callout callout-note callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
+<p>FASTA files most commonly have a <code>.fa</code> or <code>.fasta</code> <strong>file extension</strong>. Also used are <code>.fna</code> and <code>.faa</code>, which make explicit that it contains nucleotide or amino acid (protein) sequences, respectively.</p>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="fastq-files" class="slide level2">
 <h2>FASTQ files</h2>
 <p>FASTQ is the standard format for HTS reads. <strong>Each</strong> <strong>read forms</strong> <strong>one FASTQ entry</strong> and is represented by four lines, which contain, respectively:</p>
 <div class="fragment">
 <ol type="1">
-<li>A <strong>header</strong> that starts with <code>@</code> and e.g.&nbsp;uniquely identifies the read</li>
+<li>A <strong>header</strong> that starts with <strong><code>@</code></strong> and e.g.&nbsp;uniquely identifies the read</li>
 <li>The <strong>sequence</strong> itself</li>
-<li>A <strong><code>+</code></strong> (plus sign)</li>
+<li>A plus sign, <strong><code>+</code></strong></li>
 <li>One-character <strong>quality scores</strong> for each base (hence FASTQ as in “Q” for “quality”)</li>
 </ol>
 </div>
@@ -317,14 +330,14 @@ A <strong>genome annotation</strong> format: tables with information such as coo
 <section id="fastq-quality-scores" class="slide level2">
 <h2>FASTQ quality scores</h2>
 <p>The quality scores in the reads represent an estimate of the error probability of the base call.</p>
-<p>Specifically, they correspond to a numeric “Phred” quality score (<span class="math inline">\(Q\)</span>), which is a function of the estimated probability that a base call is erroneous (<span class="math inline">\(P\)</span> ):</p>
+<p>Specifically, they correspond to a numeric “Phred” quality score (<span class="math inline">\(Q\)</span>), which is a function of the estimated probability that a base call is erroneous (<span class="math inline">\(P\)</span>):</p>
 <p><span class="math display">\[
 Q = -10 * log_{10}(P)
 \]</span></p>
 <div class="fragment">
 <p>For example:</p>
 <p><span class="math display">\[
--10 * log_{10}(0.1) = 10
+10 = -10 * log_{10}(0.1)
 \]</span></p>
 </div>
 </section>
@@ -422,11 +435,11 @@ Q = -10 * log_{10}(P)
 </section>
 <section id="fastq-cont." class="slide level2">
 <h2>FASTQ (cont.)</h2>
-<p>How are reads organized into different FASTQ files? While FASTQ files can be any size, they are usually split by:</p>
+<p>While FASTQ files can be any size, separate files are typically used for each:</p>
 <ul>
 <li><p><strong>Read direction</strong><br>
 In paired-end (PE) sequencing, forward and reverse reads are typically in two separate files:</p>
-<table class="caption-top">
+<table class="table-striped table-hover caption-top">
 <thead>
 <tr class="header">
 <th>Read direction</th>
@@ -448,16 +461,17 @@ In paired-end (PE) sequencing, forward and reverse reads are typically in two se
 Reads are normally “demultiplexed” into separate files for each sample.</p></li>
 </ul>
 <div class="fragment">
-<p>With that, having paired-end FASTQ files for 2 samples typically looks something like this:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a></a><span class="ex">sample1_R1.fastq.gz</span></span>
-<span id="cb2-2"><a></a><span class="ex">sample1_R2.fastq.gz</span></span>
-<span id="cb2-3"><a></a><span class="ex">sample2_R1.fastq.gz</span></span>
-<span id="cb2-4"><a></a><span class="ex">sample2_R2.fastq.gz</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Therefore, having paired-end FASTQ files for 2 samples usually looks something like this:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a></a><span class="co"># (The FASTQ file extension is usually '.fastq' but sometimes '.fq')</span></span>
+<span id="cb2-2"><a></a><span class="ex">sample1_R1.fastq</span></span>
+<span id="cb2-3"><a></a><span class="ex">sample1_R2.fastq</span></span>
+<span id="cb2-4"><a></a><span class="ex">sample2_R1.fastq</span></span>
+<span id="cb2-5"><a></a><span class="ex">sample2_R2.fastq</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="gtfgff-files" class="slide level2">
 <h2>GTF/GFF files</h2>
-<p>The very similar GTF and GFF formats are <strong>tabular</strong> genome annotation files with:</p>
+<p>The very similar GTF (<code>.gtf</code>) and GFF (<code>.gff</code>) formats are <strong>tabular</strong> annotation files with:</p>
 <ul>
 <li>One row for each annotated “<strong>genomic feature</strong>” (gene, exon, etc.)</li>
 <li>Columns with information like the genomic coordinates of the features</li>
@@ -488,14 +502,6 @@ Reads are normally “demultiplexed” into separate files for each sample.</p><
 </div>
 </div>
 </div>
-</section>
-<section id="recap-sequence-file-types" class="slide level2">
-<h2>Recap: Sequence file types</h2>
-<ul>
-<li><p>FASTA</p></li>
-<li><p>FASTQ</p></li>
-<li><p>GTF/GFF</p></li>
-</ul>
 </section></section>
 <section>
 <section id="the-courses-main-example-dataset" class="title-slide slide level1 center" data-background-color="silver">
@@ -505,7 +511,7 @@ Reads are normally “demultiplexed” into separate files for each sample.</p><
 <section id="garrigos-et-al.-2025" class="slide level2">
 <h2>Garrigos et al.&nbsp;2025</h2>
 <p>Throughout the course, we will use an example/practice data set, which is from the paper:</p>
-<p><span class="citation" data-cites="garrigós2025">Garrigós et al. (<a href="#/x" role="doc-biblioref" onclick="">2025</a>)</span> – <em>Two avian Plasmodium species trigger different transcriptional responses on their vector Culex pipiens</em>:</p>
+<p><span class="citation" data-cites="garrigós2025">Garrigós et al. (<a href="#/references" role="doc-biblioref" onclick="">2025</a>)</span> – <em>Two avian Plasmodium species trigger different transcriptional responses on their vector Culex pipiens</em>:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><a href="../img/garrigos_paper.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img data-src="../img/garrigos_paper.png" class="quarto-figure quarto-figure-center" style="width:80.0%" alt="A screenshot of the paper's front matter."></a></p>
@@ -556,25 +562,28 @@ Reads are normally “demultiplexed” into separate files for each sample.</p><
 <p>However, to keep things manageable while practicing, I have <strong>subset</strong> the data to omit the 21-day samples and only keep 500,000 reads per FASTQ file.</p>
 <p>All in all, the set of files, <a href="https://github.com/jelmerp/garrigos-data">available through GitHub</a>, consists of:</p>
 <ul>
-<li><strong>Sequence data</strong>: 44 paired-end 75-bp Illumina FASTQ files for 22 samples.</li>
-<li>A <strong>Reference genome annotation</strong> GTF file for <em>Culex pipiens</em> (we will download the assembly FASTA file separately)</li>
+<li><strong>Reads</strong>: 44 paired-end 75-bp Illumina FASTQ files for 22 samples</li>
+<li><strong>A reference genome annotation</strong> GTF file for <em>Culex pipiens</em> (we will download the assembly FASTA file separately)</li>
 <li><strong>Metadata</strong> (sample data): A table with e.g.&nbsp;treatment info for each sample</li>
-<li>A <strong>README</strong> file describing the data set.</li>
+<li>A <strong>README</strong> file describing the data set</li>
 </ul>
 </section>
 <section id="rna-seq-analysis-steps" class="slide level2">
 <h2>RNA-Seq analysis steps</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="../img/rnaseq-wf-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img data-src="../img/rnaseq-wf-1.png" class="quarto-figure quarto-figure-center" style="width:60.0%" alt="A diagram showing the steps in an RNA-Seq analysis pipeline."></a></p>
+<p><a href="../img/alignment5.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img data-src="../img/alignment5.png" class="quarto-figure quarto-figure-center" style="width:72.0%" alt="A diagram of RNA-Seq analysis steps."></a></p>
 </figure>
+</div>
+<div class="footer">
+
 </div>
 </section>
 <section id="rna-seq-analysis-steps-cont." class="slide level2">
 <h2>RNA-Seq analysis steps (cont.)</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="../img/rnaseq-wf-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img data-src="../img/rnaseq-wf-2.png" class="quarto-figure quarto-figure-center" style="width:60.0%" alt="A diagram showing the steps in an RNA-Seq analysis pipeline."></a></p>
+<p><a href="../img/rnaseq-wf-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img data-src="../img/rnaseq-wf-1.png" class="quarto-figure quarto-figure-center" style="width:60.0%" alt="A diagram showing the steps in an RNA-Seq analysis pipeline."></a></p>
 </figure>
 </div>
 </section>
@@ -582,13 +591,20 @@ Reads are normally “demultiplexed” into separate files for each sample.</p><
 <h2>RNA-Seq analysis steps (cont.)</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="../img/rnaseq-wf-3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img data-src="../img/rnaseq-wf-3.png" class="quarto-figure quarto-figure-center" style="width:60.0%" alt="A diagram showing the steps in an RNA-Seq analysis pipeline."></a></p>
+<p><a href="../img/rnaseq-wf-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img data-src="../img/rnaseq-wf-2.png" class="quarto-figure quarto-figure-center" style="width:60.0%" alt="A diagram showing the steps in an RNA-Seq analysis pipeline."></a></p>
 </figure>
 </div>
 </section>
-<section id="x" class="slide level2 smaller scrollable">
-<h2>X</h2>
-<p>Check https://jelmerp.github.io/ENTMLGY6703/lectures/rnaseq.html#/from-counts-to-conclusions</p>
+<section id="rna-seq-analysis-steps-cont.-2" class="slide level2">
+<h2>RNA-Seq analysis steps (cont.)</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><a href="../img/rnaseq-wf-3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img data-src="../img/rnaseq-wf-3.png" class="quarto-figure quarto-figure-center" style="width:60.0%" alt="A diagram showing the steps in an RNA-Seq analysis pipeline."></a></p>
+</figure>
+</div>
+</section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>References</h2>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">

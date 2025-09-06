@@ -37,7 +37,7 @@ editor_options:
 
 We'll now pick up where we left off last week,
 continuing with basic Unix shell commands,
-focusing on those that work with files and dirs.
+with a focus on commands that operate on files and dirs.
 Specifically, you will learn to use the Unix shell to:
 
 - Create, copy, move, rename and delete directories and files (**this lecture**)
@@ -53,76 +53,77 @@ can perform operations like listing, creating, moving, renaming, copying and
 removing files and folders.
 Here, you will learn to use Unix shell commands that can perform these actions.
 
-**Why do I need to learn to do these relatively trivial tasks in the shell?**
+**Why do I need to learn to do these relatively trivial tasks in the shell?** 🤨
 
 - This will help you to get more comfortable with working in the shell.
-- These are good commands to learn how the shell works more generally,
+- These commands are useful to learn how the shell works generally,
   and how commands are structured.
-- You will eventually use the shell for data processing,
-  and it is more efficient to stick with the shell for file browser operations,
-  rather than going back and forth all the time.
-- You may run into situations where a GUI file browser is not at all available.
-- ***With practice, using the shell is faster and more powerful than a GUI file browser***
-  (certainly at OSU).
+- ***With practice, using the shell is faster and more powerful than a GUI file***
+  ***browser*** (certainly at OSU).
+- You may eventually run into situations where a GUI file browser is not available.
 
 ### Getting ready
 
-- **Start a VS Code session like you've done before**
+#### Start a VS Code session
 
-  <details><summary>_Click here to see the instructions_</summary>
-  
-  1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>
-  2. In the blue top bar, select `Interactive Apps` and near the bottom, click `Code Server`
-  3. Fill out the form as follows:
-     - **Cluster**: `pitzer`
-     - **Account**: `PAS2880`
-     - **Number of hours**: `2`
-     - **Working Directory**: `/fs/ess/PAS2880/user/<username>` (replace `<username>` with your user name)
-     - **App Code Server version**: `4.8.3`
-  4. Click `Launch`
-  5. Click the `Connect to VS Code` button once it appears
-  6. In VS Code, open a terminal by either:
-     - Clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal`
-     - Using the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>
-  7. Check that your are in `/fs/ess/PAS2880/users/$USER`
-     (recall: `$USER` is a variable that represents your username!)
-     by typing `pwd` in the terminal.
-     _(If you're not, that dir may be listed under `Recents` in the `Get Started`_
-     _document --- if that's the case, click on that entry._
-     _Otherwise, click `File` > `Open Folder` and type/select that dir.)_
+1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>
+2. In the blue top bar, select `Interactive Apps` and near the bottom,
+   click `Code Server`
+3. Fill out the form as follows:
+   - **Cluster**: `pitzer`
+   - **Account**: `PAS2880`
+   - **Number of hours**: `2`
+   - **Working Directory**: `/fs/ess/PAS2880/user/<username>`
+    (replace `<username>` with your user name)
+   - **App Code Server version**: `4.8.3`
+4. Click `Launch`
+5. Click the `Connect to VS Code` button once it appears
+6. In VS Code, open a terminal by 
+   clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal` ^[
+   Or use the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>.]
+7. Check that your are in `/fs/ess/PAS2880/users/$USER`
+   by typing `pwd` in the terminal.\
+   _(Recall that `$USER` is a variable that represents your username._
+   _If you're not in that dir, it may be listed under `Recents` in the_
+   _`Get Started` document -- if so, click on that entry._
+   _Otherwise, click `File` > `Open Folder` and type/select_
+   _`/fs/ess/PAS2880/users/$USER`.)_
      
-  </details>
+#### Open a Markdown file for notes
 
-- **Open a Markdown file for notes**\
-  I recommend that you create and open a Markdown file to keep
-  notes on what we're doing in this session:
+I recommend that you create and open a Markdown file to keep
+notes on what we're doing in this session:
 
-  1. Click <i class="fa fa-bars"></i> > `File` > `New File`
-  2. Save the file inside `/fs/ess/PAS2880/users/$USER/week03`,
-     e.g. as `lectureB.md`
+1. Click <i class="fa fa-bars"></i> > `File` > `New File`
+2. Save the file inside `/fs/ess/PAS2880/users/$USER/week03`,
+   e.g. as `lectureB.md`
 
 ## Additional VS Code functionality and setup
 
 #### Try a few color themes
 
-1. Access the "Color Themes" option by clicking <i class="fa fa-cog"></i> > `Color Theme`.
+1. Access the "Color Themes" option by clicking
+   <i class="fa fa-cog"></i> (bottom left) > `Color Theme`.
 2. Try out a few themes and see pick one you like!
 
 #### Options for the Side Bar
 
-- Icons to toggle **(wide/Primary) Side Bar** options:
-  - ***Explorer***: File browser & outline for the active file.
-  - ***Search***: To search recursively across all files in the active folder.
-  - ***Source Control***: To work with Git (*next week*).
-  - Debugger
-  - ***Extensions***: To install extensions (*next week*).
+The activity bar or narrow side bar contains the following icons
+to toggle **(wide/Primary) Side Bar** options:
+
+- ***Explorer***: File browser & outline for the active file
+- ***Search***: To search recursively across all files in the active folder
+- ***Source Control***: To work with Git (*next week*)
+- ***Debugger*** (we won't work with this)
+- ***Extensions***: To install extensions (*up next!*)
 
 #### Install two VS Code extensions
 
-Click the gear icon <i class="fa fa-cog"></i> and then `Extensions`,
-and search for and then install:
+In the narrow side bar, click the `Extensions` icon.
+In the Extensions pane that now makes up the wide side bar,
+search for and then install the following two extensions:
 
-- **shellcheck** (by *simonwong*) --- this will check our shell scripts later on!
+- **shellcheck** (by *simonwong*) --- this will check your shell scripts later on!
 - **Rainbow CSV** (by *mechatroner*) ---
   make CSV/TSV files easier to view with column-based colors
   
@@ -242,20 +243,22 @@ fastq  meta  README.md  ref
 ::: {.callout-tip collapse="false"}
 #### `ls` output colors
 
-The `ls` output above does not show the different colors you should see in your shell —
-the most common ones are:
+The `ls` output above does not show the different colors you should see in your
+shell — the most common ones are:
 
-- Entries in **[blue]{style="color: #0328fc"}** are directories (`fastq`, `meta`, and `ref` above)
+- Entries in **[blue]{style="color: #0328fc"}** are directories
+  (`fastq`, `meta`, and `ref` above)
 - Entries in **black** are regular files (`README.md` above)
-- Entries in **[red]{style="color: #d92118"}** are compressed files (we'll see examples of this soon).
+- Entries in **[red]{style="color: #d92118"}** are compressed files
+  (we'll see examples of this soon).
 
-_(Some of these colors depend on the color scheme of your terminal / VS Code._
-_For example, in dark themes, regular text files are in white.)_
+_(Some of these depend on the color scheme of your terminal / VS Code._
+_E.g., in dark themes, regular text files are in white.)_
 :::
 
 You can use an **argument** to change the dir (or file) that `ls` operates on, 
 and you can use **options** to change how it shows the output.
-Let's start with *options* --- for example, the option **`-l`** (lowercase L):
+Let's start with *options* -- specifically, the option **`-l`** (lowercase L):
 
 ``` bash
 ls -l 
@@ -269,8 +272,9 @@ drwxr-x---+ 2 jelmer PAS0471 4096 Jul  4 20:52 ref
 ```
 
 It lists the same items as earlier, but **printed in a different format**:
-one item per line, with additional information such as the date and time each file was last modified,
-and file sizes in bytes (to the left of the date).
+one item per line,
+with additional information such as the date and time that each file was last
+modified, and the file sizes in bytes directly to the left of the date.
 
 Let's add another option, **`-h`**:
 
@@ -286,7 +290,8 @@ drwxr-x---+ 2 jelmer PAS0471 4.0K Jul  4 20:52 ref
 ```
 
 <details><summary>How does the output differ after adding `-h`, and what do you think that means? *(Click to see the answer)*</summary>
-  The only difference is in the format of the column reporting the sizes of the items listed.
+  The only difference is in the format of the column reporting the sizes of the
+  items listed.
   
   We now have "Human-readable filesizes" (hence `-h`),
   where sizes on the scale of kilobytes will be shown  with `K`s,
@@ -294,10 +299,8 @@ drwxr-x---+ 2 jelmer PAS0471 4.0K Jul  4 20:52 ref
   That can be useful especially for large files.
 </details>
 
-<hr style="height:1pt; visibility:hidden;" />
-
-::: {.callout-note collapse="false"}
-#### More info about the columns in long-format `ls` output
+::: {.callout-note collapse="true"}
+#### More info about the columns in long-format `ls` output _(Click to expand)_
 
 The following image shows what each column in long-format `ls` represents:
 
@@ -312,6 +315,10 @@ Some notes about the above:
   size of the dir and its contents.
   Basically, you should only pay attention to sizes of _files_ when looking at
   long-format `ls` output (see the next box to get dir sizes).
+
+Finally, the first line of long-format `ls` output (`total 2` / `total 2k` in
+the examples above) gives an indication of the total size of files
+that are directly located in this folder, i.e. not including those in subdirs.
 :::
 
 Moving on to **argument(s)** --
@@ -333,7 +340,7 @@ ERR10802866_R1.fastq.gz  ERR10802870_R1.fastq.gz  ERR10802876_R1.fastq.gz  ERR10
 ERR10802866_R2.fastq.gz  ERR10802870_R2.fastq.gz  ERR10802876_R2.fastq.gz  ERR10802880_R2.fastq.gz  ERR10802884_R2.fastq.gz
 ```
 
-And like you saw with `cal`, options and arguments can be combined:
+And like you saw last week with `cal`, options and arguments can be combined:
 
 ``` bash
 ls -lh fastq
@@ -383,8 +390,8 @@ ls -lh fastq/ERR10802865_R2.fastq.gz
 
 ### `tree` to recursively list files in tree-like format
 
-By default, `ls` is not recursive,
-which means that it only shows results for one directory level.
+By default, `ls` is **not recursive**,
+**which means that it only shows results for one directory level**.
 Compare that with the output of the `tree` command,
 which gives a nice recursive overview in a simple tree-like format
 (with the `-C` option additionally adding colors):
@@ -505,13 +512,13 @@ touch newfile2.txt newfile3.txt
 
 ::: callout-tip
 #### Operating on multiple files
-We just saw that both `mkdir` and `touch` can take multiple arguments.
+As you just saw, both `mkdir` and `touch` can take multiple arguments.
 Notably, almost all Unix commands that operate on files and/or dirs
 can operate on multiple (many!) files at a time,
-which is one reason that using them can be highly efficient.
+which is one reason that using these commands can be highly efficient.
 
-That's especially true once you learn how to select/specify may files at once
-using shortcuts known as wildcards, as will later in this lecture.
+That's especially true once you know how to select/specify many files at once
+using shortcuts known as wildcards: we will look at that later in this lecture.
 :::
 
 ::: exercise
@@ -521,7 +528,7 @@ using shortcuts known as wildcards, as will later in this lecture.
 
    <details><summary>*Click to see the solutions*</summary>
   
-   The initial files were created in your working dir.
+   The files were created in your working dir.
   
    ```bash
    ls -lh
@@ -535,6 +542,7 @@ using shortcuts known as wildcards, as will later in this lecture.
    </details>
 
 2. Can you create a create a new file `monarch.txt` inside a new dir `butterflies`?
+   Don't change your working dir while you're doing this.
 
    <details><summary>*Click to see the solutions*</summary>
 
@@ -564,8 +572,8 @@ using shortcuts known as wildcards, as will later in this lecture.
 
 The `cp` command copies files and/or dirs from one location to another.
 Just like when copying files in a GUI file browser,
-the copy can have a different name than the original --
-or the same name, as long as it's copied to a different dir.
+the new copy can have a different name than the original.
+It can also have the same name, as long as it's copied to a different dir.
 
 `cp` has two **required** arguments in the following order:
 
@@ -657,15 +665,13 @@ butterflies  meta2.tsv  metadata.tsv  newfile1.txt  newfile2.txt  newfile3.txt  
 
 ## `mv` to move and rename
 
-Three notes as a preamble to the `mv` command, in part a recap from before:
+First off, recall from last week that a mere file name like `monarch.txt` can
+represent a path, implying that the file is in your current working dir.
+More generally, both a file's name (e.g. `monarch.txt`) and the dir it is inside
+(`butterflies/`) are part of the path (`butterflies/monarch.txt`).
 
-1. Moving files versus renaming them is fundamentally the same operation:
-   you are **changing the path**.
-2. For a file,
-   both its name (e.g. `monarch.txt`) and the dir it is inside
-   (`butterflies/`) are part of the path (`butterflies/monarch.txt`).
-3. A mere file name like `monarch.txt` can also represent a path:
-   it implies that the file is in your current working dir.
+With that in mind, it becomes apparent that _moving_ a file versus _renaming_ it
+is fundamentally the same operation: you are **changing the path** to the file.
 
 As such, the **`mv`** command can be used to move files, rename them,
 or do both at the same time:
@@ -689,7 +695,7 @@ or do both at the same time:
   mv metadata.tsv meta/metadata_old.tsv
   ```
 
-Unlike `cp`, the `mv` command is recursive by default!
+Finally, not that unlike `cp`, the `mv` command is recursive by default!
 
 ::: callout-note
 #### Operating on multiple files with `mv` and `cp`
@@ -862,7 +868,8 @@ it **does not** make a difference whether or not you using a trailing slash.
 Shell wildcard expansion is a very useful technique to select multiple files,
 where **wildcards** are _characters that have a special meaning_.
 
-Start by creating some dummy FASTQ files in your `sandbox` dir:
+To practice with this, 
+start by creating some dummy FASTQ files in your `sandbox` dir:
 
 ```sh
 # (Copy-and-paste this into the shell rather than typing it out) 
@@ -874,7 +881,6 @@ touch sample3_R1.fastq sample3_R2.fastq
 By far the most commonly used wildcard is `*`,
 which matches **any number of any combination of characters**
 (including "nothing" -- the absence of any characters).
-
 For example, you can match only the two `sample1` files with a `*` using:
 
 ```bash
@@ -1006,22 +1012,24 @@ For example, we can:
   rm -v *.txt
   ```
   ```bash-out
-  removed ‘sample1.txt’
-  removed ‘sample2.txt’
+  removed 'newfile2.txt'
+  removed 'newfile3_copy.txt'
+  removed 'newfile3.txt'
+  removed 'sample1.txt'
+  removed 'sample2.txt'
   ```
 
 - Move all FASTQ files using:
 
   ```bash
   mkdir fastq_files
-  mv *fastq fastq_files/
+  mv -v *fastq fastq_files/
   ```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: {.callout-warning collapse="true"}
-#### In case you have heard of "regular expressions": these are not the same as wildcards _(Click to expand)_
-Don't confuse wildcards with **regular expressions**!
-You may have used regular expressions before, for example with R or a text editor.
-They are similar to but not the same as shell wildcards.
-:::
+  ```bash-out
+  renamed 'sample1_R1.fastq' -> 'fastq_files/sample1_R1.fastq'
+  renamed 'sample1_R2.fastq' -> 'fastq_files/sample1_R2.fastq'
+  renamed 'sample2_R1.fastq' -> 'fastq_files/sample2_R1.fastq'
+  renamed 'sample2_R2.fastq' -> 'fastq_files/sample2_R2.fastq'
+  renamed 'sample3_R1.fastq' -> 'fastq_files/sample3_R1.fastq'
+  renamed 'sample3_R2.fastq' -> 'fastq_files/sample3_R2.fastq'
+  ```

@@ -38,7 +38,8 @@ bibliography: ../references.bib
 
 ## Overview
 
-Sequences and annotations are mostly stored in **plain-text** formats.
+DNA/RNA/protein sequences and sequence annotations are mostly stored in **plain-text**
+formats.
 Some of the most common types, which you'll work with in this course, are:
 
 - **FASTA**\
@@ -50,7 +51,7 @@ Some of the most common types, which you'll work with in this course, are:
 . . .
 
 - **FASTQ**\
-  The standard format for **HTS reads** — has a quality score for each nucleotide.
+  The standard format for **HTS reads** — includes a quality score for each nucleotide.
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -65,8 +66,8 @@ Some of the most common types, which you'll work with in this course, are:
 . . .
 
 - **GTF**/**GFF**\
-  A **genome annotation** format:
-  tables with information such as coordinates of genes and exons.
+  A **(genome) annotation** format:
+  table with information such as coordinates of genes and exons.
 
 ## FASTA files
 
@@ -91,6 +92,16 @@ Each entry contains a **header** and the **sequence** itself, where:
 - Header lines start with a "`>`" and provide identifying information for the sequence
 - The sequence is often spread across multiple lines (with a fixed line width like 50 characters)
 
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+::: {.callout-note appearance="simple"}
+FASTA files most commonly have a `.fa` or `.fasta` **file extension**.
+Also used are `.fna` and `.faa`, which make explicit that it contains nucleotide
+or amino acid (protein) sequences, respectively.
+:::
+
 ## FASTQ files
 
 FASTQ is the standard format for HTS reads.
@@ -99,9 +110,9 @@ which contain, respectively:
 
 . . .
 
-1.  A **header** that starts with `@` and e.g. uniquely identifies the read
+1.  A **header** that starts with **`@`** and e.g. uniquely identifies the read
 2.  The **sequence** itself
-3.  A **`+`** (plus sign)
+3.  A plus sign, **`+`**
 4.  One-character **quality scores** for each base (hence FASTQ as in "Q" for "quality")
 
 . . .
@@ -114,7 +125,7 @@ The quality scores in the reads represent an estimate of the error probability o
 the base call.
 
 Specifically, they correspond to a numeric "Phred" quality score ($Q$),
-which is a function of the estimated probability that a base call is erroneous ($P$ ):
+which is a function of the estimated probability that a base call is erroneous ($P$):
 
 $$
 Q = -10 * log_{10}(P)
@@ -125,7 +136,7 @@ $$
 For example:
 
 $$
--10 * log_{10}(0.1) = 10
+10 = -10 * log_{10}(0.1)
 $$
 
 ## FASTQ quality scores
@@ -198,8 +209,7 @@ in the read.
 
 ## FASTQ (cont.)
 
-How are reads organized into different FASTQ files?
-While FASTQ files can be any size, they are usually split by:
+While FASTQ files can be any size, separate files are typically used for each:
 
 - **Read direction**\
   In paired-end (PE) sequencing,
@@ -209,25 +219,29 @@ While FASTQ files can be any size, they are usually split by:
   |----|--------------|
   | Forward | `_R1` |
   | Reverse | `_R2` |
+  
+  : {.striped .hover}
 
 - **Sample**\
   Reads are normally "demultiplexed" into separate files for each sample.
 
 . . .
 
-With that,
-having paired-end FASTQ files for 2 samples typically looks something like this:
+Therefore,
+having paired-end FASTQ files for 2 samples usually looks something like this:
 
 ``` bash
-sample1_R1.fastq.gz
-sample1_R2.fastq.gz
-sample2_R1.fastq.gz
-sample2_R2.fastq.gz
+# (The FASTQ file extension is usually '.fastq' but sometimes '.fq')
+sample1_R1.fastq
+sample1_R2.fastq
+sample2_R1.fastq
+sample2_R2.fastq
 ```
 
 ## GTF/GFF files
 
-The very similar GTF and GFF formats are **tabular** genome annotation files with:
+The very similar GTF (`.gtf`) and GFF (`.gff`) formats are **tabular** 
+annotation files with:
 
 - One row for each annotated "**genomic feature**" (gene, exon, etc.)
 - Columns with information like the genomic coordinates of the features
@@ -254,14 +268,6 @@ NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_i
 - _source_ --- Name of the program that generated this feature, or the data source (e.g. database)
 - _attribute_ --- A semicolon-separated list of tag-value pairs with additional information
 :::
-
-## Recap: Sequence file types
-
-- FASTA
-
-- FASTQ
-
-- GTF/GFF
 
 # The course's main example dataset {background-color="silver"}
 
@@ -304,13 +310,20 @@ reads per FASTQ file.
 All in all, the set of files, [available through GitHub](https://github.com/jelmerp/garrigos-data),
 consists of:
 
-- **Sequence data**: 44 paired-end 75-bp Illumina FASTQ files for 22 samples.
-- A **Reference genome annotation** GTF file for _Culex pipiens_
+- **Reads**: 44 paired-end 75-bp Illumina FASTQ files for 22 samples
+- **A reference genome annotation** GTF file for _Culex pipiens_
   (we will download the assembly FASTA file separately)
 - **Metadata** (sample data): A table with e.g. treatment info for each sample
-- A **README** file describing the data set.
+- A **README** file describing the data set
 
 ## RNA-Seq analysis steps
+
+![](../img/alignment5.png){fig-align="center" width="72%" fig-alt="A diagram of RNA-Seq analysis steps." .lightbox}
+
+::: footer
+:::
+
+## RNA-Seq analysis steps (cont.)
 
 ![](../img/rnaseq-wf-1.png){fig-align="center" width="60%" fig-alt="A diagram showing the steps in an RNA-Seq analysis pipeline." .lightbox}
 
@@ -322,6 +335,4 @@ consists of:
 
 ![](../img/rnaseq-wf-3.png){fig-align="center" width="60%" fig-alt="A diagram showing the steps in an RNA-Seq analysis pipeline." .lightbox}
 
-## X
-
-Check https://jelmerp.github.io/ENTMLGY6703/lectures/rnaseq.html#/from-counts-to-conclusions
+## References

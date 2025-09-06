@@ -62,29 +62,32 @@ In this lecture, you will learn to use the Unix shell to:
 
 ### Getting ready
 
-- Start a VS Code session:\
+- Start a VS Code session like before:\
 
   <details><summary>_Click here to see the instructions_</summary>
   
   1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>
-  2. In the blue top bar, select `Interactive Apps` and near the bottom, click `Code Server`
+  2. In the blue top bar, select `Interactive Apps` and near the bottom,
+     click `Code Server`
   3. Fill out the form as follows:
      - **Cluster**: `pitzer`
      - **Account**: `PAS2880`
      - **Number of hours**: `2`
-     - **Working Directory**: `/fs/ess/PAS2880/user/<username>` (replace `<username>` with your user name)
+     - **Working Directory**: `/fs/ess/PAS2880/user/<username>`
+      (replace `<username>` with your user name)
      - **App Code Server version**: `4.8.3`
   4. Click `Launch`
   5. Click the `Connect to VS Code` button once it appears
-  6. In VS Code, open a terminal by either:
-     - Clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal`
-     - Using the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>
+  6. In VS Code, open a terminal by 
+     clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal` ^[
+     Or use the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>.]
   7. Check that your are in `/fs/ess/PAS2880/users/$USER`
-     (recall: `$USER` is a variable that represents your username!)
-     by typing `pwd` in the terminal.
-     _(If you're not, that dir may be listed under `Recents` in the `Get Started`_
-     _document --- if that's the case, click on that entry._
-     _Otherwise, click `File` > `Open Folder` and type/select that dir.)_
+     by typing `pwd` in the terminal.\
+     _(Recall that `$USER` is a variable that represents your username._
+     _If you're not in that dir, it may be listed under `Recents` in the_
+     _`Get Started` document -- if so, click on that entry._
+     _Otherwise, click `File` > `Open Folder` and type/select_
+     _`/fs/ess/PAS2880/users/$USER`.)_
      
   </details>
 
@@ -112,6 +115,13 @@ screen:
 
 ```bash
 cat README.md
+```
+```bash-out
+TBA
+```
+
+```bash
+cat meta/metadata.tsv
 ```
 ```bash-out
 sample_id       time    treatment
@@ -142,7 +152,7 @@ ERR10802868     24hpi   relictum
 ### `head` and `tail`
 
 Some files, especially when working with omics data, can be huge --
-then, printing the whole file with `cat` is not typically desired.
+so printing the whole file with `cat` is not always ideal.
 The twin commands **`head`** and **`tail`** can be useful,
 as they print only the first (`head`) or last (`tail`) lines of a file.
 
@@ -215,18 +225,16 @@ i��k��q�ְ(G�ϫ��L�^��=��<���K��j�_/�[ۭ
 ```
 
 <details><summary>Ouch! 😳 What went wrong here? *(Click for the solution)*</summary>
-We were directly presented with the contents of the *compressed* file, which isn't human-readable.
+We were presented with the contents of the *compressed* file, which isn't human-readable.
 </details>
 
-<hr style="height:1pt; visibility:hidden;" />
-
-::: callout-note
-#### When it comes to FASTQ files, no need to decompress
-To get around the problem we just encountered with `head`,
+::: {.callout-note collapse="true"}
+#### When it comes to FASTQ files, no need to decompress _(Click to expand)_
+To get around the problem you just encountered with `head`,
 you might be inclined to decompress these files
-(which you could do with the `gunzip` command).
+(which you could do with the `gunzip` command -- week 5).
 However, at least when it comes to FASTQ files,
-you are best off leaving them compressed:
+it is better to keep them compressed:
 
 - Uncompressed files take up much more disk storage space than compressed ones
 - Almost any bioinformatics program accepts compressed FASTQ files
@@ -236,9 +244,8 @@ you are best off leaving them compressed:
   
 Other sequence files, like assembly FASTA files and annotation GTF/GFF files,
 are often also compressed when you download them.
-These types of files are more commonly decompressed ---
-for one because they don't take up nearly as much space as a set of FASTQ files
-(you'll learn how to do this later).
+These types of files, though, are more commonly decompressed before usage ---
+e.g. because they don't take up nearly as much space as a set of FASTQ files.
 :::
 
 ### `less`: A file pager
@@ -249,7 +256,7 @@ Instead, `less` will open a file for you to browse through,
 and you need to explicitly quit the program to get your prompt back.
 
 Also, `less` will automatically display gzip-compressed files in
-human-readable form:
+human-readable form: 🥳
 
 ``` bash
 less garrigos-data/fastq/ERR10802863_R1.fastq.gz
@@ -269,30 +276,34 @@ CTCGGCGTTAACTTCATCACGCAGATCATTCCGTTCCAGCAGCTGAAGCAAGACTACCGTCAGTACGAGATGA
 AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 ```
 
-::: {.callout-tip}
-#### The `-S` option to `less` suppresses "line-wrapping"
+::: {.callout-tip collapse="true"}
+#### The `-S` option to `less` suppresses "line-wrapping" _(Click to expand)_
 
 When lines are too long to fit on your computer screen,
 `less` will by default "wrap" them onto a next line on the screen.
 That's convenient for reading,
 but can be confusing for tabular formats and formats like FASTQ,
-because one line on the screen no longer corresponds to one line in the file.
+because it means that one line on the screen no longer corresponds to one line
+in the file.
 
-With `-S`, lines will not be wrapped but will "run out of the screen"
-on the right-hand side (press the rightward arrow <kbd>→</kbd> to see that part).
+With the `-S` option to `less`, lines will not be wrapped but will
+"run out of the screen" on the right-hand side
+(press the rightward arrow <kbd>→</kbd> to see that part):
 
 ``` bash
 less -S garrigos-data/fastq/ERR10802863_R1.fastq.gz
+# [output not shown]
 ```
 :::
 
-When inside the `less` pager, you can move around in the file in several ways:
+When you're inside the `less` pager,
+you can move around in the file in several ways:
 
 - By scrolling with your mouse
 - With up <kbd>↑</kbd> and down <kbd>↓</kbd> arrows: move line-by-line
 - With <kbd>u</kbd> (up) and <kbd>d</kbd> (down): move half a page at a time
 - If you have them, with <kbd>PgUp</kbd> and <kbd>PgDn</kbd> keys: move page-by-page
-- Press `G` to go the end of the file, and `g` to go (back) to the top
+- By pressing `G` to go the end of the file, and `g` to go (back) to the top
 
 To exit/quit `less` and get your shell prompt back, simply type **<kbd>q</kbd>**:
 
@@ -301,7 +312,7 @@ To exit/quit `less` and get your shell prompt back, simply type **<kbd>q</kbd>**
 q
 ```
 
-<details><summary> {{< fa user-edit >}} Explore the FASTQ file a bit. Do you notice any unusual-looking reads? _(Click for the solution)_ </summary>
+<details><summary> {{< fa user-edit >}} With `less`, explore the FASTQ file a bit. Do you notice any unusual-looking reads? _(Click for the solution)_ </summary>
 
 A number of reads are much shorter than the others,
 and only consist of `N`s, i.e. uncalled bases. For example:
@@ -316,7 +327,7 @@ NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 
 ### `wc -l` to count lines
 
-_(This command doesn't display file contents and fits better in the section_
+_(This command doesn't display file contents and would fit better in the section_
 _on Unix data tools below, but needs to be introduced for the next bit.)_
 
 The **`wc`** command by default counts the number of lines, words, and characters
@@ -330,13 +341,12 @@ wc -l meta/metadata.tsv
 23 meta/metadata.tsv
 ```
 
-This can be surprisingly useful,
-because the number of lines in many file types reflects the number of entries.
+This simple operation can be surprisingly useful,
+as the number of lines in many file types reflects the number of entries.
 
 ## Redirection and pipes
 
-You'll create some dummy files for this section,
-so let's first create and move into a `sandbox` dir within `garrigos-data`:
+First create and move into a `sandbox` dir within `garrigos-data`:
 
 ```bash
 mkdir sandbox
@@ -383,7 +393,7 @@ The **`>`** operator will redirect output to a file with the following rules:
 - If the file doesn't exist, it will be *created*.
 - If the file does exist, any contents will be *overwritten*.
 
-Let's redirect another line into that same file:
+Redirect another line into that same file:
 
 ```bash
 echo "My second line" > test.txt
@@ -449,12 +459,12 @@ We'll see pipes in action a bunch more in the next section.
 
 ## Unix data tools
 
-We'll now turn to some commands that may be described as Unix "data tools".
-These commands are very useful when working in the shell generally,
-and when working with omics data specifically.
+We'll now turn to some commands that may be described as "Unix data tools".
+These commands are especially good for relatively simple data processing and
+summarizing steps, and are excellent in dealing with very large files.
+They are therefore quite useful when working with sequence data files.
 
-These command are especially helpful for relatively simple data processing and summarizing
-steps, and they are excellent in dealing with very large files. We will cover:
+We will cover the following commands:
 
 - `grep` to search for text in files 
 - `cut` to select one or more columns from tabular data
@@ -467,10 +477,16 @@ and discussing tabular plain-text files.
 ### Tabular plain-text files and file extensions
 
 The examples below will use the file `meta/metadata.tsv`,
-so let's take another look at the first lines of that file first:
+so we'll first make a copy of that file and take another look at its first lines:
 
 ```bash
-cd meta
+cp -v ../meta/metadata.tsv .
+```
+```bash-out
+'../meta/metadata.tsv' -> './metadata.tsv'
+```
+
+```bash
 head metadata.tsv
 ```
 ```bash-out
@@ -498,13 +514,14 @@ Most commonly, these are:
   Comma-Separated Values ("**CSV** file").
 
 ::: callout-important
-#### Plain-text file extensions are flexible and mostly for human-readibility
+#### Plain-text file _extensions_ are flexible and mostly for human-readibility
 
 A side note on **plain-text file extensions** like `.txt`, `.csv`, and `.tsv`,
 but also those for sequence files like `.fastq` as well as script files like `.R` or `.sh`:
 
-Because all plain text files are fundamentally the same, i.e. "just plain-text files",
-**changing the extension does not change anything about the file.**
+Different types of plain text files, like those in the examples above,
+are fundamentally the same, i.e. "just plain-text files".
+**Therefore, changing the file extension does not change anything about the file.**
 Instead, different file extensions are used primarily to make it clear
 to humans (as opposed to the computer) what the file contains.
 :::
@@ -553,8 +570,8 @@ grep -vc "control" metadata.tsv
 16
 ```
 
-::: {.callout-note collapse="false"}
-#### Additional `grep` tips
+::: {.callout-note collapse="true"}
+#### Additional `grep` tips _(Click to expand)_
 
 - While not always necessary, it's good practice to
   **use quotes** (`"..."`) around the search pattern.
@@ -605,11 +622,10 @@ In this week's exercises, you'll further explore this GTF file.
 
 ### Selecting columns using `cut`
 
-The `cut` command selects or we could say "cuts out" one or more columns
-from a tabular file.
-
-You always have to use the **`-f`** option to specify the
-**desired column(s) / "field"(s)**.
+The `cut` command selects, or we could say "cuts out",
+one or more columns from a tabular file.
+You always have to use its **`-f`** ("field") option to specify the
+**desired column(s)**:
 
 ```bash
 # Select the second column of the file:
@@ -631,7 +647,7 @@ it can be useful to **pipe the output to `head`** to quickly see if your command
 works without printing a large number (sometimes thousands) of lines:
 
 ```bash
-cut -f 1 metadata.tsv | head -n 3
+cut -f 2 metadata.tsv | head -n 3
 ```
 ```bash-out
 time
@@ -677,11 +693,12 @@ cut -d, 2 my-data.csv
 
 ### Combining `cut`, `sort`, and `uniq` to create a list
 
-Let's say you want an alphabetically sorted list of treatments in `metadata.tsv`.
-(Yes, that's a bit trivial in this case, but you could use the following code
+Say you want an alphabetically sorted list of the different treatments that
+appear in `metadata.tsv`.
+(That's a bit trivial, but you could use the following code
 also to operate on a huge genome annotation file, as you'll do later.)
 
-To do this, you need to learn about two new commands:
+To do this, you'll need to learn about two new commands:
 
 - **`sort`** to sort/order/arrange rows, by default in alphanumeric order.
 - **`uniq`** to remove duplicates (i.e., keep all distinct/unique) entries
@@ -786,8 +803,8 @@ tail -n +2 metadata.tsv | cut -f 3 | sort | uniq -c | sort -nr
 :::{.callout-note collapse="true"}
 #### Sorting based on one or more specific columns _(Click to expand)_
 Above, we used `sort` to simply sort a list.
-More generally, `sort` will by default sort based on the entire line.
-To sort based on one or more columns, like you've probably done in Excel,
+More generally, `sort` will by default perform sorting based on the entire line.
+To sort based on one or more columns, the way you've probably done in Excel,
 use the `-k` option --- for example:
 
 ```bash
@@ -840,17 +857,17 @@ By contrast, try to take a peak at such a file with a GUI text editor,
 and your computer will crash.
 
 Here is one other example, combining the `cat` command with globbing and redirection.
-This command would concatenate (combine) all your R1 FASTQ files into a single file
--- and this is both elegantly short code,
+This command would concatenate (combine) all your R1 FASTQ files into a single file.
+This is both elegantly short code,
 and will run quickly and without using much computer memory!
 
 ```bash
-# [Don't run this - for illustration only]
+# [Don't run this - for illustration purposes only]
 cat fastq/*R1.fastq.gz > all_R1.fastq.gz
 ```
 
 ::: {.callout-tip collapse="false"}
-#### The above will even produce a valid compressed FASTQ file, because:
+#### The above code will produce a valid compressed FASTQ file, because:
 
 - FASTQ files can (in principle) be concatenated freely since every read is a
   "stand-alone" unit of 4 lines.
@@ -859,14 +876,15 @@ cat fastq/*R1.fastq.gz > all_R1.fastq.gz
 
 #### Don't redirect back to the input file!
 
-One drawback of the "text streams" mode of operation is that you can never redirect
-the output of Unix commands "back" to the input file.
+One possible drawback of the "text streams" mode of operation is that you can never
+redirect the output of Unix commands "back" to the input file.
 This will corrupt the input file.
 
 Therefore, if you really want to edit/overwrite the original file instead of
-creating a separate edited copy, you will need multiple steps:
-first produce a separate copy and then rename that.
-For example:
+creating a separate edited copy, you will two multiple steps:
+
+1. Redirect to a new, edited copy of the input file
+2. Rename the copy to overwrite the original file
 
 ```bash
 # [Don't run any of this - for illustration only]
@@ -874,10 +892,12 @@ For example:
 # You should NEVER run something like this:
 sort metadata.tsv > metadata.tsv
 
-# Instead, you would use:
+# Instead, you should redirect to a new file:
 sort metadata.tsv > metadata_sorted.tsv
 
 # Possibly followed by (if you really needed to edit the original file):
 mv metadata_sorted.tsv metadata.tsv
-rm metadata_sorted.tsv
 ```
+
+However, our general recommendation is that whenever you edit files,
+you keep both the original and the edited version.
