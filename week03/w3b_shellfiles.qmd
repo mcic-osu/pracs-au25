@@ -1,6 +1,6 @@
 ---
 title: "Working with files in the Unix shell I:<br>The shell as a file browser"
-subtitle: "Week 3 -- lecture B"
+subtitle: "Week 3 -- lecture A"
 pagetitle: "w3b: Shell files I"
 date: 2025-09-05
 author:
@@ -35,14 +35,18 @@ editor_options:
 
 ### Overview & learning goals for the rest of the week
 
-We'll now pick up where we left off last week,
-continuing with basic Unix shell commands,
-with a focus on commands that operate on files and dirs.
+We'll pick up where we left off last week,
+continuing with basic Unix shell commands.
+We will focus on commands that operate on files and dirs.
 Specifically, you will learn to use the Unix shell to:
 
 - Create, copy, move, rename and delete directories and files (**this lecture**)
+- Select multiple files with a shell wildcard (**this lecture**)
 - View the contents of text files in various ways ([next lecture](./w3c_shellfiles.qmd))
-- Search within, manipulate, and extract information from text files ([next lecture](./w3c_shellfiles.qmd))
+- Use redirection and the pipe to flexibly process the output of commands
+  ([next lecture](./w3c_shellfiles.qmd))
+- Search within, manipulate, and extract information from text files
+  ([next lecture](./w3c_shellfiles.qmd))
 
 ### Lecture context & overview
 
@@ -127,28 +131,6 @@ search for and then install the following two extensions:
 - **Rainbow CSV** (by *mechatroner*) ---
   make CSV/TSV files easier to view with column-based colors
   
-#### Add a VS Code keyboard shortcut
-
-Add a keyboard shortcut to send code from your editor pane to the terminal.
-That way, you don't have to copy-and-paste code into the terminal when you've
-typed it in the editor^[
-This is the same type of behavior that you may be familiar with from RStudio]:
-
-1. Click <i class="fa fa-cog"></i> (bottom-left) > `Keyboard Shortcuts`
-2. Enter "Run Selected Text" in the search box,
-   and the option in question should pop up:
-   `Terminal: Run Selected Text in Active Terminal`
-3. Click on that, then add the shortcut <kbd>Ctrl</kbd>+<kbd>Enter</kbd>^[
-   Don't worry about the warning that other keybindings exist for this shortcut.].
-
-::: callout-tip
-### Automatic whole-line selection in VS Code
-In VS Code's editor pane,
-the _entire line that your cursor is on is selected by default_.
-As such, you don't need to manually select the entire line when wanting to send
-it to the terminal (or when cutting/copying!).
-:::
-
 :::{.callout-note collapse="true"}
 ### Some more VS Code tips and tricks _(Click to expand)_
 
@@ -188,7 +170,7 @@ it to the terminal (or when cutting/copying!).
   [Linux](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-linux.pdf).)
 :::
 
-## Downloading the practice dataset
+## Download the practice dataset
 
 You will now download the practice/example dataset we've discussed.
 First, make sure you are in `/fs/ess/PAS2880/users/$USER`
@@ -428,16 +410,6 @@ Let's take a step back and consider what's in our dataset:
 
 We will take a closer look at these files today and in the weeks to come.
 
-<details><summary>Can you think of a file that we need for the analysis that is not present in our dir?
-*(Click to see the answer)*</summary>
-
-We are missing the genome assembly FASTA file.
-We will download that one separately later on!^[
-The reason for this is simply that tt was too large to be included in the
-GitHub repository.
-]
-</details>
-
 ## `mkdir` and `touch` to create
 
 ### `mkdir` to create new directories
@@ -524,11 +496,9 @@ using shortcuts known as wildcards: we will look at that later in this lecture.
 ::: exercise
 #### {{< fa user-edit >}} **Exercise**: File locations
 
-1. Where were these `newfile` files created? Can you check their sizes?
+1. Can you check the sizes of the `newfile` files you just created?
 
-   <details><summary>*Click to see the solutions*</summary>
-  
-   The files were created in your working dir.
+   <details><summary>*Click to see the solution*</summary>
   
    ```bash
    ls -lh
@@ -541,10 +511,10 @@ using shortcuts known as wildcards: we will look at that later in this lecture.
    ```
    </details>
 
-2. Can you create a create a new file `monarch.txt` inside a new dir `butterflies`?
+2. Create a create a new file `monarch.txt` inside a new dir `butterflies`.
    Don't change your working dir while you're doing this.
 
-   <details><summary>*Click to see the solutions*</summary>
+   <details><summary>*Click to see the solution*</summary>
 
    To make a new dir and create a file in there,
    you can't just use the `touch` command,
@@ -661,8 +631,6 @@ ls
 butterflies  meta2.tsv  metadata.tsv  newfile1.txt  newfile2.txt  newfile3.txt  meta
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ## `mv` to move and rename
 
 First off, recall from last week that a mere file name like `monarch.txt` can
@@ -721,7 +689,7 @@ mv <source1> <source2> <source3> <source4> <destination>
 
 ## `rm` to remove
 
-The **`rm`** command removes files and optionally dirs --- here,
+The **`rm`** command removes files and optionally dirs -- here,
 remove the file copy you made above: 
 
 ```bash
@@ -750,9 +718,10 @@ for example, the command `rm -r /` would attempt to remove the entire contents
 of the computer, including the operating system.
 A couple ways to take precautions:
 
-- You can add the `-i` option, which will have you confirm each individual removal (can be tedious)
-- When you _intend_ to remove an empty dir, you can use the `rmdir` command which will
-  do just (and only) that --- that way, if the dir isn't empty after all, you'll get an error.
+- You can add the `-i` option,
+  which will make you confirm each individual removal (can be tedious)
+- When you intend to remove an _empty_ dir, you can use the `rmdir` command.
+  This command fails on non-empty dirs.
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -797,69 +766,6 @@ but it will remove the "earlier" `raw` dir ---
 now your project's data has been erased! 😳
 
 (Additionally, it will produce an error because it cannot find the `sequences` dir.)
-</details>
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: exercise
-#### {{< fa user-edit >}} Bonus exercise: `cp` and `mv` behavior
-
-For both `cp` and `mv`, when operating on files (and this works equivalently for dirs):
-
-- If the destination path is an existing dir,
-  the file will go into that dir and keep its original name.
-- If the destination path is _not_ an existing dir,
-  the (last bit of the) destination specifies the new file name.
-- A trailing slash in the destination path makes explicit that you are referring
-  to a dir and not a file.
-
------
-
-With that in mind, try to answer these questions about the following command:
-
-```bash
-cp newfile2.txt more_data/
-```
-
-1. What do you think the command would do or attempt to do?
-2. Do you think the command will succeed (given what is in your `sandbox` dir)?
-3. What would the command have done if we had omitted the trailing forward slash?
-
-<details><summary>*Click to see the solution*</summary>
-<hr style="height:1pt; visibility:hidden;" />
-
-1. Because we added a trailing forward slash to `more_data/`,
-   we are making clear that we are referring to a directory.
-   So the command will attempt to copy the file into a dir `more_data`,
-   with the file keeping the same name.
-  
-2. The `more_data/` dir does not exist,
-   and `cp` will not create a dir on the fly -- so it will fail:
-
-   ```bash
-   cp newfile2.txt more_data/
-   ```
-   ```bash-out
-   cp: cannot create regular file ‘more_data/’: Not a directory
-   ```
-
-3. If we had omitted the trailing forward slash,
-   we would have created a copy of the file with *file* name `more_data`
-   (if that seems confusing: note that in Unix, files don't need to have a file
-   extension).
-
-P.S.: To copy the file according to the original intention,
-first create the destination dir and then copy:
-
-```bash
-mkdir more_data
-cp newfile2.txt more_data/
-```
-  
-Note also that once the `more_data` dir exists,
-it **does not** make a difference whether or not you using a trailing slash.
-
 </details>
 :::
 
