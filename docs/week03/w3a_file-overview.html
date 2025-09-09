@@ -250,10 +250,10 @@ Jelmer Poelstra
 </section>
 <section id="overview" class="slide level2">
 <h2>Overview</h2>
-<p>DNA/RNA/protein sequences and sequence annotations are mostly stored in <strong>plain-text</strong> formats. Some of the most common types, which you’ll work with in this course, are:</p>
+<p>DNA and protein (amino acid) sequences and sequence annotations are mostly stored in <strong>plain-text</strong> formats. Some of the most common types, which you’ll work with in this course, are:</p>
 <ul>
 <li><strong>FASTA</strong><br>
-Simple sequence files, where each entry contains a header and a DNA/AA sequence.<br>
+Simple sequence files, where each entry contains a header and a sequence.<br>
 Versatile: may contain a few short sequences, entire genome assemblies, proteomes, …</li>
 </ul>
 <hr style="height:1pt; visibility:hidden;">
@@ -302,7 +302,7 @@ A <strong>(genome) annotation</strong> format: table with information such as co
 <i class="callout-icon"></i>
 </div>
 <div class="callout-content">
-<p>FASTA files most commonly have a <code>.fa</code> or <code>.fasta</code> <strong>file extension</strong>. Also used are <code>.fna</code> and <code>.faa</code>, which make explicit that it contains nucleotide or amino acid (protein) sequences, respectively.</p>
+<p>FASTA files most commonly have a <code>.fa</code> or <code>.fasta</code> <strong>file extension</strong>. Also used are <code>.fna</code> and <code>.faa</code>, which make explicit that it contains nucleotide or amino acid sequences, respectively.</p>
 </div>
 </div>
 </div>
@@ -338,6 +338,9 @@ Q = -10 * log_{10}(P)
 <p>For example:</p>
 <p><span class="math display">\[
 10 = -10 * log_{10}(0.1)
+\]</span></p>
+<p><span class="math display">\[
+20 = -10 * log_{10}(0.01)
 \]</span></p>
 </div>
 </section>
@@ -384,7 +387,7 @@ Q = -10 * log_{10}(P)
 </section>
 <section id="fastq-quality-scores-cont." class="slide level2">
 <h2>FASTQ quality scores (cont.)</h2>
-<p>To make things a little more complicated: the numeric Phred quality score is represented in FASTQ files <em>not by the number itself</em>, but by a corresponding “ASCII character”.</p>
+<p>To make things a little more complicated: the numeric Phred quality score is represented in FASTQ files by a “ASCII character” corresponding to the number rather than the number itself.</p>
 <p>This allows for a single-character representation of each possible score — therefore, <strong>each quality score character can conveniently correspond to (&amp; line up with) a base character</strong> in the read.</p>
 <div class="fragment">
 <hr style="height:1pt; visibility:hidden;">
@@ -437,8 +440,8 @@ Q = -10 * log_{10}(P)
 <h2>FASTQ (cont.)</h2>
 <p>While FASTQ files can be any size, separate files are typically used for each:</p>
 <ul>
-<li><p><strong>Read direction</strong><br>
-In paired-end (PE) sequencing, forward and reverse reads are typically in two separate files:</p>
+<li><p><strong>Read direction for paired-end sequences</strong><br>
+</p>
 <table class="table-striped table-hover caption-top">
 <thead>
 <tr class="header">
@@ -462,7 +465,7 @@ Reads are normally “demultiplexed” into separate files for each sample.</p><
 </ul>
 <div class="fragment">
 <p>Therefore, having paired-end FASTQ files for 2 samples usually looks something like this:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a></a><span class="co"># (The FASTQ file extension is usually '.fastq' but sometimes '.fq')</span></span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a></a><span class="co"># (The FASTQ file extension is most often '.fastq' but sometimes '.fq')</span></span>
 <span id="cb2-2"><a></a><span class="ex">sample1_R1.fastq</span></span>
 <span id="cb2-3"><a></a><span class="ex">sample1_R2.fastq</span></span>
 <span id="cb2-4"><a></a><span class="ex">sample2_R1.fastq</span></span>
@@ -510,8 +513,7 @@ Reads are normally “demultiplexed” into separate files for each sample.</p><
 </section>
 <section id="garrigos-et-al.-2025" class="slide level2">
 <h2>Garrigos et al.&nbsp;2025</h2>
-<p>Throughout the course, we will use an example/practice data set, which is from the paper:</p>
-<p><span class="citation" data-cites="garrigós2025">Garrigós et al. (<a href="#/references" role="doc-biblioref" onclick="">2025</a>)</span> – <em>Two avian Plasmodium species trigger different transcriptional responses on their vector Culex pipiens</em>:</p>
+<p>Throughout the course, we will use an example/practice data set from <span class="citation" data-cites="garrigós2025">Garrigós et al. (<a href="#/references" role="doc-biblioref" onclick="">2025</a>)</span>:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><a href="../img/garrigos_paper.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img data-src="../img/garrigos_paper.png" class="quarto-figure quarto-figure-center" style="width:80.0%" alt="A screenshot of the paper's front matter."></a></p>
@@ -525,7 +527,9 @@ Reads are normally “demultiplexed” into separate files for each sample.</p><
 <li><strong>Infection status</strong>: control vs.&nbsp;<em>Plasmodium cathemerium</em> vs.&nbsp;<em>P. relictum</em></li>
 <li><strong>Time after infection</strong>: 1 vs.&nbsp;10 vs.&nbsp;21 days (DAI)</li>
 </ul>
-<p>All in all, the experimental design contains the following number of samples (biological replicates) for each treatment combination:</p>
+<div class="fragment">
+<hr style="height:1pt; visibility:hidden;">
+<p>The following number of samples (biological replicates) were used for each treatment combination:</p>
 <table class="table-striped caption-top">
 <thead>
 <tr class="header">
@@ -556,10 +560,13 @@ Reads are normally “demultiplexed” into separate files for each sample.</p><
 </tr>
 </tbody>
 </table>
+</div>
 </section>
 <section id="the-datasets-files" class="slide level2">
 <h2>The dataset’s files</h2>
-<p>However, to keep things manageable while practicing, I have <strong>subset</strong> the data to omit the 21-day samples and only keep 500,000 reads per FASTQ file.</p>
+<p>To keep things manageable while practicing, I have <strong>subset</strong> the data to omit the 21-day samples and only keep 500,000 reads per FASTQ file.</p>
+<div class="fragment">
+<hr style="height:1pt; visibility:hidden;">
 <p>All in all, the set of files, <a href="https://github.com/jelmerp/garrigos-data">available through GitHub</a>, consists of:</p>
 <ul>
 <li><strong>Reads</strong>: 44 paired-end 75-bp Illumina FASTQ files for 22 samples</li>
@@ -567,6 +574,7 @@ Reads are normally “demultiplexed” into separate files for each sample.</p><
 <li><strong>Metadata</strong> (sample data): A table with e.g.&nbsp;treatment info for each sample</li>
 <li>A <strong>README</strong> file describing the data set</li>
 </ul>
+</div>
 </section>
 <section id="rna-seq-analysis-steps" class="slide level2">
 <h2>RNA-Seq analysis steps</h2>

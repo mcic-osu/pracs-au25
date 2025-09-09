@@ -38,12 +38,12 @@ bibliography: ../references.bib
 
 ## Overview
 
-DNA/RNA/protein sequences and sequence annotations are mostly stored in **plain-text**
-formats.
+DNA and protein (amino acid) sequences and sequence annotations are mostly
+stored in **plain-text** formats.
 Some of the most common types, which you'll work with in this course, are:
 
 - **FASTA**\
-  Simple sequence files, where each entry contains a header and a DNA/AA sequence.\
+  Simple sequence files, where each entry contains a header and a sequence.\
   Versatile: may contain a few short sequences, entire genome assemblies, proteomes, ...
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -99,7 +99,7 @@ Each entry contains a **header** and the **sequence** itself, where:
 ::: {.callout-note appearance="simple"}
 FASTA files most commonly have a `.fa` or `.fasta` **file extension**.
 Also used are `.fna` and `.faa`, which make explicit that it contains nucleotide
-or amino acid (protein) sequences, respectively.
+or amino acid sequences, respectively.
 :::
 
 ## FASTQ files
@@ -139,6 +139,10 @@ $$
 10 = -10 * log_{10}(0.1)
 $$
 
+$$
+20 = -10 * log_{10}(0.01)
+$$
+
 ## FASTQ quality scores
 
 The quality scores in the reads represent an estimate of the error probability of
@@ -168,8 +172,7 @@ Some specific probabilities and their rough qualitative interpretation for Illum
 
 To make things a little more complicated:
 the numeric Phred quality score is represented in FASTQ files
-*not by the number itself*,
-but by a corresponding "ASCII character".
+by a "ASCII character" corresponding to the number rather than the number itself.
 
 This allows for a single-character representation of each possible score —
 therefore,
@@ -211,9 +214,7 @@ in the read.
 
 While FASTQ files can be any size, separate files are typically used for each:
 
-- **Read direction**\
-  In paired-end (PE) sequencing,
-  forward and reverse reads are typically in two separate files:
+- **Read direction for paired-end sequences**\
 
   | Read direction | File name identifier |
   |----|--------------|
@@ -231,7 +232,7 @@ Therefore,
 having paired-end FASTQ files for 2 samples usually looks something like this:
 
 ``` bash
-# (The FASTQ file extension is usually '.fastq' but sometimes '.fq')
+# (The FASTQ file extension is most often '.fastq' but sometimes '.fq')
 sample1_R1.fastq
 sample1_R2.fastq
 sample2_R1.fastq
@@ -273,11 +274,8 @@ NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_i
 
 ## Garrigos et al. 2025
 
-Throughout the course, we will use an example/practice data set,
-which is from the paper:
-
-@garrigós2025 --
-*Two avian Plasmodium species trigger different transcriptional responses on their vector Culex pipiens*:
+Throughout the course, we will use an example/practice data set
+from @garrigós2025:
 
 ![](../img/garrigos_paper.png){fig-align="center" width="80%" fig-alt="A screenshot of the paper's front matter." .lightbox}
 
@@ -290,8 +288,12 @@ specifically, it compares mosquitos according to:
 - **Infection status**: control vs. *Plasmodium cathemerium* vs. *P. relictum*
 - **Time after infection**: 1 vs. 10 vs. 21 days (DAI)
 
-All in all, the experimental design contains the following number of samples
-(biological replicates) for each treatment combination:
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+The following number of samples (biological replicates) were used for each
+treatment combination:
 
 |        | Control | _P. cathemerium_ | _P. relictum_ | 
 |--------|:---------:|:--------:|:---------:|
@@ -303,11 +305,16 @@ All in all, the experimental design contains the following number of samples
 
 ## The dataset's files
 
-However, to keep things manageable while practicing,
+To keep things manageable while practicing,
 I have **subset** the data to omit the 21-day samples and only keep 500,000
 reads per FASTQ file.
 
-All in all, the set of files, [available through GitHub](https://github.com/jelmerp/garrigos-data),
+. . .
+
+<hr style="height:1pt; visibility:hidden;" />
+
+All in all, the set of files,
+[available through GitHub](https://github.com/jelmerp/garrigos-data),
 consists of:
 
 - **Reads**: 44 paired-end 75-bp Illumina FASTQ files for 22 samples

@@ -50,7 +50,7 @@ Specifically, you will learn to use the Unix shell to:
 
 ### Lecture context & overview
 
-File browser GUIs
+GUI-based file browsers
 (such as "Finder" on Mac, "File Explorer" on Windows,
 and the interface we saw in OSC OnDemand's File menu)
 can perform operations like listing, creating, moving, renaming, copying and
@@ -108,16 +108,16 @@ notes on what we're doing in this session:
 
 1. Access the "Color Themes" option by clicking
    <i class="fa fa-cog"></i> (bottom left) > `Color Theme`.
-2. Try out a few themes and see pick one you like!
+2. Try out a color few themes and see pick one you like!
 
 #### Options for the Side Bar
 
-The activity bar or narrow side bar contains the following icons
+The narrow side bar (Activity Bar) contains the following icons
 to toggle **(wide/Primary) Side Bar** options:
 
 - ***Explorer***: File browser & outline for the active file
-- ***Search***: To search recursively across all files in the active folder
-- ***Source Control***: To work with Git (*next week*)
+- ***Search***: For recursive searches across all files in the active folder
+- ***Source Control***: To work with version control (Git; *next week*)
 - ***Debugger*** (we won't work with this)
 - ***Extensions***: To install extensions (*up next!*)
 
@@ -137,17 +137,16 @@ search for and then install the following two extensions:
 - **Downloading files**\
   In the Explorer in the side bar, you can right click on any file,
   and among the options shown, you should see "**Download...**".
-  Click on that to download the file to your compyter!
+  Click on that to download the file to your computer!
 
 - **Auto Save**\
   To turn on the auto-saving of documents in the editor,
   click {{< fa bars >}} > `File` => "Auto Save"
-  (should show a checkmark when activated).
+  (shows a checkmark when activated).
 
 - **The Command Palette**\
   To access any menu option that is available in VS Code,
-  the so-called "Command Palette" can be handy,
-  especially if you know what you are looking for.
+  the so-called "Command Palette" can be handy.
   To access the Command Palette, click   <i class="fa fa-cog"></i>   and then
   `Command Palette` (or press <kbd>F1</kbd> or <kbd>Ctrl/⌘</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>).
   To use it, start typing something to search for an option.
@@ -240,7 +239,7 @@ _E.g., in dark themes, regular text files are in white.)_
 
 You can use an **argument** to change the dir (or file) that `ls` operates on, 
 and you can use **options** to change how it shows the output.
-Let's start with *options* -- specifically, the option **`-l`** (lowercase L):
+Let's start with an option, **`-l`** (lowercase L):
 
 ``` bash
 ls -l 
@@ -253,7 +252,7 @@ drwxr-x---+ 2 jelmer PAS0471 4096 Nov 13  2024 meta
 drwxr-x---+ 2 jelmer PAS0471 4096 Jul  4 20:52 ref
 ```
 
-It lists the same items as earlier, but **printed in a different format**:
+The same items as before were printed, but now **in a different format**:
 one item per line,
 with additional information such as the date and time that each file was last
 modified, and the file sizes in bytes directly to the left of the date.
@@ -412,23 +411,33 @@ We will take a closer look at these files today and in the weeks to come.
 
 ## `mkdir` and `touch` to create
 
+First, navigate to your directory for this week:
+
+```bash
+cd ../week03
+```
+
 ### `mkdir` to create new directories
 
 The `mkdir` command creates one or more new directories,
 and the `-p` option is needed to enable recursive behavior:
 
 ```bash
-mkdir -p ../week03/sandbox 
+mkdir -p sandbox/testdir1
 ```
 
-This command was recursive because both the `week03` dir and the
-`sandbox` dir within it were created at once.
+This command was recursive because both the `sandbox` dir and the
+`testdir1` dir within it had to be created at once.
 
 The name `sandbox` is common for dirs meant for experimentation and testing.
 Now, move into the `sandbox` dir you just created:
 
 ```bash
-cd ../week03/sandbox
+cd sandbox
+ls
+```
+```bash-out
+testdir1
 ```
 
 ::: exercise
@@ -438,10 +447,10 @@ cd ../week03/sandbox
    Would you consider that recursive? Run the command and see what it did.
 
    ```bash
-   mkdir testdir1 testdir2
+   mkdir testdir2 testdir3
    ```
 
-   <details><summary>*Click to see the solutions*</summary>
+   <details><summary>*Click to see the solution*</summary>
    This command created two dirs at once.
    It is **not** recursive but it only operated on one "dir level",
    i.e. it did not need to create two dir levels
@@ -451,21 +460,48 @@ cd ../week03/sandbox
    ls
    ```
    ```bash-out
-   testdir1 testdir2
+   testdir1 testdir2 testdir3
    ```
    </details>
 
-2. Above, we used a somewhat complicated relative path to create the `sandbox` dir.
-   What do you think its absolute path is? Use `pwd` to see if you are right.
-
-   <details><summary>*Click to see the solutions*</summary>
+2. Run the below two commands one by one,
+   and read any output the commands print the screen.
+   Why does the first command fail?
+   What can you conclude about the `-p` other than that it enables recursiveness?
 
    ```bash
-   pwd
+   mkdir testdir1
+   mkdir -p testdir1
    ```
-   ```bash-out
-   /fs/ess/PAS2880/users/jelmer/week03/sandbox
-   ```
+   
+   <details><summary>*Click to see the solution*</summary>
+
+   - `mkdir testdir1` produces an error,
+     because you're trying to create a dir that already exists:
+     
+     ```bash
+     mkdir testdir1
+     ```
+     ```bash-out
+     mkdir: cannot create directory ‘testdir1’: File exists
+     ```
+   
+   - While `mkdir -p testdir1` doesn't print anything:
+   
+     ```bash
+     mkdir -p testdir1
+     ```
+  
+   - The latter may either mean that `mkdir -p` recreated the dir,
+     or that it did nothing but also didn't complain.
+     Looking at the `ls -l` timestamp would be one way to distinguish between
+     possibilities.
+     Or you could create a file inside the dir and see whether that's removed
+     by when you (re)run `mkdir -p`.
+     Here, I'll just give you the answer: `mkdir -p` doesn't do anything when
+     the dir already exists, and won't produce an error either.
+     This can be useful in non-interactive contexts.
+   
    </details>
 :::
 
@@ -545,7 +581,7 @@ Just like when copying files in a GUI file browser,
 the new copy can have a different name than the original.
 It can also have the same name, as long as it's copied to a different dir.
 
-`cp` has two **required** arguments in the following order:
+`cp` has two **required arguments** in the following order:
 
 1. What you want to copy (_source_ path)
 2. Where you want to copy it to (_destination_ path).
@@ -663,7 +699,7 @@ or do both at the same time:
   mv metadata.tsv meta/metadata_old.tsv
   ```
 
-Finally, not that unlike `cp`, the `mv` command is recursive by default!
+Finally, note that unlike `cp`, the `mv` command is recursive by default!
 
 ::: callout-note
 #### Operating on multiple files with `mv` and `cp`
