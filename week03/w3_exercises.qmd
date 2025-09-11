@@ -59,7 +59,11 @@ git clone https://github.com/jelmerp/garrigos-data
 ## Prelude: Lecture pages exercises
 
 Make sure to do any of the exercises on this week's lecture pages that we did
-not do in class.
+not do in class -- up until 
+[section 3 (Redirection and the pipe) of the third lecture](./w3c_shellfiles.html#redirection-and-the-pipe)
+(We will cover sections 4 and 5 next Tuesday, and you won't need to know
+about those commands to do the rest of the exercises below).
+
 Also, if you struggled with any of the exercises we did do in class,
 go over those again.
 
@@ -76,7 +80,7 @@ _Your starting point working dir should be `/fs/ess/PAS2880/users/$USER`_
 2. Copy the `ref` dir of the @garrigós2025 data set to your current working dir,
    giving the new copy the name `ref_copy`.
 
-3. Run the following command:
+3. Run the following command (we did not see this one in class!):
 
    ```bash
    rmdir ref_copy
@@ -123,6 +127,9 @@ _Your starting point working dir should be `/fs/ess/PAS2880/users/$USER`_
 
 ## Exercise 3: Nuances of `cp` and `mv` behavior
 
+1. Create a dir `week03/ex3` within `/fs/ess/PAS2880/users/$USER`, and navigate there.
+2. Create a new file called `newfile.txt` in your working dir.
+
 For both `cp` and `mv`, when operating on files
 (and this works equivalently for directories):
 
@@ -133,15 +140,17 @@ For both `cp` and `mv`, when operating on files
 - A trailing slash in the destination path makes explicit that you are referring
   to a dir and not a file.
 
-With that in mind, try to answer these questions about the following command:
+With that in mind, try to answer the below questions about the following command:
 
 ```bash
-cp newfile2.txt more_data/
+cp newfile.txt more_data/
 ```
 
-1. What do you think the command would do or attempt to do?
-2. Do you think the command will succeed (given what is in your `sandbox` dir)?
-3. What would the command have done if you had omitted the trailing forward slash?
+3. What do you think the command would do or attempt to do?
+4. Do you think the command will succeed?
+   Run the command and see whether you were right.
+5. What would the command have done if you had omitted the trailing forward slash
+   to `more_data/`?
 
 ## Exercise 4: Exploring the GTF annotation file
 
@@ -189,12 +198,12 @@ Some details on what's in each column:
 
 1. Create a dir `week03/ex4` within `/fs/ess/PAS2880/users/$USER`, and navigate there.
 
-2. Copy the genome annotation file `garrigos-data/ref/GCF_016801865.2.gtf.gz`
+2. Copy the genome annotation GTF file `garrigos-data/ref/GCF_016801865.2.gtf.gz`
    to a file called `annot.gtf.gz` inside your `ex4` working dir.
 
 3. Explore `annot.gtf.gz` with `less -S`.
    Just look around a bit and try to navigate with the keybindings shown in the lecture,
-   then answer the following questions:
+   then consider the following questions:
    
    - How many header lines does the file have?
    - Do you understand the file's structure?
@@ -202,11 +211,17 @@ Some details on what's in each column:
    
 4. `zcat` is a command that is essentially identical to `cat`,
    but can print compressed files in human-readable form.
-   Pipe the output of `zcat` to another command to print the file's first 15 lines.
+   Pipe the output of `zcat` to another command to print only the first 15 lines
+   of `annot.gtf.gz`.
    
 4. Count the number of lines in the GTF file both in compressed and uncompressed form.
    Are the counts the same?
-
+   
+   <details><summary>_Click to show a hint_</summary>
+   Use the `zcat`-then-pipe trick from the previous exercise to get the "uncompressed count".
+   The "compressed count" on the other hand, is simply the number of lines `annot.gtf.gz`.
+   </details>
+   
 ## Solutions
 
 ### Exercise 1
@@ -220,7 +235,12 @@ mkdir week03/ex1
 cd week03/ex1
 ```
 
-(You could also `cd week03` first, and then create the dir and navigate there.)
+Or, with absolute paths:
+
+```bash
+mkdir /fs/ess/PAS2880/users/$USER/week03/ex1
+cd /fs/ess/PAS2880/users/$USER/week03/ex1
+```
 
 </details>
 
@@ -276,7 +296,7 @@ Yes, because the `ref_copy` dir is now empty, this will work:
 rmdir ref_copy
 ```
 
-Let's check:
+Let's check -- indeed, the `ref_copy` dir is no longer there:
 
 ```bash
 ls
@@ -299,6 +319,14 @@ in which case the following commands work:
 mkdir ../ex2
 cd ../ex2
 ```
+
+Or, with absolute paths:
+
+```bash
+mkdir /fs/ess/PAS2880/users/$USER/week03/ex3
+cd /fs/ess/PAS2880/users/$USER/week03/ex3
+```
+
 </details>
 
 <details><summary>**2.** Create a dir with dummy sequence files</summary>
@@ -497,7 +525,34 @@ cp ../../garrigos-data/meta/metadata.tsv garrigos_metadata.tsv
 
 ### Exercise 3
 
-<details><summary>**1.** What do you think the command would do or attempt to do?</summary>
+<details><summary>**1.** Create a new dir and navigate there</summary>
+
+Assuming you're doing this right after exercise 2,
+you should be in `/fs/ess/PAS2880/users/$USER/week03/ex2`,
+in which case the following commands work:
+
+```bash
+mkdir ../ex3
+cd ../ex3
+```
+
+Or, with absolute paths:
+
+```bash
+mkdir /fs/ess/PAS2880/users/$USER/week03/ex3
+cd /fs/ess/PAS2880/users/$USER/week03/ex3
+```
+</details>
+
+<details><summary>**2.** Create a new file called `newfile.txt` in your working dir</summary>
+
+```bash
+touch newfile.txt
+```
+
+</details>
+
+<details><summary>**3.** What do you think the command would do or attempt to do?</summary>
 
 Because we added a trailing forward slash to `more_data/`,
 we are making clear that we are referring to a directory.
@@ -541,11 +596,22 @@ it **does not** make a difference whether or not you using a trailing slash.
 
 ### Exercise 4
 
-<details><summary>**1.** Create a dir `week03/ex4` within `/fs/ess/PAS2880/users/$USER`, and navigate there</summary>
+<details><summary>**1.** Create a new dir and navigate there</summary>
+
+Assuming you're doing this right after exercise 2,
+you should be in `/fs/ess/PAS2880/users/$USER/week03/ex2`,
+in which case the following commands work:
 
 ```bash
-mkdir week03/ex4
-cd week03/ex4
+mkdir ../ex4
+cd ../ex4
+```
+
+Or, with absolute paths:
+
+```bash
+mkdir /fs/ess/PAS2880/users/$USER/week03/ex4
+cd /fs/ess/PAS2880/users/$USER/week03/ex4
 ```
 </details>
 
