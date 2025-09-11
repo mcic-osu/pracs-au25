@@ -2,73 +2,7 @@
 title: "Removed week 3 exercises"
 ---
 
-### GTF file info
-
-Exercise 2 will work with the GTF file in the example dataset,
-so we'll start with some more info about GTF files.
-As mentioned in this week's first lecture,
-the main part of a GTF file is a table with:
-
-- One row for each annotated "**genomic feature**" (gene, exon, intron, etc.)
-- Columns with information like the genomic coordinates of the features
-
-However, the file typically starts with **header lines** that contain metadata
-and start with `#`.
-In some cases, the header can have hundreds of lines,
-including a list of all chromosomes and/or scaffolds and/or contigs (depending on
-the assembly quality) that are represented in the file.
-"Our" GTF file only has a few header lines, though:
-
-```bash
-zcat ../ref/GCF_016801865.2.gtf.gz | head -n 5
-```
-```bash-out
-#gtf-version 2.2
-#!genome-build TS_CPP_V2
-#!genome-build-accession NCBI_Assembly:GCF_016801865.2
-#!annotation-source NCBI RefSeq GCF_016801865.2-RS_2022_12
-NC_068937.1     Gnomon  gene    2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
-NC_068937.1     Gnomon  transcript      2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA";
-```
-
-The last two lines of the snippet above are the first rows of the tabular part.
-There is no line with column names,
-so here's the snippet with aligned columns, and the manually added column names
-also shown in the lecture:
-
-```bash-out-solo
-# [Column names are not present in the file! They are shown for informational purposes.]
-seqname       source  feature     start   end     score  strand  frame    attributes
-NC_068937.1   Gnomon  gene        2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
-NC_068937.1   Gnomon  transcript  2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; 
-NC_068937.1   Gnomon  exon        2046    2531    .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "1"; 
-NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "2"; 
-```
-
-Some details on what's in each column:
-
-| Column # | Column ID | Explanation
-|---|---|----------------|
-| 1 | **_seqname_** | Name of the chromosome, scaffold, or contig
-| 2 | **_source_** | Name of the program that generated this feature, or the data source (e.g. database)
-| 3 | **_feature_** | Name of the genomic feature type, e.g. "gene", "exon", "intron", "CDS"
-| 4 | **_start_** | Start position of the feature
-| 5 | **_end_** | End position of the feature
-| 6 | **_score_** | A confidence score for the feature, often absent (in which case it is `.`)
-| 7 | **_strand_** | Whether the feature is on the `+` (forward) or `-` (reverse) strand^[Because double-stranded DNA is represented as a single sequence, the `strand` column effectively indicates in which direction a feature should be read along this sequence.]
-| 8 | **_frame_** | The "frame" for coding features, either `0`, `1` or `2` (or `.` for no frame). E.g. `0` means the first base of the feature is the first base of a codon
-| 9 | **_attributes_** | A semicolon-separated list of key-value pairs with additional information. Can be very wide!
-
-: {.striped .hover}
-
-## Exercise 2: Exploring the GTF annotation file
-
-1. Create a dir `week03/ex2` within `/fs/ess/PAS2880/users/$USER`, and navigate there.
-
-2. Copy the genome annotation file `garrigos-data/ref/GCF_016801865.2.gtf.gz`
-   to a file called `annot.gtf.gz` inside your `ex2` working dir.
-
-3. Check the size of the `annot.gtf.gz` file.
+5. Check the size of the `annot.gtf.gz` file.
    Then, unzip (decompress) the GTF file with the `gunzip` command as shown below.
    Finally, check the size of the resulting `annot.gtf` file.
    How large is the size difference between the compressed and uncompressed files?
@@ -76,9 +10,7 @@ Some details on what's in each column:
    ```bash
    gunzip annot.gtf.gz
    ```
-
-4. How many lines does the GTF file contain?
-
+   
 5. The total number of genomic features that are listed in a GTF file is simply
    the number of lines in its table section.
    

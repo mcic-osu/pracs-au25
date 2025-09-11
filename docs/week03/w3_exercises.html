@@ -319,11 +319,17 @@ div.csl-indent {
   <li><a href="#exercise-1-miscellaneous" id="toc-exercise-1-miscellaneous" class="nav-link" data-scroll-target="#exercise-1-miscellaneous">Exercise 1: Miscellaneous</a></li>
   <li><a href="#exercise-2-moving-copying-and-removing-dummy-fastq-files" id="toc-exercise-2-moving-copying-and-removing-dummy-fastq-files" class="nav-link" data-scroll-target="#exercise-2-moving-copying-and-removing-dummy-fastq-files">Exercise 2: Moving, copying and removing dummy FASTQ files</a></li>
   <li><a href="#exercise-3-nuances-of-cp-and-mv-behavior" id="toc-exercise-3-nuances-of-cp-and-mv-behavior" class="nav-link" data-scroll-target="#exercise-3-nuances-of-cp-and-mv-behavior">Exercise 3: Nuances of <code>cp</code> and <code>mv</code> behavior</a></li>
+  <li><a href="#exercise-4-exploring-the-gtf-annotation-file" id="toc-exercise-4-exploring-the-gtf-annotation-file" class="nav-link" data-scroll-target="#exercise-4-exploring-the-gtf-annotation-file">Exercise 4: Exploring the GTF annotation file</a>
+  <ul class="collapse">
+  <li><a href="#gtf-file-info" id="toc-gtf-file-info" class="nav-link" data-scroll-target="#gtf-file-info">GTF file info</a></li>
+  <li><a href="#your-turn" id="toc-your-turn" class="nav-link" data-scroll-target="#your-turn">Your turn!</a></li>
+  </ul></li>
   <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a>
   <ul class="collapse">
   <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1">Exercise 1</a></li>
   <li><a href="#exercise-2" id="toc-exercise-2" class="nav-link" data-scroll-target="#exercise-2">Exercise 2</a></li>
   <li><a href="#exercise-3" id="toc-exercise-3" class="nav-link" data-scroll-target="#exercise-3">Exercise 3</a></li>
+  <li><a href="#exercise-4" id="toc-exercise-4" class="nav-link" data-scroll-target="#exercise-4">Exercise 4</a></li>
   </ul></li>
   </ul>
 <div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w3_overview.html"><i class="bi bi-book"></i>Week 3 overview</a></li><li><a href="w3a_file-overview.html"><i class="bi bi-bookmarks"></i>w3a: Sequence file types</a></li><li><a href="w3b_shellfiles.html"><i class="bi bi-bookmarks"></i>w3b: Shell files I</a></li><li><a href="w3c_shellfiles.html"><i class="bi bi-bookmarks"></i>w3c: Shell files II</a></li></ul></div></nav>
@@ -363,6 +369,12 @@ div.csl-indent {
     </div>
   </div>
   
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">September 11, 2025</p>
+    </div>
+  </div>
     
   </div>
   
@@ -443,6 +455,102 @@ div.csl-indent {
 <li>What would the command have done if you had omitted the trailing forward slash?</li>
 </ol>
 </section>
+<section id="exercise-4-exploring-the-gtf-annotation-file" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-4-exploring-the-gtf-annotation-file">Exercise 4: Exploring the GTF annotation file</h2>
+<section id="gtf-file-info" class="level3">
+<h3 class="anchored" data-anchor-id="gtf-file-info">GTF file info</h3>
+<p>This exercise will work with the GTF file in the example dataset, so we’ll start with some more info about GTF files.</p>
+<p>As mentioned, the file typically starts with <em>header lines</em> that contain metadata and start with <code>#</code>. Then, the main part of a GTF file is essentially a table, with:</p>
+<ul>
+<li>One row for each annotated “<strong>genomic feature</strong>” (gene, exon, intron, etc.)</li>
+<li>Columns with information like the genomic coordinates of the features</li>
+</ul>
+<p>Here is a snippet of the table part of our <em>Culex pipiens</em> GTF file, with manually added column names also shown in the lecture:</p>
+<pre class="bash-out-solo"><code># [Column names are not present in the file! They are shown for informational purposes.]
+seqname       source  feature     start   end     score  strand  frame    attributes
+NC_068937.1   Gnomon  gene        2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
+NC_068937.1   Gnomon  transcript  2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; 
+NC_068937.1   Gnomon  exon        2046    2531    .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "1"; 
+NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "2"; </code></pre>
+<p>Some details on what’s in each column:</p>
+<table class="table-striped table-hover caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 72%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Column #</th>
+<th>Column ID</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><strong><em>seqname</em></strong></td>
+<td>Name of the chromosome, scaffold, or contig</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><strong><em>source</em></strong></td>
+<td>Name of the program that generated this feature, or the data source (e.g.&nbsp;database)</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><strong><em>feature</em></strong></td>
+<td>Name of the genomic feature type, e.g.&nbsp;“gene”, “exon”, “intron”, “CDS”</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><strong><em>start</em></strong></td>
+<td>Start position of the feature</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td><strong><em>end</em></strong></td>
+<td>End position of the feature</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td><strong><em>score</em></strong></td>
+<td>A confidence score for the feature, often absent (in which case it is <code>.</code>)</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td><strong><em>strand</em></strong></td>
+<td>Whether the feature is on the <code>+</code> (forward) or <code>-</code> (reverse) strand<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td><strong><em>frame</em></strong></td>
+<td>The “frame” for coding features, either <code>0</code>, <code>1</code> or <code>2</code> (or <code>.</code> for no frame). E.g. <code>0</code> means the first base of the feature is the first base of a codon</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td><strong><em>attributes</em></strong></td>
+<td>A semicolon-separated list of key-value pairs with additional information. Can be very wide!</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="your-turn" class="level3">
+<h3 class="anchored" data-anchor-id="your-turn">Your turn!</h3>
+<ol type="1">
+<li><p>Create a dir <code>week03/ex4</code> within <code>/fs/ess/PAS2880/users/$USER</code>, and navigate there.</p></li>
+<li><p>Copy the genome annotation file <code>garrigos-data/ref/GCF_016801865.2.gtf.gz</code> to a file called <code>annot.gtf.gz</code> inside your <code>ex4</code> working dir.</p></li>
+<li><p>Explore <code>annot.gtf.gz</code> with <code>less -S</code>. Just look around a bit and try to navigate with the keybindings shown in the lecture, then answer the following questions:</p>
+<ul>
+<li>How many header lines does the file have?</li>
+<li>Do you understand the file’s structure?</li>
+<li>Is the <code>-S</code> option useful here?</li>
+</ul></li>
+<li><p><code>zcat</code> is a command that is essentially identical to <code>cat</code>, but can print compressed files in human-readable form. Pipe the output of <code>zcat</code> to another command to print the file’s first 15 lines.</p></li>
+<li><p>Count the number of lines in the GTF file both in compressed and uncompressed form. Are the counts the same?</p></li>
+</ol>
+</section>
+</section>
 <section id="solutions" class="level2">
 <h2 class="anchored" data-anchor-id="solutions">Solutions</h2>
 <section id="exercise-1" class="level3">
@@ -452,8 +560,8 @@ div.csl-indent {
 <strong>1.</strong> Create a new dir and navigate there
 </summary>
 <p>This assumes you start in <code>/fs/ess/PAS2880/users/$USER</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> week03/ex1</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> week03/ex1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> week03/ex1</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> week03/ex1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>(You could also <code>cd week03</code> first, and then create the dir and navigate there.)</p>
 </details>
 <details>
@@ -461,7 +569,7 @@ div.csl-indent {
 <strong>2.</strong> What is the size of the <code>metadata.tsv</code> file?
 </summary>
 <p>It is 633 bytes:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> ../../garrigos-data/meta/metadata.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> ../../garrigos-data/meta/metadata.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>-rw-rw----+ 1 jelmer PAS0471 633 Sep  7 09:05 metadata.tsv</code></pre>
 </details>
 <details>
@@ -469,13 +577,13 @@ div.csl-indent {
 <strong>3.</strong> Copy the <code>ref</code> dir to <code>ref_copy</code>
 </summary>
 <p>Because you are copying a dir, you will need the <code>-r</code> (recursive) option:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> ../../garrigos-data/ref ref_copy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> ../../garrigos-data/ref ref_copy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <details>
 <summary>
 <strong>4.</strong> Run the <code>rmdir</code> command
 </summary>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rmdir</span> ref_copy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rmdir</span> ref_copy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>rmdir: failed to remove 'ref_copy': Directory not empty</code></pre>
 </details>
 <details>
@@ -483,17 +591,17 @@ div.csl-indent {
 <strong>5.</strong> Move the GTF file in <code>ref_copy</code> to your current working dir
 </summary>
 <p>To keep the same filename, remember to simply use the <code>.</code> shortcut for the current working dir as the destination:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> ref_copy/GCF_016801865.2.gtf.gz .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> ref_copy/GCF_016801865.2.gtf.gz .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <details>
 <summary>
 <strong>6.</strong> Do you think you will now be able to succesfully run <code>rmdir ref_copy</code>?
 </summary>
 <p>Yes, because the <code>ref_copy</code> dir is now empty, this will work:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [No output means it succeeds!]</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rmdir</span> ref_copy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [No output means it succeeds!]</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rmdir</span> ref_copy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Let’s check:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>GCF_016801865.2.gtf.gz</code></pre>
 </details>
 </section>
@@ -504,8 +612,8 @@ div.csl-indent {
 <strong>1.</strong> Create a new dir and navigate there
 </summary>
 <p>Assuming you’re doing this right after exercise 1, you should be in <code>/fs/ess/PAS2880/users/$USER/week03/ex1</code>, in which case the following commands work:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ../ex2</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../ex2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ../ex2</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../ex2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <details>
 <summary>
@@ -513,22 +621,22 @@ div.csl-indent {
 </summary>
 <ul>
 <li><p>Create the dir:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> seqs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> seqs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Create the dummy files:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> seqs/sample{01..25}_R<span class="dt">{1</span><span class="op">,</span><span class="dt">2}</span>.fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> seqs/sample{01..25}_R<span class="dt">{1</span><span class="op">,</span><span class="dt">2}</span>.fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This uses a construct called <strong>brace expansion</strong>, which we won’t cover in class.</p></li>
 <li><p>Check the result:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> seqs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> seqs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>sample01_R1.fastq  sample03_R1.fastq  sample05_R1.fastq  sample07_R1.fastq  sample09_R1.fastq  sample11_R1.fastq  sample13_R1.fastq  sample15_R1.fastq  sample17_R1.fastq  sample19_R1.fastq  sample21_R1.fastq  sample23_R1.fastq  sample25_R1.fastq
 sample01_R2.fastq  sample03_R2.fastq  sample05_R2.fastq  sample07_R2.fastq  sample09_R2.fastq  sample11_R2.fastq  sample13_R2.fastq  sample15_R2.fastq  sample17_R2.fastq  sample19_R2.fastq  sample21_R2.fastq  sample23_R2.fastq  sample25_R2.fastq
 sample02_R1.fastq  sample04_R1.fastq  sample06_R1.fastq  sample08_R1.fastq  sample10_R1.fastq  sample12_R1.fastq  sample14_R1.fastq  sample16_R1.fastq  sample18_R1.fastq  sample20_R1.fastq  sample22_R1.fastq  sample24_R1.fastq
 sample02_R2.fastq  sample04_R2.fastq  sample06_R2.fastq  sample08_R2.fastq  sample10_R2.fastq  sample12_R2.fastq  sample14_R2.fastq  sample16_R2.fastq  sample18_R2.fastq  sample20_R2.fastq  sample22_R2.fastq  sample24_R2.fastq</code></pre></li>
 <li><p>Count the number of files:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> seqs <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> seqs <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>50</code></pre>
 <p>Note that this gives the correct count even though when printed to screen, <code>ls</code> output typically used multiple columns and therefore shows more than one file per line.</p>
 <p>In contrast, the count from <code>ls -l</code> is <em>not</em> correct, since its output includes a header line:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> seqs <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> seqs <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>51</code></pre></li>
 </ul>
 </details>
@@ -538,9 +646,9 @@ sample02_R2.fastq  sample04_R2.fastq  sample06_R2.fastq  sample08_R2.fastq  samp
 </summary>
 <ul>
 <li><p>Copy the files – recall to use <code>.</code> to indicate your current working dir as the destination path.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> seqs/sample0<span class="pp">*</span> .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> seqs/sample0<span class="pp">*</span> .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Let’s check the result:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>sample01_R1.fastq  sample02_R1.fastq  sample03_R1.fastq  sample04_R1.fastq  sample05_R1.fastq  sample06_R1.fastq  sample07_R1.fastq  sample08_R1.fastq  sample09_R1.fastq  seqs
 sample01_R2.fastq  sample02_R2.fastq  sample03_R2.fastq  sample04_R2.fastq  sample05_R2.fastq  sample06_R2.fastq  sample07_R2.fastq  sample08_R2.fastq  sample09_R2.fastq</code></pre></li>
 </ul>
@@ -549,7 +657,7 @@ sample01_R2.fastq  sample02_R2.fastq  sample03_R2.fastq  sample04_R2.fastq  samp
 <summary>
 <strong>4.</strong> Remove the files you just copied
 </summary>
-<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-v</span> sample0<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-v</span> sample0<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>removed 'sample01_R1.fastq'
 removed 'sample01_R2.fastq'
 removed 'sample02_R1.fastq'
@@ -575,13 +683,13 @@ removed 'sample09_R2.fastq'</code></pre>
 </summary>
 <ul>
 <li><p>Create the new dir:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> seqs_R1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> seqs_R1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Move the R1 files into the new dir:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> seqs/<span class="pp">*</span>R1.fastq seqs_R1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> seqs/<span class="pp">*</span>R1.fastq seqs_R1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Rename the old dir:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> seqs seqs_R2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> seqs seqs_R2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Check the result:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-C</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-C</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>.
 ├── seqs_R1
 │   ├── sample01_R1.fastq
@@ -643,7 +751,7 @@ removed 'sample09_R2.fastq'</code></pre>
 <summary>
 <strong>6.</strong> Copy the Garrigos et al.&nbsp;metadata file into your current working dir
 </summary>
-<div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../../garrigos-data/meta/metadata.tsv garrigos_metadata.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../../garrigos-data/meta/metadata.tsv garrigos_metadata.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </section>
 <section id="exercise-3" class="level3">
@@ -659,7 +767,7 @@ removed 'sample09_R2.fastq'</code></pre>
 <strong>2.</strong> Do you think the command will succeed?
 </summary>
 <p>The <code>more_data/</code> dir does not exist, and <code>cp</code> will not create a dir on the fly – so it will fail:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> newfile2.txt more_data/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> newfile2.txt more_data/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>cp: cannot create regular file ‘more_data/’: Not a directory</code></pre>
 </details>
 <details>
@@ -668,9 +776,78 @@ removed 'sample09_R2.fastq'</code></pre>
 </summary>
 <p>If you had omitted the trailing forward slash, it would have created a copy of the file with <em>file</em> name <code>more_data</code> (if that seems confusing: note that in Unix, files don’t need to have a file extension).</p>
 <p>P.S.: To copy the file according to the original intention, first create the destination dir and then copy:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> more_data</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> newfile2.txt more_data/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> more_data</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> newfile2.txt more_data/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Note also that once the <code>more_data</code> dir exists, it <strong>does not</strong> make a difference whether or not you using a trailing slash.</p>
+</details>
+</section>
+<section id="exercise-4" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-4">Exercise 4</h3>
+<details>
+<summary>
+<strong>1.</strong> Create a dir <code>week03/ex4</code> within <code>/fs/ess/PAS2880/users/$USER</code>, and navigate there
+</summary>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> week03/ex4</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> week03/ex4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<details>
+<summary>
+<strong>2.</strong> Copy the genome annotation file
+</summary>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../../garrigos-data/ref/GCF_016801865.2.gtf.gz annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<details>
+<summary>
+<strong>3.</strong> Explore <code>annot.gtf.gz</code> with <code>less -S</code>
+</summary>
+<ul>
+<li>The file has 4 header lines:</li>
+</ul>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> <span class="at">-S</span> annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>#gtf-version 2.2
+#!genome-build TS_CPP_V2
+#!genome-build-accession NCBI_Assembly:GCF_016801865.2
+#!annotation-source NCBI RefSeq GCF_016801865.2-RS_2022_12
+NC_068937.1     Gnomon  gene    2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
+NC_068937.1     Gnomon  transcript      2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA";</code></pre>
+<ul>
+<li>The <code>-S</code> option is very useful here, because it’s quite hard to read the table part when lines are wrapped: each line is an entry and with line-wrapping, it’s hard to see that structure.</li>
+</ul>
+</details>
+<details>
+<summary>
+<strong>4.</strong> Pipe the output of <code>zcat</code> to another command to print the file’s first 15 lines
+</summary>
+<div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> annot.gtf.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 15</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>#gtf-version 2.2
+#!genome-build TS_CPP_V2
+#!genome-build-accession NCBI_Assembly:GCF_016801865.2
+#!annotation-source NCBI RefSeq GCF_016801865.2-RS_2022_12
+NC_068937.1     Gnomon  gene    2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
+NC_068937.1     Gnomon  transcript      2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; 
+NC_068937.1     Gnomon  exon    2046    2531    .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "1"; 
+NC_068937.1     Gnomon  exon    52113   52136   .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "2"; 
+NC_068937.1     Gnomon  exon    70113   70962   .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "3"; 
+NC_068937.1     Gnomon  exon    105987  106087  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "4"; 
+NC_068937.1     Gnomon  exon    106551  106734  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "5"; 
+NC_068937.1     Gnomon  exon    109296  109660  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "6"; 
+NC_068937.1     Gnomon  exon    109726  110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "7"; 
+NC_068937.1     Gnomon  CDS     70143   70962   .       +       0       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "CDS"; gene "LOC120427725"; product "homeotic protein deformed"; protein_id "XP_052563405.1"; exon_number "3"; 
+NC_068937.1     Gnomon  CDS     105987  106087  .       +       2       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "CDS"; gene "LOC120427725"; product "homeotic protein deformed"; protein_id "XP_052563405.1"; exon_number "4";</code></pre>
+</details>
+<details>
+<summary>
+<strong>5.</strong> Count the number of lines in the GTF file both in compressed and uncompressed form
+</summary>
+<ul>
+<li><p>Uncompressed count:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> annot.gtf.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>408402</code></pre></li>
+<li><p>Compressed count:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>22934 garrigos-data/ref/GCF_016801865.2.gtf.gz</code></pre></li>
+</ul>
+<p>So: no, the counts are not the same! The lesson here is that you should not get “compressed linecounts”, since these are not informative.</p>
 </details>
 
 
@@ -678,11 +855,17 @@ removed 'sample09_R2.fastq'</code></pre>
 </section>
 </section>
 
+
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-garrigós2025" class="csl-entry" role="listitem">
 Garrigós, Marta, Guillem Ylla, Josué Martínez-de la Puente, Jordi Figuerola, and María José Ruiz-López. 2025. <span>“Two Avian <em>Plasmodium</em> Species Trigger Different Transcriptional Responses on Their Vector <em>Culex <span>p</span>ipiens</em>.”</span> <em>Molecular Ecology</em> 34 (15): e17240. <a href="https://doi.org/10.1111/mec.17240">https://doi.org/10.1111/mec.17240</a>.
 </div>
-</div></section></div></main> <!-- /main -->
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Because double-stranded DNA is represented as a single sequence, the <code>strand</code> column effectively indicates in which direction a feature should be read along this sequence.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

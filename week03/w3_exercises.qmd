@@ -3,6 +3,7 @@ title: "Week 3 exercises: Files in the Unix shell"
 pagetitle: "Week 3 exercises"
 number-sections: false
 date: 2025-09-05
+date-modified: 2025-09-11
 author:
   - name: Jelmer Poelstra
     orcid: 0000-0002-3514-7462
@@ -141,6 +142,70 @@ cp newfile2.txt more_data/
 1. What do you think the command would do or attempt to do?
 2. Do you think the command will succeed (given what is in your `sandbox` dir)?
 3. What would the command have done if you had omitted the trailing forward slash?
+
+## Exercise 4: Exploring the GTF annotation file
+
+### GTF file info
+
+This exercise will work with the GTF file in the example dataset,
+so we'll start with some more info about GTF files.
+
+As mentioned, the file typically starts with *header lines* that contain metadata
+and start with `#`.
+Then, the main part of a GTF file is essentially a table, with:
+
+- One row for each annotated "**genomic feature**" (gene, exon, intron, etc.)
+- Columns with information like the genomic coordinates of the features
+
+Here is a snippet of the table part of our _Culex pipiens_ GTF file,
+with manually added column names also shown in the lecture:
+
+```bash-out-solo
+# [Column names are not present in the file! They are shown for informational purposes.]
+seqname       source  feature     start   end     score  strand  frame    attributes
+NC_068937.1   Gnomon  gene        2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
+NC_068937.1   Gnomon  transcript  2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; 
+NC_068937.1   Gnomon  exon        2046    2531    .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "1"; 
+NC_068937.1   Gnomon  exon        52113   52136   .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "2"; 
+```
+
+Some details on what's in each column:
+
+| Column # | Column ID | Explanation
+|---|---|----------------|
+| 1 | **_seqname_** | Name of the chromosome, scaffold, or contig
+| 2 | **_source_** | Name of the program that generated this feature, or the data source (e.g. database)
+| 3 | **_feature_** | Name of the genomic feature type, e.g. "gene", "exon", "intron", "CDS"
+| 4 | **_start_** | Start position of the feature
+| 5 | **_end_** | End position of the feature
+| 6 | **_score_** | A confidence score for the feature, often absent (in which case it is `.`)
+| 7 | **_strand_** | Whether the feature is on the `+` (forward) or `-` (reverse) strand^[Because double-stranded DNA is represented as a single sequence, the `strand` column effectively indicates in which direction a feature should be read along this sequence.]
+| 8 | **_frame_** | The "frame" for coding features, either `0`, `1` or `2` (or `.` for no frame). E.g. `0` means the first base of the feature is the first base of a codon
+| 9 | **_attributes_** | A semicolon-separated list of key-value pairs with additional information. Can be very wide!
+
+: {.striped .hover}
+
+### Your turn!
+
+1. Create a dir `week03/ex4` within `/fs/ess/PAS2880/users/$USER`, and navigate there.
+
+2. Copy the genome annotation file `garrigos-data/ref/GCF_016801865.2.gtf.gz`
+   to a file called `annot.gtf.gz` inside your `ex4` working dir.
+
+3. Explore `annot.gtf.gz` with `less -S`.
+   Just look around a bit and try to navigate with the keybindings shown in the lecture,
+   then answer the following questions:
+   
+   - How many header lines does the file have?
+   - Do you understand the file's structure?
+   - Is the `-S` option useful here? 
+   
+4. `zcat` is a command that is essentially identical to `cat`,
+   but can print compressed files in human-readable form.
+   Pipe the output of `zcat` to another command to print the file's first 15 lines.
+   
+4. Count the number of lines in the GTF file both in compressed and uncompressed form.
+   Are the counts the same?
 
 ## Solutions
 
@@ -474,3 +539,91 @@ it **does not** make a difference whether or not you using a trailing slash.
 
 </details>
 
+### Exercise 4
+
+<details><summary>**1.** Create a dir `week03/ex4` within `/fs/ess/PAS2880/users/$USER`, and navigate there</summary>
+
+```bash
+mkdir week03/ex4
+cd week03/ex4
+```
+</details>
+
+<details><summary>**2.** Copy the genome annotation file</summary>
+
+```bash
+cp ../../garrigos-data/ref/GCF_016801865.2.gtf.gz annot.gtf.gz
+```
+</details>
+
+<details><summary>**3.** Explore `annot.gtf.gz` with `less -S`</summary>
+
+- The file has 4 header lines:
+
+```bash
+less -S annot.gtf.gz
+```
+```bash-out
+#gtf-version 2.2
+#!genome-build TS_CPP_V2
+#!genome-build-accession NCBI_Assembly:GCF_016801865.2
+#!annotation-source NCBI RefSeq GCF_016801865.2-RS_2022_12
+NC_068937.1     Gnomon  gene    2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
+NC_068937.1     Gnomon  transcript      2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA";
+```
+
+- The `-S` option is very useful here,
+  because it's quite hard to read the table part when lines are wrapped:
+  each line is an entry and with line-wrapping, it's hard to see that structure.
+
+</details>
+
+<details><summary>**4.** Pipe the output of `zcat` to another command to print the file’s first 15 lines</summary>
+
+```bash
+zcat annot.gtf.gz | head -n 15
+```
+```bash-out
+#gtf-version 2.2
+#!genome-build TS_CPP_V2
+#!genome-build-accession NCBI_Assembly:GCF_016801865.2
+#!annotation-source NCBI RefSeq GCF_016801865.2-RS_2022_12
+NC_068937.1     Gnomon  gene    2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id ""; db_xref "GeneID:120427725"; description "homeotic protein deformed"; gbkey "Gene"; gene "LOC120427725"; gene_biotype "protein_coding"; 
+NC_068937.1     Gnomon  transcript      2046    110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "mRNA"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; 
+NC_068937.1     Gnomon  exon    2046    2531    .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "1"; 
+NC_068937.1     Gnomon  exon    52113   52136   .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "2"; 
+NC_068937.1     Gnomon  exon    70113   70962   .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "3"; 
+NC_068937.1     Gnomon  exon    105987  106087  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "4"; 
+NC_068937.1     Gnomon  exon    106551  106734  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "5"; 
+NC_068937.1     Gnomon  exon    109296  109660  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "6"; 
+NC_068937.1     Gnomon  exon    109726  110808  .       +       .       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gene "LOC120427725"; model_evidence "Supporting evidence includes similarity to: 25 Proteins"; product "homeotic protein deformed, transcript variant X3"; transcript_biotype "mRNA"; exon_number "7"; 
+NC_068937.1     Gnomon  CDS     70143   70962   .       +       0       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "CDS"; gene "LOC120427725"; product "homeotic protein deformed"; protein_id "XP_052563405.1"; exon_number "3"; 
+NC_068937.1     Gnomon  CDS     105987  106087  .       +       2       gene_id "LOC120427725"; transcript_id "XM_052707445.1"; db_xref "GeneID:120427725"; gbkey "CDS"; gene "LOC120427725"; product "homeotic protein deformed"; protein_id "XP_052563405.1"; exon_number "4";
+```
+</details>
+
+<details><summary>**5.** Count the number of lines in the GTF file both in compressed and uncompressed form</summary>
+
+- Uncompressed count:
+
+  ```bash
+  zcat annot.gtf.gz | wc -l
+  ```
+  ```bash-out
+  408402
+  ```
+  
+- Compressed count:
+
+  ```bash
+  wc -l annot.gtf.gz
+  ```
+  ```bash-out
+  22934 garrigos-data/ref/GCF_016801865.2.gtf.gz
+  ```
+  
+So: no, the counts are not the same!
+The lesson here is that you should not get "compressed linecounts",
+since these are not informative.
+
+</details>
