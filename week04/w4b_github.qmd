@@ -1,8 +1,8 @@
 ---
-title: "Version control: Remotes on GitHub"
-subtitle: "Week 4 -- Lecture II"
+title: "Version control: Remote repositories on GitHub"
+subtitle: "Week 4 -- Lecture B"
 pagetitle: "Git remotes"
-date: 2025-09-18
+date: 2025-09-12
 author:
   - name: Jelmer Poelstra
     orcid: 0000-0002-3514-7462
@@ -16,16 +16,16 @@ other-links:
   - text: "Week 4 overview"
     icon: book
     href: w4_overview.html
-  - text: "w4-1: Version control with Git"
+  - text: "w4a: Version control with Git"
     icon: bookmarks
     href: w4a_git.html
-  - text: "Ungraded assignment: GitHub account"
+  - text: "Week 4 ungraded assignment: GitHub account"
     icon: pencil
     href: w4_ua_github-account.html
-  - text: "Graded assignment"
+  - text: "Week 4 graded assignment"
     icon: pencil
     href: w4_ga_git.html
-  - text: "Bonuns: Advanced Git"
+  - text: "Bonus: advanced Git"
     icon: bookmarks
     href: ../bonus/git.html
 ---
@@ -46,12 +46,6 @@ your code and other relevant files -- here, you'll learn to do so with GitHub.
 In other words, we will cover how can  put your local repositories online at GitHub,
 and how to keep local and online ("remote") repositories in sync.
 
-::: {.callout-important appearance="minimal"}
-Of course, you always pay attention,
-but here is some extra incentive to do so today:
-you'll be handing in all your assignments for the rest of the course via GitHub.
-:::
-
 ### Learning goals
 
 In this lecture, you will learn to:
@@ -61,8 +55,6 @@ In this lecture, you will learn to:
   counterpart on GitHub
 - How to keep your local and online (remote) repositories in sync
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### Getting ready
 
 #### Start a VS Code session
@@ -71,26 +63,28 @@ Start a VS Code session like you've done before.
 
 <details><summary>_Click here to see the instructions_</summary>
 
-1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>.
-2. In the blue top bar, select `Interactive Apps` and near the bottom, click `Code Server`.
-3. In the form on the page that appears, fill out the following:
-   - "_Cluster_": `pitzer`
-   - "_Account_" (= OSC Project): `PAS2880`.
-   - "_Number of hours_": `2`
-   - "_Working Directory_": your personal dir in `/fs/ess/PAS2880/users`
-     (e.g. `/fs/ess/PAS2880/users/jelmer`)
-   - "_App Code Server version_": `4.8.3`
+1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>
+2. In the blue top bar, select `Interactive Apps` and near the bottom,
+   click `Code Server`
+3. Fill out the form as follows:
+   - **Cluster**: `pitzer`
+   - **Account**: `PAS2880`
+   - **Number of hours**: `2`
+   - **Working Directory**: `/fs/ess/PAS2880/user/<username>`
+    (replace `<username>` with your user name)
+   - **App Code Server version**: `4.8.3`
 4. Click `Launch`
-5. Once the blue *Connect to VS Code* button appears,
-   click that to open VS Code in a new browser tab.
-6. In VS Code, open a terminal by either:
-   - Clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal`
-   - Using the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>
-7. Check that your are in your dir within `/fs/ess/PAS2880/users` by typing `pwd`
-   in the terminal.
-   _(If you're not, that dir may be listed under `Recents` in the `Get Started`_
-   _document --- if that's the case, click on that entry._
-   _Otherwise, click `File` => `Open Folder` and type/select that dir.)_
+5. Click the `Connect to VS Code` button once it appears
+6. In VS Code, open a terminal by 
+   clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal` ^[
+   Or use the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>.]
+7. Check that your are in `/fs/ess/PAS2880/users/$USER`
+   by typing `pwd` in the terminal.\
+   _(Recall that `$USER` is a variable that represents your username._
+   _If you're not in that dir, it may be listed under `Recents` in the_
+   _`Get Started` document -- if so, click on that entry._
+   _Otherwise, click `File` > `Open Folder` and type/select_
+   _`/fs/ess/PAS2880/users/$USER`.)_
    
 </details>
 
@@ -99,8 +93,7 @@ Start a VS Code session like you've done before.
 Like before, I recommend that you create and open a Markdown file to keep notes:
 
 1. Click <i class="fa fa-bars"></i> => `File` => `New File`.
-2. Save the file inside `/fs/ess/PAS2880/users/$USER/week04`,
-   e.g. as `lecture2.md` (use a `.md` extension).
+2. Save the file inside `/fs/ess/PAS2880/users/$USER/week04`, e.g. as `lectureB.md`.
    
 #### Change your working dir
 
@@ -108,14 +101,14 @@ Like before, I recommend that you create and open a Markdown file to keep notes:
 cd week04
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ## Remote repositories
 
-So far, we have been locally version-controlling our `originspecies` repository.
-Now, we also want to put this repo online, so we can:
+You have used version control to create a local Git repository for the mock
+`originspecies` project.
+The next step is to put this repo online.
+Generally, sharing repositories online allows you to:
 
-- Share our work (e.g. alongside a publication) and/or
+- Share your work (e.g. alongside a publication) and/or
 - Have an online backup and/or
 - Collaborate with others^[
   We will not cover collaboration workflows in class, though --
@@ -132,8 +125,6 @@ Using remote repositories will mean adding a couple of Git commands to our toolb
 - **`git pull`** to download ("pull") changes from remote to local.
 
 But we will need to start with some one-time setup to enable GitHub authentication.
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### One-time setup: GitHub authentication
 
@@ -182,9 +173,9 @@ There are two options for this (see the box below) but we will use
    ```
 
 3. Now, you have a file `~/.ssh/id_ed25519.pub`, which is your **public key**.
-   To enable authentication, you will put this public key (which interacts with
-   your private key) on GitHub.
-   Print the public key to your screen using `cat`:
+   To enable authentication, you will put this public SSH key
+   (which interacts with your private SSH key) on GitHub.
+   Print the file with your public SSH key to your screen using `cat`:
   
    ```sh
    cat ~/.ssh/id_ed25519.pub
@@ -193,13 +184,13 @@ There are two options for this (see the box below) but we will use
    ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBz4qiqjbNrKPodoGyoF/v7n0GKyvc/vKiW0apaRjba2 your_email@example.com
    ```
 
-4. Copy the line that was printed to screen to your clipboard.
+4. Copy the entire line that was printed to screen to your clipboard.
 5. In your browser, go to <https://github.com> and log in.
-6. Go to your personal Settings.
-   (Click on your avatar in the far top-right of the page, then select "Settings".)
+6. Go to your personal Settings:
+   click on your avatar in the far top-right of the page, then select "Settings".
 7. Click on `SSH and GPG keys` in the sidebar.
 8. Click the green `New SSH key` button.
-9. In the form (see screenshot below):
+9. In the form that appears (see screenshot below):
    - Give the key an arbitrary, informative "Title" (name),
      e.g. "OSC" to indicate that you will use this key at OSC.
    - Paste the public key, which you copied to your clipboard earlier, into the "Key" box.
@@ -207,89 +198,87 @@ There are two options for this (see the box below) but we will use
 
 ![](../img/ssh-key-add-github2.png){fig-align="center" width="80%" fig-alt="The GitHub dialog box to enter your SSH key." .lightbox}
 
-<hr style="height:1pt; visibility:hidden;" />
-
-::: callout-tip
 #### Authentication and GitHub URLs
+
 The current two options to authenticate to GitHub when connecting with remotes are:
 
 - `SSH` access with an *SSH key* (which we have just set up)
-- `HTTPS` access with a *Public Access Token* (PAT).
+- `HTTPS` access with a *Public Access Token* (PAT)^[
    [See this GitHub page](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) 
-   to set this up instead of or in addition to SSH access.
+   to set this up instead of or in addition to SSH access.]
 
-For everything on GitHub, **there are separate SSH and HTTPS URLs**.
-When using `SSH` (as we are), we need to use URLs with the following format:
+These two options are associated with separate URLs.
+In other words, for everything on GitHub,
+**there are separate SSH and HTTPS URLs, and you should make sure to make the correct one**.
+Since you have set up SSH but not HTTPS authentication,
+you must use URLs with the following format:
 
 ```bash-out-solo
 git@github.com:<USERNAME>/<REPOSITORY>.git
 ```
 
-(And when using `HTTPS`, you would use URLs like
+(HTTPS URLs are in the more familiar-looking format
 `https://github.com/<USERNAME>/<REPOSITORY>.git`)
-:::
 
-<hr style="height:1pt; visibility:hidden;" />
+We'll see an example of this in a bit.
 
 ### Create a remote repository
 
 While we can *interact* with online repos using Git commands,
 we can't _create_ a new online repo with the Git CLI.
-Therefore, we will to go to the GitHub website to create a new online repo:
+Therefore, go to the GitHub website to create a new online repo:
 
 1. On the GitHub website, click the **`+`** next to your avatar (top-right) and
    select "**New repository**":
 
 ![](../img/github-newrepo-button2.png){fig-align="center" width="40%" fig-alt="A screenshot showing the button on GitHub to create a new repository." .lightbox}
 
-2. In the box "**Repository name**", we'll use the same name that we gave to our
-   local directory: `originspecies`^[Though note that these names don't *have to* match up.].
+2. In the box "**Repository name**", use the same name as that of your local dir:
+   `originspecies`(though note that these names don't *have to* match).
 
 ![](../img/github-newrepo-name2.png){fig-align="center" width="45%" fig-alt="A screenshot showing how to name your repository on GitHub." .lightbox}
 
-3. Leave other options as they are, as shown below, and click "**Create repository**":
+3. Leave other options unchanged, as shown below, and click "**Create repository**":
 
 ![](../img/github-newrepo-confirm2.png){fig-align="center" width="80%" fig-alt="A screenshot showing the desired settings when creating a new repository on GitHub" .lightbox}
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### Link the local and remote repositories
 
 After you clicked "Create repository",
 a page similar to this screenshot should appear,
-which gives us some information about linking the remote and local repositories:
+which provides information about linking the remote and local repositories:
 
 ![](../img/github-newrepo2.png){fig-align="center" width="75%" fig-alt="A screenshot showing the information GitHub provides about linking remote and local repositories." .lightbox}
 
-We go back to VS Code, where we'll enter the commands that GitHub provided to us under the
+Go back to VS Code to enter the commands that GitHub provided us with under the
 "*...or push an existing repository from the command line*"
-heading shown at the bottom of the screenshot above:^[
+heading shown at the bottom of the screenshot above^[
 Though we can skip the second one, `git branch -M main`, since our branch is already called "main".
-] 
+]:
 
-1. First, we tell Git to add a "remote" connection with **`git remote`**,
+1. First, tell Git to add a "remote" connection with **`git remote`**,
    providing three arguments to this command:
-   - **`add`** --- because we're adding a remote connection.
-   - **`origin`** --- the arbitrary nickname we're giving the connection
-     (usually called "origin" by convention).   
+   - **`add`** --- because we're adding a remote connection
+   - **`origin`** --- the nickname for the connection
+     (could be anything but usually called "origin" by convention). 
    - The **URL** to the GitHub repo
-     (**in SSH format**: click on the `HTTPS`/`SSH` button to toggle the URL type).
+     (**in SSH format**: click on the `HTTPS`/`SSH` button to toggle the URL type)
 
    ```sh
    # git remote add <remote-nickname> <URL>
    git remote add origin git@github.com:<user>/originspecies.git
    ```
 
-2. Second, we upload ("push") our local repo to remote using **`git push`**.
-   When we push a repository for the first time,
-   we need to use the `-u` option to set up an "**u**pstream" counterpart:
+2. Second, upload ("push") your local repo to remote using **`git push`**.
+   Only when you push a repository for the first time,
+   you must use the `-u` option to set up an "**u**pstream" counterpart:
   
    ```sh
    # git push -u <connection> <branch>
    git push -u origin main
    ```
 
-3. You should then get a message like this: type `yes` and press <kbd>Enter</kbd>.
+3. You should get a message like this: type `yes` and press <kbd>Enter</kbd>.
 
    ```bash-out-solo
    The authenticity of host 'github.com (140.82.114.4)' can't be established.
@@ -298,8 +287,7 @@ Though we can skip the second one, `git branch -M main`, since our branch is alr
    Are you sure you want to continue connecting (yes/no)?
    ```
 
-4. Then, the push/upload should go through, with a message along these lines
-   printed to screen:
+4. The push/upload should process, with a message along these lines printed:
    
    ```bash-out-solo
    Counting objects: 18, done.
@@ -312,26 +300,22 @@ Though we can skip the second one, `git branch -M main`, since our branch is alr
    * [new branch]      main -> main
    ```
 
-<hr style="height:1pt; visibility:hidden;" />
+From now on, you can push with a simpler command, because without additional
+arguments, `git push` will push:
 
-::: callout-note
-### Pushing will be easier from now on
-Note that when we don't give `git push` any arguments, it will push:
-
-- To the **default remote connection**.
-- To & from the **currently active repository *"branch"*** (default: `main`)^[
+- To the **default remote connection** (which we just set up)
+- To and from the **currently active repository *"branch"*** (default: `main`)^[
   To learn more about branches, see the [Git bonus material](../bonus/git.qmd).].
 
-Because we only have one remote connection and one branch,
-we can from now on simply use the following to push:
+Because you only have one remote connection and one branch in this repo,
+you can simply use the following to push from now on:
 
 ```sh
 git push
 ```
 
-----
-
-Also, note that you can check your remote connection settings for a repo with `git remote -v`:
+::: {.callout-tip appearance="simple"}
+You can check your remote connection settings for a repo with `git remote -v`:
 
 ```bash
 git remote -v
@@ -341,29 +325,27 @@ origin  git@github.com:jelmerp/originspecies.git (fetch)
 origin  git@github.com:jelmerp/originspecies.git (push)
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
 :::
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### Explore the repository on GitHub
 
-Back at GitHub on your repo page, click where it says `<> Code` in the lower of the top bars:
+Back at GitHub on your repo page,
+click `<> Code` in the lower of the top bars:
 
 ![](../img/github-code-button.png){fig-align="center" width="40%" fig-alt="A screenshot of the GitHub Code button for a repository." .lightbox}
 
-This is basically our repo's "home page",
-and we can see the files that we just uploaded from our local repo:
+This is basically your repo's "home page",
+and you can see the files you just uploaded from your local repo:
 
 ![](../img/github-repo-home.png){fig-align="center" width="90%" fig-alt="A screenshot of the front page of our new repository." .lightbox}
 
-Next, click where it says `x commits` (x should be 10 in this case):
+Next, click where it says `x commits`
+(x should be 10 if you followed along exactly in the previous class):
 
 ![](../img/github-x-commits2.png){fig-align="center" width="35%" fig-alt="A screenshot of the commit info on GitHub." .lightbox}
 
-You'll get an overview of the commits that you made,
-somewhat similar to what you get when you run `git log`:
+You'll get an overview of the commits you made,
+somewhat similar to `git log`'s output:
 
 ![](../img/github-commit-overview.png){fig-align="center" width="95%" fig-alt="A screenshot of the overview of commits on GitHub." .lightbox}
 
@@ -372,7 +354,7 @@ You can click on a commit to see the changes that were made by it:
 ![The line that is highlighted in green was added by this commit.](../img/github-commit-details.png){fig-align="center" width="95%" fig-alt="A screenshot of the diff view on GitHub." .lightbox}
 
 On the right-hand side, a **<kbd>< ></kbd>** button will allow you to
-see the _state of the repo_ at the time of that commit:
+see the _state of the entire repo_ (all files in the project) at the time of that commit:
 
 ![](../img/github-browse-repo-at-commit.png){fig-align="center" width="28%" fig-alt="A screenshot of the Browse Repository button on GitHub." .lightbox}
 
@@ -382,16 +364,14 @@ since that was the only file in your repo at the time:
 
 ![](../img/github-past-repo.png){fig-align="center" width="90%" fig-alt="A screenshot of the view of our repository at an earlier timepoint." .lightbox}
 
-<hr style="height:1pt; visibility:hidden;" />
-
 #### GitHub "Issues"
 
-Each GitHub repository has an "Issues" tab --- issues are mainly used to
-track bugs and other (potential) problems with a repository.
+Each GitHub repository has an "Issues" tab.
+GitHub Issues are mainly used to track bugs and other (potential) problems with a repository.
 In an issue, you can reference specific commits and people, and use Markdown formatting.
 
-::: callout-note
-#### When you hand in your final project submissions, you will create an issue simply to notify me about your repository.
+::: {.callout-note appearance="simple"}
+For future assignments and your final project, you will create an issue simply to notify me about your repository.
 :::
 
 To go to the Issues tab for your repo, click on Issues towards the top of the page:
@@ -403,11 +383,10 @@ in which you can open a new issue with the "New" button:
 
 ![](../img/github-issues2.png){fig-align="center" width="65%" fig-alt="A screenshot showing the New Issue button on GitHub." .lightbox}
 
-<br>
-
 ## Remote repo workflows: single-user
 
-In a single-user workflow, all changes are typically made in the local repository,
+In a single-user workflow (i.e., without collaborators),
+all changes are typically made in the local repository,
 and the remote repo is simply periodically updated (*pushed to*).
 So, the interaction between local and remote is unidirectional:
 
@@ -437,12 +416,10 @@ So, the interaction between local and remote is unidirectional:
 :::
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
 In a single-user workflow with a remote,
 you commit just like you would without a remote in your day-to-day work,
-and in addition, *push* to remote occasionally ---
-let's run through an example.
+and in addition, *push* to remote occasionally.
+Let's run through an example.
 
 - Start by creating a `README.md` file for your repo:
 
@@ -474,7 +451,7 @@ let's run through an example.
   nothing to commit, working tree clean
   ```
 
-- But Git will not automatically sync. So now, push to the remote repository:
+- But Git will not automatically sync! So, now push to the remote repository:
   
   ```sh
   git push
@@ -495,12 +472,8 @@ Let's go back to GitHub: note that the `README.md` Markdown has been automatical
 
 ![](../img/github-markdown-rendered.png){fig-align="center" width="90%" fig-alt="A screenshot of the rendered README file on GitHub." .lightbox}
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ::: callout-tip
 #### Want to collaborate on repositories?
 The [version control bonus page](../bonus/git.qmd##collaboration-with-git-multi-user-remote-workflows)
 covers collaboration with Git and Github, i.e. multi-user workflows.
 :::
-
-<br>

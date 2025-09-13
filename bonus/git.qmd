@@ -10,6 +10,16 @@ author:
     affiliation: 
       - name: CFAES Bioinformatics Core, Ohio State University
         url: https://mcic.osu.edu/bioinformatics
+other-links:
+  - text: "Week 4 overview"
+    icon: book
+    href: ../week04/w4_overview.html
+  - text: "w4a: Version control with Git"
+    icon: bookmarks
+    href: ../week04/w4a_git.html
+  - text: "w4b: Remotes on GitHub"
+    icon: bookmarks
+    href: ../week04/w4b_github.html
 editor_options: 
   chunk_output_type: console
 bibliography: ../references.bib
@@ -19,13 +29,7 @@ bibliography: ../references.bib
 
 <br>
 
-:::callout-caution
-#### THIS PAGE IS STILL UNDER CONSTRUCTION
-
-- TBA: Add Alt text
-:::
-
-<br>
+## Introduction
 
 This page contains optional self-study material if you want to dig deeper into Git.
 Some of it may also be useful as a reference in case you run into problems while
@@ -37,16 +41,12 @@ trying to use Git.
 - Undoing (& viewing) changes that have been committed
 - Miscellaneous Git
 
-<br>
-
 ## Branching & merging
 
 In this section, you'll learn about using so-called "branches" in Git.
 Branches are basically parallel versions of your repository,
 which allow you or your collaborators to experiment or create variants without
 affecting existing functionality or others' work.
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### A repo with a couple of commits
 
@@ -119,8 +119,6 @@ cat code.txt
 Some great code here
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### Using branches in Git
 
 You now want to improve the code, but these changes are *experimental,*
@@ -129,7 +127,7 @@ This is where ***branching*** comes in.
 With a new branch, you can make changes that don't affect the `main` branch,
 and can also keep working on the `main` branch:
 
-![Figure modified after @allesina2019.<br>(Note that the `main` branch is here called "master".)](../img/csb-branch-intro.png){fig-align="center" width="75%"}
+![Figure modified after @allesina2019.<br>(Note that the `main` branch is here called "master".)](../img/csb-branch-intro.png){fig-align="center" width="75%" fig-alt="A diagram showing how Git branches work." .lightbox}
 
 #### Creating a new branch
 
@@ -182,8 +180,6 @@ On branch fastercode
 nothing to commit, working tree clean
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
 #### Making experimental changes on the new branch
 
 You edit the code, stage and commit the changes:
@@ -217,8 +213,6 @@ git log --oneline
 7ba8ca4 (main) Drafted paper
 3c59d8a Code ready
 ```
-
-<hr style="height:1pt; visibility:hidden;" />
 
 #### Moving back to the `main` branch
 
@@ -274,8 +268,6 @@ git log --oneline --graph --all
 * 3c59d8a Code ready
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
 #### Finishing up on the experimental branch
 
 Earlier, you finished speeding up the code in the `fastercode` branch,
@@ -325,8 +317,6 @@ git log --oneline --all --graph
 * 3c59d8a Code ready
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
 #### Merging the branches
 
 You're happy with the changes to the code, and want to make the `fastercode`
@@ -370,8 +360,6 @@ git log --oneline --all --graph
 * 3c59d8a Code ready
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
 #### Cleaning up
 
 You no longer need the `fastercode` branch, so you can delete it as follows:
@@ -383,11 +371,9 @@ git branch -d fastercode
 Deleted branch fastercode (was d09f611).
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
+### Branching and merging -- Workflow summary
 
-### Branching and merging &ndash; Workflow summary
-
-![Figure from after @allesina2019](../img/csb-branch.png){fig-align="center" width="90%"}
+![Figure from @allesina2019](../img/csb-branch.png){fig-align="center" width="90%" fig-alt="A diagram with a summary of the Git branching and merging workflow." .lightbox}
 
 #### Overview of commands used in the branching workflow 
 
@@ -412,10 +398,8 @@ git merge mybranch -m "Message for merge"
 git -d mybranch
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ::: exercise
-#### {{< fa user-edit >}} Exercise (Intermezzo 2.2)
+#### {{< fa user-edit >}} Exercise (CSB Intermezzo 2.2)
 
 - **(a)** Move to the directory `CSB/git/sandbox`.
 
@@ -505,8 +489,6 @@ git branch -d newintro
 </details>
 :::
 
-<br>
-
 ## Collaboration with Git: multi-user remote workflows
 
 In a multi-user workflow, your collaborator can make changes to the repository
@@ -519,12 +501,12 @@ This happens with the **`git pull`** command.
 
 ::: columns
 ::: {.column width="48%"}
-![**A**<br>First, a second user, your collaborator, downloads (*clones*) the online repo. They should also receive admin rights on the repo (not shown - done on GitHub).](../img/git-remote-mult-1.png){fig-align="center" width="100%"}
+![**A**<br>First, a second user, your collaborator, downloads (*clones*) the online repo. They should also receive admin rights on the repo (not shown - done on GitHub).](../img/git-remote-mult-1.png){fig-align="center" width="100%" fig-alt="A diagram showing a multi-user Git and Github workflow in 4 steps: step 1" .lightbox}
 :::
 ::: {.column width="4%"}
 :::
 ::: {.column width="48%"}
-![**B**<br>Then, your collaborator commits changes to their local copy of the repository.](../img/git-remote-mult-2.png){fig-align="center" width="100%"}
+![**B**<br>Then, your collaborator commits changes to their local copy of the repository.](../img/git-remote-mult-2.png){fig-align="center" width="100%" fig-alt="A diagram showing a multi-user Git and Github workflow in 4 steps: step 2" .lightbox}
 :::
 :::
 
@@ -532,16 +514,14 @@ This happens with the **`git pull`** command.
 
 ::: columns
 ::: {.column width="48%"}
-![**C**<br>Before you can receive these changes, your collaborator will need to push their changes to the remote, which you can access too.](../img/git-remote-mult-3.png){fig-align="center" width="100%"}
+![**C**<br>Before you can receive these changes, your collaborator will need to push their changes to the remote, which you can access too.](../img/git-remote-mult-3.png){fig-align="center" width="100%" fig-alt="A diagram showing a multi-user Git and Github workflow in 4 steps: step 3" .lightbox}
 :::
 ::: {.column width="4%"}
 :::
 ::: {.column width="48%"}
-![**D**<br>To update your local repo with the changes made by your collaborator, you *pull* in the changes from the remote. Now all 3 copies of the repo are in sync again!](../img/git-remote-mult-4.png){fig-align="center" width="100%"}
+![**D**<br>To update your local repo with the changes made by your collaborator, you *pull* in the changes from the remote. Now all 3 copies of the repo are in sync again!](../img/git-remote-mult-4.png){fig-align="center" width="100%" fig-alt="A diagram showing a multi-user Git and Github workflow in 4 steps: step 4" .lightbox}
 :::
 :::
-
-<hr style="height:1pt; visibility:hidden;" />
 
 In a multi-user workflow,
 changes made by different users are **shared via the online copy of the repo**.
@@ -564,25 +544,21 @@ In a multi-user workflow, you should use use `git pull` often,
 since staying up-to-date with your collaborator's changes will reduce the chances of
 *[merge conflicts](#merge-conflicts)*.
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### Add a collaborator in GitHub
 
 You can add a collaborator to a repository on GitHub as follows:
 
 1. Go to the repository's settings:
 
-![](../img/github-repo-settings.png){fig-align="center" width="30%"}
+![](../img/github-repo-settings.png){fig-align="center" width="30%" fig-alt="A screenshot of the repository Settings button on GitHub." .lightbox}
 
 2. Find and click `Manage access`:
 
-![](../img/github-repo-access.png){fig-align="center" width="30%"}
+![](../img/github-repo-access.png){fig-align="center" width="30%" fig-alt="A screenshot of the 'Manage access' button in the GitHub repository settings." .lightbox}
 
 3. Click `Invite a collaborator`:
 
-![](../img/github-repo-collaborator.png){fig-align="center" width="30%"}
-
-<hr style="height:1pt; visibility:hidden;" />
+![](../img/github-repo-collaborator.png){fig-align="center" width="30%" fig-alt="A screenshot of the 'Invite a collaborator' button on GitHub repository setttings." .lightbox}
 
 ### Merge conflicts
 
@@ -598,7 +574,7 @@ two branches, which occurs when all three of the following conditions are met:
 When this occurs, Git has no way of knowing which changes to keep,
 and it will report a merge conflict as follows:
 
-![](../img/merge-conflict-start.png){fig-align="center" width="70%"}
+![](../img/merge-conflict-start.png){fig-align="center" width="70%" fig-alt="A screenshot of Git repoting a Merge Conflict." .lightbox}
 
 #### Resolving a merge conflict
 
@@ -606,7 +582,7 @@ When Git reports a merge conflict, follow these steps:
 
 1. Use **`git status`** to find the conflicting file(s).
 
-![](../img/merge-conflict-status.png){fig-align="center" width="70%"}
+![](../img/merge-conflict-status.png){fig-align="center" width="70%" fig-alt="A screenshot showing how you can see which file contains a Conflict." .lightbox}
 
 2. **Open and edit those file(s) manually** to a version that fixes the conflict (!).
    
@@ -631,7 +607,7 @@ When Git reports a merge conflict, follow these steps:
    git add origin.txt
    ```
 
-![](../img/merge-conflict-resolved.png){fig-align="center" width="50%"}
+![](../img/merge-conflict-resolved.png){fig-align="center" width="50%" fig-alt="A screenshot showing Git output when the conflicts have been fixed." .lightbox}
 
 4. Once all conflicts are resolved, use `git status` to check that all changes
    have been staged.
@@ -640,8 +616,6 @@ When Git reports a merge conflict, follow these steps:
    ```sh
    git commit -m "Solved the merge conflict"
    ```
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ::: callout-tip
 #### VS Code functionality for resolving Merge Conflicts
@@ -652,14 +626,12 @@ VS Code has some nice functionality to make Step 2 (resolving the conflict) easi
 code <conflicting-file>  # Open the file in VS Code
 ```
 
-![](../img/vs-code-merge-conflict.png){fig-align="center" width="70%"}
+![](../img/vs-code-merge-conflict.png){fig-align="center" width="70%" fig-alt="A screenshot of how VS Code shows conflicting lines in a file causing a Merge Conflict." .lightbox}
 
 If you click on "*Accept Current Change*" or "*Accept Incoming Change*", etc.,
 it will keep the desired lines and remove the Git indicator marks.
 Then, save and exit.
 :::
-
-<br>
 
 ## Contributing to repositories: Forking & Pull Requests
 
@@ -691,12 +663,12 @@ You can follow along by e.g. forking [my `originspecies` repo](https://github.co
 
 - Go to a GitHub repository, and click the "**_Fork_**" button in the top-right:
 
-![](../img/github-fork.png){fig-align="center" width="50%"}
+![](../img/github-fork.png){fig-align="center" width="50%" fig-alt="A screenshot of the 'Fork' button on GitHub." .lightbox}
 
 - You may be asked which account to fork to: select your account.
 - Now, you have your own version of the repository, and it is labeled explicitly as a fork:
 
-![](../img/github-forked.png){fig-align="center" width="50%"}
+![](../img/github-forked.png){fig-align="center" width="50%" fig-alt="A screenshot of GitHub showing that your repo is a fork." .lightbox}
 
 #### Forking workflow
 
@@ -708,9 +680,7 @@ You can't directly modify the *original repository*, but you can:
 - Also, you can also easily **keep your fork up-to-date** with changes to the
   original repository.
 
-![[Figure from Happy Git and GitHub for the useR](https://happygitwithr.com/fork-and-clone.html)](../img/fork-triangle-happy.png){fig-align="center" width="70%"}
-
-<hr style="height:1pt; visibility:hidden;" />
+![[_Figure from Happy Git and GitHub for the useR_](https://happygitwithr.com/fork-and-clone.html)](../img/fork-triangle-happy.png){fig-align="center" width="70%" fig-alt="A diagram of the fork-and-pull request workflow." .lightbox}
 
 #### Editing the forked repository
 
@@ -726,7 +696,7 @@ Then, find the URL for your forked GitHub repository by clicking the green `Code
 Make sure you get the SSH URL (rather than the HTTPS URL),
 and click the clipboard button next to the URL to copy it:
 
-![](../img/github-ssh-url.png){fig-align="center" width="50%"}
+![](../img/github-ssh-url.png){fig-align="center" width="50%" fig-alt="A screenshot showing where to find the SSH URL to a repository." .lightbox}
 
 Then, type `git clone` and a space, and paste the URL, e.g.:
 
@@ -760,30 +730,26 @@ have set up GitHub authentication):
 git push
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
 #### Creating a Pull Request
 
 If you then go back to GitHub, you'll see that your forked repo is "*x commit(s) ahead*"
 of the original repo:
 
-![](../img/github-fork-ahead.png){fig-align="center" width="90%"}
+![](../img/github-fork-ahead.png){fig-align="center" width="90%" fig-alt="A screenshot of GitHub indicating that a forked repo is ahead of the original repo." .lightbox}
 
 Click `Pull request`, and check whether the right repositories and branches
 are being compared
 (and here you can also see the changes that were made in the commits):
 
-![](../img/github-pr-compare.png){fig-align="center" width="90%"}
+![](../img/github-pr-compare.png){fig-align="center" width="90%" fig-alt="A screenshot of GitHub indicating that two repos can be merged." .lightbox}
 
 If it looks good, click the green `Create Pull Request` button:
 
-![](../img/github-pr.png){fig-align="center" width="90%"}
+![](../img/github-pr.png){fig-align="center" width="90%" fig-alt="A screenshot of the 'Create pull request' button on GitHub." .lightbox}
 
 Give your Pull Request a title, and write a brief description of your changes:
 
-![](../img/github-pr-confirm.png){fig-align="center" width="85%"}
-
-<hr style="height:1pt; visibility:hidden;" />
+![](../img/github-pr-confirm.png){fig-align="center" width="85%" fig-alt="A screenshot of the 'Pull  Request' dialogue box." .lightbox}
 
 #### Keeping your fork up-to-date
 
@@ -815,20 +781,68 @@ upstream   git@github.com:jelmerp/originspecies.git  (push)
 git pull upstream main
 ```
 
-::: callout-tip
-#### "*upstream*" is an arbitrary but convential name, compare with "origin" which is used for your *own* version of the online repo. 
+::: {.callout-tip appearance="simple"}
+"*Upstream*" is an arbitrary but convential name --
+compare with this "origin" which is used for your *own* version of the online repo. 
 :::
-
-<br>
 
 ## Undoing (& viewing) changes that have been committed
 
 Whereas in [the first Git session](../week04/w4a_git.qmd),
 we learned about undoing changes that have _not_ been committed,
 here you'll see how you can undo changes that have been committed.
+We'll start with some concepts that are helpful in this context. 
+
+### The three trees of Git
+
+These three states correspond to the three "trees" of Git:
+
+- **HEAD**: State of the project in the most recent commit (on the current branch).
+- **Index** (*Stage*): State of the project ready to be committed.
+- **Working directory** (_Working Tree_): State of the project as currently on your computer.
 
 <hr style="height:1pt; visibility:hidden;" />
 
+![The three "trees" of Git: HEAD, the index, and the working dir.<br>The hexadecimals in the Commits rectangles are abbreviated checksums for each commit.](../img/git-3trees-simple2.svg){fig-align="center" width="40%" fig-alt="A diagram illustrating the concept of the three trees of Git." .lightbox}
+
+<hr style="height:1pt; visibility:hidden;" />
+
+Or consider this table for a hypothetical example in which HEAD, the Index,
+and the working dir all differ with regards to the the version of file 1,
+and there also is an untracked file in the working dir:
+
+| File state    | Version         | Which tree  |
+|---------------|-----------------|-------------|
+| **Committed** | file 1 version X                     | HEAD        |
+| **Staged**    | [**file 1 version Y**]{style="color:green"} | Index (stage)       |
+| **Modified**  | [**file 1 version Z**]{style="color:red"}   | Working dir |
+| **Untracked** | [**file 2 version X**]{style="color:red"}   | Working dir |
+
+: {.striped .hover}
+
+### Ways to refer to past commits
+
+To refer to specific past commits, you can:
+
+- Using the hexadecimal checksum (either the full ID or the 7-character abbreviation)
+- Use ***HEAD*** notation: HEAD is the most recent commit,
+  and there are two ways of indicating ancestors of HEAD:
+
+<hr style="height:1pt; visibility:hidden;" />
+
+![To refer to past commits, you can use checksums (e.g. `dab0dc4` for the second-to-last commit)<br>or HEAD notation (`HEAD^^` or `HEAD~2` for the second-to-last commit).](../img/git-head-notation.svg){fig-align="center" width="70%" fig-alt="A diagram showing how to refer to past commits." .lightbox}
+
+For example, using `git diff` to compare your repo or individual files between
+any two arbitrary commits:
+
+```bash
+# Last commit vs second-to-last commit - full repo:
+git diff HEAD HEAD^
+
+# Last commit vs a specified commit - specific file: 
+git diff HEAD d715c54 todo.txt 
+```
+  
 ### Viewing past versions of the repository
 
 Before undoing committed changes, you may want to look at earlier states of your repo,
@@ -866,7 +880,7 @@ simply copy the file to a location outside of your repo, move yourself back to t
 and move the file back into your repo, now in the present.
 :::
 
-![A visual of using `git checkout` to view files from older versions of your repo.<br>Figure from <https://software-carpentry.org>.](../img/git-checkout-softcarp.svg){fig-align="center" width="90%"}
+![A visual of using `git checkout` to view files from older versions of your repo.<br>Figure from <https://software-carpentry.org>.](../img/git-checkout-softcarp.svg){fig-align="center" width="90%" fig-alt="An diagram visualizing the `git checkout` command." .lightbox}
 
 ::: callout-warning
 ### The multiple uses of `git checkout`
@@ -876,8 +890,6 @@ Note the confusing re-use of `git checkout`! We have now seen `git checkout` bei
 - Move to previous commits to explore (**figure below**)
 - (Revert files back to previous states --- as an alternative to `git restore`)
 :::
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### Undoing entire commits
 
@@ -939,8 +951,6 @@ At any rate, you should **never** use `git reset` for commits that have already
 been pushed online.
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### Viewing & reverting to earlier versions of files
 
 Above, you learned to undo at a project/commit-wide level.
@@ -980,8 +990,6 @@ Be careful with `git checkout`: any uncommitted changes to this file
 would be overwritten by the past version you retrieve!
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
 An **alternative method** to view and revert to older versions of specific files
 is to use `git show`.
 
@@ -1002,8 +1010,6 @@ is to use `git show`.
   ```sh
   git show ad4ca74:README.md > README.md
   ```
-
-<br>
 
 ## Miscellaneous Git
 
@@ -1038,8 +1044,6 @@ For sure, do **not** amend commits that have been published in (*pushed to*)
 the online counterpart of the repo.
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### `git stash`
 
 Git stash can be useful when you need to _pull from the remote_,
@@ -1069,7 +1073,17 @@ Here is an example of the sequence of commands you can use in such cases.
    git stash apply
    ```
 
-<hr style="height:1pt; visibility:hidden;" />
+### Tags
+
+If you have a repo with general scripts, which you continue to develop and use in multiple projects,
+and you publish a paper in which you use these scripts,
+it is a good idea to add a "**_tag_**" to a commit to mark the version of the
+scripts used in your analysis:
+ 
+```sh
+git tag -a v1.2.0 -m "Clever release title"
+git push --follow-tags
+```
 
 ### A few more tips
 
@@ -1102,5 +1116,3 @@ Here is an example of the sequence of commands you can use in such cases.
     ```sh
     git config --global alias.last "log -1 HEAD"
     ```
-
-<br>

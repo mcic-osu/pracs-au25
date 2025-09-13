@@ -1,8 +1,8 @@
 ---
-title: "Graded Assignment II: Version control"
-subtitle: "Week 4 graded assignment -- due Monday Sep 22 at 10:00 pm"
+title: "Graded Assignment 2:<br>Unix shell data tools and version control"
+subtitle: "Week 4 graded assignment -- due Sunday Sep 21 at 11:59 pm"
 pagetitle: "GA2"
-date: 2025-09-15
+date: 2025-09-12
 author:
   - name: Jelmer Poelstra
     orcid: 0000-0002-3514-7462
@@ -17,119 +17,219 @@ other-links:
   - text: "w4-2: Remotes with GitHub"
     icon: bookmarks
     href: w4b_github.html
-  - text: "Week 4: Ungraded assignment: GitHub account"
+  - text: "Week 4 ungraded assignment: GitHub account"
     icon: pencil
     href: w4_ua_github-account.html
   - text: "Bonus: Advanced Git"
     icon: book
     href: ../bonus/git.html
 number-sections: false
+bibliography: ../references.bib
 ---
 
 ------
 
-<br>
-
-::: {.callout-tip}
-#### OVERVIEW
-This graded assignment centers around the material for week 4,
-and you will primarily be practicing your Git skills.
-:::
-
 <hr style="height:1pt; visibility:hidden;" />
+
+## Overview
+
+This graded assignment is worth 10 points and is due on Sunday Sep 21^st^.
+You will practice with Unix shell commands, especially the "data tools" commands,
+and with Git commands.
 
 ## Directions and grading
 
 ### Submission expectations
 
-The **deadline** is Monday Sep 22^nd^ at 10:00 pm.
-You will submit your assignment by tagging the instructor in an Issue in your
-GitHub as per the last step below. 
-
+- **Deadline**: Sunday September 21^st^ at 11:59 pm.
+- **Submission**: You don't need to submit anything or notify the instructors:
+  we will simply look for these files in the appropriate location at OSC.
+  (We will also be able to see when the files were last modified.)
+- **When to start**: We recommend that you only get started with this assignment
+   "for real" after Thursday's class.
+   Many of the questions revolve around commands you'll have learned by Tuesday,
+   so you could do a partial practice run after that lecture.
+   
 ### Academic integrity
 
-- Use of generative AI Tools (e.g. ChatGPT, Microsoft Copilot, Google Gemini) is
-  not permitted.
-- Getting help on the assignment is not permitted.
-- Collaborating, or completing the assignment with others, is not permitted.
-- Copying or reusing previous work is not permitted.
-- Open-book research for the assignment is permitted.
-- APA Citations and/or formatting for this assignment are not required.
+|    |  | 
+|--|-------------------------|
+| ![](../img/icons/AI-Permitted_No.png){width="80%"} | Use of generative AI Tools (e.g. ChatGPT, Microsoft Copilot, Google Gemini) is not permitted. |
+| ![](../img/icons/GetHelp_No.png){width="80%"} | Getting help on the assignment is not permitted |
+| ![](../img/icons/Collaborate_No.png){width="80%"} | Collaborating, or completing the assignment with others, is not permitted |
+| ![](../img/icons/CopyPreviousWork_No.png){width="80%"} | Copying or reusing previous work is not permitted |
+| ![](../img/icons/OpenBookResearch_Yes.png){width="80%"} | Open-book research for the assignment is permitted |
+| ![](../img/icons/CitationsRequired_No.png){width="80%"} | APA Citations and/or formatting for this assignment are not required |
+
+: {.striped}
 
 ### Rubric
 
-You can earn a maximum of 8 points for this assignment:
-
-- 4 points for part I
-- 4 points for part II
-
-::: {.callout-note collapse="true"}
-#### Detailed rubric _(Click here to view)_
-TBA
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
+You can earn a maximum of 0.5 points for each of the numbered 20 questions/items below.
+There is a bonus 21^st^ question that can earn you 1 point if you dropped points elsewhere.
 
 ## Detailed steps
 
-_A general tips to keep in mind is to keep checking the status of your repository (repo)_
-_with **`git status`** before and after nearly all other Git commands that you issue._
-_This will help prevent mistakes, and will also help you understand Git better._
+### General
 
-<hr style="height:1pt; visibility:hidden;" />
+- Work in VS Code at OSC as per usual
+- Use Unix shell and Git commands to answer all questions unless explicitly
+  instructed not to do so
+- In the Markdown file with your answers
+  (you will be instructed below where to create this),
+  copy each of the numbered instructions below into your document,
+  and insert your answers in between.
+  The Unix shell code you came up with should be in Markdown code blocks,
+  and that code's output should also be part of your answer. For example:
 
-### Part I: Local Git workflow
+  ````bash-in-nocolor
+  1. List the files in your current working dir
 
-1. **Create a new directory at OSC for this assignment, and move there.**\
-   Use the following path for the new dir: `/fs/ess/PAS2880/users/$USER/week04/assignment`.
-
-2. **Initialize a local Git repository** inside your new directory.
-
-3. **Create a README file in Markdown format.**\
-   The file should be named `README.md`, and for now,
-   just contain a *header* that states this is a repo for your assignment.
-   
-4. **Stage and then commit the README file** with an appropriate commit message.
-
-5. **Create a second Markdown file with some more contents.**\
-   Name it as you like. In it,
-   describe the basic Git workflow and commands with bullet points and headers.
+     I used the following command:
      
-6. **Create at least two commits while you work on the Markdown file.**\
-   Try to break your progress up into logical units that can be
-   summarized with a descriptive commit message.
+     ```bash
+     ls
+     ```
+     
+     The output was:
+     
+     ```
+     file1.txt   file2.txt   annot.gtf
+     ```
+
+  ````
+
+### Setting up
+
+- Create a new dir for this assignment, `/fs/ess/PAS2880/users/$USER/GA2`,
+  and navigate there. ***This will be your working dir for the entire assignment.***
+  Inside it, also create a dir `data` and a dir `results`.
+
+- In your working dir, create a `README.md` file and open it in the VS Code editor.
+  ***Use this file throughout the assigment to add your answers.***
    
-7. **Update the `README.md` file**.\
-   Briefly describe the current contents of your repo now that you actually
-   have some contents.
+### Part A: Starting a Git repository
 
-8. **Stage and commit the updated README file.**\
+01. Add a *header* to the README file indicating it (and this dir) is for your assignment.
 
-9. **Create a `results` directory with an empty file and make Git ignore this directory.**\
-   Also, commit your `.gitignore` file.
+02. Initialize a Git repository inside your new directory.
 
-<hr style="height:1pt; visibility:hidden;" />
+03. Add & stage and then commit the README file with an appropriate commit message.
 
-### Part II: Create and sync an online version of the repo
+### Part B: Exploring the GTF file with Unix data tools
 
-Phew, you made several commits! Time to share all this work with the world.
+04. Copy the genome annotation GTF file `GCF_016801865.2.gtf.gz` of your copy of
+    the @garrigós2025 data to a file `data/annot.gtf.gz`
+    (i.e., into the `data` dir you just created).
+   
+05. Check the size of the `annot.gtf.gz` file.
+    Then, decompress the GTF file with the `gunzip` command below.
+    Finally, check the size of the resulting `annot.gtf` file.
+    How large is the size difference between the compressed and uncompressed files?
 
-10. **Create a GitHub repository.**\
-    Go to <https://github.com>, sign in, and create a new repository.
-    Name the repo "PRACS25_w04-assignment"^[
-    This is not the same name as your dir on OSC, which is OK.].
-    Like in class, create a completely *empty* GitHub repository,
-    because you will upload all the contents from your local repo.
-    
-11. **Push your local repo to the online counterpart you just created.**\
-    When you're done, click the `Code` button, and
-    admire the nicely rendered README on the front page of your GitHub repo.
-
-12. **Open a GitHub Issue**\
-    Open an Issue for your repo: in the Issues tab, click "New Issue",
-    and in the box where you can type your issue, tag the instructor.
-    For example:
-    
-    ```markdown
-    Hey @jelmerp, can you please take a look at my repo?
+    ```bash
+    gunzip data/annot.gtf.gz
     ```
+   
+06. The total number of "genomic features" (genes, exons, etc.)
+    listed in a GTF file is simply the number of lines in its table section.
+   
+    - Count the total number of lines in `annot.gtf`.
+    - Take a look at the contents of the file and count the number of header
+      lines by eye.
+    - Based on your knowledge of what the GTF header lines look like,
+      combine `grep -v` and `wc -l` to count the number of genomic features in the file.
+
+07. Does the difference between the two line counts you just performed correspond
+    to the number of header lines you counted visually?
+    If not, can you figure out which other line(s) than the header lines
+    contain the pattern you used with `grep` above?
+   
+    <details><summary>_Click here for a hint_</summary>
+    Review the "Additional `grep` tips" box in
+    [the section on `grep`](../week03/w3c_shellfiles.html#grep-to-print-lines-that-match-a-pattern)
+    to find an option that might help you make sense of that.
+    </details>
+
+08. How many distinct "sequences" (chromosome/scaffolds/contigs) are represented
+    in the annotation file?
+    Store a list of these distinct sequences in a file `results/scaffolds.txt`.
+    
+    <details><summary>_Click here for a hint_</summary>
+    In this and all following questions, you'll only want to consider the table
+    part of the file, so you should start your commands with `grep -v` as above.
+    </details>
+
+09. Print a "count table" (like we did towards the end of
+    [this section](../week03/w3c_shellfiles.html#combining-cut-sort-and-uniq-to-create-a-list))
+    of feature types in the annotation:
+    this should have a count of the number of times each feature type occurs.
+    _(Such a table will for example show how many genes have been annotated in this genome_
+    _-- quite useful!)_
+
+10. Check the status of your Git repository.
+    You don't want to commit the files in the `data` and `results` dirs,
+    so create a `.gitignore` file that makes Git ignore them.
+    Check the status again -- is your `.gitignore` file working as intended?
+    
+11. Stage and commit the `.gitignore` file.
+
+12. Stage and commit the `README.md` file again.
+
+### Part B: Exploring the FASTQ files with Unix data tools
+
+13. Copy the FASTQ file `ERR10802863_R1.fastq.gz` of the @garrigós2025 data
+    to a file of the same name inside the `data` dir that's in your working dir.
+
+14. Check the status of your Git repository.
+    Does the FASTQ file show up? Why/why not?
+
+15. How many reads does the FASTQ file contain?
+
+    <details><summary>_Click here for hints_</summary>
+    Recall from last week's exercises that a direct linecount of the compressed file
+    will **not** give you the correct answer.
+   
+    Also, don't forget to convert the number of lines to the number of reads.
+    </details>
+
+16. How many reads contain the sequence `ACGT`?
+    _(You can assume this string does not occur outside of the lines with sequences.)_
+
+17. Count the number of reads that contain at least 10 consecutive `N`s,
+    i.e. uncalled bases.
+    _(You can assume that stretches of N's do not occur in the sequence quality lines.)_
+   
+18. Using the read length information in the FASTQ read header lines,
+    print a count table of read lengths.
+   
+    <details><summary>_Click here for hints_</summary>
+   
+    - First, select only the read header lines.
+      When doing so, you can assume that `@`s do not occur in other lines.
+   
+    - Next, extract the read length numbers in these header lines,
+      which are in the format `length=74`.
+      One way to do this is with a fun trick:
+      by using `=` as the delimiter to `cut` (`-d =`)!
+    </details>
+   
+19. Compare the number you got in the previous question,
+    with the number of 35-bp reads from the question before that.
+    What does this seem to tell you?
+    To confirm, can you check what a sample of 35-bp reads look like?
+   
+    <details><summary>_Click here for hints_</summary>
+    With `grep -A1`, you can print the line _after_ each match.
+    This will allow you to see the sequences in the 35-bp reads.
+    Also, pipe `grep`'s output to `less` or `head` so you don't get thousands of
+    lines printed to screen.
+    </details>
+
+20. Stage and commit the `README.md` file again.
+
+### Bonus
+
+21. Name at least two concepts or commands that we have gone over in the course
+    so far, but which you feel you do not (fully) understand.
+    It helps to be specific about what you struggle with.

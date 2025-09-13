@@ -1,8 +1,8 @@
 ---
 title: "Version control with Git"
-subtitle: "Week 4 -- Lecture I"
+subtitle: "Week 4 -- Lecture A"
 pagetitle: "Git intro"
-date: 2025-09-16
+date: 2025-09-12
 author:
   - name: Jelmer Poelstra
     orcid: 0000-0002-3514-7462
@@ -14,16 +14,16 @@ other-links:
   - text: "Week 4 overview"
     icon: book
     href: w4_overview.html
-  - text: "w4-2: Remotes with GitHub"
+  - text: "w4b: Remotes on GitHub"
     icon: bookmarks
     href: w4b_github.html
-  - text: "Ungraded assignment: GitHub account"
+  - text: "Week 4 ungraded assignment: GitHub account"
     icon: pencil
     href: w4_ua_github-account.html
-  - text: "Week 4 Graded assignment"
+  - text: "Week 4 graded assignment"
     icon: pencil
     href: w4_ga_git.html
-  - text: "Bonus: Advanced Git"
+  - text: "Bonus: advanced Git"
     icon: bookmarks
     href: ../bonus/git.html
 editor_options: 
@@ -40,11 +40,11 @@ bibliography: ../references.bib
 ### Week overview and context
 
 This week, you will learn about the why and how of storing different versions of
-some of your project files using **Git*8, a formal Version Control System (VCS),
+some of your project files using **Git**, a formal Version Control System (VCS),
 and sharing the resulting repositories on the **GitHub** website.
 
-- This lecture (today and Thursday): Getting started with Git
-- Thursday: [Remotes on GitHub](w4b_github.qmd)
+- This lecture: Getting started with Git
+- Next lecture: [Remote Git repositories on GitHub](w4b_github.qmd)
 - Optional self-study material:
   [branching & merging, undoing committed changes, and viewing the past](../bonus/git.qmd)
   
@@ -67,45 +67,54 @@ Start a VS Code session like you've done before.
 
 <details><summary>_Click here to see the instructions_</summary>
 
-1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>.
-2. In the blue top bar, select `Interactive Apps` and near the bottom, click `Code Server`.
-3. In the form on the page that appears, fill out the following:
-   - "_Cluster_": `pitzer`
-   - "_Account_" (= OSC Project): `PAS2880`.
-   - "_Number of hours_": `2`
-   - "_Working Directory_": your personal dir in `/fs/ess/PAS2880/users`
-     (e.g. `/fs/ess/PAS2880/users/jelmer`)
-   - "_App Code Server version_": `4.8.3`
+1. Log in to OSC's OnDemand portal at <https://ondemand.osc.edu>
+2. In the blue top bar, select `Interactive Apps` and near the bottom,
+   click `Code Server`
+3. Fill out the form as follows:
+   - **Cluster**: `pitzer`
+   - **Account**: `PAS2880`
+   - **Number of hours**: `2`
+   - **Working Directory**: `/fs/ess/PAS2880/user/<username>`
+    (replace `<username>` with your user name)
+   - **App Code Server version**: `4.8.3`
 4. Click `Launch`
-5. Once the blue *Connect to VS Code* button appears,
-   click that to open VS Code in a new browser tab.
-6. In VS Code, open a terminal by either:
-   - Clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal`
-   - Using the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>
-7. Check that your are in your dir within `/fs/ess/PAS2880/users` by typing `pwd`
-   in the terminal.
-   _(If you're not, that dir may be listed under `Recents` in the `Get Started`_
-   _document --- if that's the case, click on that entry._
-   _Otherwise, click `File` => `Open Folder` and type/select that dir.)_
+5. Click the `Connect to VS Code` button once it appears
+6. In VS Code, open a terminal by 
+   clicking   {{< fa bars >}}   =\> `Terminal` =\> `New Terminal` ^[
+   Or use the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>`</kbd>.]
+7. Check that your are in `/fs/ess/PAS2880/users/$USER`
+   by typing `pwd` in the terminal.\
+   _(Recall that `$USER` is a variable that represents your username._
+   _If you're not in that dir, it may be listed under `Recents` in the_
+   _`Get Started` document -- if so, click on that entry._
+   _Otherwise, click `File` > `Open Folder` and type/select_
+   _`/fs/ess/PAS2880/users/$USER`.)_
    
 </details>
 
-#### Open a Markdown file for notes
-
-Like before, I recommend that you create and open a Markdown file to keep notes:
-
-1. Click <i class="fa fa-bars"></i> => `File` => `New File`.
-2. Save the file inside `/fs/ess/PAS2880/users/$USER/week04`,
-   e.g. as `lecture1.md` (use a `.md` extension).
-   
-#### Change your working dir
+#### Create a dir for this week and navigate there
 
 ```bash
+# You should be in /fs/ess/PAS2880/users/$USER :
+pwd
+```
+```bash-out
+/fs/ess/PAS2880/users/jelmer
+```
+
+```bash
+mkdir week04
 cd week04
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
+#### Open a Markdown file for notes
 
+You may want to create and open a Markdown file to keep class notes:
+
+1. Click <i class="fa fa-bars"></i> => `File` => `New File`.
+2. Save the file inside `/fs/ess/PAS2880/users/$USER/week04`,
+   e.g. as `lectureA.md`.
+  
 ## Version control
 
 ### Why use a Version Control System (VCS)?
@@ -120,29 +129,25 @@ that you may run into when not using a formal Version Control System (VCS):
   - *Do you save a copy of the full project periodically?*\
     Better than the above option, but can become prohibitive in terms of disk storage.
 - How to know what changes were made between saved versions?
-- How to collaborate, especially when working simultaneously?
 - How to restore an accidentally deleted, modified, or overwritten file?
   This can especially be an issue at OSC where there is no recycle bin or undo button.
 - How to manage simultaneous variants of files, such as when making experimental changes?
+- How to collaborate, especially when working simultaneously?
 
 A formal VCS can help you with these challenges. With a VCS:
 
 -   You can easily see your history of changes.
 -   You have a time machine: you can go back to past states of your project (and not just of
     individual files!).
--   You can do simultaneous collaborative work --- you can always track down who made which changes.
 -   Sharing your code and other aspects of your project is easy.
+-   You can do simultaneous collaborative work --- you can always track down who made which changes.
 -   You can make experimental changes without affecting current functionality.
-
-<hr style="height:1pt; visibility:hidden;" />
 
 Or, as @allesina2019 puts it:
 
 > *Version control is a way to keep your scientific projects tidily organized,*
 > *collaborate on science, and have the whole history of each project at your* *fingertips.*\
 > — Chapter 2
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### How Git works
 
@@ -154,65 +159,61 @@ Git manages this cleverly without having to create full copies of the project fo
 
 <hr style="height:1pt; visibility:hidden;" />
 
-As illustrated above, files that haven't changed between snapshots are not saved again and again
-with every snapshot.
-But Git _doesn't even save full copies of files that have changed_: it tracks changes on a
-line-by-line basis, and saves changed lines (!).
+As illustrated above,
+files that haven't changed between snapshots are not saved again and again with every snapshot.
+In fact, Git _doesn't even save full copies of files that have changed_:
+instead, it tracks changes on a line-by-line basis, and saves changed lines (!).
 
-Note that **one Git database (repository) manages files inside a single directory structure**,
-so to use Git, it's important that your projects are properly organized or at least kept
-in separate dirs, as discussed last week.
-
-<hr style="height:1pt; visibility:hidden;" />
+Note that **one Git database (repository) manages files inside a single directory structure**.
+Therefore, to use Git, it's important that your projects are properly organized
+or at least kept in separate dirs, as discussed in week 2.
 
 #### Key Git term 1: Repository (repo)
 
 A Git "repository" (or "repo") is the **version-control database for a project.**
 Note that:
 
-- You can start a Git repository in any dir on your computer.
-- The Git database is saved in a hidden dir **`.git`** in the dir in which you started the repo.
-- It is typical (& recommended) that you should have one Git repository for each research project.
-- You can also download any public online Git repository.
-  (You already did this in week 3 of the course,
+- You can start a Git repository in any dir you have access to on your computer and on OSC.
+- The Git database is saved in a hidden dir **`.git`** within the dir in which you started the repo.
+- It is typical (and recommended) to have one Git repository for each research project.
+- You can download any public online Git repository.
+  (You already did this last week,
   when you used `git clone` to download the course's example data set files.)
 
 ::: callout-tip
 #### Hidden files and dirs
-When a file or dir name has a leading **`.`**, it's "hidden".
-These don't show up in file browsers by default,
+When a file or dir name starts with a **`.`**, like in `.git`, it is "hidden".
+Hidden files and dirs don't show up in most file browsers by default,
 nor in `ls` file listings unless you use the `-a` ("all") option.
-Hidden files and dirs are often generated automatically by software.
+
+Hidden files and dirs are often generated automatically by software,
+and one reason they are hidden is that they are not supposed to be manually
+edited, moved, or removed^[Unless you know exactly what you're doing.].
+One location that has many hidden files is your Home directory,
+and these store different kinds of personal configurations.
 :::
 
 #### Key Git term 2: Commit
 
-A Git "commit" is a **saved snapshot** of the project. For now, note that:
-
-- It is always possible to go the exact state of the entire project or individual 
-  files for any commit.
-- Whenever you create a commit, you also include a message describing the changes you made.
-
-<hr style="height:1pt; visibility:hidden;" />
+A Git "commit" is a **saved snapshot** of the project.
+You'll soon learn more about this, but for now,
+note that it is always possible to go the exact state of the entire project
+or individual  files for any commit.
 
 ### What do I put under version control?
 
 The primary files to put under version control are:
 
-- Scripts[^3].
-- Project documentation files.
-- Metadata.
-- Manuscripts, if you write them in a plain text format.
-
-[^3]: And if you're writing software, all its source code.
+- Scripts^[And if you're writing software, all its source code.]
+- Project documentation files
+- Metadata
+- Optionally manuscripts, especially if you write them in a plain text format
 
 What about data and results?
 
 - Raw data may or may not be included ---
-  for omics data, this is generally not feasible due to large file sizes.
+  for omics data, this is generally not feasible due to large file sizes
 - Results from analyses should generally not be included.
-
-<hr style="height:1pt; visibility:hidden;" />
 
 #### Source versus derived files
 
@@ -225,11 +226,10 @@ should _version-control the source, but not derived files_. For instance:
 ::: callout-tip
 #### Derived files
 
-Recall last week's point that results and other derived files are (or should be) *dispensable*,
+Recall last week's point that results and other derived files are (or should be)
+in essence *dispensable*,
 because they can be regenerated using the raw data and the scripts.
 :::
-
-<hr style="height:1pt; visibility:hidden;" />
 
 #### File limitations
 
@@ -245,30 +245,23 @@ There are some limitations to the types and sizes of files that can be committed
 
 As such, omics data is usually too large to be version-controlled.
 To make your data available to others,
-you can use dedicated repositories like the NCBI's Sequence Read Archive (SRA).
-
-<hr style="height:1pt; visibility:hidden;" />
+you should use dedicated repositories like the NCBI's Sequence Read Archive
+(SRA; we'll talk more about data sharing later).
 
 ### User Interfaces for Git
 
-![By [xkcd](https://xkcd.com/1597)](../img/xkcd-git.png){fig-align="center" width="40%" fig-alt="A humorous cartoon suggesting that no-one really understands Git." .lightbox}
-
 You can work with Git in several different ways --- using:
 
-- The native command-line interface (CLI).
-- Third-party graphical user interfaces (GUIs) such as Git Kraken.
+- The native command-line interface (CLI)
+- Third-party graphical user interfaces (GUIs) such as GitHub Desktop and Git Kraken
 - IDEs/editors with Git integration like RStudio and VS Code.
 
-In this course, we will mainly focus on the CLI because it's the most universal and powerful
+In this course, we will focus on the CLI because it's the most universal and powerful
 interface. But it's absolutely fine to switch to GUI usage later,
-which will not be hard if you've learned the basics with the CLI.
+which will not be hard if you've learned Git basics with the CLI.
 
 Git takes some getting used to, regardless of the interface. Many people have one or more "false
-starts" with it. I hope that being "forced" to use it in a course[^5] will take you past that!
-
-[^5]: E.g., you'll have to use Git for you final project.
-
-<br>
+starts" with it. I hope that being "forced" to use it in a course will take you past that!
 
 ## The basic Git workflow
 
@@ -277,10 +270,10 @@ Git commands always start with `git` followed by a second command/subcommand or 
 
 - **`git add`** does two things:\
   - Start "**tracking**" files
-    (i.e., files in your directory structure are _not_ automatically included in the repo).
-  - Mark changed/new files as ready to be committed, which is called "**staging**" files.
+    (i.e., files in your directory structure are _not_ automatically included in the repo)
+  - Mark changed/new files as ready to be committed, which is called "**staging**" files
 - **`git commit`**\
-  Create a new snapshot of the project by commiting all currently staged files (changes).
+  Create a new snapshot of the project by commiting all currently staged files (changes)
 - **`git status`**\
   Get the status of your repo: which files have changed, which new files are present,
   tips on next steps, etc.
@@ -291,14 +284,14 @@ Git commands always start with `git` followed by a second command/subcommand or 
 
 ![Another way of visualizing the adding and committing of changes in Git.<br>Note that `git add` has a dual function: it starts tracking files and stages them.](../img/git-do1.png){fig-align="center" width="50%" fig-alt="A diagram of the process of adding and committing changes with Git commands" .lightbox}
 
-<br>
+## One-time Git configuration
 
-## Getting set up
+We will start by doing some one-time personal Git configuration that will apply
+anywhere on OSC, and won't have to be redone ever unless you want to make changes.
 
-1. Launch VS Code at <https://ondemand.osc.edu> as before,
-   at the dir `/fs/ess/PAS2880/users/$USER`, and open a terminal in VS Code.
-
-2. Use `git config` to make your (actual) name known to Git:
+1. Use `git config` to make your name known to Git.
+   This should be your actual name (first and last as in the example below)
+   and not your GitHub username:
    
    ```sh
    git config --global user.name 'John Doe'
@@ -311,7 +304,7 @@ Git commands always start with `git` followed by a second command/subcommand or 
    git config --global user.email 'doe.391@osu.edu'
    ```
 
-4. Use `git config` to set a default text editor for Git.\
+4. Use `git config` to set a default text editor for Git.
    (Occasionally^[When you need to provide Git with a "commit message" to Git
    and you haven't entered one on the command line.],
    Git will open up a text editor for you.
@@ -347,21 +340,21 @@ Git commands always start with `git` followed by a second command/subcommand or 
    # init.defaultbranch=main
    ```
 
-<br>
-
 ## Your first Git repository
 
 You'll create a Git repository for a mock book project:
 writing Charles Darwin's "On the Origin of Species".
+This follows the Git chapter (chapter 2) in @allesina2019.
 
 ### Start a new Git repository
 
-Create a new dir for a mock project that we will version-control with Git, and move there:
+Create a new dir for a mock project that you will version-control with Git,
+and navigate there:
 
 ``` sh
-# Before starting, you should be in /fs/PAS2880/users/$USER, cd there first if needed
-mkdir -p week03/originspecies
-cd week03/originspecies
+# (Your starting point should be /fs/ess/PAS2880/users/$USER)
+mkdir originspecies
+cd originspecies
 ```
 
 The command to **initialize a new Git repository is `git init`** ---
@@ -403,11 +396,9 @@ Git reports that you:
 - Are on a "branch" that is called 'main'.
   We won't talk about Git branches in class, but this is discussed in the
   [optional self-study material](../bonus/git.qmd) and @allesina2019 Chapter 2.6.
-  Basically, these are "parallel versions" of your repository.
+  Basically, branches are "parallel versions" of your repository.
 - Have not created any commits yet.
 - Have "nothing to commit" because there are no files in this dir.
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### Your first Git commit
 
@@ -494,8 +485,9 @@ On branch main
 nothing to commit, working tree clean
 ```
 
-::: callout-tip
-#### Try to get used to using `git status` a lot --- as a sanity check before and after other `git` actions.
+::: {.callout-tip appearance="simple"}
+Try to get in the habit of using `git status` a lot --
+as a sanity check before and after other `git` actions.
 :::
 
 Also look at the **commit history** of the repo with `git log`:
@@ -512,15 +504,14 @@ Date:   Mon Mar 11 10:55:35 2024 -0400
     Started the book
 ```
 
-Note the "hexadecimal code" (using numbers and the letters `a`-`f`) on the first line ---
+Note the "hexadecimal code" (which uses numbers and the letters `a`-`f`)
+on the first line --
 this is a unique identifier for each commit, called the **SHA-1 checksum**.
 You can reference and access each past commit with these checksums.
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### Your second commit
 
-Start by modifying the book file --- you'll actually overwrite the earlier content:
+Start by modifying the book file -- you'll actually overwrite the earlier content:
 
 ``` sh
 echo "On the Origin of Species" > origin.txt
@@ -565,7 +556,7 @@ Git gives a brief summary of the changes that were made:
 you changed 1 file (`origin.txt`), and since you replaced the line of text in that file,
 it is interpreting that as 1 insertion (the new line) and 1 deletion (the removed/replace line).
 
-Check the history of the repo again --- you'll see that there are now 2 commits:
+Check the history of the repo again -- you'll see that there are now 2 commits:
 
 ``` bash
 git log
@@ -585,11 +576,6 @@ Date:   Mon Mar 11 10:55:35 2024 -0400
     Started the book
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
-::: callout-tip
-#### One-line commit log
-
 As you start accumulating commits,
 you might prefer `git log --oneline` for a one-line-per-commit summary:
 
@@ -601,9 +587,6 @@ git log --oneline
 4fd04af Started the book
 ```
 
-:::
-<hr style="height:1pt; visibility:hidden;" />
-
 ::: callout-note
 ### Staging files efficiently
 
@@ -611,16 +594,11 @@ When you have multiple files that you would like to stage, you don't need to add
 
 ``` sh
 # NOTE: Don't run any of this - these are hypothetical examples
-
-# Stage all files in the project (either option works):
+# Stage all files in the project/repository:
 git add --all
-git add *
 
 # Stage all files in a specific dir (here: 'scripts') in the project:
 git add scripts/*
-
-# Stage all shell scripts *anywhere* in the project:
-git add *sh   
 ```
 
 Finally, you can use the `-a` option for `git commit` as a shortcut to
@@ -633,12 +611,10 @@ git commit -am "My commit message"
 ```
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### What to include in individual commits
 
 The last example in the box above showed the `-a` option to `git commit`,
-which allows you to at once stage & commit all changes since the last commit.
+which allows you to at once stage and commit all changes since the last commit.
 That seems more convenient than separately `git add`ing files before committing.
 
 However, it's good practice not to simply and only commit, say, at the end of each day,
@@ -653,8 +629,6 @@ since your last commit, and you find that you have:
 
 These are completely unrelated changes, and it would **not** be recommended to include both in a
 single commit.
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ::: exercise
 #### {{< fa user-edit >}} Exercise
@@ -690,67 +664,22 @@ git commit -m "Added to-do list"
 </details>
 :::
 
-<br>
+<hr style="height:1pt; visibility:hidden;" />
+
+::: {.callout-tip appearance="simple"}
+You have now learned the basic Git workflow! 🥳
+The sections below will go through a few related key aspects of using Git.
+:::
 
 ## File states and showing changes
 
-### File states (and Git's three "trees")
+### File states
 
 Tracked files can be in one of three states:
 
--   Unchanged since the last commit: **committed** (latest version is in the repo/commits).
--   Modified and staged since the last commit: **staged** (latest version is in the Index).
--   Modified but not staged since the last commit: **modified** (latest version is in the working dir).
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: {.callout-note collapse="true"}
-#### The three trees of Git _(Click to expand)_
-
-These three states correspond to the three "trees" of Git:
-
--   **HEAD**: State of the project in the most recent commit[^7].
--   **Index** (*Stage*): State of the project ready to be committed.
--   **Working directory** (_Working Tree_): State of the project as currently on your computer.
-
-[^7]: On the current "branch" -- see the optional self-study page or @allesina2019 Chapter 2.6 to learn about branches.
-
-<hr style="height:1pt; visibility:hidden;" />
-
-![The three "trees" of Git: HEAD, the index, and the working dir.<br>The hexadecimals in the Commits rectangles are abbreviated checksums for each commit.](../img/git-3trees-simple2.svg){fig-align="center" width="40%" fig-alt="A diagram illustrating the concept of the three trees of Git." .lightbox}
-
-<hr style="height:1pt; visibility:hidden;" />
-
-Or consider this table for a hypothetical example in which HEAD, the Index,
-and the working dir all differ with regards to the the version of file 1,
-and there also is an untracked file in the working dir:
-
-| File state    | Version         | Which tree  |
-|---------------|-----------------|-------------|
-| **Committed** | file 1 version X                     | HEAD        |
-| **Staged**    | [**file 1 version Y**]{style="color:green"} | Index (stage)       |
-| **Modified**  | [**file 1 version Z**]{style="color:red"}   | Working dir |
-| **Untracked** | [**file 2 version X**]{style="color:red"}   | Working dir |
-
-: {.striped .hover}
-
-:::
-
-::: {.callout-note collapse="true"}
-### Ways to refer to past commits _(Click to expand)_
-
-To refer to specific past commits, you can:
-
-- Using the hexadecimal checksum (either the full ID or the 7-character abbreviation)
-- Use ***HEAD*** notation: HEAD is the most recent commit,
-  and there are two ways of indicating ancestors of HEAD:
-
-<hr style="height:1pt; visibility:hidden;" />
-
-![To refer to past commits, you can use checksums (e.g. `dab0dc4` for the second-to-last commit)<br>or HEAD notation (`HEAD^^` or `HEAD~2` for the second-to-last commit).](../img/git-head-notation.svg){fig-align="center" width="70%" fig-alt="A diagram showing how to refer to past commits." .lightbox}
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
+- Unchanged since the last commit: **committed** (latest version is in the repo/commits).
+- Modified and staged since the last commit: **staged** (latest version is in the Index).
+- Modified but not staged since the last commit: **modified** (latest version is in the working dir).
 
 ### Showing changes
 
@@ -762,18 +691,20 @@ By default, it will show all changes between the _working dir_ and:
 
 ::: callout-warning
 ### "Working dir" in the context of Git
-Note that when I talk about the "working dir" in the context of Git,
-I mean not just your top-level project/repository directory,
+Note that when we talk about the "working dir" in the context of Git,
+it means not just your top-level project/repository directory,
 or any specific dir within there that you may have `cd`-ed into,
 but the **entire project/repository directory hierarchy**.
 
-It is mainly used to distinguish the state of your project on your computer
-("working dir") versus that in the repository ("index" and "commits"),
-and should technically be referred to as the "working dir _tree_".
+In a Git context,
+this term is mainly used to distinguish between the state of your
+project on your computer ("working dir")
+versus that in the repository ("index" and "commits"),
+and is in full referred to as the "working dir _tree_".
 :::
 
 Right now, there are no differences to report in our `originspecies` repository,
-because our working dir, the stage/Index, and the last commit are all the same:
+because your working dir, the stage/Index, and the last commit are all the same:
 
 ``` sh
 # Git diff will not have output if there are no changes to report
@@ -804,13 +735,27 @@ but at the bottom of the output above, you can see some specific changes:
 the line "Send first draft to Huxley" was added (hence the **`+`** sign) in our
 latest version of the file.
 
-<hr style="height:1pt; visibility:hidden;" />
+::: {.callout-note collapse="true"}
+#### More `git diff` *(Click to expand)*
 
-::: callout-tip
-#### VS Code can show file differences in a nicer way
+- To show changes **between the Index (stage) and the last commit**,
+  use the `--staged` option to `git diff`.
+
+- If you have *changed multiple files, but just want to see differences for one of them*, you can
+  specify the filename --- in our case here, that will give the same output as the plain `git diff`
+  command above, since we only changed one file:
+
+  ```sh
+  git diff todo.txt
+  # Output not shown, same as above
+  ```
+:::
+
+### VS Code functionality show changes
 
 1. Click on the Git symbol in the narrow side bar  (below the search icon)
    to open the *Source Control* side bar.
+   
 2. In the source control sidebar, you should see not just the `originspecies`
    repository listed, but also the `garrigos-data` repo^[
    This is because our VS Code working dir is not `originspecies` but two levels
@@ -826,36 +771,8 @@ latest version of the file.
    
 ![](../img/vscode_diff.png){fig-align="center" width="95%" fig-alt="A screenshot of the VS Code diff view." .lightbox}
 
-That's a much more intuitive overview that makes it clear which line was added.
-
-:::
-
-::: {.callout-note collapse="true"}
-#### More `git diff` *(Click to expand)*
-
-- To show changes **between the Index (stage) and the last commit**,
-  use the `--staged` option to `git diff`.
-
-- If you have *changed multiple files, but just want to see differences for one of them*, you can
-  specify the filename --- in our case here, that will give the same output as the plain `git diff`
-  command above, since we only changed one file:
-
-  ```sh
-  git diff todo.txt
-  # Output not shown, same as above
-  ```
-
-- You can also compare your repo or individual files between any two arbitrary commits
-  (for the HEAD notation, see the boxes on the "three trees" of Git above.):
-
-  ``` sh
-  # Last commit vs second-to-last commit - full repo:
-  git diff HEAD HEAD^
-
-  # Last commit vs a specified commit - specific file: 
-  git diff HEAD d715c54 todo.txt 
-  ```
-:::
+That's a much more intuitive overview than that of `git diff`,
+and makes very clear which line was added.
 
 ::: exercise
 #### {{< fa user-edit >}} Exercise: another commit
@@ -921,8 +838,6 @@ Stage and commit the changes to `todo.txt`, then check what you have done.
 
 :::
 
-<br>
-
 ## Ignoring files and directories
 
 As discussed above, it's best not to track some files,
@@ -940,7 +855,7 @@ This way, these files won't be listed as untracked files when you run `git statu
 and they wouldn't be added even when you use `git add --all`.
 
 To see this in action,
-let's start by adding some content that we don't want to commit to our repository:
+start by adding some content that you don't want to commit to your repository:
 a dir `data`,
 and a file ending in a `~` (a temporary file type that e.g. text editors can produce):
 
@@ -949,7 +864,7 @@ mkdir data
 touch data/drawings_1855-{01..12} todo.txt~
 ```
 
-When we check the status of the repo, we can see that Git has noticed these files:
+When you check the status of the repo, you see that Git has noticed these files:
 
 ``` sh
 git status
@@ -962,21 +877,23 @@ Untracked files:
         todo.txt~
 ```
 
-If we don't do anything about this, Git will keep reporting these untracked files
-whenever we run `git status`.
-To prevent this, we will we create a `.gitignore` file:
+If you don't do anything about this,
+Git will keep reporting these untracked files whenever you run `git status`.
+**To prevent this, you can create a `.gitignore` file:**
 
-- This file should be in the project's root dir and should be called `.gitignore`.
-- `.gitignore` is a plain text file that contains dir and file names/patterns,
-  all of which will be ignored by Git.
-- As soon as such a file exists, Git will automatically check and process its contents.
+- `.gitignore` should be in the project's root dir and should be called `.gitignore`
+- This is a plain text file that contains dir and file names/patterns,
+  all of which will be ignored by Git
+- As soon as a `.gitignore` file exists, Git will automatically check and process its contents
 - It's a good idea add and commit this file to the repo.
 
-We will create our `.gitignore` file and add the following to it to instruct Git
+Now, create a `.gitignore` file and add entries to instruct Git
 to ignore everything in the `data/` dir, and any file that ends in a `~`:
 
 ``` sh
+# Ignore everything in the data dir:
 echo "data/" > .gitignore
+# Ignore everything that ends in a ~:
 echo "*~" >> .gitignore
 ```
 ```sh
@@ -987,9 +904,9 @@ data/
 *~
 ```
 
-When we check the status again, Git will have automatically processed the contents
-of the `.gitignore` file, and the files we want to ignore should no longer be listed
-as untracked files:
+When you check the status again,
+Git will have automatically processed the the `.gitignore` file,
+and the targeted files should no longer be listed as untracked files:
 
 ``` sh
 git status
@@ -1001,11 +918,12 @@ Untracked files:
         .gitignore
 ```
 
-However, we do now have an untracked `.gitignore` file, and we should track and commit this file:
+However, you do now have an untracked `.gitignore` file,
+so track and commit this file as follows:
 
 ``` sh
 git add .gitignore
-git commit -m "Added a gitignore file"
+git commit -m "Add a gitignore file"
 ```
 
 ``` bash-out
@@ -1013,8 +931,6 @@ git commit -m "Added a gitignore file"
  1 file changed, 2 insertions(+)
  create mode 100644 .gitignore
 ```
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ::: callout-tip
 ### Good project file organization helps with version control
@@ -1025,15 +941,13 @@ This is especially true when it comes to files that you want to ignore.
 Since you'll generally want to ignore data and results files,
 if you keep all of those in their own top-level directories,
 it will be easy and not error-prone to tell Git to ignore them.
-But if you were -for example- mixing scripts and either results or data within dirs,
+But if you were, for example, mixing scripts and either results or data within dirs,
 it would be much harder to keep this straight.
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ## Moving and removing tracked files
 
-When wanting to remove, move, or rename files that are tracked by Git,
+When you want to remove, move, or rename files that are tracked by Git,
 it is good practice to preface regular `rm` and `mv` commands with `git`:
 so, `git rm <file>` and `git mv <source> <dest>`.
 
@@ -1105,10 +1019,8 @@ So, there is no need to stress if you forget this, but when you remember,
 use `git mv` and `git rm`.
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ::: exercise
-#### {{< fa user-edit >}} Exercises: `.gitignore` and `git rm`
+#### {{< fa user-edit >}} Exercise: `.gitignore` and `git rm`
 
 **A)** Create a new directory `results` with files `Galapagos.txt` and `Ascencion.txt`.
 Add a line to the `.gitignore` file to ignore these results,
@@ -1224,10 +1136,7 @@ Then, remove it with `git rm` and commit your file removal.
   ```
 
 </details>
-
 :::
-
-<br>
 
 ## Undoing changes that have not been committed
 
@@ -1240,15 +1149,18 @@ there is a section on undoing changes that _have_ been committed.)
 
 We'll practice with undoing changes to your working dir (that have not been staged)
 by recovering a version from the repo:
-in other words, using Git as an "undo button" after accidental file changes or removal.
+in other words,
+using Git as an "undo button" after accidental file changes or removal.
 
-1. Let's say you **accidentally overwrote** instead of appended to a file:
+Let's say you **accidentally overwrote** instead of appended to a file:
+
+1. Accidental overwriting of the file:
 
    ```sh
    echo "Finish the taxidermy of the finches from Galapagos" > todo.txt
    ```
 
-2. Always start by checking the status:
+2. Next, always start by checking the status:
   
    ```sh
    git status
@@ -1272,7 +1184,8 @@ in other words, using Git as an "undo button" after accidental file changes or r
 
 <hr style="height:1pt; visibility:hidden;" />
 
-If you **accidentally deleted a file**, you can similarly retrieve it with `git checkout`:
+If you **accidentally deleted a file**,
+you can similarly retrieve it with `git checkout`:
 
 1. Accidental removal of `todo.txt`
 
@@ -1286,13 +1199,11 @@ If you **accidentally deleted a file**, you can similarly retrieve it with `git 
    git restore todo.txt
    ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### Unstaging a file
 
-`git restore` can also *unstage* a file, which is most often needed when you
-added a file that was not supposed to be part of the next commit.
-For example:
+`git restore` can also *unstage* a file.
+This is most often needed when you added a file that was not supposed to be part
+of the next commit. For example:
 
 1. You modify two files and use `git add --all`:
 
@@ -1338,10 +1249,8 @@ For example:
 
 Now, you can go ahead and add these changes to separate commits: see the exercise below.
 
-(Finally: in case you merely staged a file _prematurely_,
-you can just continue editing the file and re-add it.)
-
-<hr style="height:1pt; visibility:hidden;" />
+And finally, in case you merely staged a file _prematurely_,
+you can just continue editing the file and re-add it afterwards.
 
 ::: exercise
 #### {{< fa user-edit >}} Exercise: Commit the changes 1-by-1
@@ -1368,10 +1277,8 @@ you can just continue editing the file and re-add it.)
 
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
-::: {.callout-note}
-####  Undoing staged changes
+::: {.callout-note collapse="true"}
+#### Undoing staged changes _(Click to expand)_
 
 What if you had made mistaken changes (like an accidental deletion) and also
 *staged* those changes?
@@ -1406,9 +1313,7 @@ Variation under domestication
 ```
 :::
 
-<br>
-
-## Some Git best-practices
+## A few Git best-practices
 
 - **Write informative commit messages.**  
   Imagine looking back at your project in a few months,
@@ -1416,15 +1321,7 @@ Variation under domestication
   - Not-so-good commit message: "Updated file"
   - Good commit message: "In file x, updated function y to include z"
 
-![[Image source](https://xkcd.com/1296)](../img/xkcd-git-commit-msg.png){fig-align="center" width="70%" fig-alt="A humorous cartoon showing ever-worsening Git commit messages over time." .lightbox}
-
-::: callout-note
-#### Commit messages for the truly committed
-It is often argued that commit messages should preferably be in the form of
-completing the sentence "*This commit will...*":
-When adhering to this, the above commit message would instead say
-"*In file x, update function y to include z.*".
-:::
+![By XKCD - [image source](https://xkcd.com/1296)](../img/xkcd-git-commit-msg.png){fig-align="center" width="70%" fig-alt="A humorous cartoon showing ever-worsening Git commit messages over time." .lightbox}
 
 - **Commit often, using small commits.**\
   This will also help to keep commit messages informative!
@@ -1439,21 +1336,3 @@ When adhering to this, the above commit message would instead say
 - **Don't commit unnecessary files.**\
   These can also lead to conflicts --- especially automatically generated,
   temporary files.
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: callout-tip
-#### A more advanced tip: tags
-
-If you have a repo with general scripts, which you continue to develop and use in multiple projects,
-and you publish a paper in which you use these scripts,
-it is a good idea to add a "**_tag_**" to a commit to mark the version of the
-scripts used in your analysis:
- 
-```sh
-git tag -a v1.2.0 -m "Clever release title"
-git push --follow-tags
-```
-:::
-
-<br>
