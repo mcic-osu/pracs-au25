@@ -72,14 +72,13 @@ There is a bonus 21^st^ question that can earn you 1 point if you dropped points
 
 ### General
 
-- Work in VS Code at OSC as per usual
+- Work in VS Code at OSC as per usual.
 - Use Unix shell and Git commands to answer all questions unless explicitly
-  instructed not to do so
-- In the Markdown file with your answers
-  (you will be instructed below where to create this),
-  copy each of the numbered instructions below into your document,
+  instructed not to do so.
+- In the Markdown file with your answers (see below),
+  copy each of the numbered instructions/questions into your document,
   and insert your answers in between.
-  The Unix shell code you came up with should be in Markdown code blocks,
+  The code parts of your answers should be entered in Markdown code blocks,
   and that code's output should also be part of your answer. For example:
 
   ````bash-in-nocolor
@@ -110,7 +109,8 @@ There is a bonus 21^st^ question that can earn you 1 point if you dropped points
    
 ### Part A: Starting a Git repository
 
-01. Add a *header* to the README file indicating it (and this dir) is for your assignment.
+01. Add a header to your README file to indicate that this file (and dir) is for
+    your assignment.
 
 02. Initialize a Git repository inside your new directory.
 
@@ -118,11 +118,11 @@ There is a bonus 21^st^ question that can earn you 1 point if you dropped points
 
 ### Part B: Exploring the GTF file with Unix data tools
 
-04. Copy the genome annotation GTF file `GCF_016801865.2.gtf.gz` of your copy of
-    the @garrigós2025 data to a file `data/annot.gtf.gz`
+04. Copy the genome annotation GTF file `GCF_016801865.2.gtf.gz` that is in your
+    copy of the @garrigós2025 data to a file `data/annot.gtf.gz`
     (i.e., into the `data` dir you just created).
    
-05. Check the size of the `annot.gtf.gz` file.
+05. Check the file size of `annot.gtf.gz`.
     Then, decompress the GTF file with the `gunzip` command below.
     Finally, check the size of the resulting `annot.gtf` file.
     How large is the size difference between the compressed and uncompressed files?
@@ -132,7 +132,7 @@ There is a bonus 21^st^ question that can earn you 1 point if you dropped points
     ```
    
 06. The total number of "genomic features" (genes, exons, etc.)
-    listed in a GTF file is simply the number of lines in its table section.
+    listed in a GTF file is simply the number of lines in its main/table section.
    
     - Count the total number of lines in `annot.gtf`.
     - Take a look at the contents of the file and count the number of header
@@ -168,9 +168,12 @@ There is a bonus 21^st^ question that can earn you 1 point if you dropped points
     _-- quite useful!)_
 
 10. Check the status of your Git repository.
-    You don't want to commit the files in the `data` and `results` dirs,
+    You should see that your `README` has changed but also that Git has detected
+    the files in the `data` and `results` dirs.
+    You don't want to commit any files in the `data` and `results` dirs,
     so create a `.gitignore` file that makes Git ignore them.
-    Check the status again -- is your `.gitignore` file working as intended?
+    Check the status of your repository again --
+    is your `.gitignore` file working as intended?
     
 11. Stage and commit the `.gitignore` file.
 
@@ -179,7 +182,8 @@ There is a bonus 21^st^ question that can earn you 1 point if you dropped points
 ### Part B: Exploring the FASTQ files with Unix data tools
 
 13. Copy the FASTQ file `ERR10802863_R1.fastq.gz` of the @garrigós2025 data
-    to a file of the same name inside the `data` dir that's in your working dir.
+    to a file of the same name inside the same `data` dir you copied the GTF
+    file into.
 
 14. Check the status of your Git repository.
     Does the FASTQ file show up? Why/why not?
@@ -193,11 +197,10 @@ There is a bonus 21^st^ question that can earn you 1 point if you dropped points
     Also, don't forget to convert the number of lines to the number of reads.
     </details>
 
-16. How many reads contain the sequence `ACGT`?
+16. How many reads in the FASTQ file contain the sequence `ACGT`?
     _(You can assume this string does not occur outside of the lines with sequences.)_
 
-17. Count the number of reads that contain at least 10 consecutive `N`s,
-    i.e. uncalled bases.
+17. How many reads contain at least 10 consecutive `N`s (uncalled bases)?
     _(You can assume that stretches of N's do not occur in the sequence quality lines.)_
    
 18. Using the read length information in the FASTQ read header lines,
@@ -214,15 +217,16 @@ There is a bonus 21^st^ question that can earn you 1 point if you dropped points
       by using `=` as the delimiter to `cut` (`-d =`)!
     </details>
    
-19. Compare the number you got in the previous question,
+19. Compare the number you got in the previous question
     with the number of 35-bp reads from the question before that.
     What does this seem to tell you?
     To confirm, can you check what a sample of 35-bp reads look like?
    
     <details><summary>_Click here for hints_</summary>
-    With `grep -A1`, you can print the line _after_ each match.
-    This will allow you to see the sequences in the 35-bp reads.
-    Also, pipe `grep`'s output to `less` or `head` so you don't get thousands of
+    To see the sequences in the 35-bp reads,
+    use a `grep` option that allows you to see the line after each match along
+    with the matching line.
+    Also, pipe `grep`'s output to `less` or `head` to avoid having thousands of
     lines printed to screen.
     </details>
 
