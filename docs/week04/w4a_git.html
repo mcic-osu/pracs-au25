@@ -9,7 +9,7 @@
 <meta name="author" content="Jelmer Poelstra">
 <meta name="dcterms.date" content="2025-09-12">
 
-<title>Git intro – PRACS-AU25</title>
+<title>w4a: Git intro – PRACS-AU25</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -330,13 +330,13 @@ div.csl-indent {
   <li><a href="#your-second-commit" id="toc-your-second-commit" class="nav-link" data-scroll-target="#your-second-commit"><span class="header-section-number">5.3</span> Your second commit</a></li>
   <li><a href="#what-to-include-in-individual-commits" id="toc-what-to-include-in-individual-commits" class="nav-link" data-scroll-target="#what-to-include-in-individual-commits"><span class="header-section-number">5.4</span> What to include in individual commits</a></li>
   </ul></li>
-  <li><a href="#file-states-and-showing-changes" id="toc-file-states-and-showing-changes" class="nav-link" data-scroll-target="#file-states-and-showing-changes"><span class="header-section-number">6</span> File states and showing changes</a>
+  <li><a href="#ignoring-files-and-directories" id="toc-ignoring-files-and-directories" class="nav-link" data-scroll-target="#ignoring-files-and-directories"><span class="header-section-number">6</span> Ignoring files and directories</a></li>
+  <li><a href="#file-states-and-showing-changes" id="toc-file-states-and-showing-changes" class="nav-link" data-scroll-target="#file-states-and-showing-changes"><span class="header-section-number">7</span> File states and showing changes</a>
   <ul class="collapse">
-  <li><a href="#file-states" id="toc-file-states" class="nav-link" data-scroll-target="#file-states"><span class="header-section-number">6.1</span> File states</a></li>
-  <li><a href="#showing-changes" id="toc-showing-changes" class="nav-link" data-scroll-target="#showing-changes"><span class="header-section-number">6.2</span> Showing changes</a></li>
-  <li><a href="#vs-code-functionality-show-changes" id="toc-vs-code-functionality-show-changes" class="nav-link" data-scroll-target="#vs-code-functionality-show-changes"><span class="header-section-number">6.3</span> VS Code functionality show changes</a></li>
+  <li><a href="#file-states" id="toc-file-states" class="nav-link" data-scroll-target="#file-states"><span class="header-section-number">7.1</span> File states</a></li>
+  <li><a href="#showing-changes" id="toc-showing-changes" class="nav-link" data-scroll-target="#showing-changes"><span class="header-section-number">7.2</span> Showing changes</a></li>
+  <li><a href="#vs-code-functionality-show-changes" id="toc-vs-code-functionality-show-changes" class="nav-link" data-scroll-target="#vs-code-functionality-show-changes"><span class="header-section-number">7.3</span> VS Code functionality show changes</a></li>
   </ul></li>
-  <li><a href="#ignoring-files-and-directories" id="toc-ignoring-files-and-directories" class="nav-link" data-scroll-target="#ignoring-files-and-directories"><span class="header-section-number">7</span> Ignoring files and directories</a></li>
   <li><a href="#moving-and-removing-tracked-files" id="toc-moving-and-removing-tracked-files" class="nav-link" data-scroll-target="#moving-and-removing-tracked-files"><span class="header-section-number">8</span> Moving and removing tracked files</a></li>
   <li><a href="#undoing-changes-that-have-not-been-committed" id="toc-undoing-changes-that-have-not-been-committed" class="nav-link" data-scroll-target="#undoing-changes-that-have-not-been-committed"><span class="header-section-number">9</span> Undoing changes that have not been committed</a>
   <ul class="collapse">
@@ -468,21 +468,22 @@ div.csl-indent {
 <h2 data-number="2" class="anchored" data-anchor-id="version-control"><span class="header-section-number">2</span> Version control</h2>
 <section id="why-use-a-version-control-system-vcs" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="why-use-a-version-control-system-vcs"><span class="header-section-number">2.1</span> Why use a Version Control System (VCS)?</h3>
-<p>Here are some “versioning”- and backup-related challenges for your <strong>research project files</strong> that you may run into when not using a formal Version Control System (VCS):</p>
+<p>Here are some “versioning”- and backup-related challenges for your <strong>research project files</strong> that you may run into:</p>
 <ul>
-<li>What to save periodic copies of?
+<li>How do you save periodic copies?
 <ul>
 <li><em>Do you only save versions of individual files?</em><br>
 Space-efficient, but doesn’t allow you to go back to the state of other project files at the same point in time.</li>
 <li><em>Do you save a copy of the full project periodically?</em><br>
 Better than the above option, but can become prohibitive in terms of disk storage.</li>
 </ul></li>
-<li>How to know what changes were made between saved versions?</li>
-<li>How to restore an accidentally deleted, modified, or overwritten file? This can especially be an issue at OSC where there is no recycle bin or undo button.</li>
-<li>How to manage simultaneous variants of files, such as when making experimental changes?</li>
-<li>How to collaborate, especially when working simultaneously?</li>
+<li>How do you know what changes were made between saved versions?</li>
+<li>How do you restore an accidentally deleted, modified, or overwritten file? This can especially be an issue at OSC where there is no recycle bin or undo button.</li>
+<li>How do you manage simultaneous variants of files, such as when making experimental changes?</li>
+<li>How do you collaborate, especially when working simultaneously?</li>
 </ul>
-<p>A formal VCS can help you with these challenges. With a VCS:</p>
+<p>Modern cloud storage solutions like OneDrive and Dropbox can help with some of these challenges: for example, you can restore automatically saved earlier versions of files, and work simultaneously on files. But they don’t solve all of them, and you can’t use use them directly at (e.g.) OSC.</p>
+<p>However, with a formal Version Control System (VCS) like Git:</p>
 <ul>
 <li>You can easily see your history of changes.</li>
 <li>You have a time machine: you can go back to past states of your project (and not just of individual files!).</li>
@@ -490,15 +491,15 @@ Better than the above option, but can become prohibitive in terms of disk storag
 <li>You can do simultaneous collaborative work — you can always track down who made which changes.</li>
 <li>You can make experimental changes without affecting current functionality.</li>
 </ul>
-<p>Or, as <span class="citation" data-cites="allesina2019">Allesina (<a href="#ref-allesina2019" role="doc-biblioref">2019</a>)</span> puts it:</p>
+<p>Or, as <span class="citation" data-cites="allesina2019">Allesina (<a href="#ref-allesina2019" role="doc-biblioref">2019</a>)</span> puts it in Chapter 2 of the book:</p>
 <blockquote class="blockquote">
 <p><em>Version control is a way to keep your scientific projects tidily organized,</em> <em>collaborate on science, and have the whole history of each project at your</em> <em>fingertips.</em><br>
-— Chapter 2</p>
+</p>
 </blockquote>
 </section>
 <section id="how-git-works" class="level3" data-number="2.2">
 <h3 data-number="2.2" class="anchored" data-anchor-id="how-git-works"><span class="header-section-number">2.2</span> How Git works</h3>
-<p><strong>Git</strong> is the most widely used Version Control System. With Git, you save “snapshots” of your project with every minor piece of progress. Git manages this cleverly without having to create full copies of the project for every snapshot:</p>
+<p><strong>Git</strong> is the most widely used Version Control System. Git maintains databases called <strong>repositories</strong>, in which you save “snapshots” of your project with every minor piece of progress. Git manages this cleverly without having to create full copies of the project for every snapshot:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <div class="quarto-figure quarto-figure-center">
@@ -510,16 +511,15 @@ Better than the above option, but can become prohibitive in terms of disk storag
 </figure>
 </div>
 <hr style="height:1pt; visibility:hidden;">
-<p>As illustrated above, files that haven’t changed between snapshots are not saved again and again with every snapshot. In fact, Git <em>doesn’t even save full copies of files that have changed</em>: instead, it tracks changes on a line-by-line basis, and saves changed lines (!).</p>
-<p>Note that <strong>one Git database (repository) manages files inside a single directory structure</strong>. Therefore, to use Git, it’s important that your projects are properly organized or at least kept in separate dirs, as discussed in week 2.</p>
+<p>As illustrated above, files that haven’t changed between snapshots are not saved again and again with every snapshot. In fact, Git <em>doesn’t even save full copies of files that have changed</em>: instead, it tracks changes on a line-by-line basis, and only saves changed lines!</p>
+<p>Note that <strong>one Git repository manages files inside a single directory structure</strong>. That is, you should have a separate Git repository for each research project. To use Git effectively, it is therefore important that your projects are properly organized or at least kept in separate dirs, as discussed in week 2.</p>
 <section id="key-git-term-1-repository-repo" class="level4">
-<h4 class="anchored" data-anchor-id="key-git-term-1-repository-repo">Key Git term 1: Repository (repo)</h4>
+<h4 class="anchored" data-anchor-id="key-git-term-1-repository-repo">Key Git term #1: Repository (repo)</h4>
 <p>A Git “repository” (or “repo”) is the <strong>version-control database for a project.</strong> Note that:</p>
 <ul>
 <li>You can start a Git repository in any dir you have access to on your computer and on OSC.</li>
-<li>The Git database is saved in a hidden dir <strong><code>.git</code></strong> within the dir in which you started the repo.</li>
 <li>It is typical (and recommended) to have one Git repository for each research project.</li>
-<li>You can download any public online Git repository. (You already did this last week, when you used <code>git clone</code> to download the course’s example data set files.)</li>
+<li>The Git database is saved in a hidden dir (<strong><code>.git</code></strong>) within the dir in which you started the repo.</li>
 </ul>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -532,22 +532,26 @@ Hidden files and dirs
 </div>
 <div class="callout-body-container callout-body">
 <p>When a file or dir name starts with a <strong><code>.</code></strong>, like in <code>.git</code>, it is “hidden”. Hidden files and dirs don’t show up in most file browsers by default, nor in <code>ls</code> file listings unless you use the <code>-a</code> (“all”) option.</p>
-<p>Hidden files and dirs are often generated automatically by software, and one reason they are hidden is that they are not supposed to be manually edited, moved, or removed<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. One location that has many hidden files is your Home directory, and these store different kinds of personal configurations.</p>
+<p>Hidden files and dirs are often generated (and used!) automatically by various software, and one reason they are hidden is that they are not supposed to be manually edited, moved, or removed<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. A location that has many hidden files is your Home directory, where these file store different kinds of personal configurations.</p>
 </div>
 </div>
 </section>
 <section id="key-git-term-2-commit" class="level4">
-<h4 class="anchored" data-anchor-id="key-git-term-2-commit">Key Git term 2: Commit</h4>
-<p>A Git “commit” is a <strong>saved snapshot</strong> of the project. You’ll soon learn more about this, but for now, note that it is always possible to go the exact state of the entire project or individual files for any commit.</p>
+<h4 class="anchored" data-anchor-id="key-git-term-2-commit">Key Git term #2: Commit</h4>
+<p>A Git “commit” is a <strong>saved snapshot</strong> of the project. You’ll soon learn more about this, but for now, note that:</p>
+<ul>
+<li>You can always go back the exact state of the entire project or of individual files for any commit.</li>
+<li>You make commits <strong>manually</strong> – Git is not an automated backup system, and this is by design!</li>
+</ul>
 </section>
 </section>
 <section id="what-do-i-put-under-version-control" class="level3" data-number="2.3">
 <h3 data-number="2.3" class="anchored" data-anchor-id="what-do-i-put-under-version-control"><span class="header-section-number">2.3</span> What do I put under version control?</h3>
-<p>The primary files to put under version control are:</p>
+<p>You should primarily put <strong>manually edited</strong> files under version control, e.g.:</p>
 <ul>
 <li>Scripts<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
 <li>Project documentation files</li>
-<li>Metadata</li>
+<li>Metadata / sample data</li>
 <li>Optionally manuscripts, especially if you write them in a plain text format</li>
 </ul>
 <p>What about data and results?</p>
@@ -557,7 +561,7 @@ Hidden files and dirs
 </ul>
 <section id="source-versus-derived-files" class="level4">
 <h4 class="anchored" data-anchor-id="source-versus-derived-files">Source versus derived files</h4>
-<p>The general idea behind what you should and should not include is that you should <em>version-control the source, but not derived files</em>. For instance:</p>
+<p>The general idea behind what you should and should not include is that you should <em>version-control the source, but not derived files</em>. In other words, version-control files that are manually edited, but not the files that can be automatically/deterministically generated from them. For instance:</p>
 <ul>
 <li>Version-control your Markdown file, not the HTML it produces.</li>
 <li>Version-control your script, not the output it produces.</li>
@@ -596,7 +600,7 @@ Derived files
 <li>IDEs/editors with Git integration like RStudio and VS Code.</li>
 </ul>
 <p>In this course, we will focus on the CLI because it’s the most universal and powerful interface. But it’s absolutely fine to switch to GUI usage later, which will not be hard if you’ve learned Git basics with the CLI.</p>
-<p>Git takes some getting used to, regardless of the interface. Many people have one or more “false starts” with it. I hope that being “forced” to use it in a course will take you past that!</p>
+<p>Git takes some getting used to, regardless of the interface. Many people have one or more “false starts” with it. I hope that being forced to use it in a course will take you past that!</p>
 </section>
 </section>
 <section id="the-basic-git-workflow" class="level2" data-number="3">
@@ -606,11 +610,11 @@ Derived files
 <li><strong><code>git add</code></strong> does two things:<br>
 
 <ul>
-<li>Start “<strong>tracking</strong>” files (i.e., files in your directory structure are <em>not</em> automatically included in the repo)</li>
-<li>Mark changed/new files as ready to be committed, which is called “<strong>staging</strong>” files</li>
+<li>Start “<strong>tracking</strong>” files – needed because files in your dir hierarchy are <em>not</em> automatically included in the repo</li>
+<li>Mark changed and new files as ready to be committed, which is called “<strong>staging</strong>” files</li>
 </ul></li>
 <li><strong><code>git commit</code></strong><br>
-Create a new snapshot of the project by commiting all currently staged files (changes)</li>
+Create a new snapshot of the project by commiting all currently staged files</li>
 <li><strong><code>git status</code></strong><br>
 Get the status of your repo: which files have changed, which new files are present, tips on next steps, etc.</li>
 </ul>
@@ -638,7 +642,7 @@ Get the status of your repo: which files have changed, which new files are prese
 </section>
 <section id="one-time-git-configuration" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="one-time-git-configuration"><span class="header-section-number">4</span> One-time Git configuration</h2>
-<p>We will start by doing some one-time personal Git configuration that will apply anywhere on OSC, and won’t have to be redone ever unless you want to make changes.</p>
+<p>We will start by doing some one-time personal Git configuration that will apply anywhere on OSC, and won’t ever have to be redone unless you want to make changes.</p>
 <ol type="1">
 <li><p>Use <code>git config</code> to make your name known to Git. This should be your actual name (first and last as in the example below) and not your GitHub username:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">'John Doe'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
@@ -661,11 +665,11 @@ Get the status of your repo: which files have changed, which new files are prese
 </section>
 <section id="your-first-git-repository" class="level2" data-number="5">
 <h2 data-number="5" class="anchored" data-anchor-id="your-first-git-repository"><span class="header-section-number">5</span> Your first Git repository</h2>
-<p>You’ll create a Git repository for a mock book project: writing Charles Darwin’s “On the Origin of Species”. This follows the Git chapter (chapter 2) in <span class="citation" data-cites="allesina2019">Allesina (<a href="#ref-allesina2019" role="doc-biblioref">2019</a>)</span>.</p>
+<p>You’ll create a Git repository for a mock book project: writing Charles Darwin’s “On the Origin of Species”. This content follows the chapter 2 in <span class="citation" data-cites="allesina2019">Allesina (<a href="#ref-allesina2019" role="doc-biblioref">2019</a>)</span>.</p>
 <section id="start-a-new-git-repository" class="level3" data-number="5.1">
 <h3 data-number="5.1" class="anchored" data-anchor-id="start-a-new-git-repository"><span class="header-section-number">5.1</span> Start a new Git repository</h3>
 <p>Create a new dir for a mock project that you will version-control with Git, and navigate there:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Your starting point should be /fs/ess/PAS2880/users/$USER)</span></span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (Your starting point should be /fs/ess/PAS2880/users/$USER/week04)</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> originspecies</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> originspecies</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The command to <strong>initialize a new Git repository is <code>git init</code></strong> — use that to start a repo for the <code>originspecies</code> dir:</p>
@@ -684,7 +688,7 @@ No commits yet
 nothing to commit (create/copy files and use "git add" to track)</code></pre>
 <p>Git reports that you:</p>
 <ul>
-<li>Are on a “branch” that is called ‘main’. We won’t talk about Git branches in class, but this is discussed in the <a href="../bonus/git.html">optional self-study material</a> and <span class="citation" data-cites="allesina2019">Allesina (<a href="#ref-allesina2019" role="doc-biblioref">2019</a>)</span> Chapter 2.6. Basically, branches are “parallel versions” of your repository.</li>
+<li>Are on a “branch” called <code>main</code>. We won’t cover Git branches in class, but this is discussed in the <a href="../bonus/git.html">optional self-study material</a> and <span class="citation" data-cites="allesina2019">Allesina (<a href="#ref-allesina2019" role="doc-biblioref">2019</a>)</span> Chapter 2.6. Basically, branches are “parallel versions” of your repository.</li>
 <li>Have not created any commits yet.</li>
 <li>Have “nothing to commit” because there are no files in this dir.</li>
 </ul>
@@ -859,10 +863,65 @@ Click to see the solution
 </div>
 </section>
 </section>
-<section id="file-states-and-showing-changes" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="file-states-and-showing-changes"><span class="header-section-number">6</span> File states and showing changes</h2>
-<section id="file-states" class="level3" data-number="6.1">
-<h3 data-number="6.1" class="anchored" data-anchor-id="file-states"><span class="header-section-number">6.1</span> File states</h3>
+<section id="ignoring-files-and-directories" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="ignoring-files-and-directories"><span class="header-section-number">6</span> Ignoring files and directories</h2>
+<p>As discussed above, it’s best not to track some files, such as very bulky data files, temporary files, and results.</p>
+<p>We’ve seen that Git will notice and report any “untracked” files in your project whenever you run <code>git status</code>. This can get annoying and can make it harder to spot changes and untracked files that you do want to add — and you might even accidentally start tracking these files such as with <code>git add --all</code>.</p>
+<p>To deal with this, you can tell Git not to pay attention to certain files by adding file names and wildcard selections to a <strong><code>.gitignore</code> file</strong>. This way, these files won’t be listed as untracked files when you run <code>git status</code>, and they wouldn’t be added even when you use <code>git add --all</code>.</p>
+<p>To see this in action, start by adding some content that you don’t want to commit to your repository: a dir <code>data</code>, and a file ending in a <code>~</code> (a temporary file type that e.g.&nbsp;text editors can produce):</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> data</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> data/drawings_1855-{01..12} todo.txt~</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When you check the status of the repo, you see that Git has noticed these files:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Untracked files:
+  (use "git add &lt;file&gt;..." to include in what will be committed)
+        data/
+        todo.txt~</code></pre>
+<p>If you don’t do anything about this, Git will keep reporting these untracked files whenever you run <code>git status</code>. <strong>To prevent this, you can create a <code>.gitignore</code> file:</strong></p>
+<ul>
+<li><code>.gitignore</code> should be in the project’s root dir and should be called <code>.gitignore</code></li>
+<li>This is a plain text file that contains dir and file names/patterns, all of which will be ignored by Git</li>
+<li>As soon as a <code>.gitignore</code> file exists, Git will automatically check and process its contents</li>
+<li>It’s a good idea add and commit this file to the repo.</li>
+</ul>
+<p>Now, create a <code>.gitignore</code> file and add entries to instruct Git to ignore everything in the <code>data/</code> dir, and any file that ends in a <code>~</code>:</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ignore everything in the data dir:</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"data/"</span> <span class="op">&gt;</span> .gitignore</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Ignore everything that ends in a ~:</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"*~"</span> <span class="op">&gt;&gt;</span> .gitignore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> .gitignore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>data/
+*~</code></pre>
+<p>When you check the status again, Git will have automatically processed the the <code>.gitignore</code> file, and the targeted files should no longer be listed as untracked files:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Untracked files:
+  (use "git add &lt;file&gt;..." to include in what will be committed)
+        .gitignore</code></pre>
+<p>However, you do now have an untracked <code>.gitignore</code> file, so track and commit this file as follows:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .gitignore</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add a gitignore file"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>[main 9715ab5] Added a gitignore file
+ 1 file changed, 2 insertions(+)
+ create mode 100644 .gitignore</code></pre>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Good project file organization helps with version control
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Good project file organization, as discussed last week, can make your life with Git a lot easier. This is especially true when it comes to files that you want to ignore.</p>
+<p>Since you’ll generally want to ignore data and results files, if you keep all of those in their own top-level directories, it will be easy and not error-prone to tell Git to ignore them. But if you were, for example, mixing scripts and either results or data within dirs, it would be much harder to keep this straight.</p>
+</div>
+</div>
+</section>
+<section id="file-states-and-showing-changes" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="file-states-and-showing-changes"><span class="header-section-number">7</span> File states and showing changes</h2>
+<section id="file-states" class="level3" data-number="7.1">
+<h3 data-number="7.1" class="anchored" data-anchor-id="file-states"><span class="header-section-number">7.1</span> File states</h3>
 <p>Tracked files can be in one of three states:</p>
 <ul>
 <li>Unchanged since the last commit: <strong>committed</strong> (latest version is in the repo/commits).</li>
@@ -870,8 +929,8 @@ Click to see the solution
 <li>Modified but not staged since the last commit: <strong>modified</strong> (latest version is in the working dir).</li>
 </ul>
 </section>
-<section id="showing-changes" class="level3" data-number="6.2">
-<h3 data-number="6.2" class="anchored" data-anchor-id="showing-changes"><span class="header-section-number">6.2</span> Showing changes</h3>
+<section id="showing-changes" class="level3" data-number="7.2">
+<h3 data-number="7.2" class="anchored" data-anchor-id="showing-changes"><span class="header-section-number">7.2</span> Showing changes</h3>
 <p>You can use the <strong><code>git diff</code> command</strong> to show changes that you have made. By default, it will show all changes between the <em>working dir</em> and:</p>
 <ul>
 <li>The <em>last commit</em> if nothing has been staged.</li>
@@ -892,12 +951,12 @@ Click to see the solution
 </div>
 </div>
 <p>Right now, there are no differences to report in our <code>originspecies</code> repository, because your working dir, the stage/Index, and the last commit are all the same:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Git diff will not have output if there are no changes to report</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Git diff will not have output if there are no changes to report</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Change the to-do list (note: for this to work, you should have done the exercise above!), and check again:</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"June 20, 1858: Send first draft to Huxley"</span> <span class="op">&gt;&gt;</span> todo.txt</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"June 20, 1858: Send first draft to Huxley"</span> <span class="op">&gt;&gt;</span> todo.txt</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>diff --git a/todo.txt b/todo.txt
 index e3b5e55..9aca508 100644
 --- a/todo.txt
@@ -907,7 +966,7 @@ index e3b5e55..9aca508 100644
 +June 20, 1858: Send first draft to Huxley</code></pre>
 <p>We won’t go into the details of the above “diff format”, but at the bottom of the output above, you can see some specific changes: the line “Send first draft to Huxley” was added (hence the <strong><code>+</code></strong> sign) in our latest version of the file.</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -916,20 +975,20 @@ More <code>git diff</code> <em>(Click to expand)</em>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li><p>To show changes <strong>between the Index (stage) and the last commit</strong>, use the <code>--staged</code> option to <code>git diff</code>.</p></li>
 <li><p>If you have <em>changed multiple files, but just want to see differences for one of them</em>, you can specify the filename — in our case here, that will give the same output as the plain <code>git diff</code> command above, since we only changed one file:</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff todo.txt</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Output not shown, same as above</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb58"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff todo.txt</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Output not shown, same as above</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul>
 </div>
 </div>
 </div>
 </section>
-<section id="vs-code-functionality-show-changes" class="level3" data-number="6.3">
-<h3 data-number="6.3" class="anchored" data-anchor-id="vs-code-functionality-show-changes"><span class="header-section-number">6.3</span> VS Code functionality show changes</h3>
+<section id="vs-code-functionality-show-changes" class="level3" data-number="7.3">
+<h3 data-number="7.3" class="anchored" data-anchor-id="vs-code-functionality-show-changes"><span class="header-section-number">7.3</span> VS Code functionality show changes</h3>
 <ol type="1">
 <li><p>Click on the Git symbol in the narrow side bar (below the search icon) to open the <em>Source Control</em> side bar.</p></li>
 <li><p>In the source control sidebar, you should see not just the <code>originspecies</code> repository listed, but also the <code>garrigos-data</code> repo<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>. If needed, click on <code>originspecies</code> to expand it:</p></li>
@@ -957,13 +1016,13 @@ Click to see the solution
 </summary>
 <ul>
 <li><p>Stage the file:</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add todo.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb59"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add todo.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Commit:</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Update the TODO list"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Update the TODO list"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>[main 8ec8103] Update the TODO list
 1 file changed, 1 insertion(+)</code></pre></li>
-<li><p>Check the log:</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<li><p>Check the log – note, when the Git log output gets longer, because you have more commits, it may open in <code>less</code> rather than print the output to the screen. Recall that to exit <code>less</code>, you have to press <code>q</code>.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>commit 8ec8103e8d01b342f9470908b87f0649be53edd5
 Author: Jelmer Poelstra &lt;jelmerpoelstra@gmail.com&gt;
 Date:   Mon Mar 11 12:30:35 2024 -0400
@@ -997,61 +1056,6 @@ Date:   Mon Mar 11 10:55:35 2024 -0400
 </details>
 </section>
 </section>
-</section>
-<section id="ignoring-files-and-directories" class="level2" data-number="7">
-<h2 data-number="7" class="anchored" data-anchor-id="ignoring-files-and-directories"><span class="header-section-number">7</span> Ignoring files and directories</h2>
-<p>As discussed above, it’s best not to track some files, such as very bulky data files, temporary files, and results.</p>
-<p>We’ve seen that Git will notice and report any “untracked” files in your project whenever you run <code>git status</code>. This can get annoying and can make it harder to spot changes and untracked files that you do want to add — and you might even accidentally start tracking these files such as with <code>git add --all</code>.</p>
-<p>To deal with this, you can tell Git not to pay attention to certain files by adding file names and wildcard selections to a <strong><code>.gitignore</code> file</strong>. This way, these files won’t be listed as untracked files when you run <code>git status</code>, and they wouldn’t be added even when you use <code>git add --all</code>.</p>
-<p>To see this in action, start by adding some content that you don’t want to commit to your repository: a dir <code>data</code>, and a file ending in a <code>~</code> (a temporary file type that e.g.&nbsp;text editors can produce):</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> data</span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> data/drawings_1855-{01..12} todo.txt~</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>When you check the status of the repo, you see that Git has noticed these files:</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>Untracked files:
-  (use "git add &lt;file&gt;..." to include in what will be committed)
-        data/
-        todo.txt~</code></pre>
-<p>If you don’t do anything about this, Git will keep reporting these untracked files whenever you run <code>git status</code>. <strong>To prevent this, you can create a <code>.gitignore</code> file:</strong></p>
-<ul>
-<li><code>.gitignore</code> should be in the project’s root dir and should be called <code>.gitignore</code></li>
-<li>This is a plain text file that contains dir and file names/patterns, all of which will be ignored by Git</li>
-<li>As soon as a <code>.gitignore</code> file exists, Git will automatically check and process its contents</li>
-<li>It’s a good idea add and commit this file to the repo.</li>
-</ul>
-<p>Now, create a <code>.gitignore</code> file and add entries to instruct Git to ignore everything in the <code>data/</code> dir, and any file that ends in a <code>~</code>:</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ignore everything in the data dir:</span></span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"data/"</span> <span class="op">&gt;</span> .gitignore</span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Ignore everything that ends in a ~:</span></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"*~"</span> <span class="op">&gt;&gt;</span> .gitignore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb58"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> .gitignore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>data/
-*~</code></pre>
-<p>When you check the status again, Git will have automatically processed the the <code>.gitignore</code> file, and the targeted files should no longer be listed as untracked files:</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>Untracked files:
-  (use "git add &lt;file&gt;..." to include in what will be committed)
-        .gitignore</code></pre>
-<p>However, you do now have an untracked <code>.gitignore</code> file, so track and commit this file as follows:</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .gitignore</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add a gitignore file"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>[main 9715ab5] Added a gitignore file
- 1 file changed, 2 insertions(+)
- create mode 100644 .gitignore</code></pre>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Good project file organization helps with version control
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Good project file organization, as discussed last week, can make your life with Git a lot easier. This is especially true when it comes to files that you want to ignore.</p>
-<p>Since you’ll generally want to ignore data and results files, if you keep all of those in their own top-level directories, it will be easy and not error-prone to tell Git to ignore them. But if you were, for example, mixing scripts and either results or data within dirs, it would be much harder to keep this straight.</p>
-</div>
-</div>
 </section>
 <section id="moving-and-removing-tracked-files" class="level2" data-number="8">
 <h2 data-number="8" class="anchored" data-anchor-id="moving-and-removing-tracked-files"><span class="header-section-number">8</span> Moving and removing tracked files</h2>
@@ -1209,7 +1213,8 @@ no changes added to commit (use "git add" and/or "git commit -a")</code></pre></
 </section>
 <section id="unstaging-a-file" class="level3" data-number="9.2">
 <h3 data-number="9.2" class="anchored" data-anchor-id="unstaging-a-file"><span class="header-section-number">9.2</span> Unstaging a file</h3>
-<p><code>git restore</code> can also <em>unstage</em> a file. This is most often needed when you added a file that was not supposed to be part of the next commit. For example:</p>
+<p><code>git restore</code> can also <em>unstage</em> a file. In other words, you can undo the staging that is done by <code>git add</code>, so the file goes back to the <em>modified</em> stage.</p>
+<p>This is most often needed when you added a file that was not supposed to be part of the next commit. For example:</p>
 <ol type="1">
 <li><p>You modify two files and use <code>git add --all</code>:</p>
 <div class="sourceCode" id="cb92"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Variation under domestication"</span> <span class="op">&gt;&gt;</span> origin.txt</span>

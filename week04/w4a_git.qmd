@@ -1,7 +1,7 @@
 ---
 title: "Version control with Git"
 subtitle: "Week 4 -- Lecture A"
-pagetitle: "Git intro"
+pagetitle: "w4a: Git intro"
 date: 2025-09-12
 author:
   - name: Jelmer Poelstra
@@ -120,39 +120,45 @@ You may want to create and open a Markdown file to keep class notes:
 ### Why use a Version Control System (VCS)?
 
 Here are some "versioning"- and backup-related challenges for your **research project files**
-that you may run into when not using a formal Version Control System (VCS):
+that you may run into:
 
-- What to save periodic copies of?
+- How do you save periodic copies?
   - *Do you only save versions of individual files?*\
     Space-efficient, but doesn't allow you to go back to the state of
     other project files at the same point in time.
   - *Do you save a copy of the full project periodically?*\
     Better than the above option, but can become prohibitive in terms of disk storage.
-- How to know what changes were made between saved versions?
-- How to restore an accidentally deleted, modified, or overwritten file?
+- How do you know what changes were made between saved versions?
+- How do you restore an accidentally deleted, modified, or overwritten file?
   This can especially be an issue at OSC where there is no recycle bin or undo button.
-- How to manage simultaneous variants of files, such as when making experimental changes?
-- How to collaborate, especially when working simultaneously?
+- How do you manage simultaneous variants of files, such as when making experimental changes?
+- How do you collaborate, especially when working simultaneously?
 
-A formal VCS can help you with these challenges. With a VCS:
+Modern cloud storage solutions like OneDrive and Dropbox can help with some
+of these challenges:
+for example, you can restore automatically saved earlier versions of files,
+and work simultaneously on files.
+But they don't solve all of them, and you can't use use them directly at (e.g.) OSC.
 
--   You can easily see your history of changes.
--   You have a time machine: you can go back to past states of your project (and not just of
-    individual files!).
--   Sharing your code and other aspects of your project is easy.
--   You can do simultaneous collaborative work --- you can always track down who made which changes.
--   You can make experimental changes without affecting current functionality.
+However, with a formal Version Control System (VCS) like Git:
 
-Or, as @allesina2019 puts it:
+- You can easily see your history of changes.
+- You have a time machine: you can go back to past states of your project
+  (and not just of individual files!).
+- Sharing your code and other aspects of your project is easy.
+- You can do simultaneous collaborative work --- you can always track down who made which changes.
+- You can make experimental changes without affecting current functionality.
+
+Or, as @allesina2019 puts it in Chapter 2 of the book:
 
 > *Version control is a way to keep your scientific projects tidily organized,*
 > *collaborate on science, and have the whole history of each project at your* *fingertips.*\
-> — Chapter 2
 
 ### How Git works
 
 **Git** is the most widely used Version Control System.
-With Git, you save "snapshots" of your project with every minor piece of progress.
+Git maintains databases called **repositories**,
+in which you save "snapshots" of your project with every minor piece of progress.
 Git manages this cleverly without having to create full copies of the project for every snapshot:
 
 ![The boxes with dashed lines depict files that have not changed: these will not be saved repeatedly.<br>Figure from <https://git-scm.com>.](../img/git-scm-snapshots.png){fig-align="center" width="90%" fig-alt="A diagram showing how Git saves project snapshots." .lightbox}
@@ -162,23 +168,22 @@ Git manages this cleverly without having to create full copies of the project fo
 As illustrated above,
 files that haven't changed between snapshots are not saved again and again with every snapshot.
 In fact, Git _doesn't even save full copies of files that have changed_:
-instead, it tracks changes on a line-by-line basis, and saves changed lines (!).
+instead, it tracks changes on a line-by-line basis, and only saves changed lines!
 
-Note that **one Git database (repository) manages files inside a single directory structure**.
-Therefore, to use Git, it's important that your projects are properly organized
-or at least kept in separate dirs, as discussed in week 2.
+Note that **one Git repository manages files inside a single directory structure**.
+That is, you should have a separate Git repository for each research project.
+To use Git effectively,
+it is therefore important that your projects are properly organized or at least
+kept in separate dirs, as discussed in week 2.
 
-#### Key Git term 1: Repository (repo)
+#### Key Git term #1: Repository (repo)
 
 A Git "repository" (or "repo") is the **version-control database for a project.**
 Note that:
 
 - You can start a Git repository in any dir you have access to on your computer and on OSC.
-- The Git database is saved in a hidden dir **`.git`** within the dir in which you started the repo.
 - It is typical (and recommended) to have one Git repository for each research project.
-- You can download any public online Git repository.
-  (You already did this last week,
-  when you used `git clone` to download the course's example data set files.)
+- The Git database is saved in a hidden dir (**`.git`**) within the dir in which you started the repo.
 
 ::: callout-tip
 #### Hidden files and dirs
@@ -186,27 +191,30 @@ When a file or dir name starts with a **`.`**, like in `.git`, it is "hidden".
 Hidden files and dirs don't show up in most file browsers by default,
 nor in `ls` file listings unless you use the `-a` ("all") option.
 
-Hidden files and dirs are often generated automatically by software,
+Hidden files and dirs are often generated (and used!) automatically by various software,
 and one reason they are hidden is that they are not supposed to be manually
 edited, moved, or removed^[Unless you know exactly what you're doing.].
-One location that has many hidden files is your Home directory,
-and these store different kinds of personal configurations.
+A location that has many hidden files is your Home directory,
+where these file store different kinds of personal configurations.
 :::
 
-#### Key Git term 2: Commit
+#### Key Git term #2: Commit
 
 A Git "commit" is a **saved snapshot** of the project.
-You'll soon learn more about this, but for now,
-note that it is always possible to go the exact state of the entire project
-or individual  files for any commit.
+You'll soon learn more about this, but for now, note that:
 
+- You can always go back the exact state of the entire project or of individual
+  files for any commit.
+- You make commits **manually** --
+  Git is not an automated backup system, and this is by design!
+  
 ### What do I put under version control?
 
-The primary files to put under version control are:
+You should primarily put **manually edited** files under version control, e.g.:
 
 - Scripts^[And if you're writing software, all its source code.]
 - Project documentation files
-- Metadata
+- Metadata / sample data
 - Optionally manuscripts, especially if you write them in a plain text format
 
 What about data and results?
@@ -218,7 +226,10 @@ What about data and results?
 #### Source versus derived files
 
 The general idea behind what you should and should not include is that you
-should _version-control the source, but not derived files_. For instance:
+should _version-control the source, but not derived files_.
+In other words, version-control files that are manually edited,
+but not the files that can be automatically/deterministically generated from them.
+For instance:
 
 - Version-control your Markdown file, not the HTML it produces.
 - Version-control your script, not the output it produces.
@@ -260,8 +271,9 @@ In this course, we will focus on the CLI because it's the most universal and pow
 interface. But it's absolutely fine to switch to GUI usage later,
 which will not be hard if you've learned Git basics with the CLI.
 
-Git takes some getting used to, regardless of the interface. Many people have one or more "false
-starts" with it. I hope that being "forced" to use it in a course will take you past that!
+Git takes some getting used to, regardless of the interface.
+Many people have one or more "false starts" with it.
+I hope that being forced to use it in a course will take you past that!
 
 ## The basic Git workflow
 
@@ -269,11 +281,11 @@ Git commands always start with `git` followed by a second command/subcommand or 
 `git commit`, etc. Only three commands tend to make up the vast majority of your Git work:
 
 - **`git add`** does two things:\
-  - Start "**tracking**" files
-    (i.e., files in your directory structure are _not_ automatically included in the repo)
-  - Mark changed/new files as ready to be committed, which is called "**staging**" files
+  - Start "**tracking**" files -- needed because files in your dir hierarchy
+    are _not_ automatically included in the repo
+  - Mark changed and new files as ready to be committed, which is called "**staging**" files
 - **`git commit`**\
-  Create a new snapshot of the project by commiting all currently staged files (changes)
+  Create a new snapshot of the project by commiting all currently staged files
 - **`git status`**\
   Get the status of your repo: which files have changed, which new files are present,
   tips on next steps, etc.
@@ -287,7 +299,7 @@ Git commands always start with `git` followed by a second command/subcommand or 
 ## One-time Git configuration
 
 We will start by doing some one-time personal Git configuration that will apply
-anywhere on OSC, and won't have to be redone ever unless you want to make changes.
+anywhere on OSC, and won't ever have to be redone unless you want to make changes.
 
 1. Use `git config` to make your name known to Git.
    This should be your actual name (first and last as in the example below)
@@ -344,7 +356,7 @@ anywhere on OSC, and won't have to be redone ever unless you want to make change
 
 You'll create a Git repository for a mock book project:
 writing Charles Darwin's "On the Origin of Species".
-This follows the Git chapter (chapter 2) in @allesina2019.
+This content follows the chapter 2 in @allesina2019.
 
 ### Start a new Git repository
 
@@ -352,7 +364,7 @@ Create a new dir for a mock project that you will version-control with Git,
 and navigate there:
 
 ``` sh
-# (Your starting point should be /fs/ess/PAS2880/users/$USER)
+# (Your starting point should be /fs/ess/PAS2880/users/$USER/week04)
 mkdir originspecies
 cd originspecies
 ```
@@ -393,8 +405,8 @@ nothing to commit (create/copy files and use "git add" to track)
 
 Git reports that you:
 
-- Are on a "branch" that is called 'main'.
-  We won't talk about Git branches in class, but this is discussed in the
+- Are on a "branch" called `main`.
+  We won't cover Git branches in class, but this is discussed in the
   [optional self-study material](../bonus/git.qmd) and @allesina2019 Chapter 2.6.
   Basically, branches are "parallel versions" of your repository.
 - Have not created any commits yet.
@@ -671,6 +683,113 @@ You have now learned the basic Git workflow! 🥳
 The sections below will go through a few related key aspects of using Git.
 :::
 
+## Ignoring files and directories
+
+As discussed above, it's best not to track some files,
+such as very bulky data files, temporary files, and results.
+
+We've seen that Git will notice and report any "untracked" files in your project
+whenever you run `git status`.
+This can get annoying and can make it harder to spot changes and untracked files
+that you do want to add ---
+and you might even accidentally start tracking these files such as with `git add --all`.
+
+To deal with this, you can tell Git not to pay attention to certain files by adding file names and
+wildcard selections to a **`.gitignore` file**.
+This way, these files won't be listed as untracked files when you run `git status`,
+and they wouldn't be added even when you use `git add --all`.
+
+To see this in action,
+start by adding some content that you don't want to commit to your repository:
+a dir `data`,
+and a file ending in a `~` (a temporary file type that e.g. text editors can produce):
+
+``` sh
+mkdir data
+touch data/drawings_1855-{01..12} todo.txt~
+```
+
+When you check the status of the repo, you see that Git has noticed these files:
+
+``` sh
+git status
+```
+
+``` bash-out
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        data/
+        todo.txt~
+```
+
+If you don't do anything about this,
+Git will keep reporting these untracked files whenever you run `git status`.
+**To prevent this, you can create a `.gitignore` file:**
+
+- `.gitignore` should be in the project's root dir and should be called `.gitignore`
+- This is a plain text file that contains dir and file names/patterns,
+  all of which will be ignored by Git
+- As soon as a `.gitignore` file exists, Git will automatically check and process its contents
+- It's a good idea add and commit this file to the repo.
+
+Now, create a `.gitignore` file and add entries to instruct Git
+to ignore everything in the `data/` dir, and any file that ends in a `~`:
+
+``` sh
+# Ignore everything in the data dir:
+echo "data/" > .gitignore
+# Ignore everything that ends in a ~:
+echo "*~" >> .gitignore
+```
+```sh
+cat .gitignore
+```
+```bash-out
+data/
+*~
+```
+
+When you check the status again,
+Git will have automatically processed the the `.gitignore` file,
+and the targeted files should no longer be listed as untracked files:
+
+``` sh
+git status
+```
+
+``` bash-out
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+```
+
+However, you do now have an untracked `.gitignore` file,
+so track and commit this file as follows:
+
+``` sh
+git add .gitignore
+git commit -m "Add a gitignore file"
+```
+
+``` bash-out
+[main 9715ab5] Added a gitignore file
+ 1 file changed, 2 insertions(+)
+ create mode 100644 .gitignore
+```
+
+::: callout-tip
+### Good project file organization helps with version control
+
+Good project file organization, as discussed last week, can make your life with Git a lot easier.
+This is especially true when it comes to files that you want to ignore.
+
+Since you'll generally want to ignore data and results files,
+if you keep all of those in their own top-level directories,
+it will be easy and not error-prone to tell Git to ignore them.
+But if you were, for example, mixing scripts and either results or data within dirs,
+it would be much harder to keep this straight.
+:::
+
 ## File states and showing changes
 
 ### File states
@@ -797,7 +916,10 @@ Stage and commit the changes to `todo.txt`, then check what you have done.
   1 file changed, 1 insertion(+)
   ```
   
-- Check the log:
+- Check the log --
+  note, when the Git log output gets longer, because you have more commits,
+  it may open in `less` rather than print the output to the screen.
+  Recall that to exit `less`, you have to press `q`.
 
   ```bash
   git log
@@ -836,113 +958,6 @@ Stage and commit the changes to `todo.txt`, then check what you have done.
 
 </details>
 
-:::
-
-## Ignoring files and directories
-
-As discussed above, it's best not to track some files,
-such as very bulky data files, temporary files, and results.
-
-We've seen that Git will notice and report any "untracked" files in your project
-whenever you run `git status`.
-This can get annoying and can make it harder to spot changes and untracked files
-that you do want to add ---
-and you might even accidentally start tracking these files such as with `git add --all`.
-
-To deal with this, you can tell Git not to pay attention to certain files by adding file names and
-wildcard selections to a **`.gitignore` file**.
-This way, these files won't be listed as untracked files when you run `git status`,
-and they wouldn't be added even when you use `git add --all`.
-
-To see this in action,
-start by adding some content that you don't want to commit to your repository:
-a dir `data`,
-and a file ending in a `~` (a temporary file type that e.g. text editors can produce):
-
-``` sh
-mkdir data
-touch data/drawings_1855-{01..12} todo.txt~
-```
-
-When you check the status of the repo, you see that Git has noticed these files:
-
-``` sh
-git status
-```
-
-``` bash-out
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-        data/
-        todo.txt~
-```
-
-If you don't do anything about this,
-Git will keep reporting these untracked files whenever you run `git status`.
-**To prevent this, you can create a `.gitignore` file:**
-
-- `.gitignore` should be in the project's root dir and should be called `.gitignore`
-- This is a plain text file that contains dir and file names/patterns,
-  all of which will be ignored by Git
-- As soon as a `.gitignore` file exists, Git will automatically check and process its contents
-- It's a good idea add and commit this file to the repo.
-
-Now, create a `.gitignore` file and add entries to instruct Git
-to ignore everything in the `data/` dir, and any file that ends in a `~`:
-
-``` sh
-# Ignore everything in the data dir:
-echo "data/" > .gitignore
-# Ignore everything that ends in a ~:
-echo "*~" >> .gitignore
-```
-```sh
-cat .gitignore
-```
-```bash-out
-data/
-*~
-```
-
-When you check the status again,
-Git will have automatically processed the the `.gitignore` file,
-and the targeted files should no longer be listed as untracked files:
-
-``` sh
-git status
-```
-
-``` bash-out
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-        .gitignore
-```
-
-However, you do now have an untracked `.gitignore` file,
-so track and commit this file as follows:
-
-``` sh
-git add .gitignore
-git commit -m "Add a gitignore file"
-```
-
-``` bash-out
-[main 9715ab5] Added a gitignore file
- 1 file changed, 2 insertions(+)
- create mode 100644 .gitignore
-```
-
-::: callout-tip
-### Good project file organization helps with version control
-
-Good project file organization, as discussed last week, can make your life with Git a lot easier.
-This is especially true when it comes to files that you want to ignore.
-
-Since you'll generally want to ignore data and results files,
-if you keep all of those in their own top-level directories,
-it will be easy and not error-prone to tell Git to ignore them.
-But if you were, for example, mixing scripts and either results or data within dirs,
-it would be much harder to keep this straight.
 :::
 
 ## Moving and removing tracked files
@@ -1202,6 +1217,9 @@ you can similarly retrieve it with `git checkout`:
 ### Unstaging a file
 
 `git restore` can also *unstage* a file.
+In other words, you can undo the staging that is done by `git add`,
+so the file goes back to the *modified* stage.
+
 This is most often needed when you added a file that was not supposed to be part
 of the next commit. For example:
 
