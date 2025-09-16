@@ -752,7 +752,7 @@ Plain-text file <em>extensions</em> are flexible and mostly for human-readibilit
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>A side note on <strong>plain-text file extensions</strong> like <code>.txt</code>, <code>.csv</code>, and <code>.tsv</code>, but also those for sequence files like <code>.fastq</code> as well as script files like <code>.R</code> or <code>.sh</code>:</p>
+<p>A side note on plain-text file extensions like <code>.txt</code>, <code>.csv</code>, and <code>.tsv</code>, but also those for sequence files like <code>.fastq</code> as well as script files like <code>.R</code> or <code>.sh</code>:</p>
 <p>Different types of plain text files, like those in the examples above, are fundamentally the same, i.e.&nbsp;“just plain-text files”. <strong>Therefore, changing the file extension does not change anything about the file.</strong> Instead, different file extensions are used primarily to make it clear to humans (as opposed to the computer) what the file contains.</p>
 </div>
 </div>
@@ -773,7 +773,7 @@ ERR10802870     24hpi   cathemerium</code></pre>
 <p>Instead of printing matching lines, you can also <strong>count</strong> them with the <code>-c</code> option. For example, how many control samples are in the dataset?</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">"control"</span> metadata.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>7</code></pre>
-<p>The option <code>-v</code> <strong>inverts</strong> <code>grep</code>’s behavior and prints all lines that do <em>not</em> match the pattern. Here, combine <code>-v</code> and <code>-c</code> to count lines that do not contain the string “control”:</p>
+<p>The option <code>-v</code> <strong>inverts</strong> <code>grep</code>’s behavior and prints all lines that <em>do not match</em> the pattern. For example, you can combine <code>-v</code> and <code>-c</code> to count lines that do not contain the text “control”:</p>
 <div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-vc</span> <span class="st">"control"</span> metadata.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>16</code></pre>
 <section id="exercise-grep" class="level4 exercise">
@@ -859,18 +859,6 @@ NC_068937.1     Gnomon  transcript      398255  486969  .       -       .       
 <pre class="bash-out"><code>time
 10dpi
 10dpi</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Selecting multiple columns, and specifying the delimiter, with <code>cut</code> <em>(Click to expand)</em>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
 <p>To select <strong>multiple columns</strong>, use a comma-delimited list, or a range with <code>-</code>:</p>
 <div class="sourceCode" id="cb59"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f</span> 1,3 metadata.tsv <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>sample_id       treatment
@@ -880,13 +868,21 @@ ERR10802875     cathemerium</code></pre>
 <pre class="bash-out"><code>sample_id       time
 ERR10802882     10dpi
 ERR10802875     10dpi</code></pre>
-<p>However, note that it is not possible to change the order of columns with <code>cut</code>!</p>
-<hr>
-<p>The default column <strong>delimiter</strong> that <code>cut</code> expects is a <kbd>Tab</kbd>. Therefore, we didn’t have to specify the delimiter in the above examples. But when a file has a different column delimiter, use the <code>-d</code> option – e.g.&nbsp;<code>-d ,</code> for a CSV file:</p>
+<p><em>Note that it is not possible to change the order of columns with <code>cut</code>!</em></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Specifying the delimiter for <code>cut</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The default column <strong>delimiter</strong> that <code>cut</code> expects is a Tab. Therefore, we didn’t have to specify the delimiter in the above examples. But when a file has a different column delimiter, use the <code>-d</code> option – e.g.&nbsp;<code>-d ,</code> for a CSV file:</p>
 <div class="sourceCode" id="cb63"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this, hypothetical example]</span></span>
 <span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the second column in a comma-delimited (CSV) file:</span></span>
 <span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-d</span> , 2 my-data.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 </div>
 </div>
 </section>
@@ -940,18 +936,55 @@ control</code></pre>
 control
 relictum</code></pre>
 <p>Great!</p>
-<hr>
+<section id="generating-a-count-table" class="level4">
+<h4 class="anchored" data-anchor-id="generating-a-count-table">Generating a count table</h4>
 <p>With a very small modification to this pipeline, you can generate a “count table” instead of a simple list! You just have to add <code>uniq</code>’s <code>-c</code> option (for <strong>c</strong>ount):</p>
 <div class="sourceCode" id="cb72"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 metadata.tsv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 3 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>      7 cathemerium
       7 control
       8 relictum</code></pre>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Sorting the count table
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>And this count table can in turn be sorted by most frequent occurrence — to do this, use <code>sort</code>’s <code>-n</code> option for numeric sorting together with <code>-r</code> for reverse sorting so the largest numbers go first:</p>
 <div class="sourceCode" id="cb74"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 metadata.tsv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 3 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-nr</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>      8 relictum
       7 control
       7 cathemerium</code></pre>
-<hr style="height:1pt; visibility:hidden;">
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Sorting based on one or more columns <em>(Click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Above, we used <code>sort</code> to simply sort a list. More generally, <code>sort</code> will by default perform sorting based on the entire line. To sort based on one or more columns, the way you’ve probably done in Excel, use the <code>-k</code> option — for example:</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort based on the third column:</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 metadata.tsv <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>-k</code> takes a start and a stop column to sort by, so if you want to strictly sort only based on one column at a time, use this syntax:</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Explicitly indicate to sort based on the third column only:</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 metadata.tsv <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k3,3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To sort first by one column and <em>then</em> by another, use <code>-k</code> multiple times:</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort first by the first column, then break ties using the second column:</span></span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 metadata.tsv <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k3,3</span> <span class="at">-k2,2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="exercise" class="level4 exercise">
 <h4 class="anchored" data-anchor-id="exercise"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise</h4>
 <p>Using commands similar to the last examples above, check whether:</p>
@@ -963,7 +996,7 @@ relictum</code></pre>
 <em>Click for the solution</em>
 </summary>
 <p>No, there are 12 <code>10dpi</code> samples and 10 <code>24hpi</code> samples:</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 metadata.tsv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 metadata.tsv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>  12 10dpi
   10 24hpi</code></pre>
 </details>
@@ -976,35 +1009,11 @@ relictum</code></pre>
 </summary>
 <p>No duplicate sample IDs are present.</p>
 <p>The most elegant way to see this is by using <code>sort -nr | head -n1</code> at the end: if the single sample shown has a count of 1, this means there are no duplicates.</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 metadata.tsv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-nr</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 metadata.tsv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-nr</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>1 ERR10802886</code></pre>
 <p>Omitting the <code>head -n1</code> or even the <code>sort -nr</code> would also work in this case.</p>
 </details>
 </section>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Sorting based on one or more specific columns <em>(Click to expand)</em>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Above, we used <code>sort</code> to simply sort a list. More generally, <code>sort</code> will by default perform sorting based on the entire line. To sort based on one or more columns, the way you’ve probably done in Excel, use the <code>-k</code> option — for example:</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort based on the third column:</span></span>
-<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 metadata.tsv <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>-k</code> takes a start and a stop column to sort by, so if you want to strictly sort only based on one column at a time, use this syntax:</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Explicitly indicate to sort based on the third column only:</span></span>
-<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 metadata.tsv <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k3,3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To sort first by one column and <em>then</em> by another, use <code>-k</code> multiple times:</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort first by the first column, then break ties using the second column:</span></span>
-<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 metadata.tsv <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-k3,3</span> <span class="at">-k2,2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
 </section>
 </section>
 <section id="the-unix-philosophy-and-data-streaming" class="level2" data-number="5">
@@ -1013,12 +1022,7 @@ Sorting based on one or more specific columns <em>(Click to expand)</em>
 <blockquote class="blockquote">
 <p><em>This is the Unix philosophy: Write programs that do one thing and do it well.</em> <em>Write programs to work together. Write programs to handle text <strong>streams</strong>,</em> <em>because that is a universal interface.</em><br> — Doug McIlory</p>
 </blockquote>
-<p>Here are some advantages of a modular approach:</p>
-<ul>
-<li>Easier to spot errors</li>
-<li>Easy to swap out components, including in other languages</li>
-<li>Easier to learn</li>
-</ul>
+<p>Some advantages of a modular approach are that it’s easier to spot errors, to swap out components, and to learn.</p>
 <section id="textdata-streaming" class="level4">
 <h4 class="anchored" data-anchor-id="textdata-streaming">Text/data streaming</h4>
 <p>What about those <strong>text “streams”</strong> mentioned in the quote above? Rather than loading entire files into memory, Unix tools process them one line at a time.</p>
@@ -1027,7 +1031,7 @@ Sorting based on one or more specific columns <em>(Click to expand)</em>
 <div class="sourceCode" id="cb83"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this - for illustration purposes only]</span></span>
 <span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> fastq/<span class="pp">*</span>R1.fastq.gz <span class="op">&gt;</span> all_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1036,7 +1040,7 @@ The above code will produce a valid compressed FASTQ file, because:
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse show">
+<div id="callout-8" class="callout-8-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <ul>
 <li>FASTQ files can (in principle) be concatenated freely since every read is a “stand-alone” unit of 4 lines.</li>
@@ -1048,23 +1052,37 @@ The above code will produce a valid compressed FASTQ file, because:
 </section>
 <section id="dont-redirect-back-to-the-input-file" class="level4">
 <h4 class="anchored" data-anchor-id="dont-redirect-back-to-the-input-file">Don’t redirect back to the input file!</h4>
-<p>One possible drawback of the “text streams” mode of operation is that you can never redirect the output of Unix commands “back” to the input file. This will corrupt the input file.</p>
-<p>Therefore, if you really want to edit/overwrite the original file instead of creating a separate edited copy, you will two multiple steps:</p>
+<p>One potential drawback of the “text streams” mode of operation is that you can’t redirect the output of Unix commands “back” to the input file. This will corrupt the input file.</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this - for illustration only]</span></span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="co"># You should NEVER run something like this:</span></span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> metadata.tsv <span class="op">&gt;</span> metadata.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Changing the original file
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>Therefore, if you really want to edit the original file instead of creating a separate edited copy, you will two multiple steps:</p>
 <ol type="1">
 <li>Redirect to a new, edited copy of the input file</li>
 <li>Rename the copy to overwrite the original file</li>
 </ol>
-<div class="sourceCode" id="cb84"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run any of this - for illustration only]</span></span>
-<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="co"># You should NEVER run something like this:</span></span>
-<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> metadata.tsv <span class="op">&gt;</span> metadata.tsv</span>
-<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Instead, you should redirect to a new file:</span></span>
-<span id="cb84-7"><a href="#cb84-7" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> metadata.tsv <span class="op">&gt;</span> metadata_sorted.tsv</span>
-<span id="cb84-8"><a href="#cb84-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb84-9"><a href="#cb84-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Possibly followed by (if you really needed to edit the original file):</span></span>
-<span id="cb84-10"><a href="#cb84-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> metadata_sorted.tsv metadata.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>However, our general recommendation is that whenever you edit files, you keep both the original and the edited version.</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this - for illustration only]</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1 - redirect to a new file:</span></span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> metadata.tsv <span class="op">&gt;</span> metadata_sorted.tsv</span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2 - rename the new file to overwrite the original (if really needed!)</span></span>
+<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> metadata_sorted.tsv metadata.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>However, our general recommendation is that whenever you edit files, you keep both the original and the edited version – so you won’t typically need the above roundabout method.</p>
+</div>
+</div>
+</div>
 
 
 </section>

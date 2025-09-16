@@ -57,7 +57,6 @@ and sharing the resulting repositories on the **GitHub** website.
   - Showing changes between files
   - Making Git ignore specific files and dirs
   - Undoing accidental changes to your files
-  - Some Git best practices
 
 ### Getting ready
 
@@ -131,8 +130,8 @@ that you may run into:
 - How do you know what changes were made between saved versions?
 - How do you restore an accidentally deleted, modified, or overwritten file?
   This can especially be an issue at OSC where there is no recycle bin or undo button.
-- How do you manage simultaneous variants of files, such as when making experimental changes?
-- How do you collaborate, especially when working simultaneously?
+- [How do you manage simultaneous variants of files, such as when making experimental changes?]{style="color:#807c7c"}
+- [How do you collaborate, especially when working simultaneously?]{style="color:#807c7c"}
 
 Modern cloud storage solutions like OneDrive and Dropbox can help with some
 of these challenges:
@@ -146,13 +145,18 @@ However, with a formal Version Control System (VCS) like Git:
 - You have a time machine: you can go back to past states of your project
   (and not just of individual files!).
 - Sharing your code and other aspects of your project is easy.
-- You can do simultaneous collaborative work --- you can always track down who made which changes.
-- You can make experimental changes without affecting current functionality.
+- [You can do simultaneous collaborative work -- and can always track down who made which changes.]{style="color:#807c7c"}
+- [You can make experimental changes without affecting current functionality.]{style="color:#807c7c"}
 
 Or, as @allesina2019 puts it in Chapter 2 of the book:
 
 > *Version control is a way to keep your scientific projects tidily organized,*
 > *collaborate on science, and have the whole history of each project at your* *fingertips.*\
+
+In this course, you will (only) learn the basics of using version control.
+The grayed-out examples above are only covered in the
+[optional self-study material](../bonus/git.qmd).
+But you will practice with applying these basics quite a lot!
 
 ### How Git works
 
@@ -300,46 +304,41 @@ Git commands always start with `git` followed by a second command/subcommand or 
 
 We will start by doing some one-time personal Git configuration that will apply
 anywhere on OSC, and won't ever have to be redone unless you want to make changes.
+This is all done with `git config --global`.
 
-1. Use `git config` to make your name known to Git.
-   This should be your actual name (first and last as in the example below)
-   and not your GitHub username:
+1. Make your name known to Git --
+   your actual name (first and last) and not e.g. your OSC or GitHub username:
    
    ```sh
    git config --global user.name 'John Doe'
    ```
 
-3. Use `git config` to make your email address known
-   (_use the same email address you signed up for GitHub with_):
+3. Make your email address known
+   (_should match the address associated with your GitHub account_):
    
    ```sh
    git config --global user.email 'doe.391@osu.edu'
    ```
 
-4. Use `git config` to set a default text editor for Git.
-   (Occasionally^[When you need to provide Git with a "commit message" to Git
-   and you haven't entered one on the command line.],
-   Git will open up a text editor for you.
-   Even though we're using VS Code,
-   here it is better to select a text editor that runs directly in the shell, like `nano`.)
+4. Set a default text editor for Git.
+   (Git will
+   occasionally^[When you need to provide Git with a "commit message" to Git
+   and you haven't entered one on the command line.]
+   open a text editor for you. Even though we're using VS Code,
+   here it is better to select a text editor that runs in the shell,
+   like `nano`.)
 
    ```sh
    git config --global core.editor "nano -w"
    ```
 
-5. Activate Git output with colors:
-  
-   ```sh
-   git config --global color.ui true
-   ```
-
-6. Change the default "branch" name to `main`:
+5. Change the default "branch" name to `main`:
 
    ```sh
    git config --global init.defaultbranch main
    ```
    
-7. Check whether you successfully changed the settings:
+6. Check whether you successfully changed the settings:
 
    ```sh
    git config --global --list
@@ -347,7 +346,6 @@ anywhere on OSC, and won't ever have to be redone unless you want to make change
    ```bash-out
    # user.name=John Doe
    # user.email=doe.39@osu.edu
-   # colour.ui=true
    # core.editor=nano -w
    # init.defaultbranch=main
    ```
@@ -355,8 +353,8 @@ anywhere on OSC, and won't ever have to be redone unless you want to make change
 ## Your first Git repository
 
 You'll create a Git repository for a mock book project:
-writing Charles Darwin's "On the Origin of Species".
-This content follows the chapter 2 in @allesina2019.
+writing Charles Darwin's "On the Origin of Species"
+(this content follows chapter 2 in @allesina2019).
 
 ### Start a new Git repository
 
@@ -437,6 +435,11 @@ Untracked files:
 
 nothing added to commit but untracked files present (use "git add" to track)
 ```
+
+::: {.callout-tip appearance="minimal"}
+The Git output will include some [colors]{style="color:red"} that are not shown
+in the output on this website.
+:::
 
 Git has clearly **detected** the new file.
 But as mentioned, Git does not automatically start "tracking" files,
@@ -595,7 +598,7 @@ you might prefer `git log --oneline` for a one-line-per-commit summary:
 git log --oneline
 ```
 ```bash-out
-1e2bba4 Changed the title as suggested by Murray
+1e2bba4 (HEAD -> main) Changed the title as suggested by Murray
 4fd04af Started the book
 ```
 
@@ -645,35 +648,33 @@ single commit.
 ::: exercise
 #### {{< fa user-edit >}} Exercise
 
-1.  Create a new file `todo.txt` containing the line: "June 18, 1858: read essay from Wallace".
+1.  Create a new file `todo.txt` containing the line:
+    "June 18, 1858: read essay from Wallace".
 
-<details><summary>Click to see the solution</summary>
-
-``` sh
-echo "June 18, 1858: read essay from Wallace" > todo.txt
-```
-
-</details>
+    <details><summary>Click to see the solution</summary>
+    
+    ``` sh
+    echo "June 18, 1858: read essay from Wallace" > todo.txt
+    ```
+    </details>
 
 2.  Use a Git command to stage the file.
 
-<details><summary>Click to see the solution</summary>
-
-``` sh
-git add todo.txt
-```
-
-</details>
+    <details><summary>Click to see the solution</summary>
+    
+    ``` sh
+    git add todo.txt
+    ```
+    </details>
 
 3.  Create a Git commit with the commit message "*Added to-do list*".
 
-<details><summary>Click to see the solution</summary>
-
-``` sh
-git commit -m "Added to-do list"
-```
-
-</details>
+    <details><summary>Click to see the solution</summary>
+    
+    ``` sh
+    git commit -m "Added to-do list"
+    ```
+    </details>
 :::
 
 <hr style="height:1pt; visibility:hidden;" />
@@ -831,7 +832,8 @@ git diff
 ```
 
 Change the to-do list
-(note: for this to work, you should have done the exercise above!), and check again:
+(note: for this to work, you should have done the exercise above!),
+and check again:
 
 ``` sh
 echo "June 20, 1858: Send first draft to Huxley" >> todo.txt
@@ -1037,8 +1039,8 @@ use `git mv` and `git rm`.
 ::: exercise
 #### {{< fa user-edit >}} Exercise: `.gitignore` and `git rm`
 
-**A)** Create a new directory `results` with files `Galapagos.txt` and `Ascencion.txt`.
-Add a line to the `.gitignore` file to ignore these results,
+Create a new directory `results` with files `Galapagos.txt` and `Ascencion.txt`.
+Add a line to the `.gitignore` file to ignore all files in `results`,
 and commit the changes to the `.gitignore` file.
 
 <details><summary>Click to see the solution</summary>
@@ -1065,7 +1067,7 @@ and commit the changes to the `.gitignore` file.
   nothing added to commit but untracked files present (use "git add" to track
   ```
 
-- Add the string "results/" to the `.gitignore` file:
+- Add the text "results/" to the `.gitignore` file:
 
   ```bash
   echo "results/" >> .gitignore
@@ -1087,7 +1089,7 @@ and commit the changes to the `.gitignore` file.
   ```
   
   Looks good, `results/` is no longer listed.
-  But we do need to commit the changes to `.gitignore`.
+  But you do need to commit the changes to `.gitignore`.
   
 - Commit the changes to `.gitignore`:
 
@@ -1102,7 +1104,7 @@ and commit the changes to the `.gitignore` file.
 
 </details>
 
-**B)** Create and commit an empty new file `notes.txt`.
+Create and commit an empty new file `notes.txt`.
 Then, remove it with `git rm` and commit your file removal.
 
 <details><summary>Click to see the solution</summary>
@@ -1273,24 +1275,23 @@ you can just continue editing the file and re-add it afterwards.
 ::: exercise
 #### {{< fa user-edit >}} Exercise: Commit the changes 1-by-1
 
-1. Commit the currently staged changes to `origin.txt`.
-2. Stage and commit the changes to `todo.txt`.
+Commit the currently staged changes to `origin.txt`.
 
 <details><summary>Click for the solution</summary>
 
-1. Commit the currently staged changes to `origin.txt`.
+```bash
+git commit -m "Start writing about artificial selection"
+```
+</details>
 
-   ```bash
-   git commit -m "Start writing about artificial selection"
-   ```
+Next, stage and commit the changes to `todo.txt`.
 
-2. Stage and commit the changes to `todo.txt`.
+<details><summary>Click for the solution</summary>
 
-   ```bash
-   git add todo.txt
-   git commit -m "Update the TODO file"
-   ```
-
+```bash
+git add todo.txt
+git commit -m "Update the TODO file"
+```
 </details>
 
 :::

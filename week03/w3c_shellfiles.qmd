@@ -609,7 +609,7 @@ Most commonly, these are:
 ::: callout-important
 #### Plain-text file _extensions_ are flexible and mostly for human-readibility
 
-A side note on **plain-text file extensions** like `.txt`, `.csv`, and `.tsv`,
+A side note on plain-text file extensions like `.txt`, `.csv`, and `.tsv`,
 but also those for sequence files like `.fastq` as well as script files like `.R` or `.sh`:
 
 Different types of plain text files, like those in the examples above,
@@ -659,8 +659,9 @@ grep -c "control" metadata.tsv
 ```
 
 The option `-v` **inverts** `grep`'s behavior and prints all lines that
-do _not_ match the pattern.
-Here, combine `-v` and `-c` to count lines that do not contain the string "control":
+_do not match_ the pattern.
+For example, you can combine `-v` and `-c` to count lines that do not contain
+the text "control":
 
 ```bash
 grep -vc "control" metadata.tsv
@@ -780,9 +781,6 @@ time
 10dpi
 ```
 
-::: {.callout-note collapse="true"}
-#### Selecting multiple columns, and specifying the delimiter, with `cut` _(Click to expand)_
-
 To select **multiple columns**, use a comma-delimited list, or a range with `-`:
 
 ```bash
@@ -803,11 +801,12 @@ ERR10802882     10dpi
 ERR10802875     10dpi
 ```
 
-However, note that it is not possible to change the order of columns with `cut`!
+_Note that it is not possible to change the order of columns with `cut`!_
 
------
+::: {.callout-note}
+#### Specifying the delimiter for `cut`
 
-The default column **delimiter** that `cut` expects is a <kbd>Tab</kbd>.
+The default column **delimiter** that `cut` expects is a Tab.
 Therefore, we didn't have to specify the delimiter in the above examples.
 But when a file has a different column delimiter,
 use the `-d` option -- e.g. `-d ,` for a CSV file:
@@ -904,7 +903,7 @@ relictum
 
 Great!
 
-----
+#### Generating a count table
 
 With a very small modification to this pipeline,
 you can generate a "count table" instead of a simple list!
@@ -919,6 +918,9 @@ tail -n +2 metadata.tsv | cut -f 3 | sort | uniq -c
       8 relictum
 ```
 
+:::{.callout-tip}
+#### Sorting the count table
+
 And this count table can in turn be sorted by most frequent occurrence ---
 to do this, use `sort`'s `-n` option for numeric sorting together with `-r`
 for reverse sorting so the largest numbers go first:
@@ -931,8 +933,35 @@ tail -n +2 metadata.tsv | cut -f 3 | sort | uniq -c | sort -nr
       7 control
       7 cathemerium
 ```
+:::
 
-<hr style="height:1pt; visibility:hidden;" />
+:::{.callout-note collapse="true"}
+#### Sorting based on one or more columns _(Click to expand)_
+Above, we used `sort` to simply sort a list.
+More generally, `sort` will by default perform sorting based on the entire line.
+To sort based on one or more columns, the way you've probably done in Excel,
+use the `-k` option --- for example:
+
+```bash
+# Sort based on the third column:
+tail -n +2 metadata.tsv | sort -k3
+```
+
+`-k` takes a start and a stop column to sort by,
+so if you want to strictly sort only based on one column at a time, use this syntax:
+
+```bash
+# Explicitly indicate to sort based on the third column only:
+tail -n +2 metadata.tsv | sort -k3,3
+```
+
+To sort first by one column and _then_ by another, use `-k` multiple times:
+
+```bash
+# Sort first by the first column, then break ties using the second column:
+tail -n +2 metadata.tsv | sort -k3,3 -k2,2
+```
+:::
 
 ::: exercise
 #### {{< fa user-edit >}} Exercise
@@ -976,34 +1005,6 @@ Omitting the `head -n1` or even the `sort -nr` would also work in this case.
 </details>
 :::
 
-:::{.callout-note collapse="true"}
-#### Sorting based on one or more specific columns _(Click to expand)_
-Above, we used `sort` to simply sort a list.
-More generally, `sort` will by default perform sorting based on the entire line.
-To sort based on one or more columns, the way you've probably done in Excel,
-use the `-k` option --- for example:
-
-```bash
-# Sort based on the third column:
-tail -n +2 metadata.tsv | sort -k3
-```
-
-`-k` takes a start and a stop column to sort by,
-so if you want to strictly sort only based on one column at a time, use this syntax:
-
-```bash
-# Explicitly indicate to sort based on the third column only:
-tail -n +2 metadata.tsv | sort -k3,3
-```
-
-To sort first by one column and _then_ by another, use `-k` multiple times:
-
-```bash
-# Sort first by the first column, then break ties using the second column:
-tail -n +2 metadata.tsv | sort -k3,3 -k2,2
-```
-:::
-
 ## The Unix philosophy and data streaming
 
 Today, and in particular with these Unix data tool examples,
@@ -1013,11 +1014,8 @@ we saw the Unix philosophy in action:
 > well.* *Write programs to work together. Write programs to handle text
 > **streams**,* *because that is a universal interface.*<br> — Doug McIlory
 
-Here are some advantages of a modular approach:
-
-- Easier to spot errors
-- Easy to swap out components, including in other languages
-- Easier to learn
+Some advantages of a modular approach are that it's easier to spot errors,
+to swap out components, and to learn.
 
 #### Text/data streaming
 
@@ -1032,7 +1030,8 @@ that could never be loaded into memory.
 By contrast, try to take a peak at such a file with a GUI text editor,
 and your computer will crash.
 
-Here is one other example, combining the `cat` command with globbing and redirection.
+Here is one other example,
+combining the `cat` command with globbing and redirection.
 This command would concatenate (combine) all your R1 FASTQ files into a single file.
 This is both elegantly short code,
 and will run quickly and without using much computer memory!
@@ -1052,28 +1051,35 @@ cat fastq/*R1.fastq.gz > all_R1.fastq.gz
 
 #### Don't redirect back to the input file!
 
-One possible drawback of the "text streams" mode of operation is that you can never
+One potential drawback of the "text streams" mode of operation is that you can't
 redirect the output of Unix commands "back" to the input file.
 This will corrupt the input file.
 
-Therefore, if you really want to edit/overwrite the original file instead of
-creating a separate edited copy, you will two multiple steps:
+```bash
+# [Don't run this - for illustration only]
+# You should NEVER run something like this:
+sort metadata.tsv > metadata.tsv
+```
+
+::: {.callout-note collapse="false"}
+#### Changing the original file 
+
+Therefore, if you really want to edit the original file instead of creating a
+separate edited copy, you will two multiple steps:
 
 1. Redirect to a new, edited copy of the input file
 2. Rename the copy to overwrite the original file
 
 ```bash
-# [Don't run any of this - for illustration only]
-
-# You should NEVER run something like this:
-sort metadata.tsv > metadata.tsv
-
-# Instead, you should redirect to a new file:
+# [Don't run this - for illustration only]
+# Step 1 - redirect to a new file:
 sort metadata.tsv > metadata_sorted.tsv
 
-# Possibly followed by (if you really needed to edit the original file):
+# Step 2 - rename the new file to overwrite the original (if really needed!)
 mv metadata_sorted.tsv metadata.tsv
 ```
 
 However, our general recommendation is that whenever you edit files,
-you keep both the original and the edited version.
+you keep both the original and the edited version --
+so you won't typically need the above roundabout method.
+:::

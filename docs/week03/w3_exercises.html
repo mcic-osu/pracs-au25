@@ -430,8 +430,7 @@ div.csl-indent {
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> seqs/sample{01..25}_R<span class="dt">{1</span><span class="op">,</span><span class="dt">2}</span>.fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Copy the dummy FASTA files for samples <code>01</code> through <code>09</code> into your working dir with a single command.</p></li>
 <li><p>Remove the files you just copied and when doing so, make the command report what it’s doing.</p></li>
-<li><p>Move all R1 files into a dir <code>seqs_R1</code>, and then rename <code>seqs</code>, which should now only contain R2 files, to <code>seqs_R1</code>.</p></li>
-<li><p>Copy the Garrigos et al.&nbsp;metadata file into your current working dir, giving the copy the name <code>garrigos_metadata.tsv</code>.</p></li>
+<li><p>Move all R1 files into a dir <code>seqs_R1</code>, and then rename <code>seqs</code>, which should now only contain R2 files, to <code>seqs_R2</code>.</p></li>
 </ol>
 </section>
 <section id="exercise-3-nuances-of-cp-and-mv-behavior" class="level2">
@@ -696,7 +695,7 @@ removed 'sample09_R2.fastq'</code></pre>
 <div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> seqs_R1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Move the R1 files into the new dir:</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> seqs/<span class="pp">*</span>R1.fastq seqs_R1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p>Rename the old dir:</p>
+<li><p>Rename the old dir from <code>seqs</code> to <code>seqs_R2</code>:</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> seqs seqs_R2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Check the result:</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-C</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -757,12 +756,6 @@ removed 'sample09_R2.fastq'</code></pre>
 2 directories, 50 files</code></pre></li>
 </ul>
 </details>
-<details>
-<summary>
-<strong>6.</strong> Copy the Garrigos et al.&nbsp;metadata file into your current working dir
-</summary>
-<div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../../garrigos-data/meta/metadata.tsv garrigos_metadata.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </section>
 <section id="exercise-3" class="level3">
 <h3 class="anchored" data-anchor-id="exercise-3">Exercise 3</h3>
@@ -771,17 +764,17 @@ removed 'sample09_R2.fastq'</code></pre>
 <strong>1.</strong> Create a new dir and navigate there
 </summary>
 <p>Assuming you’re doing this right after exercise 2, you should be in <code>/fs/ess/PAS2880/users/$USER/week03/ex2</code>, in which case the following commands work:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ../ex3</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../ex3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ../ex3</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../ex3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Or, with absolute paths:</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> /fs/ess/PAS2880/users/<span class="va">$USER</span>/week03/ex3</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /fs/ess/PAS2880/users/<span class="va">$USER</span>/week03/ex3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> /fs/ess/PAS2880/users/<span class="va">$USER</span>/week03/ex3</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /fs/ess/PAS2880/users/<span class="va">$USER</span>/week03/ex3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <details>
 <summary>
 <strong>2.</strong> Create a new file called <code>newfile.txt</code> in your working dir
 </summary>
-<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> newfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> newfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <details>
 <summary>
@@ -794,7 +787,7 @@ removed 'sample09_R2.fastq'</code></pre>
 <strong>2.</strong> Do you think the command will succeed?
 </summary>
 <p>The <code>more_data/</code> dir does not exist, and <code>cp</code> will not create a dir on the fly – so it will fail:</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> newfile2.txt more_data/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> newfile2.txt more_data/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>cp: cannot create regular file ‘more_data/’: Not a directory</code></pre>
 </details>
 <details>
@@ -803,8 +796,8 @@ removed 'sample09_R2.fastq'</code></pre>
 </summary>
 <p>If you had omitted the trailing forward slash, it would have created a copy of the file with <em>file</em> name <code>more_data</code> (if that seems confusing: note that in Unix, files don’t need to have a file extension).</p>
 <p>P.S.: To copy the file according to the original intention, first create the destination dir and then copy:</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> more_data</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> newfile2.txt more_data/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> more_data</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> newfile2.txt more_data/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Note also that once the <code>more_data</code> dir exists, it <strong>does not</strong> make a difference whether or not you using a trailing slash.</p>
 </details>
 </section>
@@ -815,17 +808,17 @@ removed 'sample09_R2.fastq'</code></pre>
 <strong>1.</strong> Create a new dir and navigate there
 </summary>
 <p>Assuming you’re doing this right after exercise 2, you should be in <code>/fs/ess/PAS2880/users/$USER/week03/ex2</code>, in which case the following commands work:</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ../ex4</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../ex4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> ../ex4</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../ex4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Or, with absolute paths:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> /fs/ess/PAS2880/users/<span class="va">$USER</span>/week03/ex4</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /fs/ess/PAS2880/users/<span class="va">$USER</span>/week03/ex4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> /fs/ess/PAS2880/users/<span class="va">$USER</span>/week03/ex4</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /fs/ess/PAS2880/users/<span class="va">$USER</span>/week03/ex4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <details>
 <summary>
 <strong>2.</strong> Copy the genome annotation file
 </summary>
-<div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../../garrigos-data/ref/GCF_016801865.2.gtf.gz annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> ../../garrigos-data/ref/GCF_016801865.2.gtf.gz annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <details>
 <summary>
@@ -834,7 +827,7 @@ removed 'sample09_R2.fastq'</code></pre>
 <ul>
 <li>The file has 4 header lines:</li>
 </ul>
-<div class="sourceCode" id="cb47"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> <span class="at">-S</span> annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> <span class="at">-S</span> annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>#gtf-version 2.2
 #!genome-build TS_CPP_V2
 #!genome-build-accession NCBI_Assembly:GCF_016801865.2
@@ -849,7 +842,7 @@ NC_068937.1     Gnomon  transcript      2046    110808  .       +       .       
 <summary>
 <strong>4.</strong> Pipe the output of <code>zcat</code> to another command to print the file’s first 15 lines
 </summary>
-<div class="sourceCode" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> annot.gtf.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 15</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> annot.gtf.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 15</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>#gtf-version 2.2
 #!genome-build TS_CPP_V2
 #!genome-build-accession NCBI_Assembly:GCF_016801865.2
@@ -872,10 +865,10 @@ NC_068937.1     Gnomon  CDS     105987  106087  .       +       2       gene_id 
 </summary>
 <ul>
 <li><p>Uncompressed count:</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> annot.gtf.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> annot.gtf.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>408402</code></pre></li>
 <li><p>Compressed count:</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> annot.gtf.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>22934 garrigos-data/ref/GCF_016801865.2.gtf.gz</code></pre></li>
 </ul>
 <p>So: no, the counts are not the same! The lesson here is that you should not get “compressed linecounts”, since these are not informative.</p>
