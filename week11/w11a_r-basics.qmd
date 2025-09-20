@@ -5,7 +5,7 @@ pagetitle: "w11a: R Intro"
 date: 2025-11-01
 author:
   - name: Menuka Bhandari
-    #orcid: 0000-0002-3514-7462
+    #orcid: TBA
     email: bhandari.72@osu.edu
     affiliation: 
       - name: CFAES Bioinformatics Core, Ohio State University
@@ -32,11 +32,20 @@ bibliography: ../references.bib
 
 <br>
 
+:::{.callout-caution appearance="simple"}
+#### THIS PAGE IS STILL UNDER CONSTRUCTION
+
+- TBA: Add a couple of mini-exercises
+
+:::
+
+<br>
+
 ## Introduction
 
 ### Overview and learning goals of the course's R material
 
-This week is the first of a series of four that will focus on the R language.
+This is the first of a series of four weeks that will focus on the R language.
 
 Besides being a great all-round tool for data analysis and visualization,
 the R language is probably the best environment for the "downstream" analysis
@@ -45,9 +54,7 @@ of omics data, with an excellent array of packages for e.g.:
 - Metabarcoding analysis
 - RNA-Seq analysis
 - ....
-- Proteomics and metabolomics (?)
-
-_[TBA - Rationale for using R including in omics data context]_
+- Proteomics and metabolomics
 
 Specifically, you will learn:
 
@@ -56,10 +63,10 @@ Specifically, you will learn:
 - How to use combine R and Markdown with Quarto to produce beautiful, reproducible documents (week 12)
 - How to visualize data in R with the ggplot2 package (week 13)
 - About the ecosystem of packages for omics data analysis (week 13/14)
-- By means of example, how to analyze the RNA-Seq count data that you have
+- By means of example, how to analyze the RNA-Seq count data you have
   produced using the @garrigós2025 dataset.
 
-### Lecture context & overview
+### Lecture learning goals
 
 In this lecture, you will learn:
 
@@ -72,75 +79,56 @@ In this lecture, you will learn:
 
 ## Starting an RStudio Server session at OSC
 
-R can be run using a console that itself can simply be run in the terminal.
-However, we will be running R inside a fancy editor (or "IDE", Integrated Development Environment)
+You can use R with a "console" that can simply be run inside the terminal.
+At OSC, you can do so after loading the R module.
+However, we'll use R with a fancy editor (or "IDE", Integrated Development Environment)
 called [RStudio](https://www.rstudio.com/products/rstudio/download/#download),
-which makes working with R much more pleasant!
+which makes working with it much more pleasant!
 
-From within your browser,
-you can access a version of RStudio ("RStudio Server") that will be running on
-OSC's computers.
+Like with VS Code, we can run a version of RStudio ("RStudio Server") within our
+browsers by starting an Interactive App through OSC OnDemand.
 
-1. Click on **`Interactive Apps`** (top bar) and then
-   **`RStudio Server`** (all the way at the bottom)
-
+1. Log in to OSC’s OnDemand portal at <https://ondemand.osc.edu>
+1. In the blue top bar, select **`Interactive Apps`** at the bottom,
+   click **`RStudio Server`**
 2. Fill out the form as follows:
+   - Cluster: **`pitzer`**
+   - R version: **`4.4.0`**
+   - Project: **`PAS2880`**
+   - Number of hours: **`2`**
+   - Node type: **`any`**
+   - Number of cores: **`1`**
+4. Click **`Launch`**
+5. Click the **`Connect to RStudio Server`** button once it appears
 
-  - Cluster: **`pitzer`**
-  - R version: **`4.4.0`**
-  - Project: **`PAS2880`**
-  - Number of hours: **`2`**
-  - Node type: **`any`**
-  - Number of cores: **`1`**
-
-<details><summary>*Click to see a screenshot*</summary>
-
-***TBA - Update screenshot***
-
-![](../img/rstudio_form.png){fig-align="center" width="50%"}
-
-</details>
-
-4. Click the big blue **`Launch`** button at the bottom
-
-5. Now, you should be sent to a new page with a box at the top for your RStudio Server "job",
-   which should initially be "Queued" (waiting to start).
-
-<details><summary>*Click to see a screenshot*</summary>
-
-![](../img/rstudio_queued.png){fig-align="center" width="70%"}
-
-</details>
-
-6. Your job should start running very soon, with the top bar of the box turning green and saying "Running".
-
-<details><summary>*Click to see a screenshot*</summary>
-
-![](../img/rstudio_running.png){fig-align="center" width="70%"}
-
-</details>
-
-7. Click **`Connect to RStudio Server`** at the bottom of the box,
-   and an RStudio Server instance will open in a new browser tab. You're ready to go!
+::: callout-tip
+#### Number of cores
+Note that unlike with Code Server,
+we can choose how many cores we want when starting an RStudio server job.
+Changing the number of cores is also the way to go if you need more than the
+default 4 GB of memory (RAM):
+recall that each core is associated with 4 GB of memory,
+so asking for 4 cores will get you 16 GB RAM.
+:::
 
 ## Orienting to RStudio (basic layout)
 
-When you first open RStudio, you will be greeted by three panels:
+When you first open RStudio, you will be greeted by three panels,
+each of which have multiple tabs:
 
-- **Left:** the default tab in this panel is your R "Console",
+- **Left:** the default and most useful tab in this panel is your R "Console",
   where you can type and execute R code
-  (if you’ve previously used standalone R without RStudio, all that would be shown
-  is this type of console).
 
-- **Top right:** the default tab in this panel this is your "Environment",
+- **Top right:** the default and most useful tab in this panel this is your
+  "Environment",
   which shows you all the objects that are active in your R environment.
 
-- **Bottom right:** the default tab in this panel is "Files", showing the files
-  in your working directory (more about that next).
-  There are also additional tabs to e.g. show plots, packages, and help,
-  some of which we'll see later today.
+- **Bottom right:** the default tab in this panel is "Files",
+  which is a file explorer starting in your initial working directory
+  (more about that next).
+  The additional tabs are also commonly used, such as those to show plots and help.
 
-*[TBA - Use screenshot from OSC, and annotate in Powerpoint]*
+***[TBA - Switch below to screenshot from OSC, and annotate in Powerpoint]***
 
 ![](../img/rstudio.png){width="100%" fig-align="center"}
 
@@ -162,34 +150,35 @@ type `5 + 5` in the console and press <kbd>Enter</kbd>:
 
 R will print the result of the calculation, `10`.
 The result is prefaced by `[1]`, which is simply an index/count of outputs,
-because sometimes R can output hundreds of numbers or other elements.
+which can be helpful when multiple/many numbers or other elements are printed.
 
-Some additional examples:
+Some additional calculation examples:
 
-```{r}
-# Multiplication
-6 * 8
-```
+- Multiplication and division:
 
-```{r}
-# Division
-40 / 5
-```
+  ```{r}
+  6 * 8
+  40 / 5
+  ```
 
-```{r}
-# Exponents
-3 ^ 4
-```
+- Exponents:
 
-```{r}
-# Parentheses change order of operations
-(5 + 3) * 2
-```
+  ```{r}
+  3 ^ 4
+  ```
 
-```{r}
-# Without parentheses, multiplication happens first
-5 + 3 * 2
-```
+- Parentheses can be used to change the default order of operations:
+
+  ```{r}
+  (5 + 3) * 2
+  ```
+  
+  ```{r}
+  # Without parentheses, multiplication happens first
+  5 + 3 * 2
+  ```
+
+***[TBA - Talk about leaving spaces between numbers / space-sensitivity]***
 
 ::: {.callout-tip collapse="true"}
 #### Order of operations is as you learned in school _(Click to expand)_
@@ -225,9 +214,10 @@ you typed an incomplete command -- for example:
 +
 ```
 
-Once again like in the Unix shell, you can either try to finish the command
-or abort it by pressing <kbd>Ctrl</kbd>+<kbd>C</kbd>
-(<kbd>Esc</kbd> also works in R) -- let's practice the latter here.
+And once again like in the Unix shell,
+you can either try to finish the command or abort it by pressing
+<kbd>Ctrl</kbd>+<kbd>C</kbd>.
+In R, <kbd>Esc</kbd> also works to cancel -- let's practice the latter here.
 
 ::: callout-note
 #### Adding comments to your code
@@ -244,42 +234,33 @@ you can use `#` signs to comment your code, both inline and on separate lines:
 ### Comparing things
 
 In R, you can use comparison operators to compare numbers.
-When you do this, R will return a `logical`
+When you do this, R will return a so-called `logical`
 (one of R's "data types" -- more about these later):
 either `FALSE` or `TRUE`. For example:
 
-```{r}
-# Greater than
-8 > 3
-```
+- Greater than and less than:
+  
+  ```{r}
+  8 > 3
+  2 < 1
+  ```
 
-```{r}
-# Less than
-2 < 1
-```
+- Equal to or not equal to --
+  don't forget to use **two** equals signs `==` for the former:
 
-```{r}
-# Equal to
-7 == 7
-```
-
-```{r}
-# Not equal to
-10 != 5
-```
-
-```{r}
-# Greater than or equal to
-6 >= 6
-```
+  ```{r}
+  7 == 7
+  # The exclamation mark in general is a "negator"
+  10 != 5
+  ```
 
 Here are the most common comparison operators in R:
 
 | **Operator** | **Description**          | **Example**            |
-|--------------|--------------------------|------------------------|
+|---------|--------------------|------------------------|
 | `>`           | Greater than             | 5 \> 6 returns `FALSE`   |
 | `<`           | Less than                | 5 \< 6 returns `TRUE`    |
-| `==`           | Equals to                | 10 == 10 returns `TRUE`  |
+| `==`           | Equal to                | 10 == 10 returns `TRUE`  |
 | `!=`           | Not equal to             | 10 != 10 returns `FALSE` |
 | `>=`          | Greater than or equal to | 5 \>= 6 returns `FALSE`  |
 | `<=`          | Less than or equal to    | 6 \<= 6 returns `TRUE`   |
@@ -291,42 +272,50 @@ Here are the most common comparison operators in R:
 To do almost anything in R, you will use "**functions**",
 which are the equivalent of Unix commands.
 
-_TBA - A couple of equivalent shell <-> R functions, e.g:_
+***[TBA - A couple of equivalent shell <-> R functions, e.g:]***
 
 ```{r}
-print("Hello world")
+print(x = "Hello world")
 ```
 
 ```r
 getwd()
 ```
+```r-out
+/users/PAS0471/jelmer
+```
 
 ```r
-head(x)
+setwd(dir = "TBA")
+```
+
+```{r}
+head(x = iris)
 ```
 
 You can recognize function calls by the parentheses.
 Inside those parentheses, you can provide **arguments** to a function.
 
-_TBA - compare with arguments and options in the shell_
+***[TBA - explain naming versus not-naming args - e.g.:]***
 
-Another important function is `c()`, which stands for **combine** or **concatenate**.
-With `c()`, you can create _vectors_ that contain multiple elements, like multiple numbers.
-You'll learn more about vectors in the next session, but here is a quick example:
-
-```{r}
-c(10, 15)
+```{r, eval=FALSE}
+setwd("TBA")
+head(iris)
 ```
 
-Below are examples of some other R functions:
+***[TBA - compare with arguments and options in the shell]***
+
+R has over 3,000 functions that serve many different purposes,
+and tens of thousands of additional functions are available in packages (add-ons).
+Below are a couple of examples continuing along the theme of using R as a calculator:
 
 | **Function** | **Description** |
-|---------------------------------|---------------------------------------|
-| `abs(x)` | Absolute value |
+|-----------------|---------------------------------------|
+| `abs(x)` | Absolute value: e.g. `abs(-5)` returns 5 |
 | `sqrt(x)` | Square root |
 | `log(x)` | Natural logarithm |
 | `log10(x)` | Common logarithm |
-| `round(x, digits = n)` | E.g `round(3.475, digits = 2)` returns 3.48 |
+| `round(x, digits = n)` | Round: e.g `round(3.475, digits = 2)` returns 3.48 |
 
 : {.striped .hover}
 
@@ -351,7 +340,7 @@ and look something like this:
 
 ### Assigning stuff to objects
 
-We can assign one or more values to a so-called "object"
+You can assign one or more values to a so-called "object"
 with the **assignment operator** `<-`.
 A few examples:
 
@@ -376,7 +365,7 @@ equivaluent of `echo` in the Unix shell:
 print(length_cm)
 ```
 
-However, in R you can simply type an object's name:
+However, in R you can actually also omit `print()` and simply type an object's name:
 
 ```{r}
 length_cm
@@ -414,18 +403,18 @@ Some pointers on object names:
 
 ## R packages
 
-For example, `install.packages()` is an important function you already used if you followed
-the setup instructions for this workshop: it will **install** an R package.
 R packages are basically add-ons or extensions to the functionality of the R language.
-Inside the parenthese of `install.packages()`,
-you should provide a package name as an argument, like `install.packages("tidyverse")`.
 
-Another example of an R function is `library()`,
-which will access your "library" of installed packages to **load** a package.
-Every time you want to use a package in R, you need to load it, just like everytime
-you want to use MS Word on your computer, you need to open it.
+- The function `install.packages()` **installs** an R package.
+  This is a one-time operation, also at OSC (see below).
+  
+- The function `library()` will **load** an R package in your current R session.
+  Every time you want to use a package in R, you need to load it,
+  just like everytime you want to use MS Word on your computer, you need to open it.
 
-_TBA - Start with a simpler installation - then tidyverse_
+For example:
+
+***[TBA - Start with a simpler installation - then tidyverse]***
 
 ```{r eval=FALSE}
 install.packages("tidyverse")
@@ -436,31 +425,33 @@ install.packages("tidyverse")
 library(tidyverse)
 ```
 
+In RStudio server at OSC,
+packages will by default be installed into a standard location in your Home dir,
+so they can be accessed through time and regardless of what your working dir is,
+or what OSC project you are using^[And this works equivalently on your own computer.].
+
+However, package installation is done separately for:
+
+- Different major versions of R
+  (e.g. 4.1 versus 4.2, but not R 4.1.1 versus 4.1.5).
+  Therefore, when you switch to a different R version, you will start over with
+  package installation^[This too, works the same with R on your own computer.].
+
+- Each OSC cluster, like Pitzer versus Cardinal.
+  
 ## Working directory and RStudio Projects
 
-We can figure out where our working directory with `getwd()`:
-
-```r
-getwd()
-```
-```r-out
-[1] "TBA"
-```
-
-You can change your working directory with the function `setwd()`:
-
-```r
-setwd("TBA")
-```
+As shown earlier, you can figure out what your working directory is with `getwd()`,
+and change it with `setwd()`.
 
 However, there is a better way of dealing with working directories,
 which is to avoid using `setwd()` altogether and to use RStudio Projects instead.
+This is similar to the Open Folder functionality of VS Code,
+but then a bit more formalized.
 
-_[TBA - Explain Projects and create a Project]_
+***[TBA - Explain why RStudio Projects are useful]***
 
-Using an "RStudio Project" will most of all help to make sure your working directory in R
-is correct. To create a new RStudio Project inside your personal dir in
-`TBA`:
+To create a new RStudio Project inside your personal dir in `/fs/ess/PAS2880`:
 
 1.  Click **`File`** (top bar, below your browser's address bar) \> **`New Project`**
 2.  In the popup window, click **`Existing Directory`**.
@@ -481,19 +472,23 @@ is correct. To create a new RStudio Project inside your personal dir in
 </details>
 
 4.  In the next window, you should be in your Home directory (abbreviated as **`~`**),
-    from which you can't click your way to `/fs/scratch`! Instead, you'll first have to
-    click on the (very small!) **`...`** highlighted in the screenshot below:
+    from which you can't click your way to `/fs/ess`! 
+    Instead, you first have to click on the (very small!) **`...`**
+    highlighted in the screenshot below:
 
 ![](../img/rstudio_proj_dotdotdot_ed.png){fig-align="center" width="50%"}
 
-5.  Type at least part of the path to your dir in `/fs/scratch/PAS2658`,
+5.  Type at least part of the path to your dir in `/fs/ess/PAS2880`,
     e.g. as shown below, and click **`OK`**:
 
-![(This doesn't show the correct OSC project but you get the idea.)](../img/rstudio_proj_path.png){fig-align="center" width="35%"}
+![REPLACE THIS SCREENSHOT TO ONE WITH THE CORRECT PATH](../img/rstudio_proj_path.png){fig-align="center" width="35%"}
 
-6.  Now you should be able to browse/click the rest of the way to your `Lab9` dir.
+6.  Now you should be able to browse/click the rest of the way to your dir
+    (`/fs/ess/PAS2880/users/$USER`).
 7.  Click **`Choose`** to pick your selected directory.
 8.  Click **`Create Project`**.
+
+This will make R restart, which is by design because... ***[TBA expand on this]***
 
 ## R scripts
 
@@ -503,12 +498,14 @@ An R script is a text file that contains R code.
 
 ***Create and open a new R script by clicking File (top menu bar) \> New File \> R Script.***
 
+***[TBA - screenshot]***
+
 #### Why use a script?
 
-It's a good idea to write and save most of our code in scripts,
+It's a good idea to write and save most of your code in scripts,
 instead of directly in the R console.
-This helps us ***keep track of what we’ve been doing***, especially in the longer run,
-and to re-run our code after modifying input data or one of the lines of code.
+This helps to ***keep track of what you've been doing***, especially in the longer run,
+and to re-run your code after modifying input data or one of the lines of code.
 
 #### Sending code to the console
 
@@ -521,13 +518,3 @@ Practice that after typing the following command in the script:
 ```{r}
 5 + 5
 ```
-
-## R best practices
-
-- Code line length
-- Spaces around ...
-- Script length
-- TBA
-
-
-

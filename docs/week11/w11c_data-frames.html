@@ -389,21 +389,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="the-tidyverse" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="the-tidyverse"><span class="header-section-number">2</span> The tidyverse</h2>
-<p>a family of R packages designed for “dataframe-centric” data science called the <a href="https://www.tidyverse.org">“tidyverse”</a>. Dataframe-centric refers to doing most if not all data analysis while keeping the data in R’s data frame data structure. Another tidyverse package we’ll cover in today’s workshop is <em>ggplot2</em> for making plots.</p>
+<p>We’ll start working with a family of R packages designed for “dataframe-centric” data science called the <a href="https://www.tidyverse.org">“tidyverse”</a>. Dataframe-centric refers to doing most if not all data analysis while keeping the data in R’s data frame data structure. Another tidyverse package we’ll cover in today’s workshop is <em>ggplot2</em> for making plots.</p>
 <p>All core tidyverse packages can be installed and loaded with a single command. Since you should already have <em>installed</em> the tidyverse<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, you only need to <em>load</em> it, which you do as follows:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre class="regular-r-output"><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.2     ✔ tibble    3.3.0
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.1.0     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
 </div>
 <p>The output tells you which packages have been loaded as part of the tidyverse.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<p>One thing to note about the <em>tidyverse</em> is that much of its functionality is also covered by base R functions, but <strong><em>[TBA expand]</em></strong></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 Function name conflicts
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>When you loaded the tidyverse, the output included a “Conflicts” section that may have seemed ominous:</p>
 <pre class="r-out-solo"><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
@@ -416,21 +431,43 @@ Function name conflicts
 <p>You <em>can</em> use a “masked” function, by prefacing it with its package name as follows: <code>stats::filter()</code>.</p>
 </div>
 </div>
+</div>
 </section>
 <section id="reading-data" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="reading-data"><span class="header-section-number">3</span> Reading data</h2>
-<p>To practice reading data from a file, use the <code>read_tsv()</code> function on the file you just created:</p>
+<p><em>readr</em> is one of the packages that is loaded as part of the core tidyverse, and has functions for reading and writing tabular data to and from plain-text files like CSV and TSV files.</p>
+<p>The <code>read_tsv()</code> function will read TSV (tab-delimited files) – for example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gapminder_reread <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="at">file =</span> <span class="st">"gapminder.tsv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>meta <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="at">file =</span> <span class="st">"../../garrigos-data/meta/metadata.tsv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre class="regular-r-output"><code>Rows: 22 Columns: 3
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: "\t"
+chr (3): sample_id, time, treatment
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
 </div>
 <p>Note that this function is rather chatty, telling you how many rows and columns it read, and what their data types are. Let’s check the resulting object:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>gapminder_reread</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>meta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 22 × 3
+   sample_id   time  treatment  
+   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;      
+ 1 ERR10802882 10dpi cathemerium
+ 2 ERR10802875 10dpi cathemerium
+ 3 ERR10802879 10dpi cathemerium
+ 4 ERR10802883 10dpi cathemerium
+ 5 ERR10802878 10dpi control    
+ 6 ERR10802884 10dpi control    
+ 7 ERR10802877 10dpi control    
+ 8 ERR10802881 10dpi control    
+ 9 ERR10802876 10dpi relictum   
+10 ERR10802880 10dpi relictum   
+# ℹ 12 more rows</code></pre>
 </div>
-<p>This looks good! Do note that the column’s data types are not identical to what they were (<code>year</code> and <code>pop</code> are saved as <code>double</code> rather than <code>integer</code>, and <code>country</code> and <code>continent</code> as <code>character</code> rather than <code>factor</code>). This is largely expected because that kind of metadata is not stored in a plain-text TSV, so <code>read_tsv()</code> will by default simply make best guesses as to the types.</p>
-<p>Alternatively, you could tell <code>read_tsv()</code> what the column types should be, using the <code>col_types</code> argument (with abbreviations <code>f</code> for <code>factor</code>, <code>i</code> for <code>integer</code>, <code>d</code> for <code>double</code> — run <code>?read_tsv</code> for more info):</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_tsv</span>(<span class="at">file =</span> <span class="st">"gapminder.tsv"</span>, <span class="at">col_types =</span> <span class="st">"ffidi"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-simple callout-tip no-icon">
 <div class="callout-body d-flex">
@@ -442,11 +479,10 @@ Function name conflicts
 </div>
 </div>
 </div>
-<p><em>TBA - probably work with Garrigos et al metadata and with the count table, maybe GTF</em></p>
 <p>You can also use the <code>View()</code> function to look at the data frame. This will open a new tab in your editor pane with a spreadsheet-like look and feel:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(gapminder)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (Should display the dataset in an editor pane tab)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(meta)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (Should display the dataset in an editor pane tab)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="data-frame-basics" class="level2" data-number="4">
@@ -463,17 +499,26 @@ Function name conflicts
 <h3 data-number="4.1" class="anchored" data-anchor-id="extracting-columns-from-a-data-frame"><span class="header-section-number">4.1</span> Extracting columns from a data frame</h3>
 <p>You can extract individual columns from a data frame using the <code>$</code> operator:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cats<span class="sc">$</span>weight</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>cats<span class="sc">$</span>coat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>meta<span class="sc">$</span>treatment</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code> [1] "cathemerium" "cathemerium" "cathemerium" "cathemerium" "control"    
+ [6] "control"     "control"     "control"     "relictum"    "relictum"   
+[11] "relictum"    "relictum"    "cathemerium" "cathemerium" "cathemerium"
+[16] "control"     "control"     "control"     "relictum"    "relictum"   
+[21] "relictum"    "relictum"   </code></pre>
+</div>
 </div>
 <p>This kind of operation will return a vector – and can be indexed as well:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cats<span class="sc">$</span>weight[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>meta<span class="sc">$</span>treatment[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code>[1] "cathemerium"</code></pre>
+</div>
 </div>
 </section>
 <section id="matrix" class="level3" data-number="4.2">
 <h3 data-number="4.2" class="anchored" data-anchor-id="matrix"><span class="header-section-number">4.2</span> Matrix</h3>
-<p><em>TBA - Introduce the matrix data structure - used with DESeq2</em></p>
+<p><strong><em>[TBA - Introduce the matrix data structure - used with DESeq2]</em></strong></p>
 </section>
 </section>
 <section id="the-dplyr-package" class="level2" data-number="5">
@@ -494,14 +539,46 @@ Function name conflicts
 <h2 data-number="6" class="anchored" data-anchor-id="select-to-pick-columns-variables"><span class="header-section-number">6</span> <code>select()</code> to pick columns (variables)</h2>
 <p>The first <code>dplyr</code> function you’ll learn about is <code>select()</code>, which subsets a data frame by including/excluding certain columns. By default, it only <strong>includes the columns you specify</strong>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(<span class="at">.data =</span> gapminder, year, country, pop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(<span class="at">.data =</span> meta, time, sample_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 22 × 2
+   time  sample_id  
+   &lt;chr&gt; &lt;chr&gt;      
+ 1 10dpi ERR10802882
+ 2 10dpi ERR10802875
+ 3 10dpi ERR10802879
+ 4 10dpi ERR10802883
+ 5 10dpi ERR10802878
+ 6 10dpi ERR10802884
+ 7 10dpi ERR10802877
+ 8 10dpi ERR10802881
+ 9 10dpi ERR10802876
+10 10dpi ERR10802880
+# ℹ 12 more rows</code></pre>
+</div>
 </div>
 <p>Above, the first argument was the data frame, whereas the other arguments were the (unquoted!) names of columns to be included in the output data frame<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
 <p>The <strong>order of the columns</strong> in the output data frame is exactly as you list them in <code>select()</code>, and doesn’t need to be the same as in the input data frame. In other words, <code>select()</code> is also one way to reorder columns: in the example above, we made <code>year</code> appear before <code>country</code>.</p>
 <p>You can also <strong>specify columns that should be excluded</strong>, by prefacing their name with a <code>!</code> (or a <code>-</code>):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This will include all columns _except_ continent:</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(<span class="at">.data =</span> gapminder, <span class="sc">!</span>continent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This will include all columns _except_ sample_id:</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(<span class="at">.data =</span> meta, <span class="sc">!</span>sample_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 22 × 2
+   time  treatment  
+   &lt;chr&gt; &lt;chr&gt;      
+ 1 10dpi cathemerium
+ 2 10dpi cathemerium
+ 3 10dpi cathemerium
+ 4 10dpi cathemerium
+ 5 10dpi control    
+ 6 10dpi control    
+ 7 10dpi control    
+ 8 10dpi control    
+ 9 10dpi relictum   
+10 10dpi relictum   
+# ℹ 12 more rows</code></pre>
+</div>
 </div>
 <div class="callout callout-style-simple callout-tip">
 <div class="callout-body d-flex">
@@ -517,9 +594,25 @@ Function name conflicts
 <section id="rename-to-change-column-names" class="level2" data-number="7">
 <h2 data-number="7" class="anchored" data-anchor-id="rename-to-change-column-names"><span class="header-section-number">7</span> <code>rename()</code> to change column names</h2>
 <p>The next <em>dplyr</em> function is one of the simplest: <code>rename()</code> to change column names.</p>
-<p>The syntax to specify the new and old name within the function is <code>new_name = old_name</code>. For example, to rename the <code>gdpPercap</code> column:</p>
+<p>The syntax to specify the new and old name within the function is <code>new_name = old_name</code>. For example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rename</span>(<span class="at">.data =</span> gapminder, <span class="at">gdp_per_capita =</span> gdpPercap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rename</span>(<span class="at">.data =</span> meta, <span class="at">sample =</span> sample_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 22 × 3
+   sample      time  treatment  
+   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;      
+ 1 ERR10802882 10dpi cathemerium
+ 2 ERR10802875 10dpi cathemerium
+ 3 ERR10802879 10dpi cathemerium
+ 4 ERR10802883 10dpi cathemerium
+ 5 ERR10802878 10dpi control    
+ 6 ERR10802884 10dpi control    
+ 7 ERR10802877 10dpi control    
+ 8 ERR10802881 10dpi control    
+ 9 ERR10802876 10dpi relictum   
+10 ERR10802880 10dpi relictum   
+# ℹ 12 more rows</code></pre>
+</div>
 </div>
 </section>
 <section id="the-pipe" class="level2" data-number="8">
@@ -527,18 +620,50 @@ Function name conflicts
 <p>Examples so far applied a single <em>dplyr</em> function to a data frame, simply printing the output (a new data frame) to screen. But in practice, it’s common to use several consecutive <em>dplyr</em> functions to wrangle a dataframe into the format you want.</p>
 <p>For example, you may want to first <code>select()</code> one or more columns, and <em>then</em> <code>rename()</code> a column. You could do that as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>gapminder_sel <span class="ot">&lt;-</span> <span class="fu">select</span>(<span class="at">.data =</span> gapminder, year, country, gdpPercap)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rename</span>(<span class="at">.data =</span> gapminder_sel, <span class="at">gdp_per_capita =</span> gdpPercap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>meta_sel <span class="ot">&lt;-</span> <span class="fu">select</span>(<span class="at">.data =</span> meta, sample_id, time)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rename</span>(<span class="at">.data =</span> meta_sel, <span class="at">sample =</span> sample_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 22 × 2
+   sample      time 
+   &lt;chr&gt;       &lt;chr&gt;
+ 1 ERR10802882 10dpi
+ 2 ERR10802875 10dpi
+ 3 ERR10802879 10dpi
+ 4 ERR10802883 10dpi
+ 5 ERR10802878 10dpi
+ 6 ERR10802884 10dpi
+ 7 ERR10802877 10dpi
+ 8 ERR10802881 10dpi
+ 9 ERR10802876 10dpi
+10 ERR10802880 10dpi
+# ℹ 12 more rows</code></pre>
+</div>
 </div>
 <p>And you could go on along these lines, successively creating new objects that you then use for the next step.</p>
-<p>But there is a more elegent way of dong this, directly sending (“piping”) output from one function into the next function with the <strong>pipe operator</strong> <code>|&gt;</code> (a vertical bar <kbd>|</kbd> followed by a greater-than sign <kbd>&gt;</kbd>). Let’s start by seeing a reformulation of the code above with pipes:</p>
+<p>But there is a more elegant way of dong this, directly sending (“piping”) output from one function into the next function with the <strong>pipe operator</strong> <code>|&gt;</code> (a vertical bar <kbd>|</kbd> followed by a greater-than sign <kbd>&gt;</kbd>). Let’s start by seeing a reformulation of the code above with pipes:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year, country, gdpPercap) <span class="sc">|&gt;</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">gdp_per_capita =</span> gdpPercap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>meta <span class="sc">|&gt;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sample_id, time) <span class="sc">|&gt;</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">sample =</span> sample_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 22 × 2
+   sample      time 
+   &lt;chr&gt;       &lt;chr&gt;
+ 1 ERR10802882 10dpi
+ 2 ERR10802875 10dpi
+ 3 ERR10802879 10dpi
+ 4 ERR10802883 10dpi
+ 5 ERR10802878 10dpi
+ 6 ERR10802884 10dpi
+ 7 ERR10802877 10dpi
+ 8 ERR10802881 10dpi
+ 9 ERR10802876 10dpi
+10 ERR10802880 10dpi
+# ℹ 12 more rows</code></pre>
 </div>
-<p>What happened here? We took the <code>gapminder</code> data frame, sent (“piped”) it into the <code>select()</code> function, whose output in turn was piped into the <code>rename()</code> function. You can think of the pipe as <strong>“then”</strong>: take <code>gapminder</code>, <em>then</em> select, <em>then</em> rename.</p>
+</div>
+<p>What happened here? We took the <code>meta</code> data frame, sent (“piped”) it into the <code>select()</code> function, whose output in turn was piped into the <code>rename()</code> function. You can think of the pipe as <strong>“then”</strong>: take <code>meta</code>, <em>then</em> select, <em>then</em> rename.</p>
 <p>When using the pipe, you no longer specify the input data frame with the <code>.data</code> argument, because the function now gets its input data via the pipe (specifically, the input goes to the function’s first argument by default).</p>
 <div class="callout callout-style-simple callout-tip no-icon">
 <div class="callout-body d-flex">
@@ -580,21 +705,37 @@ Using the pipe keyboard shortcut
 <h2 data-number="9" class="anchored" data-anchor-id="filter-to-pick-rows-observations"><span class="header-section-number">9</span> <code>filter()</code> to pick rows (observations)</h2>
 <section id="introduction-1" class="level3" data-number="9.1">
 <h3 data-number="9.1" class="anchored" data-anchor-id="introduction-1"><span class="header-section-number">9.1</span> Introduction</h3>
-<p>The <code>filter()</code> function outputs only those rows that satisfy one or more conditions. It is similar to Filter functionality in Excel — except that those only change what you <em>display</em>, while <code>filter()</code> will completely <em>exclude</em> rows.</p>
+<p>The <code>filter()</code> function outputs only those rows that satisfy one or more conditions. It is similar to Filter functionality in Excel – except that those only change what you <em>display</em>, while <code>filter()</code> will completely <em>exclude</em> rows.</p>
 <p>But if that sounds scary, recall that <em>dplyr</em> functions always output a <strong><em>new</em></strong> data frame. Therefore, with any <em>dplyr</em> function, you’ll only modify existing data when you assign the output back to the input object, like in this example with the <code>select()</code> function:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this - hypothetical example]</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># After running this, any columns in the 'cats' dataframe other than 'name'</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># and 'coat' would be removed from it:</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>cats <span class="ot">&lt;-</span> cats <span class="sc">|&gt;</span> <span class="fu">select</span>(name, coat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this - hypothetical example]</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># After running this, the 'meta' dataframe would no longer contain the treatment column:</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>meta <span class="ot">&lt;-</span> meta <span class="sc">|&gt;</span> <span class="fu">select</span>(sample_id, time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="filter-based-on-one-condition" class="level3" data-number="9.2">
 <h3 data-number="9.2" class="anchored" data-anchor-id="filter-based-on-one-condition"><span class="header-section-number">9.2</span> Filter based on one condition</h3>
 <p>This first <code>filter()</code> example outputs only rows for which the life expectancy exceeds 80 years (remember, each row represents a country in a given year):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(lifeExp <span class="sc">&gt;</span> <span class="dv">80</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>meta <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time <span class="sc">==</span> <span class="st">"10dpi"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 12 × 3
+   sample_id   time  treatment  
+   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;      
+ 1 ERR10802882 10dpi cathemerium
+ 2 ERR10802875 10dpi cathemerium
+ 3 ERR10802879 10dpi cathemerium
+ 4 ERR10802883 10dpi cathemerium
+ 5 ERR10802878 10dpi control    
+ 6 ERR10802884 10dpi control    
+ 7 ERR10802877 10dpi control    
+ 8 ERR10802881 10dpi control    
+ 9 ERR10802876 10dpi relictum   
+10 ERR10802880 10dpi relictum   
+11 ERR10802885 10dpi relictum   
+12 ERR10802886 10dpi relictum   </code></pre>
+</div>
 </div>
 <details>
 <summary>
@@ -604,12 +745,6 @@ Using the pipe keyboard shortcut
 21 rows were output, as shown in the first line above: <code>21 x 6</code> (rows x columns)
 </p>
 </details>
-<p>As the example above demonstrated, <code>filter()</code> <strong>outputs rows that satisfy the condition(s)</strong> you specify. These conditions don’t have to be based on numeric comparisons:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Only keep rows where the value in the 'continent' column is 'Europe':</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(continent <span class="sc">==</span> <span class="st">"Europe"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -626,41 +761,85 @@ Remember to use <em>two</em> equals signs <code>==</code> to test for equality!
 </section>
 <section id="filter-based-on-multiple-conditions" class="level3" data-number="9.3">
 <h3 data-number="9.3" class="anchored" data-anchor-id="filter-based-on-multiple-conditions"><span class="header-section-number">9.3</span> Filter based on multiple conditions</h3>
-<p>It’s also possible to filter based on multiple conditions. For example, you may want to see which countries in Asia had a life expectancy greater than 80 years in 2007:</p>
+<p>It’s also possible to filter based on multiple conditions. For example, you may want to see <strong><em>[TBA]</em></strong>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(continent <span class="sc">==</span> <span class="st">"Asia"</span>, year <span class="sc">==</span> <span class="dv">2007</span>, lifeExp <span class="sc">&gt;</span> <span class="dv">80</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>meta <span class="sc">|&gt;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time <span class="sc">==</span> <span class="st">"10dpi"</span>, treatment <span class="sc">==</span> <span class="st">"control"</span>, sample_id <span class="sc">!=</span> <span class="st">"ERR10802882"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 4 × 3
+  sample_id   time  treatment
+  &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;    
+1 ERR10802878 10dpi control  
+2 ERR10802884 10dpi control  
+3 ERR10802877 10dpi control  
+4 ERR10802881 10dpi control  </code></pre>
+</div>
 </div>
 <p>Like above, by default, multiple conditions are combined using a Boolean <strong><em>AND</em></strong>. In other words, in a given row, <em>each</em> condition must be met to output the row.</p>
 <p>If you want to combine conditions using a Boolean <strong><em>OR</em></strong>, where only one of the conditions needs to be met, use a <code>|</code> between the conditions:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep rows with a high life expectancy and/or a high GDP:</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(lifeExp <span class="sc">&gt;</span> <span class="dv">80</span> <span class="sc">|</span> gdpPercap <span class="sc">&gt;</span> <span class="dv">10000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep rows with a high life expectancy and/or a high GDP:</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>meta <span class="sc">|&gt;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time <span class="sc">==</span> <span class="st">"10dpi"</span> <span class="sc">|</span> treatment <span class="sc">==</span> <span class="st">"control"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 15 × 3
+   sample_id   time  treatment  
+   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;      
+ 1 ERR10802882 10dpi cathemerium
+ 2 ERR10802875 10dpi cathemerium
+ 3 ERR10802879 10dpi cathemerium
+ 4 ERR10802883 10dpi cathemerium
+ 5 ERR10802878 10dpi control    
+ 6 ERR10802884 10dpi control    
+ 7 ERR10802877 10dpi control    
+ 8 ERR10802881 10dpi control    
+ 9 ERR10802876 10dpi relictum   
+10 ERR10802880 10dpi relictum   
+11 ERR10802885 10dpi relictum   
+12 ERR10802886 10dpi relictum   
+13 ERR10802866 24hpi control    
+14 ERR10802869 24hpi control    
+15 ERR10802863 24hpi control    </code></pre>
+</div>
 </div>
 </section>
 <section id="pipeline-practice" class="level3" data-number="9.4">
 <h3 data-number="9.4" class="anchored" data-anchor-id="pipeline-practice"><span class="header-section-number">9.4</span> Pipeline practice</h3>
-<p>Finally, let’s practice another time with “pipelines” that use multiple <em>dplyr</em> functions: <code>filter</code> rows, then <code>select</code> columns, and finally <code>rename</code> one of the remaining columns:</p>
+<p>Finally, let’s practice once more with “pipelines” that use multiple <em>dplyr</em> functions: <code>filter</code> rows, then <code>select</code> columns, and finally <code>rename</code> one of the remaining columns:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(continent <span class="sc">==</span> <span class="st">"Americas"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year, country, gdpPercap) <span class="sc">|&gt;</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">gdp_per_capita =</span> gdpPercap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>meta <span class="sc">|&gt;</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time <span class="sc">==</span> <span class="st">"10dpi"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sample_id, treatment) <span class="sc">|&gt;</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">sample =</span> sample_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 12 × 2
+   sample      treatment  
+   &lt;chr&gt;       &lt;chr&gt;      
+ 1 ERR10802882 cathemerium
+ 2 ERR10802875 cathemerium
+ 3 ERR10802879 cathemerium
+ 4 ERR10802883 cathemerium
+ 5 ERR10802878 control    
+ 6 ERR10802884 control    
+ 7 ERR10802877 control    
+ 8 ERR10802881 control    
+ 9 ERR10802876 relictum   
+10 ERR10802880 relictum   
+11 ERR10802885 relictum   
+12 ERR10802886 relictum   </code></pre>
+</div>
 </div>
 <section id="challenge-1" class="level4 unnumbered exercise">
 <h4 class="unnumbered anchored" data-anchor-id="challenge-1"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <strong>Challenge 1</strong></h4>
-<p>Use a “pipeline” like above to output a data frame with columns <code>year</code>, <code>country</code>, and <code>lifeExp</code>, only for countries in Africa. How many rows does your output data frame have?</p>
+<p>Use a “pipeline” like above to output a data frame with columns <strong><em>[TBA]</em></strong> only for <strong><em>[TBA]</em></strong>. How many rows does your output data frame have?</p>
 <details>
 <summary>
 Click for the solution
 </summary>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(continent <span class="sc">==</span> <span class="st">"Africa"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year, country, lifeExp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">#TBA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-The output data frame has 624 rows.
+The output data frame has <strong><em>[TBA]</em></strong> rows.
 </details>
 </section>
 </section>
@@ -668,54 +847,156 @@ The output data frame has 624 rows.
 <section id="arrange-to-sort-data-frames" class="level2" data-number="10">
 <h2 data-number="10" class="anchored" data-anchor-id="arrange-to-sort-data-frames"><span class="header-section-number">10</span> <code>arrange()</code> to sort data frames</h2>
 <p>The <code>arrange()</code> function is like sorting functionality in Excel: it changes the order of rows based on the values in one or more columns<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
-<p><code>gapminder</code> is currently first sorted alphabetically by <code>country</code>, and next by <code>year</code>. But you may, for example, want to sort by population size instead:</p>
+<p><code>meta</code> is currently first sorted by <code>time</code> and then by <code>treatment</code>, whereas <code>sample_id</code>s within these groups are not sorted.</p>
+<p>You may, for example, want to sort by <code>sample_id</code> instead:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(pop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>meta <span class="sc">|&gt;</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(sample_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 22 × 3
+   sample_id   time  treatment  
+   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;      
+ 1 ERR10802863 24hpi control    
+ 2 ERR10802864 24hpi cathemerium
+ 3 ERR10802865 24hpi relictum   
+ 4 ERR10802866 24hpi control    
+ 5 ERR10802867 24hpi cathemerium
+ 6 ERR10802868 24hpi relictum   
+ 7 ERR10802869 24hpi control    
+ 8 ERR10802870 24hpi cathemerium
+ 9 ERR10802871 24hpi relictum   
+10 ERR10802874 24hpi relictum   
+# ℹ 12 more rows</code></pre>
 </div>
-<p>Sorting can help you find observations with the smallest or largest values for a certain column: above, we see that the smallest population size in the dataset is <em>Sao Tome and Principe</em> in 1952.</p>
-<p>Default sorting is from <strong>small to large</strong>, as seen above . To sort in reverse order, use the <code>desc()</code> (descending) helper function:</p>
+</div>
+<p>Sorting can help you find observations with the smallest or largest values for a certain column … <strong><em>TBA</em></strong></p>
+<p>Default sorting is alphabetically and, for numbers, from small to large. To sort in reverse order, use the <code>desc()</code> (descending) helper function:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(pop))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>meta <span class="sc">|&gt;</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(sample_id))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 22 × 3
+   sample_id   time  treatment  
+   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;      
+ 1 ERR10802886 10dpi relictum   
+ 2 ERR10802885 10dpi relictum   
+ 3 ERR10802884 10dpi control    
+ 4 ERR10802883 10dpi cathemerium
+ 5 ERR10802882 10dpi cathemerium
+ 6 ERR10802881 10dpi control    
+ 7 ERR10802880 10dpi relictum   
+ 8 ERR10802879 10dpi cathemerium
+ 9 ERR10802878 10dpi control    
+10 ERR10802877 10dpi control    
+# ℹ 12 more rows</code></pre>
+</div>
 </div>
 <p>Finally, you may want to sort by multiple columns, where ties in the first column are broken by a second column (and so on). Do this by simply listing the columns in the appropriate order:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort first by continent, then by country:</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(continent, country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort first by continent, then by country:</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>meta <span class="sc">|&gt;</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(treatment, time, sample_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 22 × 3
+   sample_id   time  treatment  
+   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;      
+ 1 ERR10802875 10dpi cathemerium
+ 2 ERR10802879 10dpi cathemerium
+ 3 ERR10802882 10dpi cathemerium
+ 4 ERR10802883 10dpi cathemerium
+ 5 ERR10802864 24hpi cathemerium
+ 6 ERR10802867 24hpi cathemerium
+ 7 ERR10802870 24hpi cathemerium
+ 8 ERR10802877 10dpi control    
+ 9 ERR10802878 10dpi control    
+10 ERR10802881 10dpi control    
+# ℹ 12 more rows</code></pre>
+</div>
 </div>
 </section>
 <section id="mutate-to-modify-columns-and-create-new-ones" class="level2" data-number="11">
 <h2 data-number="11" class="anchored" data-anchor-id="mutate-to-modify-columns-and-create-new-ones"><span class="header-section-number">11</span> <code>mutate()</code> to modify columns and create new ones</h2>
 <p>So far, we’ve focused on functions that subset and reorganize data frames (and you’ve seen how to modify column names). But you haven’t seen how you can <em>change the data</em> or <em>compute derived data</em>.</p>
-<p>This can be done with the <code>mutate()</code> function. For example, to create a new column that has population sizes in millions rather than in individuals:</p>
+<p><strong><em>TBA introduce sub() function</em></strong></p>
+<p>This can be done with the <code>mutate()</code> function. For example, to shorten sample IDs by removing the shared prefix:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new column 'pop_million' by dividing 'pop' by a million:</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pop_million =</span> pop <span class="sc">/</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new column 'pop_million' by dividing 'pop' by a million:</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>meta <span class="sc">|&gt;</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sample_id_short =</span> <span class="fu">sub</span>(<span class="st">"ERR10802"</span>, <span class="st">""</span>, sample_id))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 22 × 4
+   sample_id   time  treatment   sample_id_short
+   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;          
+ 1 ERR10802882 10dpi cathemerium 882            
+ 2 ERR10802875 10dpi cathemerium 875            
+ 3 ERR10802879 10dpi cathemerium 879            
+ 4 ERR10802883 10dpi cathemerium 883            
+ 5 ERR10802878 10dpi control     878            
+ 6 ERR10802884 10dpi control     884            
+ 7 ERR10802877 10dpi control     877            
+ 8 ERR10802881 10dpi control     881            
+ 9 ERR10802876 10dpi relictum    876            
+10 ERR10802880 10dpi relictum    880            
+# ℹ 12 more rows</code></pre>
+</div>
 </div>
 <p>To <em>modify</em> an existing column rather than adding a new one, simply “assign back to the same name”:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Change the unit of the 'pop' column:</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pop =</span> pop <span class="sc">/</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>meta <span class="sc">|&gt;</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sample_id_short =</span> <span class="fu">sub</span>(<span class="st">"ERR10802"</span>, <span class="st">""</span>, sample_id))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 22 × 4
+   sample_id   time  treatment   sample_id_short
+   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;          
+ 1 ERR10802882 10dpi cathemerium 882            
+ 2 ERR10802875 10dpi cathemerium 875            
+ 3 ERR10802879 10dpi cathemerium 879            
+ 4 ERR10802883 10dpi cathemerium 883            
+ 5 ERR10802878 10dpi control     878            
+ 6 ERR10802884 10dpi control     884            
+ 7 ERR10802877 10dpi control     877            
+ 8 ERR10802881 10dpi control     881            
+ 9 ERR10802876 10dpi relictum    876            
+10 ERR10802880 10dpi relictum    880            
+# ℹ 12 more rows</code></pre>
+</div>
 </div>
 <section id="challenge-2" class="level4 unnumbered exercise">
 <h4 class="unnumbered anchored" data-anchor-id="challenge-2"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <strong>Challenge 2</strong></h4>
-<p>Use <code>mutate()</code> to create a new column <code>gdp_billion</code> that has the <strong>absolute</strong> GDP (i.e., not relative to population size) in <strong>units of billions</strong> (i.e., <code>2.3</code> would mean 2.3 billion).</p>
+<p>Use <code>mutate()</code> to:</p>
+<ul>
+<li>Create a numeric <code>time_num</code> column, stripping the <code>hpi</code>/<code>dpi</code> suffix from <code>time</code>.</li>
+<li>Create a column <code>time_unit</code> column, keeping only the <code>hpi</code>/<code>dpi</code> suffix from <code>time</code>.</li>
+</ul>
+<p>Save the resulting data frame as <code>meta_time</code> (we will use it after this!)</p>
 <details>
 <summary>
 Click for the solution
 </summary>
-<p>You need to do two things, which can be combined into a single line:</p>
-<ol type="1">
-<li>Make the GDP absolute by multiplying by the population size: <code>gdpPercap * pop</code></li>
-<li>Change the unit of the absolute GDP to billions by dividing by a billion: <code>/ 10^9</code></li>
-</ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">gdp_billion =</span> gdpPercap <span class="sc">*</span> pop <span class="sc">/</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>meta_time <span class="ot">&lt;-</span> meta <span class="sc">|&gt;</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">time_num =</span> <span class="fu">as.numeric</span>(<span class="fu">substr</span>(time, <span class="dv">1</span>, <span class="dv">2</span>)),</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">time_unit =</span> <span class="fu">substr</span>(time, <span class="dv">3</span>, <span class="dv">5</span>)</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>meta_time</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 22 × 5
+   sample_id   time  treatment   time_num time_unit
+   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;    
+ 1 ERR10802882 10dpi cathemerium       10 dpi      
+ 2 ERR10802875 10dpi cathemerium       10 dpi      
+ 3 ERR10802879 10dpi cathemerium       10 dpi      
+ 4 ERR10802883 10dpi cathemerium       10 dpi      
+ 5 ERR10802878 10dpi control           10 dpi      
+ 6 ERR10802884 10dpi control           10 dpi      
+ 7 ERR10802877 10dpi control           10 dpi      
+ 8 ERR10802881 10dpi control           10 dpi      
+ 9 ERR10802876 10dpi relictum          10 dpi      
+10 ERR10802880 10dpi relictum          10 dpi      
+# ℹ 12 more rows</code></pre>
+</div>
 </div>
 </details>
 </section>
@@ -724,58 +1005,43 @@ Click for the solution
 <h2 data-number="12" class="anchored" data-anchor-id="summarize-to-compute-summary-stats"><span class="header-section-number">12</span> <code>summarize()</code> to compute summary stats</h2>
 <p>The final function <em>dplyr</em> function we’ll cover is <code>summarize()</code>, which computes <strong>summaries of your data across rows</strong>. For example, to calculate the mean GDP across the entire dataset (all rows):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The syntax is similar to 'mutate': &lt;new-column&gt; = &lt;operation&gt;</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_gdp =</span> <span class="fu">mean</span>(gdpPercap))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The syntax is similar to 'mutate': &lt;new-column&gt; = &lt;operation&gt;</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>meta_time <span class="sc">|&gt;</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_time =</span> <span class="fu">mean</span>(time_num))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 1 × 1
+  mean_time
+      &lt;dbl&gt;
+1      16.4</code></pre>
+</div>
 </div>
 <p>The output is still a dataframe, but unlike with all previous <em>dplyr</em> functions, it is completely different from the input dataframe, “collapsing” the data down to as little as a single number, like above.</p>
 <p><code>summarize()</code> becomes really powerful in combination with the helper function <code>group_by()</code> to compute <strong>groupwise</strong> stats. For example, to get the mean GDP separately for each continent:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(continent) <span class="sc">|&gt;</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_gdp =</span> <span class="fu">mean</span>(gdpPercap))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>meta_time <span class="sc">|&gt;</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment) <span class="sc">|&gt;</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_time =</span> <span class="fu">mean</span>(time_num))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 3 × 2
+  treatment   mean_time
+  &lt;chr&gt;           &lt;dbl&gt;
+1 cathemerium        16
+2 control            16
+3 relictum           17</code></pre>
+</div>
 </div>
 <p><code>group_by()</code> implicitly splits a data frame into groups of rows: here, one group for observations from each continent. After that, operations like in <code>summarize()</code> will happen separately for each group, which is how we ended up with per-continent means.</p>
 <section id="challenge-3" class="level4 unnumbered exercise">
 <h4 class="unnumbered anchored" data-anchor-id="challenge-3"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <strong>Challenge 3</strong></h4>
-<p>Calculate the average life expectancy per country. Which country has the longest average life expectancy and which has the shortest average life expectancy?</p>
-<details>
-<summary>
-Click for some hints
-</summary>
-<ul>
-<li><p>Since you’ll need to examine your output in two ways, it makes sense to store the output of the life expectancy calculation in a dataframe.</p></li>
-<li><p>Next, an easy way to get rows with lowest and highest values in a column is to simply sort by that column and examining the output.</p></li>
-</ul>
-</details>
-<details>
-<summary>
-Click for the solution
-</summary>
-<p>First, create a dataframe with the mean life expectancy by country:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>lifeExp_bycountry <span class="ot">&lt;-</span> gapminder <span class="sc">|&gt;</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">group_by</span>(country) <span class="sc">|&gt;</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarize</span>(<span class="at">mean_lifeExp =</span> <span class="fu">mean</span>(lifeExp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Then, arrange that dataframe in two directions to see the countries with the longest and shortest life expectancy. You could optionally pipe into <code>head()</code> to only see the top <code>n</code>, here top 1:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>lifeExp_bycountry <span class="sc">|&gt;</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">arrange</span>(mean_lifeExp) <span class="sc">|&gt;</span></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">1</span>)</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>lifeExp_bycountry <span class="sc">|&gt;</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">arrange</span>(<span class="fu">desc</span>(mean_lifeExp)) <span class="sc">|&gt;</span></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</details>
+<p><strong><em>TBA</em></strong></p>
 </section>
 </section>
 <section id="writing-to-files" class="level2" data-number="13">
 <h2 data-number="13" class="anchored" data-anchor-id="writing-to-files"><span class="header-section-number">13</span> Writing to files</h2>
-<p>To write the <code>gapminder</code> data frame to a TSV file, use the <code>write_tsv()</code> function with argument <code>x</code> for the R object and argument <code>file</code> for the file path:</p>
+<p>To write a data frame to a TSV file, you can use the <code>write_tsv()</code> function, with argument <code>x</code> for the R object and argument <code>file</code> for the file path:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_tsv</span>(<span class="at">x =</span> gapminder, <span class="at">file =</span> <span class="st">"gapminder.tsv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># TBA - probably change the path</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_tsv</span>(<span class="at">x =</span> meta_time, <span class="at">file =</span> <span class="st">"metadata_ed.tsv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Because we simply provided a file name, the file will have been written in your R working directory<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
 <p>If you want to take a look at the file you just created, you can find it in RStudio’s <strong>Files</strong> tab and click on it, which will open it in the editor panel. Of course, you could also find it in your computer’s file browser and open it in different ways.</p>

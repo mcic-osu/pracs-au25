@@ -23,7 +23,7 @@ other-links:
     icon: bookmarks
     href: w11a_r-basics.html
 execute:
-  eval: false
+  eval: true
 ---
 
 --------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ You will learn
 
 ## The tidyverse
 
-a family of R packages designed for "dataframe-centric"
+We'll start working with a family of R packages designed for "dataframe-centric"
 data science called the ["tidyverse"](https://www.tidyverse.org).
 Dataframe-centric refers to doing most if not all data analysis while keeping
 the data in R's data frame data structure.
@@ -71,7 +71,10 @@ library(tidyverse)
 
 The output tells you which packages have been loaded as part of the tidyverse.
 
-::: callout-note
+One thing to note about the _tidyverse_ is that much of its functionality
+is also covered by base R functions, but ***[TBA expand]***
+
+::: {.callout-tip collapse="true"}
 ### Function name conflicts
 
 When you loaded the tidyverse, the output included a  "Conflicts" section that
@@ -102,11 +105,14 @@ by prefacing it with its package name as follows: `stats::filter()`.
 
 ## Reading data
 
-To practice reading data from a file,
-use the `read_tsv()` function on the file you just created: 
+_readr_ is one of the packages that is loaded as part of the core tidyverse,
+and has functions for reading and writing tabular data to and from plain-text
+files like CSV and TSV files.
+
+The `read_tsv()` function will read TSV (tab-delimited files) -- for example:
 
 ```{r}
-gapminder_reread <- read_tsv(file = "gapminder.tsv")
+meta <- read_tsv(file = "../../garrigos-data/meta/metadata.tsv")
 ```
 
 Note that this function is rather chatty,
@@ -114,36 +120,18 @@ telling you how many rows and columns it read, and what their data types are.
 Let's check the resulting object:
 
 ```{r}
-gapminder_reread
-```
-
-This looks good!
-Do note that the column's data types are not identical to what they were
-(`year` and `pop` are saved as `double` rather than `integer`,
-and `country` and `continent` as `character` rather than `factor`).
-This is largely expected because that kind of metadata is not stored in a plain-text
-TSV, so `read_tsv()` will by default simply make best guesses as to the types.
-
-Alternatively, you could tell `read_tsv()` what the column types should be,
-using the `col_types` argument
-(with abbreviations `f` for `factor`, `i` for `integer`, `d` for `double` ---
-run `?read_tsv` for more info):
-
-```{r}
-read_tsv(file = "gapminder.tsv", col_types = "ffidi")
+meta
 ```
 
 ::: {.callout-tip appearance='minimal'}
 To read and write CSV files instead, use `read_csv()` / `write_csv()` in the same way.
 :::
 
-_TBA - probably work with Garrigos et al metadata and with the count table, maybe GTF_
-
 You can also use the `View()` function to look at the data frame.
 This will open a new tab in your editor pane with a spreadsheet-like look and feel:
 
 ```{r, eval=FALSE}
-View(gapminder)
+View(meta)
 # (Should display the dataset in an editor pane tab)
 ```
 
@@ -175,19 +163,18 @@ and only a limited number of rows are printed.
 You can extract individual columns from a data frame using the `$` operator:
 
 ```{r}
-cats$weight
-cats$coat
+meta$treatment
 ```
 
 This kind of operation will return a vector -- and can be indexed as well:
 
 ```{r}
-cats$weight[2]
+meta$treatment[2]
 ```
 
 ### Matrix
 
-_TBA - Introduce the matrix data structure - used with DESeq2_
+***[TBA - Introduce the matrix data structure - used with DESeq2]***
 
 ## The _dplyr_ package
 
@@ -215,7 +202,7 @@ which subsets a data frame by including/excluding certain columns.
 By default, it only **includes the columns you specify**:
 
 ```{r}
-select(.data = gapminder, year, country, pop)
+select(.data = meta, time, sample_id)
 ```
 
 Above, the first argument was the data frame,
@@ -235,8 +222,8 @@ You can also **specify columns that should be excluded**,
 by prefacing their name with a `!` (or a `-`):
 
 ```{r}
-# This will include all columns _except_ continent:
-select(.data = gapminder, !continent)
+# This will include all columns _except_ sample_id:
+select(.data = meta, !sample_id)
 ```
 
 ::: {.callout-tip appearance='simple'}
@@ -250,10 +237,10 @@ The next _dplyr_ function is one of the simplest:
 `rename()` to change column names.
 
 The syntax to specify the new and old name within the function is `new_name = old_name`.
-For example, to rename the `gdpPercap` column:
+For example:
 
 ```{r}
-rename(.data = gapminder, gdp_per_capita = gdpPercap)
+rename(.data = meta, sample = sample_id)
 ```
 
 ## The pipe (`|>`)
@@ -268,31 +255,31 @@ and _then_ `rename()` a column.
 You could do that as follows:
 
 ```{r}
-gapminder_sel <- select(.data = gapminder, year, country, gdpPercap)
+meta_sel <- select(.data = meta, sample_id, time)
 
-rename(.data = gapminder_sel, gdp_per_capita = gdpPercap)
+rename(.data = meta_sel, sample = sample_id)
 ```
 
 And you could go on along these lines,
 successively creating new objects that you then use for the next step.
 
-But there is a more elegent way of dong this,
+But there is a more elegant way of dong this,
 directly sending ("piping") output from one function into the next function
 with the **pipe operator** `|>`
 (a vertical bar <kbd>|</kbd> followed by a greater-than sign <kbd>></kbd>).
 Let's start by seeing a reformulation of the code above with pipes:
 
 ```{r}
-gapminder |>
-  select(year, country, gdpPercap) |>
-  rename(gdp_per_capita = gdpPercap)
+meta |>
+  select(sample_id, time) |>
+  rename(sample = sample_id)
 ```
 
-What happened here? We took the `gapminder` data frame,
+What happened here? We took the `meta` data frame,
 sent ("piped") it into the `select()` function,
 whose output in turn was piped into the `rename()` function.
 You can think of the pipe as **"then"**:
-take `gapminder`, _then_ select, _then_ rename.
+take `meta`, _then_ select, _then_ rename.
 
 When using the pipe,
 you no longer specify the input data frame with the `.data` argument,
@@ -335,7 +322,7 @@ But it would be preferred to make RStudio insert the `|>` pipe symbol:
 ### Introduction
 
 The `filter()` function outputs only those rows that satisfy one or more conditions.
-It is similar to Filter functionality in Excel ---
+It is similar to Filter functionality in Excel --
 except that those only change what you _display_,
 while `filter()` will completely _exclude_ rows.
 
@@ -347,9 +334,8 @@ like in this example with the `select()` function:
 
 ```{r, eval=FALSE}
 # [Don't run this - hypothetical example]
-# After running this, any columns in the 'cats' dataframe other than 'name'
-# and 'coat' would be removed from it:
-cats <- cats |> select(name, coat)
+# After running this, the 'meta' dataframe would no longer contain the treatment column:
+meta <- meta |> select(sample_id, time)
 ```
 
 ### Filter based on one condition
@@ -359,8 +345,8 @@ life expectancy exceeds 80 years
 (remember, each row represents a country in a given year):
 
 ```{r}
-gapminder |>
-  filter(lifeExp > 80)
+meta |>
+  filter(time == "10dpi")
 ```
 
 <details><summary>{{< fa user-edit >}} How many rows were output? _(Click to see the answer)_</summary>
@@ -369,16 +355,6 @@ gapminder |>
 </p>
 </details>
 
-As the example above demonstrated,
-`filter()` **outputs rows that satisfy the condition(s)** you specify.
-These conditions don't have to be based on numeric comparisons:
-
-```{r}
-# Only keep rows where the value in the 'continent' column is 'Europe':
-gapminder |>
-  filter(continent == "Europe")
-```
-
 :::callout-warning
 ### Remember to use _two_ equals signs `==` to test for equality!
 :::
@@ -386,12 +362,11 @@ gapminder |>
 ### Filter based on multiple conditions
 
 It's also possible to filter based on multiple conditions.
-For example, you may want to see which countries in Asia had a life expectancy
-greater than 80 years in 2007:
+For example, you may want to see ***[TBA]***:
 
 ```{r}
-gapminder |>
-  filter(continent == "Asia", year == 2007, lifeExp > 80)
+meta |>
+  filter(time == "10dpi", treatment == "control", sample_id != "ERR10802882")
 ```
 
 Like above, by default, multiple conditions are combined using a Boolean ***AND***.
@@ -403,38 +378,36 @@ use a `|` between the conditions:
 
 ```{r}
 # Keep rows with a high life expectancy and/or a high GDP:
-gapminder |>
-  filter(lifeExp > 80 | gdpPercap > 10000)
+meta |>
+  filter(time == "10dpi" | treatment == "control")
 ```
 
 ### Pipeline practice
 
-Finally, let's practice another time with "pipelines" that use multiple _dplyr_
+Finally, let's practice once more with "pipelines" that use multiple _dplyr_
 functions: `filter` rows, then `select` columns,
 and finally `rename` one of the remaining columns:
 
 ```{r}
-gapminder |>
-  filter(continent == "Americas") |>
-  select(year, country, gdpPercap) |>
-  rename(gdp_per_capita = gdpPercap)
+meta |>
+  filter(time == "10dpi") |>
+  select(sample_id, treatment) |>
+  rename(sample = sample_id)
 ```
 
 :::exercise
 #### {{< fa user-edit >}} **Challenge 1** {-}
 
 Use a "pipeline" like above to output a data frame with
-columns `year`, `country`, and `lifeExp`, only for countries in Africa.
+columns ***[TBA]*** only for ***[TBA]***.
 How many rows does your output data frame have?
 
 <details><summary>Click for the solution</summary>
 ```{r}
-gapminder |>
-  filter(continent == "Africa") |>
-  select(year, country, lifeExp)
+#TBA
 ```
 
-The output data frame has 624 rows.
+The output data frame has ***[TBA]*** rows.
 </details>
 
 :::
@@ -447,25 +420,25 @@ It will always rearrange the order of rows as a whole,
 never just of individual columns since that would scramble the data.
 ].
 
-`gapminder` is currently first sorted alphabetically by `country`,
-and next by `year`.
-But you may, for example, want to sort by population size instead:
+`meta` is currently first sorted by `time` and then by `treatment`,
+whereas `sample_id`s within these groups are not sorted.
+
+You may, for example, want to sort by `sample_id` instead:
 
 ```{r}
-gapminder |>
-  arrange(pop)
+meta |>
+  arrange(sample_id)
 ```
 
 Sorting can help you find observations with the smallest or largest values
-for a certain column: above, we see that the smallest population size in
-the dataset is _Sao Tome and Principe_ in 1952.
+for a certain column ... ***TBA***
 
-Default sorting is from **small to large**, as seen above .
+Default sorting is alphabetically and, for numbers, from small to large.
 To sort in reverse order, use the `desc()` (descending) helper function:
 
 ```{r}
-gapminder |>
-  arrange(desc(pop))
+meta |>
+  arrange(desc(sample_id))
 ```
  
 Finally, you may want to sort by multiple columns,
@@ -474,8 +447,8 @@ Do this by simply listing the columns in the appropriate order:
 
 ```{r}
 # Sort first by continent, then by country:
-gapminder |>
-  arrange(continent, country)
+meta |>
+  arrange(treatment, time, sample_id)
 ```
 
 ## `mutate()` to modify columns and create new ones
@@ -484,43 +457,45 @@ So far, we've focused on functions that subset and reorganize data frames
 (and you've seen how to modify column names).
 But you haven't seen how you can _change the data_ or _compute derived data_.
 
+***TBA introduce sub() function***
+
 This can be done with the `mutate()` function.
-For example, to create a new column that has population sizes
-in millions rather than in individuals:
+For example, to shorten sample IDs by removing the shared prefix:
 
 ```{r}
 # Create a new column 'pop_million' by dividing 'pop' by a million:
-gapminder |>
-  mutate(pop_million = pop / 10^6)
+meta |>
+  mutate(sample_id_short = sub("ERR10802", "", sample_id))
 ```
 
 To _modify_ an existing column rather than adding a new one,
 simply "assign back to the same name":
 
 ```{r}
-# Change the unit of the 'pop' column:
-gapminder |>
-  mutate(pop = pop / 10^6)
+meta |>
+  mutate(sample_id_short = sub("ERR10802", "", sample_id))
 ```
 
 :::exercise
 #### {{< fa user-edit >}} **Challenge 2** {-}
 
-Use `mutate()` to create a new column `gdp_billion` that has the
-**absolute** GDP (i.e., not relative to population size)
-in **units of billions** (i.e., `2.3` would mean 2.3 billion).
+Use `mutate()` to:
+
+- Create a numeric `time_num` column, stripping the `hpi`/`dpi` suffix from `time`.
+- Create a column `time_unit` column, keeping only the `hpi`/`dpi` suffix from `time`.
+
+Save the resulting data frame as `meta_time` (we will use it after this!)
 
 <details><summary>Click for the solution</summary>
 
-You need to do two things, which can be combined into a single line:
-
-1. Make the GDP absolute by multiplying by the population size: `gdpPercap * pop`
-2. Change the unit of the absolute GDP to billions by dividing by a billion:
-   ` / 10^9`
-
 ```{r}
-gapminder |>
-    mutate(gdp_billion = gdpPercap * pop / 10^9)
+meta_time <- meta |>
+    mutate(
+      time_num = as.numeric(substr(time, 1, 2)),
+      time_unit = substr(time, 3, 5)
+      )
+
+meta_time
 ```
 </details>
 :::
@@ -533,8 +508,8 @@ For example, to calculate the mean GDP across the entire dataset (all rows):
 
 ```{r}
 # The syntax is similar to 'mutate': <new-column> = <operation>
-gapminder |>
-  summarize(mean_gdp = mean(gdpPercap))
+meta_time |>
+  summarize(mean_time = mean(time_num))
 ```
 
 The output is still a dataframe, but unlike with all previous _dplyr_ functions,
@@ -546,9 +521,9 @@ it is completely different from the input dataframe,
 For example, to get the mean GDP separately for each continent:
 
 ```{r}
-gapminder |>
-  group_by(continent) |>
-  summarize(mean_gdp = mean(gdpPercap))
+meta_time |>
+  group_by(treatment) |>
+  summarize(mean_time = mean(time_num))
 ```
 
 `group_by()` implicitly splits a data frame into groups of rows:
@@ -559,52 +534,18 @@ which is how we ended up with per-continent means.
 :::exercise
 #### {{< fa user-edit >}} **Challenge 3** {-}
 
-Calculate the average life expectancy per country.
-Which country has the longest average life expectancy and which has the shortest
-average life expectancy?
-
-<details><summary>Click for some hints</summary>
-- Since you'll need to examine your output in two ways,
-  it makes sense to store the output of the life expectancy calculation in a dataframe.
-
-- Next, an easy way to get rows with lowest and highest values in a column is to
-  simply sort by that column and examining the output.
-</details>
-
-<details><summary>Click for the solution</summary>
-
-First, create a dataframe with the mean life expectancy by country:
-
-```{r}
-lifeExp_bycountry <- gapminder |>
-   group_by(country) |>
-   summarize(mean_lifeExp = mean(lifeExp))
-```
-
-Then, arrange that dataframe in two directions to see the countries with the
-longest and shortest life expectancy.
-You could optionally pipe into `head()` to only see the top `n`, here top 1:
-
-```{r}
-lifeExp_bycountry |>
-   arrange(mean_lifeExp) |>
-   head(n = 1)
-
-lifeExp_bycountry |>
-   arrange(desc(mean_lifeExp)) |>
-   head(n = 1)
-```
-</details>
+***TBA***
 :::
 
 ## Writing to files
 
-To write the `gapminder` data frame to a TSV file,
-use the `write_tsv()` function with argument `x` for the R object
-and argument `file` for the file path:
+To write a data frame to a TSV file,
+you can use the `write_tsv()` function,
+with argument `x` for the R object and argument `file` for the file path:
 
 ```{r}
-write_tsv(x = gapminder, file = "gapminder.tsv")
+# TBA - probably change the path
+write_tsv(x = meta_time, file = "metadata_ed.tsv")
 ```
 
 Because we simply provided a file name, the file will have been written in your

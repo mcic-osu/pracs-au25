@@ -304,10 +304,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#rs-main-data-types" id="toc-rs-main-data-types" class="nav-link" data-scroll-target="#rs-main-data-types"><span class="header-section-number">3.1</span> R’s main data types</a></li>
   <li><a href="#a-vector-can-only-contain-one-data-type" id="toc-a-vector-can-only-contain-one-data-type" class="nav-link" data-scroll-target="#a-vector-can-only-contain-one-data-type"><span class="header-section-number">3.2</span> A vector can only contain one data type</a></li>
-  <li><a href="#automatic-type-coercion" id="toc-automatic-type-coercion" class="nav-link" data-scroll-target="#automatic-type-coercion"><span class="header-section-number">3.3</span> Automatic Type Coercion</a></li>
-  <li><a href="#manual-type-conversion" id="toc-manual-type-conversion" class="nav-link" data-scroll-target="#manual-type-conversion"><span class="header-section-number">3.4</span> Manual Type Conversion</a></li>
-  <li><a href="#missing-values-na" id="toc-missing-values-na" class="nav-link" data-scroll-target="#missing-values-na"><span class="header-section-number">3.5</span> Missing values (<code>NA</code>)</a></li>
-  <li><a href="#factors" id="toc-factors" class="nav-link" data-scroll-target="#factors"><span class="header-section-number">3.6</span> Factors</a></li>
+  <li><a href="#type-coercion-and-conversion" id="toc-type-coercion-and-conversion" class="nav-link" data-scroll-target="#type-coercion-and-conversion"><span class="header-section-number">3.3</span> Type coercion and conversion</a></li>
+  <li><a href="#missing-values-na" id="toc-missing-values-na" class="nav-link" data-scroll-target="#missing-values-na"><span class="header-section-number">3.4</span> Missing values (<code>NA</code>)</a></li>
+  <li><a href="#factors" id="toc-factors" class="nav-link" data-scroll-target="#factors"><span class="header-section-number">3.5</span> Factors</a></li>
   </ul></li>
   </ul>
 <div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w11_overview.html"><i class="bi bi-book"></i>Week 11 overview</a></li><li><a href="w11a_r-basics.html"><i class="bi bi-bookmarks"></i>w11a: Intro to R and RStudio</a></li><li><a href="w11c_data-frames.html"><i class="bi bi-bookmarks"></i>w11c: Tabular data in R</a></li></ul></div></nav>
@@ -362,6 +361,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <hr>
+<p><br></p>
+<div class="callout callout-style-simple callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+THIS PAGE IS STILL UNDER CONSTRUCTION
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
 <p><br></p>
 <section id="introduction" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
@@ -814,28 +827,22 @@ Click for the solutions
 </details>
 </section>
 </section>
-<section id="automatic-type-coercion" class="level3" data-number="3.3">
-<h3 data-number="3.3" class="anchored" data-anchor-id="automatic-type-coercion"><span class="header-section-number">3.3</span> Automatic Type Coercion</h3>
+<section id="type-coercion-and-conversion" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="type-coercion-and-conversion"><span class="header-section-number">3.3</span> Type coercion and conversion</h3>
 <p>R’s behavior of returning a character vector for <code>c(2, 6, "3")</code> in the challenge above is called <strong>type coercion</strong>.</p>
 <p>When R encounters a <em>mix of data types</em> (here, numbers and characters) to be combined into a single vector, it forces them all to be the same type. It “must” do this because a vector can consist of only a single data type.</p>
 <p>Type coercion can be the source of many surprises, and is one reason you need to be aware of the basic R data types and how R’s behaviour around them.</p>
-</section>
-<section id="manual-type-conversion" class="level3" data-number="3.4">
-<h3 data-number="3.4" class="anchored" data-anchor-id="manual-type-conversion"><span class="header-section-number">3.4</span> Manual Type Conversion</h3>
-<p>Luckily, you are not just at the mercy of whatever R decides to do automatically, but can convert vectors using the <code>as.</code> group of functions:</p>
-<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Try to use RStudio’s auto-complete functionality here: type “<code>as.</code>” and then press the <kbd>Tab</kbd> key.
+Manual Type Conversion
 </div>
 </div>
 <div class="callout-body-container callout-body">
-
-</div>
-</div>
+<p>Luckily, you are not just at the mercy of whatever R decides to do automatically, but can convert vectors using the <code>as.</code> group of functions:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.integer</span>(<span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"2"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -856,9 +863,11 @@ Try to use RStudio’s auto-complete functionality here: type “<code>as.</code
 <pre class="regular-r-output"><code>[1] NA</code></pre>
 </div>
 </div>
+</div>
+</div>
 </section>
-<section id="missing-values-na" class="level3" data-number="3.5">
-<h3 data-number="3.5" class="anchored" data-anchor-id="missing-values-na"><span class="header-section-number">3.5</span> Missing values (<code>NA</code>)</h3>
+<section id="missing-values-na" class="level3" data-number="3.4">
+<h3 data-number="3.4" class="anchored" data-anchor-id="missing-values-na"><span class="header-section-number">3.4</span> Missing values (<code>NA</code>)</h3>
 <p>R has a concept of <strong>missing data</strong>, which is important in statistical computing, as not all information/measurements are always available for each sample.</p>
 <p>In R, missing values are coded as <code>NA</code> (like <code>TRUE</code>/<code>FALSE</code>, this is not a character string so it is not quoted):</p>
 <div class="cell">
@@ -884,8 +893,8 @@ Try to use RStudio’s auto-complete functionality here: type “<code>as.</code
 </div>
 </div>
 </section>
-<section id="factors" class="level3" data-number="3.6">
-<h3 data-number="3.6" class="anchored" data-anchor-id="factors"><span class="header-section-number">3.6</span> Factors</h3>
+<section id="factors" class="level3" data-number="3.5">
+<h3 data-number="3.5" class="anchored" data-anchor-id="factors"><span class="header-section-number">3.5</span> Factors</h3>
 <p><strong>Categorical</strong> data, like treatments in an experiment, can be stored as “factors” in R. Factors are useful for statistical analyses and for plotting, e.g.&nbsp;because they allow you to specify a custom order.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>diet_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"high"</span>, <span class="st">"medium"</span>, <span class="st">"low"</span>, <span class="st">"low"</span>, <span class="st">"medium"</span>)</span>
@@ -910,7 +919,7 @@ Levels: low medium high</code></pre>
 </div>
 <p>This ordering would be automatically respected in plots and statistical analyses.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -919,7 +928,7 @@ Oddly, factors are technically not a data type <em>(Click to expand)</em>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>For most intents and purposes, it makes sense to think of factors as another data type, even though technically, they are a kind of data structure build on the <code>integer</code> data type:</p>
 <div class="cell">
