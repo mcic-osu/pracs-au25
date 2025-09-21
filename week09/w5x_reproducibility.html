@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jelmer Poelstra">
-<meta name="dcterms.date" content="2025-12-01">
+<meta name="dcterms.date" content="2025-10-19">
 
-<title>Week 15 overview – PRACS-AU25</title>
+<title>Data management – PRACS-AU25</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -252,15 +272,26 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#before-we-start" id="toc-before-we-start" class="nav-link active" data-scroll-target="#before-we-start">Before we start</a></li>
+  <li><a href="#reproducibility" id="toc-reproducibility" class="nav-link" data-scroll-target="#reproducibility">Reproducibility</a></li>
+  <li><a href="#coding-best-practices" id="toc-coding-best-practices" class="nav-link" data-scroll-target="#coding-best-practices">Coding best practices</a></li>
+  <li><a href="#tidy-metadata" id="toc-tidy-metadata" class="nav-link" data-scroll-target="#tidy-metadata">Tidy (meta)data</a></li>
+  <li><a href="#misc" id="toc-misc" class="nav-link" data-scroll-target="#misc">Misc</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Week 15: Running nf-core pipelines</h1>
+<h1 class="title">Reproducibility in (computational) research</h1>
+<p class="subtitle lead">Week 9 – lecture TBA</p>
 </div>
 
 
@@ -286,7 +317,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 1, 2025</p>
+      <p class="date">October 19, 2025</p>
     </div>
   </div>
   
@@ -300,23 +331,71 @@ ul.task-list li input[type="checkbox"] {
 
 <hr>
 <p><br></p>
-<div class="callout callout-style-default callout-caution callout-titled">
+<section id="before-we-start" class="level2">
+<h2 class="anchored" data-anchor-id="before-we-start">Before we start</h2>
+</section>
+<section id="reproducibility" class="level2">
+<h2 class="anchored" data-anchor-id="reproducibility">Reproducibility</h2>
+<ul>
+<li><a href="https://www.annualreviews.org/content/journals/10.1146/annurev-statistics-112723-034436" class="uri">https://www.annualreviews.org/content/journals/10.1146/annurev-statistics-112723-034436</a></li>
+</ul>
+<blockquote class="blockquote">
+<p>To clarify reproducibility further, we can consider Leek &amp; Jager’s (2017) review as an example. They summarize the assessment of reproducibility of a scientific study with two questions: “Are code and data both readily available?” and “Does running the provided code exactly produce the study results?” (Leek &amp; Jager 2017, p.&nbsp;120).</p>
+</blockquote>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-THIS PAGE IS STILL UNDER CONSTRUCTION
+Reproducibility in Plant Pathology
 </div>
 </div>
 <div class="callout-body-container callout-body">
-
+<p>In a special issue of Phytopathology on “Key Challenges in Plant Pathology in the Next Decade”, <span class="citation" data-cites="wang2024">Wang et al. (<a href="#ref-wang2024" role="doc-biblioref">2024</a>)</span> noted reproducibility as one of these challenges.</p>
+<p>The paper by <span class="citation" data-cites="grünwald2024">Grünwald et al. (<a href="#ref-grünwald2024" role="doc-biblioref">2024</a>)</span> …</p>
 </div>
 </div>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="coding-best-practices" class="level2">
+<h2 class="anchored" data-anchor-id="coding-best-practices">Coding best practices</h2>
+<p>Some practice we have covered or will cover:</p>
+<ul>
+<li>Use a modular approach and limit the scope of individual scripts</li>
+<li>Literate programming (in R)</li>
+<li>Make scripts stop upon error (in the shell)</li>
+<li>Annotate your code</li>
+<li>Use a workflow management system like Nextflow</li>
+<li>Don’t repeat yourself — use loops (esp.&nbsp;shell) and write functions (esp.&nbsp;R)</li>
+<li>Environment management? SessionInfo?</li>
+</ul>
+</section>
+<section id="tidy-metadata" class="level2">
+<h2 class="anchored" data-anchor-id="tidy-metadata">Tidy (meta)data</h2>
+<ul>
+<li>Spreadsheet recommendations from the Turing Way</li>
+<li>Tidy data</li>
+</ul>
+</section>
+<section id="misc" class="level2">
+<h2 class="anchored" data-anchor-id="misc">Misc</h2>
+<ul>
+<li>Zenodo reference for Git repo</li>
+</ul>
 
 
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-grünwald2024" class="csl-entry" role="listitem">
+Grünwald, Niklaus J., Clive H. Bock, Jeff H. Chang, Alessandra Alves De Souza, Emerson M. Del Ponte, Lindsey J. du Toit, Anne E. Dorrance, et al. 2024. <span>“Open Access and Reproducibility in Plant Pathology Research: Guidelines and Best Practices.”</span> <em>Phytopathology®</em> 114 (5): 910–16. <a href="https://doi.org/10.1094/PHYTO-12-23-0483-IA">https://doi.org/10.1094/PHYTO-12-23-0483-IA</a>.
+</div>
+<div id="ref-wang2024" class="csl-entry" role="listitem">
+Wang, Nian, George W. Sundin, Leonardo De La Fuente, Jaime Cubero, Satyanarayana Tatineni, Marin T. Brewer, Quan Zeng, et al. 2024. <span>“Key Challenges in Plant Pathology in the Next Decade.”</span> <em>Phytopathology®</em> 114 (5): 837–42. <a href="https://doi.org/10.1094/PHYTO-04-24-0137-KC">https://doi.org/10.1094/PHYTO-04-24-0137-KC</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

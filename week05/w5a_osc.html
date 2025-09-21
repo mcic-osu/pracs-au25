@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jelmer Poelstra">
-<meta name="dcterms.date" content="2025-09-19">
+<meta name="dcterms.date" content="2025-09-20">
 
-<title>w5a - OSC I – PRACS-AU25</title>
+<title>w5a - OSC part II – PRACS-AU25</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -117,12 +117,15 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../week04/w4_overview.html">
  <span class="dropdown-text">Week 4: Version control with Git and GitHub</span></a>
   </li>  
-        <li class="dropdown-header">Week 5: Data and software management at OSC [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week05/w5_overview.html">
+ <span class="dropdown-text">Week 5: Software management at OSC</span></a>
+  </li>  
         <li class="dropdown-header">Week 6: Shell scripts and CLI tools [TBA]</li>
         <li class="dropdown-header">Week 7: Slurm batch jobs at OSC [TBA]</li>
         <li class="dropdown-header">Week 8: Using generative AI when coding [TBA]</li>
-        <li class="dropdown-header">Week 9: Automated pipelines with Nextflow [TBA]</li>
-        <li class="dropdown-header">Week 10: Building Nextflow pipelines [TBA]</li>
+        <li class="dropdown-header">Week 9: Reproducibility and data management [TBA]</li>
+        <li class="dropdown-header">Week 10: Workflow management [TBA]</li>
         <li class="dropdown-header">Week 11: R – basics [TBA]</li>
         <li class="dropdown-header">Week 12: R – Quarto [TBA]</li>
         <li class="dropdown-header">Week 13: R – data visualization [TBA]</li>
@@ -139,7 +142,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../week03/w3_exercises.html">
  <span class="dropdown-text">Week 3: Unix shell</span></a>
   </li>  
-        <li class="dropdown-header">Week 5: OSC data and software [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week05/w5_exercises.html">
+ <span class="dropdown-text">Week 5: Software at OSC</span></a>
+  </li>  
         <li class="dropdown-header">Week 7: Slurm batch jobs [TBA]</li>
         <li class="dropdown-header">Week 9: Nextflow [TBA]</li>
         <li class="dropdown-header">Week 11: R basics [TBA]</li>
@@ -260,12 +266,12 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#lecture-overview-and-learning-goals" id="toc-lecture-overview-and-learning-goals" class="nav-link" data-scroll-target="#lecture-overview-and-learning-goals"><span class="header-section-number">1.2</span> Lecture overview and learning goals</a></li>
   </ul></li>
   <li><a href="#osc-projects" id="toc-osc-projects" class="nav-link" data-scroll-target="#osc-projects"><span class="header-section-number">2</span> OSC Projects</a></li>
-  <li><a href="#hierarchical-components" id="toc-hierarchical-components" class="nav-link" data-scroll-target="#hierarchical-components"><span class="header-section-number">3</span> Hierarchical components</a></li>
+  <li><a href="#cores" id="toc-cores" class="nav-link" data-scroll-target="#cores"><span class="header-section-number">3</span> Cores</a></li>
   <li><a href="#file-systems" id="toc-file-systems" class="nav-link" data-scroll-target="#file-systems"><span class="header-section-number">4</span> File systems</a></li>
   <li><a href="#compute-nodes" id="toc-compute-nodes" class="nav-link" data-scroll-target="#compute-nodes"><span class="header-section-number">5</span> Compute nodes</a></li>
   <li><a href="#putting-it-together" id="toc-putting-it-together" class="nav-link" data-scroll-target="#putting-it-together"><span class="header-section-number">6</span> Putting it together</a></li>
   </ul>
-<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w5_overview.html"><i class="bi bi-book"></i>Week 5 overview</a></li><li><a href="w5_exercises.html"><i class="bi bi-pencil"></i>Week 5 exercises</a></li><li><a href="w5b_data-management.html"><i class="bi bi-bookmarks"></i>w5-2: Data management</a></li><li><a href="w5c_software.html"><i class="bi bi-bookmarks"></i>w5-3: Software management</a></li><li><a href="../bonus/conda.html"><i class="bi bi-book"></i>Bonus: Conda</a></li><li><a href="../bonus/ssh-and-transfer.html"><i class="bi bi-book"></i>Bonus: SSH and file transfer</a></li></ul></div></nav>
+<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w5_overview.html"><i class="bi bi-book"></i>Week 5 overview</a></li><li><a href="w5b_software.html"><i class="bi bi-bookmarks"></i>w5b: Software management</a></li><li><a href="../bonus/conda.html"><i class="bi bi-book"></i>Bonus: Conda</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -273,7 +279,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">A closer look at OSC</h1>
-<p class="subtitle lead">Week 5 – lecture I</p>
+<p class="subtitle lead">Week 5 – lecture A</p>
 </div>
 
 
@@ -299,7 +305,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 19, 2025</p>
+      <p class="date">September 20, 2025</p>
     </div>
   </div>
   
@@ -318,54 +324,65 @@ ul.task-list li input[type="checkbox"] {
 <section id="week-overview-and-context" class="level3" data-number="1.1">
 <h3 data-number="1.1" class="anchored" data-anchor-id="week-overview-and-context"><span class="header-section-number">1.1</span> Week overview and context</h3>
 <p>TBA</p>
+<p>Next weeks … Slurm, file transfer, data management</p>
 </section>
 <section id="lecture-overview-and-learning-goals" class="level3" data-number="1.2">
 <h3 data-number="1.2" class="anchored" data-anchor-id="lecture-overview-and-learning-goals"><span class="header-section-number">1.2</span> Lecture overview and learning goals</h3>
-<p>In this short session, you will learn about some aspects of the Ohio Supercomputer Center (OSC) that we did not talk about during our initial OSC introduction in week 1 of this course:</p>
+<p>In this short session that complements the <a href="../week01/w1c_osc.html">initial OSC introduction in week 1 of the course</a>, we will go a bit deeper into the following aspects of the Ohio Supercomputer Center (OSC):</p>
 <ul>
-<li>OSC Project</li>
+<li>OSC Projects</li>
 <li>Cores</li>
-<li>File systems</li>
-<li>Compute nodes</li>
+<li>OSC file systems</li>
+<li>Compute node types and access</li>
 </ul>
-<p>In the next session, you will learn more about file transfer to and from OSC, and data management at OSC and beyond.</p>
-<hr style="height:1pt; visibility:hidden;">
 </section>
 </section>
 <section id="osc-projects" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="osc-projects"><span class="header-section-number">2</span> OSC Projects</h2>
-<p>In this course, we are exclusively using the course’s OSC Project <code>PAS2880</code>. When you use OSC for your own research project, you would use a different OSC Project. This would likely be specific to a research project or grant, or your lab/PI’s general-use OSC Project.</p>
-<p>Generally, only PIs request OSC projects, and they typically manage them as well. OSC has <a href="https://www.osc.edu/supercomputing/support/account">a webpage with more information on how to do so</a>. Whoever manages an OSC Project can add both existing OSC users and new users to the Project. Anyone added to an OSC Project will have access to its directories, and can use this Project when requesting compute node resources.</p>
+<p>In this course, we exclusively use the course’s OSC Project <code>PAS2880</code>. When you use OSC for your own research project, you would use a different OSC Project. This would likely be a Project specific to a research project or grant, or perhaps your lab/PI’s general-use OSC Project.</p>
+<p>With “using” an OSC Project, we mean:</p>
+<ul>
+<li>Storing data in its project dirs in <code>/fs/ess</code> and/or <code>/fs/scratch</code></li>
+<li>Selecting the Project when starting compute jobs, like Code Server and the command-line batch jobs you’ll learn about later in this course.</li>
+</ul>
+<p>Generally, only PIs request and manage/administrate OSC projects. OSC has <a href="https://www.osc.edu/supercomputing/support/account">a webpage with more information on how to do so</a>. The administrator of an OSC Project can, among others:</p>
+<ul>
+<li>Manage the compute budget and allocated storage space in <code>/fs/ess</code> for the Project.</li>
+<li>Add users to the Project. If the user doesn’t yet have an OSC account, this addition will trigger an invite email that allows the user to create an account (you can’t create an account unless you’ve been added to a Project).</li>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Billing
+OSC billing
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>OSC will bill OSC Projects (not individual users), and only for the following two things:</p>
 <ul>
-<li><em><strong>File storage</strong></em> in the Project Storage file system</li>
+<li><em><strong>File storage</strong></em> in the Project Storage (<code>/fs/ess</code>) file system per TB per month</li>
 <li><em><strong>Compute node usage</strong></em> per “core hour” (e.g.&nbsp;using 2 cores for 2 hours = 4 core hours)</li>
 </ul>
-<p>The prices for academic usage are quite low (see <a href="https://www.osc.edu/content/academic_fee_model_faq">this page for specifics</a>). At OSU, they are often covered at the college or department level, so individual PIs typically do not have to directly pay for OSC usage at all.</p>
+<p>OSC no longer publishes flat rates, but the prices for academic usage are generally quite low. Nevertheless, a Project that uses dozens of TBs of storage space and hundreds of thousands of core hours could be charged several thousands dollars per year. But:</p>
+<ul>
+<li>Every PI at OSU gets a $1,000 credit</li>
+<li>OSU pays some or all of these costs at the college level, depending on the college. CFAES currently pays all of it.</li>
+</ul>
 </div>
 </div>
 </section>
-<section id="hierarchical-components" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="hierarchical-components"><span class="header-section-number">3</span> Hierarchical components</h2>
-<p>In week 1, you learned that a supercomputer center like OSC typically has multiple supercomputers, each of which in turn consists of many nodes. But I omitted a fourth “level” in this hierarchy:</p>
-<ul>
-<li><strong>Core / Processor / CPU / Thread</strong> — Components of a computer/node that can each (semi-)independently be asked to perform a computing task like running a bioinformatics program. With most bioinformatics programs, you can also use multiple cores for a single run, which can speed things up considerably. While these four terms are not technically all synonyms, we can treat them as such for our purposes.</li>
-</ul>
+<section id="cores" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="cores"><span class="header-section-number">3</span> Cores</h2>
+<p>In week 1, you learned that a supercomputer center like OSC typically has multiple supercomputers, each of which in turn consists of many nodes. But I omitted an additional “level” in this hierarchy:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><a href="../img/terminology.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="../img/terminology.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:95.0%" alt="A diagram showing how the terms core/processor, node, and cluster/supercomputer fit together."></a></p>
 </figure>
 </div>
+<p><strong>Core / Processor / CPU / Thread</strong> — Components of a computer (recall: we refer to these as “nodes” at OSC) that can each (semi-)independently be asked to perform a computing task like running a bioinformatics program. With many programs, you can also use multiple cores for a single run, which can speed things up considerably.</p>
+<p>The terms core, processor, CPU and thread are not technically synonyms. However, they are often used interchangeably, and for the purposes of working at OSC, you should treat them as meaning the same thing: the components of a node that can be reserved and used independently.</p>
 </section>
 <section id="file-systems" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="file-systems"><span class="header-section-number">4</span> File systems</h2>
@@ -425,8 +442,7 @@ Billing
 </tbody>
 </table>
 <hr style="height:1pt; visibility:hidden;">
-<p>When you use OSC for your own research project with a different OSC Project, I would recommend that you <strong>work mostly in the Project (<code>/fs/ess/</code>) dir</strong>, which offers backed-up, permanent storage with flexible quota.</p>
-<p>This is because each of the other file systems has certain drawbacks:</p>
+<p>When you use OSC for your own research project with a different OSC Project, I would recommend that you <strong>work mostly in the Project dir</strong> (<code>/fs/ess/</code>), which offers backed-up, permanent storage with flexible quota. Each of the other file systems has certain drawbacks:</p>
 <ul>
 <li>Scratch dirs (<code>/fs/scratch</code>) are temporary and not backed up.</li>
 <li>The storage space of Home dirs (<code>/users/</code>) is limited and cannot be expanded, and file sharing / collaborating is also more difficult with Home dirs.</li>
@@ -434,9 +450,9 @@ Billing
 </ul>
 <p>So when <em>are</em> these other file systems useful?</p>
 <ul>
-<li>Your <strong>Home</strong> dir can e.g.&nbsp;be useful for files that you use across projects, like some software.</li>
-<li><strong>Scratch</strong> has the advantages of having <em>effectively unlimited</em> space and much <em>faster</em> data read and write (“I/O”) speed than Home and Project space. Especially if you are working with large datasets, it therefore regularly makes sense to run analyses on Scratch, and then copy specific files over the the Project dirs. Additionally, some programs produce lots of temporary files while they are running, so setting a scratch dir as the output dir may speed things up.</li>
-<li><strong>Compute</strong> storage has even faster I/O so can be useful for very I/O-intensive jobs — but using it requires some extra code in your script<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> and I personally end up using this very rarely.</li>
+<li><p>Your <strong>Home</strong> dir can be useful for files that you use across projects, like some software. Additionally, this is where many of your user-specific settings are stored. That is mostly done automatically by OSC and the programs that you use, with <em>hidden</em> files and dirs (start with a <code>.</code>) that you should generally not manually edit or remove.</p></li>
+<li><p><strong>Scratch</strong> has the advantages of having <em>effectively unlimited</em> space and much <em>faster</em> data read and write (“I/O”) speed than Home and Project space. Especially if you are working with large datasets, it can therefore makes sense to run analyses on Scratch, and then copy specific files over to the Project dirs. Additionally, some programs produce lots of temporary files while they are running, so setting a scratch dir as the output dir may speed things up.</p></li>
+<li><p><strong>Compute</strong> storage has even faster I/O and can be useful for very I/O-intensive jobs — but using it requires some extra code in your script<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> and I personally end up using this very rarely.</p></li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -461,7 +477,7 @@ Accessing files on different clusters
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>File systems are shared among OSC’s clusters, such that you can access your files in the exact same way regardless of which cluster you have connected to.</p>
+<p>As moentioned previously, file systems are shared among OSC’s clusters, such that you can access your files in the exact same way regardless of which cluster you have connected to.</p>
 </div>
 </div>
 </section>
@@ -483,15 +499,16 @@ Memory versus storage
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>When we talk about “memory”, this refers to RAM: the data that your computer has actively “loaded” or in use. For example, if you play a computer game or have many browser tabs open, your computer’s memory will be heavily used. Genomics programs sometimes load all the input data from disk into memory to allow for fast access, or they will hold a huge assembly graph in memory, and therefore may need a lot of memory as well.</p>
-<p>Don’t confuse memory with file storage, the data that is on disk.</p>
+<p>When we talk about a computer’s “memory”, this refers to RAM: the data that your computer has actively “loaded” or in use. Don’t confuse memory with file storage, the data that is on disk.</p>
+<p>A computer can access data in RAM orders of magnitude faster than data on disk, which is why computers load actively used data into memory. For example, if you play a computer game or have many browser tabs open, your computer’s memory will be heavily used. And when your computer slows down noticeably or freezes, this is typically because all its memory capacity is being used, and your disk storage needs to be used as well.</p>
+<p>Bioinformatics programs may also load input data from disk into memory to allow for fast access, and will often also hold intermediate results in memory. When datasets are large, such programs may therefore need lots (10s or 100s of GBs) of memory.</p>
 </div>
 </div>
 <section id="using-compute-nodes" class="level4">
 <h4 class="anchored" data-anchor-id="using-compute-nodes">Using compute nodes</h4>
 <p>You can use compute nodes by putting in a request for resources, such as the number of nodes, cores, and for how long you will need them. These requests result in “<strong>compute jobs</strong>” (also simply called “jobs”). Our VS Code sessions are an example of such compute jobs.</p>
-<p>Because many different users are sending such requests all the time, there is software called a <strong>job scheduler</strong> (specifically, <em>Slurm</em> in case of OSC) that considers each request and assigns the necessary resources to the job as they become available.</p>
-<p>Next week, you will learn about submitting scripts as “batch jobs” with Slurm commands.</p>
+<p>Because many different users are sending such requests all the time, there is software called a <strong>job scheduler</strong> (specifically, <strong>Slurm</strong> in case of OSC) that considers each request and assigns the necessary resources to the job as they become available.</p>
+<p>In two weeks, you will learn about submitting scripts as “batch jobs” with Slurm commands.</p>
 </section>
 </section>
 <section id="putting-it-together" class="level2" data-number="6">

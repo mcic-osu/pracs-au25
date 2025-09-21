@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jelmer Poelstra">
-<meta name="dcterms.date" content="2025-09-29">
+<meta name="dcterms.date" content="2025-09-20">
 
-<title>Week 6 Exercises – PRACS-AU25</title>
+<title>Week 5 Exercises – PRACS-AU25</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -148,12 +148,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week04/w4_overview.html">
  <span class="dropdown-text">Week 4: Version control with Git and GitHub</span></a>
   </li>  
-        <li class="dropdown-header">Week 5: Data and software management at OSC [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week05/w5_overview.html">
+ <span class="dropdown-text">Week 5: Software management at OSC</span></a>
+  </li>  
         <li class="dropdown-header">Week 6: Shell scripts and CLI tools [TBA]</li>
         <li class="dropdown-header">Week 7: Slurm batch jobs at OSC [TBA]</li>
         <li class="dropdown-header">Week 8: Using generative AI when coding [TBA]</li>
-        <li class="dropdown-header">Week 9: Automated pipelines with Nextflow [TBA]</li>
-        <li class="dropdown-header">Week 10: Building Nextflow pipelines [TBA]</li>
+        <li class="dropdown-header">Week 9: Reproducibility and data management [TBA]</li>
+        <li class="dropdown-header">Week 10: Workflow management [TBA]</li>
         <li class="dropdown-header">Week 11: R – basics [TBA]</li>
         <li class="dropdown-header">Week 12: R – Quarto [TBA]</li>
         <li class="dropdown-header">Week 13: R – data visualization [TBA]</li>
@@ -170,7 +173,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week03/w3_exercises.html">
  <span class="dropdown-text">Week 3: Unix shell</span></a>
   </li>  
-        <li class="dropdown-header">Week 5: OSC data and software [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week05/w5_exercises.html">
+ <span class="dropdown-text">Week 5: Software at OSC</span></a>
+  </li>  
         <li class="dropdown-header">Week 7: Slurm batch jobs [TBA]</li>
         <li class="dropdown-header">Week 9: Nextflow [TBA]</li>
         <li class="dropdown-header">Week 11: R basics [TBA]</li>
@@ -285,8 +291,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#exercise-x-containers" id="toc-exercise-x-containers" class="nav-link active" data-scroll-target="#exercise-x-containers"><span class="header-section-number">1</span> Exercise X: containers</a></li>
-  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions"><span class="header-section-number">2</span> Solutions</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a>
+  <ul class="collapse">
+  <li><a href="#setting-up" id="toc-setting-up" class="nav-link" data-scroll-target="#setting-up"><span class="header-section-number">1.1</span> Setting up</a></li>
+  </ul></li>
+  <li><a href="#exercise-1-github" id="toc-exercise-1-github" class="nav-link" data-scroll-target="#exercise-1-github"><span class="header-section-number">2</span> Exercise 1: GitHub</a></li>
+  <li><a href="#exercise-2-modules-and-pandoc" id="toc-exercise-2-modules-and-pandoc" class="nav-link" data-scroll-target="#exercise-2-modules-and-pandoc"><span class="header-section-number">3</span> Exercise 2: Modules and Pandoc</a></li>
+  <li><a href="#exercise-3-containers" id="toc-exercise-3-containers" class="nav-link" data-scroll-target="#exercise-3-containers"><span class="header-section-number">4</span> Exercise 3: containers</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions"><span class="header-section-number">5</span> Solutions</a>
+  <ul class="collapse">
+  <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1"><span class="header-section-number">5.1</span> Exercise 1</a></li>
+  <li><a href="#exercise-2" id="toc-exercise-2" class="nav-link" data-scroll-target="#exercise-2"><span class="header-section-number">5.2</span> Exercise 2</a></li>
+  <li><a href="#exercise-3" id="toc-exercise-3" class="nav-link" data-scroll-target="#exercise-3"><span class="header-section-number">5.3</span> Exercise 3</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -295,7 +312,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Week 6 Exercises: OSC data and software</h1>
+<h1 class="title">Week 5 Exercises: GitHub and software at OSC</h1>
 </div>
 
 
@@ -321,7 +338,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 29, 2025</p>
+      <p class="date">September 20, 2025</p>
     </div>
   </div>
   
@@ -334,74 +351,158 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <hr>
-<p><br></p>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-THIS PAGE IS STILL UNDER CONSTRUCTION
-</div>
-</div>
-<div class="callout-body-container callout-body">
-
-</div>
-</div>
 <hr style="height:1pt; visibility:hidden;">
-<section id="exercise-x-containers" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="exercise-x-containers"><span class="header-section-number">1</span> Exercise X: containers</h2>
+<section id="introduction" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
+<p>In these exercises, you’ll practice with creating and pushing to GitHub repositories, and with using software at OSC.</p>
+<section id="setting-up" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="setting-up"><span class="header-section-number">1.1</span> Setting up</h3>
+<ul>
+<li>Start a VS Code session through OSC OnDemand in the folder <code>/fs/ess/PAS2880/$USER</code>.</li>
+</ul>
+</section>
+</section>
+<section id="exercise-1-github" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="exercise-1-github"><span class="header-section-number">2</span> Exercise 1: GitHub</h2>
 <ol type="1">
-<li>Find a container image for TrimGalore, and run the container with the command <code>trim_galore -v</code></li>
+<li><p>Go to the GitHub website, log in, and create a new GitHub repository. This will be the remote counterpart of the Git repo you made as part of last week’s assignment. You can give the GitHub repo any name you want.</p></li>
+<li><p>In the terminal in VS Code, navigate to your dir for last week’s assigmment. Then, use Git commands to set up a connection between the Git repo and the GitHub counterpart.</p></li>
+<li><p>Push your local repo to the online counterpart.</p></li>
+<li><p>Explore your repo on GitHub. Does your <code>README.md</code> render well? Can you see all your commits?</p></li>
+<li><p>Open a GitHub Issue for your repo: on the GitHub page for your repo, in the Issues tab, click “New Issue”, and in the box where you can type your issue, tag the instructor. For example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Hey @jelmerp, can you please take a look at my repo?</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Back in VS Code, add a line to your <code>README.md</code> stating that you created a Github repo on today’s date, adding the repo’s URL.</p></li>
+<li><p>Commit the change you made to <code>README.md</code> to your Git repo.</p></li>
+<li><p>Push to the remote and check that the changes were applied in the online repo.</p></li>
 </ol>
 </section>
-<section id="solutions" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="solutions"><span class="header-section-number">2</span> Solutions</h2>
+<section id="exercise-2-modules-and-pandoc" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="exercise-2-modules-and-pandoc"><span class="header-section-number">3</span> Exercise 2: Modules and Pandoc</h2>
+<p>Say we wanted to use <code>pandoc</code>, the program that can for example render Markdown files to HTML and PDF.</p>
+<ol type="1">
+<li><p>Check if Pandoc is available, and if so, which version, by running <code>pandoc -v</code>.</p></li>
+<li><p>Use Google (or similar) to check whether this appears to be the most recent version of Pandoc.</p></li>
+<li><p>Is a more recent Pandoc version available in an OSC module?</p></li>
+<li><p>Load the module with the most recent available Pandoc version.</p></li>
+<li><p>Use Pandoc to create a PDF of your <code>README.md</code> The command to do so is <code>pandoc -o README.pdf README.md</code>. <em>TBA CHECK</em></p></li>
+<li><p>Install the extension <em>TBA</em> and take a look at your PDF.</p></li>
+</ol>
+</section>
+<section id="exercise-3-containers" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="exercise-3-containers"><span class="header-section-number">4</span> Exercise 3: containers</h2>
+<ol type="1">
+<li><p>Go to <a href="https://seqera.io/containers" class="uri">https://seqera.io/containers</a> and find a container image for the program called “Trim-Galore”. <em>(This program trims and filters FASTQ files, and you’ll use it in the next</em> <em>few weeks of the course.)</em></p></li>
+<li><p>Back in VS Code, run the container with the command <code>trim_galore -v</code>.</p></li>
+</ol>
+</section>
+<section id="solutions" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="solutions"><span class="header-section-number">5</span> Solutions</h2>
+<section id="exercise-1" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="exercise-1"><span class="header-section-number">5.1</span> Exercise 1</h3>
 <details>
 <summary>
-<strong>9.</strong> Change file permissions
+<strong>2.</strong> Navigate, then set up a connection to the online repo
 </summary>
-<p>Before we start, let’s check the current file permissions:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> data/fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>ls -lh data/fastq/ | head
-total 0
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_F.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_R.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_F.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_R.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_F.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_R.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_F.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_R.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample005_F.fastq.gz</code></pre>
-<p>The file “owner”/“user” (you) and the “group” (in this case, PAS0471, likely a different group for you) have read and write permissions, and “others” have no permissions at all.</p>
-<p>There are several different ways to change permissions with the <code>chmod</code> command. Here are some examples which would ensure that no-one has write permission for the raw data:</p>
-<ul>
-<li><p>Set read(-only) permissions for all:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a=r =&gt; all=read</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a=r data/fastq/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p>Take away write permissions for all:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a-w =&gt; all minus write</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a-w data/fastq/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p>You can also use the “numeric” syntax:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 444 data/fastq/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-</ul>
-<p>Whereas after running the second option, others won’t have read-access, the first and third option should give this result:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> data/fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>ls -lh data/fastq/ | head
-total 0
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_F.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_R.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_F.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_R.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_F.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_R.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_F.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_R.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample005_F.fastq.gz</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> GA2</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># (replace &lt;SSH-URL-to-repo&gt; with your actual SSH (not HTTPS!) URL)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add origin <span class="op">&lt;</span>SSH-URL-to-repo<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<details>
+<summary>
+<strong>3.</strong> Push your local repo to the online one you just created
+</summary>
+<p>When you push to a remote repo for the first time, you need to add the <code>-u origin main</code> part:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<details>
+<summary>
+<strong>7.</strong> Commit the change you made to <code>README.md</code>
+</summary>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add README.md</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Update README with GitHub repo information"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<details>
+<summary>
+<strong>8.</strong> Push to the remote
+</summary>
+<p>Since you’ve pushed to this remote before, a simple <code>git push</code> works:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</section>
+<section id="exercise-2" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="exercise-2"><span class="header-section-number">5.2</span> Exercise 2</h3>
+<details>
+<summary>
+<strong>1.</strong> Check if Pandoc is available, and if so, which version, by running <code>pandoc -v</code>
+</summary>
+<p>As of September 2025, the version is <code>2.14.0.3</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pandoc</span> <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>pandoc 2.14.0.3
+Compiled with pandoc-types 1.22.1, texmath 0.12.3.3, skylighting 0.10.5.2,
+citeproc 0.4.0.1, ipynb 0.1.0.1
+User data directory: /users/PAS0471/jelmer/.local/share/pandoc
+Copyright (C) 2006-2021 John MacFarlane. Web:  https://pandoc.org
+This is free software; see the source for copying conditions. There is no
+warranty, not even for merchantability or fitness for a particular purpose.</code></pre>
+</details>
+<details>
+<summary>
+<strong>2.</strong> Check whether this appears to be the most recent version of Pandoc
+</summary>
+Version 2.14 is <a href="https://pandoc.org/releases.html">not nearly the most recent one</a>, which is 3.8 as of September 2025.
+<p></p>
+</details>
+<details>
+<summary>
+<strong>3.</strong> Is a more recent Pandoc version available in an OSC module?
+</summary>
+<p>Yes:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> spider pandoc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>--------------------------------------------------------------------------------
+  pandoc:
+--------------------------------------------------------------------------------
+    Versions:
+        pandoc/2.19.2
+        pandoc/3.6.4</code></pre>
+</details>
+<details>
+<summary>
+<strong>4.</strong> Load the module with the most recent available Pandoc version
+</summary>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load pandoc/3.6.4</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pandoc</span> <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>pandoc 3.6.4
+Features: +server +lua
+Scripting engine: Lua 5.4
+User data directory: /users/PAS0471/jelmer/.local/share/pandoc
+Copyright (C) 2006-2024 John MacFarlane. Web: https://pandoc.org
+This is free software; see the source for copying conditions. There is no
+warranty, not even for merchantability or fitness for a particular purpose.</code></pre>
+</details>
+</section>
+<section id="exercise-3" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="exercise-3"><span class="header-section-number">5.3</span> Exercise 3</h3>
+<details>
+<summary>
+<strong>2.</strong> Run the container with the command <code>trim_galore -v</code>
+</summary>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">singularity</span> exec oras://community.wave.seqera.io/library/trim-galore:0.6.10--bc38c9238980c80e <span class="dt">\</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  trim_galore <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>INFO:    Downloading oras image
+465.8MiB / 465.8MiB [=============================================================================================================================] 100 % 56.2 MiB/s 0s
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+
+                        Quality-/Adapter-/RRBS-/Speciality-Trimming
+                                [powered by Cutadapt]
+                                  version 0.6.10
+
+                               Last update: 02 02 2023</code></pre>
 </details>
 
 
+</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
