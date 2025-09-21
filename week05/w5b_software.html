@@ -735,22 +735,40 @@ To list all parameters, run STAR --help</code></pre>
 <h2 data-number="4" class="anchored" data-anchor-id="using-apptainer-containers"><span class="header-section-number">4</span> Using Apptainer containers</h2>
 <section id="introduction-1" class="level3" data-number="4.1">
 <h3 data-number="4.1" class="anchored" data-anchor-id="introduction-1"><span class="header-section-number">4.1</span> Introduction</h3>
-<p>As mentioned above, because many programs needed for omics data analysis are not available through OSC modules, we need an alternative way to access them.</p>
-<p><strong>Conda</strong> and <strong>containers</strong> are both great options, and here, we will go over containers, while <a href="../bonus/conda.html">optional at-home reading covers Conda</a>. These two options are quite different both conceptually and in terms of usage. Conda is similar to OSC’s modules, except that you can install things yourself. Containers, on the other hand, are not installed or loaded at all<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. With typical usage, you simply download a pre-existing container image, and then use it.</p>
+<p>As mentioned above, because many programs needed for omics data analysis are not available through OSC modules, we need an alternative way to get access to these.</p>
+<p><strong>Conda</strong> and <strong>containers</strong> are both great options: here, we will go over containers, while <a href="../bonus/conda.html">optional at-home reading covers Conda</a>. These two approeaches are quite different both conceptually and operationally. Conda is similar to OSC’s modules, except that you can also install things yourself. Containers, on the other hand, are not installed or loaded<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>: typical usage involves simply downloading a file and using it.</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Conda versus containers
+Pros and cons of Conda versus containers <em>(Click to expand)</em>
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>TBA</p>
+<p>Key advantages of Conda are that:</p>
+<ul>
+<li>Once software is installed, using it is identical to using other software that has been installed. With containers, on the other hand, we need a long prefix to each comand.</li>
+<li>It is a bit easier to create custom environments with multiple programs or with manually installed programs</li>
+</ul>
+<p>Key advantages of containers are that:</p>
+<ul>
+<li>They are more portable (likely to work across different computers) and for that and a few other reasons, more reproducible than Conda</li>
+<li>It is quicker to download a container than to install software with Conda</li>
+<li>With the usage you’ll learn, you need to remember fewer commands than with Conda</li>
+<li>At OSC, it doesn’t require the loading of a module unlike with Conda</li>
+</ul>
+<p>One thing that currently does not differ is:</p>
+<ul>
+<li>The same set of programs is available through Conda and as containers – basically, their repositories are tightly linked</li>
+</ul>
 </div>
 </div>
-<p>Among container platforms, Apptainer (formerly known as Singularity) and especially Docker are most widely used. At supercomputers like OSC, however, only Apptainer containers can be used<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Some Apptainer container terminology:</p>
+</div>
+<p>Among container platforms, <strong>Apptainer</strong> (formerly, and in some cases still, known as <strong>Singularity</strong>) and especially Docker are most widely used. At supercomputers like OSC, however, only Apptainer containers can be used<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Some Apptainer container terminology:</p>
 <ul>
 <li><strong>Container image</strong>: a binary <em>file</em> that contains the container application (<code>.sif</code> extension)</li>
 <li><strong>Container</strong> (sensu stricto): a <em>running</em> container image</li>
@@ -759,8 +777,8 @@ Conda versus containers
 </section>
 <section id="how-well-use-containers" class="level3" data-number="4.2">
 <h3 data-number="4.2" class="anchored" data-anchor-id="how-well-use-containers"><span class="header-section-number">4.2</span> How we’ll use containers</h3>
-<p>Here, you will learn how to find container images online and use them at OSC. We will not cover writing Definition files to create your own custom containers, because this is very rarely needed, especially given recent developments in online container availability. The website we will use has or can be asked to create container images for nearly all open-source bioinformatics software!</p>
-<p>As such, the <strong>first step</strong> to using a container is finding/obtaining one. The <strong>second step</strong> is to run an appropriate command to access the software installed inside the container.</p>
+<p>Here, you will learn how to find container images online and use them at OSC. We will not cover writing Definition files to create your own custom containers, because this is very rarely needed given recent developments in online container availability. The website we’ll use has, or can be asked to create, container images for nearly all open-source bioinformatics software!</p>
+<p>As such, the first step to using a container is finding/obtaining one. The second step is to run an appropriate command to access the software installed inside the container. We’ll go over these steps one-by-one.</p>
 </section>
 <section id="obtaining-a-container-image" class="level3" data-number="4.3">
 <h3 data-number="4.3" class="anchored" data-anchor-id="obtaining-a-container-image"><span class="header-section-number">4.3</span> Obtaining a container image</h3>
@@ -773,17 +791,28 @@ Conda versus containers
 <li>Any combination of software that’s not mutually incompatible</li>
 </ul>
 <p>Then, it will see if a container with your exact requirements is already available and if not, it will build it and make it available.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-More on which programs are available as containers
+More on which programs are (not) available as containers <em>(Click to expand)</em>
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>TBA</p>
+<p>The below applies to both containers and Conda:</p>
+<ul>
+<li>Only free, open-source software is available
+<ul>
+<li>It is a good idea to avoid proprietary/paid software anyway!</li>
+<li>Rarely, academic free software has restrictive licensing that prevents it from being available</li>
+</ul></li>
+<li>You may run into an old or “low-key” program that is not available. I would take this as a sign that it may be better to avoid that program anyway – in practice, it is likely to be outdated, poorly maintained, and/or poorly documented.</li>
+</ul>
+</div>
 </div>
 </div>
 </section>
@@ -794,44 +823,78 @@ More on which programs are available as containers
 <li><p>Go to <strong><a href="https://seqera.io/containers" class="uri">https://seqera.io/containers</a></strong></p></li>
 <li><p>In the <strong>search box</strong> below “Containers”, enter <code>fastqc</code>.</p></li>
 <li><p>After waiting for the list to populate, the <strong>top hit</strong> should be <code>bioconda::fastqc</code>, with version <code>0.12.1</code> selected (the most recent version is always selected by default)</p></li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/container_search.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="../img/container_search.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="A screenshot showing the search result for FastQC on the Seqera containers website."></a></p>
+</figure>
+</div>
+<ol start="4" type="1">
 <li><p><strong>Add FastQC</strong> to your container request by clicking the blue <code>+ Add</code> button. At this point, you could add additional programs, but for this example, we are happy with a container that only has FastQC.</p></li>
 <li><p>In “<strong>Container settings</strong>” below the search box, change from <code>Docker</code> to <code>Singularity</code> (and leave the other dropdown as is – <code>linux/amd64</code> should be selected).</p></li>
-<li><p><strong>Get a link</strong> to the container image by clicking the blue <code>Get Container</code> button.</p></li>
-<li><p><strong>Copy the link</strong> to the container image that should appear immediately In this case, the link should be: <code>oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960</code></p></li>
 </ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/container_added.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="../img/container_added.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="A screenshot showing the correct selections before getting the link to the container."></a></p>
+</figure>
+</div>
+<ol start="6" type="1">
+<li><p><strong>Get a link</strong> to the container image by clicking the blue <code>Get Container</code> button.</p></li>
+<li><p><strong>Copy the link</strong> to the container image that should appear immediately (use the copy icon on the far left). The link should be: <code>oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960</code></p></li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/container_link2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="../img/container_link2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="A screenshot showing the download link for the container."></a></p>
+</figure>
+</div>
 <hr style="height:1pt; visibility:hidden;">
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Screenshots of the above process
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>TBA</strong></p>
-</div>
-</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Other tips
+Selecting programs on <a href="https://seqera.io/containers" class="uri">https://seqera.io/containers</a>
 </div>
 </div>
 <div class="callout-body-container callout-body">
+<p>A few more tips on selecting programs for your container on this website:</p>
 <ul>
-<li><p>If we had wanted a different version of FastQC, we could have used the dropdown menu… <em>TBA</em></p></li>
-<li><p>Always pick the Bioconda ones! <em>TBA</em></p></li>
-<li><p>In this case, after we clicked Get Container, the pop-up box should have immediately said “Container is ready”. When that happens, the container image was already available in the repository. In other cases, however, the container may still need to be built. This could take one or a few minutes, and while the link is made available immediately and won’t change (!), you can only download/use the container once the “Container is ready”.</p>
-<p>If you use the URL before the container is ready, you would get this error:</p>
+<li>If we had wanted a <strong>different (older) version of FastQC</strong>, we could have used the dropdown menu on the right:</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/container_versions.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="../img/container_versions.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="A screenshot demonstrating how to select a different program version for your container."></a></p>
+</figure>
+</div>
+<ul>
+<li>You will always want to <strong>pick Conda-based search hits</strong>, which you can recognize in two ways:
+<ul>
+<li>The program name will be prefixed by <code>bioconda::</code> (most commonly) or <code>conda-forge::</code>.</li>
+<li>Its logo, the green open circle (snake) shown in the screenshot above</li>
+</ul>
+(The other hits are typically Python packages, which can be recognized by the yellow-and-blue logo.)</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+You can’t use the container before it’s ready <em>(Click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>In this case, after we clicked Get Container, the pop-up box should have immediately said “Container is ready”. When that happens, the container image was already available in the repository. In other cases, however, the container may still need to be built, and the box should say <strong>“Fetching container”</strong> for a while.</p>
+<p>This could take one or a few minutes, and even though the URL is made available immediately and won’t change, you can only download/use the container once the “Container is ready”. If you use an URL before the container is ready, you get this error:</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f <span class="dt">\</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    multiqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>FATAL:   Unable to handle oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f uri: failed to get checksum for oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f: GET https://community.wave.seqera.io/v2/library/multiqc_trim-galore/manifests/15a1e9f26daf266f: MANIFEST_UNKNOWN: manifest unknown; map[Tag:15a1e9f26daf266f]</code></pre></li>
-</ul>
+<pre class="bash-out"><code>FATAL:   Unable to handle oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f uri: failed to get checksum for oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f: GET https://community.wave.seqera.io/v2/library/multiqc_trim-galore/manifests/15a1e9f26daf266f: MANIFEST_UNKNOWN: manifest unknown; map[Tag:15a1e9f26daf266f]</code></pre>
+</div>
 </div>
 </div>
 </section>

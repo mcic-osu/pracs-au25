@@ -78,6 +78,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/bootstrap/bootstrap-2249f211b4ff13c2f7c9e38a36b3bb61.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -294,15 +297,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#conda-basics" id="toc-conda-basics" class="nav-link active" data-scroll-target="#conda-basics"><span class="header-section-number">1</span> Conda basics</a></li>
   <li><a href="#creating-conda-environments-and-installing-software" id="toc-creating-conda-environments-and-installing-software" class="nav-link" data-scroll-target="#creating-conda-environments-and-installing-software"><span class="header-section-number">2</span> Creating Conda environments and installing software</a>
   <ul class="collapse">
-  <li><a href="#one-time-conda-configuration" id="toc-one-time-conda-configuration" class="nav-link" data-scroll-target="#one-time-conda-configuration"><span class="header-section-number">2.1</span> One-time Conda configuration</a></li>
-  <li><a href="#example-creating-an-environment-for-trimgalore" id="toc-example-creating-an-environment-for-trimgalore" class="nav-link" data-scroll-target="#example-creating-an-environment-for-trimgalore"><span class="header-section-number">2.2</span> Example: Creating an environment for TrimGalore</a></li>
-  <li><a href="#finding-conda-installation-info-online" id="toc-finding-conda-installation-info-online" class="nav-link" data-scroll-target="#finding-conda-installation-info-online"><span class="header-section-number">2.3</span> Finding Conda installation info online</a></li>
-  <li><a href="#building-the-installation-command-from-the-online-info" id="toc-building-the-installation-command-from-the-online-info" class="nav-link" data-scroll-target="#building-the-installation-command-from-the-online-info"><span class="header-section-number">2.4</span> Building the installation command from the online info</a></li>
-  <li><a href="#organizing-your-conda-environments" id="toc-organizing-your-conda-environments" class="nav-link" data-scroll-target="#organizing-your-conda-environments"><span class="header-section-number">2.5</span> Organizing your Conda environments</a></li>
+  <li><a href="#loading-the-conda-module" id="toc-loading-the-conda-module" class="nav-link" data-scroll-target="#loading-the-conda-module"><span class="header-section-number">2.1</span> Loading the Conda module</a></li>
+  <li><a href="#one-time-conda-configuration" id="toc-one-time-conda-configuration" class="nav-link" data-scroll-target="#one-time-conda-configuration"><span class="header-section-number">2.2</span> One-time Conda configuration</a></li>
+  <li><a href="#example-creating-an-environment-for-trimgalore" id="toc-example-creating-an-environment-for-trimgalore" class="nav-link" data-scroll-target="#example-creating-an-environment-for-trimgalore"><span class="header-section-number">2.3</span> Example: Creating an environment for TrimGalore</a></li>
   </ul></li>
-  <li><a href="#activating-conda-environments" id="toc-activating-conda-environments" class="nav-link" data-scroll-target="#activating-conda-environments"><span class="header-section-number">3</span> Activating Conda environments</a>
+  <li><a href="#creating-environments-for-any-available-program" id="toc-creating-environments-for-any-available-program" class="nav-link" data-scroll-target="#creating-environments-for-any-available-program"><span class="header-section-number">3</span> Creating environments for any available program</a>
   <ul class="collapse">
-  <li><a href="#lines-to-add-to-your-shell-script" id="toc-lines-to-add-to-your-shell-script" class="nav-link" data-scroll-target="#lines-to-add-to-your-shell-script"><span class="header-section-number">3.1</span> Lines to add to your shell script</a></li>
+  <li><a href="#finding-conda-installation-info-online" id="toc-finding-conda-installation-info-online" class="nav-link" data-scroll-target="#finding-conda-installation-info-online"><span class="header-section-number">3.1</span> Finding Conda installation info online</a></li>
+  <li><a href="#building-the-installation-command-from-the-online-info" id="toc-building-the-installation-command-from-the-online-info" class="nav-link" data-scroll-target="#building-the-installation-command-from-the-online-info"><span class="header-section-number">3.2</span> Building the installation command from the online info</a></li>
+  </ul></li>
+  <li><a href="#activating-conda-environments" id="toc-activating-conda-environments" class="nav-link" data-scroll-target="#activating-conda-environments"><span class="header-section-number">4</span> Activating Conda environments</a></li>
+  <li><a href="#managing-your-conda-environments" id="toc-managing-your-conda-environments" class="nav-link" data-scroll-target="#managing-your-conda-environments"><span class="header-section-number">5</span> Managing your Conda environments</a>
+  <ul class="collapse">
+  <li><a href="#practical-environment-management" id="toc-practical-environment-management" class="nav-link" data-scroll-target="#practical-environment-management"><span class="header-section-number">5.1</span> Practical environment management</a></li>
+  <li><a href="#one-environment-for-each" id="toc-one-environment-for-each" class="nav-link" data-scroll-target="#one-environment-for-each"><span class="header-section-number">5.2</span> One environment for each …?</a></li>
   </ul></li>
   </ul>
 <div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="../week05/w5_overview.html"><i class="bi bi-book"></i>Week 5 overview</a></li><li><a href="w5a_osc.html"><i class="bi bi-bookmarks"></i>w5a: A closer look at OSC</a></li><li><a href="w5b_software.html"><i class="bi bi-bookmarks"></i>w5b: Software management</a></li></ul></div></nav>
@@ -353,72 +361,64 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <hr>
 <p><br></p>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-THIS PAGE IS STILL UNDER CONSTRUCTION
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>TO DO:</p>
-<ul>
-<li>Use <code>bioconda::fastqc</code> notation</li>
-<li>List environments</li>
-<li>Talk about the default location (path) for environments</li>
-</ul>
-</div>
-</div>
-<p><br></p>
 <section id="conda-basics" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="conda-basics"><span class="header-section-number">1</span> Conda basics</h2>
 <p>Conda can create so-called <strong>environments</strong> in which you can install one or more software packages.</p>
 <p>As you’ll learn below, as long as a program is available in one of the online Conda repositories (and this is nearly always the case for open-source bioinformatics programs), then installing it:</p>
 <ul>
-<li>is quite straightforward;</li>
-<li>is very uniform, i.e.&nbsp;done with a procedure that is nearly identical regardless of the program you are installing;</li>
-<li>doesn’t require admin privileges.</li>
+<li>Is quite straightforward</li>
+<li>Is very uniform, i.e.&nbsp;done with a procedure that is nearly identical regardless of the program you are installing</li>
+<li>Doesn’t require adminastrative privileges</li>
 </ul>
-<p>Under the hood, a Conda environment is “merely” a directory that includes the executable (binary) files for the program(s) in question. And when you activate a Conda environment, that directory will be added to the locations the computer will search wen you try to run a program by entering a command.</p>
+<p>Under the hood, a Conda environment is “merely” a directory that includes the executable (binary) files for the program or programs in question. When you activate a Conda environment, that directory will be added to the collection of locations that the computer checks when you try to run a program by entering a command (the <code>$PATH</code>).</p>
 <p>Like Lmod modules, Conda has a main command (<code>conda</code>) and several sub-commands (<code>deactivate</code>, <code>create</code>, <code>install</code>, <code>update</code>). For example, to activate an environment, you would use <code>conda activate</code>. But before you can do so, you need to create an environment.</p>
 </section>
 <section id="creating-conda-environments-and-installing-software" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="creating-conda-environments-and-installing-software"><span class="header-section-number">2</span> Creating Conda environments and installing software</h2>
-<section id="one-time-conda-configuration" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="one-time-conda-configuration"><span class="header-section-number">2.1</span> One-time Conda configuration</h3>
-<p>Before you can create our own environments, you first have to do some one-time configuration<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. The configuration will set the <strong>Conda “channels”</strong> (basically, software repositories) that we want to use when we install programs. It will also set the relative priorities among channels, since one program may be available from multiple channels.</p>
+<section id="loading-the-conda-module" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="loading-the-conda-module"><span class="header-section-number">2.1</span> Loading the Conda module</h3>
+<p>Before you can use Conda in any way, you always need to load OSC’s Miniconda module first:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load miniconda3/24.1.2-py310</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="one-time-conda-configuration" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="one-time-conda-configuration"><span class="header-section-number">2.2</span> One-time Conda configuration</h3>
+<p>Before you can create our own environments, you should first do some one-time configuration<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. The configuration will set the <strong>Conda “channels”</strong> (basically, software repositories) you want to use when installing programs. It will also set the relative priorities among channels, since one program may be available from multiple channels.</p>
 <p>We can do this configuration with the <code>config</code> sub-command — run the following in your shell:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--add</span> channels defaults     <span class="co"># Added first =&gt; lowest priority</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--add</span> channels bioconda</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--add</span> channels conda-forge  <span class="co"># Added last =&gt; highest priority</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--add</span> channels defaults     <span class="co"># Added first =&gt; lowest priority</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--add</span> channels bioconda</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--add</span> channels conda-forge  <span class="co"># Added last =&gt; highest priority</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Check whether the configuration was successfully saved:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--get</span> channels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--get</span> channels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>--add channels 'defaults'   # lowest priority
 --add channels 'bioconda'
 --add channels 'conda-forge'   # highest priority</code></pre>
 </section>
-<section id="example-creating-an-environment-for-trimgalore" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="example-creating-an-environment-for-trimgalore"><span class="header-section-number">2.2</span> Example: Creating an environment for TrimGalore</h3>
-<p>You will now create a Conda environment for the program TrimGalore, which can trim and filter FASTQ files, and does not have a system-wide installation at OSC.</p>
+<section id="example-creating-an-environment-for-trimgalore" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="example-creating-an-environment-for-trimgalore"><span class="header-section-number">2.3</span> Example: Creating an environment for TrimGalore</h3>
+<p>You will create a Conda environment for the program TrimGalore, which can trim and filter FASTQ files, and does not have a system-wide installation at OSC.</p>
 <p>Here is the command to all at once create a new Conda environment and install TrimGalore into that environment:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this - we'll modify this a bit below]</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-y</span> <span class="at">-n</span> trim_galore <span class="at">-c</span> bioconda trim-galore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this - we'll modify this a bit below]</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-y</span> <span class="at">-n</span> trim_galore bioconda::trim-galore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Let’s break that command down:</p>
 <ul>
 <li><strong><code>create</code></strong> is the Conda sub-command to create a new environment.</li>
 <li>When adding <strong><code>-y</code></strong>, Conda will not ask us for confirmation to install.</li>
 <li>Following the <strong><code>-n</code></strong> option, you can specify the <em>name</em> you would like the environment to have: we used <code>trim-galore</code>. You can use whatever name you like for the environment, but a descriptive yet concise name is a good idea. For single-program environments, it makes sense to simply name it after the program.</li>
-<li>The <strong><code>-c</code></strong> option is to specify a “channel” (repository) from which to install, here <code>bioconda</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</li>
-<li>The <strong><code>trim-galore</code></strong> argument at the end of the line simply tells Conda to install the package of that name.</li>
+<li>With <strong><code>bioconda::trim-galore</code></strong> we indicate that we want to install the program <code>trim-galore</code> from the <code>bioconda</code> channel.</li>
 </ul>
-<hr style="height:1pt; visibility:hidden;">
-<p>By default, Conda will install the <strong>latest available version</strong> of a program. If you create an entirely new environment for a program, like we’re doing here, that default should always apply — but if you’re installing into an environment that already contains programs, it’s <em>possible</em> that due to compatibility issues, it will install a different version.</p>
-<p>If you want to be explicit about the version you want to install, add the version number after <strong><code>=</code></strong> following the package name, and you may then also want to include that version number in the Conda environment’s name — try this:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-y</span> <span class="at">-n</span> trim_galore-0.6.10 <span class="at">-c</span> bioconda trim-galore=0.6.10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>Collecting package metadata (current_repodata.json): done  
+<p>By default, Conda will install the <strong>latest available version</strong> of a program. If you create an entirely new environment for a program, like we’re doing here, that default should always apply. But if you’re installing into an environment that already contains other programs, it’s <em>possible</em> that due to compatibility issues, it will install a different version.</p>
+<p>If you want to be explicit about the version you want to install, add the version number after <strong><code>=</code></strong> following the package name, and you may then also want to include that version number in the Conda environment’s name – try this:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-y</span> <span class="at">-n</span> trim_galore-0.6.10 bioconda::trim-galore=0.6.10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Retrieving notices: ...working... done
+Channels:
+ - conda-forge
+ - bioconda
+ - defaults
+Platform: linux-64
+Collecting package metadata (repodata.json): done
 Solving environment: done
+
+## Package Plan ##
 # [...truncated...]</code></pre>
 <p>There should be a lot of output, with many packages that are being downloaded (these are all “dependencies” of TrimGalore), but if it works, you should see this before you get your prompt back:</p>
 <pre class="bash-out-solo"><code>Downloading and Extracting Packages
@@ -434,29 +434,12 @@ Executing transaction: done
 # To deactivate an active environment, use
 #
 #     $ conda deactivate</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Specifying the full path to the environment dir <em>(Click to expand)</em>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>You may have noticed above that we merely gave the environment a <em>name</em> (<code>trim_galore</code> or <code>trim_galore-0.6.10</code>), and did not tell it <em>where</em> to put this environment. Similarly, we were able to activate the environment with just its name. Conda assigns a <strong>personal default directory for its environments</strong>, somewhere in your Home directory.</p>
-<p>You can install environments in a different location with the <code>-p</code> (instead of <code>-n</code>) option — for example:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this]</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-y</span> <span class="at">-p</span> /fs/scratch/PAS2880/<span class="va">$USER</span>/conda/trim-galore <span class="at">-c</span> bioconda trim-galore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>When you want to load someone else’s Conda environments (this is possible!), you’ll always have to specify the full path to environment’s dir, like you did when loading one of my Conda environments above.</p>
-</div>
-</div>
-</div>
 </section>
-<section id="finding-conda-installation-info-online" class="level3" data-number="2.3">
-<h3 data-number="2.3" class="anchored" data-anchor-id="finding-conda-installation-info-online"><span class="header-section-number">2.3</span> Finding Conda installation info online</h3>
+</section>
+<section id="creating-environments-for-any-available-program" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="creating-environments-for-any-available-program"><span class="header-section-number">3</span> Creating environments for any available program</h2>
+<section id="finding-conda-installation-info-online" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="finding-conda-installation-info-online"><span class="header-section-number">3.1</span> Finding Conda installation info online</h3>
 <p>Minor variations on the <code>conda create</code> command above can be used to install almost any program for which a Conda package is available, which is the vast majority of open-source bioinformatics programs!</p>
 <p>However, you may wonder how you would know:</p>
 <ul>
@@ -464,112 +447,63 @@ Specifying the full path to the environment dir <em>(Click to expand)</em>
 <li>Which Conda channel we should use</li>
 <li>Which versions are available</li>
 </ul>
-<p>To find this out, my strategy is to simply Google the program name together with “conda”, e.g.&nbsp;“cutadapt conda” if I wanted to install the Cutadapt program. Let’s see that in action:</p>
+<p>To find this out, a good strategy is to simply Google the program name together with “conda”, e.g.&nbsp;“cutadapt conda” if I wanted to install the Cutadapt program. Let’s see that in action:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/conda_google.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%"></p>
+<p><a href="../img/conda_google.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="../img/conda_google.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="A screenshot of Google searh results for 'conda cutadapt'"></a></p>
 </figure>
 </div>
 <p>Click on that first link (in my experience, it is always the first Google hit):</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/conda_website.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%"></p>
+<p><a href="../img/conda_website2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="../img/conda_website2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:65.0%" alt="A screenshot of the Conda page for Cutadapt"></a></p>
 </figure>
 </div>
 </section>
-<section id="building-the-installation-command-from-the-online-info" class="level3" data-number="2.4">
-<h3 data-number="2.4" class="anchored" data-anchor-id="building-the-installation-command-from-the-online-info"><span class="header-section-number">2.4</span> Building the installation command from the online info</h3>
-<p>You can take the top of the two example installation commands as a template, here: <code>conda install -c bioconda cutadapt</code>. You may notice the <code>install</code> subcommand, which we haven’t yet seen. This would install Cutadapt into <em>the currently activated Conda environment</em>. Since our strategy here is to create a separate environment for each program, just installing a program into whatever environment is currently active is not a great idea.</p>
-<p>You <em>can</em> use the <code>install</code> command with a new environment, but then you would first have to create an “empty” environment, and <em>then</em> run the install command. However, we saw above that we can do all of this in a single command. To build this create-plus-install command, all we need to do is replace <code>install</code> in the example command on the Conda website by <code>create -y -n &lt;env-name&gt;</code>. Then, our full command (without version specification) will be:</p>
+<section id="building-the-installation-command-from-the-online-info" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="building-the-installation-command-from-the-online-info"><span class="header-section-number">3.2</span> Building the installation command from the online info</h3>
+<p>When you’re “building” you installation command, you can take as a template the first of the two example installation we saw above. In this case, that was: <code>conda install bioconda::cutadapt</code>.</p>
+<p>You may notice the <code>install</code> subcommand, which we didn’t see yet. This command would install Cutadapt into <em>the currently activated Conda environment</em>. Since our strategy here is to create a separate environment for each program, installing a program into whatever environment is currently active is not a great idea.</p>
+<p>You <em>can</em> use the <code>install</code> command with a new environment, but then you would first have to create an “empty” environment, and <em>then</em> run the install command. However, we saw above that we can do all of this in a single command.</p>
+<p>To build this create-plus-install command, all we need to do is replace <code>install</code> in the example command on the Conda website by <code>create -y -n &lt;env-name&gt;</code>. Then, your full command (without version specification) will be:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this - example command]</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-y</span> <span class="at">-n</span> cutadapt <span class="at">-c</span> bioconda cutadapt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-y</span> <span class="at">-n</span> cutadapt bioconda::cutadapt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To see which <strong>version</strong> of the software will be installed by default, and to see which older versions are available:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/conda_website_version.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<p><a href="../img/conda_website_version.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="../img/conda_website_version.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="An annotated screenshot of version options on the Conda website"></a></p>
 </figure>
 </div>
 <p>For almost any other program, you can use the exact same procedure to find the Conda package and install it!</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+</section>
+</section>
+<section id="activating-conda-environments" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="activating-conda-environments"><span class="header-section-number">4</span> Activating Conda environments</h2>
+<p>As mentioned above, these environments are (de)activated much like with the Lmod system. But while the term “load” is used for Lmod modules, the term and command <strong><code>activate</code></strong> is used for Conda environments — it means the same thing.</p>
+<p>Now, you should be able to activate the environment (using just its name – see the box below):</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate trim_galore-0.6.10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>(trim_galore-0.6.10) [jelmer@p0085 jelmer]$</code></pre>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-More Conda commands to manage your environments <em>(Click to expand)</em>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ul>
-<li><p>Remove an environment entirely:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env remove <span class="at">-n</span> cutadapt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p>List all your conda environments:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p>List all packages (programs) installed in an environment — due to dependencies, this can be a long list, even if you only actively installed one program:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> list <span class="at">-p</span> /fs/ess/PAS0471/jelmer/conda/multiqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p>Export a plain-text “YAML” file that contains the instructions to recreate your currently-active environment (useful for reproducibility!)</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env export <span class="op">&gt;</span> my_env.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>And you can use the following to create a Conda environment from such a YAML file:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env create <span class="at">-n</span> my_env <span class="at">--force</span> <span class="at">--file</span> my_env.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-</ul>
+<div class="callout-body-container">
+<p>When you have an active Conda environment, its name is displayed in front of your prompt, as shown above!</p>
 </div>
 </div>
 </div>
-</section>
-<section id="organizing-your-conda-environments" class="level3" data-number="2.5">
-<h3 data-number="2.5" class="anchored" data-anchor-id="organizing-your-conda-environments"><span class="header-section-number">2.5</span> Organizing your Conda environments</h3>
-<p>There are two reasonable alternative way to organize your Conda environments:</p>
-<ul>
-<li><strong>Have one environment per program</strong> (my preference)
-<ul>
-<li>Easier to keep an overview of what you have installed</li>
-<li>No need to reinstall the same program across different projects</li>
-<li>Less risk of running into problems with your environment due to mutually incompatible software and complicated dependency situations</li>
-</ul></li>
-<li><strong>Have one environment per research project</strong>
-<ul>
-<li>You just need to activate that one environment when you’re working on your project.</li>
-<li>Easier when you need to share your entire project with someone else (or yourself) on a different (super)computer.</li>
-</ul></li>
-</ul>
-<p>Even though it might seem easier, a third alternative, to simply install all programs across all projects in one single environment, is <em>not</em> recommended. This doesn’t benefit reproducibility, and your environment is likely to stop functioning properly sooner or later.</p>
-</section>
-</section>
-<section id="activating-conda-environments" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="activating-conda-environments"><span class="header-section-number">3</span> Activating Conda environments</h2>
-<p>Before you can activate Conda environments, you always need to load OSC’s Miniconda module first:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load miniconda3/24.1.2-py310</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>As mentioned above, these environments are (de)activated much like with the Lmod system. But while the term “load” is used for Lmod modules, the term and command <strong><code>activate</code></strong> is used for Conda environments — it means the same thing.</p>
-<p>Now, you should be able to activate the environment (using just its name – see the box below):</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate trim_galore-0.6.10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>(trim_galore-0.6.10) [jelmer@p0085 jelmer]$</code></pre>
 <p>After you have activated the <em>trimgalore</em> environment, you should be able to use the program. To test this, simply run the <code>trim_galore</code> command with the <code>--help</code> option:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code> USAGE:
 
 trim_galore [options] &lt;filename(s)&gt;
 
 -h/--help               Print this help message and exits.
 # [...truncated...]</code></pre>
-<p>Above, you activated a Conda environment of mine.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Conda environment indicator!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>When you have an active Conda environment, its name is displayed in front of your prompt, as depicted above with <code>(trimgalore)</code>.</p>
-</div>
-</div>
 <p>Unlike Lmod / <code>module load</code>, Conda will by default only keep <strong>a single environment active</strong>. Therefore, when you have environment A active and then activate environment B, the program(s) in environment A will no longer be available.</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -578,45 +512,98 @@ The <code>--stack</code> option does enable you having multiple Conda environmen
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
+<p>If you want to have multiple Conda environments active at the same time, you can do so with the <code>--stack</code> option:</p>
 <ol type="1">
 <li><p>Activate the TrimGalore environment, if it isn’t already active:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate trim_galore-0.6.10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate trim_galore-0.6.10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>“Stack” a MultiQC environment of mine:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate <span class="at">--stack</span> /fs/ess/PAS0471/jelmer/conda/multiqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate <span class="at">--stack</span> /fs/ess/PAS0471/jelmer/conda/multiqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Check that you can use both programs — output not shown, but both should successfully print help info:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> <span class="at">--help</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">multiqc</span> <span class="at">--help</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ol>
 </div>
 </div>
 </div>
-<section id="lines-to-add-to-your-shell-script" class="level3" data-number="3.1">
-<h3 data-number="3.1" class="anchored" data-anchor-id="lines-to-add-to-your-shell-script"><span class="header-section-number">3.1</span> Lines to add to your shell script</h3>
-<p>Like for Lmod modules, you’ll have to load Conda environments in every shell session that you want to use them — they don’t automatically reload.</p>
-<p>Conda environments loaded in your interactive shell environment <em>do</em> “carry over” to the environment in which your script runs (even when you submit them to the Slurm queue with <code>sbatch</code>). However, it is good practice to always <em>include the necessary code to load/activate programs in your shell scripts:</em></p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load software</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load miniconda3/24.1.2-py310</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate trim_galore-0.6.10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
+</section>
+<section id="managing-your-conda-environments" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="managing-your-conda-environments"><span class="header-section-number">5</span> Managing your Conda environments</h2>
+<section id="practical-environment-management" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="practical-environment-management"><span class="header-section-number">5.1</span> Practical environment management</h3>
+<p>You may have noticed that above, we merely gave the environment we created a <em>name</em> (<code>trim_galore</code> or <code>trim_galore-0.6.10</code>), and did not tell Conda <em>where</em> to put this environment. Similarly, we were able to activate the environment with just its name. Conda assigns a <strong>personal default directory for its environments</strong>, typically <code>~/.conda</code> or <code>~/miniconda</code>.</p>
+<p>To use a different location for individual environments, you can use the <code>-p</code> (instead of <code>-n</code>) option – for example:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this]</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-y</span> <span class="at">-p</span> /fs/scratch/PAS2880/<span class="va">$USER</span>/conda/trim-galore bioconda::trim-galore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When you do this, you will in most cases have to use <code>-p &lt;path&gt;</code> also when you <em>activate</em> the environment.</p>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>When you want to load someone else’s Conda environments (this is possible as long as you have read-access to that dir!), you’ll always have to specify the full path to environment’s dir.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>If you want to change the default location for your Conda environments, see <a href="https://docs.conda.io/projects/conda/en/stable/user-guide/configuration/use-condarc.html">this page</a>.</p>
+</div>
+</div>
+</div>
+<p>To see which Conda environments you have, run <code>conda env list</code>:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>trim_galore-0.6.10       /users/PAS0471/jelmer/.conda/envs/trim_galore-0.6.10</code></pre>
+<p>To remove a Conda environment, use <code>conda env remove</code>:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env remove <span class="at">-n</span> trim_galore-0.6.10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Perils of Conda environments inside scripts
+More Conda commands to manage your environments <em>(Click to expand)</em>
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Problems can occur when you have a Conda environment active in your interactive shell while you submit a script as a batch job that activates a different environment. Therefore, it is generally a good idea <strong>to not have any Conda environments active</strong> <strong>in your interactive shell when submitting batch jobs</strong><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. To deactivate the currently active Conda environment, simply type <code>conda deactivate</code> without any arguments:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> deactivate   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><p>List all packages (programs) installed in an environment — due to dependencies, this can be a long list, even if you only actively installed one program:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> list <span class="at">-p</span> /fs/ess/PAS0471/jelmer/conda/multiqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Export a plain-text “YAML” file that contains the instructions to recreate your currently-active environment (useful for reproducibility!)</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env export <span class="op">&gt;</span> my_env.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>And you can use the following to create a Conda environment from such a YAML file:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env create <span class="at">-n</span> my_env <span class="at">--force</span> <span class="at">--file</span> my_env.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
 </div>
 </div>
+</div>
+</section>
+<section id="one-environment-for-each" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="one-environment-for-each"><span class="header-section-number">5.2</span> One environment for each …?</h3>
+<p>There are two reasonable ways to organize your Conda environments:</p>
+<ul>
+<li><strong>Have one environment for each program</strong>
+<ul>
+<li>Easier to keep an overview of what you have installed</li>
+<li>No need to reinstall the same program across different projects</li>
+<li>Less risk of running into problems with your environment due to mutually incompatible software and complicated dependency situations</li>
+</ul></li>
+<li><strong>Have one environment for each research project</strong>
+<ul>
+<li>You just need to activate that one environment when you’re working on your project.</li>
+<li>Easier when you need to share your entire project with someone else (or yourself) on a different (super)computer.</li>
+</ul></li>
+</ul>
+<p>Even though it might seem easier, a third alternative, to simply install all programs across all projects in one single environment, is <em>not</em> recommended. This doesn’t benefit reproducibility, and your environment is likely to stop functioning properly sooner or later.</p>
 
 
 </section>
@@ -627,8 +614,6 @@ Perils of Conda environments inside scripts
 
 <ol>
 <li id="fn1"><p>That is, these settings will be saved somewhere in your OSC Home directory, and you never have to set them again unless you need to make changes.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p> Given that you’ve done some config above, this is not always necessary, but it can be good to be explicit.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p> Unless you first deactivate any active environments in your script.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1069,6 +1054,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

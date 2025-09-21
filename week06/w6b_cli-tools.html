@@ -979,6 +979,32 @@ Hard-coding settings
 <span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Run a fictional program</span></span>
 <span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a><span class="ex">trimmer2</span> <span class="at">--in1</span> <span class="st">"</span><span class="va">$R1_in</span><span class="st">"</span> <span class="at">--in2</span> <span class="st">"</span><span class="va">$R2_in</span><span class="st">"</span> <span class="at">--out1</span> <span class="st">"</span><span class="va">$R1_out</span><span class="st">"</span> <span class="at">--out2</span> <span class="st">"</span><span class="va">$R2_out</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Using Conda environments in shell scripts <em>(Click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Like with Lmod modules, you’ll have to load Conda environments in every shell session that you want to use them – they don’t automatically reload.</p>
+<p>Conda environments loaded in your interactive shell environment <em>do</em> “carry over” to the environment in which your script runs (even when you submit them to the Slurm queue with <code>sbatch</code>). However, it is good practice to always <em>include the necessary code to load/activate programs in your shell scripts:</em></p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load software</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load miniconda3/24.1.2-py310</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate trim_galore-0.6.10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p>Unfortunately, problems can occur when you have a Conda environment active in your interactive shell while you submit a script as a batch job that activates a different environment. Therefore, it is generally a good idea <strong>to not have any Conda environments active</strong> <strong>in your interactive shell when submitting batch jobs</strong>. To deactivate the currently active Conda environment, simply type <code>conda deactivate</code> without any arguments:</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> deactivate   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 
 
 </section>
