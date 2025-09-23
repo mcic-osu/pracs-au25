@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jelmer Poelstra">
-<meta name="dcterms.date" content="2025-09-23">
+<meta name="dcterms.date" content="2025-09-26">
 
 <title>Shell scripting – PRACS-AU25</title>
 <style>
@@ -294,38 +294,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a>
   <ul class="collapse">
   <li><a href="#learning-goals" id="toc-learning-goals" class="nav-link" data-scroll-target="#learning-goals"><span class="header-section-number">1.1</span> Learning Goals</a></li>
-  <li><a href="#shell-scripts" id="toc-shell-scripts" class="nav-link" data-scroll-target="#shell-scripts"><span class="header-section-number">1.2</span> Shell scripts</a></li>
-  <li><a href="#getting-ready" id="toc-getting-ready" class="nav-link" data-scroll-target="#getting-ready"><span class="header-section-number">1.3</span> Getting ready</a></li>
+  <li><a href="#getting-ready" id="toc-getting-ready" class="nav-link" data-scroll-target="#getting-ready"><span class="header-section-number">1.2</span> Getting ready</a></li>
   </ul></li>
-  <li><a href="#a-basic-shell-script" id="toc-a-basic-shell-script" class="nav-link" data-scroll-target="#a-basic-shell-script"><span class="header-section-number">2</span> A basic shell script</a>
+  <li><a href="#shell-scripts" id="toc-shell-scripts" class="nav-link" data-scroll-target="#shell-scripts"><span class="header-section-number">2</span> Shell scripts</a></li>
+  <li><a href="#a-basic-shell-script" id="toc-a-basic-shell-script" class="nav-link" data-scroll-target="#a-basic-shell-script"><span class="header-section-number">3</span> A basic shell script</a>
   <ul class="collapse">
-  <li><a href="#a-one-line-script-to-start" id="toc-a-one-line-script-to-start" class="nav-link" data-scroll-target="#a-one-line-script-to-start"><span class="header-section-number">2.1</span> A one-line script to start</a></li>
-  <li><a href="#shebang-line" id="toc-shebang-line" class="nav-link" data-scroll-target="#shebang-line"><span class="header-section-number">2.2</span> Shebang line</a></li>
-  <li><a href="#shell-script-settings" id="toc-shell-script-settings" class="nav-link" data-scroll-target="#shell-script-settings"><span class="header-section-number">2.3</span> Shell script settings</a></li>
-  <li><a href="#adding-the-header-lines-to-our-script" id="toc-adding-the-header-lines-to-our-script" class="nav-link" data-scroll-target="#adding-the-header-lines-to-our-script"><span class="header-section-number">2.4</span> Adding the header lines to our script</a></li>
+  <li><a href="#a-one-line-script-to-start" id="toc-a-one-line-script-to-start" class="nav-link" data-scroll-target="#a-one-line-script-to-start"><span class="header-section-number">3.1</span> A one-line script to start</a></li>
+  <li><a href="#shebang-line" id="toc-shebang-line" class="nav-link" data-scroll-target="#shebang-line"><span class="header-section-number">3.2</span> Shebang line</a></li>
+  <li><a href="#shell-script-settings" id="toc-shell-script-settings" class="nav-link" data-scroll-target="#shell-script-settings"><span class="header-section-number">3.3</span> Shell script settings</a></li>
+  <li><a href="#adding-the-header-lines-to-your-script" id="toc-adding-the-header-lines-to-your-script" class="nav-link" data-scroll-target="#adding-the-header-lines-to-your-script"><span class="header-section-number">3.4</span> Adding the header lines to your script</a></li>
   </ul></li>
-  <li><a href="#shell-variables" id="toc-shell-variables" class="nav-link" data-scroll-target="#shell-variables"><span class="header-section-number">3</span> Shell variables</a>
+  <li><a href="#shell-variables" id="toc-shell-variables" class="nav-link" data-scroll-target="#shell-variables"><span class="header-section-number">4</span> Shell variables</a>
   <ul class="collapse">
-  <li><a href="#variables" id="toc-variables" class="nav-link" data-scroll-target="#variables"><span class="header-section-number">3.1</span> Variables</a></li>
-  <li><a href="#variable-names" id="toc-variable-names" class="nav-link" data-scroll-target="#variable-names"><span class="header-section-number">3.2</span> Variable names</a></li>
-  <li><a href="#quoting-variables" id="toc-quoting-variables" class="nav-link" data-scroll-target="#quoting-variables"><span class="header-section-number">3.3</span> Quoting variables</a></li>
+  <li><a href="#variables" id="toc-variables" class="nav-link" data-scroll-target="#variables"><span class="header-section-number">4.1</span> Variables</a></li>
+  <li><a href="#variable-names" id="toc-variable-names" class="nav-link" data-scroll-target="#variable-names"><span class="header-section-number">4.2</span> Variable names</a></li>
+  <li><a href="#quoting-variables" id="toc-quoting-variables" class="nav-link" data-scroll-target="#quoting-variables"><span class="header-section-number">4.3</span> Quoting variables</a></li>
   </ul></li>
-  <li><a href="#command-line-arguments-for-scripts" id="toc-command-line-arguments-for-scripts" class="nav-link" data-scroll-target="#command-line-arguments-for-scripts"><span class="header-section-number">4</span> Command-line arguments for scripts</a>
+  <li><a href="#command-line-arguments-for-scripts" id="toc-command-line-arguments-for-scripts" class="nav-link" data-scroll-target="#command-line-arguments-for-scripts"><span class="header-section-number">5</span> Command-line arguments for scripts</a>
   <ul class="collapse">
-  <li><a href="#executing-a-script-with-arguments" id="toc-executing-a-script-with-arguments" class="nav-link" data-scroll-target="#executing-a-script-with-arguments"><span class="header-section-number">4.1</span> Executing a script with arguments</a></li>
-  <li><a href="#placeholder-variables" id="toc-placeholder-variables" class="nav-link" data-scroll-target="#placeholder-variables"><span class="header-section-number">4.2</span> Placeholder variables</a></li>
-  <li><a href="#copying-placeholders-to-variables-with-descriptive-names" id="toc-copying-placeholders-to-variables-with-descriptive-names" class="nav-link" data-scroll-target="#copying-placeholders-to-variables-with-descriptive-names"><span class="header-section-number">4.3</span> Copying placeholders to variables with descriptive names</a></li>
+  <li><a href="#executing-a-script-with-arguments" id="toc-executing-a-script-with-arguments" class="nav-link" data-scroll-target="#executing-a-script-with-arguments"><span class="header-section-number">5.1</span> Executing a script with arguments</a></li>
+  <li><a href="#placeholder-variables" id="toc-placeholder-variables" class="nav-link" data-scroll-target="#placeholder-variables"><span class="header-section-number">5.2</span> Placeholder variables</a></li>
+  <li><a href="#copying-placeholders-to-variables-with-descriptive-names" id="toc-copying-placeholders-to-variables-with-descriptive-names" class="nav-link" data-scroll-target="#copying-placeholders-to-variables-with-descriptive-names"><span class="header-section-number">5.3</span> Copying placeholders to variables with descriptive names</a></li>
   </ul></li>
-  <li><a href="#command-substitution" id="toc-command-substitution" class="nav-link" data-scroll-target="#command-substitution"><span class="header-section-number">5</span> Command substitution</a></li>
-  <li><a href="#conditionals" id="toc-conditionals" class="nav-link" data-scroll-target="#conditionals"><span class="header-section-number">6</span> Conditionals</a>
+  <li><a href="#command-substitution" id="toc-command-substitution" class="nav-link" data-scroll-target="#command-substitution"><span class="header-section-number">6</span> Command substitution</a></li>
+  <li><a href="#conditionals" id="toc-conditionals" class="nav-link" data-scroll-target="#conditionals"><span class="header-section-number">7</span> Conditionals</a>
   <ul class="collapse">
-  <li><a href="#basic-syntax" id="toc-basic-syntax" class="nav-link" data-scroll-target="#basic-syntax"><span class="header-section-number">6.1</span> Basic syntax</a></li>
-  <li><a href="#string-comparisons" id="toc-string-comparisons" class="nav-link" data-scroll-target="#string-comparisons"><span class="header-section-number">6.2</span> String comparisons</a></li>
-  <li><a href="#integer-number-comparisons" id="toc-integer-number-comparisons" class="nav-link" data-scroll-target="#integer-number-comparisons"><span class="header-section-number">6.3</span> Integer (number) comparisons</a></li>
-  <li><a href="#file-tests" id="toc-file-tests" class="nav-link" data-scroll-target="#file-tests"><span class="header-section-number">6.4</span> File tests</a></li>
+  <li><a href="#basic-syntax" id="toc-basic-syntax" class="nav-link" data-scroll-target="#basic-syntax"><span class="header-section-number">7.1</span> Basic syntax</a></li>
+  <li><a href="#string-comparisons" id="toc-string-comparisons" class="nav-link" data-scroll-target="#string-comparisons"><span class="header-section-number">7.2</span> String comparisons</a></li>
+  <li><a href="#integer-number-comparisons" id="toc-integer-number-comparisons" class="nav-link" data-scroll-target="#integer-number-comparisons"><span class="header-section-number">7.3</span> Integer (number) comparisons</a></li>
+  <li><a href="#file-tests" id="toc-file-tests" class="nav-link" data-scroll-target="#file-tests"><span class="header-section-number">7.4</span> File tests</a></li>
   </ul></li>
   </ul>
-<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w6_overview.html"><i class="bi bi-book"></i>Week 6 overview</a></li><li><a href="w6_ga_shell-scripts.html"><i class="bi bi-pencil"></i>Week 6 graded assignment</a></li><li><a href="w6b_cli-tools.html"><i class="bi bi-bookmarks"></i>w6-2: Shell scripting II</a></li><li><a href="../bonus/shell-scripting.html"><i class="bi bi-book"></i>Bonus: Advanced shell scripting and looping</a></li></ul></div></nav>
+<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w6_overview.html"><i class="bi bi-book"></i>Week 6 overview</a></li><li><a href="w6b_cli-tools.html"><i class="bi bi-bookmarks"></i>w6b: Shell scripting - CLI tools</a></li><li><a href="w6_ga_shell-scripts.html"><i class="bi bi-pencil"></i>Week 6 graded assignment</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -333,7 +333,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Shell scripting</h1>
-<p class="subtitle lead">Week 6 – Lecture I</p>
+<p class="subtitle lead">Week 6 – Lecture A</p>
 </div>
 
 
@@ -359,7 +359,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 23, 2025</p>
+      <p class="date">September 26, 2025</p>
     </div>
   </div>
   
@@ -379,8 +379,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="1.1" class="anchored" data-anchor-id="learning-goals"><span class="header-section-number">1.1</span> Learning Goals</h3>
 <section id="this-week-and-the-next-two-weeks" class="level4">
 <h4 class="anchored" data-anchor-id="this-week-and-the-next-two-weeks">This week and the next two weeks</h4>
-<p>This week, you will learn how to write shell scripts and use them to run programs, like various bioinformatics tools, that have command-line interfaces (CLIs).</p>
-<p>If we write shell scripts, we can easily submit them as “batch jobs” at OSC — and that e.g.. allows us to run the program simultaneously up to hundreds of times!</p>
+<p>This week, you will learn how to write shell scripts and use them to run programs, like various bioinformatics tools, that have command-line interfaces (CLIs). Shell scripts can be easily submitted as “batch jobs” at OSC — and that e.g.. allows us to run the program simultaneously up to hundreds of times!</p>
 <p>Before you can actually start doing that, you’ll still need to learn about the following topics:</p>
 <ol type="1">
 <li>The basics of shell scripts (this session)</li>
@@ -398,17 +397,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Command-line arguments to scripts</li>
 <li>Command substitution to save the output of commands</li>
 </ul>
-<hr style="height:1pt; visibility:hidden;">
 </section>
 </section>
-<section id="shell-scripts" class="level3" data-number="1.2">
-<h3 data-number="1.2" class="anchored" data-anchor-id="shell-scripts"><span class="header-section-number">1.2</span> Shell scripts</h3>
+<section id="getting-ready" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="getting-ready"><span class="header-section-number">1.2</span> Getting ready</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Some useful VS Code keyboard shortcuts
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Working with keyboard shortcuts for common operations can be a lot faster than using your mouse. Below are some particularly useful ones in VS Code:</p>
+<ul>
+<li><p>Open a terminal: <kbd>Ctrl</kbd>+<kbd>`</kbd> (backtick)</p></li>
+<li><p>Toggle between the terminal and the editor pane: <kbd>Ctrl</kbd>+<kbd>`</kbd> and <kbd>Ctrl</kbd>+<kbd>1</kbd>.</p></li>
+<li><p><em>“Line actions”</em>:</p>
+<ul>
+<li><p>Move a line up or down: <kbd>Alt/Option</kbd>+<kbd>⬆</kbd>/<kbd>⬇</kbd></p></li>
+<li><p>Delete a line: <kbd>Ctrl/⌘</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd></p></li>
+<li><p>The standard copy and cut shortcuts (<kbd>Ctrl/⌘</kbd>+<kbd>X</kbd> / <kbd>C</kbd>) will <strong>cut/copy the entire line</strong> that the cursor is on!</p></li>
+</ul></li>
+</ul>
+<p><strong>TBA point to shortcut reference again</strong></p>
+</div>
+</div>
+</section>
+</section>
+<section id="shell-scripts" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="shell-scripts"><span class="header-section-number">2</span> Shell scripts</h2>
 <p>Many bioinformatics tools (programs/software) that are used to analyze omics data are run from the command line. We can run them using command line expressions that are structurally <em>very similar to how we’ve been using basic Unix shell commands.</em></p>
-<p>However, we’ve been running shell commands in a manner that we may call “interactive”, by typing or pasting them into the shell, and then pressing <kbd>Enter</kbd>. But when you run bioinformatics tools, it is in most cases a much better idea to <strong>run them via shell scripts</strong>, which are plain-text files that contain shell code.</p>
-<p>Therefore, shell scripts are relatively straightforward to write given what you already know!</p>
+<p>However, we’ve been running shell commands in a manner that we may call “interactive”, by typing or pasting them into the shell, and then pressing <kbd>Enter</kbd>. But when you run bioinformatics tools, it is in most cases a much better idea to <strong>run them via shell scripts</strong>, which are plain-text files that contain shell code. Shell scripts are relatively straightforward to write given what you already know!</p>
 <section id="why-use-shell-scripts" class="level4">
 <h4 class="anchored" data-anchor-id="why-use-shell-scripts">Why use shell scripts</h4>
-<p>There are some general reasons why it can be beneficial to use shell scripts instead of running code interactively line-by-line:</p>
+<p>Some general reasons why it can be beneficial to use shell scripts instead of running code interactively line-by-line:</p>
 <ul>
 <li>It is a good way to save and organize your code.</li>
 <li>You can easily rerun scripts and re-use them in similar contexts.</li>
@@ -434,39 +459,10 @@ Bash vs.&nbsp;shell
 </div>
 </section>
 </section>
-<section id="getting-ready" class="level3" data-number="1.3">
-<h3 data-number="1.3" class="anchored" data-anchor-id="getting-ready"><span class="header-section-number">1.3</span> Getting ready</h3>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Some useful VS Code keyboard shortcuts
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Working with keyboard shortcuts for common operations can be a lot faster than using your mouse. Below are some particularly useful ones in VS Code:</p>
-<ul>
-<li><p>Open a terminal: <kbd>Ctrl</kbd>+<kbd>`</kbd> (backtick)</p></li>
-<li><p>Toggle between the terminal and the editor pane: <kbd>Ctrl</kbd>+<kbd>`</kbd> and <kbd>Ctrl</kbd>+<kbd>1</kbd>.</p></li>
-<li><p><em>“Line actions”</em>:</p>
-<ul>
-<li>Move a line up or down: <kbd>Alt/Option</kbd>+<kbd>⬆</kbd>/<kbd>⬇</kbd></li>
-<li>Delete a line: <kbd>Ctrl/⌘</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd></li>
-<li>The standard copy and cut shortcuts (<kbd>Ctrl/⌘</kbd>+<kbd>X</kbd> / <kbd>C</kbd>) will <strong>cut/copy the entire line</strong> that the cursor is on!</li>
-</ul></li>
-</ul>
-<p><strong>TBA point to shortcut reference again</strong></p>
-</div>
-</div>
-<p><br></p>
-</section>
-</section>
-<section id="a-basic-shell-script" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="a-basic-shell-script"><span class="header-section-number">2</span> A basic shell script</h2>
-<section id="a-one-line-script-to-start" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="a-one-line-script-to-start"><span class="header-section-number">2.1</span> A one-line script to start</h3>
+<section id="a-basic-shell-script" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="a-basic-shell-script"><span class="header-section-number">3</span> A basic shell script</h2>
+<section id="a-one-line-script-to-start" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="a-one-line-script-to-start"><span class="header-section-number">3.1</span> A one-line script to start</h3>
 <p>Create your first script, <code>printname.sh</code> (note that shell scripts usually have the extension <code>.sh</code>) as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, let's create and move into a new dir</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> week06/scripts</span>
@@ -499,40 +495,16 @@ Auto Save in VS Code <em>(Click to expand)</em>
 </div>
 </div>
 </div>
-<section id="add-a-vs-code-keyboard-shortcut" class="level4">
-<h4 class="anchored" data-anchor-id="add-a-vs-code-keyboard-shortcut">Add a VS Code keyboard shortcut</h4>
-<p>Add a keyboard shortcut to send code from your editor pane to the terminal. That way, you don’t have to copy-and-paste code into the terminal when you’ve typed it in the editor<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
-<ol type="1">
-<li>Click <i class="fa fa-cog"></i> (bottom-left) &gt; <code>Keyboard Shortcuts</code></li>
-<li>Enter “Run Selected Text” in the search box, and the option in question should pop up: <code>Terminal: Run Selected Text in Active Terminal</code></li>
-<li>Click on that, then add the shortcut <kbd>Ctrl</kbd>+<kbd>Enter</kbd><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</li>
-</ol>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Automatic whole-line selection in VS Code
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>In VS Code’s editor pane, the <em>entire line that your cursor is on is selected by default</em>. As such, you don’t need to manually select the entire line when wanting to send it to the terminal (or when cutting/copying!).</p>
-</div>
-</div>
-<hr style="height:1pt; visibility:hidden;">
 </section>
-</section>
-<section id="shebang-line" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="shebang-line"><span class="header-section-number">2.2</span> Shebang line</h3>
+<section id="shebang-line" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="shebang-line"><span class="header-section-number">3.2</span> Shebang line</h3>
 <p>We use a so-called “<em>shebang</em>” line as the first line of a script to <strong>indicate which computer language our script uses</strong>. More specifically, this line tell the computer where to find the binary (executable) that will run our script.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Such a line starts with <strong><code>#!</code></strong> (hash-bang), basically marking it as a special type of comment. After those two characters, we give the file path of the relevant program: in our case Bash, which itself is just a program with an executable file that is located at <code>/bin/bash</code> on Linux and Mac computers.</p>
 <p>While not always strictly necessary, adding a <em>shebang</em> line to every shell script is good practice, especially when you submit your script to OSC’s Slurm queue, as we’ll do later.</p>
-<hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="shell-script-settings" class="level3" data-number="2.3">
-<h3 data-number="2.3" class="anchored" data-anchor-id="shell-script-settings"><span class="header-section-number">2.3</span> Shell script settings</h3>
+<section id="shell-script-settings" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="shell-script-settings"><span class="header-section-number">3.3</span> Shell script settings</h3>
 <p>Another best-practice line you should add to your shell scripts will change some default settings to safer alternatives.</p>
 <section id="bad-default-shell-settings" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="bad-default-shell-settings">Bad default shell settings</h4>
@@ -545,7 +517,6 @@ Automatic whole-line selection in VS Code
 <li><p>A Bash script <strong>keeps running after encountering errors</strong>. That is, if an error is encountered when running, say, line 2 of a script, any remaining lines in the script will nevertheless be executed.</p>
 <p>In the best case, this is a waste of computer resources, and in worse cases, it can lead to all kinds of unintended consequences. Additionally, if your script prints a lot of output, you might not notice an error somewhere in the middle if it doesn’t produce more errors downstream. But the downstream results from what we at that point might call a “zombie script” can still be completely wrong.</p></li>
 </ul>
-<hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -578,7 +549,7 @@ Above, the text specified the <em>intent</em> of the commands. What would have a
 </ul>
 </details>
 <p>These kinds of accidents are especially likely to happen inside scripts, where it is common to use variables and to work non-interactively.</p>
-<p>Before you get too scared of creating terrible damage, note that at OSC, you would not be able to remove any essential files<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, since you don’t have the permissions to do so. On your own computer, this could be more genuinely dangerous, though even there, you would not be able to remove operating system files without specifically requesting “admin” rights.</p>
+<p>Before you get too scared of creating terrible damage, note that at OSC, you would not be able to remove any essential files<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, since you don’t have the permissions to do so. On your own computer, this could be more genuinely dangerous, though even there, you would not be able to remove operating system files without specifically requesting “admin” rights.</p>
 </div>
 </div>
 </section>
@@ -594,11 +565,10 @@ Above, the text specified the <em>intent</em> of the commands. What would have a
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-e</span> <span class="at">-u</span> <span class="at">-o</span> pipefail</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Or even more concisely:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr style="height:1pt; visibility:hidden;">
 </section>
 </section>
-<section id="adding-the-header-lines-to-our-script" class="level3" data-number="2.4">
-<h3 data-number="2.4" class="anchored" data-anchor-id="adding-the-header-lines-to-our-script"><span class="header-section-number">2.4</span> Adding the header lines to our script</h3>
+<section id="adding-the-header-lines-to-your-script" class="level3" data-number="3.4">
+<h3 data-number="3.4" class="anchored" data-anchor-id="adding-the-header-lines-to-your-script"><span class="header-section-number">3.4</span> Adding the header lines to your script</h3>
 <p>Add the discussed header lines to your <code>printname.sh</code> script, so it will now contain the following:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
@@ -609,7 +579,7 @@ Above, the text specified the <em>intent</em> of the commands. What would have a
 <pre class="bash-out"><code>This script will print a first and a last name</code></pre>
 <p>That didn’t change anything to the output, but at least we confirmed that the script still works.</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -618,7 +588,7 @@ Can I run scripts without the <code>bash</code> command? <em>(Click to expand)</
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>It’s possible to execute scripts “as a command”, i.e.&nbsp;by only typing their path — for example:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If the script is in a different dir:</span></span>
@@ -638,13 +608,12 @@ Can I run scripts without the <code>bash</code> command? <em>(Click to expand)</
 </div>
 </div>
 </div>
-<hr style="height:1pt; visibility:hidden;">
 </section>
 </section>
-<section id="shell-variables" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="shell-variables"><span class="header-section-number">3</span> Shell variables</h2>
-<section id="variables" class="level3" data-number="3.1">
-<h3 data-number="3.1" class="anchored" data-anchor-id="variables"><span class="header-section-number">3.1</span> Variables</h3>
+<section id="shell-variables" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="shell-variables"><span class="header-section-number">4</span> Shell variables</h2>
+<section id="variables" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="variables"><span class="header-section-number">4.1</span> Variables</h3>
 <p>Variables are truly ubiquitous in programming. We typically use them for items that:</p>
 <ul>
 <li>We refer to repeatedly and/or</li>
@@ -675,7 +644,7 @@ Note that there can’t be spaces around the equals sign (<code>=</code>)!
 <p>To <strong>reference</strong> a variable (i.e., to access its value):</p>
 <ul>
 <li>You need to put a dollar sign <code>$</code> in front of its name.</li>
-<li>It is good practice to double-quote (<code>"..."</code>) variable names<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</li>
+<li>It is good practice to double-quote (<code>"..."</code>) variable names<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</li>
 </ul>
 <p>As before with the environment variables <code>$USER</code> and <code>$HOME</code>, we’ll use the <code>echo</code> command to see what values our variables contain:</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$location</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -688,7 +657,7 @@ Note that there can’t be spaces around the equals sign (<code>=</code>)!
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> <span class="st">"</span><span class="va">$input_file</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>-rw-rw----+ 1 jelmer PAS0471 0 Mar  7 13:17 data/fastq/sample1_R1.fastq</code></pre>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -697,7 +666,7 @@ In case you’re familiar with R: syntax comparison <em>(Click to expand)</em>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li><p>Assigning and printing the value of a variable <strong>in R</strong>:</p>
@@ -718,7 +687,7 @@ In case you’re familiar with R: syntax comparison <em>(Click to expand)</em>
 <p>Difference are that in the Unix shell:</p>
 <ul>
 <li>There cannot be any <strong>spaces</strong> around the <strong><code>=</code></strong> in <code>x=5</code>.</li>
-<li>You need a <strong><code>$</code> prefix</strong> to <em>reference</em> (but not to <em>assign</em>) variables in the shell<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</li>
+<li>You need a <strong><code>$</code> prefix</strong> to <em>reference</em> (but not to <em>assign</em>) variables in the shell<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</li>
 <li>You need the <strong><code>echo</code></strong> command, a general command to print text, to print the value of <code>$x</code> (cf.&nbsp;in R).</li>
 </ul>
 </div>
@@ -726,12 +695,12 @@ In case you’re familiar with R: syntax comparison <em>(Click to expand)</em>
 </div>
 </section>
 </section>
-<section id="variable-names" class="level3" data-number="3.2">
-<h3 data-number="3.2" class="anchored" data-anchor-id="variable-names"><span class="header-section-number">3.2</span> Variable names</h3>
+<section id="variable-names" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="variable-names"><span class="header-section-number">4.2</span> Variable names</h3>
 <p>In the shell, variable names:</p>
 <ul>
 <li><strong>Can</strong> contain letters, numbers, and underscores</li>
-<li><strong>Cannot</strong> contain spaces, periods (<code>.</code>), dashes (<code>-</code>), or other special symbols<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.</li>
+<li><strong>Cannot</strong> contain spaces, periods (<code>.</code>), dashes (<code>-</code>), or other special symbols<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</li>
 <li><strong>Cannot start</strong> with a number</li>
 </ul>
 <p>Try to make your variable names descriptive, like <code>$input_file</code> above, as opposed to say <code>$x</code> and <code>$myvar</code>.</p>
@@ -750,10 +719,9 @@ Case and environment variables
 <p>My preferred approach is to use lowercase for variables and uppercase for what we may call “constants”, like when you “hard-code” certain file paths or settings (i.e., including them e.g.&nbsp;in a script without allowing them to be set from outside).</p>
 </div>
 </div>
-<hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="quoting-variables" class="level3" data-number="3.3">
-<h3 data-number="3.3" class="anchored" data-anchor-id="quoting-variables"><span class="header-section-number">3.3</span> Quoting variables</h3>
+<section id="quoting-variables" class="level3" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="quoting-variables"><span class="header-section-number">4.3</span> Quoting variables</h3>
 <p>I have mentioned that it is good practice to quote variables (i.e.&nbsp;to use <code>"$myvar"</code> instead of <code>$myvar</code>). So what can happen if you don’t do this?</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Start by making and moving into a dir to create some messy files</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> sandbox</span>
@@ -793,9 +761,8 @@ We have assigned a variable called <code>$today</code>, but the shell will inste
 <div class="sourceCode" id="cb39"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> README_<span class="st">"</span><span class="va">$today</span><span class="st">"</span>_final.txt</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>README_Tue, Mar 26_final.txt</code></pre>
-<hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -804,7 +771,7 @@ Curly braces notation: <code>${myvar}</code> <em>(Click to expand)</em>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>The <code>$var</code> notation to refer to a variable in the shell is actually an abbreviation of the full notation, which includes curly braces:</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">${today}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -823,7 +790,7 @@ Curly braces notation: <code>${myvar}</code> <em>(Click to expand)</em>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -832,7 +799,7 @@ Quoting as “escaping” – and double vs.&nbsp;single quotes <em>(Click to ex
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>By double-quoting a variable, we are essentially escaping (or “turning off”) the default special meaning of the <em>space as a separator</em>, and are asking the shell to interpret it as a <em>literal space</em>.</p>
 <p>Similarly, double quotes will escape other “special characters”, such as shell wildcards. Compare:</p>
@@ -854,15 +821,14 @@ Quoting as “escaping” – and double vs.&nbsp;single quotes <em>(Click to ex
 </div>
 <div class="sourceCode" id="cb55"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Move out of the 'sandbox' dir (back to /fs/ess/PAS2880/users/$USER/week06)</span></span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><br></p>
 </section>
 </section>
-<section id="command-line-arguments-for-scripts" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="command-line-arguments-for-scripts"><span class="header-section-number">4</span> Command-line arguments for scripts</h2>
+<section id="command-line-arguments-for-scripts" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="command-line-arguments-for-scripts"><span class="header-section-number">5</span> Command-line arguments for scripts</h2>
 <p>When you run a script, you can pass arguments to it, such as a file to operate on.</p>
 <p>This allows you to make <strong>scripts that are flexible</strong> when it comes to inputs, outputs, and possibly other settings. That way, you don’t have to “hard-code” such variable things inside the script, and can for example run a script many times in parallel to dramatically speed up your analysis. All shell scripts that we will write in this course will accept arguments.</p>
-<section id="executing-a-script-with-arguments" class="level3" data-number="4.1">
-<h3 data-number="4.1" class="anchored" data-anchor-id="executing-a-script-with-arguments"><span class="header-section-number">4.1</span> Executing a script with arguments</h3>
+<section id="executing-a-script-with-arguments" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="executing-a-script-with-arguments"><span class="header-section-number">5.1</span> Executing a script with arguments</h3>
 <p>Executing a script with arguments is much like when you provide a command like <code>ls</code> with arguments:</p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Running a command like `ls` with or without arguments</span></span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run any of this, these are just syntax examples]</span></span>
@@ -886,10 +852,9 @@ Quoting as “escaping” – and double vs.&nbsp;single quotes <em>(Click to ex
 <span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/fastqc.sh data/sampleA.fastq.gz  <span class="co"># 1 argument: a filename</span></span>
 <span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/printname.sh John Doe            <span class="co"># 2 arguments: strings representing names</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In the next section, you’ll see how you can use these arguments inside your script.</p>
-<hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="placeholder-variables" class="level3" data-number="4.2">
-<h3 data-number="4.2" class="anchored" data-anchor-id="placeholder-variables"><span class="header-section-number">4.2</span> Placeholder variables</h3>
+<section id="placeholder-variables" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="placeholder-variables"><span class="header-section-number">5.2</span> Placeholder variables</h3>
 <p>Inside the script, any command-line arguments that you pass to it are <strong>automatically available in “placeholder” variables</strong>. Specifically:</p>
 <ul>
 <li>Any first argument will be assigned to the variable <strong><code>$1</code></strong></li>
@@ -923,7 +888,6 @@ Quoting as “escaping” – and double vs.&nbsp;single quotes <em>(Click to ex
 <pre class="bash-out"><code>This script will print a first and a last name
 First name: John
 Last name: Doe</code></pre>
-<hr style="height:1pt; visibility:hidden;">
 <section id="exercise-command-line-arguments" class="level4 exercise">
 <h4 class="anchored" data-anchor-id="exercise-command-line-arguments"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Command-line arguments</h4>
 <p>In each scenario that is described below, think about what might happen. Then, run the script as instructed in the scenario to test your prediction.</p>
@@ -974,10 +938,9 @@ echo "Last name:"</code></pre>
 </details>
 <p>To get back to where you were, remove the <code>#</code> you inserted in the script in step 2 above to reactive the <code>set</code> line.</p>
 </section>
-<p><br></p>
 </section>
-<section id="copying-placeholders-to-variables-with-descriptive-names" class="level3" data-number="4.3">
-<h3 data-number="4.3" class="anchored" data-anchor-id="copying-placeholders-to-variables-with-descriptive-names"><span class="header-section-number">4.3</span> Copying placeholders to variables with descriptive names</h3>
+<section id="copying-placeholders-to-variables-with-descriptive-names" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="copying-placeholders-to-variables-with-descriptive-names"><span class="header-section-number">5.3</span> Copying placeholders to variables with descriptive names</h3>
 <p>While you could use the <code>$1</code>-style placeholder variables throughout your script, I highly recommend to always copy them to more descriptively named variables — for example:</p>
 <div class="sourceCode" id="cb69"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
@@ -994,7 +957,6 @@ echo "Last name:"</code></pre>
 <li>It will make it less likely that you accidentally mix up the variables.</li>
 </ul>
 <p><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <em>Copy the above code into <code>printname.sh</code>, replacing its previous contents.</em></p>
-<hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1007,15 +969,14 @@ Other placeholder variables that are automatically available inside scripts:
 <div class="callout-body-container callout-body">
 <ul>
 <li><strong><code>$#</code></strong> contains the <em>number</em> of command-line arguments passed to the script</li>
-<li><strong><code>$0</code></strong> contains the script’s file name<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></li>
+<li><strong><code>$0</code></strong> contains the script’s file name<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></li>
 </ul>
 </div>
 </div>
-<p><br></p>
 </section>
 </section>
-<section id="command-substitution" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="command-substitution"><span class="header-section-number">5</span> Command substitution</h2>
+<section id="command-substitution" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="command-substitution"><span class="header-section-number">6</span> Command substitution</h2>
 <p>Command substitution allows you to <strong>store the output of a command in a variable</strong>. This is especially useful in scripts and loops.</p>
 <p>Let’s see an example. As you know, the <code>date</code> command will print the current date and time:</p>
 <div class="sourceCode" id="cb70"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1028,7 +989,6 @@ Other placeholder variables that are automatically available inside scripts:
 <div class="sourceCode" id="cb74"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="va">today</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span><span class="va">)</span></span>
 <span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$today</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Thu Sep 11 14:54:11 EDT 2025</code></pre>
-<hr style="height:1pt; visibility:hidden;">
 <p>One practical example of using command substitution is when you want to <strong>automatically include the current date in a file name</strong> (with “automatic” meaning that you can use the same command regardless of the date, and that you could use it in a script that you could run at any point). First, note that we can use <code>date +%F</code> to get <code>YYYY-MM-DD</code> format without the time:</p>
 <div class="sourceCode" id="cb76"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span> +%F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>2025-09-07</code></pre>
@@ -1052,7 +1012,6 @@ Or insert the command substitution on the fly
 <div class="sourceCode" id="cb80"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> README_<span class="st">"</span><span class="va">$(</span><span class="fu">date</span> +%F<span class="va">)</span><span class="st">"</span>.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<hr style="height:1pt; visibility:hidden;">
 <section id="exercise-command-substitution" class="level4 exercise">
 <h4 class="anchored" data-anchor-id="exercise-command-substitution"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Command substitution</h4>
 <p>Say we wanted to count and report the number of FASTQ files in a directory in a generalized, programmatic way. To do the counting, we can run:</p>
@@ -1080,10 +1039,9 @@ Click for the solution
 <p><strong>Note:</strong> You don’t have to quote variables <em>inside</em> a quoted <code>echo</code> call, since it’s, well, already quoted. If you <em>also</em> quote the variables, you will in fact <em>unquote</em> it, although that shouldn’t pose a problem inside <code>echo</code> statements.</p>
 </details>
 </section>
-<p><br></p>
 </section>
-<section id="conditionals" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="conditionals"><span class="header-section-number">6</span> Conditionals</h2>
+<section id="conditionals" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="conditionals"><span class="header-section-number">7</span> Conditionals</h2>
 <p>With conditionals like <code>if</code> statements, we can <strong>run one or more commands only if some condition is true</strong>. We can also run a different set of commands if the condition is <em>not</em> true.</p>
 <p>These features are especially useful in shell scripts because we may, for instance, check that all the inputs are correct, and exit with an informative error if that’s not the case.</p>
 <p>While this does add some complexity to your shell scripts, it can be worth it because:</p>
@@ -1091,8 +1049,8 @@ Click for the solution
 <li>The sooner you stop a script from running when there are such problems, the better.</li>
 <li>If we instead pass erroneous input to the program that our script runs, we sometimes get confusing errors or even worse, no clear errors at all.</li>
 </ul>
-<section id="basic-syntax" class="level3" data-number="6.1">
-<h3 data-number="6.1" class="anchored" data-anchor-id="basic-syntax"><span class="header-section-number">6.1</span> Basic syntax</h3>
+<section id="basic-syntax" class="level3" data-number="7.1">
+<h3 data-number="7.1" class="anchored" data-anchor-id="basic-syntax"><span class="header-section-number">7.1</span> Basic syntax</h3>
 <p>This is the basic syntax of an <code>if</code> statement in Bash:</p>
 <div class="sourceCode" id="cb87"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">&lt;</span>test<span class="op">&gt;</span><span class="kw">;</span> <span class="cf">then</span></span>
 <span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Command(s) to run if the condition is true</span></span>
@@ -1116,15 +1074,14 @@ Click for the solution
 <span id="cb89-9"><a href="#cb89-9" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In the code above, note that:</p>
 <ul>
-<li>The double square brackets <code>[[ ]]</code> represent a <em>test statement</em><a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>.</li>
+<li>The double square brackets <code>[[ ]]</code> represent a <em>test statement</em><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.</li>
 <li>The spaces bordering the brackets on the inside are necessary: <code>[["$filetype" == "fastq"]]</code> would fail!</li>
 <li>Double equals signs (<code>==</code>) are common in programming to <em>test for equality</em> — this is to contrast it with a single <code>=</code>, which is used for variable assignment.</li>
 <li>When used inside a script, the <code>exit</code> command will stop the execution of the script. With <code>exit 1</code>, the <em>exit status</em> of our script is 1: an exit status of 0 means success — any other integer, including 1, means failure.</li>
 </ul>
-<hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="string-comparisons" class="level3" data-number="6.2">
-<h3 data-number="6.2" class="anchored" data-anchor-id="string-comparisons"><span class="header-section-number">6.2</span> String comparisons</h3>
+<section id="string-comparisons" class="level3" data-number="7.2">
+<h3 data-number="7.2" class="anchored" data-anchor-id="string-comparisons"><span class="header-section-number">7.2</span> String comparisons</h3>
 <p>The above test, <code>"$filetype" == "fastq"</code>, was an example of a string comparison, where “string” is basically another term for “text” that is common in programming contexts, and mostly serves to distinguish this from numeric data.</p>
 <p>The two main string comparisons are:</p>
 <table class="table-striped table-hover caption-top table">
@@ -1141,7 +1098,7 @@ Click for the solution
 <tbody>
 <tr class="odd">
 <td><code>str1 == str2</code></td>
-<td>Strings <code>str1</code> and <code>str2</code> are identical<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></td>
+<td>Strings <code>str1</code> and <code>str2</code> are identical<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></td>
 </tr>
 <tr class="even">
 <td><code>str1 != str2</code></td>
@@ -1151,8 +1108,8 @@ Click for the solution
 </table>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="integer-number-comparisons" class="level3" data-number="6.3">
-<h3 data-number="6.3" class="anchored" data-anchor-id="integer-number-comparisons"><span class="header-section-number">6.3</span> Integer (number) comparisons</h3>
+<section id="integer-number-comparisons" class="level3" data-number="7.3">
+<h3 data-number="7.3" class="anchored" data-anchor-id="integer-number-comparisons"><span class="header-section-number">7.3</span> Integer (number) comparisons</h3>
 <p>It can be a good idea to test at the beginning of a script whether the correct number of arguments were passed to it, and simply exit if that’s not the case.</p>
 <p>The <code>$#</code> variable will automatically contain the number of arguments that were passed to a script:</p>
 <div class="sourceCode" id="cb90"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Hypothetical example - don't run this]</span></span>
@@ -1194,9 +1151,8 @@ Click for the solution
 </tr>
 </tbody>
 </table>
-<hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1205,7 +1161,7 @@ Another integer comparison example <em>(Click to expand)</em>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Say that we want to run a program with options that depend on our number of samples. With the number of samples determined from the number of lines in a hypothetical file <code>samples.txt</code> and stored in a variable <code>$n_samples</code>, we can test if the number is greater than 9 with <code>"$n_samples" -gt 9</code>, where <code>gt</code> stands for “greater than”:</p>
 <div class="sourceCode" id="cb91"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Hypothetical example - don't run this]</span></span>
@@ -1224,10 +1180,9 @@ Another integer comparison example <em>(Click to expand)</em>
 </div>
 </div>
 </div>
-<hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="file-tests" class="level3" data-number="6.4">
-<h3 data-number="6.4" class="anchored" data-anchor-id="file-tests"><span class="header-section-number">6.4</span> File tests</h3>
+<section id="file-tests" class="level3" data-number="7.4">
+<h3 data-number="7.4" class="anchored" data-anchor-id="file-tests"><span class="header-section-number">7.4</span> File tests</h3>
 <p>We can also test whether files or dirs exist:</p>
 <table class="table-striped table-hover caption-top table">
 <colgroup>
@@ -1259,9 +1214,8 @@ Another integer comparison example <em>(Click to expand)</em>
 <span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Error: Input file </span><span class="va">$fastq_file</span><span class="st"> not found!"</span></span>
 <span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
 <span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1270,7 +1224,7 @@ Combining expressions with <code>&amp;&amp;</code> and <code>||</code> <em>(Clic
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>To test for multiple conditions at once, use the <code>&amp;&amp;</code> (“and”) and <code>||</code> (“or”) shell operators — for example:</p>
 <ul>
@@ -1286,7 +1240,6 @@ Combining expressions with <code>&amp;&amp;</code> and <code>||</code> <em>(Clic
 </div>
 </div>
 </div>
-<hr style="height:1pt; visibility:hidden;">
 <section id="exercise-number-of-arguments" class="level4 exercise">
 <h4 class="anchored" data-anchor-id="exercise-number-of-arguments"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Number of arguments</h4>
 <p>In your <code>printname.sh</code> script, add the <code>if</code> statement from above that tests whether the correct number of arguments were passed to the script. Then, try running the script consecutively with 1, 2, and 3 arguments.</p>
@@ -1382,15 +1335,13 @@ Click for the solution
 
 <ol>
 <li id="fn1"><p> Alternatively, find the script in the file explorer in the side bar and click on it there.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p> This is the same type of behavior that you may be familiar with from RStudio<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p> Don’t worry about the warning that other keybindings exist for this shortcut.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p> And more generally, you can’t remove or edit files that are not yours unless you’ve explicitly been given permission for this.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p> We’ll talk more about quoting later.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p> Because of this, anytime you see a word/string that starts with a <code>$</code> in the shell, you can safely assume that it is a variable.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p> Compare this with the situation for file names, which ideally do not contain spaces and special characters either, but in which <code>-</code> and <code>.</code> <em>are</em> recommended.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn8"><p> Though this does not work when you submit scripts as Slurm batch jobs, and we will therefore not use this feature.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn9"><p> You can also use single square brackets <code>[ ]</code> but the double brackets have more functionality and I would recommend to always use these.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn10"><p>A single <code>=</code> also works but <code>==</code> is clearer.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p> And more generally, you can’t remove or edit files that are not yours unless you’ve explicitly been given permission for this.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p> We’ll talk more about quoting later.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p> Because of this, anytime you see a word/string that starts with a <code>$</code> in the shell, you can safely assume that it is a variable.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p> Compare this with the situation for file names, which ideally do not contain spaces and special characters either, but in which <code>-</code> and <code>.</code> <em>are</em> recommended.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p> Though this does not work when you submit scripts as Slurm batch jobs, and we will therefore not use this feature.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p> You can also use single square brackets <code>[ ]</code> but the double brackets have more functionality and I would recommend to always use these.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>A single <code>=</code> also works but <code>==</code> is clearer.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
