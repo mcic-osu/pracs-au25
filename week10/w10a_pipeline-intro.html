@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jelmer Poelstra">
-<meta name="dcterms.date" content="2025-09-20">
+<meta name="dcterms.date" content="2025-10-21">
 
-<title>w5a - OSC part II – PRACS-AU25</title>
+<title>Pipelines – PRACS-AU25</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -260,29 +314,25 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#markdown-files-with-your-analysis-workflow" id="toc-markdown-files-with-your-analysis-workflow" class="nav-link" data-scroll-target="#markdown-files-with-your-analysis-workflow"><span class="header-section-number">2</span> Markdown files with your analysis workflow</a>
   <ul class="collapse">
-  <li><a href="#week-overview-and-context" id="toc-week-overview-and-context" class="nav-link" data-scroll-target="#week-overview-and-context"><span class="header-section-number">1.1</span> Week overview and context</a></li>
-  <li><a href="#lecture-overview-and-learning-goals" id="toc-lecture-overview-and-learning-goals" class="nav-link" data-scroll-target="#lecture-overview-and-learning-goals"><span class="header-section-number">1.2</span> Lecture overview and learning goals</a></li>
+  <li><a href="#a-longer-protocol-file-example" id="toc-a-longer-protocol-file-example" class="nav-link" data-scroll-target="#a-longer-protocol-file-example"><span class="header-section-number">2.1</span> A longer protocol file example</a></li>
+  <li><a href="#the-rationale-behind-organizing-and-running-scripts-this-way" id="toc-the-rationale-behind-organizing-and-running-scripts-this-way" class="nav-link" data-scroll-target="#the-rationale-behind-organizing-and-running-scripts-this-way"><span class="header-section-number">2.2</span> The rationale behind organizing and running scripts this way</a></li>
+  <li><a href="#how-to-further-automate-this" id="toc-how-to-further-automate-this" class="nav-link" data-scroll-target="#how-to-further-automate-this"><span class="header-section-number">2.3</span> How to further automate this?</a></li>
   </ul></li>
-  <li><a href="#osc-projects" id="toc-osc-projects" class="nav-link" data-scroll-target="#osc-projects"><span class="header-section-number">2</span> OSC Projects</a></li>
-  <li><a href="#cores" id="toc-cores" class="nav-link" data-scroll-target="#cores"><span class="header-section-number">3</span> Cores</a></li>
-  <li><a href="#file-systems" id="toc-file-systems" class="nav-link" data-scroll-target="#file-systems"><span class="header-section-number">4</span> File systems</a></li>
-  <li><a href="#compute-nodes" id="toc-compute-nodes" class="nav-link" data-scroll-target="#compute-nodes"><span class="header-section-number">5</span> Compute nodes</a>
-  <ul class="collapse">
-  <li><a href="#compute-node-types" id="toc-compute-node-types" class="nav-link" data-scroll-target="#compute-node-types"><span class="header-section-number">5.1</span> Compute node types</a></li>
-  </ul></li>
-  <li><a href="#putting-it-together" id="toc-putting-it-together" class="nav-link" data-scroll-target="#putting-it-together"><span class="header-section-number">6</span> Putting it together</a></li>
+  <li><a href="#workflow-management-systems" id="toc-workflow-management-systems" class="nav-link" data-scroll-target="#workflow-management-systems"><span class="header-section-number">3</span> Workflow management systems</a></li>
+  <li><a href="#nf-core-pipelines" id="toc-nf-core-pipelines" class="nav-link" data-scroll-target="#nf-core-pipelines"><span class="header-section-number">4</span> nf-core pipelines</a></li>
   </ul>
-<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w5_overview.html"><i class="bi bi-book"></i>Week 5 overview</a></li><li><a href="w5b_software.html"><i class="bi bi-bookmarks"></i>w5b: Software management</a></li><li><a href="w5_exercises.html"><i class="bi bi-pencil"></i>Week 5 exercises</a></li><li><a href="../bonus/conda.html"><i class="bi bi-book"></i>Bonus: Conda</a></li></ul></div></nav>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">A closer look at OSC</h1>
-<p class="subtitle lead">Week 5 – lecture A</p>
+<h1 class="title">Workflow management</h1>
+<p class="subtitle lead">Week 9 – Lecture I</p>
 </div>
 
 
@@ -308,7 +358,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 20, 2025</p>
+      <p class="date">October 21, 2025</p>
     </div>
   </div>
   
@@ -324,247 +374,259 @@ ul.task-list li input[type="checkbox"] {
 <p><br></p>
 <section id="introduction" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
-<section id="week-overview-and-context" class="level3" data-number="1.1">
-<h3 data-number="1.1" class="anchored" data-anchor-id="week-overview-and-context"><span class="header-section-number">1.1</span> Week overview and context</h3>
-<p>The contents of this and the next few weeks will slowly get you ready to run command-line bioinformatics programs at OSC by teaching you:</p>
-<ol type="1">
-<li>More details about OSC generally <em>(now)</em></li>
-<li>Using software at OSC, including programs that aren’t installed <em>(next lecture)</em></li>
-<li>Writing shell scripts <em>(next week)</em></li>
-<li>Submitting shell scripts as “batch jobs” <em>(in two weeks)</em></li>
-<li>Examples of building functional commands to run these programs <em>(throughout)</em></li>
-</ol>
+<p>TBA</p>
+<hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="lecture-overview-and-learning-goals" class="level3" data-number="1.2">
-<h3 data-number="1.2" class="anchored" data-anchor-id="lecture-overview-and-learning-goals"><span class="header-section-number">1.2</span> Lecture overview and learning goals</h3>
-<p>This session complements the <a href="../week01/w1c_osc.html">initial OSC introduction in week 1 of the course</a>, and will go a bit deeper into the following aspects of the Ohio Supercomputer Center (OSC):</p>
+<section id="markdown-files-with-your-analysis-workflow" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="markdown-files-with-your-analysis-workflow"><span class="header-section-number">2</span> Markdown files with your analysis workflow</h2>
+<p>In the past few weeks of this course, you’ve created Markdown files with the commands you used to run your scripts. Alternatively, you can directly type such commands in the terminal, but this is harder to do without making mistakes (especially with more complex constructs like loops) and reduces reproducibility, since you don’t keep a good record of what you did.</p>
+<p>So far, these Markdown files have been short, and may not have given you a good picture of what this would look like in the context of a larger research project, where you’d run a whole series of steps with different bioinformatics tools and perhaps custom scripts. As <a href="../week02/w2a_project-org.html#types-of-documentation-files-for-larger-projects">discussed in week 2</a>, for larger projects, it is a good idea to create at least two separate Markdown files for the code you used to run scripts and other commands:</p>
 <ul>
-<li>OSC Projects</li>
-<li>Cores</li>
-<li>OSC file systems</li>
-<li>Compute node types and access</li>
+<li><p>A “lab notebook”-style file that has <strong>chronological entries</strong> and is comprehensive: this should cover everything of note that you did, including mishaps, dead ends, and things that were redone differently later on.</p></li>
+<li><p>A “protocol” (or “recipe” / “workflow”)-style file that has the <strong>final code in order of execution</strong> needed to run and rerun your entire project’s computational work.</p></li>
+</ul>
+<section id="a-longer-protocol-file-example" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="a-longer-protocol-file-example"><span class="header-section-number">2.1</span> A longer protocol file example</h3>
+<p>For this example, let’s have in mind a simple RNA-Seq analysis for 3 samples that:</p>
+<ul>
+<li>Trims reads in FASTQ files <em>(independently for each sample)</em></li>
+<li>Maps (aligns) reads to a reference genome <em>(independently for each sample)</em></li>
+<li>Creates a gene expression count table from the alignments <em>(for all samples together)</em></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/schem-workflow.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="A simple 3-step RNA-Seq analysis, with arrows showing the connections between the steps: the output of one step is the input of the next. The example only has 3 samples, and the first two steps are executed separately for each sample, while the last step is executed once for all samples."><img src="../img/schem-workflow.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="A diagram of the steps in a simple RNA-Seq analysis."></a></p>
+</figure>
+</div>
+<figcaption>A simple 3-step RNA-Seq analysis, with arrows showing the connections<br>between the steps: the output of one step is the input of the next.<br>The example only has 3 samples, and the first two steps are executed separately<br>for each sample, while the last step is executed once for all samples.</figcaption>
+</figure>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+<p>Here is an example “protocol-style” Markdown file for this RNA-seq analysis:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--- [Hypothetical example - don't run any of the code in this document] --&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu"># RNA-Seq analysis of _Culex pipiens_</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Author: Jelmer Poelstra, MCIC, OSU (poelstra.1@osu.edu)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Date: First created on 2025-04-01, last modified on 2025-08-25</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>GitHub repository: <span class="ot">&lt;https://github.com/jelmerp/culex&gt;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>These steps have been run at the Ohio Supercomputer Center (&lt;www.osc.edu&gt;)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Working dir at OSC: /fs/ess/PAS2880/users/jelmer</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>More information about the project and its files: <span class="in">`README.md`</span> in the working dir</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Prerequisites</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Input files**:</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>The input files are:</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Paired-end FASTQ files</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Reference genomes files <span class="in">`assembly.fna`</span> and <span class="in">`annotation.gtf`</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Input file paths are set below and can be adjusted to your situation.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>If you're running this at OSC and have access to project PAS2880,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>      you can copy the files from the working dir specified above,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>      or adjust the input file paths below to directly use these files.</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Otherwise:</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">      - </span>Reference genome files can be downloaded from &lt;URL&gt;</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">      - </span>FASTQ files are available through the SRA via accession number &lt;ACCESSION&gt;</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Software**:</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>The scripts will run programs using Singularity/Apptainer containers</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>If running at OSC, no software installations are needed</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>If you're not at OSC, you need to have <span class="in">`apptainer`</span> and <span class="in">`Slurm`</span> installed.</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>You don't need to create the output dirs because the scripts will do so.</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## Set up: Set the input file paths</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_dir</span><span class="op">=</span>data/fastq</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="va">ref_assembly</span><span class="op">=</span>results/01_refseqs/assembly.fna</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="va">ref_annotation</span><span class="op">=</span>results/01_refseqs/annotation.gtf</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 1: Trim the raw reads</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>The <span class="in">`trim.sh`</span> script runs for one sample at a time and takes 3 arguments -</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>input forward-read (R1) FASTQ, reverse-read (R2) FASTQ, and the desired output dir:</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> R1 <span class="kw">in</span> <span class="st">"</span><span class="va">$fastq_dir</span><span class="st">"</span>/<span class="pp">*</span>_R1.fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="va">R2</span><span class="op">=</span><span class="va">${R1</span><span class="op">/</span><span class="ss">_R1</span><span class="op">/</span>_R2<span class="va">}</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="ex">sbatch</span> scripts/trim.sh <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> <span class="st">"</span><span class="va">$R2</span><span class="st">"</span> results/trim</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 2: Align the trimmed reads to a reference genome</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>The <span class="in">`map.sh`</span> script runs for one sample at a time and takes 4 arguments -</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>input trimmed R1 and R2 FASTQs produced by <span class="in">`trim.sh`</span>, a reference FASTA file,</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>and the desired output dir:</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> R1 <span class="kw">in</span> results/trim/<span class="pp">*</span>_R1.fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>    <span class="va">R2</span><span class="op">=</span><span class="va">${R1</span><span class="op">/</span><span class="ss">_R1</span><span class="op">/</span>_R2<span class="va">}</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    <span class="ex">sbatch</span> scripts/map.sh <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> <span class="st">"</span><span class="va">$R2</span><span class="st">"</span> <span class="st">"</span><span class="va">$ref_assembly</span><span class="st">"</span> results/map</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 3: Count gene-level alignments</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>The <span class="in">`count.sh`</span> script runs for all samples at once and takes 3 arguments -</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>input dir with alignments produced by <span class="in">`map.sh`</span>, a reference GTF file,</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>and the desired output dir:</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/count.sh results/map <span class="st">"</span><span class="va">$ref_annotation</span><span class="st">"</span> results/count_table.txt</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="the-rationale-behind-organizing-and-running-scripts-this-way" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="the-rationale-behind-organizing-and-running-scripts-this-way"><span class="header-section-number">2.2</span> The rationale behind organizing and running scripts this way</h3>
+<p>The protocol above submits a shell script one or more times for each of the three steps (<code>trim.sh</code>, <code>map.sh</code>, and<code>count.sh</code>), with each script <em>taking arguments</em> to specify the in- and output files, and running an (unspecified) bioinformatics program to perform that step.</p>
+<p>Here are some advantages of using such a script structure with single-step, flexible (argument-accepting) scripts, and an overarching protocol Markdown file to describe the entire workflow:</p>
+<ul>
+<li>Rerunning everything, including with a modified sample set, or tool settings, is relatively straightforward — both for yourself and others, improving reproducibility.</li>
+<li>Re-applying the same set of analyses in a different project is straightforward.</li>
+<li>The Markdown file documents the steps taken.</li>
+<li>It (more or less) ensures you are including all necessary steps.</li>
+</ul>
+<p>However, in the example above, it is import to realize that you <strong>cannot</strong> run all the code at once. This is because there are three batch job steps, with both the second and third steps using the output of an earlier step as their input. Therefore, if you run all code at once, all batch jobs will be submitted at the same time: this means that later steps will start running before the earlier step has finished, i.e.&nbsp;before their input files are available, and will fail.</p>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="how-to-further-automate-this" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="how-to-further-automate-this"><span class="header-section-number">2.3</span> How to further automate this?</h3>
+<p>Waiting for each step to finish before submitting the next step is a bit tedious, and means the above protocol is not a fully automated pipeline. Therefore, you may want to find ways to:</p>
+<ul>
+<li>Reduce the number of steps and/or</li>
+<li>Avoid having to wait for each step to finish before moving on to the next</li>
+</ul>
+<section id="combining-scripts-to-reduce-the-number-of-steps" class="level4">
+<h4 class="anchored" data-anchor-id="combining-scripts-to-reduce-the-number-of-steps">Combining scripts to reduce the number of steps</h4>
+<p>Once you get the hang of writing shell scripts, it may be appealing to string a series of programs/steps together in a single script, rather than having “single-step scripts” like in the example above.</p>
+<p>At the extreme, you could completely solve the problem of simultaneous batch job submission by including all steps (trimming, mapping, counting) in a single script: i.e., you’d submit a <strong>single batch job to run all steps</strong>.</p>
+<details>
+<summary>
+Can you see a potential problem with this approach?
+</summary>
+<p>but this would make for a very inefficient pipeline, since you’d now be running steps that can be parallelized across samples consecutively.</p>
+<p>TBA</p>
+</details>
+<p>Even if combining steps that run multiple times versus steps that run once, why not at least combine in a single script, trimming and mapping in the example above? Since both of those steps will be run for each sample separately. While this is not unreasonable, in practice, this kind of strategy often ends up leading to more difficulties than convenience.</p>
+<p>For example, what if you realize that the mapping needs to redone because you want to change some settings. Now you have a script that both trims and maps, and you’re forced to rerun both. Well, not entirely: you could add an option to your script to only run one step, and/or to have the script check for the presence of output files. But now things are starting to get pretty complicated, and they will increasingly more complicated if you try to combine even more steps. After all, a real RNA-Seq analysis typically contains several more steps.</p>
+<p>All in all, my recommendation is to keep your shell scripts simple <em>in the sense that they should generally <strong>just run one program</strong></em>, and not a sequence of programs.</p>
+</section>
+<section id="automate-batch-job-submission" class="level4">
+<h4 class="anchored" data-anchor-id="automate-batch-job-submission">Automate batch job submission</h4>
+<p>Foremost, you’d need to overcome the problem of simultaneous batch job submission. But a decent pipeline <strong>detect failure and then stop</strong>, and to <strong>rerun parts of the pipeline</strong> flexibly. The latter may be necessary after, e.g.:</p>
+<ul>
+<li>Some scripts failed for all or some samples</li>
+<li>You added or removed a sample</li>
+<li>You had to modify a script or settings somewhere halfway the pipeline.</li>
+</ul>
+<p>How could you implement all of that?</p>
+<ul>
+<li><strong>Push the limits of the Bash and Slurm tool set (not recommended)</strong><br>
+Use <code>if</code> statements, additional script arguments, and Slurm “job dependencies” (see the <a href="../bonus/slurm.html">optional reading page</a>) — but this is hard to manage for more complex workflows.</li>
 </ul>
 </section>
+<section id="a-better-solution" class="level4">
+<h4 class="anchored" data-anchor-id="a-better-solution">A better solution</h4>
+<p>Use a formal workflow management system like <a href="https://snakemake.readthedocs.io">Snakemake</a> or <a href="https://www.nextflow.io">NextFlow</a>, which can take care of all these details and more for you.</p>
+<hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="osc-projects" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="osc-projects"><span class="header-section-number">2</span> OSC Projects</h2>
-<p>In this course, we exclusively use the course’s OSC Project <code>PAS2880</code>. When you use OSC for your own research project, you would use a different OSC Project. This would likely be a Project specific to a research project or grant, or perhaps your lab/PI’s general-use OSC Project.</p>
-<p>With “using” an OSC Project, we mean:</p>
+</section>
+</section>
+<section id="workflow-management-systems" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="workflow-management-systems"><span class="header-section-number">3</span> Workflow management systems</h2>
+<p>Pipeline/workflow tools, often called “workflow management systems” in full, provide ways to formally describe and execute pipelines.</p>
+<section id="the-need-for-specialized-programs-to-orchestrate-pipelines" class="level4">
+<h4 class="anchored" data-anchor-id="the-need-for-specialized-programs-to-orchestrate-pipelines">The need for specialized programs to orchestrate pipelines</h4>
+<p><em>TBA - Explain this is about the bioinformatics/algorithmic stage of analyses.</em></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/nature-feature.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<figcaption>Perkel 2019 - <a href="https://www.nature.com/articles/d41586-019-02619-z" class="uri">https://www.nature.com/articles/d41586-019-02619-z</a></figcaption>
+</figure>
+</div>
+<p>Two quotes from this article:</p>
+<blockquote class="blockquote">
+<p>Typically, researchers codify workflows using general scripting languages such as Python or Bash. But these often lack the necessary flexibility.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Workflows can involve hundreds to thousands of data files; a pipeline must be able to monitor their progress and exit gracefully if any step fails. And pipelines must be smart enough to work out which tasks need to be re-executed and which do not.</p>
+</blockquote>
+</section>
+<section id="advantages-of-workflow-management-systems" class="level4">
+<h4 class="anchored" data-anchor-id="advantages-of-workflow-management-systems">Advantages of workflow management systems</h4>
+<p>Advantages of workflow management systems are improved <em>automation</em>, <em>flexibility</em> (e.g., ease of running with different settings or on different datasets), <em>portability</em> (ease of running on different computers), and <em>scalability</em> (ease of scaling up to larger datasets):</p>
 <ul>
-<li>Storing data in its project dirs in <code>/fs/ess</code> and/or <code>/fs/scratch</code></li>
-<li>Selecting the Project when starting compute jobs, like Code Server and the command-line batch jobs you’ll learn about later in this course.</li>
-</ul>
-<p>Generally, only PIs request and manage/administrate OSC projects. OSC has <a href="https://www.osc.edu/supercomputing/support/account">a webpage with more information on how to do so</a>. The administrator of an OSC Project can, among others:</p>
+<li><strong>Automation</strong>
 <ul>
-<li>Manage the compute budget and allocated storage space in <code>/fs/ess</code> for the Project.</li>
-<li>Add users to the Project. If the user doesn’t yet have an OSC account, this addition will trigger an invite email that allows the user to create an account (you can’t create an account unless you’ve been added to a Project).</li>
+<li>Detect &amp; rerun upon changes in input files and failed steps.</li>
+<li>Automate Slurm job submissions.</li>
+<li>Integration with software management.</li>
+</ul></li>
+<li><strong>Flexibility, portability, and scalability</strong><br>
+This is due to these tools separating generic pipeline nuts-and-bolts from the following two aspects:
+<ul>
+<li>Run-specific configuration — samples, directories, settings/parameters.</li>
+<li>Things specific to the run-time environment (laptop vs.&nbsp;cluster vs.&nbsp;cloud).</li>
+</ul></li>
 </ul>
+</section>
+<section id="nextflow" class="level4">
+<h4 class="anchored" data-anchor-id="nextflow">Nextflow</h4>
+<p>The two most commonly used command-line based options in bioinformatics are <strong>Nextflow</strong> and <strong>Snakemake</strong>. Both are small “domain-specific” languages (DSLs) that are an extension of a more general language: Python for Snakemake, and Groovy/Java for Nextflow. Unfortunately, their learning curves are steeper than you might expect for a tool that “merely” needs to tie your workflow steps together. Therefore, we’ll spend this week and next week on learning one of them: Nextflow.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-OSC billing
+Nextflow vs.&nbsp;Snakemake (TBA)
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>OSC will bill OSC Projects (not individual users), and only for the following two things:</p>
-<ul>
-<li><em><strong>File storage</strong></em> in the Project Storage (<code>/fs/ess</code>) file system per TB per month</li>
-<li><em><strong>Compute node usage</strong></em> per “core hour” (e.g.&nbsp;using 2 cores for 2 hours = 4 core hours)</li>
-</ul>
-<p>OSC no longer publishes flat rates, but the prices for academic usage are generally quite low. Nevertheless, a Project that uses dozens of TBs of storage space and hundreds of thousands of core hours could be charged several thousands dollars per year. But:</p>
-<ul>
-<li>Every PI at OSU gets a $1,000 credit</li>
-<li>OSU pays some or all of these costs at the college level, depending on the college. CFAES currently pays all of it.</li>
-</ul>
+
 </div>
 </div>
-</section>
-<section id="cores" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="cores"><span class="header-section-number">3</span> Cores</h2>
-<p>In week 1, you learned that a supercomputer center like OSC typically has multiple supercomputers, each of which in turn consists of many nodes. But I omitted an additional “level” in this hierarchy:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="../img/terminology.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="../img/terminology.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:95.0%" alt="A diagram showing how the terms core/processor, node, and cluster/supercomputer fit together."></a></p>
-</figure>
-</div>
-<p><strong>Core / Processor / CPU / Thread</strong> — Components of a computer (recall: we refer to these as “nodes” at OSC) that can each (semi-)independently be asked to perform a computing task like running a bioinformatics program. With many programs, you can also use multiple cores for a single run, which can speed things up considerably.</p>
-<p>The terms core, processor, CPU and thread are not technically synonyms. However, they are often used interchangeably, and for the purposes of working at OSC, you should treat them as meaning the same thing: the components of a node that can be reserved and used independently.</p>
-</section>
-<section id="file-systems" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="file-systems"><span class="header-section-number">4</span> File systems</h2>
-<p>Here is an expanded table with details about OSC’s file systems:</p>
-<table class="table-striped table-hover caption-top table">
-<colgroup>
-<col style="width: 12%">
-<col style="width: 19%">
-<col style="width: 19%">
-<col style="width: 12%">
-<col style="width: 19%">
-<col style="width: 14%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>File system</th>
-<th>Located within</th>
-<th>Quota</th>
-<th>Backed up?</th>
-<th>Auto-purged?</th>
-<th>One for each…</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Home</strong></td>
-<td><code>/users/</code></td>
-<td>500 GB / 1 M files</td>
-<td>Yes</td>
-<td>No</td>
-<td>User</td>
-</tr>
-<tr class="even">
-<td><strong>Project</strong></td>
-<td><code>/fs/ess/</code></td>
-<td>Flexible</td>
-<td>Yes</td>
-<td>No</td>
-<td>OSC Project</td>
-</tr>
-<tr class="odd">
-<td><strong>Scratch</strong></td>
-<td><code>/fs/scratch/</code></td>
-<td>100 TB</td>
-<td>No</td>
-<td>After 60 days</td>
-<td>OSC Project</td>
-</tr>
-<tr class="even">
-<td><strong>Compute</strong></td>
-<td><code>$TMPDIR</code></td>
-<td>1 TB</td>
-<td>No</td>
-<td>After job completes</td>
-<td>Compute job</td>
-</tr>
-</tbody>
-</table>
 <hr style="height:1pt; visibility:hidden;">
-<p>When you use OSC for your own research project with a different OSC Project, I would recommend that you <strong>work mostly in the Project dir</strong> (<code>/fs/ess/</code>), which offers backed-up, permanent storage with flexible quota. Each of the other file systems has certain drawbacks:</p>
-<ul>
-<li>Scratch dirs (<code>/fs/scratch</code>) are temporary and not backed up.</li>
-<li>The storage space of Home dirs (<code>/users/</code>) is limited and cannot be expanded, and file sharing / collaborating is also more difficult with Home dirs.</li>
-<li>Compute storage space (<code>$TMPDIR</code>) is linked to compute jobs and extremely fleeting: as soon as the compute “job” in question has stopped, these files will be deleted.</li>
-</ul>
-<p>So when <em>are</em> these other file systems useful?</p>
-<ul>
-<li><p>Your <strong>Home</strong> dir can be useful for files that you use across projects, like some software. Additionally, this is where many of your user-specific settings are stored. That is mostly done automatically by OSC and the programs that you use, with <em>hidden</em> files and dirs (start with a <code>.</code>) that you should generally not manually edit or remove.</p></li>
-<li><p><strong>Scratch</strong> has the advantages of having <em>effectively unlimited</em> space and much <em>faster</em> data read and write (“I/O”) speed than Home and Project space. Especially if you are working with large datasets, it can therefore makes sense to run analyses on Scratch, and then copy specific files over to the Project dirs. Additionally, some programs produce lots of temporary files while they are running, so setting a scratch dir as the output dir may speed things up.</p></li>
-<li><p><strong>Compute</strong> storage has even faster I/O and can be useful for very I/O-intensive jobs — but using it requires some extra code in your script<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> and I personally end up using this very rarely.</p></li>
-</ul>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Accessing back-ups
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Home and Project directories are <strong>backed up</strong> daily. You don’t have <em>direct</em> access to the backups, but if you’ve accidentally deleted important files, you can email OSC to have them restore your files to the way they were on a specific date.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Accessing files on different clusters
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>As moentioned previously, file systems are shared among OSC’s clusters, such that you can access your files in the exact same way regardless of which cluster you have connected to.</p>
-</div>
-</div>
-</section>
-<section id="compute-nodes" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="compute-nodes"><span class="header-section-number">5</span> Compute nodes</h2>
-<section id="compute-node-types" class="level3" data-number="5.1">
-<h3 data-number="5.1" class="anchored" data-anchor-id="compute-node-types"><span class="header-section-number">5.1</span> Compute node types</h3>
-<p>Compute nodes come in different shapes and sizes:</p>
-<ul>
-<li><p><strong>“Standard nodes”</strong> are by far the most numerous (e.g., Pitzer has 564) and even those vary in size, e.g.&nbsp;from 40-48 cores per node on Pitzer.</p></li>
-<li><p><strong>Other types of nodes</strong> include those with extra memory (<code>largemem</code> and <code>hugemem</code>), and nodes that provide access to GPUs (Graphical Processing Units) rather than CPUs.</p></li>
-</ul>
-<p>Standard nodes are used by default and these will serve you well for the majority of omics analysis. But you may occasionally need a different type of node, such as for genome or transcriptome assembly (you’ll need need nodes with a lot of memory) or Oxford Nanopore sequence data base-calling (GPU nodes).</p>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Memory versus storage
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>When we talk about a computer’s “memory”, this refers to RAM: the data that your computer has actively “loaded” or in use. Don’t confuse memory with file storage, the data that is on disk.</p>
-<p>A computer can access data in RAM orders of magnitude faster than data on disk, which is why computers load actively used data into memory. For example, if you play a computer game or have many browser tabs open, your computer’s memory will be heavily used. And when your computer slows down noticeably or freezes, this is typically because all its memory capacity is being used, and your disk storage needs to be used as well.</p>
-<p>Bioinformatics programs may also load input data from disk into memory to allow for fast access, and will often also hold intermediate results in memory. When datasets are large, such programs may therefore need lots (10s or 100s of GBs) of memory.</p>
-</div>
-</div>
-<section id="using-compute-nodes" class="level4">
-<h4 class="anchored" data-anchor-id="using-compute-nodes">Using compute nodes</h4>
-<p>You can use compute nodes by putting in a request for resources, such as the number of nodes, cores, and for how long you will need them. These requests result in “<strong>compute jobs</strong>” (also simply called “jobs”). Our VS Code sessions are an example of such compute jobs.</p>
-<p>Because many different users are sending such requests all the time, there is software called a <strong>job scheduler</strong> (specifically, <strong>Slurm</strong> in case of OSC) that considers each request and assigns the necessary resources to the job as they become available.</p>
-<p>In two weeks, you will learn about submitting scripts as “batch jobs” with Slurm commands.</p>
 </section>
 </section>
-</section>
-<section id="putting-it-together" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="putting-it-together"><span class="header-section-number">6</span> Putting it together</h2>
-<p>Let’s take a look at the specs for Pitzer now that we understand a supercomputer’s components a bit better:</p>
+<section id="nf-core-pipelines" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="nf-core-pipelines"><span class="header-section-number">4</span> nf-core pipelines</h2>
+<p>You don’t always have to build your own pipeline. Many publicly available pipelines exist, and if reliable pipelines exist for your planned analyses, there are several advantages to using one of these instead of trying to build your own pipeline.</p>
+<p>For example, a bewildering array of bioinformatics programs is often available for a given type of analysis, and it can be very hard and time-consuming to figure out what you should use. If you use a XXX, you can be confident that it uses a good if not optimal combination of tools and tool settings: most of these pipelines have been developed over years by many experts in the field, and are continuously updated.</p>
+<p>Among workflow tools, Nextflow has by far the best ecosystem of publicly available pipelines. The “nf-core” initiative (<a href="https://nf-co.re" class="uri">https://nf-co.re</a>, <span class="citation" data-cites="ewels2020">Ewels et al. (<a href="#ref-ewels2020" role="doc-biblioref">2020</a>)</span>) curates a set of best-practice, highly flexible, and well-documented pipelines written in Nextflow:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="../img/pitzer_specs.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Specs for the Pitzer cluster on OSC."><img src="../img/pitzer_specs.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:95.0%" alt="A complex diagram showing the specs for the OSc Pitzer cluster."></a></p>
-</figure>
-</div>
-<figcaption>Specs for the Pitzer cluster on OSC.</figcaption>
+<p><img src="../img/nfcore_homepage.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
 </figure>
 </div>
 <hr style="height:1pt; visibility:hidden;">
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<p>For many common omics analysis types, nf-core has a pipeline. It currently has 58 complete pipelines — these are the four most popular ones:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/nfcore_pipelines.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
 </div>
-<div class="callout-title-container flex-fill">
-Citing and contacting OSC
+<p>Here’s a closer look at the most widely used nf-core pipeline, the <a href="https://nf-co.re/rnaseq%3E">rnaseq pipeline</a>, which we’ll run in <a href="../week15/w15_1_nfcore.html">week 15 of the course</a>:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/nfcore_rnaseq.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:120.0%"></p>
+</figure>
 </div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>When you use OSC, it’s good practice to <strong>acknowledge and cite OSC</strong> in your papers, see their <a href="https://www.osc.edu/resources/getting_started/citation">citation page</a>.</li>
-<li>For many questions, such as if you have problems with your account or with installing or using specific software, or don’t understand why your jobs keep failing, you can <strong>email OSC at <a href="mailto:oschelp@osc.edu" class="email">oschelp@osc.edu</a></strong>. They are usually very quick to respond!</li>
-<li>If you don’t yet have an account, then use this email address: <a href="mailto:start@osc.edu" class="email">start@osc.edu</a>.</li>
-</ul>
-</div>
-</div>
+
 
 
 </section>
 
-
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p> Copying of files back-and-forth, and making sure your results are not lost upon some kind of failure.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section></div></main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-ewels2020" class="csl-entry" role="listitem">
+Ewels, Philip A., Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso, and Sven Nahnsen. 2020. <span>“The Nf-Core Framework for Community-Curated Bioinformatics Pipelines.”</span> <em>Nature Biotechnology</em> 38 (3): 276–78. <a href="https://doi.org/10.1038/s41587-020-0439-x">https://doi.org/10.1038/s41587-020-0439-x</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

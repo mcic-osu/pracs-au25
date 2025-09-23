@@ -157,7 +157,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
         <li class="dropdown-header">Week 6: Shell scripts and CLI tools [TBA]</li>
         <li class="dropdown-header">Week 7: Slurm batch jobs at OSC [TBA]</li>
-        <li class="dropdown-header">Week 8: Using generative AI when coding [TBA]</li>
+        <li class="dropdown-header">Week 8: Halfway recap [TBA]</li>
         <li class="dropdown-header">Week 9: Reproducibility and data management [TBA]</li>
         <li class="dropdown-header">Week 10: Workflow management [TBA]</li>
         <li class="dropdown-header">Week 11: R – basics [TBA]</li>
@@ -411,13 +411,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="change-your-working-dir" class="level4">
 <h4 class="anchored" data-anchor-id="change-your-working-dir">Change your working dir</h4>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> week04</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> week04/originspecies</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 </section>
 <section id="remote-repositories" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="remote-repositories"><span class="header-section-number">2</span> Remote repositories</h2>
-<p>You have used version control to create a local Git repository for the mock <code>originspecies</code> project. The next step is to put this repo online. Generally, sharing repositories online allows you to:</p>
+<p>You have used version control to create a local Git repository for the mock <code>originspecies</code> project. The next step is to put this repo online. Generally, sharing Git repositories online allows you to:</p>
 <ul>
 <li>Share your work (e.g.&nbsp;alongside a publication) and/or</li>
 <li>Have an online backup and/or</li>
@@ -433,7 +433,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>But we will need to start with some one-time setup to enable GitHub authentication.</p>
 <section id="one-time-setup-github-authentication" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="one-time-setup-github-authentication"><span class="header-section-number">2.1</span> One-time setup: GitHub authentication</h3>
-<p>In order to link your local Git repositories to their online counterparts on GitHub, you need to set up GitHub authentication. There are two options for this (see the box below) but we will use <code>SSH</code> access with an SSH key.</p>
+<p>In order to link your local Git repositories to their online counterparts on GitHub, you need to set up GitHub authentication. There are two options for this (see below) – we will use <code>SSH</code> access with an SSH key.</p>
 <ol type="1">
 <li><p>Use the <code>ssh-keygen</code> command to generate a public-private SSH key pair — in the command below, replace <code>your_email@example.com</code> with the email address you used to sign up for a GitHub account:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-keygen</span> <span class="at">-t</span> ed25519 <span class="at">-C</span> <span class="st">"your_email@example.com"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
@@ -465,7 +465,7 @@ The key's randomart image is:
 <div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ~/.ssh/id_ed25519.pub</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBz4qiqjbNrKPodoGyoF/v7n0GKyvc/vKiW0apaRjba2 your_email@example.com</code></pre></li>
 <li><p>Copy the entire line that was printed to screen to your clipboard.</p></li>
-<li><p>In your browser, go to <a href="https://github.com" class="uri">https://github.com</a> and log in.</p></li>
+<li><p>In a separate tab in your web browser, go to <a href="https://github.com" class="uri">https://github.com</a> and log in.</p></li>
 <li><p>Go to your personal Settings: click on your avatar in the far top-right of the page, then select “Settings”.</p></li>
 <li><p>Click on <code>SSH and GPG keys</code> in the sidebar.</p></li>
 <li><p>Click the green <code>New SSH key</code> button.</p></li>
@@ -485,10 +485,10 @@ The key's randomart image is:
 <h4 class="anchored" data-anchor-id="authentication-and-github-urls">Authentication and GitHub URLs</h4>
 <p>The current two options to authenticate to GitHub when connecting with remotes are:</p>
 <ul>
-<li><code>SSH</code> access with an <em>SSH key</em> (which we have just set up)</li>
-<li><code>HTTPS</code> access with a <em>Public Access Token</em> (PAT)<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
+<li><code>SSH</code> access with an SSH key (which we have just set up)</li>
+<li><code>HTTPS</code> access with a Public Access Token (PAT)<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
 </ul>
-<p>These two options are associated with separate URLs. In other words, for everything on GitHub, <strong>there are separate SSH and HTTPS URLs, and you should make sure to make the correct one</strong>. Since you have set up SSH but not HTTPS authentication, you must use URLs with the following format:</p>
+<p>These two options are associated with separate URLs for your repos on GitHub. For interacting with your repo on the command line, <strong>you should make sure to select the URL type corresponding to your authorization type</strong>. Since you have set up SSH but not HTTPS authentication, you must use URLs with the SSH format, which look like this:</p>
 <pre class="bash-out-solo"><code>git@github.com:&lt;USERNAME&gt;/&lt;REPOSITORY&gt;.git</code></pre>
 <p>(HTTPS URLs are in the more familiar-looking format <code>https://github.com/&lt;USERNAME&gt;/&lt;REPOSITORY&gt;.git</code>)</p>
 <p>We’ll see an example of this in a bit.</p>
@@ -506,11 +506,11 @@ The key's randomart image is:
 </figure>
 </div>
 <ol start="2" type="1">
-<li>In the box “<strong>Repository name</strong>”, use the same name as that of your local dir: <code>originspecies</code>(though note that these names don’t <em>have to</em> match).</li>
+<li>In the box “<strong>Repository name</strong>”, use the same name as that of your local dir: <code>originspecies</code>(though note that these names don’t <em>have to</em> match). You can leave the Description empty in this case.</li>
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../img/github-newrepo-name2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="../img/github-newrepo-name2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:45.0%" alt="A screenshot showing how to name your repository on GitHub."></a></p>
+<p><a href="../img/github-newrepo-name3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="../img/github-newrepo-name3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="A screenshot showing how to name your repository on GitHub."></a></p>
 </figure>
 </div>
 <ol start="3" type="1">
@@ -518,8 +518,25 @@ The key's randomart image is:
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../img/github-newrepo-confirm2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="../img/github-newrepo-confirm2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="A screenshot showing the desired settings when creating a new repository on GitHub"></a></p>
+<p><a href="../img/github-newrepo-confirm3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="../img/github-newrepo-confirm3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="A screenshot showing the desired settings when creating a new repository on GitHub"></a></p>
 </figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Notes on the above settings
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>Public vs.&nbsp;private repositories: if you have code you are not (yet) willing to share with the world, but you still want an online backup and/or collaborate, you can set a repository’s visibility to “Private”.</p></li>
+<li><p>We don’t want to add README or <code>.gitignore</code>, since we already have those in our local repo. In general, to avoid confusion, it’s best to not add or edit any files in your GitHub repo: do this locally, then upload to GitHub (as we’ll see below).</p></li>
+<li><p>For a research project repository, you may want to add a brief Description. But you can also do that after creating the repo.</p></li>
+</ul>
+</div>
 </div>
 </section>
 <section id="link-the-local-and-remote-repositories" class="level3" data-number="2.3">
@@ -535,7 +552,7 @@ The key's randomart image is:
 <li><p>First, tell Git to add a “remote” connection with <strong><code>git remote</code></strong>, providing three arguments to this command:</p>
 <ul>
 <li><strong><code>add</code></strong> — because we’re adding a remote connection</li>
-<li><strong><code>origin</code></strong> — the nickname for the connection (could be anything but usually called “origin” by convention).</li>
+<li><strong><code>origin</code></strong> — the nickname for the connection (could be anything but is usually called “origin” by convention).</li>
 <li>The <strong>URL</strong> to the GitHub repo (<strong>in SSH format</strong>: click on the <code>HTTPS</code>/<code>SSH</code> button to toggle the URL type)</li>
 </ul>
 <div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># git remote add &lt;remote-nickname&gt; &lt;URL&gt;</span></span>
@@ -555,27 +572,32 @@ Compressing objects: 100% (12/12), done.
 Writing objects: 100% (18/18), 1.67 KiB | 0 bytes/s, done.
 Total 18 (delta 1), reused 0 (delta 0)
 remote: Resolving deltas: 100% (1/1), done.
-remote: To git@github.com:jelmerp/originspecies2.git
+remote: To git@github.com:jelmerp/originspecies.git
 * [new branch]      main -&gt; main</code></pre></li>
 </ol>
 <p>From now on, you can push with a simpler command, because without additional arguments, <code>git push</code> will push:</p>
 <ul>
 <li>To the <strong>default remote connection</strong> (which we just set up)</li>
-<li>To and from the <strong>currently active repository <em>“branch”</em></strong> (default: <code>main</code>)<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</li>
+<li>To and from the <strong>currently active repository <em>“branch”</em></strong> (default: <code>main</code> – this is our only branch)<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</li>
 </ul>
-<p>Because you only have one remote connection and one branch in this repo, you can simply use the following to push from now on:</p>
+<p>Therefore, you can simply use the following to push command from now on:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-simple callout-tip">
-<div class="callout-body d-flex">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
+<div class="callout-title-container flex-fill">
+Check or change the remote connection
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>You can check your remote connection settings for a repo with <code>git remote -v</code>:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>origin  git@github.com:jelmerp/originspecies.git (fetch)
 origin  git@github.com:jelmerp/originspecies.git (push)</code></pre>
-</div>
+<p>If you need to change the URL of your connection, you can use:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote set-url origin <span class="op">&lt;</span>NEW_URL<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -593,7 +615,7 @@ origin  git@github.com:jelmerp/originspecies.git (push)</code></pre>
 <p><a href="../img/github-repo-home.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="../img/github-repo-home.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="A screenshot of the front page of our new repository."></a></p>
 </figure>
 </div>
-<p>Next, click where it says <code>x commits</code> (x should be 10 if you followed along exactly in the previous class):</p>
+<p>Next, click on <code>x commits</code> (<code>x</code> should be 10 if you followed along exactly in the previous class – but it’s not really important if you have a different number):</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><a href="../img/github-x-commits2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="../img/github-x-commits2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:35.0%" alt="A screenshot of the commit info on GitHub."></a></p>
@@ -605,7 +627,7 @@ origin  git@github.com:jelmerp/originspecies.git (push)</code></pre>
 <p><a href="../img/github-commit-overview.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="../img/github-commit-overview.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:95.0%" alt="A screenshot of the overview of commits on GitHub."></a></p>
 </figure>
 </div>
-<p>You can click on a commit to see the changes that were made by it:</p>
+<p>You can click on a commit message to see the changes made by that commit:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <div class="quarto-figure quarto-figure-center">
@@ -616,7 +638,7 @@ origin  git@github.com:jelmerp/originspecies.git (push)</code></pre>
 <figcaption>The line that is highlighted in green was added by this commit.</figcaption>
 </figure>
 </div>
-<p>Go back to the previous page (the overview of commits). On the right-hand side, a <strong><kbd>&lt; &gt;</kbd></strong> button will allow you to see the <em>state of the entire repo</em> (all files in the project) at the time of that commit:</p>
+<p>Go back to the previous page, the overview of commits. On the right-hand side, a <strong><kbd>&lt; &gt;</kbd></strong> button will allow you to see the <em>state of the entire repo</em> (all files in the project) at the time of that commit:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><a href="../img/github-browse-repo-at-commit.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="../img/github-browse-repo-at-commit.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:28.0%" alt="A screenshot of the Browse Repository button on GitHub."></a></p>
@@ -717,11 +739,11 @@ origin  git@github.com:jelmerp/originspecies.git (push)</code></pre>
 <p>In a single-user workflow with a remote, you commit just like you would without a remote in your day-to-day work, and in addition, <em>push</em> to remote occasionally. Let’s run through an example.</p>
 <ul>
 <li><p>Start by creating a <code>README.md</code> file for your repo:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Origin"</span> <span class="op">&gt;</span> README.md</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Repo for book draft on my new **theory**"</span> <span class="op">&gt;&gt;</span> README.md</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Origin"</span> <span class="op">&gt;</span> README.md</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Repo for book draft on my new **theory**"</span> <span class="op">&gt;&gt;</span> README.md</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Add and commit the file:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add README.md</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Added a README file"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add README.md</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Added a README file"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>[main 63ce484] Added a README file
 1 file changed, 2 insertions(+)
 create mode 100644 README.md</code></pre></li>
@@ -732,7 +754,7 @@ Your branch is ahead of 'origin/main' by 1 commit.
 
 nothing to commit, working tree clean</code></pre></li>
 <li><p>But Git will not automatically sync! So, now push to the remote repository:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Counting objects: 4, done.
 Delta compression using up to 40 threads.
 Compressing objects: 100% (3/3), done.
