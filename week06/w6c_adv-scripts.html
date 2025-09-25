@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jelmer Poelstra">
+<meta name="dcterms.date" content="2025-09-26">
+
+<title>Advanced shell scripting – PRACS-AU25</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../img/favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-57476271c5f0467c372e20ff5d25630e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-2249f211b4ff13c2f7c9e38a36b3bb61.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">PRACS-AU25</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-week-overviews" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Week overviews</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-week-overviews">    
+        <li>
+    <a class="dropdown-item" href="../week01/w1_overview.html">
+ <span class="dropdown-text">Week 1: Omics data and OSC</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week02/w2_overview.html">
+ <span class="dropdown-text">Week 2: Project organization and Unix shell basics</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week03/w3_overview.html">
+ <span class="dropdown-text">Week 3: Working with files in the Unix shell</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week04/w4_overview.html">
+ <span class="dropdown-text">Week 4: Version control with Git and GitHub</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week05/w5_overview.html">
+ <span class="dropdown-text">Week 5: Software management at OSC</span></a>
+  </li>  
+        <li class="dropdown-header">Week 6: Shell scripts and CLI tools [TBA]</li>
+        <li class="dropdown-header">Week 7: Slurm batch jobs at OSC [TBA]</li>
+        <li class="dropdown-header">Week 8: Halfway recap [TBA]</li>
+        <li class="dropdown-header">Week 9: Reproducibility and data management [TBA]</li>
+        <li class="dropdown-header">Week 10: Workflow management [TBA]</li>
+        <li class="dropdown-header">Week 11: R – basics [TBA]</li>
+        <li class="dropdown-header">Week 12: R – Quarto [TBA]</li>
+        <li class="dropdown-header">Week 13: R – data visualization [TBA]</li>
+        <li class="dropdown-header">Week 14: R – omics data [TBA]</li>
+        <li class="dropdown-header">Week 15: Nextflow nf-core pipelines [TBA]</li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-exercises" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Exercises</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-exercises">    
+        <li>
+    <a class="dropdown-item" href="../week03/w3_exercises.html">
+ <span class="dropdown-text">Week 3: Unix shell</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week05/w5_exercises.html">
+ <span class="dropdown-text">Week 5: GitHub and software at OSC</span></a>
+  </li>  
+        <li class="dropdown-header">Week 7: Slurm batch jobs [TBA]</li>
+        <li class="dropdown-header">Week 9: Nextflow [TBA]</li>
+        <li class="dropdown-header">Week 11: R basics [TBA]</li>
+        <li class="dropdown-header">Week 12: Quarto [TBA]</li>
+        <li class="dropdown-header">Week 14: R for omics data [TBA]</li>
+        <li class="dropdown-header">Week 15: nf-core pipelines [TBA]</li>
+        <li><hr class="dropdown-divider"></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-assignments" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Assignments</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-assignments">    
+        <li class="dropdown-header">GRADED</li>
+        <li>
+    <a class="dropdown-item" href="../week02/w2_ga.html">
+ <span class="dropdown-text">GA 1: Markdown and Unix shell basics (Week 2)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week04/w4_ga.html">
+ <span class="dropdown-text">GA 2: Unix shell data tools and Git (Week 4)</span></a>
+  </li>  
+        <li class="dropdown-header">GA 3: Shell scripting (Week 6) [TBA]</li>
+        <li class="dropdown-header">GA 4: Slurm batch jobs at OSC (Week 8) [TBA]</li>
+        <li class="dropdown-header">GA 5: Nextflow (Week 10) [TBA]</li>
+        <li class="dropdown-header">GA 6: Data analysis with R (Week 13) [TBA]</li>
+        <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-header">UNGRADED</li>
+        <li>
+    <a class="dropdown-item" href="https://forms.office.com/r/YfMxzmzRdH">
+ <span class="dropdown-text">UA 1: Pre-course survey (week 1)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week01/w1_ua_osc-setup.html">
+ <span class="dropdown-text">UA 2: OSC account setup (week 1)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../week04/w4_ua_github-account.html">
+ <span class="dropdown-text">UA 3: GitHub account setup (week 4)</span></a>
+  </li>  
+        <li class="dropdown-header">UA 4: Post-course survey (week 16) [TBA]</li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-final-project" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Final project</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-final-project">    
+        <li class="dropdown-header">General info [TBA]</li>
+        <li class="dropdown-header">FP 1: Proposal (week 12) [TBA]</li>
+        <li class="dropdown-header">FP 2: Draft (week 14) [TBA]</li>
+        <li class="dropdown-header">FP 3: Oral presentation (week 16) [TBA]</li>
+        <li class="dropdown-header">FP 4: Final submission (week 16) [TBA]</li>
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-other" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Other</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-other">    
+        <li>
+    <a class="dropdown-item" href="../ref/refs.html">
+ <span class="dropdown-text">Course references</span></a>
+  </li>  
+        <li class="dropdown-header">Course glossary [TBA]</li>
+        <li class="dropdown-header">Collected further learning resources [TBA]</li>
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../ref/about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://osu.instructure.com/courses/187770"> 
+<span class="menu-text"><i class="fa-solid fa-graduation-cap" aria-label="graduation-cap"></i></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://ondemand.osc.edu"> 
+<span class="menu-text"><i class="fa-solid fa-desktop" aria-label="desktop"></i></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="The GitHub repo for this website"><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="https://github.com/mcic-osu/pracs-au25">
+            Source Code
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="https://github.com/mcic-osu/pracs-au25/issues/new">
+            Report an Issue
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#command-substitution" id="toc-command-substitution" class="nav-link active" data-scroll-target="#command-substitution"><span class="header-section-number">1</span> Command substitution</a></li>
+  <li><a href="#a-script-that-defines-output-files" id="toc-a-script-that-defines-output-files" class="nav-link" data-scroll-target="#a-script-that-defines-output-files"><span class="header-section-number">2</span> A script that defines output <em>files</em></a>
+  <ul class="collapse">
+  <li><a href="#basename-and-dirname-to-extract-parts-of-paths" id="toc-basename-and-dirname-to-extract-parts-of-paths" class="nav-link" data-scroll-target="#basename-and-dirname-to-extract-parts-of-paths"><span class="header-section-number">2.1</span> <code>basename</code> and <code>dirname</code> to extract parts of paths</a></li>
+  <li><a href="#a-script-variant-that-defines-output-files" id="toc-a-script-variant-that-defines-output-files" class="nav-link" data-scroll-target="#a-script-variant-that-defines-output-files"><span class="header-section-number">2.2</span> A script variant that defines output <em>files</em></a></li>
+  </ul></li>
+  <li><a href="#conditionals" id="toc-conditionals" class="nav-link" data-scroll-target="#conditionals"><span class="header-section-number">3</span> Conditionals</a>
+  <ul class="collapse">
+  <li><a href="#basic-syntax" id="toc-basic-syntax" class="nav-link" data-scroll-target="#basic-syntax"><span class="header-section-number">3.1</span> Basic syntax</a></li>
+  <li><a href="#string-comparisons" id="toc-string-comparisons" class="nav-link" data-scroll-target="#string-comparisons"><span class="header-section-number">3.2</span> String comparisons</a></li>
+  <li><a href="#integer-number-comparisons" id="toc-integer-number-comparisons" class="nav-link" data-scroll-target="#integer-number-comparisons"><span class="header-section-number">3.3</span> Integer (number) comparisons</a></li>
+  <li><a href="#file-tests" id="toc-file-tests" class="nav-link" data-scroll-target="#file-tests"><span class="header-section-number">3.4</span> File tests</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w6_overview.html"><i class="bi bi-book"></i>Week 6 overview</a></li><li><a href="w6a_scripts.html"><i class="bi bi-bookmarks"></i>w6a: Shell scripting I</a></li><li><a href="w6b_cli-tools.html"><i class="bi bi-bookmarks"></i>w6b: Shell scripting - CLI tools</a></li><li><a href="w6_ga.html"><i class="bi bi-pencil"></i>Week 6 graded assignment</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Advanced shell scripting</h1>
+<p class="subtitle lead">Week 6 – Lecture C</p>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Jelmer Poelstra <a href="mailto:poelstra.1@osu.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> <a href="https://orcid.org/0000-0002-3514-7462" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="https://mcic.osu.edu/bioinformatics">
+            CFAES Bioinformatics Core, Ohio State University
+            </a>
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 26, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<hr>
+<p><br></p>
+<section id="command-substitution" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="command-substitution"><span class="header-section-number">1</span> Command substitution</h2>
+<p>Command substitution allows you to <strong>store the output of a command in a variable</strong>. This is especially useful in scripts and loops.</p>
+<p>Let’s see an example. As you know, the <code>date</code> command will print the current date and time:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Thu Sep 11 14:52:22 EDT 2025</code></pre>
+<p>If we try to <em>store the date in a variable</em> directly, it doesn’t work: the literal string “date” is stored instead:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">today</span><span class="op">=</span>date</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$today</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>date</code></pre>
+<p>That’s why we need command substitution, which we can use by wrapping the command inside <strong><code>$()</code></strong>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">today</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span><span class="va">)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$today</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Thu Sep 11 14:54:11 EDT 2025</code></pre>
+<p>One practical example of using command substitution is when you want to <strong>automatically include the current date in a file name</strong> (with “automatic” meaning that you can use the same command regardless of the date, and that you could use it in a script that you could run at any point). First, note that we can use <code>date +%F</code> to get <code>YYYY-MM-DD</code> format without the time:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span> +%F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>2025-09-07</code></pre>
+<p>Let’s use that in a command substitution:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="va">today</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%F<span class="va">)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> README_<span class="st">"</span><span class="va">$today</span><span class="st">"</span>.txt</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>README_2025-09-07.txt</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Or insert the command substitution on the fly
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It is even possible to do this all in one go, by using the command substitution <code>$(date +%F)</code> <em>directly</em> in our <code>touch</code> command, rather than first assigning it to a variable:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> README_<span class="st">"</span><span class="va">$(</span><span class="fu">date</span> +%F<span class="va">)</span><span class="st">"</span>.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<section id="exercise-command-substitution" class="level4 exercise">
+<h4 class="anchored" data-anchor-id="exercise-command-substitution"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Command substitution</h4>
+<p>Say we wanted to count and report the number of FASTQ files in a directory in a generalized, programmatic way. To do the counting, we can run:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="pp">*</span>fastq <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>6</code></pre>
+<p>Now, use command substitution to store the output of the last command in a variable, and then use an <code>echo</code> command to print the following:</p>
+<pre class="bash-out-solo"><code>The dir has 6 files</code></pre>
+<p><em>To be clear, <code>6</code> (or whatever the number of files ends up being) should be contained</em> <em>in a variable and you should not be typing that character yourself!</em></p>
+<details>
+<summary>
+Click for a hint
+</summary>
+<p>Your final <code>echo</code> command should look something like this:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"The dir has </span><span class="va">$n_files</span><span class="st"> files"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+Now, you try to store the number of files in the variable <code>$n_files</code>.
+</details>
+<details>
+<summary>
+Click for the solution
+</summary>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="va">n_files</span><span class="op">=</span><span class="va">$(</span><span class="fu">ls</span> <span class="pp">*</span>fastq <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span><span class="va">)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"The dir has </span><span class="va">$n_files</span><span class="st"> files"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>The dir has 6 files</code></pre>
+<p><strong>Note:</strong> You don’t have to quote variables <em>inside</em> a quoted <code>echo</code> call, since it’s, well, already quoted. If you <em>also</em> quote the variables, you will in fact <em>unquote</em> it, although that shouldn’t pose a problem inside <code>echo</code> statements.</p>
+</details>
+</section>
+</section>
+<section id="a-script-that-defines-output-files" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="a-script-that-defines-output-files"><span class="header-section-number">2</span> A script that defines output <em>files</em></h2>
+<section id="basename-and-dirname-to-extract-parts-of-paths" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="basename-and-dirname-to-extract-parts-of-paths"><span class="header-section-number">2.1</span> <code>basename</code> and <code>dirname</code> to extract parts of paths</h3>
+<p>In loops and other contexts where you are working with file names programmatically, you often have a path to a file and need to extract just the file name part from it.</p>
+<p>For example, we can think of the path <code>data/fastq/sample1_R1.fastq</code> as consisting of a directory part (<code>data/fastq/</code>) and a filename part (<code>sample1_R1.fastq</code>).</p>
+<p>Running the <code>basename</code> command on a file path will strip any directories and just return the file name:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">basename</span> garrigos-data/fastq/ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>ERR10802863_R1.fastq.gz</code></pre>
+<p>You can also provide a <em>suffix to also strip</em> from the file name:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">basename</span> garrigos-data/fastq/ERR10802863_R1.fastq.gz .fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>ERR10802863_R1</code></pre>
+<p>If you instead want the <em>directory</em> part of a path, use the <code>dirname</code> command:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dirname</span> garrigos-data/fastq/ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>garrigos-data/fastq</code></pre>
+</section>
+<section id="a-script-variant-that-defines-output-files" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="a-script-variant-that-defines-output-files"><span class="header-section-number">2.2</span> A script variant that defines output <em>files</em></h3>
+<p>In previous shell script examples, we only defined and used an output dir. But some programs allow or require you to define the output file names.</p>
+<p>Here is an example of doing that inside a script:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the placeholder variables</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="va">R1_in</span><span class="op">=</span><span class="va">$1</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="va">R2_in</span><span class="op">=</span><span class="va">$2</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="va">outdir</span><span class="op">=</span><span class="va">$3</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the output file names</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="va">R1_out</span><span class="op">=</span><span class="st">"</span><span class="va">$outdir</span><span class="st">"</span>/<span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$R1_in</span><span class="st">"</span><span class="va">)</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="va">R2_out</span><span class="op">=</span><span class="st">"</span><span class="va">$outdir</span><span class="st">"</span>/<span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$R2_in</span><span class="st">"</span><span class="va">)</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Run a fictional program</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="ex">trimmer2</span> <span class="at">--in1</span> <span class="st">"</span><span class="va">$R1_in</span><span class="st">"</span> <span class="at">--in2</span> <span class="st">"</span><span class="va">$R2_in</span><span class="st">"</span> <span class="at">--out1</span> <span class="st">"</span><span class="va">$R1_out</span><span class="st">"</span> <span class="at">--out2</span> <span class="st">"</span><span class="va">$R2_out</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="conditionals" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="conditionals"><span class="header-section-number">3</span> Conditionals</h2>
+<p>With conditionals like <code>if</code> statements, we can <strong>run one or more commands only if some condition is true</strong>. We can also run a different set of commands if the condition is <em>not</em> true.</p>
+<p>These features are especially useful in shell scripts because we may, for instance, check that all the inputs are correct, and exit with an informative error if that’s not the case.</p>
+<p>While this does add some complexity to your shell scripts, it can be worth it because:</p>
+<ul>
+<li>The sooner you stop a script from running when there are such problems, the better.</li>
+<li>If we instead pass erroneous input to the program that our script runs, we sometimes get confusing errors or even worse, no clear errors at all.</li>
+</ul>
+<section id="basic-syntax" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="basic-syntax"><span class="header-section-number">3.1</span> Basic syntax</h3>
+<p>This is the basic syntax of an <code>if</code> statement in Bash:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">&lt;</span>test<span class="op">&gt;</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Command(s) to run if the condition is true</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We’ll have to add an <code>else</code> clause to run alternative command(s) if the condition is false:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">&lt;</span>test<span class="op">&gt;</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Command(s) to run if the condition is true</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Commands(s) to run if the condition is false</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr style="height:1pt; visibility:hidden;">
+<p>In this first example of an <code>if</code> statement we check the file type of an input file, and exit the script if it’s not of the correct type:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Hypothetical example - don't run this]</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Say we have a variable $filetype that contains a file's type</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="st">"</span><span class="va">$filetype</span><span class="st">"</span> <span class="ot">==</span> <span class="st">"fastq"</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Processing FASTQ file..."</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># [Commands to process the FASTQ file...]</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Error: unknown filetype!"</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the code above, note that:</p>
+<ul>
+<li>The double square brackets <code>[[ ]]</code> represent a <em>test statement</em><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</li>
+<li>The spaces bordering the brackets on the inside are necessary: <code>[["$filetype" == "fastq"]]</code> would fail!</li>
+<li>Double equals signs (<code>==</code>) are common in programming to <em>test for equality</em> — this is to contrast it with a single <code>=</code>, which is used for variable assignment.</li>
+<li>When used inside a script, the <code>exit</code> command will stop the execution of the script. With <code>exit 1</code>, the <em>exit status</em> of our script is 1: an exit status of 0 means success — any other integer, including 1, means failure.</li>
+</ul>
+</section>
+<section id="string-comparisons" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="string-comparisons"><span class="header-section-number">3.2</span> String comparisons</h3>
+<p>The above test, <code>"$filetype" == "fastq"</code>, was an example of a string comparison, where “string” is basically another term for “text” that is common in programming contexts, and mostly serves to distinguish this from numeric data.</p>
+<p>The two main string comparisons are:</p>
+<table class="table-striped table-hover caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 69%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>String comparison</th>
+<th>Evaluates to true if</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>str1 == str2</code></td>
+<td>Strings <code>str1</code> and <code>str2</code> are identical<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></td>
+</tr>
+<tr class="even">
+<td><code>str1 != str2</code></td>
+<td>Strings <code>str1</code> and <code>str2</code> are different</td>
+</tr>
+</tbody>
+</table>
+<hr style="height:1pt; visibility:hidden;">
+</section>
+<section id="integer-number-comparisons" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="integer-number-comparisons"><span class="header-section-number">3.3</span> Integer (number) comparisons</h3>
+<p>It can be a good idea to test at the beginning of a script whether the correct number of arguments were passed to it, and simply exit if that’s not the case.</p>
+<p>The <code>$#</code> variable will automatically contain the number of arguments that were passed to a script:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Hypothetical example - don't run this]</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="ot">!</span> <span class="st">"</span><span class="va">$#</span><span class="st">"</span> <span class="ot">-eq</span> 2 <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Error: wrong number of arguments"</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"You provided </span><span class="va">$#</span><span class="st"> arguments, while 2 are required."</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Usage: printname.sh &lt;first-name&gt; &lt;last-name&gt;"</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr style="height:1pt; visibility:hidden;">
+<table class="table-striped table-hover caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 69%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Integer comparisons</th>
+<th>Evaluates to true if</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>int1 -eq int2</code></td>
+<td>Integers <code>int1</code> and <code>int2</code> are equal</td>
+</tr>
+<tr class="even">
+<td><code>int1 -ne int2</code></td>
+<td>Integers <code>int1</code> and <code>int2</code> are not equal</td>
+</tr>
+<tr class="odd">
+<td><code>int1 -lt int2</code></td>
+<td>Integer <code>int1</code> is less than <code>int2</code> (<code>-le</code> for less than or equal to)</td>
+</tr>
+<tr class="even">
+<td><code>int1 -gt int2</code></td>
+<td>Integer <code>int1</code> is greater than <code>int2</code> (<code>-ge</code> for greater than or equal to)</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Another integer comparison example <em>(Click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Say that we want to run a program with options that depend on our number of samples. With the number of samples determined from the number of lines in a hypothetical file <code>samples.txt</code> and stored in a variable <code>$n_samples</code>, we can test if the number is greater than 9 with <code>"$n_samples" -gt 9</code>, where <code>gt</code> stands for “greater than”:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Hypothetical example - don't run this]</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Store the number of samples in variable $n_samples:</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="va">n_samples</span><span class="op">=</span><span class="va">$(</span><span class="fu">cat</span> samples.txt <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span><span class="va">)</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># With '-gt 9', the if statement tests whether the number of samples is greater than 9:</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="st">"</span><span class="va">$n_samples</span><span class="st">"</span> <span class="ot">-gt</span> 9 <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Commands to run if nr of samples &gt;9:</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Processing files with algorithm A"</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Commands to run if nr of samples is &lt;=9:</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Processing files with algorithm B..."</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="file-tests" class="level3" data-number="3.4">
+<h3 data-number="3.4" class="anchored" data-anchor-id="file-tests"><span class="header-section-number">3.4</span> File tests</h3>
+<p>We can also test whether files or dirs exist:</p>
+<table class="table-striped table-hover caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 70%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>File/dir test</th>
+<th>Evaluates to true if</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>-f file</code></td>
+<td><code>file</code> exists and is a regular file (not a dir or link)</td>
+</tr>
+<tr class="even">
+<td><code>-d dir</code></td>
+<td><code>dir</code> exists and is a directory &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
+</tr>
+</tbody>
+</table>
+<hr style="height:1pt; visibility:hidden;">
+<p>For example, the code below tests whether an input file exists using the file test <strong><code>-f</code></strong> and if it does <em>not</em> (hence the <strong><code>!</code></strong>), it will stop the execution of the script:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Hypothetical example - don't run this]</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># '-f' is true if the file exists, so '! -f' is true if the file doesn't exist</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="ot">!</span> <span class="ot">-f</span> <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Error: Input file </span><span class="va">$fastq_file</span><span class="st"> not found!"</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Combining expressions with <code>&amp;&amp;</code> and <code>||</code> <em>(Click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>To test for multiple conditions at once, use the <code>&amp;&amp;</code> (“and”) and <code>||</code> (“or”) shell operators — for example:</p>
+<ul>
+<li><p>If the number of samples is less than 100 <strong>and</strong> at least 50 (i.e.&nbsp;50-99):</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="st">"</span><span class="va">$n_samples</span><span class="st">"</span> <span class="ot">-lt</span> 100 <span class="kw">&amp;&amp;</span> <span class="st">"</span><span class="va">$n_samples</span><span class="st">"</span> <span class="ot">-ge</span> 50 <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Commands to run if the number of samples is 50-99</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>If either one of two FASTQ files don’t exist:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="ot">!</span> <span class="ot">-f</span> <span class="st">"</span><span class="va">$fastq_R1</span><span class="st">"</span> <span class="kw">||</span> <span class="ot">!</span> <span class="ot">-f</span> <span class="st">"</span><span class="va">$fastq_R2</span><span class="st">"</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Commands to run if either file doesn't exist - probably report error &amp; exit</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+</div>
+</div>
+</div>
+<section id="exercise-number-of-arguments" class="level4 exercise">
+<h4 class="anchored" data-anchor-id="exercise-number-of-arguments"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Number of arguments</h4>
+<p>In your <code>printname.sh</code> script, add the <code>if</code> statement from above that tests whether the correct number of arguments were passed to the script. Then, try running the script consecutively with 1, 2, and 3 arguments.</p>
+<details>
+<summary>
+Start with this <code>printname.sh</code> script we wrote above.
+</summary>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="va">first_name</span><span class="op">=</span><span class="va">$1</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="va">last_name</span><span class="op">=</span><span class="va">$2</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"This script will print a first and a last name"</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"First name: </span><span class="va">$first_name</span><span class="st">"</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Last name: </span><span class="va">$last_name</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<details>
+<summary>
+Click for the solution
+</summary>
+<p>Note that the <code>if</code> statement should come before you copy the variables to <code>first_name</code> and <code>last_name</code>, otherwise you get the “unbound variable error” before your descriptive custom error, when you pass 0 or 1 arguments to the script.</p>
+<p>The final script:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="ot">!</span> <span class="st">"</span><span class="va">$#</span><span class="st">"</span> <span class="ot">-eq</span> 2 <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Error: wrong number of arguments"</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"You provided </span><span class="va">$#</span><span class="st"> arguments, while 2 are required."</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Usage: printname.sh &lt;first-name&gt; &lt;last-name&gt;"</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="va">first_name</span><span class="op">=</span><span class="va">$1</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="va">last_name</span><span class="op">=</span><span class="va">$2</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"This script will print a first and a last name"</span></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"First name: </span><span class="va">$first_name</span><span class="st">"</span></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Last name: </span><span class="va">$last_name</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Run it with different numbers of arguments:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/printname.sh Jelmer</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Error: wrong number of arguments
+You provided 1 arguments, while 2 are required.
+Usage: printname.sh &lt;first-name&gt; &lt;last-name&gt;</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/printname.sh Jelmer Poelstra</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>First name: Jelmer
+Last name: Poelstra</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/printname.sh Jelmer Wijtze Poelstra</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Error: wrong number of arguments
+You provided 3 arguments, while 2 are required.
+Usage: printname.sh &lt;first-name&gt; &lt;last-name&gt;</code></pre>
+</details>
+</section>
+<section id="exercise-conditionals-ii" class="level4 exercise">
+<h4 class="anchored" data-anchor-id="exercise-conditionals-ii"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Conditionals II</h4>
+<p>In your Markdown notes file, write an <code>if</code> statement that tests whether the script <code>scripts/printname.sh</code> exists and is a regular file, and:</p>
+<ul>
+<li>If it is (<code>then</code> block), report the outcome with <code>echo</code> (e.g.&nbsp;“The file is found”).</li>
+<li>If it is not (<code>else</code> block), also report that outcome with <code>echo</code> (e.g.&nbsp;“The file is not found”).</li>
+</ul>
+<p>Then:</p>
+<ol type="1">
+<li>Run your <code>if</code> statement — it should report that the file is found.</li>
+<li>Introduce a typo in the file name in the <code>if</code> statement, and run it again, to check that the file is not indeed not found.</li>
+</ol>
+<details>
+<summary>
+Click for the solution
+</summary>
+<div class="sourceCode" id="cb41"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: you need single quotes when using exclamation marks with echo!</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="ot">-f</span> scripts/printname.sh <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">'Phew! The file is found.'</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">'Oh no! The file is not found!'</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Phew! The file is found.</code></pre>
+<p>After introducing a typo:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="ot">-f</span> scripts/printnames.sh <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">'Phew! The file is found.'</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">'Oh no! The file is not found!'</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Oh no! The file is not found!</code></pre>
+</details>
+</section>
+
+
+</section>
+</section>
+
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p> You can also use single square brackets <code>[ ]</code> but the double brackets have more functionality and I would recommend to always use these.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>A single <code>=</code> also works but <code>==</code> is clearer.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/mcic-osu\.github\.io\/pracs-au25");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>2025, Jelmer Poelstra, <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a> &nbsp; <img src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc.png" class="img-fluid" style="width:10.0%"></p>
+</div>   
+    <div class="nav-footer-center">
+<p><img src="../img/CFAES-Horiz-RGBHEX.svg" class="img-fluid" style="width:40.0%"></p>
+</div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/mcic-osu/pracs-au25">
+      <i class="bi bi-github" role="img" aria-label="The GitHub repo for this website">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
