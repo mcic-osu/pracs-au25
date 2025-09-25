@@ -113,7 +113,29 @@ You may want to create and open a Markdown file to keep class notes:
 1. Click <i class="fa fa-bars"></i> => `File` => `New File`.
 2. Save the file inside `/fs/ess/PAS2880/users/$USER/week04`,
    e.g. as `lectureA.md`.
-  
+
+#### Add a VS Code keyboard shortcut
+
+Add a keyboard shortcut to send code from your editor pane to the terminal.
+That way, you don't have to copy-and-paste code into the terminal when you've
+typed it in the editor^[
+This is the same type of behavior that you may be familiar with from RStudio]:
+
+1. Click <i class="fa fa-cog"></i> (bottom-left) > `Keyboard Shortcuts`
+2. Enter "Run Selected Text" in the search box,
+   and the option in question should pop up:
+   `Terminal: Run Selected Text in Active Terminal`
+3. Click on that, then add the shortcut <kbd>Ctrl</kbd>+<kbd>Enter</kbd>^[
+   Don't worry about the warning that other keybindings exist for this shortcut.].
+
+::: callout-tip
+### Automatic whole-line selection in VS Code
+In VS Code's editor pane,
+the _entire line that your cursor is on is selected by default_.
+As such, you don't need to manually select the entire line when wanting to send
+it to the terminal (or when cutting/copying!).
+:::
+
 ## Version control
 
 ### Why use a Version Control System (VCS)?
@@ -795,19 +817,12 @@ it would be much harder to keep this straight.
 
 ### File states
 
-Tracked files can be in one of three states:
+To formalize what we've seen earlier,
+tracked files can be in one of three states:
 
-- Unchanged since the last commit: **committed** (latest version is in the repo/commits).
-- Modified and staged since the last commit: **staged** (latest version is in the Index).
-- Modified but not staged since the last commit: **modified** (latest version is in the working dir).
-
-### Showing changes
-
-You can use the **`git diff` command** to show changes that you have made.
-By default, it will show all changes between the _working dir_ and:
-
-- The _last commit_ if nothing has been staged.
-- The _stage (Index)_ if something has been staged.
+- Unchanged since the last commit: **committed** (=> latest version is in the repo/commits).
+- Modified and staged since the last commit: **staged** (=> latest version is in the stage/"Index").
+- Modified but not staged since the last commit: **modified** (=> latest version is in the working dir).
 
 ::: callout-warning
 ### "Working dir" in the context of Git
@@ -823,17 +838,24 @@ versus that in the repository ("index" and "commits"),
 and is in full referred to as the "working dir _tree_".
 :::
 
+### Showing changes
+
+You can use the **`git diff` command** to show changes that you have made.
+By default, it will show all changes between the _working dir_ and:
+
+- The _last commit_ if nothing has been staged.
+- The _stage (Index)_ if something has been staged.
+
 Right now, there are no differences to report in our `originspecies` repository,
 because your working dir, the stage/Index, and the last commit are all the same:
 
 ``` sh
-# Git diff will not have output if there are no changes to report
+# Git diff will not print anything if there are no changes to report:
 git diff
 ```
 
 Change the to-do list
-(note: for this to work, you should have done the exercise above!),
-and check again:
+(note: this will only work if you did the exercise above) and check again:
 
 ``` sh
 echo "June 20, 1858: Send first draft to Huxley" >> todo.txt
@@ -862,9 +884,11 @@ latest version of the file.
 - To show changes **between the Index (stage) and the last commit**,
   use the `--staged` option to `git diff`.
 
-- If you have *changed multiple files, but just want to see differences for one of them*, you can
-  specify the filename --- in our case here, that will give the same output as the plain `git diff`
-  command above, since we only changed one file:
+- If you have *changed multiple files, but just want to see differences for one of them*,
+  you can specify the filename.
+  In our example,
+  that will print the same output as the plain `git diff` command above,
+  since we only changed one file:
 
   ```sh
   git diff todo.txt
@@ -872,23 +896,28 @@ latest version of the file.
   ```
 :::
 
-### VS Code functionality show changes
+### VS Code functionality to show changes
 
-1. Click on the Git symbol in the narrow side bar  (below the search icon)
+VS Code has some built-in Git functionality,
+some of which is quite a bit more user-friendly than the Git command-line interface.
+For example, to see changes between files:
+
+1. Click on the Git symbol in the narrow side bar (below the search icon)
    to open the *Source Control* side bar.
    
-2. In the source control sidebar, you should see not just the `originspecies`
-   repository listed, but also the `garrigos-data` repo^[
-   This is because our VS Code working dir is not `originspecies` but two levels
-   up from there. Typically, your VS Code working dir should be your project dir
-   which would be the same as the repo dir.].
-   If needed, click on `originspecies` to expand it:
+2. In the source control sidebar,
+   you should see the `garrigos-data` repository,
+   but you may not see the `originspecies` repository.
+   If not, click "File" > "Open Folder" and select `week04/originspecies`
+   to make VS Code start at that dir --
+   then, you should definitely see the `originspecies` repo.
+   
+3. Within the `originspecies` listing, you should see `todo.txt`:
+   click on the **`M`** next to the file `todo.txt`:
    
 ![](../img/vscode_repos.png){fig-align="center" width="40%" fig-alt="A screenshot of the VS Code source control sidebar." .lightbox}
-
-3. Within the `originspecies` listing, you should see `todo.txt`:
-   click on the **`M`** next to the file `todo.txt`,
-   and the following should appear in your editor pane:
+   
+4. Then, the following should appear in your editor pane:
    
 ![](../img/vscode_diff.png){fig-align="center" width="95%" fig-alt="A screenshot of the VS Code diff view." .lightbox}
 
@@ -966,7 +995,7 @@ Stage and commit the changes to `todo.txt`, then check what you have done.
 
 When you want to remove, move, or rename files that are tracked by Git,
 it is good practice to preface regular `rm` and `mv` commands with `git`:
-so, `git rm <file>` and `git mv <source> <dest>`.
+so, to `git rm` and `git mv`.
 
 When removing or moving/renaming a tracked file with `git rm` / `git mv`,
 changes will be made to your working dir just like with a regular `rm`/`mv`,
@@ -1202,7 +1231,7 @@ Let's say you **accidentally overwrote** instead of appended to a file:
 <hr style="height:1pt; visibility:hidden;" />
 
 If you **accidentally deleted a file**,
-you can similarly retrieve it with `git checkout`:
+you can similarly retrieve it with `git restore`:
 
 1. Accidental removal of `todo.txt`
 

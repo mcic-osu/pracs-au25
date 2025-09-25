@@ -1,8 +1,8 @@
 ---
 title: "Running command-line software with shell scripts"
-subtitle: "Week 6 -- Lecture II"
+subtitle: "Week 6 -- Lecture B"
 pagetitle: "shell scripts II"
-date: 2025-09-25
+date: 2025-09-26
 author:
   - name: Jelmer Poelstra
     orcid: 0000-0002-3514-7462
@@ -14,15 +14,12 @@ other-links:
   - text: "Week 6 overview"
     icon: book
     href: w6_overview.html
-  - text: "Week 6 graded assignment"
-    icon: pencil
-    href: w6_ga_shell-scripts.html
-  - text: "w6-1: Shell scripting I"
+  - text: "w6a: Shell scripting I"
     icon: bookmarks
     href: w6a_scripts.html
-  - text: "Bonus: Advanced shell scripting and looping"
-    icon: book
-    href: ../bonus/shell-scripting.html
+  - text: "Week 6 graded assignment"
+    icon: pencil
+    href: w6_ga.html
 editor_options: 
   chunk_output_type: console
 ---
@@ -64,11 +61,12 @@ _We will continue to a use Markdown files for purpose. _
 We'll start with a quick intro to FASTQ files and the FastQC program,
 which will be our first example of a CLI tool.
 
-### Getting ready
+### Setting up
 
-TBA
-
-<br>
+1. At <https://ondemand.osc.edu>,
+   start a VS Code session in your personal dir within `/fs/ess/PAS2880/users/`.
+2. Navigate to your `week06` dir.
+3. _Optional: Create a new Markdown file for class notes and save it in your `week06` dir._
 
 ## Running FastQC with a shell script
 
@@ -84,21 +82,18 @@ when we **submit a separate batch job for each FASTQ file**.
 
 This is why we will write a script such that runs only one file,
 and then we'll run that script many times using a loop _outside_ of the script.
-
 For now, we'll practice with writing scripts this way, and running them interactively.
 Next week, we will take the next step and submit each run of the script as a batch job.
 
-<hr style="height:1pt; visibility:hidden;" />
+### Arguments to your script
 
-### Arguments to the script
+The approach of running the script for one FASTQ file at a time means that
+your script needs to **accept a FASTQ file name as an argument**.
+Additionally, you will have an argument for the output dir too,
+because it is a good idea to keep that flexible as well.
 
-Our approach of running the script for one FASTQ file at a time means that
-our script needs to **accept a FASTQ file name as an argument**.
-Additionally, we will have an output dir argument too,
-so we can also keep that flexible.
-
-With code to copy the placeholder variables that contain the command-line arguments,
-that part of the script would then look as follows:
+With code to copy the placeholder variables containing the command-line arguments,
+that part of the script would look like this:
 
 ```bash
 # [Don't copy or run this]
@@ -110,18 +105,16 @@ outdir=$2
 fastqc --outdir "$outdir" "$fastq"
 ```
 
-And such a script would be run for a single file as follows:
+And you could run such a script as follows for a single FASTQ file:
 
 ```bash
 # [Don't copy or run this]
 # Syntax: 'bash <script-path> <argument1> <argument2>'
-bash scripts/fastqc.sh garrigos-data/fastq/ERR10802863_R2.fastq.gz results/fastqc
+bash scripts/fastqc.sh ../garrigos-data/fastq/ERR10802863_R2.fastq.gz results/fastqc
 ```
 
 Let's dive into this and create a complete script and run it ---
 first for one file like above, and then for all files with a loop.
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### Creating an initial script
 
@@ -216,8 +209,6 @@ from the previous sessions: mostly standard ("boilerplate") code with
 Therefore, you can adopt this script as a template for scripts that run other
 command-line programs, and will generally only need minor modifications!
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### Add some "logging" statements
 
 It is often useful to have your scripts "report" or "log" what is going on.
@@ -291,19 +282,17 @@ touch scripts/fastqc.sh
 
 Open it and paste in the code in the box above.
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### Running your FastQC script for 1 file
 
 Run your FastQC script for one FASTQ file:
 
 ```bash
-bash scripts/fastqc.sh garrigos-data/fastq/ERR10802863_R1.fastq.gz results/fastqc
+bash scripts/fastqc.sh ../garrigos-data/fastq/ERR10802863_R1.fastq.gz results/fastqc
 ```
 ```bash-out
 # Starting script fastqc.sh
 Thu Sep 25 13:53:13 EDT 2025
-# Input FASTQ file:   garrigos-data/fastq/ERR10802863_R1.fastq.gz
+# Input FASTQ file:   ../garrigos-data/fastq/ERR10802863_R1.fastq.gz
 # Output dir:         results/fastqc
 
 Started analysis of ERR10802863_R1.fastq.gz
@@ -337,14 +326,11 @@ However, as discussed above,
 we'll eventually want to run the script for each FASTQ file.
 We will write the loop to do so in an accompanying Markdown document.
 
-<br>
-
 ## A "Protocol" Markdown file
 
 The abovementioned loop code _could_ be directly typed in the terminal,
 but we need to keep a record of and/or build a protocol of our analysis steps,
 so we will save this in a Markdown file.
-
 For small projects,
 a simple protocol of steps could be added to your main `README.md`,
 which is what we'll do here:
@@ -363,7 +349,7 @@ Open that file in the VS Code editor, and add the following to it:
 - Author: Jelmer Poelstra
 - Date: 2025-10-02
 - Environment: Pitzer cluster at OSC via VS Code
-- Working dir: `/fs/ess/PAS2880/users/<username>/week05`
+- Working dir: `/fs/ess/PAS2880/users/<username>/week06`
 
 ## Project background
 
@@ -372,11 +358,9 @@ This project is ...
 ## Protocol
 ````
 
-::: callout-tip
-#### [Next week](../week07/w7b_slurm2.qmd), we'll discuss how you can organize this for larger projects.
+::: {.callout-tip appearance="simple"}
+Next week, we'll discuss how you can organize this for larger projects.
 :::
-
-<br>
 
 ## For loops
 
@@ -511,12 +495,10 @@ sample3_R2.fastq contains 0 lines
 <hr style="height:1pt; visibility:hidden;" />
 :::
 
-<br>
-
 ## Running a script many times with a loop
 
-We will now loop over all FASTQ files in the `garrigos-data/fastq` dir,
-and run our `fastqc.sh` script for each file.
+We will now loop over all FASTQ files in the `../garrigos-data/fastq` dir,
+and run your `fastqc.sh` script for each file.
 
 Add the following to your `README.md` file,
 and then run the code inside the code block:
@@ -525,7 +507,7 @@ and then run the code inside the code block:
 - Step 1 - Run FastQC for each FASTQ file:
 
 ```bash
-for fastq in garrigos-data/fastq/*fastq.gz; do
+for fastq in ../garrigos-data/fastq/*fastq.gz; do
     bash scripts/fastqc.sh "$fastq" results/fastqc
 done
 ```
@@ -534,7 +516,7 @@ done
 ```bash-out
 # Starting script fastqc.sh
 Thu Sep 25 13:58:21 EDT 2025
-# Input FASTQ file:   garrigos-data/fastq/ERR10802863_R1.fastq.gz
+# Input FASTQ file:   ../garrigos-data/fastq/ERR10802863_R1.fastq.gz
 # Output dir:         results/fastqc
 
 Started analysis of ERR10802863_R1.fastq.gz
@@ -546,7 +528,7 @@ Thu Sep 25 13:58:26 EDT 2025
 
 # Starting script fastqc.sh
 Thu Sep 25 13:58:26 EDT 2025
-# Input FASTQ file:   garrigos-data/fastq/ERR10802863_R2.fastq.gz
+# Input FASTQ file:   ../garrigos-data/fastq/ERR10802863_R2.fastq.gz
 # Output dir:         results/fastqc
 
 Started analysis of ERR10802863_R2.fastq.gz
@@ -566,8 +548,6 @@ it may have still taken hours for this to finish.
 Next week, you'll learn about submitting scripts like this as batch jobs
 which means you can run a script _simultaneously_ (in parallel) many times,
 which can be a huge time-saver.
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ## Looping over samples rather than files 
 
@@ -642,20 +622,20 @@ File names of corresponding R1 and R2 FASTQ files should be identical other than
 the marker indicating the read direction,
 which is typically `_R1`/`_R2` (and in some cases just `_1` / `_2`).
 
-After assigning the file name `garrigos-data/fastq/ERR10802863_R1.fastq.gz` to a variable,
+After assigning the file name `../garrigos-data/fastq/ERR10802863_R1.fastq.gz` to a variable,
 as shown below,
 add the parameter expansion needed to obtain the name of the corresponding R2 file
 by completing the second line:
 
 ```bash
-fastq_R1=garrigos-data/fastq/ERR10802863_R1.fastq.gz
+fastq_R1=../garrigos-data/fastq/ERR10802863_R1.fastq.gz
 fastq_R2=
 ```
 
 <details><summary>Solutions</summary>
 
 ```bash
-fastq_R1=garrigos-data/fastq/ERR10802863_R1.fastq.gz
+fastq_R1=../garrigos-data/fastq/ERR10802863_R1.fastq.gz
 fastq_R2=${fastq_R1/_R1/_R2}
 ```
 
@@ -665,12 +645,10 @@ Test that it worked:
 echo "$fastq_R2"
 ```
 ```bash-out
-garrigos-data/fastq/ERR10802863_R2.fastq.gz
+../garrigos-data/fastq/ERR10802863_R2.fastq.gz
 ```
 </details>
 :::
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### A per-sample loop
 
@@ -680,7 +658,7 @@ for example, with an imaginary `trim.sh` script:
 
 ```bash
 # [Don't run this]
-for R1 in garrigos-data/fastq/*_R1.fastq.gz; do
+for R1 in ../garrigos-data/fastq/*_R1.fastq.gz; do
   R2=${R1/_R1/_R2}
   bash scripts/trim.sh "$R1" "$R2" results/trim
 done
@@ -745,7 +723,7 @@ run the `trim_mock.sh` script for each sample.
   We will loop over R1 files only, and infer the R2 file name:
 
 ```bash
-for R1 in garrigos-data/fastq/*_R1.fastq.gz; do
+for R1 in ../garrigos-data/fastq/*_R1.fastq.gz; do
     R2=${R1/_R1/_R2}
     bash scripts/trim_mock.sh "$R1" "$R2" results/trim_mock
 done
@@ -755,25 +733,23 @@ done
 ```bash-out
 # Starting script trim_mock.sh
 Thu Sep 25 14:05:10 EDT 2025
-# Input R1 file:       garrigos-data/fastq/ERR10802863_R1.fastq.gz
-# Input R2 file:       garrigos-data/fastq/ERR10802863_R2.fastq.gz
+# Input R1 file:       ../garrigos-data/fastq/ERR10802863_R1.fastq.gz
+# Input R2 file:       ../garrigos-data/fastq/ERR10802863_R2.fastq.gz
 # Output dir:          results/trim_mock
 
-trimmer --in1 garrigos-data/fastq/ERR10802863_R1.fastq.gz --in2 garrigos-data/fastq/ERR10802863_R2.fastq.gz --outdir results/trim_mock
+trimmer --in1 ../garrigos-data/fastq/ERR10802863_R1.fastq.gz --in2 ../garrigos-data/fastq/ERR10802863_R2.fastq.gz --outdir results/trim_mock
 
 # Succesfully finished script trim_mock.sh
 Thu Sep 25 14:05:10 EDT 2025
 
 # Starting script trim_mock.sh
 Thu Sep 25 14:05:10 EDT 2025
-# Input R1 file:       garrigos-data/fastq/ERR10802864_R1.fastq.gz
+# Input R1 file:       ../garrigos-data/fastq/ERR10802864_R1.fastq.gz
 # [...output truncated...]
 ```
 </details>
 
 :::
-
-<br>
 
 ## Your final protocol Markdown file
 
@@ -798,24 +774,21 @@ This project is ...
 - Step 1 - Run FastQC for each FASTQ file:
 
 ```bash
-for fastq in garrigos-data/fastq/*fastq.gz; do
+for fastq in ../garrigos-data/fastq/*fastq.gz; do
     bash scripts/fastqc.sh "$fastq" results/fastqc
 done
 ```
 
 - Step 2 - run the trim_mock.sh script for each _sample_.
-  We will loop over R1 files only, and infer the R2 file name:
+  Loop over R1 files only, and infer the R2 file name:
 
 ```bash
-for R1 in garrigos-data/fastq/*_R1.fastq.gz; do
+for R1 in ../garrigos-data/fastq/*_R1.fastq.gz; do
     R2=${R1/_R1/_R2}
     bash scripts/trim_mock.sh "$R1" "$R2" results/trim_mock
 done
 ```
-
 ````
-
-<br>
 
 :::callout-note
 #### Hard-coding settings
@@ -826,16 +799,14 @@ The latter method can be referred to as "hard-coding" these items.
   
 You can also use arguments for _settings_ like bioinformatics program options
 you may want to vary among different runs of the script,
-or relatedly, for information about your data like read length or RNA-seq library
-strandedness (as you did in last week's exercises).
+or relatedly, for information about your data like read length.
 If you don't hard-code these options in your script but have arguments for them,
-it will be easier to re-use your script in different contexts.
+it is easier to re-use your script in different contexts.
 
-But there is balance to be struck here, and you can also "hobble" your script
-with a confusing array of arguably too many arguments.
-
+But there is balance to be struck,
+and you can also "hobble" your script with a confusing array of arguments.
 When you do hard-code potentially variable things in your script,
-it can be a good idea to define them clearly **at the top of your script**.
+you may want to clearly define them **at the top of your script**.
 For example:
   
 ```bash
@@ -847,76 +818,8 @@ MIN_QUAL=30
 ```
 
 Such variables can be referred to as "constants",
-since they are hard-coded in the script,
-and in shell code, ALL-CAPS is regularly used for them^[
+since they are hard-coded in the script.
+In shell code, ALL-CAPS is regularly used for them^[
 But this is far from universal. It is also fairly common to use all-caps
 for all shell variables, but this is not what we've been doing.].
-
-**TBA expand**
 :::
-
-<br>
-
-## At-home reading: A script that defines output _files_
-
-### `basename` and `dirname` to extract parts of paths
-
-In loops and other contexts where you are working with file names programmatically,
-you often have a path to a file and need to extract just the file name part from it.
-
-For example, we can think of the path `data/fastq/sample1_R1.fastq` as consisting
-of a directory part (`data/fastq/`) and a filename part (`sample1_R1.fastq`).
-
-Running the `basename` command on a file path will strip any directories and
-just return the file name:
-  
-```sh
-basename garrigos-data/fastq/ERR10802863_R1.fastq.gz
-```
-```bash-out
-ERR10802863_R1.fastq.gz
-```
-
-You can also provide a *suffix to also strip* from the file name:
-
-```sh
-basename garrigos-data/fastq/ERR10802863_R1.fastq.gz .fastq.gz
-```
-```bash-out
-ERR10802863_R1
-```
-
-If you instead want the _directory_ part of a path, use the `dirname` command:
-
-```sh
-dirname garrigos-data/fastq/ERR10802863_R1.fastq.gz
-```
-```bash-out
-garrigos-data/fastq
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### A script variant that defines output _files_
-
-In previous shell script examples, we only defined and used an output dir.
-But some programs allow or require you to define the output file names.
-
-Here is an example of doing that inside a script:
-
-```bash
-#!/bin/bash
-set -euo pipefail
-
-# Copy the placeholder variables
-R1_in=$1
-R2_in=$2
-outdir=$3
-
-# Define the output file names
-R1_out="$outdir"/$(basename "$R1_in")
-R2_out="$outdir"/$(basename "$R2_in")
-
-# Run a fictional program
-trimmer2 --in1 "$R1_in" --in2 "$R2_in" --out1 "$R1_out" --out2 "$R2_out"
-```

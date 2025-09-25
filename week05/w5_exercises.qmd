@@ -1,7 +1,7 @@
 ---
-title: "Week 6 Exercises: OSC data and software"
-pagetitle: "Week 6 Exercises"
-date: 2025-09-29
+title: "Week 5 Exercises: GitHub and software at OSC"
+pagetitle: "Week 5 Exercises"
+date: 2025-09-20
 author:
   - name: Jelmer Poelstra
     orcid: 0000-0002-3514-7462
@@ -9,94 +9,266 @@ author:
     affiliation: 
       - name: CFAES Bioinformatics Core, Ohio State University
         url: https://mcic.osu.edu/bioinformatics
+other-links:
+  - text: "Week 5 overview"
+    icon: book
+    href: w5_overview.html
+  - text: "w5a: A closer look at OSC"
+    icon: bookmarks
+    href: w5a_osc.html
+  - text: "w5b: Software management"
+    icon: bookmarks
+    href: w5b_software.html
+  - text: "Bonus: Conda"
+    icon: book
+    href: ../bonus/conda.html
 editor_options: 
   chunk_output_type: console
 ---
 
 --------------------------------------------------------------------------------
 
-<br>
-
-:::callout-caution
-#### THIS PAGE IS STILL UNDER CONSTRUCTION
-:::
-
 <hr style="height:1pt; visibility:hidden;" />
 
+## Introduction
 
-## Exercise X: containers
+In these exercises, you'll practice with creating and pushing to GitHub repositories,
+and with using software at OSC.
 
-1. Find a container image for TrimGalore,
-   and run the container with the command `trim_galore -v`
+#### Setting up
 
+- Start a VS Code session through OSC OnDemand in the folder `/fs/ess/PAS2880/$USER`.
+
+## Exercise 1: GitHub
+
+1. Go to the GitHub website, log in, and create a new GitHub repository.
+   This  will be the remote counterpart of the Git repo you made as
+   part of last week's assignment.
+   You can give the GitHub repo any name you want.
+
+2. In the terminal in VS Code, navigate to your dir for last week's assigmment.
+   Then, use Git commands to set up a connection between the Git repo
+   and the GitHub counterpart.
+   
+3. Push your local repo to the online counterpart.
+
+4. Explore your repo on GitHub.
+   Does your `README.md` render well? Can you see all your commits?
+
+5. Open a GitHub Issue for your repo:
+   on the GitHub page for your repo, in the Issues tab, click "New Issue",
+   and in the box where you can type your issue, tag the instructor.
+   For example:
+    
+   ```markdown
+   Hey @jelmerp, can you please take a look at my repo?
+   ```
+
+   _(You will use this approach to "hand in" the remaining assignments for this course.)_
+   
+6. Back in VS Code, add a line to your `README.md` that mentions you created a
+   Github repo on today's date, adding the repo's URL.
+
+7. Commit the change to `README.md` to your Git repo.
+
+8. Push to the remote and check that the changes were applied in the online repo.
+
+## Exercise 2: Modules and Pandoc
+
+_(In the shell, you should remain in the dir for last week's assignment.)_
+
+We'll practice with modules and `pandoc`,
+the program that can, among others, render Markdown files to HTML and PDF.
+
+1. Check if Pandoc is available, and if so, which version, by running `pandoc -v`.
+
+2. Use Google (or something similar) to check whether that Pandoc version appears
+   to be the most recent one.
+   
+3. Check whether a more recent Pandoc version is available in an OSC Lmod module.
+
+4. Load the OSC module with the most recent available Pandoc version.
+
+5. Use Pandoc to create a PDF of your `README.md`. The command to do so is:
+   
+   ```bash
+   pandoc -o README.pdf README.md
+   ```
+
+6. Was a PDF file created?
+
+7. To view PDF files in VS Code, you'll first need to install an extension.
+   Install the extension "Papyrus PDF Preview", and then take a look at your PDF.
+   
+8. Download the PDF file to your computer and also take a look at it there.
+
+## Exercise 3: containers
+
+1. Go to <https://seqera.io/containers> and find a container image for the program
+   called "Trim-Galore".
+   _(This program trims and filters FASTQ files, and you'll use it in the next_
+   _few weeks of the course.)_
+
+2. Back in VS Code, test-run the container with the command `trim_galore -v`.
 
 ## Solutions
 
-<details><summary>**9.** Change file permissions</summary>
+### Exercise 1
 
-Before we start, let's check the current file permissions:
-
-```bash
-ls -lh data/fastq
-```
-```bash-out
-ls -lh data/fastq/ | head
-total 0
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_F.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_R.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_F.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_R.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_F.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_R.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_F.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_R.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 0 Mar 18 10:19 sample005_F.fastq.gz
-```
-
-The file "owner"/"user" (you) and the "group" (in this case, PAS0471, likely a different group for you)
-have read and write permissions, and "others" have no permissions at all.
-
-There are several different ways to change permissions with the `chmod` command.
-Here are some examples which would ensure that no-one has write permission for the raw data:
-
-- Set read(-only) permissions for all:
-
-  ```sh
-  # a=r => all=read
-  chmod a=r data/fastq/*
-  ```
-
-- Take away write permissions for all:
-
-  ```bash
-  # a-w => all minus write
-  chmod a-w data/fastq/*
-  ```
-
-- You can also use the "numeric" syntax:
-
-  ```bash
-  chmod 444 data/fastq/*
-  ```
-
-Whereas after running the second option, others won't have read-access,
-the first and third option should give this result:
+<details><summary>**2.** Navigate, then set up a connection to the online repo</summary>
 
 ```bash
-ls -lh data/fastq
-```
-```bash-out
-ls -lh data/fastq/ | head
-total 0
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_F.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample001_R.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_F.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample002_R.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_F.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample003_R.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_F.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample004_R.fastq.gz
--r--r--r--+ 1 jelmer PAS0471 0 Mar 18 10:19 sample005_F.fastq.gz
+cd GA2
+
+# (replace <SSH-URL-to-repo> with your actual SSH (not HTTPS!) URL)
+git remote add origin <SSH-URL-to-repo>
 ```
 
+</details>
+
+<details><summary>**3.** Push your local repo to the online one you just created</summary>
+
+When you push to a remote repo for the first time,
+you need to add the `-u origin main` part:
+
+```bash
+git push -u origin main
+```
+</details>
+
+<details><summary>**7.** Commit the change you made to `README.md`</summary>
+
+```bash
+git add README.md
+git commit -m "Update README with GitHub repo information"
+```
+</details>
+
+<details><summary>**8.** Push to the remote</summary>
+
+Since you've pushed to this remote before, a simple `git push` works:
+
+```bash
+git push
+```
+</details>
+
+### Exercise 2
+
+<details><summary>**1.** Check if Pandoc is available, and if so, which version, by running `pandoc -v`</summary>
+
+As of September 2025, the version is `2.14.0.3`:
+  
+```bash
+pandoc -v
+```
+```bash-out
+pandoc 2.14.0.3
+Compiled with pandoc-types 1.22.1, texmath 0.12.3.3, skylighting 0.10.5.2,
+citeproc 0.4.0.1, ipynb 0.1.0.1
+User data directory: /users/PAS0471/jelmer/.local/share/pandoc
+Copyright (C) 2006-2021 John MacFarlane. Web:  https://pandoc.org
+This is free software; see the source for copying conditions. There is no
+warranty, not even for merchantability or fitness for a particular purpose.
+```
+</details>
+
+<details><summary>**2.** Check whether this appears to be the most recent version of Pandoc</summary>
+Version 2.14 is [not nearly the most recent one](https://pandoc.org/releases.html),
+which is 3.8 as of September 2025.
+</p></details>
+
+<details><summary>**3.** Is a more recent Pandoc version available in an OSC module?</summary>
+
+Yes:
+   
+```bash
+module spider pandoc
+```
+```bash-out
+--------------------------------------------------------------------------------
+  pandoc:
+--------------------------------------------------------------------------------
+    Versions:
+        pandoc/2.19.2
+        pandoc/3.6.4
+```
+</details>
+
+<details><summary>**4.** Load the module with the most recent available Pandoc version</summary>
+
+```bash
+module load pandoc/3.6.4
+
+pandoc -v
+```
+```bash-out
+pandoc 3.6.4
+Features: +server +lua
+Scripting engine: Lua 5.4
+User data directory: /users/PAS0471/jelmer/.local/share/pandoc
+Copyright (C) 2006-2024 John MacFarlane. Web: https://pandoc.org
+This is free software; see the source for copying conditions. There is no
+warranty, not even for merchantability or fitness for a particular purpose.
+```
+</details>
+   
+<details><summary>**6.** Was a PDF file created?</summary>
+
+If all went well, Pandoc did not print anything to screen,
+but the PDF file should be there:
+
+```bash
+ls
+```
+```bash-out
+data    README.md   README.pdf    results
+```
+
+</details>
+
+<details><summary>**7.** Install the Papyrus PDF Preview and open the file.</summary>
+
+1. Click on the Extensions icons (four squares) in the narrow side bar to open 
+   the Extensions panel in the wide side bar.
+
+2. Search for "papyrus" (or similar) and the extension should pop up:
+
+![](../img/vscode_pdf-extension.png){width="60%" fig-align="center" fig-alt="A screenshot of the search result for the Papyrus PDF Preview VS Code extension."}
+
+3. Click "Install".
+
+4. After installation, you should be able to open the PDF file e.g. by simply
+   clicking on it in the VS Code file explorer.
+
+</details>
+
+<details><summary>**8.** Download the PDF file</summary>
+
+- Recall that in the VS Code file explorer, you can right-click on a file and
+  select "Download..." to download a file to your computer.
+  
+- Alternatively, you could do this in the OnDemand file explorer.
+
+</details>
+
+### Exercise 3
+
+<details><summary>**2.** Run the container with the command `trim_galore -v`</summary>
+
+```bash
+singularity exec oras://community.wave.seqera.io/library/trim-galore:0.6.10--bc38c9238980c80e \
+  trim_galore -v
+```
+```bash-out
+INFO:    Downloading oras image
+465.8MiB / 465.8MiB [=============================================================================================================================] 100 % 56.2 MiB/s 0s
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+
+                        Quality-/Adapter-/RRBS-/Speciality-Trimming
+                                [powered by Cutadapt]
+                                  version 0.6.10
+
+                               Last update: 02 02 2023
+```
 </details>

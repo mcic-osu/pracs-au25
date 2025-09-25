@@ -1,8 +1,8 @@
 ---
 title: "A closer look at OSC"
-subtitle: "Week 5 -- lecture I"
-pagetitle: "w5a - OSC I"
-date: 2025-09-19
+subtitle: "Week 5 -- lecture A"
+pagetitle: "w5a - OSC part II"
+date: 2025-09-20
 author:
   - name: Jelmer Poelstra
     orcid: 0000-0002-3514-7462
@@ -14,21 +14,15 @@ other-links:
   - text: "Week 5 overview"
     icon: book
     href: w5_overview.html
+  - text: "w5b: Software management"
+    icon: bookmarks
+    href: w5b_software.html
   - text: "Week 5 exercises"
     icon: pencil
     href: w5_exercises.html
-  - text: "w5-2: Data management"
-    icon: bookmarks
-    href: w5b_data-management.html
-  - text: "w5-3: Software management"
-    icon: bookmarks
-    href: w5c_software.html
   - text: "Bonus: Conda"
     icon: book
     href: ../bonus/conda.html
-  - text: "Bonus: SSH and file transfer"
-    icon: book
-    href: ../bonus/ssh-and-transfer.html
 editor_options: 
   chunk_output_type: console
 ---
@@ -41,64 +35,87 @@ editor_options:
 
 ### Week overview and context
 
-TBA
+The contents of this and the next few weeks will slowly get you ready to run
+command-line bioinformatics programs at OSC by teaching you:
+
+1. More details about OSC generally _(now)_
+2. How to use software at OSC, including programs that aren't installed _(next lecture)_
+3. How to write shell scripts _(next week)_
+4. How to submit shell scripts as "batch jobs" _(in two weeks)_
+5. How to build functional commands to run such programs _(throughout)_
 
 ### Lecture overview and learning goals
 
-In this short session, you will learn about some aspects of the Ohio Supercomputer
-Center (OSC) that we did not talk about during our initial OSC introduction in
-week 1 of this course:
+This session complements the
+[initial OSC introduction in week 1 of the course](../week01/w1c_osc.qmd),
+and will go a bit deeper into the following aspects of the Ohio Supercomputer Center
+(OSC):
 
-- OSC Project
+- OSC Projects
 - Cores
-- File systems
-- Compute nodes
-
-In the next session, you will learn more about file transfer to and from OSC,
-and data management at OSC and beyond.
-
-<hr style="height:1pt; visibility:hidden;" />
+- OSC file systems
+- Compute node types and access
 
 ## OSC Projects
 
-In this course, we are exclusively using the course's OSC Project `PAS2880`.
+In this course, we exclusively use the course's OSC Project `PAS2880`.
 When you use OSC for your own research project, you would use a different OSC Project.
-This would likely be specific to a research project or grant,
-or your lab/PI's general-use OSC Project.
+This would likely be a Project specific to a research project or grant,
+or perhaps your lab/PI's general-use OSC Project.
 
-Generally, only PIs request OSC projects, and they typically manage them as well.
+With "using" an OSC Project, we mean:
+
+- Storing data in its project dirs in `/fs/ess` and/or `/fs/scratch`
+- Selecting the Project when starting compute jobs, like Code Server and the
+  command-line batch jobs you'll learn about later in this course.
+
+Generally, only PIs request and manage/administrate OSC projects.
 OSC has [a webpage with more information on how to do so](https://www.osc.edu/supercomputing/support/account).
-Whoever manages an OSC Project can add both existing OSC users and new users to the Project.
-Anyone added to an OSC Project will have access to its directories,
-and can use this Project when requesting compute node resources.
-  
+The administrator of an OSC Project can, among others:
+
+- Manage the compute budget and allocated storage space in `/fs/ess` for the Project.
+- Add users to the Project.
+  If the user doesn't yet have an OSC account,
+  this addition will trigger an invite email that allows the user to create an account
+  (you can't create an account unless you've been added to a Project).
+
 ::: callout-note
-#### Billing
+#### OSC billing
 OSC will bill OSC Projects (not individual users), and only for the following two things:
 
-- _**File storage**_ in the Project Storage file system
+- _**File storage**_ in the Project Storage (`/fs/ess`) file system per TB per month
 - _**Compute node usage**_ per "core hour" (e.g. using 2 cores for 2 hours = 4 core hours)
 
-The prices for academic usage are quite low
-(see [this page for specifics](https://www.osc.edu/content/academic_fee_model_faq)).
-At OSU, they are often covered at the college or department level,
-so individual PIs typically do not have to directly pay for OSC usage at all.
+OSC no longer publishes flat rates,
+but the prices for academic usage are generally quite low.
+Nevertheless, a Project that uses dozens of TBs of storage space and hundreds of
+thousands of core hours could be charged several thousands dollars per year.
+But:
+
+- Every PI at OSU gets a $1,000 credit
+- OSU pays some or all of these costs at the college level, depending on the college.
+  CFAES currently pays all of it.
 :::
 
-## Hierarchical components
+## Cores
 
 In week 1, you learned that a supercomputer center like OSC typically has
 multiple supercomputers, each of which in turn consists of many nodes.
-But I omitted a fourth "level" in this hierarchy:
-
-- **Core / Processor / CPU / Thread** ---
-  Components of a computer/node that can each (semi-)independently be asked to perform
-  a computing task like running a bioinformatics program.
-  With most bioinformatics programs, you can also use multiple cores for a single run,
-  which can speed things up considerably.
-  While these four terms are not technically all synonyms, we can treat them as such for our purposes.
+But I omitted an additional "level" in this hierarchy:
 
 ![](../img/terminology.png){fig-align="center" width="95%" fig-alt="A diagram showing how the terms core/processor, node, and cluster/supercomputer fit together." .lightbox}
+
+**Core / Processor / CPU / Thread** ---
+Components of a computer (recall: we refer to these as "nodes" at OSC)
+that can each (semi-)independently be asked to perform
+a computing task like running a bioinformatics program.
+With many programs, you can also use multiple cores for a single run,
+which can speed things up considerably.
+
+The terms core, processor, CPU and thread are not technically synonyms.
+However, they are often used interchangeably,
+and for the purposes of working at OSC, you should treat them as meaning the same thing:
+the components of a node that can be reserved and used independently.
 
 ## File systems
 
@@ -116,10 +133,9 @@ Here is an expanded table with details about OSC's file systems:
 <hr style="height:1pt; visibility:hidden;" />
 
 When you use OSC for your own research project with a different OSC Project,
-I would recommend that you **work mostly in the Project (`/fs/ess/`) dir**,
+I would recommend that you **work mostly in the Project dir** (`/fs/ess/`),
 which offers backed-up, permanent storage with flexible quota.
-
-This is because each of the other file systems has certain drawbacks:
+Each of the other file systems has certain drawbacks:
 
 - Scratch dirs (`/fs/scratch`) are temporary and not backed up.
 - The storage space of Home dirs (`/users/`) is limited and cannot be expanded,
@@ -129,16 +145,22 @@ This is because each of the other file systems has certain drawbacks:
 
 So when _are_ these other file systems useful?
 
-- Your **Home** dir can e.g. be useful for files that you use across projects,
+- Your **Home** dir can be useful for files that you use across projects,
   like some software.
+  Additionally, this is where many of your user-specific settings are stored.
+  That is mostly done automatically by OSC and the programs that you use,
+  with _hidden_ files and dirs (start with a `.`) that you should generally
+  not manually edit or remove.
+  
 - **Scratch** has the advantages of having _effectively unlimited_ space and
   much _faster_ data read and write ("I/O") speed than Home and Project space.
   Especially if you are working with large datasets,
-  it therefore regularly makes sense to run analyses on Scratch,
-  and then copy specific files over the the Project dirs.
+  it can therefore makes sense to run analyses on Scratch,
+  and then copy specific files over to the Project dirs.
   Additionally, some programs produce lots of temporary files while they are
   running, so setting a scratch dir as the output dir may speed things up.
-- **Compute** storage has even faster I/O so can be useful for very I/O-intensive jobs ---
+
+- **Compute** storage has even faster I/O and can be useful for very I/O-intensive jobs ---
   but using it requires some extra code in your script^[
   Copying of files back-and-forth, and making sure your results are not lost upon some kind of failure.]
   and I personally end up using this very rarely.
@@ -152,11 +174,15 @@ you can email OSC to have them restore your files to the way they were on a spec
 
 ::: {.callout-tip}
 #### Accessing files on different clusters
-File systems are shared among OSC's clusters, such that you can access your files
-in the exact same way regardless of which cluster you have connected to.
+As mentioned previously,
+file systems are shared among OSC's clusters,
+such that you can access your files in the exact same way regardless of which
+cluster you have connected to.
 :::
 
 ## Compute nodes
+
+### Compute node types
 
 Compute nodes come in different shapes and sizes:
 
@@ -175,15 +201,23 @@ base-calling (GPU nodes).
 
 ::: {.callout-caution}
 #### Memory versus storage
-When we talk about "memory", this refers to RAM:
+When we talk about a computer's "memory", this refers to RAM:
 the data that your computer has actively "loaded" or in use.
+Don't confuse memory with file storage, the data that is on disk.
+
+A computer can access data in RAM orders of magnitude faster than data on disk,
+which is why computers load actively used data into memory.
 For example, if you play a computer game or have many browser tabs open,
 your computer's memory will be heavily used.
-Genomics programs sometimes load all the input data from disk into memory to
-allow for fast access, or they will hold a huge assembly graph in memory,
-and therefore may need a lot of memory as well.
+And when your computer slows down noticeably or freezes,
+this is typically because all its memory capacity is being used,
+and your disk storage needs to be used as well.
 
-Don't confuse memory with file storage, the data that is on disk.
+Bioinformatics programs may also load input data from disk into memory to
+allow for fast access,
+and will often also hold intermediate results in memory.
+When datasets are large,
+such programs may therefore need lots (10s or 100s of GBs) of memory.
 :::
 
 #### Using compute nodes
@@ -194,10 +228,11 @@ These requests result in "**compute jobs**" (also simply called "jobs").
 Our VS Code sessions are an example of such compute jobs. 
 
 Because many different users are sending such requests all the time,
-there is software called a **job scheduler** (specifically, _Slurm_ in case of OSC)
+there is software called a **job scheduler** (specifically, **Slurm** in case of OSC)
 that considers each request and assigns the necessary resources to the job as they become available.
 
-Next week, you will learn about submitting scripts as "batch jobs" with Slurm commands.
+In two weeks,
+you will learn about submitting scripts as "batch jobs" with Slurm commands.
 
 ## Putting it together
 
