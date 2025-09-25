@@ -416,8 +416,14 @@ div.csl-indent {
 <section id="software-management-at-osc" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="software-management-at-osc"><span class="header-section-number">2</span> Software management (at OSC)</h2>
 <p>To analyze omics data sets, especially in genomics and transcriptomics, a typical workflow includes running a sequence of specialized bioinformatics software/programs/tools (I will use these terms interchangeably).</p>
+<p>For example, let’s take another look at the steps in the RNA-Seq analysis workflow we’ll go through, where each step is associated with a specific program (gray text):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/rnaseq-wf-3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="../img/rnaseq-wf-3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%" alt="A diagram showing the steps in an RNA-Seq analysis pipeline."></a></p>
+</figure>
+</div>
 <p>At OSC, there are system-wide installations of a number of such programs. We do need to “<strong>load modules</strong>” that contain these programs before we can use them. In this session, we will first talk about that process.</p>
-<p>However, OSC’s collection of bioinformatics programs is not comprehensive, and installed programs may not have the most recent versions available. We therefore need an additional way to get access to bioinformatics programs. But installing software like you are used to on your own computer is not really possible at a supercomputer center like OSC.</p>
+<p>However, OSC’s collection of bioinformatics programs is not comprehensive, and programs that <em>are</em> installed may not have the most recent versions available. We therefore need an additional way to get access to bioinformatics programs. But installing software like you are used to on your own computer is not really possible at a supercomputer center like OSC.</p>
 <p>The two most best approaches that we can use instead are:</p>
 <ul>
 <li>The <strong>Conda</strong> software management program, which installs software in “environments” you can load.</li>
@@ -458,7 +464,7 @@ Other options to install software / get it installed at OSC <em>(Click to expand
 <figure class="figure">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../img/fastqc_good.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="A FastQC per-base quality score graph for files with reasonably good quality reads. The y-axis shows Phred quality scores (higher is better, see also the color-coding) and the x-axis shows the position along the read."><img src="../img/fastqc_good.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="An example FastQC per-base quality graph."></a></p>
+<p><a href="../img/fastqc_good.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="A FastQC per-base quality score graph for files with reasonably good quality reads. The y-axis shows Phred quality scores (higher is better, see also the color-coding) and the x-axis shows the position along the read."><img src="../img/fastqc_good.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="An example FastQC per-base quality graph."></a></p>
 </figure>
 </div>
 <figcaption>A FastQC per-base quality score graph for files with reasonably good quality reads. The y-axis shows Phred quality scores (higher is better, see also the color-coding) and the x-axis shows the position along the read.</figcaption>
@@ -736,7 +742,7 @@ To list all parameters, run STAR --help</code></pre>
 <section id="introduction-1" class="level3" data-number="4.1">
 <h3 data-number="4.1" class="anchored" data-anchor-id="introduction-1"><span class="header-section-number">4.1</span> Introduction</h3>
 <p>As mentioned above, because many programs needed for omics data analysis are not available through OSC modules, we need an alternative way to get access to these.</p>
-<p><strong>Conda</strong> and <strong>containers</strong> are both great options: here, we will go over containers, while <a href="../bonus/conda.html">optional at-home reading covers Conda</a>. These two approeaches are quite different both conceptually and operationally. Conda is similar to OSC’s modules, except that you can also install things yourself. Containers, on the other hand, are not installed or loaded<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>: typical usage involves simply downloading a file and using it.</p>
+<p><strong>Conda</strong> and <strong>containers</strong> are both great options: here, we will go over containers, while <a href="../bonus/conda.html">optional at-home reading covers Conda</a>. These two approaches are quite different both conceptually and operationally. Conda is similar to OSC’s modules, except that you can also install things yourself. Containers, on the other hand, are not installed or loaded<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>: typical usage involves simply downloading a file and using it.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -751,7 +757,7 @@ Pros and cons of Conda versus containers <em>(Click to expand)</em>
 <div class="callout-body-container callout-body">
 <p>Key advantages of Conda are that:</p>
 <ul>
-<li>Once software is installed, using it is identical to using other software that has been installed. With containers, on the other hand, we need a long prefix to each comand.</li>
+<li>Once software is installed, using it is identical to using other software that has been installed. With containers, on the other hand, you essentially need a long “prefix” to your commands.</li>
 <li>It is a bit easier to create custom environments with multiple programs or with manually installed programs</li>
 </ul>
 <p>Key advantages of containers are that:</p>
@@ -782,7 +788,7 @@ Pros and cons of Conda versus containers <em>(Click to expand)</em>
 </section>
 <section id="obtaining-a-container-image" class="level3" data-number="4.3">
 <h3 data-number="4.3" class="anchored" data-anchor-id="obtaining-a-container-image"><span class="header-section-number">4.3</span> Obtaining a container image</h3>
-<p>Several online repositories have publicly available container images, but I strongly recommend <strong>Seqera Containers</strong>.</p>
+<p>Several online repositories with publicly available container images exist, but I strongly recommend <strong>Seqera Containers</strong>.</p>
 <section id="seqera-containers" class="level4">
 <h4 class="anchored" data-anchor-id="seqera-containers">Seqera Containers</h4>
 <p>Seqera Containers is currently the most reliable website to find and download available containers. It is actually more than just a repository: when a container with the program(s) you request is not available in the repository, it will build the container for you. It allows you to select:</p>
@@ -803,7 +809,7 @@ More on which programs are (not) available as containers <em>(Click to expand)</
 </div>
 <div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>The below applies to both containers and Conda:</p>
+<p>This applies to both containers and Conda:</p>
 <ul>
 <li>Only free, open-source software is available
 <ul>
@@ -826,7 +832,7 @@ More on which programs are (not) available as containers <em>(Click to expand)</
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../img/container_search.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="../img/container_search.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="A screenshot showing the search result for FastQC on the Seqera containers website."></a></p>
+<p><a href="../img/container_search.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="../img/container_search.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="A screenshot showing the search result for FastQC on the Seqera containers website."></a></p>
 </figure>
 </div>
 <ol start="4" type="1">
@@ -835,16 +841,16 @@ More on which programs are (not) available as containers <em>(Click to expand)</
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../img/container_added.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="../img/container_added.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="A screenshot showing the correct selections before getting the link to the container."></a></p>
+<p><a href="../img/container_added.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="../img/container_added.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="A screenshot showing the correct selections before getting the link to the container."></a></p>
 </figure>
 </div>
 <ol start="6" type="1">
 <li><p><strong>Get a link</strong> to the container image by clicking the blue <code>Get Container</code> button.</p></li>
-<li><p><strong>Copy the link</strong> to the container image that should appear immediately (use the copy icon on the far left). The link should be: <code>oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960</code></p></li>
+<li><p><strong>Copy the link</strong> (URL/URI) to the container image that should appear immediately (use the copy icon on the far left). The link should be: <code>oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960</code></p></li>
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../img/container_link2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="../img/container_link2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="A screenshot showing the download link for the container."></a></p>
+<p><a href="../img/container_link2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="../img/container_link2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="A screenshot showing the download link for the container."></a></p>
 </figure>
 </div>
 <hr style="height:1pt; visibility:hidden;">
@@ -864,7 +870,7 @@ Selecting programs on <a href="https://seqera.io/containers" class="uri">https:/
 </ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../img/container_versions.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="../img/container_versions.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="A screenshot demonstrating how to select a different program version for your container."></a></p>
+<p><a href="../img/container_versions.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="../img/container_versions.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="A screenshot demonstrating how to select a different program version for your container."></a></p>
 </figure>
 </div>
 <ul>
@@ -889,8 +895,8 @@ You can’t use the container before it’s ready <em>(Click to expand)</em>
 </div>
 <div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>In this case, after we clicked Get Container, the pop-up box should have immediately said “Container is ready”. When that happens, the container image was already available in the repository. In other cases, however, the container may still need to be built, and the box should say <strong>“Fetching container”</strong> for a while.</p>
-<p>This could take one or a few minutes, and even though the URL is made available immediately and won’t change, you can only download/use the container once the “Container is ready”. If you use an URL before the container is ready, you get this error:</p>
+<p>In this case, after we clicked Get Container, the pop-up box should have immediately said “Container is ready”. That means the container image was already available in the repository.</p>
+<p>In other cases, however, the container may still need to be built, and the box should say <strong>“Fetching container”</strong> for a while. This could take one or a few minutes, and even though the URL is made available immediately and won’t change, you can only download/use the container once the “Container is ready”. If you use an URL before the container is ready, you get this error:</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f <span class="dt">\</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    multiqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>FATAL:   Unable to handle oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f uri: failed to get checksum for oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f: GET https://community.wave.seqera.io/v2/library/multiqc_trim-galore/manifests/15a1e9f26daf266f: MANIFEST_UNKNOWN: manifest unknown; map[Tag:15a1e9f26daf266f]</code></pre>
@@ -904,8 +910,8 @@ You can’t use the container before it’s ready <em>(Click to expand)</em>
 <p>To run a command in a container, the general syntax is:</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="op">&lt;</span>container-URL<span class="op">&gt;</span> <span class="op">&lt;</span>command<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>For example, if the command was <code>fastqc -v</code>:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="op">&lt;</span>container-URL<span class="op">&gt;</span> <span class="op">&lt;</span>command<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>So, you just need to preface your “regular” command with <code>apptainer exec &lt;container-URL&gt;</code>. Now with the actual URL/URI to the container:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="op">&lt;</span>container-URL<span class="op">&gt;</span> fastqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>So, you need to preface your “regular” command with <code>apptainer exec &lt;container-URL&gt;</code>. Now with the actual link to the container:</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>INFO:    Downloading oras image
@@ -929,7 +935,7 @@ Breaking up a command across lines with <code>\</code>
 </section>
 <section id="the-container-image-cache-storage" class="level3" data-number="4.5">
 <h3 data-number="4.5" class="anchored" data-anchor-id="the-container-image-cache-storage"><span class="header-section-number">4.5</span> The container image cache (storage)</h3>
-<p>The easiest way to run a container image you already downloaded is to simply keep using the exact same command with the URL to the container (!): Apptainer will realize that the image has already been downloaded and will automatically use the downloaded version:</p>
+<p>The easiest way to run a container image you already downloaded is to simply keep re-use the exact same command with the URL to the container (!): Apptainer will realize that the image has already been downloaded and will automatically use the downloaded version:</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>INFO:    Using cached SIF image
@@ -951,7 +957,7 @@ Where is the cache located? <em>(Click to expand)</em>
 </div>
 <div id="callout-12" class="callout-12-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>By default, containers are downloaded to a hidden directory in your Home dir, <code>~/.apptainer/cache</code>. That is generally fine, but you can change it <em>for your current shell sessoin</em> by setting the <code>$APPTAINER_CACHEDIR</code> environment variable, e.g.:</p>
+<p>By default, containers are downloaded to a hidden directory in your Home dir, <code>~/.apptainer/cache</code>. That is generally fine, but you can change it <em>for your current shell session</em> by setting the <code>$APPTAINER_CACHEDIR</code> environment variable, e.g.:</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">APPTAINER_CACHEDIR</span><span class="op">=</span>/fs/scratch/PAS2880/<span class="va">$USER</span>/containers</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><em>(To permamently change this location, you would need to make add</em> <em>this line to your <code>~/.bashrc</code> shell configuration file.)</em></p>
 <p>You can check what’s in your cache as follows – though this is only informative in terms of how many containers are there and how much space they take up, because the container names are very cryptic:</p>
@@ -973,12 +979,23 @@ Total space used: 383.99 MiB</code></pre>
 <div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this]</span></span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  fastqc ../garrigos-data/fastq/ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To shorten subsequent commands, let’s start by assigning the container link and FASTQ file path to variables:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="va">FASTQC_APPT</span><span class="op">=</span>oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="va">FASTQ_R1</span><span class="op">=</span>../garrigos-data/fastq/ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$FASTQC_APPT</span><span class="st">"</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> <span class="st">"</span><span class="va">$FASTQ_R1</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960
+-rw-rw----+ 1 jelmer PAS0471 21M Sep  9 13:46 ../garrigos-data/fastq/ERR10802863_R1.fastq.gz</code></pre>
+<p>With that, the above command becomes:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this]</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$FASTQC_APPT</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="st">"</span><span class="va">$FASTQ_R1</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>However, an annoying default behavior of FastQC is that it writes its output files in the same dir that contains the input FASTQ files — this means mixing your raw data with your results, which we don’t want!</p>
 <section id="changing-the-output-directory" class="level3" data-number="5.1">
 <h3 data-number="5.1" class="anchored" data-anchor-id="changing-the-output-directory"><span class="header-section-number">5.1</span> Changing the output directory?</h3>
 <p>To figure out how to change that behavior, consider that many standard Unix commands and bioinformatics tools alike have an option <code>-h</code> and/or <code>--help</code> to print usage information to the screen. Let’s try that:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">-h</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$FASTQC_APPT</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">-h</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>INFO:    Using cached SIF image
 INFO:    gocryptfs not found, will not be able to use gocryptfs
 
@@ -1001,7 +1018,7 @@ SYNOPSIS
 <em>Click for the solution</em>
 </summary>
 <p>The option to do this is <code>-o</code>/<code>--outdir</code>:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">-h</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">-h</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>  -o --outdir     Create all output files in the specified output directory.
                     Please note that this directory must exist as the program
                     will not create it.  If this option is not set then the 
@@ -1013,12 +1030,12 @@ SYNOPSIS
 <section id="the-final-fastqc-command" class="level3" data-number="5.2">
 <h3 data-number="5.2" class="anchored" data-anchor-id="the-final-fastqc-command"><span class="header-section-number">5.2</span> The final FastQC command</h3>
 <p>With the added <code>--outdir</code> (or <code>-o</code>) option, try to run the following FastQC command:</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll have to first create the outdir ourselves, in this case:</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/fastqc</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we run FastQC:</span></span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">--outdir</span> results/fastqc ../garrigos-data/fastq/ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll have to first create the outdir ourselves, in this case:</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/fastqc</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we run FastQC:</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$FASTQC_APPT</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">--outdir</span> results/fastqc <span class="st">"</span><span class="va">$FASTQ_R1</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Started analysis of ERR10802863_R1.fastq.gz
 Approx 5% complete for ERR10802863_R1.fastq.gz
 Approx 10% complete for ERR10802863_R1.fastq.gz
@@ -1030,7 +1047,7 @@ Analysis complete for ERR10802863_R1.fastq.gz</code></pre>
 <li>A <code>.zip</code> file, which contains tables with FastQC’s data summaries</li>
 <li>An <code>.html</code> (HTML) file, which contains the graphs we’d like to see</li>
 </ul>
-<div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> results/fastqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> results/fastqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>total 512K
 -rw-rw----+ 1 jelmer PAS0471 241K Mar 21 09:53 ERR10802863_R1_fastqc.html
 -rw-rw----+ 1 jelmer PAS0471 256K Mar 21 09:53 ERR10802863_R1_fastqc.zip</code></pre>
@@ -1057,15 +1074,16 @@ Specifying an output dir vs.&nbsp;output file(s)
 </summary>
 <p>It makes sense to use the same output dir. This is because, as you could see above, the output file names have the input file identifiers in them. As such, because we don’t need to worry about overwriting files, it will be more convenient to have all results in a single dir.</p>
 <p>To run FastQC for the R2 (reverse-read) file:</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">--outdir</span> results/fastqc ../garrigos-data/fastq/ERR10802863_R2.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="va">FASTQ_R2</span><span class="op">=</span>../garrigos-data/fastq/ERR10802863_R2.fastq.gz</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$FASTQC_APPT</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">--outdir</span> results/fastqc <span class="st">"</span><span class="va">$FASTQ_R2</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Started analysis of ERR10802863_R2.fastq.gz
 Approx 5% complete for ERR10802863_R2.fastq.gz
 Approx 10% complete for ERR10802863_R2.fastq.gz
 Approx 15% complete for ERR10802863_R2.fastq.gz
 [...truncated...]
 Analysis complete for ERR10802863_R2.fastq.gz</code></pre>
-<div class="sourceCode" id="cb50"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> results/fastqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> results/fastqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>total 1008K
 -rw-rw----+ 1 jelmer PAS0471 241K Mar 21 09:53 ERR10802863_R1_fastqc.html
 -rw-rw----+ 1 jelmer PAS0471 256K Mar 21 09:53 ERR10802863_R1_fastqc.zip
@@ -1077,14 +1095,20 @@ Analysis complete for ERR10802863_R2.fastq.gz</code></pre>
 <section id="exercise-download-the-html-files-and-open-them" class="level4 exercise">
 <h4 class="anchored" data-anchor-id="exercise-download-the-html-files-and-open-them"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <strong>Exercise</strong>: Download the HTML files and open them</h4>
 <p>Unfortunately, it’s tricky to view HTML files in VS Code – or at least it is in the current Code Server version at OSC.</p>
-<p>Therefore, to look at the FastQC results, you should download them to your computer first.</p>
+<p>Therefore, to look at the FastQC HTML files, you should first download them to your computer.</p>
 <p>We’ll cover more scalable methods for downloading files from and uploading them to OSC in a couple of weeks, but here is a quick method when you just need one or few files: in the VS Code file explorer in the side bar, you can download a file by right-clicking on it and then selecting the “Download…” option.</p>
-<p><em>[TBA - screenshot]</em></p>
-<p>Download the two FastQC HTML files to your computer. In your computer’s file browser, navigate to the folder you downloaded the files to, and click on each of them. This should open the files in your default web browser.</p>
-<ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/vscode-download.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="../img/vscode-download.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:55.0%" alt="A screenshot showing the file download option in the VS Code file explorer."></a></p>
+</figure>
+</div>
+<p>Your turn:</p>
+<ol type="1">
+<li><p>Download the two FastQC HTML files to your computer.</p></li>
+<li><p>In your computer’s file browser, navigate to the folder you downloaded the files to, and click on each of them. This should open the files in your default web browser.</p></li>
 <li><p>Explore the files. Which graphs do you and which do you not understand?</p></li>
 <li><p>Are there noticeable differences between the two files (i.e.&nbsp;between the forward and reverse reads for the same sample)?</p></li>
-</ul>
+</ol>
 </section>
 </section>
 </section>
