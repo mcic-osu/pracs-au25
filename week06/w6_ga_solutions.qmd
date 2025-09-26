@@ -6,336 +6,120 @@ title: "Untitled"
 
 ### Exercise 2
 
-<details><summary>Hint: See the relevant parts of the TrimGalore help pages _(Click to expand)_</summary>
-<hr style="height:1pt; visibility:hidden;" />
+<details><summary>**1.** Check if Pandoc is available, and if so, which version, by running `pandoc -v`</summary>
+
+As of September 2025, the version is `2.14.0.3`:
+  
 ```bash
-trim_galore --help
+pandoc -v
 ```
-```{.bash-out-solo}
- USAGE:
-trim_galore [options] <filename(s)>
-
---paired                This option performs length trimming of quality/adapter/RRBS trimmed reads for
-                        paired-end files.
-
--o/--output_dir <DIR>   If specified all output will be written to this directory instead of the current
-                        directory. If the directory doesn't exist it will be created for you.
-
--j/--cores INT          Number of cores to be used for trimming [default: 1].
-
---fastqc                Run FastQC in the default mode on the FastQ file once trimming is complete.
-
---fastqc_args "<ARGS>"  Passes extra arguments to FastQC.
-
--a/--adapter <STRING>   Adapter sequence to be trimmed. If not specified explicitly, Trim Galore will
-                        try to auto-detect whether the Illumina universal, Nextera transposase or Illumina
-                        small RNA adapter sequence was used.
-
--q/--quality <INT>      Trim low-quality ends from reads in addition to adapter removal. [...]
-                        Default Phred score: 20.
-
---length <INT>          Discard reads that became shorter than length INT because of either
-                        quality or adapter trimming. A value of '0' effectively disables
-                        this behaviour. Default: 20 bp.
+```bash-out
+pandoc 2.14.0.3
+Compiled with pandoc-types 1.22.1, texmath 0.12.3.3, skylighting 0.10.5.2,
+citeproc 0.4.0.1, ipynb 0.1.0.1
+User data directory: /users/PAS0471/jelmer/.local/share/pandoc
+Copyright (C) 2006-2021 John MacFarlane. Web:  https://pandoc.org
+This is free software; see the source for copying conditions. There is no
+warranty, not even for merchantability or fitness for a particular purpose.
 ```
 </details>
 
-<details><summary> The TrimGalore options you were looking for _(Click to expand)_</summary>
+<details><summary>**2.** Check whether this appears to be the most recent version of Pandoc</summary>
+Version 2.14 is [not nearly the most recent one](https://pandoc.org/releases.html),
+which is 3.8 as of September 2025.
+</p></details>
 
-- `--paired` to indicate that the FASTQ files are paired-end.
-- `--output_dir` (or equivalently, `-o`) to specify the output directory.
--  `--fastqc` to run FastQC on the trimmed FASTQ files.
+<details><summary>**3.** Is a more recent Pandoc version available in an OSC module?</summary>
 
+Yes:
+   
+```bash
+module spider pandoc
+```
+```bash-out
+--------------------------------------------------------------------------------
+  pandoc:
+--------------------------------------------------------------------------------
+    Versions:
+        pandoc/2.19.2
+        pandoc/3.6.4
+```
 </details>
 
-<details><summary> The TrimGalore shell script _(Click to expand)_</summary>
-
-Save this as e.g. `scripts/trimgalore.sh`:
+<details><summary>**4.** Load the module with the most recent available Pandoc version</summary>
 
 ```bash
-#!/bin/bash
-set -euo pipefail
+module load pandoc/3.6.4
 
-# Load TrimGalore
-module load miniconda3/24.1.2-py310
-conda activate /fs/ess/PAS0471/jelmer/conda/trimgalore
-
-# Copy the placeholder variables
-R1_in=$1
-outdir=$2
-
-# Infer the R2 FASTQ file name
-R2_in=${R1_in/_R1/_R2}
-
-# Report
-echo "# Starting script trimgalore.sh"
-date
-echo "# Input R1 FASTQ file:      $R1_in"
-echo "# Input R2 FASTQ file:      $R2_in"
-echo "# Output dir:               $outdir"
-echo
-
-# Create the output dir
-mkdir -p "$outdir"
-
-# Run TrimGalore
-trim_galore \
-    --paired \
-    --fastqc \
-    --output_dir "$outdir" \
-    "$R1_in" \
-    "$R2_in"
-
-# Report
-echo
-echo "# Successfully finished script trimgalore.sh"
-date
+pandoc -v
+```
+```bash-out
+pandoc 3.6.4
+Features: +server +lua
+Scripting engine: Lua 5.4
+User data directory: /users/PAS0471/jelmer/.local/share/pandoc
+Copyright (C) 2006-2024 John MacFarlane. Web: https://pandoc.org
+This is free software; see the source for copying conditions. There is no
+warranty, not even for merchantability or fitness for a particular purpose.
 ```
 </details>
+   
+<details><summary>**6.** Was a PDF file created?</summary>
 
-<details><summary> Quality and length threshold options & interpretation _(Click to expand)_</summary>
+If all went well, Pandoc did not print anything to screen,
+but the PDF file should be there:
 
-- The option `-q` (short notation) or `--quality` (long notation) can be used
-  to adjust the base quality score threshold, which has the "Phred" unit.
-  The default threshold is 20, which corresponds to an estimated 0.01 error rate.
-  TrimGalore will trim bases with a lower quality score than this threshold
-  from the **ends** of the reads.
-  It will **not** remove or mask bases with lower quality scores elsewhere in the read.
-
-- The option `-l` (short notation) or `--length` (long notation) can be used
-  to adjust the read length threshold: any reads that are shorter than this after
-  adapter and quality trimming will be removed.
-  The default threshold is 20 bp.
-  (When the input is paired-end, the corresponding second read will also be removed,
-  regardless of its length: paired-end FASTQ files always need to contain both the
-  R1 and R2 for each pair; orphan reads would need to be stored in a separate file.)
+```bash
+ls
+```
+```bash-out
+data    README.md   README.pdf    results
+```
 
 </details>
 
-<hr style="height:1pt; visibility:hidden;" />
+<details><summary>**7.** Install the Papyrus PDF Preview and open the file.</summary>
+
+1. Click on the Extensions icons (four squares) in the narrow side bar to open 
+   the Extensions panel in the wide side bar.
+
+2. Search for "papyrus" (or similar) and the extension should pop up:
+
+![](../img/vscode_pdf-extension.png){width="60%" fig-align="center" fig-alt="A screenshot of the search result for the Papyrus PDF Preview VS Code extension."}
+
+3. Click "Install".
+
+4. After installation, you should be able to open the PDF file e.g. by simply
+   clicking on it in the VS Code file explorer.
+
+</details>
+
+<details><summary>**8.** Download the PDF file</summary>
+
+- Recall that in the VS Code file explorer, you can right-click on a file and
+  select "Download..." to download a file to your computer.
+  
+- Alternatively, you could do this in the OnDemand file explorer.
+
+</details>
 
 ### Exercise 3
 
-<details><summary> 1 - Run the script _(Click to expand)_</summary>
-  
+<details><summary>**2.** Run the container with the command `trim_galore -v`</summary>
+
 ```bash
-# Exercise 2
-R1=garrigos-data/fastq/ERR10802863_R1.fastq.gz
-bash scripts/trimgalore.sh "$R1" results/trimgalore
+singularity exec oras://community.wave.seqera.io/library/trim-galore:0.6.10--bc38c9238980c80e \
+  trim_galore -v
 ```
 ```bash-out
-# Starting script trimgalore.sh
-Thu Mar 28 10:34:24 EDT 2024
-# Input R1 FASTQ file:      garrigos-data/fastq/ERR10802863_R1.fastq.gz
-# Input R2 FASTQ file:      garrigos-data/fastq/ERR10802863_R2.fastq.gz
-# Output dir:               results/trimgalore
+INFO:    Downloading oras image
+465.8MiB / 465.8MiB [=============================================================================================================================] 100 % 56.2 MiB/s 0s
+INFO:    gocryptfs not found, will not be able to use gocryptfs
 
-Multicore support not enabled. Proceeding with single-core trimming.
-Path to Cutadapt set as: 'cutadapt' (default)
-Cutadapt seems to be working fine (tested command 'cutadapt --version')
-Cutadapt version: 4.4
+                        Quality-/Adapter-/RRBS-/Speciality-Trimming
+                                [powered by Cutadapt]
+                                  version 0.6.10
 
-# [...output truncated...]
+                               Last update: 02 02 2023
 ```
-</details>
-
-<details><summary> 2 - Check the output files _(Click to expand)_</summary>
-
-```bash
-ls -lh results/trimgalore
-```
-```bash-out
-total 42M
--rw-rw----+ 1 jelmer PAS0471 2.4K Mar 28 10:49 ERR10802863_R1.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 674K Mar 28 10:49 ERR10802863_R1_val_1_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 349K Mar 28 10:49 ERR10802863_R1_val_1_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  20M Mar 28 10:49 ERR10802863_R1_val_1.fq.gz
--rw-rw----+ 1 jelmer PAS0471 2.3K Mar 28 10:49 ERR10802863_R2.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 676K Mar 28 10:50 ERR10802863_R2_val_2_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 341K Mar 28 10:50 ERR10802863_R2_val_2_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  21M Mar 28 10:49 ERR10802863_R2_val_2.fq.gz
-```
-</details>
-
-<details><summary> 3 - Check the trimming results _(Click to expand)_</summary>
-
-- Note that the adapter- and quality trimming results summary for the R1 and R2 files
-  are separated widely among all the output that TrimGalore prints ---
-  they are printed below (first for the R1, then for the R2 file), and the answers are:
-  - 13.0% (R1) and 10.1% (R2) of reads had adapters
-  - 3.6% (R1) and 3.5% (R2) of bases were quality-trimmed
-  
-  ```bash-out-solo
-  === Summary ===
-  
-  Total reads processed:                 500,000
-  Reads with adapters:                    65,070 (13.0%)
-  Reads written (passing filters):       500,000 (100.0%)
-  
-  Total basepairs processed:    35,498,138 bp
-  Quality-trimmed:               1,274,150 bp (3.6%)
-  Total written (filtered):     34,138,461 bp (96.2%)
-  ```
-  
-  ```bash-out-solo
-  === Summary ===
-  
-  Total reads processed:                 500,000
-  Reads with adapters:                    50,357 (10.1%)
-  Reads written (passing filters):       500,000 (100.0%)
-  
-  Total basepairs processed:    36,784,563 bp
-  Quality-trimmed:               1,283,793 bp (3.5%)
-  Total written (filtered):     35,440,230 bp (96.3%)
-  ```
-  
-- Just before the FastQC logs is a line that reports how many reads were removed
-  due to the length filter --- the answer is 6.79%.
-  
-  ```bash-out-solo
-  Number of sequence pairs removed because at least one read was shorter than the length cutoff (20 bp): 33955 (6.79%)
-  ```
-
-</details>
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### Exercise 4
-
-<details><summary> Run the script for all samples _(Click to expand)_</summary>
-
-Add this loop code to your runner script (`run/run_exercises.sh`) and run it:
-
-```bash
-for R1 in garrigos-data/fastq/*_R1.fastq.gz; do
-    bash scripts/trimgalore.sh "$R1" results/trimgalore
-done
-```
-```bash-out
-# (Output not shown, same as earlier but should repeat for each sample)
-```
-</details>
-
-<details><summary> Check the output files _(Click to expand)_</summary>
-
-```bash
-ls -lh results/trimgalore
-```
-```bash-out
-total 949M
--rw-rw----+ 1 jelmer PAS0471  20M Mar 28 11:18 ERR10802863_R1.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.4K Mar 28 11:17 ERR10802863_R1.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 674K Mar 28 11:18 ERR10802863_R1_val_1_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 349K Mar 28 11:18 ERR10802863_R1_val_1_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  21M Mar 28 11:18 ERR10802863_R2.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.3K Mar 28 11:18 ERR10802863_R2.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 676K Mar 28 11:18 ERR10802863_R2_val_2_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 341K Mar 28 11:18 ERR10802863_R2_val_2_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  21M Mar 28 11:19 ERR10802864_R1.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.7K Mar 28 11:18 ERR10802864_R1.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 675K Mar 28 11:19 ERR10802864_R1_val_1_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 349K Mar 28 11:19 ERR10802864_R1_val_1_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  22M Mar 28 11:19 ERR10802864_R2.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.6K Mar 28 11:19 ERR10802864_R2.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 671K Mar 28 11:19 ERR10802864_R2_val_2_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 336K Mar 28 11:19 ERR10802864_R2_val_2_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  21M Mar 28 11:20 ERR10802865_R1.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.6K Mar 28 11:19 ERR10802865_R1.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 682K Mar 28 11:20 ERR10802865_R1_val_1_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 361K Mar 28 11:20 ERR10802865_R1_val_1_fastqc.zip
-[...output truncated...]
-```
-</details>
-
-### Bonus exercise
-
-<details><summary> Solution _(Click to expand)_</summary>
-
-The full script:
-
-```bash
-#!/bin/bash
-set -euo pipefail
-
-# Load TrimGalore
-module load miniconda3
-source activate /fs/ess/PAS0471/jelmer/conda/trimgalore
-
-# Copy the placeholder variables
-R1_in=$1
-outdir=$2
-
-# Check that the output dir isn't the same as the input dir
-# This is because we will let the output files have the same name as the input files
-indir=$(dirname "$R1_in")
-if [[ "$indir" == "$outdir" ]]; then
-    echo "ERROR: Input dir is the same as the output dir ($outdir)" 
-    exit 1
-fi
-
-# Infer the R2 FASTQ file name
-R2_in=${R1_in/_R1/_R2}
-
-# Report
-echo "# Starting script trimgalore.sh"
-date
-echo "# Input R1 FASTQ file:      $R1_in"
-echo "# Input R2 FASTQ file:      $R2_in"
-echo "# Output dir:               $outdir"
-echo
-
-# Create the output dir
-mkdir -p "$outdir"
-
-# Run TrimGalore
-trim_galore \
-    --paired \
-    --output_dir "$outdir" \
-    --fastqc \
-    "$R1_in" \
-    "$R2_in"
-
-# Rename output files
-echo
-echo "# Renaming the output files:"
-sample_id=$(basename "$R1_in" _R1.fastq.gz)
-R1_out_init="$outdir"/"$sample_id"_R1_val_1.fq.gz
-R2_out_init="$outdir"/"$sample_id"_R2_val_2.fq.gz
-R1_out_final="$outdir"/"$sample_id"_R1.fastq.gz
-R2_out_final="$outdir"/"$sample_id"_R2.fastq.gz
-mv -v "$R1_out_init" "$R1_out_final"
-mv -v "$R2_out_init" "$R2_out_final"
-
-# Report
-echo
-echo "# Done with script trimgalore.sh"
-date
-```
-
-Run the script with a different output dir:
-
-```bash
-R1=garrigos-data/fastq/ERR10802863_R1.fastq.gz
-bash scripts/trimgalore.sh "$R1" results/trimgalore_rename
-```
-
-Let's check the output files to see they were successfully renamed:
-
-```bash
-ls -lh results/trimgalore_rename
-```
-```bash-out
-total 42M
--rw-rw----+ 1 jelmer PAS0471  20M Mar 28 10:40 ERR10802863_R1.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.4K Mar 28 10:39 ERR10802863_R1.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 674K Mar 28 10:40 ERR10802863_R1_val_1_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 349K Mar 28 10:40 ERR10802863_R1_val_1_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  21M Mar 28 10:40 ERR10802863_R2.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.3K Mar 28 10:40 ERR10802863_R2.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 676K Mar 28 10:40 ERR10802863_R2_val_2_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 341K Mar 28 10:40 ERR10802863_R2_val_2_fastqc.zip
-```
-
-Looks good --- though note that we only renamed the FASTQ files, not the other files.
-
 </details>

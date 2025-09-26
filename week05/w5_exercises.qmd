@@ -1,5 +1,5 @@
 ---
-title: "Week 5 Exercises: GitHub and software at OSC"
+title: "Week 5 Exercises: Git and GitHub"
 pagetitle: "Week 5 Exercises"
 date: 2025-09-20
 author:
@@ -10,18 +10,13 @@ author:
       - name: CFAES Bioinformatics Core, Ohio State University
         url: https://mcic.osu.edu/bioinformatics
 other-links:
-  - text: "Week 5 overview"
-    icon: book
-    href: w5_overview.html
-  - text: "w5a: A closer look at OSC"
+  - text: "w4a: Version control with Git"
     icon: bookmarks
-    href: w5a_osc.html
-  - text: "w5b: Software management"
+    href: ../week04/w4a_git.html
+  - text: "w4b: Remotes on GitHub"
     icon: bookmarks
-    href: w5b_software.html
-  - text: "Bonus: Conda"
-    icon: book
-    href: ../bonus/conda.html
+    href: ../week04/w4b_github.html
+number-sections: false
 editor_options: 
   chunk_output_type: console
 ---
@@ -32,8 +27,7 @@ editor_options:
 
 ## Introduction
 
-In these exercises, you'll practice with creating and pushing to GitHub repositories,
-and with using software at OSC.
+In this exercise, you'll practice with creating and pushing to GitHub repositories.
 
 #### Setting up
 
@@ -72,44 +66,6 @@ and with using software at OSC.
 7. Commit the change to `README.md` to your Git repo.
 
 8. Push to the remote and check that the changes were applied in the online repo.
-
-## Exercise 2: Modules and Pandoc
-
-_(In the shell, you should remain in the dir for last week's assignment.)_
-
-We'll practice with modules and `pandoc`,
-the program that can, among others, render Markdown files to HTML and PDF.
-
-1. Check if Pandoc is available, and if so, which version, by running `pandoc -v`.
-
-2. Use Google (or something similar) to check whether that Pandoc version appears
-   to be the most recent one.
-   
-3. Check whether a more recent Pandoc version is available in an OSC Lmod module.
-
-4. Load the OSC module with the most recent available Pandoc version.
-
-5. Use Pandoc to create a PDF of your `README.md`. The command to do so is:
-   
-   ```bash
-   pandoc -o README.pdf README.md
-   ```
-
-6. Was a PDF file created?
-
-7. To view PDF files in VS Code, you'll first need to install an extension.
-   Install the extension "Papyrus PDF Preview", and then take a look at your PDF.
-   
-8. Download the PDF file to your computer and also take a look at it there.
-
-## Exercise 3: containers
-
-1. Go to <https://seqera.io/containers> and find a container image for the program
-   called "Trim-Galore".
-   _(This program trims and filters FASTQ files, and you'll use it in the next_
-   _few weeks of the course.)_
-
-2. Back in VS Code, test-run the container with the command `trim_galore -v`.
 
 ## Solutions
 
@@ -150,125 +106,5 @@ Since you've pushed to this remote before, a simple `git push` works:
 
 ```bash
 git push
-```
-</details>
-
-### Exercise 2
-
-<details><summary>**1.** Check if Pandoc is available, and if so, which version, by running `pandoc -v`</summary>
-
-As of September 2025, the version is `2.14.0.3`:
-  
-```bash
-pandoc -v
-```
-```bash-out
-pandoc 2.14.0.3
-Compiled with pandoc-types 1.22.1, texmath 0.12.3.3, skylighting 0.10.5.2,
-citeproc 0.4.0.1, ipynb 0.1.0.1
-User data directory: /users/PAS0471/jelmer/.local/share/pandoc
-Copyright (C) 2006-2021 John MacFarlane. Web:  https://pandoc.org
-This is free software; see the source for copying conditions. There is no
-warranty, not even for merchantability or fitness for a particular purpose.
-```
-</details>
-
-<details><summary>**2.** Check whether this appears to be the most recent version of Pandoc</summary>
-Version 2.14 is [not nearly the most recent one](https://pandoc.org/releases.html),
-which is 3.8 as of September 2025.
-</p></details>
-
-<details><summary>**3.** Is a more recent Pandoc version available in an OSC module?</summary>
-
-Yes:
-   
-```bash
-module spider pandoc
-```
-```bash-out
---------------------------------------------------------------------------------
-  pandoc:
---------------------------------------------------------------------------------
-    Versions:
-        pandoc/2.19.2
-        pandoc/3.6.4
-```
-</details>
-
-<details><summary>**4.** Load the module with the most recent available Pandoc version</summary>
-
-```bash
-module load pandoc/3.6.4
-
-pandoc -v
-```
-```bash-out
-pandoc 3.6.4
-Features: +server +lua
-Scripting engine: Lua 5.4
-User data directory: /users/PAS0471/jelmer/.local/share/pandoc
-Copyright (C) 2006-2024 John MacFarlane. Web: https://pandoc.org
-This is free software; see the source for copying conditions. There is no
-warranty, not even for merchantability or fitness for a particular purpose.
-```
-</details>
-   
-<details><summary>**6.** Was a PDF file created?</summary>
-
-If all went well, Pandoc did not print anything to screen,
-but the PDF file should be there:
-
-```bash
-ls
-```
-```bash-out
-data    README.md   README.pdf    results
-```
-
-</details>
-
-<details><summary>**7.** Install the Papyrus PDF Preview and open the file.</summary>
-
-1. Click on the Extensions icons (four squares) in the narrow side bar to open 
-   the Extensions panel in the wide side bar.
-
-2. Search for "papyrus" (or similar) and the extension should pop up:
-
-![](../img/vscode_pdf-extension.png){width="60%" fig-align="center" fig-alt="A screenshot of the search result for the Papyrus PDF Preview VS Code extension."}
-
-3. Click "Install".
-
-4. After installation, you should be able to open the PDF file e.g. by simply
-   clicking on it in the VS Code file explorer.
-
-</details>
-
-<details><summary>**8.** Download the PDF file</summary>
-
-- Recall that in the VS Code file explorer, you can right-click on a file and
-  select "Download..." to download a file to your computer.
-  
-- Alternatively, you could do this in the OnDemand file explorer.
-
-</details>
-
-### Exercise 3
-
-<details><summary>**2.** Run the container with the command `trim_galore -v`</summary>
-
-```bash
-singularity exec oras://community.wave.seqera.io/library/trim-galore:0.6.10--bc38c9238980c80e \
-  trim_galore -v
-```
-```bash-out
-INFO:    Downloading oras image
-465.8MiB / 465.8MiB [=============================================================================================================================] 100 % 56.2 MiB/s 0s
-INFO:    gocryptfs not found, will not be able to use gocryptfs
-
-                        Quality-/Adapter-/RRBS-/Speciality-Trimming
-                                [powered by Cutadapt]
-                                  version 0.6.10
-
-                               Last update: 02 02 2023
 ```
 </details>

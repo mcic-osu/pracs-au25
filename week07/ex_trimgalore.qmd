@@ -1,0 +1,158 @@
+---
+title: "Untitled"
+---
+
+
+#### Introduction to TrimGalore
+
+TrimGalore [@krueger2021] is a tool that can trim and filter FASTQ files, removing:
+
+- Any adapter sequences that are present in the reads^[
+  Adapters are always added to DNA/cDNA fragments of interest prior to Illumina sequencing,
+  and the last bases of a read can "read-through" into the adapter if the fragment
+  is shorter than the read length.].
+- Poor-quality bases at the start and end of the reads.
+- Reads that have become very short after the prior two steps.
+
+TrimGalore takes FASTQ files as input, and outputs filtered FASTQ files.
+When you have paired-end reads (as you do here),
+_a single TrimGalore run should include both the R1 and R2 file for one sample_.
+
+::: {.callout-note collapse="true"}
+#### More about TrimGalore _(Click to expand)_
+Several largely equivalent tools exist for this kind of FASTQ preprocessing ---
+[Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic) and
+[fastp](https://github.com/OpenGene/fastp) are two other commonly used ones.
+TrimGalore itself is "just" a wrapper around yet another tool called Cutadapt,
+but it is simpler to use.
+Two advantages of TrimGalore are:
+
+- It will auto-detect the adapters that are present in your reads.
+- It can automatically run FastQC on the trimmed sequences.
+:::
+
+### 2. A container image for TrimGalore
+
+After running those two lines, check that you can run TrimGalore
+and which version you're working with, as follows:
+
+```bash
+# Note: the command is 'trim_galore' with an underscore
+trim_galore --version
+```
+```{.bash-out}
+            Quality-/Adapter-/RRBS-/Speciality-Trimming
+                    [powered by Cutadapt]
+                        version 0.6.10
+```
+
+Then print the help info --- you'll be using this below!
+
+```bash
+trim_galore --help
+```
+```bash-out
+[output not shown]
+```
+
+### 3. A script to run TrimGalore
+
+Write a shell script `scripts/trimgalore.sh` that runs TrimGalore on paired end-FASTQ
+files as follows:
+
+- Header lines + TrimGalore version + TBA
+
+- The script should only **run TrimGalore once**, i.e. for one sample (two FASTQ files).
+
+- Your **script should accept and process arguments** that specify the input FASTQ
+  files and the output dir.
+
+- For each of the items below, figure out the relevant TrimGalore option,
+  and use that option:
+  - Tell it that the reads are **paired-end**^[
+    If you don't do this, TrimGalore will process the two FASTQ files independently.].
+  - Set the **output dir**.
+  - Make it **run FastQC** on the trimmed FASTQ files.
+
+- What are the default thresholds for the Phred quality score and read length?
+  Can you describe what these parameters do?
+  _(You don't have to change them here, the defaults will work fine for us.)_
+  
+::: {.callout-warning collapse="true"}
+#### Don't use/adjust TrimGalore's `--cores` option here _(Click to expand)_
+Since you're running the program interactively on your single-core VS Code compute job,
+you only have 1 core at your disposal --- and that's TrimGalore's default.
+Therefore, don't adjust this here.
+Next week, you'll submitting this script as a batch jobs,
+and that will give you the opportunity to use multiple cores.
+:::
+
+### 4. Run your TrimGalore script once
+
+1. Run your TrimGalore script for the `ERR10802863` sample in `garrigos-data/fastq`.
+
+2. Check if everything went well by reading the ouput that is printed to screen,
+   and by taking a look at TrimGalore's output files.
+   What outputs are you finding?
+   _(If something went wrong, go back to your `trimgalore.sh` script and try to fix it,_
+   _and describe your process in the `README.md`.)_
+   
+3. Take a closer look at the output that TrimGalore printed to screen
+   (note that most of that is also saved in the `*_trimming_report.txt` file in the
+   output dir):
+   - In each file (R1 and R2), in what percentage of reads were adapters detected?
+   - In each file (R1 and R2), what percentage of bases were quality trimmed?
+   - What percentage of reads were removed because they were too short?
+
+### 5. Modify the script to rename the output FASTQ files
+
+The TrimGalore output FASTQ files are oddly named,
+ending in `_R1_val_1.fq.gz` and `_R2_val_2.fq.gz` ---
+check the output files from your initial run to see this.
+This is not necessarily a problem, but could trip you up in a next step with these files.
+Therefore, in your TrimGalore script (`scripts/trimgalore.sh`):
+
+1. Rename the output files after you run TrimGalore,
+   giving them the same names as the input files.
+2. Add an `if` statement to check that the input dir is not the same as the output dir.
+   If it is, exit the script.
+3. Re-run the script to check that your changes were successful.
+
+<details><summary>Hints _(Click to expand)_</summary>
+
+To do this, you should first extract and store what is basically a sample ID:
+the part of the file name that is shared by the R1 and R2 file.
+
+```bash
+sample_id=$(basename "$R1_in" _R1.fastq.gz)
+```
+
+Based on that ID, you can build up the names of the TrimGalore output files
+as well as the desired final output files. For example:
+
+```bash
+# The name of the initial ('init') TrimGalore R1 output file will be:
+R1_out_init="$outdir"/"$sample_id"_R1_val_1.fq.gz
+```
+
+To test this, you'll need to derive the input dir from the FASTQ path.
+In this week's second lecture, we saw how to do this.
+Use command substitution (`$(...)` to store the input dir in a variable.
+
+</details>
+
+### 6. Run your TrimGalore script for all samples
+
+Write a `for` loop (include this in the README) to run your TrimGalore script for
+all samples in the `garrigos-data/fastq` dir, and run that loop.
+_(Make sure you are running the script once per sample, not per FASTQ file.)_
+
+::: callout-tip
+#### This will take some time (~20 minutes) to run!
+And note that these FASTQ files are _much_ smaller than regular ones.
+You'll hopefully agree that we need to start using more computing power,
+and have the script run simultaneously rather than consecutively for each sample ---
+we can do all of that by submitting the script as batch jobs, as we'll see next week.
+
+TBA Also talk about output to screen always being saved with batch jobs
+:::
