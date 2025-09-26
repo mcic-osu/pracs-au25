@@ -6,8 +6,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Jelmer Poelstra">
-<meta name="dcterms.date" content="2025-09-23">
 
 <title>Week 6 exercises – PRACS-AU25</title>
 <style>
@@ -152,7 +150,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week05/w5_overview.html">
  <span class="dropdown-text">Week 5: Software management at OSC</span></a>
   </li>  
-        <li class="dropdown-header">Week 6: Shell scripts and CLI tools [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week06/w6_overview.html">
+ <span class="dropdown-text">Week 6: Shell scripts and CLI tools</span></a>
+  </li>  
         <li class="dropdown-header">Week 7: Slurm batch jobs at OSC [TBA]</li>
         <li class="dropdown-header">Week 8: Halfway recap [TBA]</li>
         <li class="dropdown-header">Week 9: Reproducibility and data management [TBA]</li>
@@ -291,19 +292,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#a-shell-script-that-prints-a-specific-line" id="toc-a-shell-script-that-prints-a-specific-line" class="nav-link active" data-scroll-target="#a-shell-script-that-prints-a-specific-line">A shell script that prints a specific line</a>
+  <li><a href="#a-shell-script-that-prints-a-specific-line" id="toc-a-shell-script-that-prints-a-specific-line" class="nav-link active" data-scroll-target="#a-shell-script-that-prints-a-specific-line"><span class="header-section-number">1</span> A shell script that prints a specific line</a>
   <ul class="collapse">
-  <li><a href="#hormone-levels-in-baboons" id="toc-hormone-levels-in-baboons" class="nav-link" data-scroll-target="#hormone-levels-in-baboons">1.10.2 Hormone Levels in Baboons</a></li>
-  <li><a href="#plantpollinator-networks" id="toc-plantpollinator-networks" class="nav-link" data-scroll-target="#plantpollinator-networks">1.10.3 Plant–Pollinator Networks</a></li>
-  <li><a href="#data-explorer" id="toc-data-explorer" class="nav-link" data-scroll-target="#data-explorer">1.10.4 Data Explorer</a></li>
-  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
-  <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1">Exercise 1</a></li>
-  <li><a href="#hormone-levels-in-baboons-1" id="toc-hormone-levels-in-baboons-1" class="nav-link" data-scroll-target="#hormone-levels-in-baboons-1">1.10.2 Hormone Levels in Baboons</a></li>
-  <li><a href="#plantpollinator-networks-1" id="toc-plantpollinator-networks-1" class="nav-link" data-scroll-target="#plantpollinator-networks-1">1.10.3 Plant–Pollinator Networks</a></li>
-  <li><a href="#data-explorer-1" id="toc-data-explorer-1" class="nav-link" data-scroll-target="#data-explorer-1">1.10.4 Data Explorer</a></li>
+  <li><a href="#hormone-levels-in-baboons" id="toc-hormone-levels-in-baboons" class="nav-link" data-scroll-target="#hormone-levels-in-baboons"><span class="header-section-number">1.1</span> 1.10.2 Hormone Levels in Baboons</a></li>
+  <li><a href="#plantpollinator-networks" id="toc-plantpollinator-networks" class="nav-link" data-scroll-target="#plantpollinator-networks"><span class="header-section-number">1.2</span> 1.10.3 Plant–Pollinator Networks</a></li>
+  <li><a href="#data-explorer" id="toc-data-explorer" class="nav-link" data-scroll-target="#data-explorer"><span class="header-section-number">1.3</span> 1.10.4 Data Explorer</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions"><span class="header-section-number">1.4</span> Solutions</a></li>
+  <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1"><span class="header-section-number">1.5</span> Exercise 1</a></li>
+  <li><a href="#hormone-levels-in-baboons-1" id="toc-hormone-levels-in-baboons-1" class="nav-link" data-scroll-target="#hormone-levels-in-baboons-1"><span class="header-section-number">1.6</span> 1.10.2 Hormone Levels in Baboons</a></li>
+  <li><a href="#plantpollinator-networks-1" id="toc-plantpollinator-networks-1" class="nav-link" data-scroll-target="#plantpollinator-networks-1"><span class="header-section-number">1.7</span> 1.10.3 Plant–Pollinator Networks</a></li>
+  <li><a href="#data-explorer-1" id="toc-data-explorer-1" class="nav-link" data-scroll-target="#data-explorer-1"><span class="header-section-number">1.8</span> 1.10.4 Data Explorer</a></li>
   </ul></li>
   </ul>
-<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w6_overview.html"><i class="bi bi-book"></i>Week 6 overview</a></li><li><a href="w6a_scripts.html"><i class="bi bi-bookmarks"></i>w6-1: Shell scripting I</a></li><li><a href="w6b_cli-tools.html"><i class="bi bi-bookmarks"></i>w6-2: Shell scripting II</a></li><li><a href="w6_ga_shell-scripts.html"><i class="bi bi-pencil"></i>Week 6 graded assignment</a></li><li><a href="../bonus/shell-scripting.html"><i class="bi bi-book"></i>Bonus: Advanced shell scripting and looping</a></li></ul></div></nav>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -314,31 +315,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 
 
-<div class="quarto-title-meta-author">
-  <div class="quarto-title-meta-heading">Author</div>
-  <div class="quarto-title-meta-heading">Affiliation</div>
-  
-    <div class="quarto-title-meta-contents">
-    <p class="author">Jelmer Poelstra <a href="mailto:poelstra.1@osu.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> <a href="https://orcid.org/0000-0002-3514-7462" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
-  </div>
-  <div class="quarto-title-meta-contents">
-        <p class="affiliation">
-            <a href="https://mcic.osu.edu/bioinformatics">
-            CFAES Bioinformatics Core, Ohio State University
-            </a>
-          </p>
-      </div>
-  </div>
 
 <div class="quarto-title-meta">
 
-      
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">September 23, 2025</p>
-    </div>
-  </div>
+    
   
     
   </div>
@@ -348,24 +328,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<hr>
-<p><br></p>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-THIS PAGE IS STILL UNDER CONSTRUCTION
-</div>
-</div>
-<div class="callout-body-container callout-body">
-
-</div>
-</div>
-<p><br></p>
-<section id="a-shell-script-that-prints-a-specific-line" class="level2">
-<h2 class="anchored" data-anchor-id="a-shell-script-that-prints-a-specific-line">A shell script that prints a specific line</h2>
+<section id="a-shell-script-that-prints-a-specific-line" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="a-shell-script-that-prints-a-specific-line"><span class="header-section-number">1</span> A shell script that prints a specific line</h2>
 <p>Write a shell script that accepts two arguments, a <em>file name</em> (file path) and a <em>line number</em>, and that will print the requested line from the specified file to the screen. Save this file as <code>scripts/printline.sh</code>.</p>
 <p>Additional instructions:</p>
 <ul>
@@ -381,8 +345,8 @@ Hint
 Think how you might combine <code>head</code> and <code>tail -n 1</code> to do print a specific line!
 </details>
 <hr style="height:1pt; visibility:hidden;">
-<section id="hormone-levels-in-baboons" class="level3">
-<h3 class="anchored" data-anchor-id="hormone-levels-in-baboons">1.10.2 Hormone Levels in Baboons</h3>
+<section id="hormone-levels-in-baboons" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="hormone-levels-in-baboons"><span class="header-section-number">1.1</span> 1.10.2 Hormone Levels in Baboons</h3>
 <p>Gesquiere et al.&nbsp;(2011) studied hormone levels in the blood of baboons. Every individual was sampled several times.</p>
 <p>Write a script taking as input the file name and the ID of the individual, and returning the number of records for that ID.</p>
 <details>
@@ -397,8 +361,8 @@ Show hints
 </details>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="plantpollinator-networks" class="level3">
-<h3 class="anchored" data-anchor-id="plantpollinator-networks">1.10.3 Plant–Pollinator Networks</h3>
+<section id="plantpollinator-networks" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="plantpollinator-networks"><span class="header-section-number">1.2</span> 1.10.3 Plant–Pollinator Networks</h3>
 <p>Saavedra and Stouffer (2013) studied several plant–pollinator networks. These can be represented as rectangular matrices where the rows are pollinators, the columns plants, a 0 indicates the absence and 1 the presence of an interaction between the plant and the pollinator.</p>
 <p>The data of Saavedra and Stouffer (2013) can be found in the directory <code>CSB/unix/data/Saavedra2013</code>.</p>
 <p>Write a script that takes one of these files and determines the number of rows (pollinators) and columns (plants). Note that columns are separated by spaces and that there is a space at the end of each line. Your script should return:</p>
@@ -418,8 +382,8 @@ Show hints
 </details>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="data-explorer" class="level3">
-<h3 class="anchored" data-anchor-id="data-explorer">1.10.4 Data Explorer</h3>
+<section id="data-explorer" class="level3" data-number="1.3">
+<h3 data-number="1.3" class="anchored" data-anchor-id="data-explorer"><span class="header-section-number">1.3</span> 1.10.4 Data Explorer</h3>
 <p>Buzzard et al.&nbsp;(2016) collected data on the growth of a forest in Costa Rica. In the file <code>Buzzard2015_data.csv</code> you will find a subset of their data, including taxonomic information, abundance, and biomass of trees.</p>
 <p>Write a script that, for a given CSV file and column number, prints:</p>
 <ul>
@@ -454,11 +418,11 @@ Show hints
 </details>
 <p><br></p>
 </section>
-<section id="solutions" class="level3">
-<h3 class="anchored" data-anchor-id="solutions">Solutions</h3>
+<section id="solutions" class="level3" data-number="1.4">
+<h3 data-number="1.4" class="anchored" data-anchor-id="solutions"><span class="header-section-number">1.4</span> Solutions</h3>
 </section>
-<section id="exercise-1" class="level3">
-<h3 class="anchored" data-anchor-id="exercise-1">Exercise 1</h3>
+<section id="exercise-1" class="level3" data-number="1.5">
+<h3 data-number="1.5" class="anchored" data-anchor-id="exercise-1"><span class="header-section-number">1.5</span> Exercise 1</h3>
 <details>
 <summary>
 The <code>printline.sh</code> script <em>(Click to expand)</em>
@@ -507,8 +471,8 @@ Usage printline.sh &lt;file&gt; &lt;line-number&gt;</code></pre></li>
 </details>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="hormone-levels-in-baboons-1" class="level3">
-<h3 class="anchored" data-anchor-id="hormone-levels-in-baboons-1">1.10.2 Hormone Levels in Baboons</h3>
+<section id="hormone-levels-in-baboons-1" class="level3" data-number="1.6">
+<h3 data-number="1.6" class="anchored" data-anchor-id="hormone-levels-in-baboons-1"><span class="header-section-number">1.6</span> 1.10.2 Hormone Levels in Baboons</h3>
 <details>
 <summary>
 <strong>2.</strong> Write a script taking as input the file name and the ID of the individual, and returning the number of records for that ID.
@@ -547,8 +511,8 @@ Note
 </details>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="plantpollinator-networks-1" class="level3">
-<h3 class="anchored" data-anchor-id="plantpollinator-networks-1">1.10.3 Plant–Pollinator Networks</h3>
+<section id="plantpollinator-networks-1" class="level3" data-number="1.7">
+<h3 data-number="1.7" class="anchored" data-anchor-id="plantpollinator-networks-1"><span class="header-section-number">1.7</span> 1.10.3 Plant–Pollinator Networks</h3>
 <details>
 <summary>
 Solution
@@ -600,8 +564,8 @@ Solution
 </details>
 <hr style="height:1pt; visibility:hidden;">
 </section>
-<section id="data-explorer-1" class="level3">
-<h3 class="anchored" data-anchor-id="data-explorer-1">1.10.4 Data Explorer</h3>
+<section id="data-explorer-1" class="level3" data-number="1.8">
+<h3 data-number="1.8" class="anchored" data-anchor-id="data-explorer-1"><span class="header-section-number">1.8</span> 1.10.4 Data Explorer</h3>
 <details>
 <summary>
 Solution

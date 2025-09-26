@@ -152,7 +152,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week05/w5_overview.html">
  <span class="dropdown-text">Week 5: Software management at OSC</span></a>
   </li>  
-        <li class="dropdown-header">Week 6: Shell scripts and CLI tools [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week06/w6_overview.html">
+ <span class="dropdown-text">Week 6: Shell scripts and CLI tools</span></a>
+  </li>  
         <li class="dropdown-header">Week 7: Slurm batch jobs at OSC [TBA]</li>
         <li class="dropdown-header">Week 8: Halfway recap [TBA]</li>
         <li class="dropdown-header">Week 9: Reproducibility and data management [TBA]</li>
@@ -291,16 +294,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#parameter-expansion-and-looping-over-samples" id="toc-parameter-expansion-and-looping-over-samples" class="nav-link active" data-scroll-target="#parameter-expansion-and-looping-over-samples"><span class="header-section-number">1</span> Parameter expansion – and looping over samples</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a>
   <ul class="collapse">
-  <li><a href="#parameter-expansion" id="toc-parameter-expansion" class="nav-link" data-scroll-target="#parameter-expansion"><span class="header-section-number">1.1</span> Parameter expansion</a></li>
-  <li><a href="#a-per-sample-loop" id="toc-a-per-sample-loop" class="nav-link" data-scroll-target="#a-per-sample-loop"><span class="header-section-number">1.2</span> A per-sample loop</a></li>
-  <li><a href="#the-current-protocol-markdown-file" id="toc-the-current-protocol-markdown-file" class="nav-link" data-scroll-target="#the-current-protocol-markdown-file"><span class="header-section-number">1.3</span> The current protocol Markdown file</a></li>
+  <li><a href="#learning-goals" id="toc-learning-goals" class="nav-link" data-scroll-target="#learning-goals"><span class="header-section-number">1.1</span> Learning goals</a></li>
+  <li><a href="#setting-up" id="toc-setting-up" class="nav-link" data-scroll-target="#setting-up"><span class="header-section-number">1.2</span> Setting up</a></li>
   </ul></li>
-  <li><a href="#command-substitution" id="toc-command-substitution" class="nav-link" data-scroll-target="#command-substitution"><span class="header-section-number">2</span> Command substitution</a></li>
-  <li><a href="#basename-and-dirname-to-extract-parts-of-paths" id="toc-basename-and-dirname-to-extract-parts-of-paths" class="nav-link" data-scroll-target="#basename-and-dirname-to-extract-parts-of-paths"><span class="header-section-number">3</span> <code>basename</code> and <code>dirname</code> to extract parts of paths</a></li>
+  <li><a href="#parameter-expansion-and-looping-over-samples" id="toc-parameter-expansion-and-looping-over-samples" class="nav-link" data-scroll-target="#parameter-expansion-and-looping-over-samples"><span class="header-section-number">2</span> Parameter expansion – and looping over samples</a>
+  <ul class="collapse">
+  <li><a href="#parameter-expansion" id="toc-parameter-expansion" class="nav-link" data-scroll-target="#parameter-expansion"><span class="header-section-number">2.1</span> Parameter expansion</a></li>
+  <li><a href="#a-per-sample-loop" id="toc-a-per-sample-loop" class="nav-link" data-scroll-target="#a-per-sample-loop"><span class="header-section-number">2.2</span> A per-sample loop</a></li>
+  <li><a href="#the-current-protocol-markdown-file" id="toc-the-current-protocol-markdown-file" class="nav-link" data-scroll-target="#the-current-protocol-markdown-file"><span class="header-section-number">2.3</span> The current protocol Markdown file</a></li>
+  </ul></li>
+  <li><a href="#command-substitution" id="toc-command-substitution" class="nav-link" data-scroll-target="#command-substitution"><span class="header-section-number">3</span> Command substitution</a></li>
+  <li><a href="#basename-and-dirname-to-extract-parts-of-paths" id="toc-basename-and-dirname-to-extract-parts-of-paths" class="nav-link" data-scroll-target="#basename-and-dirname-to-extract-parts-of-paths"><span class="header-section-number">4</span> <code>basename</code> and <code>dirname</code> to extract parts of paths</a></li>
   </ul>
-<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w6_overview.html"><i class="bi bi-book"></i>Week 6 overview</a></li><li><a href="w6a_scripts.html"><i class="bi bi-bookmarks"></i>w6a: Shell scripting intro</a></li><li><a href="w6b_cli-tools.html"><i class="bi bi-bookmarks"></i>w6b: Shell scripting - CLI tools</a></li><li><a href="w6_ga.html"><i class="bi bi-pencil"></i>Week 6 graded assignment</a></li></ul></div></nav>
+<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w6_overview.html"><i class="bi bi-book"></i>Week 6 overview</a></li><li><a href="w6a_scripts.html"><i class="bi bi-bookmarks"></i>w6a: Shell scripting basics</a></li><li><a href="w6b_cli-tools.html"><i class="bi bi-bookmarks"></i>w6b: Shell scripting - CLI tools</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -348,8 +356,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <hr>
 <p><br></p>
-<section id="parameter-expansion-and-looping-over-samples" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="parameter-expansion-and-looping-over-samples"><span class="header-section-number">1</span> Parameter expansion – and looping over samples</h2>
+<section id="introduction" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
+<section id="learning-goals" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="learning-goals"><span class="header-section-number">1.1</span> Learning goals</h3>
+<p>In this short lecture, you’ll learn a few final Unix shell tips and tricks that are especially useful in a shell scripting context:</p>
+<ul>
+<li>Parameter expansion – and using this in the context of looping over samples (pairs of FASTQ files) rather than individual files</li>
+<li>Command substitution to save the output of commands</li>
+<li><code>basename</code> and <code>dirname</code> to extract parts of file paths</li>
+</ul>
+</section>
+<section id="setting-up" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="setting-up"><span class="header-section-number">1.2</span> Setting up</h3>
+</section>
+</section>
+<section id="parameter-expansion-and-looping-over-samples" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="parameter-expansion-and-looping-over-samples"><span class="header-section-number">2</span> Parameter expansion – and looping over samples</h2>
 <p>In some cases, you can’t simply loop over all files like we have done so far. For example, in many tools that process paired-end FASTQ files, the corresponding R1 and R2 files for each sample must be processed together. That is, the tool is not run separately for each FASTQ file, but for each sample, i.e.&nbsp;each <em>pair</em> of FASTQ files.</p>
 <p>How can you loop over pairs of FASTQ files? There are two main ways:</p>
 <ul>
@@ -357,8 +380,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Loop over the <strong>R1 files only</strong> and then infer the name of the corresponding R2 file within the loop. This can be done because the R1 and R2 file names should be identical other than the read-direction identifier (<code>R1</code>/<code>R2</code>).</li>
 </ul>
 <p>Below, we will use the second method — but first, you need to learn about parameter expansion.</p>
-<section id="parameter-expansion" class="level3" data-number="1.1">
-<h3 data-number="1.1" class="anchored" data-anchor-id="parameter-expansion"><span class="header-section-number">1.1</span> Parameter expansion</h3>
+<section id="parameter-expansion" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="parameter-expansion"><span class="header-section-number">2.1</span> Parameter expansion</h3>
 <p>You can use so-called “parameter expansion”, where parameter is basically another word for variable, to search-and-replace text in your variable’s values. For example:</p>
 <ul>
 <li><p>Assign a short DNA sequence to a variable:</p>
@@ -399,8 +422,8 @@ Solutions
 </details>
 </section>
 </section>
-<section id="a-per-sample-loop" class="level3" data-number="1.2">
-<h3 data-number="1.2" class="anchored" data-anchor-id="a-per-sample-loop"><span class="header-section-number">1.2</span> A per-sample loop</h3>
+<section id="a-per-sample-loop" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="a-per-sample-loop"><span class="header-section-number">2.2</span> A per-sample loop</h3>
 <p>Now, you can create a loop that iterates over R1 FASTQ files only, and then infers the corresponding R2 file name — for example, with an imaginary <code>trim.sh</code> script:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this]</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> R1 <span class="kw">in</span> ../garrigos-data/fastq/<span class="pp">*</span>_R1.fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
@@ -479,8 +502,8 @@ Thu Sep 25 14:05:10 EDT 2025
 </ul>
 </section>
 </section>
-<section id="the-current-protocol-markdown-file" class="level3" data-number="1.3">
-<h3 data-number="1.3" class="anchored" data-anchor-id="the-current-protocol-markdown-file"><span class="header-section-number">1.3</span> The current protocol Markdown file</h3>
+<section id="the-current-protocol-markdown-file" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="the-current-protocol-markdown-file"><span class="header-section-number">2.3</span> The current protocol Markdown file</h3>
 <p>Your final protocol Markdown file for this (dummy) project should look like this:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># RNA-Seq data analysis</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -516,8 +539,8 @@ Thu Sep 25 14:05:10 EDT 2025
 <span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="command-substitution" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="command-substitution"><span class="header-section-number">2</span> Command substitution</h2>
+<section id="command-substitution" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="command-substitution"><span class="header-section-number">3</span> Command substitution</h2>
 <p>Command substitution allows you to <strong>store the output of a command in a variable</strong>. This is especially useful in scripts and loops. Let’s see an example. As you know, the <code>date</code> command will print the current date and time:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Thu Sep 11 14:52:22 EDT 2025</code></pre>
@@ -581,8 +604,8 @@ Click for the solution
 </details>
 </section>
 </section>
-<section id="basename-and-dirname-to-extract-parts-of-paths" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="basename-and-dirname-to-extract-parts-of-paths"><span class="header-section-number">3</span> <code>basename</code> and <code>dirname</code> to extract parts of paths</h2>
+<section id="basename-and-dirname-to-extract-parts-of-paths" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="basename-and-dirname-to-extract-parts-of-paths"><span class="header-section-number">4</span> <code>basename</code> and <code>dirname</code> to extract parts of paths</h2>
 <p>In loops and other contexts where you are working with file names programmatically, it is common to have a path to a file from wich you want to extract just the file name part. For example, we can think of the path <code>data/fastq/sample1_R1.fastq</code> as consisting of a directory part (<code>data/fastq/</code>) and a filename part (<code>sample1_R1.fastq</code>).</p>
 <p>Running the <code>basename</code> command on a path will strip any directories and just return the file name:</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">basename</span> ../garrigos-data/fastq/ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

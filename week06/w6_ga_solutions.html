@@ -150,7 +150,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week05/w5_overview.html">
  <span class="dropdown-text">Week 5: Software management at OSC</span></a>
   </li>  
-        <li class="dropdown-header">Week 6: Shell scripts and CLI tools [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week06/w6_overview.html">
+ <span class="dropdown-text">Week 6: Shell scripts and CLI tools</span></a>
+  </li>  
         <li class="dropdown-header">Week 7: Slurm batch jobs at OSC [TBA]</li>
         <li class="dropdown-header">Week 8: Halfway recap [TBA]</li>
         <li class="dropdown-header">Week 9: Reproducibility and data management [TBA]</li>
@@ -293,8 +296,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#exercise-2" id="toc-exercise-2" class="nav-link" data-scroll-target="#exercise-2"><span class="header-section-number">1.1</span> Exercise 2</a></li>
   <li><a href="#exercise-3" id="toc-exercise-3" class="nav-link" data-scroll-target="#exercise-3"><span class="header-section-number">1.2</span> Exercise 3</a></li>
-  <li><a href="#exercise-4" id="toc-exercise-4" class="nav-link" data-scroll-target="#exercise-4"><span class="header-section-number">1.3</span> Exercise 4</a></li>
-  <li><a href="#bonus-exercise" id="toc-bonus-exercise" class="nav-link" data-scroll-target="#bonus-exercise"><span class="header-section-number">1.4</span> Bonus exercise</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -327,290 +328,106 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="1.1" class="anchored" data-anchor-id="exercise-2"><span class="header-section-number">1.1</span> Exercise 2</h3>
 <details>
 <summary>
-Hint: See the relevant parts of the TrimGalore help pages <em>(Click to expand)</em>
+<strong>1.</strong> Check if Pandoc is available, and if so, which version, by running <code>pandoc -v</code>
 </summary>
-<hr style="height:1pt; visibility:hidden;">
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out-solo"><code> USAGE:
-trim_galore [options] &lt;filename(s)&gt;
-
---paired                This option performs length trimming of quality/adapter/RRBS trimmed reads for
-                        paired-end files.
-
--o/--output_dir &lt;DIR&gt;   If specified all output will be written to this directory instead of the current
-                        directory. If the directory doesn't exist it will be created for you.
-
--j/--cores INT          Number of cores to be used for trimming [default: 1].
-
---fastqc                Run FastQC in the default mode on the FastQ file once trimming is complete.
-
---fastqc_args "&lt;ARGS&gt;"  Passes extra arguments to FastQC.
-
--a/--adapter &lt;STRING&gt;   Adapter sequence to be trimmed. If not specified explicitly, Trim Galore will
-                        try to auto-detect whether the Illumina universal, Nextera transposase or Illumina
-                        small RNA adapter sequence was used.
-
--q/--quality &lt;INT&gt;      Trim low-quality ends from reads in addition to adapter removal. [...]
-                        Default Phred score: 20.
-
---length &lt;INT&gt;          Discard reads that became shorter than length INT because of either
-                        quality or adapter trimming. A value of '0' effectively disables
-                        this behaviour. Default: 20 bp.</code></pre>
+<p>As of September 2025, the version is <code>2.14.0.3</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pandoc</span> <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>pandoc 2.14.0.3
+Compiled with pandoc-types 1.22.1, texmath 0.12.3.3, skylighting 0.10.5.2,
+citeproc 0.4.0.1, ipynb 0.1.0.1
+User data directory: /users/PAS0471/jelmer/.local/share/pandoc
+Copyright (C) 2006-2021 John MacFarlane. Web:  https://pandoc.org
+This is free software; see the source for copying conditions. There is no
+warranty, not even for merchantability or fitness for a particular purpose.</code></pre>
 </details>
 <details>
 <summary>
-The TrimGalore options you were looking for <em>(Click to expand)</em>
+<strong>2.</strong> Check whether this appears to be the most recent version of Pandoc
+</summary>
+Version 2.14 is <a href="https://pandoc.org/releases.html">not nearly the most recent one</a>, which is 3.8 as of September 2025.
+<p></p>
+</details>
+<details>
+<summary>
+<strong>3.</strong> Is a more recent Pandoc version available in an OSC module?
+</summary>
+<p>Yes:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> spider pandoc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>--------------------------------------------------------------------------------
+  pandoc:
+--------------------------------------------------------------------------------
+    Versions:
+        pandoc/2.19.2
+        pandoc/3.6.4</code></pre>
+</details>
+<details>
+<summary>
+<strong>4.</strong> Load the module with the most recent available Pandoc version
+</summary>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load pandoc/3.6.4</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pandoc</span> <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>pandoc 3.6.4
+Features: +server +lua
+Scripting engine: Lua 5.4
+User data directory: /users/PAS0471/jelmer/.local/share/pandoc
+Copyright (C) 2006-2024 John MacFarlane. Web: https://pandoc.org
+This is free software; see the source for copying conditions. There is no
+warranty, not even for merchantability or fitness for a particular purpose.</code></pre>
+</details>
+<details>
+<summary>
+<strong>6.</strong> Was a PDF file created?
+</summary>
+<p>If all went well, Pandoc did not print anything to screen, but the PDF file should be there:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>data    README.md   README.pdf    results</code></pre>
+</details>
+<details>
+<summary>
+<strong>7.</strong> Install the Papyrus PDF Preview and open the file.
+</summary>
+<ol type="1">
+<li><p>Click on the Extensions icons (four squares) in the narrow side bar to open the Extensions panel in the wide side bar.</p></li>
+<li><p>Search for “papyrus” (or similar) and the extension should pop up:</p></li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/vscode_pdf-extension.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%" alt="A screenshot of the search result for the Papyrus PDF Preview VS Code extension."></p>
+</figure>
+</div>
+<ol start="3" type="1">
+<li><p>Click “Install”.</p></li>
+<li><p>After installation, you should be able to open the PDF file e.g.&nbsp;by simply clicking on it in the VS Code file explorer.</p></li>
+</ol>
+</details>
+<details>
+<summary>
+<strong>8.</strong> Download the PDF file
 </summary>
 <ul>
-<li><code>--paired</code> to indicate that the FASTQ files are paired-end.</li>
-<li><code>--output_dir</code> (or equivalently, <code>-o</code>) to specify the output directory.</li>
-<li><code>--fastqc</code> to run FastQC on the trimmed FASTQ files.</li>
+<li><p>Recall that in the VS Code file explorer, you can right-click on a file and select “Download…” to download a file to your computer.</p></li>
+<li><p>Alternatively, you could do this in the OnDemand file explorer.</p></li>
 </ul>
 </details>
-<details>
-<summary>
-The TrimGalore shell script <em>(Click to expand)</em>
-</summary>
-<p>Save this as e.g.&nbsp;<code>scripts/trimgalore.sh</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load TrimGalore</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load miniconda3/24.1.2-py310</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate /fs/ess/PAS0471/jelmer/conda/trimgalore</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the placeholder variables</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="va">R1_in</span><span class="op">=</span><span class="va">$1</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="va">outdir</span><span class="op">=</span><span class="va">$2</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Infer the R2 FASTQ file name</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="va">R2_in</span><span class="op">=</span><span class="va">${R1_in</span><span class="op">/</span><span class="ss">_R1</span><span class="op">/</span>_R2<span class="va">}</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Report</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Starting script trimgalore.sh"</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Input R1 FASTQ file:      </span><span class="va">$R1_in</span><span class="st">"</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Input R2 FASTQ file:      </span><span class="va">$R2_in</span><span class="st">"</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Output dir:               </span><span class="va">$outdir</span><span class="st">"</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the output dir</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Run TrimGalore</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="dt">\</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">--paired</span> <span class="dt">\</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">--fastqc</span> <span class="dt">\</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">--output_dir</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span> <span class="dt">\</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$R1_in</span><span class="st">"</span> <span class="dt">\</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$R2_in</span><span class="st">"</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Report</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Successfully finished script trimgalore.sh"</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<details>
-<summary>
-Quality and length threshold options &amp; interpretation <em>(Click to expand)</em>
-</summary>
-<ul>
-<li><p>The option <code>-q</code> (short notation) or <code>--quality</code> (long notation) can be used to adjust the base quality score threshold, which has the “Phred” unit. The default threshold is 20, which corresponds to an estimated 0.01 error rate. TrimGalore will trim bases with a lower quality score than this threshold from the <strong>ends</strong> of the reads. It will <strong>not</strong> remove or mask bases with lower quality scores elsewhere in the read.</p></li>
-<li><p>The option <code>-l</code> (short notation) or <code>--length</code> (long notation) can be used to adjust the read length threshold: any reads that are shorter than this after adapter and quality trimming will be removed. The default threshold is 20 bp. (When the input is paired-end, the corresponding second read will also be removed, regardless of its length: paired-end FASTQ files always need to contain both the R1 and R2 for each pair; orphan reads would need to be stored in a separate file.)</p></li>
-</ul>
-</details>
-<hr style="height:1pt; visibility:hidden;">
 </section>
 <section id="exercise-3" class="level3" data-number="1.2">
 <h3 data-number="1.2" class="anchored" data-anchor-id="exercise-3"><span class="header-section-number">1.2</span> Exercise 3</h3>
 <details>
 <summary>
-1 - Run the script <em>(Click to expand)</em>
+<strong>2.</strong> Run the container with the command <code>trim_galore -v</code>
 </summary>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exercise 2</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">R1</span><span class="op">=</span>garrigos-data/fastq/ERR10802863_R1.fastq.gz</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/trimgalore.sh <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> results/trimgalore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code># Starting script trimgalore.sh
-Thu Mar 28 10:34:24 EDT 2024
-# Input R1 FASTQ file:      garrigos-data/fastq/ERR10802863_R1.fastq.gz
-# Input R2 FASTQ file:      garrigos-data/fastq/ERR10802863_R2.fastq.gz
-# Output dir:               results/trimgalore
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">singularity</span> exec oras://community.wave.seqera.io/library/trim-galore:0.6.10--bc38c9238980c80e <span class="dt">\</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  trim_galore <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>INFO:    Downloading oras image
+465.8MiB / 465.8MiB [=============================================================================================================================] 100 % 56.2 MiB/s 0s
+INFO:    gocryptfs not found, will not be able to use gocryptfs
 
-Multicore support not enabled. Proceeding with single-core trimming.
-Path to Cutadapt set as: 'cutadapt' (default)
-Cutadapt seems to be working fine (tested command 'cutadapt --version')
-Cutadapt version: 4.4
+                        Quality-/Adapter-/RRBS-/Speciality-Trimming
+                                [powered by Cutadapt]
+                                  version 0.6.10
 
-# [...output truncated...]</code></pre>
-</details>
-<details>
-<summary>
-2 - Check the output files <em>(Click to expand)</em>
-</summary>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> results/trimgalore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>total 42M
--rw-rw----+ 1 jelmer PAS0471 2.4K Mar 28 10:49 ERR10802863_R1.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 674K Mar 28 10:49 ERR10802863_R1_val_1_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 349K Mar 28 10:49 ERR10802863_R1_val_1_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  20M Mar 28 10:49 ERR10802863_R1_val_1.fq.gz
--rw-rw----+ 1 jelmer PAS0471 2.3K Mar 28 10:49 ERR10802863_R2.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 676K Mar 28 10:50 ERR10802863_R2_val_2_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 341K Mar 28 10:50 ERR10802863_R2_val_2_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  21M Mar 28 10:49 ERR10802863_R2_val_2.fq.gz</code></pre>
-</details>
-<details>
-<summary>
-3 - Check the trimming results <em>(Click to expand)</em>
-</summary>
-<ul>
-<li><p>Note that the adapter- and quality trimming results summary for the R1 and R2 files are separated widely among all the output that TrimGalore prints — they are printed below (first for the R1, then for the R2 file), and the answers are:</p>
-<ul>
-<li>13.0% (R1) and 10.1% (R2) of reads had adapters</li>
-<li>3.6% (R1) and 3.5% (R2) of bases were quality-trimmed</li>
-</ul>
-<pre class="bash-out-solo"><code>=== Summary ===
-
-Total reads processed:                 500,000
-Reads with adapters:                    65,070 (13.0%)
-Reads written (passing filters):       500,000 (100.0%)
-
-Total basepairs processed:    35,498,138 bp
-Quality-trimmed:               1,274,150 bp (3.6%)
-Total written (filtered):     34,138,461 bp (96.2%)</code></pre>
-<pre class="bash-out-solo"><code>=== Summary ===
-
-Total reads processed:                 500,000
-Reads with adapters:                    50,357 (10.1%)
-Reads written (passing filters):       500,000 (100.0%)
-
-Total basepairs processed:    36,784,563 bp
-Quality-trimmed:               1,283,793 bp (3.5%)
-Total written (filtered):     35,440,230 bp (96.3%)</code></pre></li>
-<li><p>Just before the FastQC logs is a line that reports how many reads were removed due to the length filter — the answer is 6.79%.</p>
-<pre class="bash-out-solo"><code>Number of sequence pairs removed because at least one read was shorter than the length cutoff (20 bp): 33955 (6.79%)</code></pre></li>
-</ul>
-</details>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="exercise-4" class="level3" data-number="1.3">
-<h3 data-number="1.3" class="anchored" data-anchor-id="exercise-4"><span class="header-section-number">1.3</span> Exercise 4</h3>
-<details>
-<summary>
-Run the script for all samples <em>(Click to expand)</em>
-</summary>
-<p>Add this loop code to your runner script (<code>run/run_exercises.sh</code>) and run it:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> R1 <span class="kw">in</span> garrigos-data/fastq/<span class="pp">*</span>_R1.fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bash</span> scripts/trimgalore.sh <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> results/trimgalore</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code># (Output not shown, same as earlier but should repeat for each sample)</code></pre>
-</details>
-<details>
-<summary>
-Check the output files <em>(Click to expand)</em>
-</summary>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> results/trimgalore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>total 949M
--rw-rw----+ 1 jelmer PAS0471  20M Mar 28 11:18 ERR10802863_R1.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.4K Mar 28 11:17 ERR10802863_R1.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 674K Mar 28 11:18 ERR10802863_R1_val_1_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 349K Mar 28 11:18 ERR10802863_R1_val_1_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  21M Mar 28 11:18 ERR10802863_R2.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.3K Mar 28 11:18 ERR10802863_R2.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 676K Mar 28 11:18 ERR10802863_R2_val_2_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 341K Mar 28 11:18 ERR10802863_R2_val_2_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  21M Mar 28 11:19 ERR10802864_R1.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.7K Mar 28 11:18 ERR10802864_R1.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 675K Mar 28 11:19 ERR10802864_R1_val_1_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 349K Mar 28 11:19 ERR10802864_R1_val_1_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  22M Mar 28 11:19 ERR10802864_R2.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.6K Mar 28 11:19 ERR10802864_R2.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 671K Mar 28 11:19 ERR10802864_R2_val_2_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 336K Mar 28 11:19 ERR10802864_R2_val_2_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  21M Mar 28 11:20 ERR10802865_R1.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.6K Mar 28 11:19 ERR10802865_R1.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 682K Mar 28 11:20 ERR10802865_R1_val_1_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 361K Mar 28 11:20 ERR10802865_R1_val_1_fastqc.zip
-[...output truncated...]</code></pre>
-</details>
-</section>
-<section id="bonus-exercise" class="level3" data-number="1.4">
-<h3 data-number="1.4" class="anchored" data-anchor-id="bonus-exercise"><span class="header-section-number">1.4</span> Bonus exercise</h3>
-<details>
-<summary>
-Solution <em>(Click to expand)</em>
-</summary>
-<p>The full script:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load TrimGalore</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load miniconda3</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> activate /fs/ess/PAS0471/jelmer/conda/trimgalore</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the placeholder variables</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="va">R1_in</span><span class="op">=</span><span class="va">$1</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="va">outdir</span><span class="op">=</span><span class="va">$2</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Check that the output dir isn't the same as the input dir</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># This is because we will let the output files have the same name as the input files</span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="va">indir</span><span class="op">=</span><span class="va">$(</span><span class="fu">dirname</span> <span class="st">"</span><span class="va">$R1_in</span><span class="st">"</span><span class="va">)</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="st">"</span><span class="va">$indir</span><span class="st">"</span> <span class="ot">==</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span> <span class="kw">]];</span> <span class="cf">then</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"ERROR: Input dir is the same as the output dir (</span><span class="va">$outdir</span><span class="st">)"</span> </span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Infer the R2 FASTQ file name</span></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="va">R2_in</span><span class="op">=</span><span class="va">${R1_in</span><span class="op">/</span><span class="ss">_R1</span><span class="op">/</span>_R2<span class="va">}</span></span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Report</span></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Starting script trimgalore.sh"</span></span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Input R1 FASTQ file:      </span><span class="va">$R1_in</span><span class="st">"</span></span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Input R2 FASTQ file:      </span><span class="va">$R2_in</span><span class="st">"</span></span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Output dir:               </span><span class="va">$outdir</span><span class="st">"</span></span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the output dir</span></span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span></span>
-<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Run TrimGalore</span></span>
-<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="dt">\</span></span>
-<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">--paired</span> <span class="dt">\</span></span>
-<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">--output_dir</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span> <span class="dt">\</span></span>
-<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">--fastqc</span> <span class="dt">\</span></span>
-<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$R1_in</span><span class="st">"</span> <span class="dt">\</span></span>
-<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$R2_in</span><span class="st">"</span></span>
-<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename output files</span></span>
-<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
-<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Renaming the output files:"</span></span>
-<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a><span class="va">sample_id</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$R1_in</span><span class="st">"</span> _R1.fastq.gz<span class="va">)</span></span>
-<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a><span class="va">R1_out_init</span><span class="op">=</span><span class="st">"</span><span class="va">$outdir</span><span class="st">"</span>/<span class="st">"</span><span class="va">$sample_id</span><span class="st">"</span>_R1_val_1.fq.gz</span>
-<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a><span class="va">R2_out_init</span><span class="op">=</span><span class="st">"</span><span class="va">$outdir</span><span class="st">"</span>/<span class="st">"</span><span class="va">$sample_id</span><span class="st">"</span>_R2_val_2.fq.gz</span>
-<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a><span class="va">R1_out_final</span><span class="op">=</span><span class="st">"</span><span class="va">$outdir</span><span class="st">"</span>/<span class="st">"</span><span class="va">$sample_id</span><span class="st">"</span>_R1.fastq.gz</span>
-<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a><span class="va">R2_out_final</span><span class="op">=</span><span class="st">"</span><span class="va">$outdir</span><span class="st">"</span>/<span class="st">"</span><span class="va">$sample_id</span><span class="st">"</span>_R2.fastq.gz</span>
-<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> <span class="at">-v</span> <span class="st">"</span><span class="va">$R1_out_init</span><span class="st">"</span> <span class="st">"</span><span class="va">$R1_out_final</span><span class="st">"</span></span>
-<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> <span class="at">-v</span> <span class="st">"</span><span class="va">$R2_out_init</span><span class="st">"</span> <span class="st">"</span><span class="va">$R2_out_final</span><span class="st">"</span></span>
-<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Report</span></span>
-<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
-<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Done with script trimgalore.sh"</span></span>
-<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Run the script with a different output dir:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="va">R1</span><span class="op">=</span>garrigos-data/fastq/ERR10802863_R1.fastq.gz</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/trimgalore.sh <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> results/trimgalore_rename</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Let’s check the output files to see they were successfully renamed:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> results/trimgalore_rename</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>total 42M
--rw-rw----+ 1 jelmer PAS0471  20M Mar 28 10:40 ERR10802863_R1.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.4K Mar 28 10:39 ERR10802863_R1.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 674K Mar 28 10:40 ERR10802863_R1_val_1_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 349K Mar 28 10:40 ERR10802863_R1_val_1_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  21M Mar 28 10:40 ERR10802863_R2.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.3K Mar 28 10:40 ERR10802863_R2.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 676K Mar 28 10:40 ERR10802863_R2_val_2_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 341K Mar 28 10:40 ERR10802863_R2_val_2_fastqc.zip</code></pre>
-<p>Looks good — though note that we only renamed the FASTQ files, not the other files.</p>
+                               Last update: 02 02 2023</code></pre>
 </details>
 
 
