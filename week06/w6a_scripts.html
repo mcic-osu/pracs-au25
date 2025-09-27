@@ -203,7 +203,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week04/w4_ga.html">
  <span class="dropdown-text">GA 2: Unix shell data tools and Git (Week 4)</span></a>
   </li>  
-        <li class="dropdown-header">GA 3: Shell scripting (Week 6) [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week06/w6_ga.html">
+ <span class="dropdown-text">GA 3: Shell scripts and software (Week 6)</span></a>
+  </li>  
         <li class="dropdown-header">GA 4: Slurm batch jobs at OSC (Week 8) [TBA]</li>
         <li class="dropdown-header">GA 5: Nextflow (Week 10) [TBA]</li>
         <li class="dropdown-header">GA 6: Data analysis with R (Week 13) [TBA]</li>
@@ -321,7 +324,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#recap-and-next-steps" id="toc-recap-and-next-steps" class="nav-link" data-scroll-target="#recap-and-next-steps"><span class="header-section-number">6</span> Recap and next steps</a></li>
   </ul>
-<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w6_overview.html"><i class="bi bi-book"></i>Week 6 overview</a></li><li><a href="w6b_cli-tools.html"><i class="bi bi-bookmarks"></i>w6b: Shell scripting - CLI tools</a></li><li><a href="w6c_tricks.html"><i class="bi bi-bookmarks"></i>w6c: Shell tips and tricks</a></li></ul></div></nav>
+<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w6_overview.html"><i class="bi bi-book"></i>Week 6 overview</a></li><li><a href="w6b_cli-tools.html"><i class="bi bi-bookmarks"></i>w6b: Shell scripting - CLI tools</a></li><li><a href="w6c_tricks.html"><i class="bi bi-bookmarks"></i>w6c: Shell tips and tricks</a></li><li><a href="w6_ga.html"><i class="bi bi-pencil"></i>Week 6 graded assignment</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -598,9 +601,9 @@ Can I run scripts without the <code>bash</code> command? <em>(Click to expand)</
 <h2 data-number="4" class="anchored" data-anchor-id="shell-variables"><span class="header-section-number">4</span> Shell variables</h2>
 <section id="variables" class="level3" data-number="4.1">
 <h3 data-number="4.1" class="anchored" data-anchor-id="variables"><span class="header-section-number">4.1</span> Variables</h3>
-<p>Variables are truly ubiquitous in programming. We typically use them for items that:</p>
+<p>Variables are truly ubiquitous in programming. They are typically used for items that:</p>
 <ul>
-<li>We refer to repeatedly and/or</li>
+<li>Are referred to repeatedly and/or</li>
 <li>Are subject to change.</li>
 </ul>
 <p>These tend to be <em>settings</em> like the paths to input and output files, and parameter values for programs. <strong>Using variables makes it easier to change such settings and makes it possible</strong> <strong>to write scripts and programs that are flexible depending on user input.</strong> We have already seen some handy applications of variables, like the environment variable <code>$USER</code>, which contains your user name.</p>
@@ -745,8 +748,7 @@ Do you understand what happened here? <em>(Click for the solution)</em>
 We have assigned a variable called <code>$today</code>, but the shell will instead look for a variable called <code>$today_final</code>. This is because we have not explicitly indicated where the variable name ends, so the shell will include all characters until it hits a character that cannot be part of a shell variable name: in this case a period, <code>.</code>.
 </details>
 <p>Quoting solves this, too:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> README_<span class="st">"</span><span class="va">$today</span><span class="st">"</span>_final.txt</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>README_Tue, Mar 26_final.txt</code></pre>
 <div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Move out of the 'sandbox' dir (back to /fs/ess/PAS2880/users/$USER/week06)</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

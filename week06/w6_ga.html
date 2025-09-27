@@ -203,7 +203,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week04/w4_ga.html">
  <span class="dropdown-text">GA 2: Unix shell data tools and Git (Week 4)</span></a>
   </li>  
-        <li class="dropdown-header">GA 3: Shell scripting (Week 6) [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week06/w6_ga.html">
+ <span class="dropdown-text">GA 3: Shell scripts and software (Week 6)</span></a>
+  </li>  
         <li class="dropdown-header">GA 4: Slurm batch jobs at OSC (Week 8) [TBA]</li>
         <li class="dropdown-header">GA 5: Nextflow (Week 10) [TBA]</li>
         <li class="dropdown-header">GA 6: Data analysis with R (Week 13) [TBA]</li>
@@ -304,10 +307,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#detailed-steps" id="toc-detailed-steps" class="nav-link" data-scroll-target="#detailed-steps">Detailed steps</a>
   <ul class="collapse">
   <li><a href="#general" id="toc-general" class="nav-link" data-scroll-target="#general">General</a></li>
-  <li><a href="#setting-up" id="toc-setting-up" class="nav-link" data-scroll-target="#setting-up">Setting up</a></li>
   </ul></li>
-  <li><a href="#part-a-containers" id="toc-part-a-containers" class="nav-link" data-scroll-target="#part-a-containers">Part A: Containers</a></li>
-  <li><a href="#part-b-containers" id="toc-part-b-containers" class="nav-link" data-scroll-target="#part-b-containers">Part B: Containers</a></li>
+  <li><a href="#part-a-setting-up" id="toc-part-a-setting-up" class="nav-link" data-scroll-target="#part-a-setting-up">Part A: Setting up</a></li>
+  <li><a href="#part-b-running-two-scripts" id="toc-part-b-running-two-scripts" class="nav-link" data-scroll-target="#part-b-running-two-scripts">Part B: Running two scripts</a></li>
+  <li><a href="#part-c-a-shell-script-that-prints-a-specific-line" id="toc-part-c-a-shell-script-that-prints-a-specific-line" class="nav-link" data-scroll-target="#part-c-a-shell-script-that-prints-a-specific-line">Part C: A shell script that prints a specific line</a></li>
+  <li><a href="#part-d-containers" id="toc-part-d-containers" class="nav-link" data-scroll-target="#part-d-containers">Part D: Containers</a></li>
+  <li><a href="#part-e-modules-and-pandoc" id="toc-part-e-modules-and-pandoc" class="nav-link" data-scroll-target="#part-e-modules-and-pandoc">Part E: Modules and Pandoc</a></li>
+  <li><a href="#part-f-publish-your-repo-on-github" id="toc-part-f-publish-your-repo-on-github" class="nav-link" data-scroll-target="#part-f-publish-your-repo-on-github">Part F: Publish your repo on Github</a></li>
   </ul>
 <div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w6_ga.html"><i class="bi bi-pencil"></i>Week 6 graded assignment</a></li><li><a href="w6a_scripts.html"><i class="bi bi-bookmarks"></i>w6a: Shell scripting basics</a></li><li><a href="w6b_cli-tools.html"><i class="bi bi-bookmarks"></i>w6b: Shell scripting - CLI tools</a></li><li><a href="w6c_tricks.html"><i class="bi bi-bookmarks"></i>w6c: Shell tips and tricks</a></li></ul></div></nav>
     </div>
@@ -316,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Graded Assignment 3: Software and Shell scripts</h1>
+<h1 class="title">Graded Assignment 3: Software and shell scripts</h1>
 <p class="subtitle lead">Week 6 graded assignment – due Sunday Oct 5 at 11:59 pm</p>
 </div>
 
@@ -359,7 +365,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <hr style="height:1pt; visibility:hidden;">
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>This graded assignment is worth 10 points and is due on Sunday Oct 5<sup>th</sup>. You will practice with ….</p>
+<p>This graded assignment is worth 10 points and is due on Sunday Oct 5<sup>th</sup>. You will practice with shell scripts, shell variables, containers, modules, and version control.</p>
 </section>
 <section id="directions-and-grading" class="level2">
 <h2 class="anchored" data-anchor-id="directions-and-grading">Directions and grading</h2>
@@ -378,13 +384,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-If you use any commands…
+Gen-AI check
 </div>
 </div>
 <div class="callout-body-container callout-body">
-
+<p>For this assignment, you are allowed to search the internet but not use generative AI – so you cannot use the Google AI Mode output either.</p>
+<p>If you use commands or code constructs we did not cover in class, you must provide the source: webpage or book page, etc. You may also attempt to argue that you already knew the command in question from previous self-study, but should in that case be prepared to answer live questions about it over Zoom.</p>
 </div>
 </div>
+<hr style="height:1pt; visibility:hidden;">
 <table class="table-striped caption-top table">
 <colgroup>
 <col style="width: 7%">
@@ -420,49 +428,149 @@ If you use any commands…
 </section>
 <section id="rubric" class="level3">
 <h3 class="anchored" data-anchor-id="rubric">Rubric</h3>
-<p>TBA</p>
+<div class="columns">
+<div class="column" style="width:20%;">
+<table class="table-striped caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Part</th>
+<th style="text-align: center;">Points</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">1.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">B</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">D</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">E</td>
+<td style="text-align: center;">1.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
 </section>
 <section id="detailed-steps" class="level2">
 <h2 class="anchored" data-anchor-id="detailed-steps">Detailed steps</h2>
 <section id="general" class="level3">
 <h3 class="anchored" data-anchor-id="general">General</h3>
-<ul>
-<li>…</li>
-</ul>
+<p>In the Markdown file with your answers, copy the numbered instructions/questions into your document, and insert your answers in between. <em>You only need to do this where it makes sense:</em> <em>e.g.&nbsp;this is not needed for questions 1 and 2.</em></p>
+<p>The code parts of your answers should be entered in Markdown code blocks, and that code’s output should also be part of your answer. For example:</p>
+<pre class="bash-in-nocolor"><code>1. List the files in your current working dir.
+
+   I used the following command:
+     
+   ```bash
+   ls
+   ```
+     
+   The output was:
+     
+   ```
+   file1.txt   file2.txt   annot.gtf
+   ```</code></pre>
+<p><em>However, you don’t need to record every Git command you used in your <code>README.md</code>.</em> <em>This would be tedious and moreover,</em> <em>we can check much of your Git history using the repo itself.</em></p>
 </section>
-<section id="setting-up" class="level3">
-<h3 class="anchored" data-anchor-id="setting-up">Setting up</h3>
-<ul>
-<li><p>Start a VS Code session at OSC in the folder <code>/fs/ess/PAS2880/users/$USER</code>.</p></li>
-<li><p>Create a new dir for this assignment, <code>/fs/ess/PAS2880/users/$USER/GA3</code>, and navigate there. <strong><em>This will be your working dir for the entire assignment.</em></strong> Inside it, also create a dir <code>data</code> and a dir <code>results</code>.</p></li>
-<li><p>In your working dir, create a <code>README.md</code> file and open it in the VS Code editor. <strong><em>Use this file throughout the assigment to add your answers.</em></strong></p></li>
-</ul>
 </section>
-</section>
-<section id="part-a-containers" class="level2">
-<h2 class="anchored" data-anchor-id="part-a-containers">Part A: Containers</h2>
-<p><em>(In the shell, you should remain in the dir for last week’s assignment.)</em></p>
-<p>We’ll practice with modules and <code>pandoc</code>, the program that can, among others, render Markdown files to HTML and PDF.</p>
+<section id="part-a-setting-up" class="level2">
+<h2 class="anchored" data-anchor-id="part-a-setting-up">Part A: Setting up</h2>
 <ol type="1">
-<li><p>Check if Pandoc is available, and if so, which version, by running <code>pandoc -v</code>.</p></li>
-<li><p>Use Google (or something similar) to check whether that Pandoc version appears to be the most recent one.</p></li>
-<li><p>Check whether a more recent Pandoc version is available in an OSC Lmod module.</p></li>
-<li><p>Load the OSC module with the most recent available Pandoc version.</p></li>
-<li><p>Use Pandoc to create a PDF of your <code>README.md</code>. The command to do so is:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pandoc</span> <span class="at">-o</span> README.pdf README.md</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p>Was a PDF file created?</p></li>
-<li><p>To view PDF files in VS Code, you’ll first need to install an extension. Install the extension “Papyrus PDF Preview”, and then take a look at your PDF.</p></li>
-<li><p>Download the PDF file to your computer and also take a look at it there.</p></li>
+<li><p>Start a VS Code session at OSC in the folder <code>/fs/ess/PAS2880/users/$USER</code>. Create a new dir for this assignment, <code>/fs/ess/PAS2880/users/$USER/GA3</code>, and switch to that folder in VS Code using the “Open Folder” option. This should be your working dir for the entire assignment.</p></li>
+<li><p>Inside dir <code>GA3</code>, create a <code>README.md</code> file and open it in the VS Code editor. Use this file throughout the assigment to add your answers.</p></li>
+<li><p>Inside dir <code>GA3</code>, also create dirs <code>data</code>, <code>scripts</code> and <code>results</code>. This time, we’ll make your dir self-contained, like a typical situation for a research project, by copying some data into it:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-v</span> ../garrigos-data/fastq/ERR10802863<span class="pp">*</span> data/</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-v</span> ../garrigos-data/meta/metadata.tsv data/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Initialize a Git repository. Commit to the repo throughout the assignment as you see fit, but at least once for each “Part” of this assignment. Use and commit a <code>.gitignore</code> file as you see fit.</p></li>
 </ol>
 </section>
-<section id="part-b-containers" class="level2">
-<h2 class="anchored" data-anchor-id="part-b-containers">Part B: Containers</h2>
-<ol type="1">
-<li><p>Go to <a href="https://seqera.io/containers" class="uri">https://seqera.io/containers</a> and find a container image for the program called “Trim-Galore”. <em>(This program trims and filters FASTQ files, and you’ll use it in the next</em> <em>few weeks of the course.)</em></p></li>
-<li><p>Back in VS Code, test-run the container with the command <code>trim_galore -v</code>.</p></li>
+<section id="part-b-running-two-scripts" class="level2">
+<h2 class="anchored" data-anchor-id="part-b-running-two-scripts">Part B: Running two scripts</h2>
+<p>Here, you’ll try to understand and run two tiny shell scripts.</p>
+<ol start="5" type="1">
+<li><p>Save the script below as <code>scripts/echo.sh</code>. Look at the below three commands to run the script, and describe what you expect to be the output and why. Then, test the commands and if any output was not as expected, reconcile the differences.</p>
+<ul>
+<li><p>The script:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$1</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$2</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$3</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Finished"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>The commands:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/echo.sh Oct07 Oct08</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/echo.sh Oct07 Oct08 Oct09 Oct10</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/echo.sh Oct07 Oct08 <span class="st">"Oct09 Oct10"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul></li>
+<li><p>Save the script below as <code>scripts/concat.sh</code>. Run it to concatenate the two FASTQ files you copied to <code>data/</code> earlier. <em>(Input files can remain compressed and therefore, so will the output file be.)</em></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="va">$1</span> <span class="va">$2</span> <span class="op">&gt;</span> <span class="va">$3</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> <span class="va">$1</span> <span class="va">$2</span> <span class="va">$3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ol>
-<p>ADAPT FASTQC SCRIPT TO RUN WITH CONTAINER?</p>
+</section>
+<section id="part-c-a-shell-script-that-prints-a-specific-line" class="level2">
+<h2 class="anchored" data-anchor-id="part-c-a-shell-script-that-prints-a-specific-line">Part C: A shell script that prints a specific line</h2>
+<p>You’ll write a shell script that accepts arguments, and test whether it works.</p>
+<ol start="7" type="1">
+<li><p>Write a shell script <code>scripts/printline.sh</code> that accepts two arguments, a file path and a line number, in order to <em>print</em> (not store in a file) the requested line from the specified file. Don’t make the script print anything other than the requested line from the file, and make sure to include the discussed best-practice header lines.</p>
+<p><em>Hint: Figure out a way to combine <code>head</code> and <code>tail</code> to print one specific line from a file.</em> <em>If you don’t manage to, your script can instead print all lines up until the specified line,</em> <em>so you can still move on to the next two steps.</em></p></li>
+<li><p>Test your script twice by making it print two different lines from <code>garrigos-data/meta/metadata.tsv</code>. In one of these tests, redirect the script’s output to an appropriately named file in <code>results</code>.</p>
+<p>(<em>Add the code to run these tests and the one in the next question to your <code>README.md</code>.</em>)</p></li>
+<li><p>Run a final test, but now:</p>
+<ul>
+<li>First, store the file name (just <code>metadata.tsv</code>) in one variable and the line number you chose in another.</li>
+<li>Then, use these two variables as the arguments that you give to the script.</li>
+<li>Finally, redirect the script’s output to a file in <code>results</code> whose name includes both the file name and the line number. But instead of simply typing the literal output file name, again use the two variables you just created to “build” the file name programmatically. The output file name should not include any spaces.</li>
+</ul></li>
+</ol>
+</section>
+<section id="part-d-containers" class="level2">
+<h2 class="anchored" data-anchor-id="part-d-containers">Part D: Containers</h2>
+<p>The program “Trim-Galore”, which you’ll use in the next few weeks of the course, trims and filters FASTQ files to remove adapters, poor quality bases, and short reads. Here, you’ll find and test-run containers with two different versions of this program.</p>
+<ol start="10" type="1">
+<li><p>Go to <a href="https://seqera.io/containers" class="uri">https://seqera.io/containers</a> and find a container image for the program. Back in VS Code, test-run the container with the command <code>trim_galore -v</code>.</p></li>
+<li><p>It turns out that your collaborator has been using an older version of Trim-Galore to trim other FASTQ files in the same project, so you decide that it will be best if you use that same version. Find a container for Trim-Galore version 0.5.0 and test-run it with the same command as above. Are the versions printed in both cases as expected?</p></li>
+</ol>
+</section>
+<section id="part-e-modules-and-pandoc" class="level2">
+<h2 class="anchored" data-anchor-id="part-e-modules-and-pandoc">Part E: Modules and Pandoc</h2>
+<p>You’ll practice with OSC software modules and the program Pandoc, which can render Markdown files to HTML and PDF.</p>
+<ol start="12" type="1">
+<li><p>See if Pandoc is available at OSC prior to loading anything, and if so, which version, by running <code>pandoc -v</code>. Then, search the internet to check if that Pandoc version is the most recent one.</p></li>
+<li><p>Check what other versions of Pandoc are available in OSC Lmod modules, and load the module with the most recent available Pandoc version.</p></li>
+<li><p>Use the below Pandoc command to create a PDF of your <code>README.md</code>, and check whether the PDF file is there.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pandoc</span> <span class="at">-o</span> README.pdf README.md</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>To view PDF files in VS Code, you’ll first need to install a VS Code extension. Install the extension “<em>Papyrus PDF Preview</em>”, and take a look at your PDF. Then, download the PDF file to your computer and also take a look at it there.</p></li>
+<li><p>Does everything in the rendered PDF look OK? Or did you make formatting errors, or did anything else not render as expected? If so, update your Markdown file, rerender the PDF, and check again.</p></li>
+</ol>
+</section>
+<section id="part-f-publish-your-repo-on-github" class="level2">
+<h2 class="anchored" data-anchor-id="part-f-publish-your-repo-on-github">Part F: Publish your repo on Github</h2>
+<p>You’ll publish your Git repo on GitHub and “hand in” your assignment by creating an Issue.</p>
+<ol start="17" type="1">
+<li><p>Create a repository on GitHub, connect it to your local repo, and push your local repo to GitHub.</p></li>
+<li><p>Create a new issue and tag GitHub user <code>menukabh</code>, asking Menuka to take a look at your assignment.</p></li>
+</ol>
 
 
 </section>
