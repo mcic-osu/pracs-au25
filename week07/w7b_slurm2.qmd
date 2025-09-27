@@ -1,8 +1,8 @@
 ---
-title: "Batch jobs in practice"
-subtitle: "Week 7 -- Lecture II"
-pagetitle: "Batch jobs"
-date: 2025-10-08
+title: "Slurm batch jobs -- part 2"
+subtitle: "Week 7 -- Lecture B"
+pagetitle: "Batch jobs 2"
+date: 2025-10-03
 author:
   - name: Jelmer Poelstra
     orcid: 0000-0002-3514-7462
@@ -14,15 +14,12 @@ other-links:
   - text: "Week 7 overview"
     icon: book
     href: w7_overview.html
+  - text: "w7a: Batch jobs 1"
+    icon: bookmarks
+    href: w7a_slurm1.html
   - text: "Week 7 exercises"
     icon: pencil
     href: w7_exercises.html
-  - text: "w7-1: Batch jobs I"
-    icon: bookmarks
-    href: w7a_slurm1.html
-  - text: "Bonus: Advanced batch jobs"
-    icon: book
-    href: ../bonus/slurm.html
 engine: knitr
 execute:
   eval: false
@@ -47,7 +44,481 @@ TBA
 
 TBA
 
+## Common Slurm options
+
+Here, we'll go through the most commonly used Slurm options
+(except `--account`, which we covered in the previous lecture).
+As pointed out above, each of these can either be:
+
+- Passed on the command line: `sbatch --account=PAS2880 myscript.sh` _(has precedence over the next)_
+- Added at the top of the script you're submitting: `#SBATCH --account=PAS2880`.
+
+Also, note that many Slurm options have a corresponding long
+(e.g. `--account=`) and short format (e.g `-A`).
+For clarity, we'll stick to long format options here.
+
+### `--time`: Time limit ("wall time")
+
+If you suspect or know that the default time limit of 1 hour may not be enough
+for your job, use the `--time` option to request more time.
+Note that your job will be **killed** (stopped) as soon as it hits the
+time limit!
+
+OSC bills you for **the time your job actually used**, not what you reserved.
+But before you decide to start asking for 168 hours for every job,
+note that jobs that request more time are likely to wait in the queue longer
+before they start.
+
+For single-node jobs, up to 168 hours (7 days) can be requested.
+If that's not enough, you can request access to the `longserial` queue
+for jobs of up to 14 days.
+  
+:::callout-tip
+### What does "**wall time**" mean?
+This is simply the actual amount of time that passes on the ("wall") clock.
+This term is used to contrast it with "_core hours_":
+if a job runs for 2 hour and used 8 cores,
+the wall time is 2 hours while the number of core hours is 2 x 8 = 16.
+:::
+
+Accepted time formats include:
+
+- `minutes` (e.g. `60` => 60 minutes)
+- `hours:minutes:seconds` (e.g. `1:00:00` => 60 minutes)
+- `days-hours` (e.g. `2-12` => two-and-a-half days)
+
+An example, requesting 2 hours in the "minute-format":
+
+```bash
+#!/bin/bash
+#SBATCH --time=120
+```
+
+Or 12 hours in the "hour-format":
+
+```bash
+#!/bin/bash
+#SBATCH --time=12:00:00
+```
+
+:::{.callout-important}
+## When in doubt, request more time!
+It is common to be uncertain about how much time your job will take
+(i.e., how long it will take for your script to finish).
+Whenever this happens, ask for more, perhaps much more, time than what you
+think/guesstimate you will need.
+
+It is really annoying to have a job run out of time after several hours,
+while the increase in queueing time for jobs that request more time is often
+quite minimal at OSC.
+:::
+
+::: exercise
+#### {{< fa user-edit >}} Exercise: exceed the time limit
+
+Modify the `sleep.sh` script to reserve only 1 minute for the job,
+while making the script run for longer than that by increasing the sleeping time
+to at least 100 seconds.
+
+If you succeed in exceeding the time limit, an error message will be printed.
+Where do you think this error message will be printed: to the screen, in the Slurm log
+file, or in `sleep.txt`?
+
+After waiting for the job to be killed after 60 seconds,
+check if you were correct and what the error message is.
+
+<details><summary>Click for the solution</summary>
+
+We request 1 minute of wall-time while we let the script sleep for 100 seconds:
+
+```bash
+#!/bin/bash
+#SBATCH --account=PAS2880
+#SBATCH --time=1
+
+echo "I will sleep for 100 seconds" > sleep.txt
+sleep 100s
+echo "I'm awake! Done with script sleep.sh"
+```
+
+Submit it as usual:
+
+```bash
+sbatch scripts/sleep.sh
+```
+```bash-out
+Submitted batch job 23641567
+```
+
+This would result in the following type of error,
+which will be printed in the Slurm log file:
+
+```bash-out-solo
+slurmstepd: error: *** JOB 23641567 ON p0133 CANCELLED AT 2025-04-04T14:55:24 DUE TO TIME LIMIT ***
+```
+</details>
+:::
+
+### Cores
+
+First, note that Slurm mostly uses the terms "core" and "CPU" interchangeably[^3].
+More generally with bioinformatics tools,
+"thread" is also commonly used interchangeably with core/CPU[^4].
+Therefore, for our purposes, you can
+**think of core, CPU, and thread as synonyms** that all refer to the
+same sub-parts/components of a node that you can reserve and use separately.
+
+[^3]: Even though technically, one CPU often contains multiple cores.
+[^4]: Even though technically, one core often contains multiple threads.
+
+Running a bioinformatics program with multiple threads/cores/CPUs ("multi-threading")
+is very common, and this can make the running time of such programs much shorter.
+While the specifics depend on the program,
+using **8-12 cores** is often a sweet spot,
+whereas asking for even more cores can lead to rapidly *diminishing returns*. 
+
+While there are multiple related Slurm options (see the box below),
+I recommend that you specify the number of threads/cores/CPUs with
+**`--cpus-per-task`** (`-c`).
+
+Typically, you will also want to inform the program that your script runs 
+about the number of available cores ---
+most have an option like `--cores` or `--threads`.
+**You should set this to the same value `n` as the `--cpus-per-task`.**
+An example, where we ask for 8 CPUs/cores/threads:
+
+```bash
+#!/bin/bash
+#SBATCH --cpus-per-task=8
+
+# And we tell a fictional program about that number of cores:
+trimming_program.py --cores 8 sampleA_R1.fastq.gz
+```
+
+:::{.callout-note collapse="true"}
+## What about nodes and tasks? _(Click to expand)_
+
+**TBA FINISH**
+
+You may have noticed that the long form of the above option is 
+`--cpus-per-task` instead of just, say, `--cpus`. EXPAND
+
+- Running multiple processes (tasks) or needing multiple nodes
+  in a single batch job is _not_ common.
+
+- Don't use options to change the number of _tasks_ or _nodes_,
+  thereby keeping them to their defaults of 1
+  (in which case the above `-c` option simply specifies the number of cores).
+  
+- You can specify the number of nodes with `--nodes` and the number of tasks
+  with `--ntasks` and/or `--ntasks-per-node`; all have defaults of 1
+  (see the table below).
+  
+- Only ask for **more than one node** when a program is parallelized with
+  e.g. "MPI", which is rare in bioinformatics.
+
+- For jobs with multiple processes (tasks),
+  you can use `--ntasks=n` or `--ntasks-per-node=n` --- this is also quite rare!
+  However, note in practice, specifying the number of tasks `n` with one of these
+  options is equivalent to using `--cpus-per-task=n`,
+  in the sense that both ask for `n` cores that can subsequently be used by a program
+  in your script.
+  Therefore, some people use `tasks` as opposed to `cpus` for multi-threading,
+  and you may run across this in the OSC documentation too.
+  Yes, this is confusing!
+
+Here is an overview of the options related to cores, tasks, and nodes:
+
+| Resource/use                  | short    | long                    | default
+|-------------------------------|----------|-------------------------|:--------:| 
+| Nr. of cores/CPUs/threads (per task)    | `-c 1`   | `--cpus-per-task=1`     | 1
+| Nr. of "tasks" (processes) | `-n 1`   | `--ntasks=1`            | 1
+| Nr. of tasks per node      | -        | `--ntasks-per-node=1`   | 1
+| Nr. of nodes               | `-N 1`   | `--nodes=1`             | 1
+
+: {.striped .hover}
+
+:::
+
+### `--mem`: RAM memory
+
+The `--mem` option specifies the maximum amount of RAM
+(Random Access Memory) available to your job.
+
+The **default** amount of memory will depend on how many cores you reserved.
+Standard cores have 4 GB of memory "on it", and therefore,
+the default amount of memory you will get is 4 GB is per reserved core.
+For example, if you specify `--cpus-per-task=4`, you will have 16 GB of memory.
+And the default number of cores is 1, which gives you 4 GB.
+
+Like with the time limit, your job gets **canceled** by Slurm when it hits
+the memory limit (see the box below).
+
+Because it is common to ask for multiple cores and due to the above-mentioned
+adjustment of the memory based on the number of cores,
+you will often end up having enough memory automatically,
+and won't need to use the `--mem` option.
+
+The maximum amount of memory you can request on regular Pitzer compute nodes
+is 178 GB.
+If you need more than that,
+you will need one of the specialized `largemem` or `hugemem` nodes ---
+switching to such a node generally happens automatically based on your requested amount^[
+Though there are unfortunately "gaps" between the maximum and minimum amounts
+of RAM on different nodes...
+] --- see
+[this OSC page for details on node types and associated memory on Pitzer](https://www.osc.edu/resources/technical_support/supercomputers/pitzer/batch_limit_rules).
+
+The default `--mem` unit is MB (MegaBytes); append `G` for GB
+(i.e. `100` means 100 MB, `10G` means 10 GB).
+For example, to request 20 GB of RAM:
+
+```sh
+#!/bin/bash
+#SBATCH --mem=20G
+```
+
+::: {.callout-warning collapse="true"}
+#### It is not always clear what happened when your job ran out of memory _(Click to expand)_
+Whereas you get a very clear Slurm error message when you hit the time limit
+(as seen in the exercise above), hitting the memory limit can result in a variety of errors.
+
+But look for keywords such as "Killed", "Out of Memory" / "OOM",
+and "Core Dumped", as well as actual "dumped cores" in your working dir
+(large files with names like `core.<number>`, these can be deleted).
+
+If you see these or otherwise suspect that your job ran out of memory,
+resubmit it with an increased requested amount of memory.
+:::
+
+::: exercise
+#### {{< fa user-edit >}} Exercise: Adjusting cores and memory
+
+Think about submitting a shell script that runs a bioinformatics tool like FastQC
+as a batch job, in the following two scenarios:
+
+1. The program has an option `--cores`, and you want to set that to 12.
+   The program also says you'll need 60 GB of memory.
+   What `#SBATCH` options will you use?
+
+<details><summary>Click for the solution</summary>
+
+Here, it will make sense to ask for `--mem` separately.
+
+```bash
+#SBATCH --cpus-per-task=12
+#SBATCH --mem=60G
+```
+
+Alternatively, you could ask for 15 cores, but then instruct the program to use
+only 12. Or you could reason that since you'll need 15 cores anyway due to the
+amount of memory you'll need, you might as well instruct the program to use all
+15, since this may well speed things up a little more.
+</details>
+
+1. The program has an option `--threads`, and you want to set that to 8.
+   The program also says you'll need 25 GB of memory.
+   What `#SBATCH` options related to this will you use?
+
+<details><summary>Click for the solution</summary>
+
+You should only need the following, since this will give you 8 * 4 = 32 GB of memory.
+There is no point in "downgrading" the amount of memory.
+
+```bash
+#SBATCH --cpus-per-task=8
+```
+
+</details>
+:::
+
+### `--output`: Slurm log files
+
+As you saw above, output from a script that would normally be printed to screen
+will end up in a Slurm log file when it is submitted as a batch job.
+By default, this file is created in the directory from which you submitted the script,
+and is called `slurm-<job-number>.out`, e.g. `slurm-12431942.out`.
+
+But it is possible to change the name of this file.
+For instance, it can be useful to include the **name of the bioinformatics program**
+that the script runs (or another kind of keyword describing the function of the script),
+so that it's easier to recognize this file later.
+You can do this with the `--output` option,
+e.g. `--output=slurm-fastqc.out` if you were running FastQC.
+
+But you'll generally want to keep the batch job number in the file name too[^6].
+Since you won't know the batch job number in advance, you need a trick here --
+and that is to use **`%j`**, which represents the batch job number:
+
+```bash
+#!/bin/bash
+#SBATCH --output=slurm-fastqc-%j.out
+```
+
+[^6]: For instance, we might be running the FastQC script multiple times,
+      and otherwise those Slurm log files would all have the same name and be overwritten!
+
+**TBA - talk about outputting to a different dir?**
+
+:::{.callout-note collapse="true"}
+## The output streams `stdout` and `stderr`, and separating them _(Click to expand)_
+
+By default, two different output streams from commands and programs are printed
+to screen.
+These are called "standard output" (`stdout`) for regular output and
+"standard error" (`stderr`) for errors and sometimes warnings.
+Both of these streams by default also end up in the same Slurm log file,
+but it is possible to separate them into different files.
+
+Because `stderr` often contains error messages,
+it could be useful to have those in a separate file.
+For example: an empty error-related files would mean that there were no errors.
+You can make that happen with the `--error` option,
+e.g. `--error=slurm-fastqc-%j.err`.
+
+However, reality is more messy:
+some programs print their main output not to a file but to standard out,
+and their logging output, errors and regular messages alike, to standard error.
+Yet other programs use `stdout` or `stderr` for _all_ messages.
+
+**I therefore usually only specify `--output`,**
+**such that both streams end up in that file.**
+:::
+
+### `--mail-type`: Receive emails
+
+You can use the `--mail-type` option so you will receive emails when
+a job begins, completes successfully, or fails.
+You don't have to specify your email address:
+you'll be automatically emailed on the address linked to your OSC account. 
+I would recommend that for:
+
+- **Shorter-running jobs** (roughly up to a few hours):
+  only have Slurm send emails if they fail (`--mail-type=FAIL`).
+  Especially when you submit many jobs at a time,
+  you may otherwise overlook failure for some jobs.
+  
+  ```bash
+  #!/bin/bash
+  #SBATCH --mail-type=FAIL
+  ```
+
+- **Longer-running jobs**,
+  have Slurm send emails both for failed and successfully completed jobs
+  (`--mail-type=END,FAIL`).
+  This is helpful because you don't want to have to keep checking in on jobs
+  that run for many hours^[
+  I would avoid having Slurm send you emails upon regular completion for shorter jobs,
+  because you may get inundated with emails and then quickly start ignoring them
+  altogether.].
+
+  ```bash
+  #!/bin/bash
+  #SBATCH --mail-type=END,FAIL
+  ```
+
+::: {.callout-tip collapse="true"}
+#### Get warned when your job is close to its time limit _(Click to expand)_
+You may also find the `--mail-type` values `TIME_LIMIT_90`, `TIME_LIMIT_80`,
+and `TIME_LIMIT_50` useful for very long-running jobs,
+which will warn you when the job is at 90/80/50% of the time limit.
+For example, it is possible to email OSC to ask for an extension on individual jobs.
+You shouldn't do this often, but if you have a job that ran for 6 days and it
+looks like it may time out, this may well be worth it.
+:::
+
+### Table with `sbatch` options
+
+Here are the main options we discussed above:
+
+| Resource/use        | short      | long                 | default
+|---------------|---------|------------------|:---------:|
+| Project to be billed          | `-A PAS2880` | `--account=PAS2880`    | _N/A_
+| Time limit                    | `-t 4:00:00` | `--time=4:00:00`      | 1:00:00
+| Nr of nodes                   | `-N 1`       | `--nodes=1`            | 1
+| Nr of cores                   | `-c 1`       | `--cpus-per-task=1`    | 1
+| Memory limit per node         | -          | `--mem=4G`             | *(4G)*
+| Log output file               | `-o`       |  `--output=slurm-fastqc-%j.out`
+| Get email when job ends<br>/ ends or fails | -        | `--mail-type=END` <br> `--mail-type=END,FAIL`
+
+: {.striped .hover}
+
 <hr style="height:1pt; visibility:hidden;" />
+
+And some additional ones:
+
+| Resource/use            | long option example
+|-----------|------------|
+| Job name (will e.g. be displayed in `squeue` output)    | `--job-name=fastqc`
+| Partition (=queue type)                      | `--partition=longserial` <br> `--partition=hugemem`
+| Only allow job to begin after a specific time | `--begin=2025-04-05T12:00:00`
+| Only allow job to begin after another job has finished | `--dependency=afterany:123456`
+| Nr of "tasks" (processes)     | `--ntasks=1`
+| Nr of tasks per node          | `--ntasks-per-node=1`
+| Put error output (*stderr*) from into a separate file. When using this option, only standard (non-error, *stdout*) output will now be put into the file specified with `--output`. | `--error=slurm-fastqc-%j.err` |
+
+: {.striped .hover}
+
+<hr style="height:1pt; visibility:hidden;" />
+
+:::{.exercise}
+#### {{< fa user-edit >}} Exercise: Submit your FastQC script as a batch job
+
+Last week, we created a shell script to run FastQC, and ran it along these lines:
+
+```bash
+fastq_file=../../week06/garrigos-data/fastq/ERR10802863_R1.fastq.gz
+bash scripts/fastqc.sh "$fastq_file" results/fastqc
+```
+
+Now, try to:
+
+1. Add an `#SBATCH` lines to the script to specify the course's OSC project `PAS2880`,
+   and submit the modified script as a batch job with the same arguments as above.
+
+<details><summary>Solution (click here)</summary>
+
+- The top of your script should read as follows:
+
+  ```bash
+  #!/bin/bash
+  #SBATCH --account=PAS2880
+  ```
+  
+- Submit the script as follows:
+
+  ```bash
+  fastq_file=../../garrigos-data/fastq/ERR10802863_R1.fastq.gz
+  sbatch scripts/fastqc.sh "$fastq_file" results/fastqc
+  ```
+  ```{.bash-out}
+  Submitted batch job 12431988
+  ```
+
+</details>
+
+2. Monitor your job with `squeue`.
+
+3. When it has finished, check the Slurm log file in your working dir
+   and the main FastQC output files in `results/fastqc`.
+
+4. Bonus --- add these `#SBATCH` options, then resubmit:
+   - Let the Slurm log file include 'fastqc' in the file name as well as the job ID number.
+   - Let Slurm email you both when the job completes normally and when it fails.
+     Check that you received the email.
+
+<details><summary>Solution (click here)</summary>
+
+- The top of your script should read as follows:
+
+  ```bash
+  #!/bin/bash
+  #SBATCH --account=PAS2880
+  #SBATCH --output=slurm-fastqc-%j.out
+  #SBATCH --mail-type=END,FAIL
+  ```
+</details>
+:::
 
 ## Batch job examples with TrimGalore
 

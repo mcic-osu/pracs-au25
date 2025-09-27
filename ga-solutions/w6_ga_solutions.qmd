@@ -123,3 +123,71 @@ INFO:    gocryptfs not found, will not be able to use gocryptfs
                                Last update: 02 02 2023
 ```
 </details>
+
+#### X
+
+<details><summary> The `printline.sh` script _(Click to expand)_</summary>
+```bash
+#!/bin/bash
+set -euo pipefail
+
+# Check the number of command-line arguments
+if [[ ! "$#" -eq 2 ]]; then
+    echo "Error: wrong number of arguments"
+    echo "You provided $# arguments, while 2 are required."
+    echo "Usage: printline.sh <file> <line-number>"
+    exit 1
+fi
+
+# Copy the command-line arguments
+input_file=$1
+line_nr=$2
+
+# Only print the requested line
+head -n "$line_nr" "$input_file" | tail -n 1
+```
+</details>
+
+<details><summary> Running and testing the script _(Click to expand)_</summary>
+
+- To run the script and make it print the 4^th^ line of the Garrigos et al. metadata file:
+
+  ```bash
+  bash scripts/printline.sh garrigos-data/meta/metadata.tsv 4
+  ```
+  ```{.bash-out}
+  ERR10802879     10dpi   cathemerium
+  ```
+
+- Or the 7^th^ line:
+
+  ```bash
+  bash scripts/printline.sh garrigos-data/meta/metadata.tsv 7
+  ```
+  ```{.bash-out}
+  ERR10802884     10dpi   control
+  ```
+
+- To test that the check for the correct number of arguments works:
+
+  ```bash
+  # Only pass 1 argument:
+  bash scripts/printline.sh garrigos-data/meta/metadata.tsv
+  ```
+  ```bash-out
+  Error: wrong number of arguments
+  You provided 1 arguments, while 2 are required
+  Usage printline.sh <file> <line-number>
+  ```
+  
+  ```bash
+  # Pass 3 arguments:
+  bash scripts/printline.sh garrigos-data/meta/metadata.tsv 4 7
+  ```
+  ```bash-out
+  Error: wrong number of arguments
+  You provided 3 arguments, while 2 are required
+  Usage printline.sh <file> <line-number>
+  ```
+
+</details>
