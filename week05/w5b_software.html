@@ -562,7 +562,7 @@ Failed to search for file: GDBus.Error:org.freedesktop.DBus.Error.NameHasNoOwner
 </section>
 <section id="final-notes-on-modules" class="level3" data-number="3.3">
 <h3 data-number="3.3" class="anchored" data-anchor-id="final-notes-on-modules"><span class="header-section-number">3.3</span> Final notes on modules</h3>
-<p>Module loading does <strong>not persist across shell sessions</strong>. Whenever you are in a fresh shell session (including but not limited to after logging into OSC again), you’ll have to reload any modules you want to use! And when you run a program that is in a module using a shell script, include the <code>module load</code> command in the script – we’ll see this next week.</p>
+<p>Module loading does <strong>not persist across shell sessions</strong>. Whenever you are in a fresh shell session (including but not limited to after you log into OSC for the day), you’ll have to reload any modules you want to use! And when you run a program that is in a module using a shell script, include the <code>module load</code> command in the script – we’ll see this next week.</p>
 <p>Here, we only covered the very basics of using <code>module</code>. To learn a bit more, you can read the boxes below, but in class, we will not go into further detail because we will mostly use containers instead (considering the limitations of these modules and the advantages of containers discussed above).</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
@@ -603,7 +603,7 @@ Another <code>module load</code> example: two-step procedure with R <em>(Click t
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>We’ll start with testing whether R may be available out of the box:</p>
+<p>First, test if R is available without loading anything:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>bash: R: command not found...</code></pre>
 <p>Nope. Is it available as a module?</p>
@@ -641,11 +641,11 @@ Another <code>module load</code> example: two-step procedure with R <em>(Click t
    Try: "module spider R/4.4.0" to view available versions or required modules.
 
    If you need further assistance, please contact oschelp@osc.edu with the subject line "lmod error: R/4.4.0"</code></pre>
-<p>That didn’t work. If we carefully read the earlier message printed by <code>module spider</code>, we can see that we first need to load the module <code>gcc/12.3.0</code> before R can be loaded. Specifically, it said:</p>
+<p>That didn’t work. Carefully reading the earlier message printed by <code>module spider</code>, it appears you first need to load the module <code>gcc/12.3.0</code> before you can load R. Specifically, it said:</p>
 <pre class="bash-out"><code>    You will need to load all module(s) on any one of the lines below before the "R/4.4.0" module is available to load.
 
       gcc/12.3.0</code></pre>
-<p>Therefore, let’s try to load <code>gcc</code> along with <code>R</code> – we can use the command below to load both at the same time, which should work:</p>
+<p>Therefore, let’s try to load <code>gcc</code> along with <code>R</code> – you can use the command below to load both at the same time:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load gcc/12.3.0 R/4.4.0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Lmod is automatically replacing "intel/2021.10.0" with "gcc/12.3.0".
 
@@ -685,6 +685,7 @@ Type 'q()' to quit R.
 <summary>
 <p><em>Click to see the solution</em></p>
 </summary>
+<p>No, it isn’t available!</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> spider multiqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Lmod has detected the following error:  Unable to find: "multiqc".</code></pre>
 </details></li>
@@ -694,7 +695,7 @@ Type 'q()' to quit R.
 <p><em>Click to see the solution</em></p>
 </summary>
 <ul>
-<li><p>Another program <code>starccm</code> also matches the search term, so the output is rather long and will open in a <code>less</code>-like pager (press <kbd>q</kbd> to exit).</p></li>
+<li><p>Note that another program, <code>starccm</code>, also matches the search term, so the output is rather long and will open in a <code>less</code>-like pager (press <kbd>q</kbd> to exit).</p></li>
 <li><p>Two versions are available, the most recent one is <code>2.7.11b</code>.</p></li>
 </ul>
 <div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> spider STAR</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -721,7 +722,7 @@ starccm:
 
 [...output truncated...]</code></pre>
 </details></li>
-<li><p>Load the most recent of the STAR versions and test whether you can use it by running <code>STAR</code>.</p>
+<li><p>Load the most recent of the STAR versions and test whether you can use it by running <code>STAR</code> (without adding any options).</p>
 <details>
 <summary>
 <p><em>Click to see the solution</em></p>
@@ -747,7 +748,7 @@ To list all parameters, run STAR --help</code></pre>
 <h2 data-number="4" class="anchored" data-anchor-id="using-apptainer-containers"><span class="header-section-number">4</span> Using Apptainer containers</h2>
 <section id="introduction-1" class="level3" data-number="4.1">
 <h3 data-number="4.1" class="anchored" data-anchor-id="introduction-1"><span class="header-section-number">4.1</span> Introduction</h3>
-<p>As mentioned above, because many programs needed for omics data analysis are not available through OSC modules, we need an alternative way to get access to these.</p>
+<p>As mentioned above, because many programs needed for omics data analysis are not available through OSC modules, you need an alternative way to access these.</p>
 <p><strong>Conda</strong> and <strong>containers</strong> are both great options: here, we will go over containers, while <a href="../bonus/conda.html">optional at-home reading covers Conda</a>. These two approaches are quite different both conceptually and operationally. Conda is similar to OSC’s modules, except that you can also install things yourself. Containers, on the other hand, are not installed or loaded<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>: typical usage involves simply downloading a file and using it.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
@@ -763,15 +764,16 @@ Pros and cons of Conda versus containers <em>(Click to expand)</em>
 <div class="callout-body-container callout-body">
 <p>Key advantages of Conda are that:</p>
 <ul>
-<li>Once software is installed, using it is identical to using other software that has been installed. With containers, on the other hand, you essentially need a long “prefix” to your commands.</li>
-<li>It is a bit easier to create custom environments with multiple programs or with manually installed programs</li>
+<li>Once software is installed, using it is just like using other software that has been installed. With containers, on the other hand, you essentially need a long “prefix” to your commands.</li>
+<li>It is a bit easier to create custom environments with multiple programs or even with programs you installed “manually” (not with Conda commands)</li>
 </ul>
 <p>Key advantages of containers are that:</p>
 <ul>
-<li>They are more portable (likely to work across different computers) and for that and a few other reasons, more reproducible than Conda</li>
-<li>It is quicker to download a container than to install software with Conda</li>
-<li>With the usage you’ll learn, you need to remember fewer commands than with Conda</li>
-<li>At OSC, it doesn’t require the loading of a module unlike with Conda</li>
+<li>They are more portable, i.e.&nbsp;likely to work across different computers. For that and a few other reasons, they’re overall a tad more reproducible than Conda.</li>
+<li>It is quicker to download a container than to install software with Conda, and Conda installation sometimes fails altogether</li>
+<li>Conda environments often consists of tens of thousands of files, and you may well hit the file <em>number</em> quota (yes, these exist at OSC!) when you have a number of Conda environments.</li>
+<li>At OSC, Singularity doesn’t require the loading of a module unlike Conda</li>
+<li>With the container usage you’ll learn, you need to remember fewer commands than with Conda</li>
 </ul>
 <p>One thing that currently does not differ is:</p>
 <ul>
@@ -790,7 +792,7 @@ Pros and cons of Conda versus containers <em>(Click to expand)</em>
 <section id="how-well-use-containers" class="level3" data-number="4.2">
 <h3 data-number="4.2" class="anchored" data-anchor-id="how-well-use-containers"><span class="header-section-number">4.2</span> How we’ll use containers</h3>
 <p>Here, you will learn how to find container images online and use them at OSC. We will not cover writing Definition files to create your own custom containers, because this is very rarely needed given recent developments in online container availability. The website we’ll use has, or can be asked to create, container images for nearly all open-source bioinformatics software!</p>
-<p>As such, the first step to using a container is finding/obtaining one. The second step is to run an appropriate command to access the software installed inside the container. We’ll go over these steps one-by-one.</p>
+<p>As such, for us, the first step to using a container is simply finding/obtaining one. The second step is to run an appropriate command to access the software installed inside the container. We’ll go over these steps one-by-one.</p>
 </section>
 <section id="obtaining-a-container-image" class="level3" data-number="4.3">
 <h3 data-number="4.3" class="anchored" data-anchor-id="obtaining-a-container-image"><span class="header-section-number">4.3</span> Obtaining a container image</h3>
@@ -815,14 +817,14 @@ More on which programs are (not) available as containers <em>(Click to expand)</
 </div>
 <div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>This applies to both containers and Conda:</p>
+<p>The following applies to both containers and Conda:</p>
 <ul>
 <li>Only free, open-source software is available
 <ul>
-<li>It is a good idea to avoid proprietary/paid software anyway!</li>
+<li><em>It is a good idea to avoid proprietary/paid software anyway!</em></li>
 <li>Rarely, academic free software has restrictive licensing that prevents it from being available</li>
 </ul></li>
-<li>You may run into an old or “low-key” program that is not available. I would take this as a sign that it may be better to avoid that program anyway – in practice, it is likely to be outdated, poorly maintained, and/or poorly documented.</li>
+<li>You may run into an old or “low-key” program/script that is not available. I would take this as a sign that it may be better to avoid that program anyway – in practice, it is likely to be outdated, poorly maintained, and/or poorly documented.</li>
 </ul>
 </div>
 </div>
@@ -833,7 +835,7 @@ More on which programs are (not) available as containers <em>(Click to expand)</
 <p>Here is a step-by-step procedure to find a container image – again using FastQC version 0.12.1 as the example, but the procedure would be the same for any other available program:</p>
 <ol type="1">
 <li><p>Go to <strong><a href="https://seqera.io/containers" class="uri">https://seqera.io/containers</a></strong></p></li>
-<li><p>In the <strong>search box</strong> below “Containers”, enter <code>fastqc</code>.</p></li>
+<li><p>In the <strong>search box</strong> below “Containers”, type <code>fastqc</code>.</p></li>
 <li><p>After waiting for the list to populate, the <strong>top hit</strong> should be <code>bioconda::fastqc</code>, with version <code>0.12.1</code> selected (the most recent version is always selected by default)</p></li>
 </ol>
 <div class="quarto-figure quarto-figure-center">
@@ -915,7 +917,7 @@ You can’t use the container before it’s ready <em>(Click to expand)</em>
 <h3 data-number="4.4" class="anchored" data-anchor-id="running-a-container-image"><span class="header-section-number">4.4</span> Running a container image</h3>
 <p>To run a command in a container, the general syntax is:</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="op">&lt;</span>container-URL<span class="op">&gt;</span> <span class="op">&lt;</span>command<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>For example, if the command was <code>fastqc -v</code>:</p>
+<p>For example, if the command (<code>&lt;command&gt;</code> above) you want to run is <code>fastqc -v</code>:</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="op">&lt;</span>container-URL<span class="op">&gt;</span> fastqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>So, you need to preface your “regular” command with <code>apptainer exec &lt;container-URL&gt;</code>. Now with the actual link to the container:</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
@@ -934,7 +936,7 @@ Breaking up a command across lines with <code>\</code>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Above, I broke the command up across two lines, which can be done by ending the first line with a <code>\</code>. This helps with readability for long commands like this one.</p>
+<p>Above, I broke the command up across two lines, which can be done by ending the first line with a <code>\</code>. With a <code>\</code>, the shell understands that the command is still incomplete despite the newline. Using <code>\</code> to break up your commands across multiple lines helps with readability for long commands like this one.</p>
 </div>
 </div>
 <p>The <strong>first time</strong> you run this command, the container image will be downloaded to a default location (see box below), as you can see in he output above — this will take a minute or so.</p>
@@ -965,7 +967,7 @@ Where is the cache located? <em>(Click to expand)</em>
 <div class="callout-body-container callout-body">
 <p>By default, containers are downloaded to a hidden directory in your Home dir, <code>~/.apptainer/cache</code>. That is generally fine, but you can change it <em>for your current shell session</em> by setting the <code>$APPTAINER_CACHEDIR</code> environment variable, e.g.:</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">APPTAINER_CACHEDIR</span><span class="op">=</span>/fs/scratch/PAS2880/<span class="va">$USER</span>/containers</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><em>(To permamently change this location, you would need to make add</em> <em>this line to your <code>~/.bashrc</code> shell configuration file.)</em></p>
+<p><em>(To permamently change this location, you would need to add</em> <em>this line to your <code>~/.bashrc</code> shell configuration file.</em> <em>We won’t cover this file in class.)</em></p>
 <p>You can check what’s in your cache as follows – though this is only informative in terms of how many containers are there and how much space they take up, because the container names are very cryptic:</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> cache list <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>NAME                     DATE CREATED           SIZE             TYPE
@@ -1081,8 +1083,9 @@ Specifying an output dir vs.&nbsp;output file(s)
 <p>It makes sense to use the same output dir. This is because, as you could see above, the output file names have the input file identifiers in them. As such, because we don’t need to worry about overwriting files, it will be more convenient to have all results in a single dir.</p>
 <p>To run FastQC for the R2 (reverse-read) file:</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="va">FASTQ_R2</span><span class="op">=</span>../garrigos-data/fastq/ERR10802863_R2.fastq.gz</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$FASTQC_APPT</span><span class="st">"</span> <span class="dt">\</span></span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">--outdir</span> results/fastqc <span class="st">"</span><span class="va">$FASTQ_R2</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$FASTQC_APPT</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">--outdir</span> results/fastqc <span class="st">"</span><span class="va">$FASTQ_R2</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Started analysis of ERR10802863_R2.fastq.gz
 Approx 5% complete for ERR10802863_R2.fastq.gz
 Approx 10% complete for ERR10802863_R2.fastq.gz

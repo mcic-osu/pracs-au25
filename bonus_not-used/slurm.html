@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jelmer Poelstra">
+<meta name="dcterms.date" content="2025-10-03">
 
-<title>Untitled – PRACS-AU25</title>
+<title>Slurm bonus – PRACS-AU25</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -295,10 +297,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#exercise-4-trimgalore-batch-jobs-in-a-loop" id="toc-exercise-4-trimgalore-batch-jobs-in-a-loop" class="nav-link active" data-scroll-target="#exercise-4-trimgalore-batch-jobs-in-a-loop"><span class="header-section-number">1</span> Exercise 4: TrimGalore batch jobs in a loop</a>
+  <li><a href="#slurm-environment-variables" id="toc-slurm-environment-variables" class="nav-link active" data-scroll-target="#slurm-environment-variables"><span class="header-section-number">1</span> Slurm environment variables</a></li>
+  <li><a href="#interactive-shell-jobs" id="toc-interactive-shell-jobs" class="nav-link" data-scroll-target="#interactive-shell-jobs"><span class="header-section-number">2</span> Interactive shell jobs</a></li>
+  <li><a href="#additional-commands-to-monitor-jobs" id="toc-additional-commands-to-monitor-jobs" class="nav-link" data-scroll-target="#additional-commands-to-monitor-jobs"><span class="header-section-number">3</span> Additional commands to monitor jobs</a>
   <ul class="collapse">
-  <li><a href="#exercise-4" id="toc-exercise-4" class="nav-link" data-scroll-target="#exercise-4"><span class="header-section-number">1.1</span> Exercise 4</a></li>
+  <li><a href="#sacct-for-info-about-finished-jobs" id="toc-sacct-for-info-about-finished-jobs" class="nav-link" data-scroll-target="#sacct-for-info-about-finished-jobs"><span class="header-section-number">3.1</span> <code>sacct</code> for info about finished jobs</a></li>
+  <li><a href="#time" id="toc-time" class="nav-link" data-scroll-target="#time"><span class="header-section-number">3.2</span> <code>time</code></a></li>
   </ul></li>
+  <li><a href="#slurm-job-arrays" id="toc-slurm-job-arrays" class="nav-link" data-scroll-target="#slurm-job-arrays"><span class="header-section-number">4</span> Slurm Job arrays</a></li>
   </ul>
 </nav>
     </div>
@@ -307,14 +313,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Untitled</h1>
+<h1 class="title">Advanced Slurm batch jobs</h1>
+<p class="subtitle lead">Optional self-study content for week 7</p>
 </div>
 
 
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Jelmer Poelstra <a href="mailto:poelstra.1@osu.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> <a href="https://orcid.org/0000-0002-3514-7462" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="https://mcic.osu.edu/bioinformatics">
+            CFAES Bioinformatics Core, Ohio State University
+            </a>
+          </p>
+      </div>
+  </div>
 
 <div class="quarto-title-meta">
 
-    
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 3, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -324,117 +352,204 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="exercise-4-trimgalore-batch-jobs-in-a-loop" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="exercise-4-trimgalore-batch-jobs-in-a-loop"><span class="header-section-number">1</span> Exercise 4: TrimGalore batch jobs in a loop</h2>
-<p>As a starting point, take your TrimGalore shell script from TBA, and save it as <code>scripts/trimgalore.sh</code>.</p>
-<details>
-<summary>
-If you don’t have it, here’s the contents of the starting TrimGalore script <em>(Click to expand)</em>
-</summary>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load TrimGalore</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load miniconda3/24.1.2-py310</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate /fs/ess/PAS0471/jelmer/conda/trimgalore</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the placeholder variables</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="va">R1_in</span><span class="op">=</span><span class="va">$1</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="va">outdir</span><span class="op">=</span><span class="va">$2</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Infer the R2 FASTQ file name</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="va">R2_in</span><span class="op">=</span><span class="va">${R1_in</span><span class="op">/</span><span class="ss">_R1</span><span class="op">/</span>_R2<span class="va">}</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Report</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Starting script trimgalore.sh"</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Input R1 FASTQ file:      </span><span class="va">$R1_in</span><span class="st">"</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Input R2 FASTQ file:      </span><span class="va">$R2_in</span><span class="st">"</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Output dir:               </span><span class="va">$outdir</span><span class="st">"</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the output dir</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Run TrimGalore</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="dt">\</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">--paired</span> <span class="dt">\</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">--fastqc</span> <span class="dt">\</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">--output_dir</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span> <span class="dt">\</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$R1_in</span><span class="st">"</span> <span class="dt">\</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$R2_in</span><span class="st">"</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Report</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Successfully finished script trimgalore.sh"</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<ol start="2" type="1">
-<li><p>Add <code>#SBATCH</code> options to the top of the TrimGalore shell script to specify:</p>
+<hr>
+<p><br></p>
+<section id="slurm-environment-variables" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="slurm-environment-variables"><span class="header-section-number">1</span> Slurm environment variables</h2>
+<p>Inside a shell script that will be submitted as a batch job, you can use a number of Slurm environment variables that will automatically be available, such as:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 24%">
+<col style="width: 51%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Corresponding option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$SLURM_JOB_ID</code></td>
+<td><em>N/A</em></td>
+<td>Job ID assigned by Slurm</td>
+</tr>
+<tr class="even">
+<td><code>$SLURM_JOB_NAME</code></td>
+<td><code>--job-name</code></td>
+<td>Job name</td>
+</tr>
+<tr class="odd">
+<td><code>$SLURM_CPUS_PER_TASK</code></td>
+<td><code>-c</code> / <code>--cpus-per-task</code></td>
+<td>Number of CPUs (~ cores/threads) available</td>
+</tr>
+<tr class="even">
+<td><code>$SLURM_MEM_PER_NODE</code></td>
+<td><code>--mem</code></td>
+<td>Amount of memory available (per node)</td>
+</tr>
+<tr class="odd">
+<td><code>$TMPDIR</code></td>
+<td><em>N/A</em></td>
+<td>Path to the Compute storage available during the job</td>
+</tr>
+<tr class="even">
+<td><code>$SLURM_SUBMIT_DIR</code></td>
+<td><em>N/A</em></td>
+<td>Path to dir from which job was submitted.</td>
+</tr>
+</tbody>
+</table>
+<hr style="height:1pt; visibility:hidden;">
+<p>As an example of how these environment variables can be useful, the command below uses <code>$SLURM_CPUS_PER_TASK</code> in its call to the program STAR inside the script:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">STAR</span> <span class="at">--runThreadN</span> <span class="st">"</span><span class="va">$SLURM_CPUS_PER_TASK</span><span class="st">"</span> <span class="at">--genomeDir</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>With this strategy, you will automatically use the correct (requested) number of cores, and don’t risk having a mismatch. Also, if you need to change the number of cores, you’ll only have to modify it in one place: in the resource request to Slurm.</p>
+</section>
+<section id="interactive-shell-jobs" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="interactive-shell-jobs"><span class="header-section-number">2</span> Interactive shell jobs</h2>
+<p>Interactive shell jobs will grant you interactive shell access on a compute node. We’ve been working in a shell in VS Code Server, which means that we already have interactive shell access on a compute node!</p>
+<p>However, we only have access to 1 core and 4 GB of memory in this VS Code shell, and there is no way of changing this. If you want an interactive shell job with more resources, you’ll have to start one with Slurm commands.</p>
+<p>A couple of different commands can be used to start an interactive shell job. I prefer the general <code>srun</code> command<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, which we can use with <code>--pty /bin/bash</code> added to get an interactive Bash shell.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">srun</span> <span class="at">--account</span><span class="op">=</span>PAS2880 <span class="at">--pty</span> /bin/bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>srun: job 12431932 queued and waiting for resources  
+srun: job 12431932 has been allocated resources
+
+[...regular login info, such as quota, not shown...]
+
+[jelmer@a0133 PAS2880]$</code></pre>
+<p>There we go! First some Slurm scheduling info was printed to screen — initially, the job was queued, and then it was “allocated resources”: that is, computing resources such as a compute node were reserved for the job. After that:</p>
 <ul>
-<li>The account/project</li>
-<li>The number of cores (8)</li>
-<li>The Slurm log file name</li>
-<li>Something to make Slurm email you upon job failure</li>
-</ul></li>
-<li><p>Use the TrimGalore option <code>--cores</code> to make it use all 8 reserved cores.</p></li>
-<li><p>Submit the script as a batch job for sample <code>ERR10802863</code>, and check that everything went well. Then remove all outputs (Slurm log files and TrimGalore output files) from this test-run.</p></li>
-<li><p>Run TrimGalore for all FASTQ file pairs from the Garrigos et al.&nbsp;data, and check that everything went well.</p></li>
-<li><p>Move the Slurm log files into a dir <code>logs</code> in the TrimGalore output dir.</p></li>
+<li><p>The job starts and because we’ve reserved an <em>interactive</em> shell job, a new Bash shell is initiated: for that reason, we get to see our regular login info once again.</p></li>
+<li><p>We have now moved to the <strong>compute node</strong> at which our interactive job is running, so you should have a different number in your prompt after <code>@</code>.</p></li>
+</ul>
+</section>
+<section id="additional-commands-to-monitor-jobs" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="additional-commands-to-monitor-jobs"><span class="header-section-number">3</span> Additional commands to monitor jobs</h2>
+<section id="sstat-for-information-about-running-jobs" class="level4">
+<h4 class="anchored" data-anchor-id="sstat-for-information-about-running-jobs"><code>sstat</code> for information about running jobs</h4>
+<p>To get information about things like memory usage, the <code>sstat</code> (for running jobs) and <code>sacct</code> (for finished jobs) commands are useful. The output of these commands is tabular and by default, too many columns are printed, so rather verbose calls are unfortunately necessary.</p>
+<p>For example, you may want to use an <code>sstat</code> call like the following <strong>at the end of your script</strong>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sstat</span> <span class="at">-j</span> <span class="va">$SLURM_JOB_ID</span> <span class="at">--format</span><span class="op">=</span>jobid,avecpu,averss,maxrss,ntasks</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Which will give you output like the following printed in your Slurm log file:</p>
+<pre class="bash-out-solo"><code>       JobID     AveCPU     MaxRSS   NTasks 
+------------ ---------- ---------- -------- 
+2979576.bat+  01:59.000    244368K        1 </code></pre>
+<p><code>MaxRSS</code> is the maximum amount of memory used by the job. It can be really good to know how much memory your job is using, so you can adjust future requests. Insufficient memory is also one of the most common causes of job failure.</p>
+</section>
+<section id="sacct-for-info-about-finished-jobs" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="sacct-for-info-about-finished-jobs"><span class="header-section-number">3.1</span> <code>sacct</code> for info about finished jobs</h3>
+<p>Get information about all jobs – by default those run in the past day:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sacct</span> <span class="at">-u</span> <span class="va">$USER</span> <span class="dt">\</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--format</span><span class="op">=</span>JobID,JobName,NodeList,Elapsed,State,ExitCode,MaxRSS,AllocTRES%32 <span class="kw">|</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grep</span> <span class="at">-v</span> <span class="st">".extern"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>               JobID    JobName        NodeList    Elapsed      State ExitCode     MaxRSS                        AllocTRES 
+-------------------- ---------- --------------- ---------- ---------- -------- ---------- -------------------------------- 
+             2978362 fastqc_si+           p0224   00:01:51  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+ 
+       2978362.batch      batch           p0224   00:01:51  COMPLETED      0:0    200004K           cpu=1,mem=4556M,node=1 
+             2978487  fqtest.sh           p0224   00:01:54  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+ 
+       2978487.batch      batch           p0224   00:01:54  COMPLETED      0:0    203332K           cpu=1,mem=4556M,node=1 
+             2978503  fqtest.sh           p0224   00:01:55  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+</code></pre>
+<p>To get information about a specific job, by means of example job <code>2978487</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sacct</span> <span class="at">-j</span> 2978487 <span class="dt">\</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--format</span><span class="op">=</span>JobID,JobName,NodeList,Elapsed,State,ExitCode,MaxRSS,AllocTRES%32 <span class="kw">|</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grep</span> <span class="at">-v</span> <span class="st">".extern"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>         JobID    JobName        NodeList    Elapsed      State ExitCode     MaxRSS                        AllocTRES 
+------------ ---------- --------------- ---------- ---------- -------- ---------- -------------------------------- 
+2978487       fqtest.sh           p0224   00:01:54  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+ 
+2978487.bat+      batch           p0224   00:01:54  COMPLETED      0:0    203332K           cpu=1,mem=4556M,node=1</code></pre>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Aliases for long job monitoring commands <em>(Click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Because you won’t remember all of these formatting options, and even if you do, you don’t want to type them out, this is a case where aliases are really handy. For instance:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> sact=<span class="st">'sacct --format=JobID,JobName,NodeList,Elapsed,State,ExitCode,MaxRSS,AllocTRES%32'</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> stat=<span class="st">'sstat --format=jobid,avecpu,averss,maxrss,ntasks'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can then add other options when you use an alias, for example:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sact</span> <span class="at">-j</span> 123456</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To make these aliases always available in interactive sessions, add lines such as these to your Bash configuration file <code>~/.bashrc</code>. (Note that this file won’t be read by job scripts, so make sure to use the full specification in scripts.)</p>
+</div>
+</div>
+</div>
+</section>
+<section id="time" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="time"><span class="header-section-number">3.2</span> <code>time</code></h3>
+<p>To get statistics on a single command, like a memory-intensive program you may be running, use the <code>time</code> utility. To use it, prepend <code>/usr/bin/time</code> to the beginning of a command:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/usr/bin/time</span> fastqc <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you use this in a script, the result will be printed to the Slurm log file, e.g:</p>
+<pre class="bash-out-solo"><code>106.79user 4.10system 1:52.34elapsed 98%CPU (0avgtext+0avgdata 246444maxresident)k
+0inputs+1760outputs (0major+35697minor)pagefaults 0swaps</code></pre>
+<ol type="1">
+<li>User time (CPU time spent running your program)</li>
+<li>System time (CPU time spent by your program in system calls)</li>
+<li>Elapsed time (wallclock)</li>
+<li>% CPU used</li>
+<li>Memory, pagefault and swap statistics</li>
+<li>I/O statistics</li>
 </ol>
-<section id="exercise-4" class="level3" data-number="1.1">
-<h3 data-number="1.1" class="anchored" data-anchor-id="exercise-4"><span class="header-section-number">1.1</span> Exercise 4</h3>
-<p>Replace the line <code>conda activate /fs/ess/PAS0471/jelmer/conda/trimgalore</code> with:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate trim-galore-0.6.10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-<details>
-<summary>
-2 - <code>#SBATCH</code> options
-</summary>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2880</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=8</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-trimgalore-%j.out</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=FAIL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<details>
-<summary>
-3 - Make TrimGalore use the reserved 8 cores
-</summary>
-Simply add <code>--cores 8</code> to your TrimGalore command.
-</details>
-<details>
-<summary>
-4 - Submit the script once, then clean up
-</summary>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_file</span><span class="op">=</span>../../garrigos-data/fastq/ERR10802863_R1.fastq.gz</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/trimgalore.sh <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span> results/trimgalore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To check that everything went well, look at the Slurm log files and the TrimGalore output files in <code>results/trimgalore</code>.</p>
-<p>To remove the outputs from this test:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> slurm-trimgalore<span class="pp">*</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> results/trimgalore/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<details>
-<summary>
-5 - Submit the script for all samples
-</summary>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fastq_R1 <span class="kw">in</span> ../../garrigos-data/fastq/<span class="pp">*</span>R1.fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>   <span class="ex">sbatch</span> scripts/trimgalore.sh <span class="st">"</span><span class="va">$fastq_R1</span><span class="st">"</span> results/trimgalore</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-To check that everything went well, check your email and look at the TrimGalore output files in <code>results/trimgalore</code>. You can also run <code>tail slurm-trimgalore*</code> to check the last lines of each Slurm log file.
-</details>
-<details>
-<summary>
-6 - Move the Slurm log files
-</summary>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> results/trimgalore/logs</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> slurm-trimgalore<span class="pp">*</span> results/trimgalore/logs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<p><em>Note that you should use the full path <code>/usr/bin/time</code> rather than just <code>time</code>.</em></p>
+</section>
+</section>
+<section id="slurm-job-arrays" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="slurm-job-arrays"><span class="header-section-number">4</span> Slurm Job arrays</h2>
+<p>As an alternative approach to looping over a script, you can also turn a script into a job “array”, i.e.&nbsp;a series of jobs.</p>
+<p>Each job in the array gets an ID that you can then use in your script for each job to run with a different value of a certain parameter. Most commonly, you may have a file with sample names and then use the array IDs to subset lines from that file – for instance, for our FastQC script:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --array=1-25</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-fastqc-%A-%a.out</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_file</span><span class="op">=</span><span class="va">$(</span><span class="fu">sed</span> <span class="at">-n</span> <span class="st">"</span><span class="va">${SLURM_ARRAY_TASK_ID}</span><span class="st">p"</span> fastq_files.txt<span class="va">)</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><p>Above, the array was configured using the <code>--array</code> option, simply creating 25 jobs with array IDs from 1 to 25 (assuming 25 FASTQ files).</p></li>
+<li><p>Then, the SLURM environment variable <code>$SLURM_ARRAY_TASK_ID</code> will contain the task ID for each job in the array, and we use that to pull out a line from a file with FASTQ file names with <code>sed</code>.</p></li>
+<li><p>We also use <code>%A</code> (master job ID) and <code>%a</code> (ID that differs for each job in the array) for the log file name.</p></li>
+</ul>
+<p>A full script example is below:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS0471</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=60</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-fastqc-%A-%a.out</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --array=1-25</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load fastqc/0.12.1</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_files_list</span><span class="op">=</span><span class="st">"</span><span class="va">$1</span><span class="st">"</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="va">output_dir</span><span class="op">=</span><span class="st">"</span><span class="va">$2</span><span class="st">"</span> </span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_file</span><span class="op">=</span><span class="va">$(</span><span class="fu">sed</span> <span class="at">-n</span> <span class="st">"</span><span class="va">${SLURM_ARRAY_TASK_ID}</span><span class="st">p"</span> <span class="va">$fastq_files_list)</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Running fastqc for file: </span><span class="va">$fastq_file</span><span class="st">"</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Output dir: </span><span class="va">$output_dir</span><span class="st">"</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">--outdir</span><span class="op">=</span><span class="st">"</span><span class="va">$output_dir</span><span class="st">"</span> <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><p>The array values can also be a comma separated list like <code>SBATCH --array=8,10,15</code> and can even have a <em>stride</em>, with <code>SBATCH --array=1-7:2</code> producing array tasks 1, 3, 5, and 7.</p></li>
+<li><p>You can also throttle an array of jobs: only run a subset of jobs at a time. This can be done as follows:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> <span class="at">--array</span> <span class="pp">[</span><span class="ss">1</span><span class="pp">-</span><span class="ss">100</span><span class="pp">]</span>%10 fastq.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The above command would only submit 10 jobs at a time. (This can also be specified inside the script.)</p></li>
+</ul>
 
 
 </section>
-</section>
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Other options: <code>salloc</code> works almost identically to <code>srun</code>, whereas <code>sinteractive</code> is an OSC convenience wrapper but with more limited options.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

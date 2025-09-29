@@ -56,7 +56,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -297,23 +317,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#setting-up" id="toc-setting-up" class="nav-link active" data-scroll-target="#setting-up"><span class="header-section-number">0.1</span> Setting up</a></li>
-  <li><a href="#exercise-0-lecture-page-exercises" id="toc-exercise-0-lecture-page-exercises" class="nav-link" data-scroll-target="#exercise-0-lecture-page-exercises"><span class="header-section-number">1</span> Exercise 0: Lecture page exercises</a></li>
-  <li><a href="#exercise-1-create-a-fastqc-conda-environment" id="toc-exercise-1-create-a-fastqc-conda-environment" class="nav-link" data-scroll-target="#exercise-1-create-a-fastqc-conda-environment"><span class="header-section-number">2</span> Exercise 1: Create a FastQC Conda environment</a></li>
-  <li><a href="#exercise-2-fastqc-with-multiple-cores" id="toc-exercise-2-fastqc-with-multiple-cores" class="nav-link" data-scroll-target="#exercise-2-fastqc-with-multiple-cores"><span class="header-section-number">3</span> Exercise 2: FastQC with multiple cores</a></li>
-  <li><a href="#exercise-3-fastqc-batch-jobs-in-a-loop" id="toc-exercise-3-fastqc-batch-jobs-in-a-loop" class="nav-link" data-scroll-target="#exercise-3-fastqc-batch-jobs-in-a-loop"><span class="header-section-number">4</span> Exercise 3: FastQC batch jobs in a loop</a></li>
-  <li><a href="#exercise-4-trimgalore-batch-jobs-in-a-loop" id="toc-exercise-4-trimgalore-batch-jobs-in-a-loop" class="nav-link" data-scroll-target="#exercise-4-trimgalore-batch-jobs-in-a-loop"><span class="header-section-number">5</span> Exercise 4: TrimGalore batch jobs in a loop</a></li>
-  <li><a href="#exercise-5-create-a-nextflow-conda-environment" id="toc-exercise-5-create-a-nextflow-conda-environment" class="nav-link" data-scroll-target="#exercise-5-create-a-nextflow-conda-environment"><span class="header-section-number">6</span> Exercise 5: Create a Nextflow Conda environment</a></li>
-  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions"><span class="header-section-number">7</span> Solutions</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#introduction-to-trimgalore" id="toc-introduction-to-trimgalore" class="nav-link" data-scroll-target="#introduction-to-trimgalore">Introduction to TrimGalore</a></li>
+  <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1">Exercise 1</a></li>
+  <li><a href="#exercise-2" id="toc-exercise-2" class="nav-link" data-scroll-target="#exercise-2">Exercise 2</a>
   <ul class="collapse">
-  <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1"><span class="header-section-number">7.1</span> Exercise 1</a></li>
-  <li><a href="#exercise-2" id="toc-exercise-2" class="nav-link" data-scroll-target="#exercise-2"><span class="header-section-number">7.2</span> Exercise 2</a></li>
-  <li><a href="#exercise-3" id="toc-exercise-3" class="nav-link" data-scroll-target="#exercise-3"><span class="header-section-number">7.3</span> Exercise 3</a></li>
-  <li><a href="#exercise-4" id="toc-exercise-4" class="nav-link" data-scroll-target="#exercise-4"><span class="header-section-number">7.4</span> Exercise 4</a></li>
-  <li><a href="#exercise-5" id="toc-exercise-5" class="nav-link" data-scroll-target="#exercise-5"><span class="header-section-number">7.5</span> Exercise 5</a></li>
+  <li><a href="#run-your-trimgalore-script-once" id="toc-run-your-trimgalore-script-once" class="nav-link" data-scroll-target="#run-your-trimgalore-script-once">4. Run your TrimGalore script once</a></li>
+  <li><a href="#modify-the-script-to-rename-the-output-fastq-files" id="toc-modify-the-script-to-rename-the-output-fastq-files" class="nav-link" data-scroll-target="#modify-the-script-to-rename-the-output-fastq-files">5. Modify the script to rename the output FASTQ files</a></li>
+  <li><a href="#run-your-trimgalore-script-for-all-samples" id="toc-run-your-trimgalore-script-for-all-samples" class="nav-link" data-scroll-target="#run-your-trimgalore-script-for-all-samples">6. Run your TrimGalore script for all samples</a></li>
   </ul></li>
   </ul>
-</nav>
+<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w7_overview.html"><i class="bi bi-book"></i>Week 7 overview</a></li><li><a href="w7a_slurm1.html"><i class="bi bi-bookmarks"></i>w7a: Batch jobs I</a></li><li><a href="w7b_slurm2.html"><i class="bi bi-bookmarks"></i>w7b: Batch jobs II</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -360,440 +374,149 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <hr>
 <hr style="height:1pt; visibility:hidden;">
-<section id="setting-up" class="level3" data-number="0.1">
-<h3 data-number="0.1" class="anchored" data-anchor-id="setting-up"><span class="header-section-number">0.1</span> Setting up</h3>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>In these exercises, you’ll practice with ….</p>
+<section id="setting-up" class="level4">
+<h4 class="anchored" data-anchor-id="setting-up">Setting up</h4>
+</section>
+</section>
+<section id="introduction-to-trimgalore" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-trimgalore">Introduction to TrimGalore</h2>
+<p>TrimGalore <span class="citation" data-cites="krueger2021">(<a href="#ref-krueger2021" role="doc-biblioref">Krueger 2021</a>)</span> is a tool that can trim and filter FASTQ files, removing:</p>
 <ul>
-<li><p>Create and move into a dir for the exercises:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># You should be in /fs/ess/PAS2880/users/$USER</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> week05/exercises</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> week05/exercises</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p>Create a runner script (in which you’ll write the code to submit batch jobs), and then open it:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> scripts run</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> run/run.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li>Any adapter sequences that are present in the reads<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</li>
+<li>Poor-quality bases at the start and end of the reads.</li>
+<li>Reads that have become very short after the prior two steps.</li>
 </ul>
-<p>You’ll be using the Garrigos et al.&nbsp;FASTQ files again, which you should have in <code>/fs/ess/PAS2880/users/$USER/garrigos-data/fastq</code>.</p>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="exercise-0-lecture-page-exercises" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="exercise-0-lecture-page-exercises"><span class="header-section-number">1</span> Exercise 0: Lecture page exercises</h2>
-<p>Do any exercises from the lecture pages that we did not get to in class.</p>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="exercise-1-create-a-fastqc-conda-environment" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="exercise-1-create-a-fastqc-conda-environment"><span class="header-section-number">2</span> Exercise 1: Create a FastQC Conda environment</h2>
-<p>The version of FastQC on OSC (0.11.8) is not the latest one (0.12.1). Let’s assume that you really need the latest version for your analysis:</p>
-<ol type="1">
-<li>Create a Conda environment for FastQC and install FastQC version 0.12.1 into it.</li>
-<li>Activate the environment and check that you have the correct version of FastQC.</li>
-</ol>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="exercise-2-fastqc-with-multiple-cores" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="exercise-2-fastqc-with-multiple-cores"><span class="header-section-number">3</span> Exercise 2: FastQC with multiple cores</h2>
-<p>As a starting point, copy the FastQC shell script from <a href="../week07/w7a_slurm1.html#exercise-submit-your-fastqc-script-as-a-batch-job">the last exercise on the Slurm batch job page</a>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># After this, your script will be at 'scripts/fastqc.sh'</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-v</span> ../class_slurm/scripts/fastqc.sh scripts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<details>
-<summary>
-If you don’t have it, here’s the contents of the starting FastQC script <em>(Click to expand)</em>
-</summary>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2880</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-fastqc-%j.out</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=</span><span class="re">END</span><span class="co">,FAIL</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the OSC module for FastQC</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load fastqc</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the placeholder variables</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_file</span><span class="op">=</span><span class="va">$1</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="va">outdir</span><span class="op">=</span><span class="va">$2</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial reporting</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Starting script fastqc.ch"</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Input FASTQ file:   </span><span class="va">$fastq_file</span><span class="st">"</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Output dir:         </span><span class="va">$outdir</span><span class="st">"</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the output dir if needed</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Run FastQC</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">--outdir</span><span class="op">=</span><span class="st">"</span><span class="va">$outdir</span><span class="st">"</span> <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Final reporting</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Successfully finished script fastqc.sh"</span></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<ol type="1">
-<li><p>Use your brand new Conda FastQC environment in the script instead of OSC’s module.</p></li>
-<li><p>Change the <code>#SBATCH</code> options in the script so that Slurm only sends you an email if the job fails.</p></li>
-<li><p>Change the <code>#SBATCH</code> options in the script so that your batch job will reserve 8 cores.</p></li>
-<li><p>Change the FastQC command in the script so that FastQC will use all 8 reserved cores. (Run <code>fastqc --help</code> to find the relevant option.)</p></li>
-<li><p>Submit the script as a batch job with input FASTQ file <code>ERR10802863_R1.fastq.gz</code> as before.</p></li>
-<li><p>You’ll be running FastQC for <em>all</em> files next, so let’s remove this Slurm log file and all FastQC output files.</p></li>
-</ol>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="exercise-3-fastqc-batch-jobs-in-a-loop" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="exercise-3-fastqc-batch-jobs-in-a-loop"><span class="header-section-number">4</span> Exercise 3: FastQC batch jobs in a loop</h2>
-<ol type="1">
-<li><p>Loop over all Garrigos et al.&nbsp;FASTQ files, submitting your Ex. 2 FastQC script as a batch job for each file.</p></li>
-<li><p>Check the Slurm queue immediately after running the loop, and keep checking it every couple of seconds until all your FastQC jobs have disappeared from the list (i.e., are done).</p></li>
-<li><p>You now arguably have too many Slurm log files to go through, so what to do next?</p>
-<ul>
-<li>The Slurm email feature should help: check that you didn’t get any emails about failed jobs.</li>
-<li>Another quick check is to run the <code>tail</code> command with a glob (using <code>*</code>) so it will print the last lines of each of the output files. Try this and scroll through the <code>tail</code> output: it should be pretty easy to spot any files that don’t end the way the should.</li>
-<li>Check the FastQC output files as well.</li>
-</ul></li>
-<li><p>It can be good to keep your Slurm log files, but things will soon get very messy if you keep them all in your working dir: create a dir called <code>logs</code> in the FastQC output dir, and move all Slurm log files into that dir.</p></li>
-</ol>
-</section>
-<section id="exercise-4-trimgalore-batch-jobs-in-a-loop" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="exercise-4-trimgalore-batch-jobs-in-a-loop"><span class="header-section-number">5</span> Exercise 4: TrimGalore batch jobs in a loop</h2>
-<p>As a starting point, take your TrimGalore shell script from TBA, and save it as <code>scripts/trimgalore.sh</code>.</p>
-<details>
-<summary>
-If you don’t have it, here’s the contents of the starting TrimGalore script <em>(Click to expand)</em>
-</summary>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load TrimGalore</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load miniconda3/24.1.2-py310</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate /fs/ess/PAS0471/jelmer/conda/trimgalore</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the placeholder variables</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="va">R1_in</span><span class="op">=</span><span class="va">$1</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="va">outdir</span><span class="op">=</span><span class="va">$2</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Infer the R2 FASTQ file name</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="va">R2_in</span><span class="op">=</span><span class="va">${R1_in</span><span class="op">/</span><span class="ss">_R1</span><span class="op">/</span>_R2<span class="va">}</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Report</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Starting script trimgalore.sh"</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Input R1 FASTQ file:      </span><span class="va">$R1_in</span><span class="st">"</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Input R2 FASTQ file:      </span><span class="va">$R2_in</span><span class="st">"</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Output dir:               </span><span class="va">$outdir</span><span class="st">"</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the output dir</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Run TrimGalore</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="dt">\</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">--paired</span> <span class="dt">\</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">--fastqc</span> <span class="dt">\</span></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">--output_dir</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span> <span class="dt">\</span></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$R1_in</span><span class="st">"</span> <span class="dt">\</span></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$R2_in</span><span class="st">"</span></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Report</span></span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Successfully finished script trimgalore.sh"</span></span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<ol type="1">
-<li><p>The script currently uses one of my Conda environments. Switch to your own that you created in class this week.</p></li>
-<li><p>Add <code>#SBATCH</code> options to the top of the TrimGalore shell script to specify:</p>
-<ul>
-<li>The account/project</li>
-<li>The number of cores (8)</li>
-<li>The Slurm log file name</li>
-<li>Something to make Slurm email you upon job failure</li>
-</ul></li>
-<li><p>Use the TrimGalore option <code>--cores</code> to make it use all 8 reserved cores.</p></li>
-<li><p>Submit the script as a batch job for sample <code>ERR10802863</code>, and check that everything went well. Then remove all outputs (Slurm log files and TrimGalore output files) from this test-run.</p></li>
-<li><p>Run TrimGalore for all FASTQ file pairs from the Garrigos et al.&nbsp;data, and check that everything went well.</p></li>
-<li><p>Move the Slurm log files into a dir <code>logs</code> in the TrimGalore output dir.</p></li>
-</ol>
-<hr style="height:1pt; visibility:hidden;">
+<p>TrimGalore takes FASTQ files as input, and outputs filtered FASTQ files. When you have paired-end reads (as you do here), <em>a single TrimGalore run should include both the R1 and R2 file for one sample</em>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+More about TrimGalore and similar programs <em>(Click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Several largely equivalent tools exist for this kind of FASTQ preprocessing — <a href="http://www.usadellab.org/cms/index.php?page=trimmomatic">Trimmomatic</a> and <a href="https://github.com/OpenGene/fastp">fastp</a> are two other commonly used ones. TrimGalore itself is “just” a wrapper around yet another tool called Cutadapt, but it is simpler to use. Two advantages of TrimGalore are:</p>
+<ul>
+<li>It will auto-detect the adapters that are present in your reads.</li>
+<li>It can automatically run FastQC on the trimmed sequences.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-1" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1">Exercise 1</h2>
+<ol type="1">
+<li><p>Get the URL to the container image with the most recent TrimGalore that you found last week. Or go to <a href="https://seqera.io/containers" class="uri">https://seqera.io/containers</a> to retrieve the link there.</p></li>
+<li><p>Print the help info with the <code>--help</code> option – you’ll be using this info below!</p></li>
+</ol>
+</section>
+<section id="exercise-2" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2">Exercise 2</h2>
+<p>Write a shell script <code>scripts/trimgalore.sh</code> that runs TrimGalore on paired end-FASTQ files as follows:</p>
+<ul>
+<li><p>Header lines + TrimGalore version + TBA</p></li>
+<li><p>The script should only <strong>run TrimGalore once</strong>, i.e.&nbsp;for one sample (two FASTQ files).</p></li>
+<li><p>Your <strong>script should accept and process arguments</strong> that specify the input FASTQ files and the output dir.</p></li>
+<li><p>For each of the items below, figure out the relevant TrimGalore option, and use that option:</p>
+<ul>
+<li>Tell it that the reads are <strong>paired-end</strong><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</li>
+<li>Set the <strong>output dir</strong>.</li>
+<li>Make it <strong>run FastQC</strong> on the trimmed FASTQ files.</li>
+</ul></li>
+<li><p>What are the default thresholds for the Phred quality score and read length? Can you describe what these parameters do? <em>(You don’t have to change them here, the defaults will work fine for us.)</em></p></li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Don’t use/adjust TrimGalore’s <code>--cores</code> option here <em>(Click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Since you’re running the program interactively on your single-core VS Code compute job, you only have 1 core at your disposal — and that’s TrimGalore’s default. Therefore, don’t adjust this here. Next week, you’ll submitting this script as a batch jobs, and that will give you the opportunity to use multiple cores.</p>
+</div>
+</div>
+</div>
+<section id="run-your-trimgalore-script-once" class="level3">
+<h3 class="anchored" data-anchor-id="run-your-trimgalore-script-once">4. Run your TrimGalore script once</h3>
+<ol type="1">
+<li><p>Run your TrimGalore script for the <code>ERR10802863</code> sample in <code>garrigos-data/fastq</code>.</p></li>
+<li><p>Check if everything went well by reading the ouput that is printed to screen, and by taking a look at TrimGalore’s output files. What outputs are you finding? <em>(If something went wrong, go back to your <code>trimgalore.sh</code> script and try to fix it,</em> <em>and describe your process in the <code>README.md</code>.)</em></p></li>
+<li><p>Take a closer look at the output that TrimGalore printed to screen (note that most of that is also saved in the <code>*_trimming_report.txt</code> file in the output dir):</p>
+<ul>
+<li>In each file (R1 and R2), in what percentage of reads were adapters detected?</li>
+<li>In each file (R1 and R2), what percentage of bases were quality trimmed?</li>
+<li>What percentage of reads were removed because they were too short?</li>
+</ul></li>
+</ol>
+</section>
+<section id="modify-the-script-to-rename-the-output-fastq-files" class="level3">
+<h3 class="anchored" data-anchor-id="modify-the-script-to-rename-the-output-fastq-files">5. Modify the script to rename the output FASTQ files</h3>
+<p>The TrimGalore output FASTQ files are oddly named, ending in <code>_R1_val_1.fq.gz</code> and <code>_R2_val_2.fq.gz</code> — check the output files from your initial run to see this. This is not necessarily a problem, but could trip you up in a next step with these files. Therefore, in your TrimGalore script (<code>scripts/trimgalore.sh</code>):</p>
+<ol type="1">
+<li>Rename the output files after you run TrimGalore, giving them the same names as the input files.</li>
+<li>Add an <code>if</code> statement to check that the input dir is not the same as the output dir. If it is, exit the script.</li>
+<li>Re-run the script to check that your changes were successful.</li>
+</ol>
+<details>
+<summary>
+Hints <em>(Click to expand)</em>
+</summary>
+<p>To do this, you should first extract and store what is basically a sample ID: the part of the file name that is shared by the R1 and R2 file.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">sample_id</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$R1_in</span><span class="st">"</span> _R1.fastq.gz<span class="va">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Based on that ID, you can build up the names of the TrimGalore output files as well as the desired final output files. For example:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The name of the initial ('init') TrimGalore R1 output file will be:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">R1_out_init</span><span class="op">=</span><span class="st">"</span><span class="va">$outdir</span><span class="st">"</span>/<span class="st">"</span><span class="va">$sample_id</span><span class="st">"</span>_R1_val_1.fq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To test this, you’ll need to derive the input dir from the FASTQ path. In this week’s second lecture, we saw how to do this. Use command substitution (<code>$(...)</code> to store the input dir in a variable.</p>
+</details>
+</section>
+<section id="run-your-trimgalore-script-for-all-samples" class="level3">
+<h3 class="anchored" data-anchor-id="run-your-trimgalore-script-for-all-samples">6. Run your TrimGalore script for all samples</h3>
+<p>Write a <code>for</code> loop (include this in the README) to run your TrimGalore script for all samples in the <code>garrigos-data/fastq</code> dir, and run that loop. <em>(Make sure you are running the script once per sample, not per FASTQ file.)</em></p>
+<div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Saving time
+This will take some time (~20 minutes) to run!
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Compared to running TrimGalore last week, you now saved time in two ways:</p>
-<ul>
-<li>You used 8 cores, decreasing the running time — for example, for the first sample, from nearly a minute to 17 seconds.</li>
-<li>You ran TrimGalore simultaneously instead of consecutively for each sample. If Slurm/OSC started these jobs quickly, as is usual, then running TrimGalore on all files should have cost well under a minute instead of over 20 minutes.</li>
-</ul>
+<p>And note that these FASTQ files are <em>much</em> smaller than regular ones. You’ll hopefully agree that we need to start using more computing power, and have the script run simultaneously rather than consecutively for each sample — we can do all of that by submitting the script as batch jobs, as we’ll see next week.</p>
+<p>TBA Also talk about output to screen always being saved with batch jobs</p>
 </div>
 </div>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="exercise-5-create-a-nextflow-conda-environment" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="exercise-5-create-a-nextflow-conda-environment"><span class="header-section-number">6</span> Exercise 5: Create a Nextflow Conda environment</h2>
-<p>Next week, we’ll work with Nextflow and the affiliated community project nf-core. Create a single Conda environment with both Nextflow and the nf-core tools.</p>
-<p><br></p>
-</section>
-<section id="solutions" class="level2" data-number="7">
-<h2 data-number="7" class="anchored" data-anchor-id="solutions"><span class="header-section-number">7</span> Solutions</h2>
-<section id="exercise-1" class="level3" data-number="7.1">
-<h3 data-number="7.1" class="anchored" data-anchor-id="exercise-1"><span class="header-section-number">7.1</span> Exercise 1</h3>
-<details>
-<summary>
-1 - Create a FastQC Conda environment
-</summary>
-<p>When you don’t specify the version, the latest one should be installed — at least when you’re using a “fresh” environment (there could be complicating factors if you already had other software in the same environment):</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load miniconda3/24.1.2-py310</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-y</span> <span class="at">-n</span> fastqc <span class="at">-c</span> bioconda fastqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>But to be more explicit, you could replace the <code>fastqc</code> at the end of the line with <code>fastqc=0.12.1</code>.</p>
-</details>
-<details>
-<summary>
-2 - Activate the environment and check the version
-</summary>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate fastqc</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>FastQC v0.12.1</code></pre>
-</details>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="exercise-2" class="level3" data-number="7.2">
-<h3 data-number="7.2" class="anchored" data-anchor-id="exercise-2"><span class="header-section-number">7.2</span> Exercise 2</h3>
-<details>
-<summary>
-1 - Use your Conda environment
-</summary>
-<p>Replace the line <code>module load fastqc</code> with:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load miniconda3/24.1.2-py310</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate fastqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<details>
-<summary>
-2 - Only email upon failure
-</summary>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=FAIL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<details>
-<summary>
-3 - Reserve 8 cores
-</summary>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=8</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<details>
-<summary>
-4 - Make FastQC use 8 cores
-</summary>
-<p>The relevant FastQC option is <code>--threads</code> (recall to consider the terms threads, cores, and CPUs as synonyms in this context):</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">--threads</span> 8 <span class="at">--outdir</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span> <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<details>
-<summary>
-5 - Submit the script
-</summary>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_file</span><span class="op">=</span>../../garrigos-data/fastq/ERR10802863_R1.fastq.gz</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/fastqc.sh <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span> results/fastqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>Submitted batch job 12431988</code></pre>
-</details>
-<details>
-<summary>
-6 - Clean up
-</summary>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> slurm-fastqc<span class="pp">*</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> results/fastqc/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="exercise-3" class="level3" data-number="7.3">
-<h3 data-number="7.3" class="anchored" data-anchor-id="exercise-3"><span class="header-section-number">7.3</span> Exercise 3</h3>
-<details>
-<summary>
-1 - Submit a FastQC batch job for each FASTQ file
-</summary>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fastq_file <span class="kw">in</span> ../../garrigos-data/fastq/<span class="pp">*</span>fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>   <span class="ex">sbatch</span> scripts/fastqc.sh <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span> results/fastqc</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>Submitted batch job 27902555
-Submitted batch job 27902556
-Submitted batch job 27902557
-Submitted batch job 27902558
-Submitted batch job 27902559
-Submitted batch job 27902560
-Submitted batch job 27902561
-[...output truncated...]</code></pre>
-</details>
-<details>
-<summary>
-2 - Check the Slurm queue
-</summary>
-<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$USER</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<details>
-<summary>
-3 - Check the output
-</summary>
-<p>Once all jobs have at least started running, you should see a lot of Slurm log files in your working dir:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>results                    slurm-fastqc-27902531.out  slurm-fastqc-27902543.out  slurm-fastqc-27902555.out
-run                        slurm-fastqc-27902532.out  slurm-fastqc-27902544.out  slurm-fastqc-27902556.out
-scripts                    slurm-fastqc-27902533.out  slurm-fastqc-27902545.out  slurm-fastqc-27902557.out
-slurm-fastqc-27902522.out  slurm-fastqc-27902534.out  slurm-fastqc-27902546.out  slurm-fastqc-27902558.out
-slurm-fastqc-27902523.out  slurm-fastqc-27902535.out  slurm-fastqc-27902547.out  slurm-fastqc-27902559.out
-slurm-fastqc-27902524.out  slurm-fastqc-27902536.out  slurm-fastqc-27902548.out  slurm-fastqc-27902560.out
-slurm-fastqc-27902525.out  slurm-fastqc-27902537.out  slurm-fastqc-27902549.out  slurm-fastqc-27902561.out
-slurm-fastqc-27902526.out  slurm-fastqc-27902538.out  slurm-fastqc-27902550.out  slurm-fastqc-27902562.out
-slurm-fastqc-27902527.out  slurm-fastqc-27902539.out  slurm-fastqc-27902551.out  slurm-fastqc-27902563.out
-slurm-fastqc-27902528.out  slurm-fastqc-27902540.out  slurm-fastqc-27902552.out  slurm-fastqc-27902564.out
-slurm-fastqc-27902529.out  slurm-fastqc-27902541.out  slurm-fastqc-27902553.out  slurm-fastqc-27902565.out
-slurm-fastqc-27902530.out  slurm-fastqc-27902542.out  slurm-fastqc-27902554.out</code></pre>
-<p>Here is how you can see the last lines of each of these files with <code>tail</code>:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> slurm-fastqc<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>==&gt; slurm-fastqc-27902563.out &lt;==
-Approx 80% complete for ERR10802885_R2.fastq.gz
-Approx 85% complete for ERR10802885_R2.fastq.gz
-Approx 90% complete for ERR10802885_R2.fastq.gz
-Approx 95% complete for ERR10802885_R2.fastq.gz
-Approx 100% complete for ERR10802885_R2.fastq.gz
-Analysis complete for ERR10802885_R2.fastq.gz
 
-# Successfully finished script fastqc.sh
-Sun Mar 31 16:30:54 EDT 2024
-
-==&gt; slurm-fastqc-27902564.out &lt;==
-Approx 80% complete for ERR10802886_R1.fastq.gz
-Approx 85% complete for ERR10802886_R1.fastq.gz
-Approx 90% complete for ERR10802886_R1.fastq.gz
-Approx 95% complete for ERR10802886_R1.fastq.gz
-Approx 100% complete for ERR10802886_R1.fastq.gz
-Analysis complete for ERR10802886_R1.fastq.gz
-
-# Successfully finished script fastqc.sh
-Sun Mar 31 16:30:54 EDT 2024
-
-==&gt; slurm-fastqc-27902565.out &lt;==
-Approx 80% complete for ERR10802886_R2.fastq.gz
-Approx 85% complete for ERR10802886_R2.fastq.gz
-Approx 90% complete for ERR10802886_R2.fastq.gz
-Approx 95% complete for ERR10802886_R2.fastq.gz
-Approx 100% complete for ERR10802886_R2.fastq.gz
-Analysis complete for ERR10802886_R2.fastq.gz
-
-# Successfully finished script fastqc.sh
-Sun Mar 31 16:30:54 EDT 2024
-
-# [...output truncated...]</code></pre>
-<p>Finally, to check the FastQC output files:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> results/fastqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>total 48M
--rw-rw----+ 1 poelstra PAS0471 718K Mar 31 16:29 ERR10802863_R1_fastqc.html
--rw-rw----+ 1 poelstra PAS0471 364K Mar 31 16:29 ERR10802863_R1_fastqc.zip
--rw-rw----+ 1 poelstra PAS0471 688K Mar 31 16:29 ERR10802863_R2_fastqc.html
--rw-rw----+ 1 poelstra PAS0471 363K Mar 31 16:29 ERR10802863_R2_fastqc.zip
--rw-rw----+ 1 poelstra PAS0471 714K Mar 31 16:29 ERR10802864_R1_fastqc.html
--rw-rw----+ 1 poelstra PAS0471 366K Mar 31 16:29 ERR10802864_R1_fastqc.zip
--rw-rw----+ 1 poelstra PAS0471 695K Mar 31 16:29 ERR10802864_R2_fastqc.html
--rw-rw----+ 1 poelstra PAS0471 351K Mar 31 16:29 ERR10802864_R2_fastqc.zip
--rw-rw----+ 1 poelstra PAS0471 713K Mar 31 16:29 ERR10802865_R1_fastqc.html
--rw-rw----+ 1 poelstra PAS0471 367K Mar 31 16:29 ERR10802865_R1_fastqc.zip
--rw-rw----+ 1 poelstra PAS0471 698K Mar 31 16:29 ERR10802865_R2_fastqc.html
--rw-rw----+ 1 poelstra PAS0471 358K Mar 31 16:29 ERR10802865_R2_fastqc.zip
--rw-rw----+ 1 poelstra PAS0471 718K Mar 31 16:29 ERR10802866_R1_fastqc.html
-# [...output truncated...]</code></pre>
-</details>
-<details>
-<summary>
-4 - Clean the Slurm log files
-</summary>
-<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> results/fastqc/logs</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> slurm-fastqc<span class="pp">*</span> results/fastqc/logs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="exercise-4" class="level3" data-number="7.4">
-<h3 data-number="7.4" class="anchored" data-anchor-id="exercise-4"><span class="header-section-number">7.4</span> Exercise 4</h3>
-<details>
-<summary>
-1 - Switch the Conda environment
-</summary>
-<p>Replace the line <code>conda activate /fs/ess/PAS0471/jelmer/conda/trimgalore</code> with:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate trim-galore-0.6.10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<details>
-<summary>
-2 - <code>#SBATCH</code> options
-</summary>
-<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2880</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=8</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-trimgalore-%j.out</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=FAIL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<details>
-<summary>
-3 - Make TrimGalore use the reserved 8 cores
-</summary>
-Simply add <code>--cores 8</code> to your TrimGalore command.
-</details>
-<details>
-<summary>
-4 - Submit the script once, then clean up
-</summary>
-<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="va">fastq_file</span><span class="op">=</span>../../garrigos-data/fastq/ERR10802863_R1.fastq.gz</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/trimgalore.sh <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span> results/trimgalore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To check that everything went well, look at the Slurm log files and the TrimGalore output files in <code>results/trimgalore</code>.</p>
-<p>To remove the outputs from this test:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> slurm-trimgalore<span class="pp">*</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> results/trimgalore/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<details>
-<summary>
-5 - Submit the script for all samples
-</summary>
-<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fastq_R1 <span class="kw">in</span> ../../garrigos-data/fastq/<span class="pp">*</span>R1.fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>   <span class="ex">sbatch</span> scripts/trimgalore.sh <span class="st">"</span><span class="va">$fastq_R1</span><span class="st">"</span> results/trimgalore</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-To check that everything went well, check your email and look at the TrimGalore output files in <code>results/trimgalore</code>. You can also run <code>tail slurm-trimgalore*</code> to check the last lines of each Slurm log file.
-</details>
-<details>
-<summary>
-6 - Move the Slurm log files
-</summary>
-<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> results/trimgalore/logs</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> slurm-trimgalore<span class="pp">*</span> results/trimgalore/logs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<hr style="height:1pt; visibility:hidden;">
-</section>
-<section id="exercise-5" class="level3" data-number="7.5">
-<h3 data-number="7.5" class="anchored" data-anchor-id="exercise-5"><span class="header-section-number">7.5</span> Exercise 5</h3>
-<details>
-<summary>
-Create a Nextflow + nf-core Conda environment
-</summary>
-<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load miniconda3/24.1.2-py310</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-y</span> <span class="at">-n</span> nextflow-23.10 <span class="at">-c</span> bioconda nextflow=23.10.1 nf-core=2.13.1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Check that it works:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate nextflow-23.10</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>nextflow version 23.10.1.5891</code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nf-core</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>                                          ,--./,-.
-          ___     __   __   __   ___     /,-._.--~\
-    |\ | |__  __ /  ` /  \ |__) |__         }  {
-    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
-                                          `._,._,'
-
-    nf-core/tools version 2.13.1 - https://nf-co.re
-
-nf-core, version 2.13.1</code></pre>
-</details>
-<p><br></p>
 
 
 </section>
 </section>
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-krueger2021" class="csl-entry" role="listitem">
+Krueger, Felix. 2021. <em>Trimgalore</em>. <a href="https://github.com/FelixKrueger/TrimGalore">https://github.com/FelixKrueger/TrimGalore</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p> Adapters are always added to DNA/cDNA fragments of interest prior to Illumina sequencing, and the last bases of a read can “read-through” into the adapter if the fragment is shorter than the read length.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p> If you don’t do this, TrimGalore will process the two FASTQ files independently.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
