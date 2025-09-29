@@ -241,7 +241,7 @@ Success! 🥳
 
 Module loading does **not persist across shell sessions**.
 Whenever you are in a fresh shell session
-(including but not limited to after logging into OSC again),
+(including but not limited to after you log into OSC for the day),
 you'll have to reload any modules you want to use!
 And when you run a program that is in a module using a shell script,
 include the `module load` command in the script --
@@ -285,7 +285,7 @@ advantages of containers discussed above).
 ::: {.callout-note collapse="true"}
 #### Another `module load` example: two-step procedure with R _(Click to expand)_
 
-We'll start with testing whether R may be available out of the box:
+First, test if R is available without loading anything:
 
 ```bash
 R
@@ -342,8 +342,8 @@ Lmod has detected the following error:  These module(s) or extension(s) exist bu
 ```
 
 That didn't work.
-If we carefully read the earlier message printed by `module spider`,
-we can see that we first need to load the module `gcc/12.3.0` before R can be loaded.
+Carefully reading the earlier message printed by `module spider`,
+it appears you first need to load the module `gcc/12.3.0` before you can load R.
 Specifically, it said:
 
 ```bash-out
@@ -353,7 +353,7 @@ Specifically, it said:
 ```
 
 Therefore, let's try to load `gcc` along with `R` --
-we can use the command below to load both at the same time, which should work:
+you can use the command below to load both at the same time:
 
 ```bash
 module load gcc/12.3.0 R/4.4.0
@@ -406,6 +406,9 @@ type `q()` or use the general keyboard short for exiting
    -- is it available?
 
    <details><summary>_Click to see the solution_</summary>
+   
+   No, it isn't available!
+   
    ```bash
    module spider multiqc
    ```
@@ -421,7 +424,7 @@ type `q()` or use the general keyboard short for exiting
    
    <details><summary>_Click to see the solution_</summary>
    
-   - Another program `starccm` also matches the search term,
+   - Note that another program, `starccm`, also matches the search term,
      so the output is rather long and will open in a `less`-like pager
      (press <kbd>q</kbd> to exit).
      
@@ -458,7 +461,7 @@ type `q()` or use the general keyboard short for exiting
    </summary>
    
 3. Load the most recent of the STAR versions and test whether you can use it 
-   by running `STAR`.
+   by running `STAR` (without adding any options). 
    
    <details><summary>_Click to see the solution_</summary>
    ```bash
@@ -487,7 +490,7 @@ type `q()` or use the general keyboard short for exiting
 
 As mentioned above,
 because many programs needed for omics data analysis are not available
-through OSC modules, we need an alternative way to get access to these.
+through OSC modules, you need an alternative way to access these.
 
 **Conda** and **containers** are both great options:
 here, we will go over containers,
@@ -505,19 +508,23 @@ typical usage involves simply downloading a file and using it.
 Key advantages of Conda are that:
 
 - Once software is installed,
-  using it is identical to using other software that has been installed.
+  using it is just like using other software that has been installed.
   With containers, on the other hand,
   you essentially need a long "prefix" to your commands.
-- It is a bit easier to create custom environments with multiple programs or
-  with manually installed programs
+- It is a bit easier to create custom environments with multiple programs or even
+  with programs you installed "manually" (not with Conda commands)
 
 Key advantages of containers are that:
 
-- They are more portable (likely to work across different computers)
-  and for that and a few other reasons, more reproducible than Conda
-- It is quicker to download a container than to install software with Conda
-- With the usage you'll learn, you need to remember fewer commands than with Conda
-- At OSC, it doesn't require the loading of a module unlike with Conda
+- They are more portable, i.e. likely to work across different computers.
+  For that and a few other reasons, they're overall a tad more reproducible than Conda.
+- It is quicker to download a container than to install software with Conda,
+  and Conda installation sometimes fails altogether
+- Conda environments often consists of tens of thousands of files,
+  and you may well hit the file _number_ quota (yes, these exist at OSC!)
+  when you have a number of Conda environments. 
+- At OSC, Singularity doesn't require the loading of a module unlike Conda
+- With the container usage you'll learn, you need to remember fewer commands than with Conda
 
 One thing that currently does not differ is:
 
@@ -547,7 +554,7 @@ container availability.
 The website we'll use has, or can be asked to create,
 container images for nearly all open-source bioinformatics software!
 
-As such, the first step to using a container is finding/obtaining one.
+As such, for us, the first step to using a container is simply finding/obtaining one.
 The second step is to run an appropriate command to access the software 
 installed inside the container.
 We'll go over these steps one-by-one.
@@ -576,13 +583,13 @@ and if not, it will build it and make it available.
 ::: {.callout-tip collapse="true"}
 ### More on which programs are (not) available as containers _(Click to expand)_
 
-This applies to both containers and Conda:
+The following applies to both containers and Conda:
 
 - Only free, open-source software is available
-  - It is a good idea to avoid proprietary/paid software anyway!
+  - _It is a good idea to avoid proprietary/paid software anyway!_
   - Rarely, academic free software has restrictive licensing that prevents it
     from being available
-- You may run into an old or "low-key" program that is not available.
+- You may run into an old or "low-key" program/script that is not available.
   I would take this as a sign that it may be better to avoid that program anyway --
   in practice, it is likely to be outdated, poorly maintained,
   and/or poorly documented.
@@ -596,7 +603,7 @@ but the procedure would be the same for any other available program:
 
 1. Go to **<https://seqera.io/containers>**
 
-2. In the **search box** below "Containers", enter `fastqc`.
+2. In the **search box** below "Containers", type `fastqc`.
 
 3. After waiting for the list to populate,
    the **top hit** should be `bioconda::fastqc`,
@@ -677,7 +684,7 @@ To run a command in a container, the general syntax is:
 apptainer exec <container-URL> <command>
 ```
 
-For example, if the command was `fastqc -v`:
+For example, if the command (`<command>` above) you want to run is `fastqc -v`:
 
 ```bash
 apptainer exec <container-URL> fastqc -v
@@ -701,7 +708,10 @@ FastQC v0.12.1
 #### Breaking up a command across lines with `\` 
 Above, I broke the command up across two lines,
 which can be done by ending the first line with a `\`.
-This helps with readability for long commands like this one.
+With a `\`, the shell understands that the command is still incomplete despite the
+newline.
+Using `\` to break up your commands across multiple lines helps with readability
+for long commands like this one.
 :::
 
 The **first time** you run this command,
@@ -743,8 +753,9 @@ but you can change it *for your current shell session* by setting the
 export APPTAINER_CACHEDIR=/fs/scratch/PAS2880/$USER/containers
 ```
 
-_(To permamently change this location, you would need to make add_
-_this line to your `~/.bashrc` shell configuration file.)_
+_(To permamently change this location, you would need to add_
+_this line to your `~/.bashrc` shell configuration file._
+_We won't cover this file in class.)_ 
 
 You can check what's in your cache as follows --
 though this is only informative in terms of how many containers are there
@@ -923,6 +934,7 @@ To run FastQC for the R2 (reverse-read) file:
 
 ``` bash
 FASTQ_R2=../garrigos-data/fastq/ERR10802863_R2.fastq.gz
+
 apptainer exec "$FASTQC_APPT" \
   fastqc --outdir results/fastqc "$FASTQ_R2"
 ```

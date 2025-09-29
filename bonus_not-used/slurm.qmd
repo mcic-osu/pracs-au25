@@ -1,8 +1,8 @@
 ---
-title: "Advanded Slurm batch jobs"
+title: "Advanced Slurm batch jobs"
 subtitle: "Optional self-study content for week 7"
 pagetitle: "Slurm bonus"
-date: 2025-09-01
+date: 2025-10-03
 author:
   - name: Jelmer Poelstra
     orcid: 0000-0002-3514-7462
@@ -17,120 +17,6 @@ editor_options:
 --------------------------------------------------------------------------------
 
 <br>
-
-:::callout-caution
-#### THIS PAGE IS STILL UNDER CONSTRUCTION
-:::
-
-<br>
-
-## Makeshift pipelines with shell scripts and Slurm
-
-Creating makeshift pipelines by pushing the limits of the shell script and
-Slurm tool set:
-
-### Ad-hoc solutions
-
-First, here are some low-tech, ad-hoc solutions to rerunning parts of the workflow:
-
-#### Comment out part of the workflow
-
-E.g., to skip a step:
-
-```sh
-# Trim:
-#for R1 in data/fastq/*_R1.fastq.gz; do
-#    sbatch scripts/trim.sh "$R1" results/trim
-#done
-  
-# Align (map):
-for R1 in results/trim/*_R1.fastq.gz; do
-  sbatch scripts/map.sh "$R1" results/map
-done
-  
-# Count alignments per sample per gene:
-sbatch scripts/count.sh results/map results/count_table.txt
-```
-
-#### Make temporary changes
-
-E.g., to only run a single added sample:
-
-  ```sh
-  # Trim:
-  #for R1 in data/fastq/*_R1.fastq.gz; do
-      R1=data/fastq/newsample_R1.fastq.gz
-      sbatch scripts/trim.sh "$R1" results/trim
-  #done
-  
-  # Align (map):
-  #for R1 in results/trim/*_R1.fastq.gz; do
-      R1=results/trim/newsample_R1.fastq.gz
-      sbatch scripts/map.sh "$R1" results/map
-  #done
-  
-  # Count - note, this step should be rerun as a whole:
-  sbatch scripts/count.sh results/map results/count_table.txt
-  ```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### A step up
-
-Second, here are some more bespoke code-based solutions:
-
-#### Command-line options and `if`-statements
-
-These will allow you to flexibly run part of the pipeline
-(and perhaps change settings):
-
-```sh
-trim=$1   # true or false
-map=$2    # true or false
-count=$3  # true or false
-  
-if [[ "$trim" == true ]]; then
-    for R1 in data/fastq/*_R1.fastq.gz; do
-        bash scripts/trim.sh "$R1" results/trim
-    done
-fi
-  
-if [[ "$map" == true ]]; then
-    for R1 in results/trim/*_R1.fastq.gz; do
-        bash scripts/map.sh "$R1" results/map
-    done
-fi
-  
-if [[ "$count" == true ]]; then
-    bash scripts/count.sh results/map results/count_table.txt
-fi
-```
-
-#### Slurm job dependencies
-
-In the example below,
-jobs will only start after their "dependencies" (jobs whose outputs they need)
-have finished:
-  
-```sh
-for R1 in data/fastq/*_R1.fastq.gz; do
-    # Submit the trimming job and store its job number:
-    submit_line=$(sbatch scripts/trim.sh "$R1" results/trim)
-    trim_id=$(echo "$submit_line" | sed 's/Submitted batch job //')
-      
-    # Submit the mapping job with the condition that it only starts when the
-    # trimming job is done, using '--dependency=afterok:':
-    R1_trimmed=results/trim/$(basename "$R1")
-    sbatch --dependency=afterok:$trim_id scripts/map.sh "$R1_trimmed" results/map
-done
-  
-# If you give the mapping and counting jobs the same name with `#SBATCH --job-name=`,
-# then you can use '--dependency=singleton': the counting job will only start
-# when ALL the mapping jobs are done:
-sbatch --dependency=singleton scripts/count.sh results/map results/count_table.txt
-```
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ## Slurm environment variables
 
@@ -168,8 +54,6 @@ With this strategy, you will automatically use the correct (requested) number of
 cores, and don't risk having a mismatch.
 Also, if you need to change the number of cores, you'll only have to modify it
 in one place: in the resource request to Slurm.
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ## Interactive shell jobs
 
@@ -213,63 +97,70 @@ After that:
 - We have now moved to the **compute node** at which our interactive job is running,
   so you should have a different number in your prompt after `@`.
 
-<br>
-
-## Additional commands for job info
+## Additional commands to monitor jobs
 
 #### `sstat` for information about running jobs
 
 To get information about things like memory usage, the `sstat`
 (for running jobs) and `sacct` (for finished jobs) commands are useful.
-
 The output of these commands is tabular and by default, too many columns are
-printed, so very verbose calls are necessary.
+printed, so rather verbose calls are unfortunately necessary.
 
-You may want to use an `sstat` call like the following
+For example, you may want to use an `sstat` call like the following
 **at the end of your script**:
 
 ```sh
 sstat -j $SLURM_JOB_ID --format=jobid,avecpu,averss,maxrss,ntasks
 ```
 
-Which will get you output like:
+Which will give you output like the following printed in your Slurm log file:
 
-```sh
+```bash-out-solo
        JobID     AveCPU     MaxRSS   NTasks 
 ------------ ---------- ---------- -------- 
 2979576.bat+  01:59.000    244368K        1 
 ```
 
 `MaxRSS` is the maximum amount of memory used by the job.
+It can be really good to know how much memory your job is using,
+so you can adjust future requests.
+Insufficient memory is also one of the most common causes of job failure.
 
-### `sacct` for info (mostly) about finished jobs
-
-Get information about a specific job:
-  
-```sh
-sacct -j 2978487 --format=JobID,JobName,NodeList,Elapsed,State,ExitCode,MaxRSS,AllocTRES%32 | grep -v ".extern"
-  
-#         JobID    JobName        NodeList    Elapsed      State ExitCode     MaxRSS                        AllocTRES 
-#------------ ---------- --------------- ---------- ---------- -------- ---------- -------------------------------- 
-#2978487       fqtest.sh           p0224   00:01:54  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+ 
-#2978487.bat+      batch           p0224   00:01:54  COMPLETED      0:0    203332K           cpu=1,mem=4556M,node=1
-```
+### `sacct` for info about finished jobs
 
 Get information about all jobs &ndash; by default those run in the past day:
 
 ```sh
-sacct -u $USER --format=JobID,JobName,NodeList,Elapsed,State,ExitCode,MaxRSS,AllocTRES%32 | grep -v ".extern"
-
-#               JobID    JobName        NodeList    Elapsed      State ExitCode     MaxRSS                        AllocTRES 
-#-------------------- ---------- --------------- ---------- ---------- -------- ---------- -------------------------------- 
-#             2978362 fastqc_si+           p0224   00:01:51  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+ 
-#       2978362.batch      batch           p0224   00:01:51  COMPLETED      0:0    200004K           cpu=1,mem=4556M,node=1 
-#             2978487  fqtest.sh           p0224   00:01:54  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+ 
-#       2978487.batch      batch           p0224   00:01:54  COMPLETED      0:0    203332K           cpu=1,mem=4556M,node=1 
-#             2978503  fqtest.sh           p0224   00:01:55  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+
+sacct -u $USER \
+  --format=JobID,JobName,NodeList,Elapsed,State,ExitCode,MaxRSS,AllocTRES%32 |
+  grep -v ".extern"
+```
+```bash-out
+               JobID    JobName        NodeList    Elapsed      State ExitCode     MaxRSS                        AllocTRES 
+-------------------- ---------- --------------- ---------- ---------- -------- ---------- -------------------------------- 
+             2978362 fastqc_si+           p0224   00:01:51  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+ 
+       2978362.batch      batch           p0224   00:01:51  COMPLETED      0:0    200004K           cpu=1,mem=4556M,node=1 
+             2978487  fqtest.sh           p0224   00:01:54  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+ 
+       2978487.batch      batch           p0224   00:01:54  COMPLETED      0:0    203332K           cpu=1,mem=4556M,node=1 
+             2978503  fqtest.sh           p0224   00:01:55  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+
 ```
 
-### Aliases for long job monitoring commands
+To get information about a specific job, by means of example job `2978487`:
+  
+```sh
+sacct -j 2978487 \
+  --format=JobID,JobName,NodeList,Elapsed,State,ExitCode,MaxRSS,AllocTRES%32 |
+  grep -v ".extern"
+```
+```bash-out
+         JobID    JobName        NodeList    Elapsed      State ExitCode     MaxRSS                        AllocTRES 
+------------ ---------- --------------- ---------- ---------- -------- ---------- -------------------------------- 
+2978487       fqtest.sh           p0224   00:01:54  COMPLETED      0:0            billing=1,cpu=1,gres/gpfs:proje+ 
+2978487.bat+      batch           p0224   00:01:54  COMPLETED      0:0    203332K           cpu=1,mem=4556M,node=1
+```
+
+::: {.callout-tip collapse="true"}
+### Aliases for long job monitoring commands _(Click to expand)_
 
 Because you won't remember all of these formatting options, and even if you
 do, you don't want to type them out,
@@ -287,7 +178,6 @@ You can then add other options when you use an alias, for example:
 sact -j 123456
 ```
 
-::: callout-tip
 To make these aliases always available in interactive sessions,
 add lines such as these to your Bash configuration file `~/.bashrc`.
 (Note that this file won't be read by job scripts, so make sure to use the
@@ -306,7 +196,7 @@ To use it, prepend `/usr/bin/time` to the beginning of a command:
 
 If you use this in a script, the result will be printed to the Slurm log file, e.g:
 
-```sh
+```bash-out-solo
 106.79user 4.10system 1:52.34elapsed 98%CPU (0avgtext+0avgdata 246444maxresident)k
 0inputs+1760outputs (0major+35697minor)pagefaults 0swaps
 ```
@@ -318,21 +208,17 @@ If you use this in a script, the result will be printed to the Slurm log file, e
 1. Memory, pagefault and swap statistics
 1. I/O statistics
 
-You should use the full path `/usr/bin/time` rather than just `time`.
-
-<hr style="height:1pt; visibility:hidden;" />
+_Note that you should use the full path `/usr/bin/time` rather than just `time`._
 
 ## Slurm Job arrays
 
-As an alternative to writing a loop script, you can also turn a script
-processing a single file into a job "array", i.e. a series of jobs.
+As an alternative approach to looping over a script,
+you can also turn a script into a job "array", i.e. a series of jobs.
   
 Each job in the array gets an ID that you can then use in your script
 for each job to run with a different value of a certain parameter.
-  
 Most commonly, you may have a file with sample names and then use the
-array IDs to subset lines from that file &ndash; for instance, for our FastQC
-script:
+array IDs to subset lines from that file -- for instance, for our FastQC script:
 
 ```sh
 #SBATCH --array=1-25

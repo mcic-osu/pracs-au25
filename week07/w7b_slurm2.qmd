@@ -1,7 +1,7 @@
 ---
-title: "Slurm batch jobs -- part 2"
+title: "Slurm batch jobs -- part II"
 subtitle: "Week 7 -- Lecture B"
-pagetitle: "Batch jobs 2"
+pagetitle: "w7b: Batch jobs 2"
 date: 2025-10-03
 author:
   - name: Jelmer Poelstra
@@ -14,7 +14,7 @@ other-links:
   - text: "Week 7 overview"
     icon: book
     href: w7_overview.html
-  - text: "w7a: Batch jobs 1"
+  - text: "w7a: Batch jobs I"
     icon: bookmarks
     href: w7a_slurm1.html
   - text: "Week 7 exercises"
@@ -459,152 +459,118 @@ And some additional ones:
 
 : {.striped .hover}
 
-<hr style="height:1pt; visibility:hidden;" />
+## Batch job examples with FastQC
 
-:::{.exercise}
-#### {{< fa user-edit >}} Exercise: Submit your FastQC script as a batch job
+Last week, we used a `for` loop to run FastQC interactively for every FASTQ file.
+This was rather quick, but keep in mind that our practice FASTQ files are only 5%
+of their original sizes.
+Additionally, other bioinformatics programs may take much longer.
+The best way to speed things up is by submitting a batch job for each sample/file,
+because they may all run simultaneously^[
+But keep in mind that batch jobs are sometimes queued/waiting for a while,
+especially if you submit large amounts of jobs.].
+So let's practice with submitting a batch job for each FastQC run.
 
-Last week, we created a shell script to run FastQC, and ran it along these lines:
-
-```bash
-fastq_file=../../week06/garrigos-data/fastq/ERR10802863_R1.fastq.gz
-bash scripts/fastqc.sh "$fastq_file" results/fastqc
-```
-
-Now, try to:
-
-1. Add an `#SBATCH` lines to the script to specify the course's OSC project `PAS2880`,
-   and submit the modified script as a batch job with the same arguments as above.
-
-<details><summary>Solution (click here)</summary>
-
-- The top of your script should read as follows:
-
-  ```bash
-  #!/bin/bash
-  #SBATCH --account=PAS2880
-  ```
-  
-- Submit the script as follows:
-
-  ```bash
-  fastq_file=../../garrigos-data/fastq/ERR10802863_R1.fastq.gz
-  sbatch scripts/fastqc.sh "$fastq_file" results/fastqc
-  ```
-  ```{.bash-out}
-  Submitted batch job 12431988
-  ```
-
-</details>
-
-2. Monitor your job with `squeue`.
-
-3. When it has finished, check the Slurm log file in your working dir
-   and the main FastQC output files in `results/fastqc`.
-
-4. Bonus --- add these `#SBATCH` options, then resubmit:
-   - Let the Slurm log file include 'fastqc' in the file name as well as the job ID number.
-   - Let Slurm email you both when the job completes normally and when it fails.
-     Check that you received the email.
-
-<details><summary>Solution (click here)</summary>
-
-- The top of your script should read as follows:
-
-  ```bash
-  #!/bin/bash
-  #SBATCH --account=PAS2880
-  #SBATCH --output=slurm-fastqc-%j.out
-  #SBATCH --mail-type=END,FAIL
-  ```
-</details>
-:::
-
-## Batch job examples with TrimGalore
-
-In the [week 6 assignment](../week06/w6_ga.qmd),
-you wrote a script to run TrimGalore,
-and eventually ran that script for all samples using a loop.
-However, this took a while to run -- and consider that these FASTQ files were
-subsamples and ~20x smaller than the original (and than typical) FASTQ files.
-As such, it would take many hours for that loop to finish on full-size files.
-
-Given that we have access to OSC,
-the best way to speed things up in such cases is by submitting a batch job for
-each sample.
-In most cases^[But keep in mind that batch jobs can be queued/waiting for a while,
-especially if you submit large amounts of jobs.],
-these jobs will then all run simultaneously (in parallel).
-
-Let's practice running the TrimGalore script using batch jobs.
-We'll start with submitting one for a single sample,
-and then we'll loop over all samples.
-First, get a copy of that script:
+We'll start with submitting one for a single file, and then loop over all files.
+First, get the script:
 
 ```bash
-cp ../week06/assignment/scripts/trimgalore.sh scripts/
+cp -v ../week05/scripts/fastqc.sh scripts/
 ```
 
 ::: {.callout-note collapse="true"}
-### ...Or download a version of this script if you don't have it _(Click to expand)_
+### ...Or create a new script and copy this code into it _(Click to expand)_
 ```bash
-wget -P scripts <TBA-URL>
+#!/bin/bash
+set -euo pipefail
+
+# Load the OSC module for FastQC
+module load fastqc/0.12.1
+
+# Copy the placeholder variables
+fastq="$1"
+outdir="$2"
+
+# Initial logging
+echo "# Starting script fastqc.sh"
+date
+echo "# Input FASTQ file:   $fastq"
+echo "# Output dir:         $outdir"
+echo
+
+# Create the output dir if needed
+mkdir -p "$outdir"
+
+# Run FastQC
+fastqc --outdir "$outdir" "$fastq"
+
+# Final logging
+echo "# Used FastQC version:"
+fastqc --version
+echo
+echo "# Successfully finished script fastqc.sh"
+date
 ```
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
+### Modify the script for usage with Slurm
 
-#### Modifying the script for usage with Slurm
-
-Next, add Slurm options with the following `#SBATCH` lines in the script ---
-note that you'll be asking for 8 cores:
+Next, add Slurm options with the following `#SBATCH` lines in the script --
+note that you'll be asking for 4 cores:
 
 ```bash
 #!/bin/bash
 #SBATCH --account=PAS2880
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=4
 #SBATCH --mail-type=FAIL
-#SBATCH --name=slurm-trimgalore-%j.out
+#SBATCH --name=slurm-fastqc-%j.out
 ```
 
-When you have multiple cores at your disposal in a job,
-you will almost always want to **explicitly tell the program you're running about this**.
+When you have multiple cores at your disposal in a batch job,
+you should almost always **explicitly tell the program you're running about this**.
 Some programs default to using 1 core while others try to auto-detect the number of cores,
 but any auto-detection tends to be inappropriate:
 the program would detect the total number of cores on the OSC node rather than the
 number that we have reserved.
-Let TrimGalore know how many cores you have reserved by _editing the command_
-to include `--cores 8`:
+
+::: exercise
+#### Exercise: Let FastQC use multiple core
+
+Change the FastQC command in the script so that FastQC will use all 8 reserved cores.
+(Run `fastqc --help` to find the relevant option.)
+
+<details><summary>_Click to see the solution_</summary>
+
+Let FastQC know how many cores you have reserved by _editing the command_
+to include `--threads 8`:
 
 ```bash
-# [Other TrimGalore options not shows - same as before]
-trim_galore \
-    --cores 8 \
+# [Other FastQC options not shown - same as before]
+fastqc \
+    --threads 8 \
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
+</details>
 
-#### Submitting the script as a batch job
+:::
 
-Now, you're ready to submit the script. Let's test it for _one sample_ first:
+
+### Submit a single test batch job
+
+Now, you're ready to submit the script.
+Let's test it for _one sample_ first:
 
 ```bash
-R1=garrigos-data/fastq/ERR10802863_R1.fastq.gz
-R2=${R1/_R1/_R2}
-sbatch scripts/trimgalore.sh "$R1" "$R2" results/trimgalore
+fastq_file=../garrigos-data/fastq/ERR10802863_R1.fastq.gz
+sbatch scripts/fastqc.sh "$fastq_file" results/fastqc
 ```
 ```bash-out
 submitted batch job TBA
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
 #### Monitoring the batch job
 
-Next, monitor your job by:
-
-- Checking its status in the Slurm queue with `squeue -u $USER`
-- Checking the contents of the Slurm log file that should appear in your working dir
+Next, monitor your job by checking its status in the Slurm queue:
 
 ```bash
 squeue -u $USER -l
@@ -615,76 +581,97 @@ TBA
 
 After a while:
 
-- You will know that your job is no longer running
+- You will know that your job has stopped running
   (either due to failure or because it finished succesfully)
   when it is no longer listed in the `squeue` output
-- If you _additionally_ didn't receive an email from Slurm
-  (you should have gotten one if the job failed due to the `#SBATCH --mail-type=FAIL` line),
-  this implies that it succeeded.
-
-But don't forget to look at the output files:
-
-- **Slurm log file**: Because of our Strict bash `set` settings and an `echo` line
-  at the end of the script,
-  the presence of the marker line "_Succesfully finished [...]_" means that the
-  script encountered no errors.
-  That said, you'll always want to also look at the rest of the contents of this
-  file, as a program's "logging statements" may have useful information,
-  including output summaries but also warnings.
-- **Program output files**: Most bioinformatics tools don't just print logging
-  information, which end up in the Slurm log file, but will also have output files.
-  In the case of TrimGalore, the main output are processed (trimmed) FASTQ files.
-  Therefore, always check the output dir for the presence of output files
+- If you _additionally_ didn't receive an email from Slurm,
+  this implies the job succeeded --
+  you should have gotten an email if the job failed due to the
+  `#SBATCH --mail-type=FAIL` line
   
-```bash
-ls
-```
-```bash-out
-slurm-trimgalore-TBA.out
-```
+#### Checking the output files
+
+But either way, don't forget to look at the output files:
+
+- **Slurm log file**:
+  The combination of having strict bash `set` settings and the "_Succesfully finished_"
+  `echo` line at the end of the script
+  means that if you see that line printed, the script encountered no errors.
+  Nevertheless, you should also look at the rest of this file,
+  because a program's "logging statements" may have useful information,
+  including output summaries but also warnings.
+
+- **The program's main output files**:
+  As discussed, most bioinformatics tools don't just print "logging" information
+  that ends up in the Slurm log file, but will also have output files
+  (in the case of of FastQC, and HTML and a Zip file).
+  Therefore, always check the output dir for the presence of output files
+
+Checking the Slurm log file:
+
+- Make sure it's there:
+
+  ```bash
+  ls
+  ```
+  ```bash-out
+  slurm-fastqc-TBA.out
+  ```
+
+- Quick check that the "marker" line that indicates a successful run is printed:
+
+  ```bash
+  tail slurm-fastqc*.out
+  ```
+  ```bash-out
+  TBA
+  ```
+
+- Take a closer look at the file:
+
+  ```bash
+  less slurm-fastqc*
+  ```
+
+Checking for the presence of the main FastQC output files:
 
 ```bash
-tail slurm-trimgalore-TBA.out
+ls -lh results/fastqc
 ```
 ```bash-out
 TBA
 ```
 
-```bash
-less slurm-trimgalore*
-```
+::: callout-tip
+#### Pay attention to file sizes
+especially if you're not going to opem the output files right aways,
+always pay attention to the file sizes.
+Sometimes programs produce 0-byte (or way-too-small) output files when they fail.
+:::
+
+#### Cleaning up
+
+Because this was a test-run and you will now run a loop to analyze each sample,
+remove all outputs:
 
 ```bash
-ls -lh results/trimgalore
-```
-```bash-out
-TBA
+rm -r results/fastqc slurm-fastqc*
 ```
 
-Because this was a test-run and we'll now run the loop for each sample,
-we'll remove all outputs:
+### Submitting a job for each file
+
+Now, loop over all FASTQ files to submit a job for each file: 
 
 ```bash
-rm -r results/trimgalore slurm-trimgalore*
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-#### Submitting a job for each sample
-
-Now, loop over all R1 files to submit a job for each sample: 
-
-```bash
-for R1 in garrigos-data/fastq/*_R1.fastq.gz; do
-    R2=${R1/_R1/_R2}
-    sbatch scripts/trimgalore.sh "$R1" "$R2" results/trimgalore
+for fastq_file in garrigos-data/fastq/*_R1.fastq.gz; do
+    sbatch scripts/fastqc.sh "$fastq_file" results/fastqc
 done
 ```
 ```bash-out
-submitted batch job TBA
-submitted batch job TBA
-submitted batch job TBA
-submitted batch job TBA
+Submitted batch job TBA
+Submitted batch job TBA
+Submitted batch job TBA
+Submitted batch job TBA
 # [...output truncated...]
 ```
 
@@ -693,25 +680,106 @@ As you saw, all these jobs were submitted in very quick succession, ...
 Check the queue:
 
 ```bash
-squeue -u $USER
+squeue -u $USER -l
 ```
 
-Once all jobs have finished (are no longer in the queue), let's:
+Once all jobs have finished (are no longer listed in `squeue` output), let's:
 
-- Take a close look at one Slurm log file:
+```bash-out
+results                    slurm-fastqc-27902531.out  slurm-fastqc-27902543.out  slurm-fastqc-27902555.out
+run                        slurm-fastqc-27902532.out  slurm-fastqc-27902544.out  slurm-fastqc-27902556.out
+scripts                    slurm-fastqc-27902533.out  slurm-fastqc-27902545.out  slurm-fastqc-27902557.out
+slurm-fastqc-27902522.out  slurm-fastqc-27902534.out  slurm-fastqc-27902546.out  slurm-fastqc-27902558.out
+slurm-fastqc-27902523.out  slurm-fastqc-27902535.out  slurm-fastqc-27902547.out  slurm-fastqc-27902559.out
+slurm-fastqc-27902524.out  slurm-fastqc-27902536.out  slurm-fastqc-27902548.out  slurm-fastqc-27902560.out
+slurm-fastqc-27902525.out  slurm-fastqc-27902537.out  slurm-fastqc-27902549.out  slurm-fastqc-27902561.out
+slurm-fastqc-27902526.out  slurm-fastqc-27902538.out  slurm-fastqc-27902550.out  slurm-fastqc-27902562.out
+slurm-fastqc-27902527.out  slurm-fastqc-27902539.out  slurm-fastqc-27902551.out  slurm-fastqc-27902563.out
+slurm-fastqc-27902528.out  slurm-fastqc-27902540.out  slurm-fastqc-27902552.out  slurm-fastqc-27902564.out
+slurm-fastqc-27902529.out  slurm-fastqc-27902541.out  slurm-fastqc-27902553.out  slurm-fastqc-27902565.out
+slurm-fastqc-27902530.out  slurm-fastqc-27902542.out  slurm-fastqc-27902554.out
+```
+
+You now arguably have too many Slurm log files to go through, so what to do next?
+
+- Take a close look at (at least) one Slurm log file:
 
   ```bash
-  less slurm-trimgalore-*
+  less slurm-fastqc-*
   ```
 
 - Check the last few lines of all of them:
 
   ```bash
-  tail slurm-trimgalore-*
+  tail slurm-fastqc-*
   ```
 
-If everything looks good, and we consider the jobs to have succesfully finished,
-all that is left is to clean up the Slurm log files.
+```bash
+tail slurm-fastqc*
+```
+```bash-out
+==> slurm-fastqc-27902563.out <==
+Approx 80% complete for ERR10802885_R2.fastq.gz
+Approx 85% complete for ERR10802885_R2.fastq.gz
+Approx 90% complete for ERR10802885_R2.fastq.gz
+Approx 95% complete for ERR10802885_R2.fastq.gz
+Approx 100% complete for ERR10802885_R2.fastq.gz
+Analysis complete for ERR10802885_R2.fastq.gz
+
+# Successfully finished script fastqc.sh
+Sun Mar 31 16:30:54 EDT 2024
+
+==> slurm-fastqc-27902564.out <==
+Approx 80% complete for ERR10802886_R1.fastq.gz
+Approx 85% complete for ERR10802886_R1.fastq.gz
+Approx 90% complete for ERR10802886_R1.fastq.gz
+Approx 95% complete for ERR10802886_R1.fastq.gz
+Approx 100% complete for ERR10802886_R1.fastq.gz
+Analysis complete for ERR10802886_R1.fastq.gz
+
+# Successfully finished script fastqc.sh
+Sun Mar 31 16:30:54 EDT 2024
+
+==> slurm-fastqc-27902565.out <==
+Approx 80% complete for ERR10802886_R2.fastq.gz
+Approx 85% complete for ERR10802886_R2.fastq.gz
+Approx 90% complete for ERR10802886_R2.fastq.gz
+Approx 95% complete for ERR10802886_R2.fastq.gz
+Approx 100% complete for ERR10802886_R2.fastq.gz
+Analysis complete for ERR10802886_R2.fastq.gz
+
+# Successfully finished script fastqc.sh
+Sun Mar 31 16:30:54 EDT 2024
+
+# [...output truncated...]
+```
+
+Finally, to check the FastQC output files:
+
+```bash
+ls -lh results/fastqc
+```
+```bash-out
+total 48M
+-rw-rw----+ 1 poelstra PAS0471 718K Mar 31 16:29 ERR10802863_R1_fastqc.html
+-rw-rw----+ 1 poelstra PAS0471 364K Mar 31 16:29 ERR10802863_R1_fastqc.zip
+-rw-rw----+ 1 poelstra PAS0471 688K Mar 31 16:29 ERR10802863_R2_fastqc.html
+-rw-rw----+ 1 poelstra PAS0471 363K Mar 31 16:29 ERR10802863_R2_fastqc.zip
+-rw-rw----+ 1 poelstra PAS0471 714K Mar 31 16:29 ERR10802864_R1_fastqc.html
+-rw-rw----+ 1 poelstra PAS0471 366K Mar 31 16:29 ERR10802864_R1_fastqc.zip
+-rw-rw----+ 1 poelstra PAS0471 695K Mar 31 16:29 ERR10802864_R2_fastqc.html
+-rw-rw----+ 1 poelstra PAS0471 351K Mar 31 16:29 ERR10802864_R2_fastqc.zip
+-rw-rw----+ 1 poelstra PAS0471 713K Mar 31 16:29 ERR10802865_R1_fastqc.html
+-rw-rw----+ 1 poelstra PAS0471 367K Mar 31 16:29 ERR10802865_R1_fastqc.zip
+-rw-rw----+ 1 poelstra PAS0471 698K Mar 31 16:29 ERR10802865_R2_fastqc.html
+-rw-rw----+ 1 poelstra PAS0471 358K Mar 31 16:29 ERR10802865_R2_fastqc.zip
+-rw-rw----+ 1 poelstra PAS0471 718K Mar 31 16:29 ERR10802866_R1_fastqc.html
+# [...output truncated...]
+```
+
+If everything looks good,
+and we are convinced that all these jobs have succesfully finished,
+all that is left is cleaning up the Slurm log files.
 In this case, it makes sense to **keep these files**,
 as they will contain information ... TBA.
 
@@ -719,32 +787,9 @@ But we do want to move them out of the working dir.
 It often makes sense to store them in a subdir of the program's outdir, e.g.:
 
 ```bash
-mkdir results/trimgalore/logs
-mv slurm-trimgalore-* logs/
+mkdir results/fastqc/logs
+mv slurm-fastqc-* logs/
 ```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-::: callout-tip
-#### See output added to the Slurm log file in real time
-Text will be added to the Slurm log file in real time as the running script
-(or the program ran by the script) outputs it.
-However, the output that commands like `cat` and `less` print are static.
-
-Therefore, if you find yourself opening/printing the contents of the Slurm log
-file again and again to keep track of progress,
-then instead **use `tail -f`**, which will "follow" the file and _will_ print new
-text as it's added to the Slurm log file:
-
-```bash
-# See the last lines of the file, with new contents added in real time
-tail -f slurm-12520046.out
-```
-
-To exit the `tail -f` livestream, press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ### Recap: Making sure your jobs ran successfully
 
@@ -766,7 +811,25 @@ To recap, here is an overview of basic strategies to monitor your batch jobs:
   - Check that you have the expected number of output files and that no files
     have size zero (run `ls -lh`).
 
-
 ::: callout-tip
 #### TBA Refer to `scontrol` etc for detailed stats
+:::
+
+::: callout-tip
+#### Job monitoring tip: See output added to the Slurm log file in real time
+Text will be added to the Slurm log file in real time as the running script
+(or the program ran by the script) outputs it.
+However, the output that commands like `cat` and `less` print are static.
+
+Therefore, if you find yourself opening/printing the contents of the Slurm log
+file again and again to keep track of progress,
+then instead **use `tail -f`**, which will "follow" the file and _will_ print new
+text as it's added to the Slurm log file:
+
+```bash
+# See the last lines of the file, with new contents added in real time
+tail -f slurm-12520046.out
+```
+
+To exit the `tail -f` livestream, press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 :::

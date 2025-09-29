@@ -1,0 +1,130 @@
+---
+title: "Untitled"
+---
+
+## Exercise 4: TrimGalore batch jobs in a loop
+
+As a starting point, take your TrimGalore shell script from TBA,
+and save it as `scripts/trimgalore.sh`.
+
+<details><summary>If you don't have it, here's the contents of the starting TrimGalore script _(Click to expand)_</summary>
+
+```bash
+#!/bin/bash
+set -euo pipefail
+
+# Load TrimGalore
+module load miniconda3/24.1.2-py310
+conda activate /fs/ess/PAS0471/jelmer/conda/trimgalore
+
+# Copy the placeholder variables
+R1_in=$1
+outdir=$2
+
+# Infer the R2 FASTQ file name
+R2_in=${R1_in/_R1/_R2}
+
+# Report
+echo "# Starting script trimgalore.sh"
+date
+echo "# Input R1 FASTQ file:      $R1_in"
+echo "# Input R2 FASTQ file:      $R2_in"
+echo "# Output dir:               $outdir"
+echo
+
+# Create the output dir
+mkdir -p "$outdir"
+
+# Run TrimGalore
+trim_galore \
+    --paired \
+    --fastqc \
+    --output_dir "$outdir" \
+    "$R1_in" \
+    "$R2_in"
+
+# Report
+echo
+echo "# Successfully finished script trimgalore.sh"
+date
+```
+
+</details>
+
+2. Add `#SBATCH` options to the top of the TrimGalore shell script to specify:
+   - The account/project
+   - The number of cores (8)
+   - The Slurm log file name
+   - Something to make Slurm email you upon job failure
+
+3. Use the TrimGalore option `--cores` to make it use all 8 reserved cores.
+
+4. Submit the script as a batch job for sample `ERR10802863`,
+   and check that everything went well. Then remove all outputs (Slurm log
+   files and TrimGalore output files) from this test-run.
+
+5. Run TrimGalore for all FASTQ file pairs from the Garrigos et al. data,
+   and check that everything went well.
+
+6. Move the Slurm log files into a dir `logs` in the TrimGalore output dir.
+
+### Exercise 4
+
+Replace the line `conda activate /fs/ess/PAS0471/jelmer/conda/trimgalore` with:
+
+```bash
+conda activate trim-galore-0.6.10
+```
+</details>
+
+<details><summary>2 - `#SBATCH` options</summary>
+```bash
+#SBATCH --account=PAS2880
+#SBATCH --cpus-per-task=8
+#SBATCH --output=slurm-trimgalore-%j.out
+#SBATCH --mail-type=FAIL
+```
+</details>
+   
+<details><summary>3 - Make TrimGalore use the reserved 8 cores</summary>
+Simply add `--cores 8` to your TrimGalore command.
+</details>
+
+<details><summary>4 - Submit the script once, then clean up</summary>
+
+```bash
+fastq_file=../../garrigos-data/fastq/ERR10802863_R1.fastq.gz
+sbatch scripts/trimgalore.sh "$fastq_file" results/trimgalore
+```
+
+To check that everything went well, look at the Slurm log files and the TrimGalore
+output files in `results/trimgalore`.
+
+To remove the outputs from this test:
+
+```bash
+rm slurm-trimgalore*
+rm results/trimgalore/*
+```
+
+</details>
+
+<details><summary>5 - Submit the script for all samples</summary>
+```bash
+for fastq_R1 in ../../garrigos-data/fastq/*R1.fastq.gz; do
+   sbatch scripts/trimgalore.sh "$fastq_R1" results/trimgalore
+done
+```
+
+To check that everything went well, check your email and look at the TrimGalore
+output files in `results/trimgalore`.
+You can also run `tail slurm-trimgalore*` to check the last lines of each Slurm
+log file.
+</details>
+
+<details><summary>6 - Move the Slurm log files</summary>
+```bash
+mkdir results/trimgalore/logs
+mv slurm-trimgalore* results/trimgalore/logs
+```
+</details>
