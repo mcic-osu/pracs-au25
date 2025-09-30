@@ -32,30 +32,35 @@ bibliography: ../references.bib
 
 ## Introduction
 
-### Overview
-
-TBA
-
 ### Learning goals
 
-TBA
+Now that you know the basics of submitting and managing Slurm batch jobs,
+you will learn:
 
-### Setting up
+- The most common Slurm/`sbatch` options, including those to request:
+  - More time, cores, and memory for jobs
+  - An email notification when jobs e.g. fail or finish
+- How to run Slurm jobs in practice, including how to submit many jobs at the same time
+- How to make sure that your jobs succeeded
 
-TBA
+### Getting ready
 
-## Common Slurm options
+1. At <https://ondemand.osc.edu>,
+   start a VS Code session in `/fs/ess/PAS2880/users/$USER`
+2. In the terminal, navigate to your `week07` dir
 
-Here, we'll go through the most commonly used Slurm options
+## Common Slurm/`sbatch` options
+
+Here, we'll go through the most commonly used `sbatch` options
 (except `--account`, which we covered in the previous lecture).
 As pointed out above, each of these can either be:
 
 - Passed on the command line: `sbatch --account=PAS2880 myscript.sh` _(has precedence over the next)_
 - Added at the top of the script you're submitting: `#SBATCH --account=PAS2880`.
 
-Also, note that many Slurm options have a corresponding long
+Also, note that many options have a corresponding long
 (e.g. `--account=`) and short format (e.g `-A`).
-For clarity, we'll stick to long format options here.
+For clarity, we'll stick to long-format options here.
 
 ### `--time`: Time limit ("wall time")
 
@@ -74,7 +79,7 @@ If that's not enough, you can request access to the `longserial` queue
 for jobs of up to 14 days.
   
 :::callout-tip
-### What does "**wall time**" mean?
+##### What does "**wall time**" mean?
 This is simply the actual amount of time that passes on the ("wall") clock.
 This term is used to contrast it with "_core hours_":
 if a job runs for 2 hour and used 8 cores,
@@ -102,7 +107,7 @@ Or 12 hours in the "hour-format":
 ```
 
 :::{.callout-important}
-## When in doubt, request more time!
+##### When in doubt, request more time!
 It is common to be uncertain about how much time your job will take
 (i.e., how long it will take for your script to finish).
 Whenever this happens, ask for more, perhaps much more, time than what you
@@ -182,7 +187,7 @@ I recommend that you specify the number of threads/cores/CPUs with
 **`--cpus-per-task`** (`-c`).
 
 Typically, you will also want to inform the program that your script runs 
-about the number of available cores ---
+about the number of available cores --
 most have an option like `--cores` or `--threads`.
 **You should set this to the same value `n` as the `--cpus-per-task`.**
 An example, where we ask for 8 CPUs/cores/threads:
@@ -196,14 +201,13 @@ trimming_program.py --cores 8 sampleA_R1.fastq.gz
 ```
 
 :::{.callout-note collapse="true"}
-## What about nodes and tasks? _(Click to expand)_
+##### What about nodes and tasks? _(Click to expand)_
 
-**TBA FINISH**
+You may have noticed that the long form of the above option is
+`--cpus-per-task` instead of just, say, `--cpus`.
+What is that about? Let's go over nodes and tasks:
 
-You may have noticed that the long form of the above option is 
-`--cpus-per-task` instead of just, say, `--cpus`. EXPAND
-
-- Running multiple processes (tasks) or needing multiple nodes
+- In bioinformatics, running multiple processes (tasks) or needing multiple nodes
   in a single batch job is _not_ common.
 
 - Don't use options to change the number of _tasks_ or _nodes_,
@@ -358,31 +362,34 @@ and that is to use **`%j`**, which represents the batch job number:
 [^6]: For instance, we might be running the FastQC script multiple times,
       and otherwise those Slurm log files would all have the same name and be overwritten!
 
-**TBA - talk about outputting to a different dir?**
+:::{.callout-note collapse="false"}
+## The output streams _stdout_ and _stderr_, and separating them
 
-:::{.callout-note collapse="true"}
-## The output streams `stdout` and `stderr`, and separating them _(Click to expand)_
+The output that programs (including basic Unix commands) print to screen can
+be divided into two types:
 
-By default, two different output streams from commands and programs are printed
-to screen.
-These are called "standard output" (`stdout`) for regular output and
-"standard error" (`stderr`) for errors and sometimes warnings.
-Both of these streams by default also end up in the same Slurm log file,
-but it is possible to separate them into different files.
+1. **Standard output** (_stdout_) for regular output
+2. **Standard error** (_stderr_) for error messages and sometimes warnings messages
 
-Because `stderr` often contains error messages,
-it could be useful to have those in a separate file.
-For example: an empty error-related files would mean that there were no errors.
-You can make that happen with the `--error` option,
-e.g. `--error=slurm-fastqc-%j.err`.
+Most of the time, you can't tell the difference between these two,
+but you can split them.
+For example,
+while both _stdout_ and _stderr_ by default end up in the same Slurm log file,
+it is possible to separate them into different files.
+You can do that by using the `--error` option, e.g. `--error=slurm-fastqc-%j.err`
+(in that case, only _stdout_ will go into the file specified with `--output`).
+
+Separating _stdout_ and _stderr_ like that could be useful because it may make
+it easier to spot errors,
+and an empty `--error` file would mean that there were no errors.
 
 However, reality is more messy:
-some programs print their main output not to a file but to standard out,
-and their logging output, errors and regular messages alike, to standard error.
-Yet other programs use `stdout` or `stderr` for _all_ messages.
-
-**I therefore usually only specify `--output`,**
-**such that both streams end up in that file.**
+some programs print their main output (results) not to a file but to standard out,
+in which case all logging output, i.e. errors and regular messages alike,
+is designated as standard error.
+And some other programs use _stdout_ for all messages.
+Therefore, with Slurm, I personally only specify `--output`,
+such that both _stdout_ and _stderr_ end up in that file.
 :::
 
 ### `--mail-type`: Receive emails
@@ -462,21 +469,21 @@ And some additional ones:
 ## Batch job examples with FastQC
 
 Last week, we used a `for` loop to run FastQC interactively for every FASTQ file.
-This was rather quick, but keep in mind that our practice FASTQ files are only 5%
-of their original sizes.
+This ran quickly,
+but keep in mind that our practice FASTQ files are only 5% of their original sizes.
 Additionally, other bioinformatics programs may take much longer.
-The best way to speed things up is by submitting a batch job for each sample/file,
-because they may all run simultaneously^[
+To speed things up, and not block the terminal while programs are running,
+we will submit a batch job for each sample/file,
+so that many jobs can run simultaneously^[
 But keep in mind that batch jobs are sometimes queued/waiting for a while,
 especially if you submit large amounts of jobs.].
 So let's practice with submitting a batch job for each FastQC run.
 
-We'll start with submitting one for a single file, and then loop over all files.
-First, get the script:
+We'll first submit a job for a single file,
+and then loop over all files to submit many jobs.
 
-```bash
-cp -v ../week05/scripts/fastqc.sh scripts/
-```
+You should have the FastQC script in `scripts/fastqc.sh` --
+if not, see the box below.
 
 ::: {.callout-note collapse="true"}
 ### ...Or create a new script and copy this code into it _(Click to expand)_
@@ -505,6 +512,7 @@ mkdir -p "$outdir"
 fastqc --outdir "$outdir" "$fastq"
 
 # Final logging
+echo
 echo "# Used FastQC version:"
 fastqc --version
 echo
@@ -523,37 +531,44 @@ note that you'll be asking for 4 cores:
 #SBATCH --account=PAS2880
 #SBATCH --cpus-per-task=4
 #SBATCH --mail-type=FAIL
-#SBATCH --name=slurm-fastqc-%j.out
+#SBATCH --output=slurm-fastqc-%j.out
 ```
 
 When you have multiple cores at your disposal in a batch job,
-you should almost always **explicitly tell the program you're running about this**.
-Some programs default to using 1 core while others try to auto-detect the number of cores,
-but any auto-detection tends to be inappropriate:
+you should almost always
+**explicitly tell the program that you're running about this**.
+Some programs default to using 1 core while others try to auto-detect the number
+of cores, but any auto-detection tends to be inappropriate:
 the program would detect the total number of cores on the OSC node rather than the
 number that we have reserved.
 
 ::: exercise
-#### Exercise: Let FastQC use multiple core
+#### Exercise: Let FastQC use multiple cores
 
-Change the FastQC command in the script so that FastQC will use all 8 reserved cores.
-(Run `fastqc --help` to find the relevant option.)
+Change the FastQC command in the script so that FastQC will use all 4 reserved cores.
+Run `fastqc --help` to find the relevant option.
 
 <details><summary>_Click to see the solution_</summary>
 
-Let FastQC know how many cores you have reserved by _editing the command_
-to include `--threads 8`:
+The relevant section of the Help text:
 
-```bash
-# [Other FastQC options not shown - same as before]
-fastqc \
-    --threads 8 \
+```bash-out
+ -t --threads    Specifies the number of files which can be processed
+                 simultaneously.  Each thread will be allocated 250MB of
+                 memory so you shouldn't run more threads than your
+                 available memory will cope with, and not more than
+                 6 threads on a 32 bit machine
 ```
 
+Let FastQC know how many cores you have reserved by _editing the command_
+to include `--threads 4`:
+
+```bash
+fastqc --threads 4 --outdir "$outdir" "$fastq"
+```
 </details>
 
 :::
-
 
 ### Submit a single test batch job
 
@@ -561,14 +576,22 @@ Now, you're ready to submit the script.
 Let's test it for _one sample_ first:
 
 ```bash
+# We'll assign the FASTQ file to a variable first
+# (e.g. to shorten the next sbatch command):
 fastq_file=../garrigos-data/fastq/ERR10802863_R1.fastq.gz
+ls -lh "$fastq_file"
+```
+```bash-out
+-rw-rw----+ 1 jelmer PAS0471 21M Sep  9 13:46 
+```
+```bash
 sbatch scripts/fastqc.sh "$fastq_file" results/fastqc
 ```
 ```bash-out
-submitted batch job TBA
+Submitted batch job 37615710
 ```
 
-#### Monitoring the batch job
+#### Monitor the batch job
 
 Next, monitor your job by checking its status in the Slurm queue:
 
@@ -576,7 +599,9 @@ Next, monitor your job by checking its status in the Slurm queue:
 squeue -u $USER -l
 ```
 ```bash-out
-TBA
+Tue Sep 30 09:21:48 2025
+             JOBID PARTITION     NAME     USER    STATE       TIME TIME_LIMI  NODES NODELIST(REASON)
+          37615710   cpu-exp fastqc.s   jelmer  RUNNING       0:01   1:00:00      1 p0510
 ```
 
 After a while:
@@ -585,13 +610,13 @@ After a while:
   (either due to failure or because it finished succesfully)
   when it is no longer listed in the `squeue` output
 - If you _additionally_ didn't receive an email from Slurm,
-  this implies the job succeeded --
-  you should have gotten an email if the job failed due to the
-  `#SBATCH --mail-type=FAIL` line
+  this implies the job succeeded -- job failure should have triggered an email
+  due to the `#SBATCH --mail-type=FAIL` line.
   
-#### Checking the output files
+#### Check the output files
 
-But either way, don't forget to look at the output files:
+Even if you've inferred that your job succeeded from the abovementioned clues,
+don't forget to look at the output files to confirm this:
 
 - **Slurm log file**:
   The combination of having strict bash `set` settings and the "_Succesfully finished_"
@@ -605,7 +630,7 @@ But either way, don't forget to look at the output files:
   As discussed, most bioinformatics tools don't just print "logging" information
   that ends up in the Slurm log file, but will also have output files
   (in the case of of FastQC, and HTML and a Zip file).
-  Therefore, always check the output dir for the presence of output files
+  Therefore, always check the output dir for the presence of output files.
 
 Checking the Slurm log file:
 
@@ -615,7 +640,7 @@ Checking the Slurm log file:
   ls
   ```
   ```bash-out
-  slurm-fastqc-TBA.out
+  slurm-fastqc-37615710.out
   ```
 
 - Quick check that the "marker" line that indicates a successful run is printed:
@@ -624,166 +649,174 @@ Checking the Slurm log file:
   tail slurm-fastqc*.out
   ```
   ```bash-out
-  TBA
+  ==> slurm-fastqc-37615710.out <==
+  Approx 90% complete for ERR10802863_R1.fastq.gz
+  Approx 95% complete for ERR10802863_R1.fastq.gz
+  Approx 100% complete for ERR10802863_R1.fastq.gz
+  Analysis complete for ERR10802863_R1.fastq.gz
+  
+  # Used FastQC version:
+  FastQC v0.12.1
+  
+  # Successfully finished script fastqc.sh
+  Tue Sep 30 09:21:51 AM EDT 2025
   ```
 
 - Take a closer look at the file:
 
   ```bash
   less slurm-fastqc*
+  # [output not shown]
   ```
 
-Checking for the presence of the main FastQC output files:
+Check for the presence of the main FastQC output files:
 
 ```bash
 ls -lh results/fastqc
 ```
 ```bash-out
-TBA
+total 1.1M
+-rw-rw----+ 1 jelmer PAS0471 718K Sep 30 09:21 ERR10802863_R1_fastqc.html
+-rw-rw----+ 1 jelmer PAS0471 364K Sep 30 09:21 ERR10802863_R1_fastqc.zip
 ```
 
 ::: callout-tip
 #### Pay attention to file sizes
-especially if you're not going to opem the output files right aways,
-always pay attention to the file sizes.
-Sometimes programs produce 0-byte (or way-too-small) output files when they fail.
+It can also be a good idea to pay attention to the file sizes, as shown by `ls -lh`.
+Especially if you're not going to open the output files right away,
+this can be yet another clue as to whether the program succeeded. 
+When they fail, some programs programs produce empty or extremely small output
+files -- these should always be a red flag.
 :::
 
-#### Cleaning up
+#### Clean up
 
 Because this was a test-run and you will now run a loop to analyze each sample,
-remove all outputs:
+let's remove the outputs:
 
 ```bash
 rm -r results/fastqc slurm-fastqc*
 ```
 
-### Submitting a job for each file
+### Submit a job for each file
 
-Now, loop over all FASTQ files to submit a job for each file: 
+Now, let's loop over all FASTQ files to submit a job for each file: 
 
 ```bash
-for fastq_file in garrigos-data/fastq/*_R1.fastq.gz; do
+for fastq_file in ../garrigos-data/fastq/*_R1.fastq.gz; do
     sbatch scripts/fastqc.sh "$fastq_file" results/fastqc
 done
 ```
 ```bash-out
-Submitted batch job TBA
-Submitted batch job TBA
-Submitted batch job TBA
-Submitted batch job TBA
+Submitted batch job 37615718
+Submitted batch job 37615719
+Submitted batch job 37615720
+Submitted batch job 37615720
 # [...output truncated...]
 ```
 
-As you saw, all these jobs were submitted in very quick succession, ...
-
+All these jobs were submitted in very quick succession, and we got our prompt back.
 Check the queue:
 
 ```bash
 squeue -u $USER -l
 ```
-
-Once all jobs have finished (are no longer listed in `squeue` output), let's:
-
 ```bash-out
-results                    slurm-fastqc-27902531.out  slurm-fastqc-27902543.out  slurm-fastqc-27902555.out
-run                        slurm-fastqc-27902532.out  slurm-fastqc-27902544.out  slurm-fastqc-27902556.out
-scripts                    slurm-fastqc-27902533.out  slurm-fastqc-27902545.out  slurm-fastqc-27902557.out
-slurm-fastqc-27902522.out  slurm-fastqc-27902534.out  slurm-fastqc-27902546.out  slurm-fastqc-27902558.out
-slurm-fastqc-27902523.out  slurm-fastqc-27902535.out  slurm-fastqc-27902547.out  slurm-fastqc-27902559.out
-slurm-fastqc-27902524.out  slurm-fastqc-27902536.out  slurm-fastqc-27902548.out  slurm-fastqc-27902560.out
-slurm-fastqc-27902525.out  slurm-fastqc-27902537.out  slurm-fastqc-27902549.out  slurm-fastqc-27902561.out
-slurm-fastqc-27902526.out  slurm-fastqc-27902538.out  slurm-fastqc-27902550.out  slurm-fastqc-27902562.out
-slurm-fastqc-27902527.out  slurm-fastqc-27902539.out  slurm-fastqc-27902551.out  slurm-fastqc-27902563.out
-slurm-fastqc-27902528.out  slurm-fastqc-27902540.out  slurm-fastqc-27902552.out  slurm-fastqc-27902564.out
-slurm-fastqc-27902529.out  slurm-fastqc-27902541.out  slurm-fastqc-27902553.out  slurm-fastqc-27902565.out
-slurm-fastqc-27902530.out  slurm-fastqc-27902542.out  slurm-fastqc-27902554.out
+Tue Sep 30 06:36:01 2025
+             JOBID PARTITION     NAME     USER    STATE       TIME TIME_LIMI  NODES NODELIST(REASON)
+          37615718   cpu-exp fastqc.s   jelmer  RUNNING       0:03   1:00:00      1 p0840
+          37615719   cpu-exp fastqc.s   jelmer  RUNNING       0:03   1:00:00      1 p0840
+          37615720   cpu-exp fastqc.s   jelmer  RUNNING       0:03   1:00:00      1 p0840
+          37615721   cpu-exp fastqc.s   jelmer  RUNNING       0:03   1:00:00      1 p0840
+          37615722   cpu-exp fastqc.s   jelmer  RUNNING       0:03   1:00:00      1 p0840
+          37615723   cpu-exp fastqc.s   jelmer  RUNNING       0:03   1:00:00      1 p0840
+          37615724   cpu-exp fastqc.s   jelmer  RUNNING       0:03   1:00:00      1 p0840
+          37615725   cpu-exp fastqc.s   jelmer  RUNNING       0:03   1:00:00      1 p0840
+# [...output truncated...]          
+```
+
+Nice! At least in this case, all jobs started running simultaneously right away!
+Once all jobs have finished (are no longer listed in `squeue` output),
+you should have many Slurm log files: 
+
+```bash
+ls
+```
+```bash-out
+results                    slurm-fastqc-37615719.out  slurm-fastqc-37615723.out  slurm-fastqc-37615727.out  slurm-fastqc-37615731.out  slurm-fastqc-37615735.out
+scripts                    slurm-fastqc-37615720.out  slurm-fastqc-37615724.out  slurm-fastqc-37615728.out  slurm-fastqc-37615732.out  slurm-fastqc-37615736.out
+slurm-fastqc-37615717.out  slurm-fastqc-37615721.out  slurm-fastqc-37615725.out  slurm-fastqc-37615729.out  slurm-fastqc-37615733.out  slurm-fastqc-37615737.out
+slurm-fastqc-37615718.out  slurm-fastqc-37615722.out  slurm-fastqc-37615726.out  slurm-fastqc-37615730.out  slurm-fastqc-37615734.out  slurm-fastqc-37615738.out
 ```
 
 You now arguably have too many Slurm log files to go through, so what to do next?
+Here's what I would generally recommend:
 
-- Take a close look at (at least) one Slurm log file:
+1. Take a close look at (at least) one Slurm log file:
 
-  ```bash
-  less slurm-fastqc-*
-  ```
+   ```bash
+   less slurm-fastqc-*
+   # [output not shown]
+   ```
 
-- Check the last few lines of all of them:
+2. Check the last few lines of all of them:
 
-  ```bash
-  tail slurm-fastqc-*
-  ```
+   ```bash
+   tail slurm-fastqc-*
+   ```
+   ```bash-out
+   ==> slurm-fastqc-37615717.out <==
+   Approx 85% complete for ERR10802863_R1.fastq.gz
+   Approx 90% complete for ERR10802863_R1.fastq.gz
+   Approx 95% complete for ERR10802863_R1.fastq.gz
+   Approx 100% complete for ERR10802863_R1.fastq.gz
+   Analysis complete for ERR10802863_R1.fastq.gz
+   # Used FastQC version:
+   FastQC v0.12.1
+   
+   # Successfully finished script fastqc.sh
+   Tue Sep 30 09:35:55 AM EDT 2025
+   
+   ==> slurm-fastqc-37615718.out <==
+   Approx 85% complete for ERR10802864_R1.fastq.gz
+   Approx 90% complete for ERR10802864_R1.fastq.gz
+   Approx 95% complete for ERR10802864_R1.fastq.gz
+   Approx 100% complete for ERR10802864_R1.fastq.gz
+   Analysis complete for ERR10802864_R1.fastq.gz
+   # Used FastQC version:
+   FastQC v0.12.1
+   
+   # Successfully finished script fastqc.sh
+   Tue Sep 30 09:36:03 AM EDT 2025
+   
+   # [...output truncated...] 
+   ```
 
-```bash
-tail slurm-fastqc*
-```
-```bash-out
-==> slurm-fastqc-27902563.out <==
-Approx 80% complete for ERR10802885_R2.fastq.gz
-Approx 85% complete for ERR10802885_R2.fastq.gz
-Approx 90% complete for ERR10802885_R2.fastq.gz
-Approx 95% complete for ERR10802885_R2.fastq.gz
-Approx 100% complete for ERR10802885_R2.fastq.gz
-Analysis complete for ERR10802885_R2.fastq.gz
+3. Check for the presence of the FastQC output files:
 
-# Successfully finished script fastqc.sh
-Sun Mar 31 16:30:54 EDT 2024
-
-==> slurm-fastqc-27902564.out <==
-Approx 80% complete for ERR10802886_R1.fastq.gz
-Approx 85% complete for ERR10802886_R1.fastq.gz
-Approx 90% complete for ERR10802886_R1.fastq.gz
-Approx 95% complete for ERR10802886_R1.fastq.gz
-Approx 100% complete for ERR10802886_R1.fastq.gz
-Analysis complete for ERR10802886_R1.fastq.gz
-
-# Successfully finished script fastqc.sh
-Sun Mar 31 16:30:54 EDT 2024
-
-==> slurm-fastqc-27902565.out <==
-Approx 80% complete for ERR10802886_R2.fastq.gz
-Approx 85% complete for ERR10802886_R2.fastq.gz
-Approx 90% complete for ERR10802886_R2.fastq.gz
-Approx 95% complete for ERR10802886_R2.fastq.gz
-Approx 100% complete for ERR10802886_R2.fastq.gz
-Analysis complete for ERR10802886_R2.fastq.gz
-
-# Successfully finished script fastqc.sh
-Sun Mar 31 16:30:54 EDT 2024
-
-# [...output truncated...]
-```
-
-Finally, to check the FastQC output files:
-
-```bash
-ls -lh results/fastqc
-```
-```bash-out
-total 48M
--rw-rw----+ 1 poelstra PAS0471 718K Mar 31 16:29 ERR10802863_R1_fastqc.html
--rw-rw----+ 1 poelstra PAS0471 364K Mar 31 16:29 ERR10802863_R1_fastqc.zip
--rw-rw----+ 1 poelstra PAS0471 688K Mar 31 16:29 ERR10802863_R2_fastqc.html
--rw-rw----+ 1 poelstra PAS0471 363K Mar 31 16:29 ERR10802863_R2_fastqc.zip
--rw-rw----+ 1 poelstra PAS0471 714K Mar 31 16:29 ERR10802864_R1_fastqc.html
--rw-rw----+ 1 poelstra PAS0471 366K Mar 31 16:29 ERR10802864_R1_fastqc.zip
--rw-rw----+ 1 poelstra PAS0471 695K Mar 31 16:29 ERR10802864_R2_fastqc.html
--rw-rw----+ 1 poelstra PAS0471 351K Mar 31 16:29 ERR10802864_R2_fastqc.zip
--rw-rw----+ 1 poelstra PAS0471 713K Mar 31 16:29 ERR10802865_R1_fastqc.html
--rw-rw----+ 1 poelstra PAS0471 367K Mar 31 16:29 ERR10802865_R1_fastqc.zip
--rw-rw----+ 1 poelstra PAS0471 698K Mar 31 16:29 ERR10802865_R2_fastqc.html
--rw-rw----+ 1 poelstra PAS0471 358K Mar 31 16:29 ERR10802865_R2_fastqc.zip
--rw-rw----+ 1 poelstra PAS0471 718K Mar 31 16:29 ERR10802866_R1_fastqc.html
-# [...output truncated...]
-```
+   ```bash
+   ls -lh results/fastqc
+   ```
+   ```bash-out
+   total 25M
+   -rw-rw----+ 1 jelmer PAS0471 718K Sep 30 06:35 ERR10802863_R1_fastqc.html
+   -rw-rw----+ 1 jelmer PAS0471 364K Sep 30 06:35 ERR10802863_R1_fastqc.zip
+   -rw-rw----+ 1 jelmer PAS0471 714K Sep 30 06:36 ERR10802864_R1_fastqc.html
+   -rw-rw----+ 1 jelmer PAS0471 366K Sep 30 06:36 ERR10802864_R1_fastqc.zip
+   -rw-rw----+ 1 jelmer PAS0471 713K Sep 30 06:36 ERR10802865_R1_fastqc.html
+   -rw-rw----+ 1 jelmer PAS0471 367K Sep 30 06:36 ERR10802865_R1_fastqc.zip
+   -rw-rw----+ 1 jelmer PAS0471 718K Sep 30 06:36 ERR10802866_R1_fastqc.html
+   -rw-rw----+ 1 jelmer PAS0471 372K Sep 30 06:36 ERR10802866_R1_fastqc.zip
+   -rw-rw----+ 1 jelmer PAS0471 710K Sep 30 06:36 ERR10802867_R1_fastqc.html
+   # [...output truncated...]
+   ```
 
 If everything looks good,
-and we are convinced that all these jobs have succesfully finished,
-all that is left is cleaning up the Slurm log files.
-In this case, it makes sense to **keep these files**,
-as they will contain information ... TBA.
-
-But we do want to move them out of the working dir.
+and you are convinced that all jobs have finished succesfully,
+all that is left is to clean up the Slurm log files.
+In this case, it does makes sense to **keep these files** around somewhere,
+as they contain information about our runs (when, which files, what version, etc.).
+But we want to move them out of our working dir.
 It often makes sense to store them in a subdir of the program's outdir, e.g.:
 
 ```bash
@@ -796,8 +829,7 @@ mv slurm-fastqc-* logs/
 To recap, here is an overview of basic strategies to monitor your batch jobs:
 
 - To see whether your job(s) have started,
-  check the queue (with `squeue`) or check for the appearance of Slurm log files
-  (with `ls`).
+  check the queue (with `squeue`) and/or check for Slurm log files (with `ls`).
   
 - Once the jobs are no longer listed in the queue,
   they will have finished: either successfully or because of an error.
@@ -806,30 +838,27 @@ To recap, here is an overview of basic strategies to monitor your batch jobs:
   - For at least 1 one of the jobs,
     carefully read the full Slurm log file, and check other output files,
   - Check whether no jobs have failed: via email when using `--mail-type=END`,
-    or by checking the `tail` of each log for messages like
+    and/or by checking the `tail` of each log for messages like
     "Successfully finished script".
   - Check that you have the expected number of output files and that no files
     have size zero (run `ls -lh`).
 
 ::: callout-tip
-#### TBA Refer to `scontrol` etc for detailed stats
-:::
-
-::: callout-tip
 #### Job monitoring tip: See output added to the Slurm log file in real time
 Text will be added to the Slurm log file in real time as the running script
 (or the program ran by the script) outputs it.
-However, the output that commands like `cat` and `less` print are static.
+However, the output printed by commands like `cat` and `less` print are static
+and not updated in real-time.
 
 Therefore, if you find yourself opening/printing the contents of the Slurm log
-file again and again to keep track of progress,
-then instead **use `tail -f`**, which will "follow" the file and _will_ print new
-text as it's added to the Slurm log file:
+file again and again to keep track of the job's progress,
+then instead **use `tail -f`**, which will "follow" the file and _will_ print
+new text as it's added to the Slurm log file:
 
 ```bash
 # See the last lines of the file, with new contents added in real time
-tail -f slurm-12520046.out
+tail -f slurm-fastqc-37615717.out
 ```
 
-To exit the `tail -f` livestream, press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
+_To exit the `tail -f` livestream, press <kbd>Ctrl</kbd>+<kbd>C</kbd>._
 :::

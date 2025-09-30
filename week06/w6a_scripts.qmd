@@ -35,11 +35,13 @@ other-links:
 
 #### This week and the next two weeks
 
-This week, you will learn how to write shell scripts and use them to run programs
+This week, you will learn how to write shell scripts to run programs
 with command-line interfaces (CLIs), like various bioinformatics tools.
 
 The end goal is to be able to submit shell scripts as "batch jobs" at OSC,
-which e.g. allows you to run them simultaneously up to hundreds of times!
+which e.g. allows you to run them simultaneously many times!
+This is extremely useful because with omics analysis,
+it's common to have to run the same step for many samples in parallel.
 To get there, you still need to learn about the following topics:
 
 1. The basics of shell scripts _(this session)_
@@ -55,13 +57,13 @@ In this session, we will talk about:
 - Shell variables
 - Command-line arguments to scripts
 
-### Setting up
+### Getting ready
 
 1. At <https://ondemand.osc.edu>,
-   start a VS Code session in your personal dir within `/fs/ess/PAS2880/users/`.
-2. Open a terminal and create and then navigate to a `week06` dir.
-3. **Within the `week06` dir, create a dir `scripts`** (but don't navigate there).
-3. _Optional: Create a new Markdown file for class notes and save it in your `week06` dir._
+   start a VS Code session in `/fs/ess/PAS2880/users/$USER`
+2. Open a terminal and create and then navigate to a `week06` dir
+3. **Within the `week06` dir, create a dir `scripts`** (but don't navigate there)
+3. _Optional: Create a new Markdown file for class notes and save it in your `week06` dir_
 
 ::: callout-note
 #### Some useful VS Code keyboard shortcuts
@@ -578,13 +580,20 @@ ls -1
 README_.txt
 ```
 
-<details><summary>Do you understand what happened here? _(Click for the solution)_</summary>
+::: exercise
+{{< fa user-edit >}} **Do you understand what happened here?**
+
+<!---
+<details><summary>_Click for the solution_</summary>
 We have assigned a variable called `$today`,
 but the shell will instead look for a variable called `$today_final`.
 This is because we have not explicitly indicated where the variable name ends,
 so the shell will include all characters until it hits a character that cannot
 be part of a shell variable name: in this case a period, `.`.
 </details>
+-->
+
+:::
 
 Quoting solves this, too:
 
@@ -732,10 +741,11 @@ bash scripts/printname.sh John Doe            # 2 arguments: strings representin
 In the next section,
 you'll see how you can use these arguments inside your script.
 
-### Placeholder variables
+### Positional parameters
 
 Inside the script, any command-line arguments that you pass to it are
-**automatically available in "placeholder" variables**.
+**automatically available in variables**,
+the so-called "positional parameters".
 Specifically:
 
 - Any first argument will be assigned to the variable **`$1`**
@@ -744,20 +754,25 @@ Specifically:
 
 <hr style="height:1pt; visibility:hidden;" />
 
-<details><summary>{{< fa user-edit >}} In the calls to `fastqc.sh` and `printname.sh` above,
-what are the placeholder variables and their values? _(Click for the solution)_</summary>
+::: exercise
+{{< fa user-edit >}} In the calls to `fastqc.sh` and `printname.sh` above,
+what are these variables and their values?
 
+<!---
+<details><summary>_Click here for the solution_</summary>
 <hr style="height:1pt; visibility:hidden;" />
 
-- In `bash scripts/fastqc.sh data/sampleA.fastq.gz`, a single argument, `data/sampleA.fastq.gz`,
-  is passed to the script, and will be assigned to `$1`.
+- In `bash scripts/fastqc.sh data/sampleA.fastq.gz`, a single argument,
+  `data/sampleA.fastq.gz`, is passed to the script, and will be assigned to `$1`.
 
 - In `bash scripts/printname.sh John Doe`, two arguments are passed to the script:
   the first one (`John`) will be stored in `$1`, and the second one (`Doe`) in `$2`.
 </details>
+-->
+:::
 
 However, even though they are _made available_,
-these placeholder variables are not automatically _used_.
+these variables are not automatically _used_.
 So, unless you include code in the script to _do_ something with these variables,
 nothing happens with them.
 
@@ -788,7 +803,7 @@ First name: John
 Last name: Doe
 ```
 
-:::{.exercise}
+::: exercise
 #### {{< fa user-edit >}} Exercise: Command-line arguments
 
 In each scenario that is described below, think about what might happen.
@@ -796,6 +811,7 @@ Then, run the script as instructed in the scenario to test your prediction.
 
 1. Running the script `printname.sh` without passing arguments to it.
 
+   <!---
    <details><summary>Click here for the solution</summary> 
    The script will error out because we are referencing variables that don't exist:
    since we didn't pass command-line arguments to the script,
@@ -807,8 +823,8 @@ Then, run the script as instructed in the scenario to test your prediction.
    ```bash-out
    printname.sh: line 5: $1: unbound variable
    ```
-     
-  </details>
+   </details>
+   -->
 
 2. After commenting out the line with `set` settings,
    running the script again without passing arguments to it.
@@ -825,6 +841,7 @@ Then, run the script as instructed in the scenario to test your prediction.
    ```
    </details>
 
+   <!---
    <details><summary>Click here for the solution</summary> 
    The script will run in its entirety and not throw any errors,
    because we are now using default Bash settings such that referencing 
@@ -845,10 +862,12 @@ Then, run the script as instructed in the scenario to test your prediction.
    #set -euo pipefail
    ```
    </details>
+   -->
 
 3. Double-quoting the entire name when you run the script,
    e.g.: `bash scripts/printname.sh "John Doe"`.
 
+   <!---
    <details><summary>Click here for the solution</summary> 
    Because we are quoting `"John Doe"`, both names are passed _as a single argument_
    and both names end up in `$1`, the "first name":
@@ -861,15 +880,16 @@ Then, run the script as instructed in the scenario to test your prediction.
    echo "Last name:"
    ```
    </details>
+   -->
 
 - _To get back to where you were,_
   _remove the `#` you inserted in the script in step 2 above to reactive the `set` line._
 :::
 
-### Copying placeholders to variables with descriptive names
+### Copying to variables with descriptive names
 
-While you could use the `$1`-style placeholder variables throughout your script,
-I highly recommend to always copy them to more descriptively named variables ---
+While you could use the `$1`-style variables throughout your script,
+I highly recommend always copying them to more descriptively named variables ---
 for example:
 
 ```bash
@@ -892,7 +912,7 @@ Using descriptively named variables in your scripts has several advantages, such
 {{< fa user-edit >}} _Copy the above code into `printname.sh`, replacing its previous contents._
 
 :::{.callout-note}
-#### Other placeholder variables that are automatically available inside scripts:
+#### Other variables that are automatically available inside scripts:
 
 - **`$#`** contains the _number_ of command-line arguments passed to the script
 - **`$0`** contains the script's file name^[

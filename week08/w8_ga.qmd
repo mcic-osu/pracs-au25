@@ -1,5 +1,5 @@
 ---
-title: "Graded Assignment IV: Slurm batch jobs"
+title: "Graded Assignment 4: Slurm batch jobs"
 pagetitle: "GA4"
 date: 2025-10-08
 author:
@@ -15,10 +15,41 @@ editor_options:
 
 --------------------------------------------------------------------------------
 
-<br>
-
-:::callout-caution
-#### THIS PAGE IS STILL UNDER CONSTRUCTION
-:::
-
 <hr style="height:1pt; visibility:hidden;" />
+
+### 5. Modify the script to rename the output FASTQ files
+
+The TrimGalore output FASTQ files are oddly named,
+ending in `_R1_val_1.fq.gz` and `_R2_val_2.fq.gz` ---
+check the output files from your initial run to see this.
+This is not necessarily a problem, but could trip you up in a next step with these files.
+Therefore, in your TrimGalore script (`scripts/trimgalore.sh`):
+
+1. Rename the output files after you run TrimGalore,
+   giving them the same names as the input files.
+2. Add an `if` statement to check that the input dir is not the same as the output dir.
+   If it is, exit the script.
+3. Re-run the script to check that your changes were successful.
+
+<details><summary>Hints _(Click to expand)_</summary>
+
+To do this, you should first extract and store what is basically a sample ID:
+the part of the file name that is shared by the R1 and R2 file.
+
+```bash
+sample_id=$(basename "$R1_in" _R1.fastq.gz)
+```
+
+Based on that ID, you can build up the names of the TrimGalore output files
+as well as the desired final output files. For example:
+
+```bash
+# The name of the initial ('init') TrimGalore R1 output file will be:
+R1_out_init="$outdir"/"$sample_id"_R1_val_1.fq.gz
+```
+
+To test this, you'll need to derive the input dir from the FASTQ path.
+In this week's second lecture, we saw how to do this.
+Use command substitution (`$(...)` to store the input dir in a variable.
+
+</details>

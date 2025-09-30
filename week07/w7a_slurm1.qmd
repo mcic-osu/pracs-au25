@@ -29,7 +29,103 @@ engine: knitr
 
 ## Introduction
 
-### Background and overview
+### Learning goals
+
+#### This week
+
+As mentioned last week, when you learned about shell scripts:
+
+> The end goal is to be able to submit shell scripts as "batch jobs" at OSC,
+which e.g. allows you to run them simultaneously many times!
+This is extremely useful because with omics analysis,
+it's common to have to run the same step for many samples in parallel.
+
+This week, we'll cover the remaining piece in being able to run bioinformatics
+tools efficiently at OSC and beyond:
+how to submit your shell scripts as batch jobs.
+
+#### This session
+
+- Different ways to start "compute jobs":
+  via OnDemand, with interactive jobs, and with Slurm batch jobs
+- Strategies around requesting appropriate resources for your compute jobs
+- Slurm commands like `sbatch` to submit, monitor and manage batch jobs
+- Slurm options to request specific resources for your compute jobs,
+  and how to add these inside your script
+
+### Getting ready
+
+1. At <https://ondemand.osc.edu>,
+   start a VS Code session in `/fs/ess/PAS2880/users/$USER`
+2. Create a `week07` dir and navigate there in the terminal
+3. Create a `scripts` dir within `week07`
+4. You'll need two scripts you made last week. Copy those
+   (or if you somehow don't have these files,
+   create new files and copy the code from the boxes below):
+  
+   ```bash
+   cp ../../week06/scripts/printname.sh scripts/
+   cp ../../week06/scripts/fastqc.sh scripts/
+   ```
+
+::: {.callout-note collapse="true"}
+#### The `printname.sh` script _(Click to expand)_
+
+The code below should be saved in `scripts/printname.sh`:
+
+```bash
+#!/bin/bash
+set -euo pipefail
+
+first_name=$1
+last_name=$2
+
+echo "This script will print a first and a last name"
+echo "First name: $first_name"
+echo "Last name: $last_name"
+```
+:::
+
+::: {.callout-note collapse="true"}
+#### The `fastqc.sh` script _(Click to expand)_
+
+The code below should be saved in `scripts/fastqc.sh`:
+
+```bash
+#!/bin/bash
+set -euo pipefail
+
+# Load the OSC module for FastQC
+module load fastqc/0.12.1
+
+# Copy the placeholder variables
+fastq="$1"
+outdir="$2"
+
+# Initial logging
+echo "# Starting script fastqc.sh"
+date
+echo "# Input FASTQ file:   $fastq"
+echo "# Output dir:         $outdir"
+echo
+
+# Create the output dir if needed
+mkdir -p "$outdir"
+
+# Run FastQC
+fastqc --outdir "$outdir" "$fastq"
+
+# Final logging
+echo
+echo "# Used FastQC version:"
+fastqc --version
+echo
+echo "# Successfully finished script fastqc.sh"
+date
+```
+:::
+
+## Compute jobs overview
 
 Automated scheduling software allows hundreds of people with different
 requirements to effectively and fairly access compute nodes at supercomputers.
@@ -50,94 +146,6 @@ We've already worked a lot with the VS Code Interactive App,
 and the self-study material at the bottom of this page will cover interactive
 shell jobs.
 What we'll focus on in this session are **batch jobs**.
-
-### Getting ready
-
-- Start a VS Code Server session through <https://ondemand.osc.edu> as per usual,
-  and in VS Code, open a terminal and make sure you are at
-  `/fs/ess/PAS2880/users/$USER`.
-
-- Create a dir for this week and move:
-
-  ```bash
-  mkdir -p week07/class_slurm/scripts
-  cd week07/class_slurm
-  ```
-
-- You'll need two scripts you made last week.
-  You can either copy those from last week's dir using the code below,
-  or if you somehow don't have these anymore,
-  create new files and copy the code from the boxes below.
-  
-  ```bash
-  cp ../../week06/scripts/printname.sh scripts/
-  cp ../../week06/scripts/fastqc.sh scripts/
-  ```
-
-::: {.callout-note collapse="true"}
-#### The `printname.sh` script _(Click to expand)_
-
-The code below should be saved in `scripts/printname.sh` 
-(within `week07/class_slurm`):
-
-```bash
-#!/bin/bash
-set -euo pipefail
-
-if [[ ! "$#" -eq 2 ]]; then
-    echo "Error: wrong number of arguments"
-    echo "You provided $# arguments, while 2 are required."
-    echo "Usage: printname.sh <first-name> <last-name>"
-    exit 1
-fi
-
-first_name=$1
-last_name=$2
-
-echo "This script will print a first and a last name"
-echo "First name: $first_name"
-echo "Last name: $last_name"
-```
-:::
-
-::: {.callout-note collapse="true"}
-#### The `fastqc.sh` script _(Click to expand)_
-
-The code below should be saved in `scripts/fastqc.sh` 
-(within `week07/class_slurm`):
-
-```bash
-#!/bin/bash
-set -euo pipefail
-
-# Load the OSC module for FastQC
-module load fastqc/0.12.1
-
-# Copy the placeholder variables
-fastq=$1
-outdir=$2
-
-# Initial logging
-echo "# Starting script fastqc.sh"
-date
-echo "# Input FASTQ file:   $fastq"
-echo "# Output dir:         $outdir"
-echo
-
-# Create the output dir if needed
-mkdir -p "$outdir"
-
-# Run FastQC
-fastqc --outdir "$outdir" "$fastq"
-
-# Final logging
-echo "# Used FastQC version:"
-fastqc --version
-echo
-echo "# Successfully finished script fastqc.sh"
-date
-```
-:::
 
 ## Basics of Slurm batch jobs
 
