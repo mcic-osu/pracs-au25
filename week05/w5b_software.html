@@ -413,9 +413,9 @@ div.csl-indent {
 <section id="setting-up" class="level3" data-number="1.2">
 <h3 data-number="1.2" class="anchored" data-anchor-id="setting-up"><span class="header-section-number">1.2</span> Setting up</h3>
 <ol type="1">
-<li>At <a href="https://ondemand.osc.edu" class="uri">https://ondemand.osc.edu</a>, start a VS Code session in your personal dir within <code>/fs/ess/PAS2880/users/</code>.</li>
-<li>Open a terminal and create and then navigate to a <code>week05</code> dir.</li>
-<li><em>Optional: Create a new Markdown file for class notes and save it in your <code>week05</code> dir.</em></li>
+<li>At <a href="https://ondemand.osc.edu" class="uri">https://ondemand.osc.edu</a>, start a VS Code session in <code>/fs/ess/PAS2880/users/$USER</code></li>
+<li>Open a terminal and create and then navigate to a <code>week05</code> dir</li>
+<li><em>Optional: Create a new Markdown file for class notes and save it in your <code>week05</code> dir</em></li>
 </ol>
 </section>
 </section>
@@ -681,25 +681,34 @@ Type 'q()' to quit R.
 <h4 class="anchored" data-anchor-id="exercise-modules"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Modules</h4>
 <ol type="1">
 <li><p>Search for the program MultiQC<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> – is it available?</p>
-<details>
-<summary>
-<p><em>Click to see the solution</em></p>
+<!---
+<details><summary>_Click to see the solution_</summary>
+
+No, it isn't available!
+
+```bash
+module spider multiqc
+```
+```bash-out
+Lmod has detected the following error:  Unable to find: "multiqc".
+```
 </summary>
-<p>No, it isn’t available!</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> spider multiqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>Lmod has detected the following error:  Unable to find: "multiqc".</code></pre>
-</details></li>
+--></li>
 <li><p>Search for the program STAR<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. How many versions are available?</p>
-<details>
-<summary>
-<p><em>Click to see the solution</em></p>
-</summary>
-<ul>
-<li><p>Note that another program, <code>starccm</code>, also matches the search term, so the output is rather long and will open in a <code>less</code>-like pager (press <kbd>q</kbd> to exit).</p></li>
-<li><p>Two versions are available, the most recent one is <code>2.7.11b</code>.</p></li>
-</ul>
-<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> spider STAR</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>-----------------------------------------------------------------------------
+<!---
+<details><summary>_Click to see the solution_</summary>
+
+- Note that another program, `starccm`, also matches the search term,
+  so the output is rather long and will open in a `less`-like pager
+  (press <kbd>q</kbd> to exit).
+
+- Two versions are available, the most recent one is `2.7.11b`.
+
+```bash
+module spider STAR
+```
+```bash-out
+-----------------------------------------------------------------------------
 star:
 -----------------------------------------------------------------------------
   Versions:
@@ -720,26 +729,32 @@ starccm:
   Versions:
      starccm/18.06.006-hbm
 
-[...output truncated...]</code></pre>
-</details></li>
-<li><p>Load the most recent of the STAR versions and test whether you can use it by running <code>STAR</code> (without adding any options).</p>
-<details>
-<summary>
-<p><em>Click to see the solution</em></p>
+[...output truncated...]
+```
+
 </summary>
-<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load star/2.7.11b</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="ex">STAR</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>Usage: STAR  [options]... --genomeDir /path/to/genome/index/   --readFilesIn R1.fq R2.fq
+--></li>
+<li><p>Load the most recent of the STAR versions and test whether you can use it by running <code>STAR</code> (without adding any options).</p>
+<!---
+<details><summary>_Click to see the solution_</summary>
+```bash
+module load star/2.7.11b
+STAR
+```
+```bash-out
+Usage: STAR  [options]... --genomeDir /path/to/genome/index/   --readFilesIn R1.fq R2.fq
 Spliced Transcripts Alignment to a Reference (c) Alexander Dobin, 2009-2022
 
 STAR version=2.7.11b
 STAR compilation time,server,dir=2025-05-15T10:25:22-04:00 cardinal-rw02.ten.osc.edu:/tmp/kkoepcke/spack/stage/spack-stage-star-2.7.11b-bvgy4jcfuw4lbeigwgzlulagqmvz5o65/spack-src/source
 For more details see:
-&lt;https://github.com/alexdobin/STAR&gt;
-&lt;https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf&gt;
+<https://github.com/alexdobin/STAR>
+<https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf>
 
-To list all parameters, run STAR --help</code></pre>
-</details></li>
+To list all parameters, run STAR --help
+```
+</summary>
+--></li>
 </ol>
 </section>
 </section>
@@ -905,8 +920,8 @@ You can’t use the container before it’s ready <em>(Click to expand)</em>
 <div class="callout-body-container callout-body">
 <p>In this case, after we clicked Get Container, the pop-up box should have immediately said “Container is ready”. That means the container image was already available in the repository.</p>
 <p>In other cases, however, the container may still need to be built, and the box should say <strong>“Fetching container”</strong> for a while. This could take one or a few minutes, and even though the URL is made available immediately and won’t change, you can only download/use the container once the “Container is ready”. If you use an URL before the container is ready, you get this error:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f <span class="dt">\</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    multiqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f <span class="dt">\</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    multiqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>FATAL:   Unable to handle oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f uri: failed to get checksum for oras://community.wave.seqera.io/library/multiqc_trim-galore:15a1e9f26daf266f: GET https://community.wave.seqera.io/v2/library/multiqc_trim-galore/manifests/15a1e9f26daf266f: MANIFEST_UNKNOWN: manifest unknown; map[Tag:15a1e9f26daf266f]</code></pre>
 </div>
 </div>
@@ -916,12 +931,12 @@ You can’t use the container before it’s ready <em>(Click to expand)</em>
 <section id="running-a-container-image" class="level3" data-number="4.4">
 <h3 data-number="4.4" class="anchored" data-anchor-id="running-a-container-image"><span class="header-section-number">4.4</span> Running a container image</h3>
 <p>To run a command in a container, the general syntax is:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="op">&lt;</span>container-URL<span class="op">&gt;</span> <span class="op">&lt;</span>command<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="op">&lt;</span>container-URL<span class="op">&gt;</span> <span class="op">&lt;</span>command<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>For example, if the command (<code>&lt;command&gt;</code> above) you want to run is <code>fastqc -v</code>:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="op">&lt;</span>container-URL<span class="op">&gt;</span> fastqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="op">&lt;</span>container-URL<span class="op">&gt;</span> fastqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>So, you need to preface your “regular” command with <code>apptainer exec &lt;container-URL&gt;</code>. Now with the actual link to the container:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>INFO:    Downloading oras image
 384.0MiB / 384.0MiB [======================================================================================================================] 100 % 51.8 MiB/s 0s
 INFO:    gocryptfs not found, will not be able to use gocryptfs
@@ -944,8 +959,8 @@ Breaking up a command across lines with <code>\</code>
 <section id="the-container-image-cache-storage" class="level3" data-number="4.5">
 <h3 data-number="4.5" class="anchored" data-anchor-id="the-container-image-cache-storage"><span class="header-section-number">4.5</span> The container image cache (storage)</h3>
 <p>The easiest way to run a container image you already downloaded is to simply keep re-use the exact same command with the URL to the container (!): Apptainer will realize that the image has already been downloaded and will automatically use the downloaded version:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>INFO:    Using cached SIF image
 INFO:    gocryptfs not found, will not be able to use gocryptfs
 FastQC v0.12.1</code></pre>
@@ -966,10 +981,10 @@ Where is the cache located? <em>(Click to expand)</em>
 <div id="callout-12" class="callout-12-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>By default, containers are downloaded to a hidden directory in your Home dir, <code>~/.apptainer/cache</code>. That is generally fine, but you can change it <em>for your current shell session</em> by setting the <code>$APPTAINER_CACHEDIR</code> environment variable, e.g.:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">APPTAINER_CACHEDIR</span><span class="op">=</span>/fs/scratch/PAS2880/<span class="va">$USER</span>/containers</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">APPTAINER_CACHEDIR</span><span class="op">=</span>/fs/scratch/PAS2880/<span class="va">$USER</span>/containers</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><em>(To permamently change this location, you would need to add</em> <em>this line to your <code>~/.bashrc</code> shell configuration file.</em> <em>We won’t cover this file in class.)</em></p>
 <p>You can check what’s in your cache as follows – though this is only informative in terms of how many containers are there and how much space they take up, because the container names are very cryptic:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> cache list <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> cache list <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>NAME                     DATE CREATED           SIZE             TYPE
 sha256:e0c976cb2eca5fe   2025-09-20 19:08:51    383.99 MiB       oras
 
@@ -984,26 +999,26 @@ Total space used: 383.99 MiB</code></pre>
 <section id="a-practical-example-running-fastqc-on-a-fastq-file" class="level2" data-number="5">
 <h2 data-number="5" class="anchored" data-anchor-id="a-practical-example-running-fastqc-on-a-fastq-file"><span class="header-section-number">5</span> A practical example: running FastQC on a FASTQ file</h2>
 <p>To analyze a FASTQ file with default FastQC settings, the command is simply <code>fastqc</code> followed by the FASTQ file path – and we could use one of the FASTQ files in our Garrigos practice data set:</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this]</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  fastqc ../garrigos-data/fastq/ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this]</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960 <span class="dt">\</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  fastqc ../garrigos-data/fastq/ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To shorten subsequent commands, let’s start by assigning the container link and FASTQ file path to variables:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="va">FASTQC_APPT</span><span class="op">=</span>oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="va">FASTQ_R1</span><span class="op">=</span>../garrigos-data/fastq/ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$FASTQC_APPT</span><span class="st">"</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> <span class="st">"</span><span class="va">$FASTQ_R1</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="va">FASTQC_APPT</span><span class="op">=</span>oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="va">FASTQ_R1</span><span class="op">=</span>../garrigos-data/fastq/ERR10802863_R1.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$FASTQC_APPT</span><span class="st">"</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> <span class="st">"</span><span class="va">$FASTQ_R1</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960
 -rw-rw----+ 1 jelmer PAS0471 21M Sep  9 13:46 ../garrigos-data/fastq/ERR10802863_R1.fastq.gz</code></pre>
 <p>With that, the above command becomes:</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this]</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$FASTQC_APPT</span><span class="st">"</span> <span class="dt">\</span></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="st">"</span><span class="va">$FASTQ_R1</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Don't run this]</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$FASTQC_APPT</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="st">"</span><span class="va">$FASTQ_R1</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>However, an annoying default behavior of FastQC is that it writes its output files in the same dir that contains the input FASTQ files — this means mixing your raw data with your results, which we don’t want!</p>
 <section id="changing-the-output-directory" class="level3" data-number="5.1">
 <h3 data-number="5.1" class="anchored" data-anchor-id="changing-the-output-directory"><span class="header-section-number">5.1</span> Changing the output directory?</h3>
 <p>To figure out how to change that behavior, consider that many standard Unix commands and bioinformatics tools alike have an option <code>-h</code> and/or <code>--help</code> to print usage information to the screen. Let’s try that:</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$FASTQC_APPT</span><span class="st">"</span> <span class="dt">\</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">-h</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$FASTQC_APPT</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">-h</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>INFO:    Using cached SIF image
 INFO:    gocryptfs not found, will not be able to use gocryptfs
 
@@ -1019,31 +1034,36 @@ SYNOPSIS
 # [...output truncated...]</code></pre>
 <hr style="height:1pt; visibility:hidden;">
 <section id="exercise-fastqc-help-and-output-dir" class="level4 exercise">
-<h4 class="anchored" data-anchor-id="exercise-fastqc-help-and-output-dir"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <strong>Exercise</strong>: FastQC help and output dir</h4>
+<h4 class="anchored" data-anchor-id="exercise-fastqc-help-and-output-dir"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: FastQC help and output dir</h4>
 <p>Look at FastQC’s help info, and figure out which option can be used to specify a custom output directory.</p>
-<details>
-<summary>
-<em>Click for the solution</em>
-</summary>
-<p>The option to do this is <code>-o</code>/<code>--outdir</code>:</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fastqc</span> <span class="at">-h</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>  -o --outdir     Create all output files in the specified output directory.
+<!---
+<details><summary>*Click for the solution*</summary>
+
+The option to do this is `-o`/`--outdir`:
+
+``` bash
+fastqc -h
+```
+``` bash-out
+  -o --outdir     Create all output files in the specified output directory.
                     Please note that this directory must exist as the program
                     will not create it.  If this option is not set then the 
                     output file for each sequence file is created in the same
-                    directory as the sequence file which was processed.</code></pre>
+                    directory as the sequence file which was processed.
+```
 </details>
+-->
 </section>
 </section>
 <section id="the-final-fastqc-command" class="level3" data-number="5.2">
 <h3 data-number="5.2" class="anchored" data-anchor-id="the-final-fastqc-command"><span class="header-section-number">5.2</span> The final FastQC command</h3>
 <p>With the added <code>--outdir</code> (or <code>-o</code>) option, try to run the following FastQC command:</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll have to first create the outdir ourselves, in this case:</span></span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/fastqc</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we run FastQC:</span></span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$FASTQC_APPT</span><span class="st">"</span> <span class="dt">\</span></span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">--outdir</span> results/fastqc <span class="st">"</span><span class="va">$FASTQ_R1</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll have to first create the outdir ourselves, in this case:</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/fastqc</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we run FastQC:</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$FASTQC_APPT</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">--outdir</span> results/fastqc <span class="st">"</span><span class="va">$FASTQ_R1</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Started analysis of ERR10802863_R1.fastq.gz
 Approx 5% complete for ERR10802863_R1.fastq.gz
 Approx 10% complete for ERR10802863_R1.fastq.gz
@@ -1055,7 +1075,7 @@ Analysis complete for ERR10802863_R1.fastq.gz</code></pre>
 <li>A <code>.zip</code> file, which contains tables with FastQC’s data summaries</li>
 <li>An <code>.html</code> (HTML) file, which contains the graphs we’d like to see</li>
 </ul>
-<div class="sourceCode" id="cb50"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> results/fastqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> results/fastqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>total 512K
 -rw-rw----+ 1 jelmer PAS0471 241K Mar 21 09:53 ERR10802863_R1_fastqc.html
 -rw-rw----+ 1 jelmer PAS0471 256K Mar 21 09:53 ERR10802863_R1_fastqc.zip</code></pre>
@@ -1074,32 +1094,49 @@ Specifying an output dir vs.&nbsp;output file(s)
 </div>
 </div>
 <section id="exercise-another-fastqc-run" class="level4 exercise">
-<h4 class="anchored" data-anchor-id="exercise-another-fastqc-run"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <strong>Exercise</strong>: Another FastQC run</h4>
+<h4 class="anchored" data-anchor-id="exercise-another-fastqc-run"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Another FastQC run</h4>
 <p>Run FastQC for the corresponding R2 FASTQ file. Would you use the same output dir or a different one?</p>
-<details>
-<summary>
-<em>Click for the solution</em>
-</summary>
-<p>It makes sense to use the same output dir. This is because, as you could see above, the output file names have the input file identifiers in them. As such, because we don’t need to worry about overwriting files, it will be more convenient to have all results in a single dir.</p>
-<p>To run FastQC for the R2 (reverse-read) file:</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="va">FASTQ_R2</span><span class="op">=</span>../garrigos-data/fastq/ERR10802863_R2.fastq.gz</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$FASTQC_APPT</span><span class="st">"</span> <span class="dt">\</span></span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  fastqc <span class="at">--outdir</span> results/fastqc <span class="st">"</span><span class="va">$FASTQ_R2</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>Started analysis of ERR10802863_R2.fastq.gz
+<!---
+<details><summary>*Click for the solution*</summary>
+
+It makes sense to use the same output dir.
+This is because, as you could see above,
+the output file names have the input file identifiers in them.
+As such, because we don't need to worry about overwriting files,
+it will be more convenient to have all results in a single dir.
+
+To run FastQC for the R2 (reverse-read) file:
+
+``` bash
+FASTQ_R2=../garrigos-data/fastq/ERR10802863_R2.fastq.gz
+
+apptainer exec "$FASTQC_APPT" \
+  fastqc --outdir results/fastqc "$FASTQ_R2"
+```
+``` bash-out
+Started analysis of ERR10802863_R2.fastq.gz
 Approx 5% complete for ERR10802863_R2.fastq.gz
 Approx 10% complete for ERR10802863_R2.fastq.gz
 Approx 15% complete for ERR10802863_R2.fastq.gz
 [...truncated...]
-Analysis complete for ERR10802863_R2.fastq.gz</code></pre>
-<div class="sourceCode" id="cb54"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> results/fastqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>total 1008K
+Analysis complete for ERR10802863_R2.fastq.gz
+```
+
+``` bash
+ls -lh results/fastqc
+```
+``` bash-out
+total 1008K
 -rw-rw----+ 1 jelmer PAS0471 241K Mar 21 09:53 ERR10802863_R1_fastqc.html
 -rw-rw----+ 1 jelmer PAS0471 256K Mar 21 09:53 ERR10802863_R1_fastqc.zip
 -rw-rw----+ 1 jelmer PAS0471 234K Mar 21 09:55 ERR10802863_R2_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 244K Mar 21 09:55 ERR10802863_R2_fastqc.zip</code></pre>
-<p>Now, we have four files: two for each of our preceding successful FastQC runs.</p>
+-rw-rw----+ 1 jelmer PAS0471 244K Mar 21 09:55 ERR10802863_R2_fastqc.zip
+```
+
+Now, we have four files: two for each of our preceding successful FastQC runs.
+
 </details>
+-->
 </section>
 <section id="exercise-download-the-html-files-and-open-them" class="level4 exercise">
 <h4 class="anchored" data-anchor-id="exercise-download-the-html-files-and-open-them"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <strong>Exercise</strong>: Download the HTML files and open them</h4>

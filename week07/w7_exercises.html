@@ -22,40 +22,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 /* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
@@ -318,14 +284,11 @@ div.csl-indent {
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#introduction-to-trimgalore" id="toc-introduction-to-trimgalore" class="nav-link" data-scroll-target="#introduction-to-trimgalore">Introduction to TrimGalore</a></li>
-  <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1">Exercise 1</a></li>
-  <li><a href="#exercise-2" id="toc-exercise-2" class="nav-link" data-scroll-target="#exercise-2">Exercise 2</a>
-  <ul class="collapse">
-  <li><a href="#run-your-trimgalore-script-once" id="toc-run-your-trimgalore-script-once" class="nav-link" data-scroll-target="#run-your-trimgalore-script-once">4. Run your TrimGalore script once</a></li>
-  <li><a href="#modify-the-script-to-rename-the-output-fastq-files" id="toc-modify-the-script-to-rename-the-output-fastq-files" class="nav-link" data-scroll-target="#modify-the-script-to-rename-the-output-fastq-files">5. Modify the script to rename the output FASTQ files</a></li>
-  <li><a href="#run-your-trimgalore-script-for-all-samples" id="toc-run-your-trimgalore-script-for-all-samples" class="nav-link" data-scroll-target="#run-your-trimgalore-script-for-all-samples">6. Run your TrimGalore script for all samples</a></li>
-  </ul></li>
+  <li><a href="#what-is-trimgalore" id="toc-what-is-trimgalore" class="nav-link" data-scroll-target="#what-is-trimgalore">What is TrimGalore?</a></li>
+  <li><a href="#get-the-trimgalore-container" id="toc-get-the-trimgalore-container" class="nav-link" data-scroll-target="#get-the-trimgalore-container">Get the TrimGalore container</a></li>
+  <li><a href="#write-a-trimgalore-script" id="toc-write-a-trimgalore-script" class="nav-link" data-scroll-target="#write-a-trimgalore-script">Write a TrimGalore script</a></li>
+  <li><a href="#run-your-trimgalore-script-once" id="toc-run-your-trimgalore-script-once" class="nav-link" data-scroll-target="#run-your-trimgalore-script-once">Run your TrimGalore script once</a></li>
+  <li><a href="#run-your-trimgalore-script-for-all-samples" id="toc-run-your-trimgalore-script-for-all-samples" class="nav-link" data-scroll-target="#run-your-trimgalore-script-for-all-samples">Run your TrimGalore script for all samples</a></li>
   </ul>
 <div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w7_overview.html"><i class="bi bi-book"></i>Week 7 overview</a></li><li><a href="w7a_slurm1.html"><i class="bi bi-bookmarks"></i>w7a: Batch jobs I</a></li><li><a href="w7b_slurm2.html"><i class="bi bi-bookmarks"></i>w7b: Batch jobs II</a></li></ul></div></nav>
     </div>
@@ -376,20 +339,25 @@ div.csl-indent {
 <hr style="height:1pt; visibility:hidden;">
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>In these exercises, you’ll practice with ….</p>
+<p>In these exercises, you’ll practice with running bioinformatics programs using Slurm batch jobs.</p>
 <section id="setting-up" class="level4">
 <h4 class="anchored" data-anchor-id="setting-up">Setting up</h4>
+<ol type="1">
+<li>At <a href="https://ondemand.osc.edu" class="uri">https://ondemand.osc.edu</a>, start a VS Code session in <code>/fs/ess/PAS2880/users/$USER</code></li>
+<li>Create a dir <code>week07/exercises</code> for these exercises, and navigate there</li>
+</ol>
 </section>
 </section>
-<section id="introduction-to-trimgalore" class="level2">
-<h2 class="anchored" data-anchor-id="introduction-to-trimgalore">Introduction to TrimGalore</h2>
+<section id="what-is-trimgalore" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-trimgalore">What is TrimGalore?</h2>
 <p>TrimGalore <span class="citation" data-cites="krueger2021">(<a href="#ref-krueger2021" role="doc-biblioref">Krueger 2021</a>)</span> is a tool that can trim and filter FASTQ files, removing:</p>
 <ul>
 <li>Any adapter sequences that are present in the reads<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</li>
 <li>Poor-quality bases at the start and end of the reads.</li>
 <li>Reads that have become very short after the prior two steps.</li>
 </ul>
-<p>TrimGalore takes FASTQ files as input, and outputs filtered FASTQ files. When you have paired-end reads (as you do here), <em>a single TrimGalore run should include both the R1 and R2 file for one sample</em>.</p>
+<p>TrimGalore takes FASTQ files as input, and outputs filtered FASTQ files.</p>
+<p>It is important to realize that when you have paired-end reads (as you do with the <span class="citation" data-cites="garrigós2025">Garrigós et al. (<a href="#ref-garrigós2025" role="doc-biblioref">2025</a>)</span> data), a single TrimGalore run should include both the R1 and R2 file for one sample. This is because R1 and R2 files need to remain “synced”: generally, you can’t remove a read from an R1 file without also removing its mate from the R2. Operationally, this means we can’t simply submit one job for each FASTQ file!</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -411,16 +379,16 @@ More about TrimGalore and similar programs <em>(Click to expand)</em>
 </div>
 </div>
 </section>
-<section id="exercise-1" class="level2">
-<h2 class="anchored" data-anchor-id="exercise-1">Exercise 1</h2>
+<section id="get-the-trimgalore-container" class="level2">
+<h2 class="anchored" data-anchor-id="get-the-trimgalore-container">Get the TrimGalore container</h2>
 <ol type="1">
 <li><p>Get the URL to the container image with the most recent TrimGalore that you found last week. Or go to <a href="https://seqera.io/containers" class="uri">https://seqera.io/containers</a> to retrieve the link there.</p></li>
-<li><p>Print the help info with the <code>--help</code> option – you’ll be using this info below!</p></li>
+<li><p>Print the TrimGalore help info with the <code>--help</code> option – you’ll use this info below!</p></li>
 </ol>
 </section>
-<section id="exercise-2" class="level2">
-<h2 class="anchored" data-anchor-id="exercise-2">Exercise 2</h2>
-<p>Write a shell script <code>scripts/trimgalore.sh</code> that runs TrimGalore on paired end-FASTQ files as follows:</p>
+<section id="write-a-trimgalore-script" class="level2">
+<h2 class="anchored" data-anchor-id="write-a-trimgalore-script">Write a TrimGalore script</h2>
+<p>Write a shell script <code>scripts/trimgalore.sh</code> that runs TrimGalore on paired-end FASTQ files as follows:</p>
 <ul>
 <li><p>Header lines + TrimGalore version + TBA</p></li>
 <li><p>The script should only <strong>run TrimGalore once</strong>, i.e.&nbsp;for one sample (two FASTQ files).</p></li>
@@ -449,8 +417,9 @@ Don’t use/adjust TrimGalore’s <code>--cores</code> option here <em>(Click to
 </div>
 </div>
 </div>
-<section id="run-your-trimgalore-script-once" class="level3">
-<h3 class="anchored" data-anchor-id="run-your-trimgalore-script-once">4. Run your TrimGalore script once</h3>
+</section>
+<section id="run-your-trimgalore-script-once" class="level2">
+<h2 class="anchored" data-anchor-id="run-your-trimgalore-script-once">Run your TrimGalore script once</h2>
 <ol type="1">
 <li><p>Run your TrimGalore script for the <code>ERR10802863</code> sample in <code>garrigos-data/fastq</code>.</p></li>
 <li><p>Check if everything went well by reading the ouput that is printed to screen, and by taking a look at TrimGalore’s output files. What outputs are you finding? <em>(If something went wrong, go back to your <code>trimgalore.sh</code> script and try to fix it,</em> <em>and describe your process in the <code>README.md</code>.)</em></p></li>
@@ -462,28 +431,8 @@ Don’t use/adjust TrimGalore’s <code>--cores</code> option here <em>(Click to
 </ul></li>
 </ol>
 </section>
-<section id="modify-the-script-to-rename-the-output-fastq-files" class="level3">
-<h3 class="anchored" data-anchor-id="modify-the-script-to-rename-the-output-fastq-files">5. Modify the script to rename the output FASTQ files</h3>
-<p>The TrimGalore output FASTQ files are oddly named, ending in <code>_R1_val_1.fq.gz</code> and <code>_R2_val_2.fq.gz</code> — check the output files from your initial run to see this. This is not necessarily a problem, but could trip you up in a next step with these files. Therefore, in your TrimGalore script (<code>scripts/trimgalore.sh</code>):</p>
-<ol type="1">
-<li>Rename the output files after you run TrimGalore, giving them the same names as the input files.</li>
-<li>Add an <code>if</code> statement to check that the input dir is not the same as the output dir. If it is, exit the script.</li>
-<li>Re-run the script to check that your changes were successful.</li>
-</ol>
-<details>
-<summary>
-Hints <em>(Click to expand)</em>
-</summary>
-<p>To do this, you should first extract and store what is basically a sample ID: the part of the file name that is shared by the R1 and R2 file.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">sample_id</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$R1_in</span><span class="st">"</span> _R1.fastq.gz<span class="va">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Based on that ID, you can build up the names of the TrimGalore output files as well as the desired final output files. For example:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The name of the initial ('init') TrimGalore R1 output file will be:</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">R1_out_init</span><span class="op">=</span><span class="st">"</span><span class="va">$outdir</span><span class="st">"</span>/<span class="st">"</span><span class="va">$sample_id</span><span class="st">"</span>_R1_val_1.fq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To test this, you’ll need to derive the input dir from the FASTQ path. In this week’s second lecture, we saw how to do this. Use command substitution (<code>$(...)</code> to store the input dir in a variable.</p>
-</details>
-</section>
-<section id="run-your-trimgalore-script-for-all-samples" class="level3">
-<h3 class="anchored" data-anchor-id="run-your-trimgalore-script-for-all-samples">6. Run your TrimGalore script for all samples</h3>
+<section id="run-your-trimgalore-script-for-all-samples" class="level2">
+<h2 class="anchored" data-anchor-id="run-your-trimgalore-script-for-all-samples">Run your TrimGalore script for all samples</h2>
 <p>Write a <code>for</code> loop (include this in the README) to run your TrimGalore script for all samples in the <code>garrigos-data/fastq</code> dir, and run that loop. <em>(Make sure you are running the script once per sample, not per FASTQ file.)</em></p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -503,10 +452,12 @@ This will take some time (~20 minutes) to run!
 
 
 </section>
-</section>
 
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-garrigós2025" class="csl-entry" role="listitem">
+Garrigós, Marta, Guillem Ylla, Josué Martínez-de la Puente, Jordi Figuerola, and María José Ruiz-López. 2025. <span>“Two Avian <em>Plasmodium</em> Species Trigger Different Transcriptional Responses on Their Vector <em>Culex <span>p</span>ipiens</em>.”</span> <em>Molecular Ecology</em> 34 (15): e17240. <a href="https://doi.org/10.1111/mec.17240">https://doi.org/10.1111/mec.17240</a>.
+</div>
 <div id="ref-krueger2021" class="csl-entry" role="listitem">
 Krueger, Felix. 2021. <em>Trimgalore</em>. <a href="https://github.com/FelixKrueger/TrimGalore">https://github.com/FelixKrueger/TrimGalore</a>.
 </div>

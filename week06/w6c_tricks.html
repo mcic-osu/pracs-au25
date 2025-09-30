@@ -301,6 +301,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#learning-goals" id="toc-learning-goals" class="nav-link" data-scroll-target="#learning-goals"><span class="header-section-number">1.1</span> Learning goals</a></li>
   <li><a href="#setting-up" id="toc-setting-up" class="nav-link" data-scroll-target="#setting-up"><span class="header-section-number">1.2</span> Setting up</a></li>
+  <li><a href="#getting-ready" id="toc-getting-ready" class="nav-link" data-scroll-target="#getting-ready"><span class="header-section-number">1.3</span> Getting ready</a></li>
   </ul></li>
   <li><a href="#parameter-expansion-and-looping-over-samples" id="toc-parameter-expansion-and-looping-over-samples" class="nav-link" data-scroll-target="#parameter-expansion-and-looping-over-samples"><span class="header-section-number">2</span> Parameter expansion – and looping over samples</a>
   <ul class="collapse">
@@ -372,10 +373,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="setting-up" class="level3" data-number="1.2">
 <h3 data-number="1.2" class="anchored" data-anchor-id="setting-up"><span class="header-section-number">1.2</span> Setting up</h3>
+</section>
+<section id="getting-ready" class="level3" data-number="1.3">
+<h3 data-number="1.3" class="anchored" data-anchor-id="getting-ready"><span class="header-section-number">1.3</span> Getting ready</h3>
 <ol type="1">
-<li>At <a href="https://ondemand.osc.edu" class="uri">https://ondemand.osc.edu</a>, start a VS Code session in your personal dir within <code>/fs/ess/PAS2880/users/</code>.</li>
-<li>Navigate to your <code>week06</code> dir.</li>
-<li><em>Optional: Create a new Markdown file for class notes and save it in your <code>week06</code> dir.</em></li>
+<li>At <a href="https://ondemand.osc.edu" class="uri">https://ondemand.osc.edu</a>, start a VS Code session in <code>/fs/ess/PAS2880/users/$USER</code></li>
+<li>In the terminal, navigate to your <code>week06</code> dir</li>
+<li><strong>Open your <code>README.md</code> from the last class</strong></li>
+<li><em>Optional: Create a new or open an existing Markdown file for class notes</em> <em>in your <code>week06</code> dir</em></li>
 </ol>
 </section>
 </section>
@@ -443,8 +448,9 @@ Solutions
 <h4 class="anchored" data-anchor-id="exercise-run-a-script-with-a-per-sample-loop"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Run a script with a per-sample loop</h4>
 <ul>
 <li><p>Write a script <code>trim_mock.sh</code> that accepts three arguments: an R1 FASTQ file, an R2 FASTQ file, and an output dir. You can use your <code>fastqc.sh</code> script as a template, but this script should mock-run the fictional <code>trimmer</code> program as follows:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mock-run the tool: by prefacing the command with 'echo' it will only be printed</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> trimmer <span class="at">--in1</span> <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> <span class="at">--in2</span> <span class="st">"</span><span class="va">$R2</span><span class="st">"</span> <span class="at">--outdir</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mock-run the tool: by prefacing the command with 'echo',</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the command will merely be printed, not run</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> trimmer <span class="at">--in1</span> <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> <span class="at">--in2</span> <span class="st">"</span><span class="va">$R2</span><span class="st">"</span> <span class="at">--outdir</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <details>
 <summary>
 <p>Solution</p>
@@ -468,14 +474,13 @@ Solutions
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Output dir:          </span><span class="va">$outdir</span><span class="st">"</span></span>
 <span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Mock-run the tool: I preface the command with 'echo',</span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="co"># so it will just print the commands (instead of trying to run a non-existing program)</span></span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> trimmer <span class="at">--in1</span> <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> <span class="at">--in2</span> <span class="st">"</span><span class="va">$R2</span><span class="st">"</span> <span class="at">--outdir</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Final reporting</span></span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Succesfully finished script trim_mock.sh"</span></span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Mock-run the tool</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> trimmer <span class="at">--in1</span> <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> <span class="at">--in2</span> <span class="st">"</span><span class="va">$R2</span><span class="st">"</span> <span class="at">--outdir</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Final reporting</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Succesfully finished script trim_mock.sh"</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details></li>
 <li><p>Add an entry to your <code>README.md</code> file to loop over all R1 FASTQ files and run the <code>trim_mock.sh</code> script for each sample.</p>
 <details>
