@@ -156,7 +156,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week06/w6_overview.html">
  <span class="dropdown-text">Week 6: Shell scripts and CLI tools</span></a>
   </li>  
-        <li class="dropdown-header">Week 7: Slurm batch jobs at OSC [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week07/w7_overview.html">
+ <span class="dropdown-text">Week 7: Slurm batch jobs at OSC</span></a>
+  </li>  
         <li class="dropdown-header">Week 8: Halfway recap [TBA]</li>
         <li class="dropdown-header">Week 9: Workflow and data management [TBA]</li>
         <li class="dropdown-header">Week 10: Coding with generative AI [TBA]</li>
@@ -180,7 +183,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week05/w5_exercises.html">
  <span class="dropdown-text">Week 5: GitHub and software at OSC</span></a>
   </li>  
-        <li class="dropdown-header">Week 7: Slurm batch jobs [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week07/w7_exercises.html">
+ <span class="dropdown-text">Week 7: Slurm batch jobs</span></a>
+  </li>  
         <li class="dropdown-header">Week 9: Workflow and data management [TBA]</li>
         <li class="dropdown-header">Week 11: R basics [TBA]</li>
         <li class="dropdown-header">Week 12: Quarto [TBA]</li>
@@ -742,15 +748,12 @@ README_Tue,</code></pre>
 <pre class="bash-out"><code>README_.txt</code></pre>
 <div class="exercise">
 <p><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <strong>Do you understand what happened here?</strong></p>
-<!---
-<details><summary>_Click for the solution_</summary>
-We have assigned a variable called `$today`,
-but the shell will instead look for a variable called `$today_final`.
-This is because we have not explicitly indicated where the variable name ends,
-so the shell will include all characters until it hits a character that cannot
-be part of a shell variable name: in this case a period, `.`.
+<details>
+<summary>
+<em>Click for the solution</em>
+</summary>
+We have assigned a variable called <code>$today</code>, but the shell will instead look for a variable called <code>$today_final</code>. This is because we have not explicitly indicated where the variable name ends, so the shell will include all characters until it hits a character that cannot be part of a shell variable name: in this case a period, <code>.</code>.
 </details>
--->
 </div>
 <p>Quoting solves this, too:</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -857,17 +860,16 @@ Quoting as “escaping” – and double vs.&nbsp;single quotes <em>(Click to ex
 <hr style="height:1pt; visibility:hidden;">
 <div class="exercise">
 <p><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> In the calls to <code>fastqc.sh</code> and <code>printname.sh</code> above, what are these variables and their values?</p>
-<!---
-<details><summary>_Click here for the solution_</summary>
-<hr style="height:1pt; visibility:hidden;" />
-
-- In `bash scripts/fastqc.sh data/sampleA.fastq.gz`, a single argument,
-  `data/sampleA.fastq.gz`, is passed to the script, and will be assigned to `$1`.
-
-- In `bash scripts/printname.sh John Doe`, two arguments are passed to the script:
-  the first one (`John`) will be stored in `$1`, and the second one (`Doe`) in `$2`.
+<details>
+<summary>
+<em>Click here for the solution</em>
+</summary>
+<hr style="height:1pt; visibility:hidden;">
+<ul>
+<li><p>In <code>bash scripts/fastqc.sh data/sampleA.fastq.gz</code>, a single argument, <code>data/sampleA.fastq.gz</code>, is passed to the script, and will be assigned to <code>$1</code>.</p></li>
+<li><p>In <code>bash scripts/printname.sh John Doe</code>, two arguments are passed to the script: the first one (<code>John</code>) will be stored in <code>$1</code>, and the second one (<code>Doe</code>) in <code>$2</code>.</p></li>
+</ul>
 </details>
--->
 </div>
 <p>However, even though they are <em>made available</em>, these variables are not automatically <em>used</em>. So, unless you include code in the script to <em>do</em> something with these variables, nothing happens with them.</p>
 <p>Therefore, let’s add some code to your <code>printname.sh</code> script to “process” any first and last name that are passed to the script. For now, your script will simply <code>echo</code> the placeholder variables, so that we can see what happens:</p>
@@ -889,65 +891,43 @@ Last name: Doe</code></pre>
 <p>In each scenario that is described below, think about what might happen. Then, run the script as instructed in the scenario to test your prediction.</p>
 <ol type="1">
 <li><p>Running the script <code>printname.sh</code> without passing arguments to it.</p>
-<!---
-<details><summary>Click here for the solution</summary> 
-The script will error out because we are referencing variables that don't exist:
-since we didn't pass command-line arguments to the script,
-the `$1` and `$2` have not been set.
-
-```bash
-bash scripts/printname.sh
-```
-```bash-out
-printname.sh: line 5: $1: unbound variable
-```
-</details>
---></li>
+<details>
+<summary>
+<p>Click here for the solution</p>
+</summary>
+<p>The script will error out because we are referencing variables that don’t exist: since we didn’t pass command-line arguments to the script, the <code>$1</code> and <code>$2</code> have not been set.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/printname.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>printname.sh: line 5: $1: unbound variable</code></pre>
+</details></li>
 <li><p>After commenting out the line with <code>set</code> settings, running the script again without passing arguments to it.</p>
 <details>
 <summary>
 <p>Click here to learn what “commenting out” means</p>
 </summary>
 <p>You can deactivate a line of code without removing it by inserting a <code>#</code> as the first character of that line. This is often referred to as “commenting out” code. For example, below I’ve commented out the <code>ls</code> command, and nothing will happen if I run this line:</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<!---
-<details><summary>Click here for the solution</summary> 
-The script will run in its entirety and not throw any errors,
-because we are now using default Bash settings such that referencing 
-non-existent variables does not throw an error.
-Of course, no names are printed either, since we didn't specify any:
-
-```bash
-bash scripts/printname.sh
-```
-```bash-out
-echo "First name:"
-echo "Last name:"
-```
-
-Being "commented out", the `set` line should read:
-
-```bash
-#set -euo pipefail
-```
-</details>
---></li>
+<details>
+<summary>
+<p>Click here for the solution</p>
+</summary>
+<p>The script will run in its entirety and not throw any errors, because we are now using default Bash settings such that referencing non-existent variables does not throw an error. Of course, no names are printed either, since we didn’t specify any:</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/printname.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>echo "First name:"
+echo "Last name:"</code></pre>
+<p>Being “commented out”, the <code>set</code> line should read:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set -euo pipefail</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details></li>
 <li><p>Double-quoting the entire name when you run the script, e.g.: <code>bash scripts/printname.sh "John Doe"</code>.</p>
-<!---
-<details><summary>Click here for the solution</summary> 
-Because we are quoting `"John Doe"`, both names are passed _as a single argument_
-and both names end up in `$1`, the "first name":
-
-```bash
-bash scripts/printname.sh "John Doe"
-```
-```bash-out
-echo "First name: John Doe"
-echo "Last name:"
-```
-</details>
---></li>
+<details>
+<summary>
+<p>Click here for the solution</p>
+</summary>
+<p>Because we are quoting <code>"John Doe"</code>, both names are passed <em>as a single argument</em> and both names end up in <code>$1</code>, the “first name”:</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/printname.sh <span class="st">"John Doe"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>echo "First name: John Doe"
+echo "Last name:"</code></pre>
+</details></li>
 </ol>
 <ul>
 <li><em>To get back to where you were,</em> <em>remove the <code>#</code> you inserted in the script in step 2 above to reactive the <code>set</code> line.</em></li>
@@ -957,15 +937,15 @@ echo "Last name:"
 <section id="copying-to-variables-with-descriptive-names" class="level3" data-number="5.3">
 <h3 data-number="5.3" class="anchored" data-anchor-id="copying-to-variables-with-descriptive-names"><span class="header-section-number">5.3</span> Copying to variables with descriptive names</h3>
 <p>While you could use the <code>$1</code>-style variables throughout your script, I highly recommend always copying them to more descriptively named variables — for example:</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a><span class="va">first_name</span><span class="op">=</span><span class="st">"</span><span class="va">$1</span><span class="st">"</span></span>
-<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a><span class="va">last_name</span><span class="op">=</span><span class="st">"</span><span class="va">$2</span><span class="st">"</span></span>
-<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"This script will print a first and a last name"</span></span>
-<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"First name: </span><span class="va">$first_name</span><span class="st">"</span></span>
-<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Last name: </span><span class="va">$last_name</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="va">first_name</span><span class="op">=</span><span class="st">"</span><span class="va">$1</span><span class="st">"</span></span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a><span class="va">last_name</span><span class="op">=</span><span class="st">"</span><span class="va">$2</span><span class="st">"</span></span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"This script will print a first and a last name"</span></span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"First name: </span><span class="va">$first_name</span><span class="st">"</span></span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Last name: </span><span class="va">$last_name</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Using descriptively named variables in your scripts has several advantages, such as:</p>
 <ul>
 <li>It will make your script easier to understand for others and for your future self.</li>
