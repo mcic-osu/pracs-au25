@@ -50,8 +50,7 @@ how to submit your shell scripts as batch jobs.
   via OnDemand, with interactive jobs, and with Slurm batch jobs
 - Strategies around requesting appropriate resources for your compute jobs
 - Slurm commands like `sbatch` to submit, monitor and manage batch jobs
-- Slurm options to request specific resources for your compute jobs,
-  and how to add these inside your script
+- How to use Slurm options to request specific resources for your compute jobs
 
 ### Getting ready
 
@@ -62,7 +61,6 @@ how to submit your shell scripts as batch jobs.
 4. You'll need two scripts you made last week. Copy those
    (or if you somehow don't have these files,
    create new files and copy the code from the boxes below):
-  
    ```bash
    cp ../../week06/scripts/printname.sh scripts/
    cp ../../week06/scripts/fastqc.sh scripts/
@@ -207,7 +205,7 @@ and you can continue doing other things in the shell while it does, or even log 
 This behavior allows you to submit many jobs at the same time:
 you don't have to wait for other jobs to finish, or even to start!
 
-#### `sbatch` options _and_ script arguments
+#### `sbatch` options and script arguments
 
 As was implicit in the command above,
 we can use `sbatch` options _and_ script arguments in one command like so:
@@ -217,7 +215,7 @@ sbatch [sbatch-options] myscript.sh [script-arguments]
 ```
 
 Depending on the details of the script itself,
-any combination of using `sbatch` options and script arguments is possible:
+any combination of `sbatch` options and script arguments is possible:
 
 ```bash
 # [Don't run this - hypothetical examples]
@@ -229,8 +227,8 @@ sbatch --account=PAS2880 scripts/printname.sh Jane Doe  # Both sbatch option and
 
 Just make sure you use the correct order,
 e.g. don't type `sbatch` options after the name of the script.
-(Omitting the `--account` option, as shown above,
-is possible when you specify this option _inside the script_, as you'll see.)
+(Also, it is possible to omit the `--account` option, as shown above,
+when you specify this option _inside the script_. We'll see this later.)
 
 ### Where does the script's output go?
 
@@ -278,7 +276,7 @@ Last name: Doe
 
 This file contains the script's output that was printed to screen 
 when we ran it with `bash` -- nothing more or less^[
-Unless you explicitly instruct Slurm to print regular output ("standard out") and
+Unless you explicitly instruct Slurm to print regular output ("standard output") and
 error messages ("standard error") to separate files --- see the box in the
 [section on Slurm log files](#output-slurm-log-files) for more.].
 
@@ -296,22 +294,27 @@ Slurm log files will (by default) be created in the dir you submitted the job fr
 #### Two types of output files
 
 There is an important distinction between two general types of output that
-a script may have:
+scripts, commands, and programs may have:
 
-- Output that is **printed to screen** when you directly run a script
-  (`bash myscript.sh`),
-  and that ends up in the **Slurm log file** when you submit the script as a batch job.
-  This includes output produced by `echo` statements,
-  by any errors that may occur,
-  and logging output by any program that we run in the script.
-  This type of output is referred to as "standard out" (non-error output) and
-  "standard error" (error output) -- see the box in the
-  [section on Slurm log files](#output-slurm-log-files) for more.
+1. Output that is **printed to screen**.\
+   The technical terms for such output are "**standard output**" for non-error output
+   and "**standard error**" for error output.
+   - We've seen that most Unix commands by default print their output to the screen.
+   - Other programs, like bioinformatics tools, will commonly print "logging"-type
+     output to the screen, like you've seen with FastQC.
+     But some programs will by default also print their main results to the screen.
+     (This can sometimes be changed with a program's options, and otherwise,
+     you can always redirect (`>`) output to a file.)
+2. Output that is **written to files**.
 
+To summarize what happens to these when you submit a script as a batch job
+instead of running it directly:
+
+- A script's standard out and standard error
+  will be written to a file when you submit the script with `sbatch`
 - Output of commands written to output files inside the script
-  (either via redirection or otherwise).
-  This type of output **will end up in the exact same files**
-  regardless of whether you run the script with `bash` or `sbatch`.
+  (either via redirection or otherwise)
+  *will end up in the exact same files* regardless of how you run the script.
 
 Your `printline.sh` script only had the first type of output,
 but scripts typically have both, and we'll see examples of that below.
@@ -326,38 +329,42 @@ These two strategies help to prevent this:
   of the job/script (see below).
 - Cleaning up your Slurm log files, by:
   - Removing them when no longer needed --- as is e.g. appropriate for our current Slurm log file.
-  - Moving them into a `results` dir, which is often appropriate after you've run
-    a bioinformatics tool, since the Slurm log file may contain some info you'd like to keep.
-    For example, we may move any Slurm log files for jobs that ran FastQC to a dir
-    `results/fastqc/logs`.
+  - Moving them to the same location as other outputs by that script.
+    This is often appropriate after you've run a bioinformatics tool,
+    since the Slurm log file may contain some info you'd like to keep.
+    For example, you can move Slurm log files for jobs that ran FastQC,
+    and produced outputs in `results/fastqc`, to a dir `results/fastqc/logs`.
 
 In this case, we'll simply remove the Slurm log file,
 as it has no information that we need to keep:
 
 ```bash
-rm slurm*
+rm -v slurm*
+```
+```bash-out
+removed slurm-12431935.out
 ```
 
 ### Adding `sbatch` options in scripts
 
 The `--account=` option is just one of many options you can use when submitting a
 compute job, but is the only _required_ one.
-Defaults exist for all other options,
+This is because defaults exist for all other options,
 such as the amount of time (1 hour) and the number of cores (1 core).
 
-Instead of specifying `sbatch` options on the command-line when submitting the script,
-you can also **add these options inside the script**.
+Instead of adding these options after the `sbatch` command when submitting the
+script, you can also **add them inside the script**.
 This is a useful alternative because:
 
 - You'll often want to specify several options,
-  which would otherwise lead to very long `sbatch` commands.
+  which could otherwise lead to very long `sbatch` commands.
 - It allows you to store a script's typical Slurm options as part of the script,
   so you don't have to remember them.
 
 These options are added in the script using another **type of special comment line**
 (akin to the shebang `#!/bin/bash` line) that is marked by `#SBATCH`.
 Just like the shebang line,
-`#SBATCH` line(s) should be at the top of the script.
+`#SBATCH` line(s) should be located at the top of the script.
 
 Let's add one such line to the `printname.sh` script,
 such that the first few lines read:
@@ -402,11 +409,11 @@ or even when running it on a computer without Slurm installed.
 
 ## Monitoring batch jobs
 
-Real batch jobs for your research projects may run for a while
-and/or you may be submitting many jobs at once.
-In addition, longer-running jobs and those that ask for many cores sometimes
+Real batch jobs for your research projects may run for a while,
+You may also be submitting many jobs at once.
+Finally, longer-running jobs and those that ask for many cores sometimes
 remain queued for a while before they start.
-It's therefore important to know how you can monitor your batch jobs.
+For these reasons, it's important to know how you can monitor your batch jobs.
 
 ### A sleepy script for practice
 
@@ -444,6 +451,7 @@ using `sbatch scripts/sleep.sh`:
 
 Then, test your predictions by running the script.
 
+<!---
 <details><summary>Click for the solutions</summary>
 
 1. The job will produce 2 files:
@@ -483,16 +491,19 @@ cat slurm-27935840.out
 ```bash-out
 I'm awake! Successfully finished script sleep.sh
 ```
-
 </details>
+-->
+
 :::
 
 ### Checking a job's status
 
+#### Batch job behavior
+
 After you submit a job, it may initially be waiting to get resources allocated to it:
-i.e., it may be **queued ("pending")**.
-Eventually, the job will start running --
-you've seen all of this with the VS Code Interactive App job as well.
+in other words, the job may be **pending**.
+Eventually, and often very quickly, the job will start running.
+You've seen this process with the VS Code Interactive App job as well.
 
 Whereas Interactive App jobs will keep running until they've reached the end
 of the allocated time^[Unless you actively "Delete" the job on the Ondemand website.],
@@ -528,6 +539,7 @@ In the `squeue` output, following a line with the date & time and a header line,
 you should see information about a single compute job, as shown above:
 this is the Interactive App job that runs VS Code
 (that's not a batch job, but it _is_ a compute job, and all compute jobs are listed).
+
 The following pieces of information about each job are listed:
 
 | Column | Explanation
@@ -536,7 +548,7 @@ The following pieces of information about each job are listed:
 | `PARTITION`   | The type of queue (usually auto-assigned and not of interest)
 | `NAME`        | The name of the job (by default the name of the script when submitting a script) |
 | `USER`        | The user name of the user who submitted the job |
-| `STATE`       | The job's state, usually either `PENDING` (queued) or `RUNNING`. **Finished jobs do not appear**. |
+| `STATE`       | The job's state, usually either `PENDING` or `RUNNING`. **Finished jobs do not appear**. |
 | `TIME`        | For how long the job has been running (here as minutes:seconds) |
 | `TIME_LIMIT`  | The amount of time you reserved for the job (here as hours:minutes:seconds) |
 | `NODES`       | The number of nodes reserved for the job |
@@ -556,8 +568,8 @@ sbatch scripts/sleep.sh
 Submitted batch job 12431945
 ```
 
-If you're quick enough, you may be able to catch its `STATE` as `PENDING`
-(i.e., queued) before the job starts:
+If you're quick enough, you may be able to catch the job's `STATE` as `PENDING`
+before it starts:
 
 ```bash
 squeue -u $USER -l
@@ -594,7 +606,7 @@ Mon Aug 21 15:49:26 2025
       23640814 condo-osu ondemand   jelmer  RUNNING       9:02   2:00:00      1 p0133
 ```
 
-#### Checking the output files
+#### Checking a job's output files
 
 Whenever you've ran a script as a batch job,
 even if you've been monitoring it with `squeue`,
@@ -602,9 +614,10 @@ you should also make sure it ran _successfully_.
 You can do this by checking the output file(s) --
 as mentioned above, you'll usually have two types of output from a batch job:
 
-- File(s) directly created by the command inside the script (here, `sleep.sh`).
-- A Slurm log file with the script's standard output and standard error
-  (i.e. output that is otherwise printed to screen).
+- A Slurm log file with the script's standard output and standard error,
+  which would have been printed to screen if the job hadn't been submitted with `sbatch`
+  (_typically: logging-type output and errors_)
+- Output file(s) created inside the script (_typically: the main results_)
 
 And as you saw in the exercise above,
 this is also the case for the output of our sleepy script:
@@ -648,7 +661,7 @@ you are better off canceling the job entirely and trying again. 😕
 ### Canceling jobs
 
 Sometimes, you want to cancel one or more jobs.
-For example, you may realize you made a mistake in the script,
+For example, you may realize you made a mistake in the script
 or used the wrong input files as arguments.
 You can cancel jobs that are either pending or running using `scancel`:
 
@@ -709,3 +722,16 @@ scancel -u $USER
   scontrol release <jobID>    # Job is free to start
   ```
 :::
+
+## Recap and what's next
+
+In this lecture, you've learned the basics of submitting scripts as Slurm batch
+jobs with the `sbatch` command, including:
+
+- How to specify `sbatch` options on the command-line or inside the script
+- The basic behavior and outputs associated with batch jobs
+- How to check the job queue and monitor your jobs
+
+In the next lecture, you will learn other commonly-used `sbatch` options so
+you can reserve more time, cores, etc. for your job.
+You will also see some more practical examples of running batch jobs. 

@@ -160,3 +160,109 @@ bash count_baboons.sh ../data/Gesquiere2011_data.csv 27
 ```
 
 </details>
+
+
+</details>
+
+### Plant–Pollinator Networks
+
+Saavedra and Stouffer (2013) studied several plant–pollinator networks.
+These can be represented as rectangular matrices where the rows are pollinators,
+the columns plants, a 0 indicates the absence and 1 the presence of an interaction
+between the plant and the pollinator.
+
+The data of Saavedra and Stouffer (2013) can be found in the directory
+`CSB/unix/data/Saavedra2013`.
+
+Write a script that takes one of these files and determines the number of
+rows (pollinators) and columns (plants).
+Note that columns are separated by spaces and that there is a space at the
+end of each line. Your script should return:
+
+```sh
+bash netsize.sh ../data/Saavedra2013/n1.txt
+# Filename: ../data/Saavedra2013/n1.txt
+# Number of rows: 97
+# Number of columns: 80
+```
+
+<details><summary>Show hints</summary>
+
+To build the script, you need to combine several commands:
+
+- To find the number of rows, you can use `wc`.
+
+- To find the number of columns, take the first line, remove the spaces,
+  remove the line terminator `\n`, and count *characters*.
+
+</details>
+
+### Solutions
+
+### Plant–Pollinator Networks
+
+<details><summary>Solution</summary><p>
+
+**Counting rows:**
+
+- Counting the number of rows amount to counting the number of lines.
+  This is easily done with `wc -l`. For example:
+  
+```sh
+wc -l ../data/Saavedra2013/n10.txt 
+# 14 ../data/Saavedra2013/n10.txt
+```
+
+- To avoid printing the file name, we can either use cat or input redirection:
+
+```sh
+cat ../data/Saavedra2013/n10.txt | wc -l
+wc -l < ../data/Saavedra2013/n10.txt 
+```
+
+**Counting rows:**
+
+- Counting the number of columns is more work.
+  First, we need only the first line:
+  
+```sh
+head -n 1 ../data/Saavedra2013/n10.txt
+# 0 1 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0
+```
+
+- Now we can remove all spaces and the line terminator using `tr`:
+
+```sh
+head -n 1 ../data/Saavedra2013/n10.txt | tr -d ' ' | tr -d '\n'
+# 01000001000000000100
+```
+
+- Finally, we can use `wc -c` to count the number of characters in the string:
+
+```sh
+head -n 1 ../data/Saavedra2013/n10.txt | tr -d ' ' | tr -d '\n' | wc -c
+# 20
+```
+
+**Final script:**
+
+```sh
+#!/bin/bash
+
+filename=$1
+
+echo "Filename:"
+echo ${filename}
+echo "Number of rows:"
+cat ${filename} | wc -l
+echo "Number of columns:"
+head -n 1 ${filename} | tr -d ' ' | tr -d '\n' | wc -c
+```
+
+- To run the script, assuming it is named `counter.sh`:
+
+```sh
+bash counter.sh ../data/Saavedra2013/n10.txt
+# 5
+```
+</details>

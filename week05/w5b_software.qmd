@@ -405,7 +405,6 @@ type `q()` or use the general keyboard short for exiting
    MultiQC summarizes the outputs of FastQC and many other bioinformatics programs.]
    -- is it available?
 
-   <!---
    <details><summary>_Click to see the solution_</summary>
    
    No, it isn't available!
@@ -417,77 +416,81 @@ type `q()` or use the general keyboard short for exiting
    Lmod has detected the following error:  Unable to find: "multiqc".
    ```
    </summary>
-   -->
    
 2. Search for the program STAR^[
    STAR is an RNA-Seq aligner that we will use to align the reads from our 
-   example dataset to our reference genome.].
-   How many versions are available?
+   example dataset to our reference genome.]
+   -- is it available?
    
-   <!---
    <details><summary>_Click to see the solution_</summary>
    
-   - Note that another program, `starccm`, also matches the search term,
-     so the output is rather long and will open in a `less`-like pager
-     (press <kbd>q</kbd> to exit).
-     
-   - Two versions are available, the most recent one is `2.7.11b`.
+   Yes, it's available:
    
    ```bash
-   module spider STAR
+   module spider star
    ```
    ```bash-out
-   -----------------------------------------------------------------------------
-   star:
-   -----------------------------------------------------------------------------
-     Versions:
-        star/2.7.10b
-        star/2.7.11b
-
-   -----------------------------------------------------------------------------
-   For detailed information about a specific "star" package (including how to load the modules) use the module's full name.
-   Note that names that have a trailing (E) are extensions provided by other modules.
-   For example:
-
-     $ module spider star/2.7.11b
-   -----------------------------------------------------------------------------
-
-   -----------------------------------------------------------------------------
-   starccm:
-   -----------------------------------------------------------------------------
-     Versions:
-        starccm/18.06.006-hbm
-   
-   [...output truncated...]
+   --------------------------------------------------------------------------------
+   star: star/2.7.10b
+   --------------------------------------------------------------------------------
+     Other possible modules matches:
+        starccm
+    This module can be loaded directly: module load star/2.7.10b
+    Help:
+      STAR is an ultrafast universal RNA-seq aligner.
+   --------------------------------------------------------------------------------
+   To find other possible module matches execute:
+      $ module -r spider '.*star.*'
    ```
-   
    </summary>
-   -->
    
-3. Load the most recent of the STAR versions and test whether you can use it 
+3. Load the STAR module and test whether you can use the program
    by running `STAR` (without adding any options). 
    
-   <!---
    <details><summary>_Click to see the solution_</summary>
    ```bash
-   module load star/2.7.11b
+   module load star/2.7.10b
    STAR
    ```
    ```bash-out
    Usage: STAR  [options]... --genomeDir /path/to/genome/index/   --readFilesIn R1.fq R2.fq
    Spliced Transcripts Alignment to a Reference (c) Alexander Dobin, 2009-2022
-  
-   STAR version=2.7.11b
-   STAR compilation time,server,dir=2025-05-15T10:25:22-04:00 cardinal-rw02.ten.osc.edu:/tmp/kkoepcke/spack/stage/spack-stage-star-2.7.11b-bvgy4jcfuw4lbeigwgzlulagqmvz5o65/spack-src/source
+   STAR version=2.7.10b
+   STAR compilation time,server,dir=2025-06-11T15:35:30-04:00 pitzer-rw02.ten.osc.edu:/tmp/kkoepcke/spack/stage/spack-stage-star-2.7.10b-itj64jf32ufsx7x6kbmlpcprqq5xo5
+   in/spack-src/source
    For more details see:
    <https://github.com/alexdobin/STAR>
    <https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf>
-  
    To list all parameters, run STAR --help
    ```
    </summary>
-   -->
+
+4. _Bonus:_ Open a Unix shell on the Cardinal cluster:
+   in OnDemand, click "Clusters" in the blue top bar,
+   and then "Cardinal Shell Access".
+   Also check there whether STAR is available and which versions --
+   does it differ from the situation in Pitzer?
    
+   <details><summary>_Click for the solution_</summary>
+   
+   Yes, two different versions are available on Cardinal,
+   including a more recent version than on Pitzer:
+   
+   ```bash
+   module spider star
+   ```
+   ```bash-out
+   -----------------------------------------------------------------------------
+   star:
+   --------------------------------------------------------------------------------
+     Versions:
+        star/2.7.10b
+        star/2.7.11b
+     Other possible modules matches:
+        starccm
+   ```
+   </details>
+
 :::
 
 ## Using Apptainer containers
@@ -856,7 +859,6 @@ SYNOPSIS
 Look at FastQC's help info,
 and figure out which option can be used to specify a custom output directory.
 
-<!---
 <details><summary>*Click for the solution*</summary>
 
 The option to do this is `-o`/`--outdir`:
@@ -872,7 +874,6 @@ fastqc -h
                     directory as the sequence file which was processed.
 ```
 </details>
--->
 
 :::
 
@@ -931,7 +932,6 @@ since they will often produce multiple output files.
 Run FastQC for the corresponding R2 FASTQ file.
 Would you use the same output dir or a different one?
 
-<!---
 <details><summary>*Click for the solution*</summary>
 
 It makes sense to use the same output dir.
@@ -971,8 +971,6 @@ total 1008K
 Now, we have four files: two for each of our preceding successful FastQC runs.
 
 </details>
--->
-
 :::
 
 ::: exercise

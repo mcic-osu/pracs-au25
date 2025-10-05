@@ -443,7 +443,7 @@ Conveniently, you can use variables in lots of contexts,
 _as if you had directly typed their values_:
 
 ```bash
-input_file=data/fastq/sample1_R1.fastq
+input_file=../garrigos-data/fastq/ERR10802863_R1.fastq.gz
 
 ls -lh "$input_file"
 ```
@@ -583,7 +583,6 @@ README_.txt
 ::: exercise
 {{< fa user-edit >}} **Do you understand what happened here?**
 
-<!---
 <details><summary>_Click for the solution_</summary>
 We have assigned a variable called `$today`,
 but the shell will instead look for a variable called `$today_final`.
@@ -591,7 +590,6 @@ This is because we have not explicitly indicated where the variable name ends,
 so the shell will include all characters until it hits a character that cannot
 be part of a shell variable name: in this case a period, `.`.
 </details>
--->
 
 :::
 
@@ -758,7 +756,6 @@ Specifically:
 {{< fa user-edit >}} In the calls to `fastqc.sh` and `printname.sh` above,
 what are these variables and their values?
 
-<!---
 <details><summary>_Click here for the solution_</summary>
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -768,7 +765,6 @@ what are these variables and their values?
 - In `bash scripts/printname.sh John Doe`, two arguments are passed to the script:
   the first one (`John`) will be stored in `$1`, and the second one (`Doe`) in `$2`.
 </details>
--->
 :::
 
 However, even though they are _made available_,
@@ -811,7 +807,6 @@ Then, run the script as instructed in the scenario to test your prediction.
 
 1. Running the script `printname.sh` without passing arguments to it.
 
-   <!---
    <details><summary>Click here for the solution</summary> 
    The script will error out because we are referencing variables that don't exist:
    since we didn't pass command-line arguments to the script,
@@ -824,7 +819,6 @@ Then, run the script as instructed in the scenario to test your prediction.
    printname.sh: line 5: $1: unbound variable
    ```
    </details>
-   -->
 
 2. After commenting out the line with `set` settings,
    running the script again without passing arguments to it.
@@ -841,7 +835,6 @@ Then, run the script as instructed in the scenario to test your prediction.
    ```
    </details>
 
-   <!---
    <details><summary>Click here for the solution</summary> 
    The script will run in its entirety and not throw any errors,
    because we are now using default Bash settings such that referencing 
@@ -862,12 +855,10 @@ Then, run the script as instructed in the scenario to test your prediction.
    #set -euo pipefail
    ```
    </details>
-   -->
 
 3. Double-quoting the entire name when you run the script,
    e.g.: `bash scripts/printname.sh "John Doe"`.
 
-   <!---
    <details><summary>Click here for the solution</summary> 
    Because we are quoting `"John Doe"`, both names are passed _as a single argument_
    and both names end up in `$1`, the "first name":
@@ -880,7 +871,6 @@ Then, run the script as instructed in the scenario to test your prediction.
    echo "Last name:"
    ```
    </details>
-   -->
 
 - _To get back to where you were,_
   _remove the `#` you inserted in the script in step 2 above to reactive the `set` line._

@@ -42,16 +42,12 @@ useful in a shell scripting context:
 - Command substitution to save the output of commands
 - `basename` and `dirname` to extract parts of file paths
 
-### Setting up
-
 ### Getting ready
 
 1. At <https://ondemand.osc.edu>,
    start a VS Code session in `/fs/ess/PAS2880/users/$USER`
 2. In the terminal, navigate to your `week06` dir
-3. **Open your `README.md` from the last class**
-4. _Optional: Create a new or open an existing Markdown file for class notes_
-   _in your `week06` dir_
+3. **Open your `README.md` from the [last class](./w6b_cli-tools.qmd)**
 
 ## Parameter expansion -- and looping over samples
 
@@ -65,11 +61,11 @@ How can you loop over pairs of FASTQ files? There are two main ways:
 
 - Create a list of **sample IDs**,
   loop over these IDs, and find the pair of FASTQ files with matching names.
-- Loop over the **R1 files only** and then infer the name of the corresponding
+- Loop over the **R1 files only** and then "infer" the name of the corresponding
   R2 file within the loop. This can be done because the R1 and R2 file names
   should be identical other than the read-direction identifier (`R1`/`R2`).
 
-Below, we will use the second method ---
+Below, we will use the second method --
 but first, you need to learn about parameter expansion.
 
 ### Parameter expansion
@@ -89,7 +85,7 @@ For example:
   AAGTTCAT
   ```
 
-- Use parameter expansion to replace all `T`s with `U` to convert the DNA to RNA:
+- Use parameter expansion to replace all `T`s with `U`:
 
   ```bash
   echo "${dna_seq//T/U}"
@@ -111,12 +107,12 @@ For example:
 So, the syntax for this type of parameter expansion is `{var_name//<search>/replace}` ---
 let's deconstruct that:
 
-1. Reference the variable, using the full notation, with braces (`${var_name}`)
-2. After the first two forward slashes, enter the search pattern: (`T`)
-3. After another forward slash, enter the replacement: (`U`).
+1. You reference the variable using the "full notation" with braces: here, `${dna_seq}`
+2. You add two forward slashes after the variable name, and then the search pattern: `//T`
+3. After another forward slash, enter the replacement: `/U`
 
-If you needed to replace at most one of the search patterns, a single backslash
-after the variable name would suffice: `{var_name/<search>/replace}`.
+(If you needed to replace at most one of the search patterns,
+use a single backslash after the variable name: `{var_name/<search>/replace}`.)
 
 <hr style="height:1pt; visibility:hidden;" />
 
@@ -124,7 +120,7 @@ after the variable name would suffice: `{var_name/<search>/replace}`.
 #### {{< fa user-edit >}} Exercise: Get the R2 file name with parameter expansion
 File names of corresponding R1 and R2 FASTQ files should be identical other than
 the marker indicating the read direction,
-which is typically `_R1`/`_R2` (and in some cases just `_1` / `_2`).
+which is typically `_R1`/`_R2`^[But in some cases, e.g., just `_1` / `_2`.].
 
 After assigning the file name `../garrigos-data/fastq/ERR10802863_R1.fastq.gz` to a variable,
 as shown below,
@@ -136,7 +132,10 @@ fastq_R1=../garrigos-data/fastq/ERR10802863_R1.fastq.gz
 fastq_R2=
 ```
 
-<details><summary>Solutions</summary>
+<!---
+<details><summary>_Click for the solution_</summary><p>
+Make sure you use `_R1`/`_R2` and not just `R1`/`R2`,
+because the string "R1" also occurs in the sample ID (`ERR1..`)!
 
 ```bash
 fastq_R1=../garrigos-data/fastq/ERR10802863_R1.fastq.gz
@@ -151,20 +150,23 @@ echo "$fastq_R2"
 ```bash-out
 ../garrigos-data/fastq/ERR10802863_R2.fastq.gz
 ```
-</details>
+</p></details>
+-->
 :::
 
 ### A per-sample loop
 
 Now, you can create a loop that iterates over R1 FASTQ files only,
-and then infers the corresponding R2 file name ---
-for example, with an imaginary `trim.sh` script:
+and then infers the corresponding R2 file name.
+**In this week's exercises, you will do this for the program TrimGalore.**
+For now, here is an example with an imaginary `trim_mock.sh` script:
 
 ```bash
 # [Don't run this]
 for R1 in ../garrigos-data/fastq/*_R1.fastq.gz; do
   R2=${R1/_R1/_R2}
-  bash scripts/trim.sh "$R1" "$R2" results/trim
+  # 'trim_mock.sh' takes 3 arguments: R1 FASTQ, R2 FASTQ, output dir
+  bash scripts/trim_mock.sh "$R1" "$R2" results/trim
 done
 ```
 
@@ -173,7 +175,7 @@ done
 ::: exercise
 #### {{< fa user-edit >}} Exercise: Run a script with a per-sample loop
 
-- Write a script `trim_mock.sh` that accepts three arguments:
+- Write a script `scripts/trim_mock.sh` that accepts three arguments:
   an R1 FASTQ file, an R2 FASTQ file, and an output dir.
   You can use your `fastqc.sh` script as a template, but this script
   should mock-run the fictional `trimmer` program as follows:
@@ -482,3 +484,31 @@ R2_out="$outdir"/$(basename "$R2_in")
 # Run a fictional program
 trimmer2 --in1 "$R1_in" --in2 "$R2_in" --out1 "$R1_out" --out2 "$R2_out"
 ```
+
+## Keyboard shortcuts
+
+A [Week 2 page](../week02/w2c_shell.qmd#keyboard-shortcuts) included a table
+with Unix shell keyboard shortcuts.
+Here are some of those that you may not yet be using,
+but that are very helpful to work more efficiently in the shell:
+
+| Windows | Mac | Function |
+|---|---|--------|
+| <kbd>Ctrl</kbd> + <kbd>→</kbd>/<kbd>←</kbd> | <kbd>option</kbd> + <kbd>→</kbd>/<kbd>←</kbd> | Move cursor word-by-word |
+| <kbd>Ctrl</kbd> + <kbd>A</kbd> | _(same)_ | Go to beginning of line |
+| <kbd>Ctrl</kbd> + <kbd>E</kbd> | _(same)_ | Go to end of line |
+| <kbd>Ctrl</kbd> + <kbd>U</kbd> | _(same)_ | Cut from cursor to beginning of line |
+| <kbd>Ctrl</kbd> + <kbd>K</kbd> | _(same)_ | Cut from cursor to end of line |
+| <kbd>Ctrl</kbd> + <kbd>W</kbd> | _(same)_ | Cut word before cursor |
+| <kbd>Ctrl</kbd> + <kbd>Y</kbd> | _(same)_ | Paste ("yank") text that was cut with one of the three cut shortcuts above |
+| <kbd>Alt</kbd> + <kbd>.</kbd> | <kbd>Esc</kbd> + <kbd>.</kbd>  | Paste/retrieve last argument of previous command (extremely useful!) |
+
+: {.striped .hover}
+
+::: exercise
+#### {{< fa user-edit >}} Exercise: Test these keyboard shortcuts
+Type multiple words in the terminal and then test the above keyboard shortcuts
+one by one.
+:::
+
+<br>
