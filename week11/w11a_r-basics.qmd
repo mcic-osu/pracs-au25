@@ -53,7 +53,7 @@ of omics data, with an excellent array of packages for e.g.:
 
 - Metabarcoding analysis
 - RNA-Seq analysis
-- ....
+- Lipidomics
 - Proteomics and metabolomics
 
 Specifically, you will learn:
@@ -130,7 +130,7 @@ each of which have multiple tabs:
 
 ***[TBA - Switch below to screenshot from OSC, and annotate in Powerpoint]***
 
-![](../img/rstudio.png){width="100%" fig-align="center"}
+![](../img/R_studio_panes){width="100%" fig-align="center"}
 
 ::: {.callout-tip appearance="simple"}
 [Click here for a useful RStudio cheatsheet](https://rstudio.github.io/cheatsheets/html/rstudio-ide.html)
@@ -177,6 +177,7 @@ Some additional calculation examples:
   # Without parentheses, multiplication happens first
   5 + 3 * 2
   ```
+The spaces between numbers does not matter in R. However, in general, it is good practice to leave space between the number to improve the readability of codes.
 
 ***[TBA - Talk about leaving spaces between numbers / space-sensitivity]***
 
@@ -289,12 +290,34 @@ getwd()
 setwd(dir = "TBA")
 ```
 
+```r
+dir.create("week11")
+```
+
 ```{r}
 head(x = iris)
 ```
 
 You can recognize function calls by the parentheses.
-Inside those parentheses, you can provide **arguments** to a function.
+Inside those parentheses, you can provide **arguments** to a function. Arguments are the actual
+values you provided to run a function.
+
+In R, you can choose to name the **arguments** in a function or just use their **position**.
+When you name an argument, the order does not matter, R will know exactly which value goes
+where. For example, in **head(n = 6, x = iris)**, the argument ***x*** is explicitly named so the function will run successfully. However, you can also write **head(iris)**, and it gives the same output because R knows the first argument of
+head() is ***x***.  **head(6, iris)** will not produce any output because the arguments are called by position but are in wrong order.
+
+```{r}
+head(n=6, x = iris)
+```
+
+```{r}
+head(iris)
+```
+
+```{r, eval=FALSE}
+head(6, iris)
+```
 
 ***[TBA - explain naming versus not-naming args - e.g.:]***
 
@@ -417,6 +440,14 @@ For example:
 ***[TBA - Start with a simpler installation - then tidyverse]***
 
 ```{r eval=FALSE}
+install.packages("stringr")
+```
+
+```{r}
+library(stringr)
+```
+
+```{r eval=FALSE}
 install.packages("tidyverse")
 ```
 
@@ -498,7 +529,7 @@ An R script is a text file that contains R code.
 
 ***Create and open a new R script by clicking File (top menu bar) \> New File \> R Script.***
 
-***[TBA - screenshot]***
+![](../img/script_file.png){fig-align="center" width="180%"}
 
 #### Why use a script?
 
