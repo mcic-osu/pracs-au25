@@ -87,13 +87,13 @@ You will do this even though (or because!) you commonly need to run a CLI tool
 many times in bionformatics,
 since many tools have to be run separately for each file or sample.
 The reason is this: given that you have access to OSC's clusters,
-it will save running time -potentially _a lot of_ it-
-when you **submit a separate batch job for each file or sample**^[
+you can save a lot of time by
+**submitting a separate batch job for each file or sample**^[
 It is possible to use another strategy that parallelizes program runs within a
 script, but we will use this strategy instead.
-].
+], since these jobs can all run simultaneously.
 
-To accomodate this, you will:
+To accommodate this, you will:
 
 - Need to make your scripts flexible:
   instead of "hard-coding" file paths and potentially other settings
@@ -122,9 +122,9 @@ As described above, our script will deliberately run FastQC on only one FASTQ fi
 
 ### Quick overview of our approach
 
-The approach of running the script for one FASTQ file at a time means that
+Because we want to run the script for one FASTQ file at a time,
 your script needs to **accept a FASTQ file name as an argument**.
-Additionally, you will use an argument for the output dir too,
+Additionally, you will use an argument for the output dir,
 because it is a good idea to keep that flexible as well.
 With code to copy the placeholder variables containing the command-line arguments,
 that part of the script would look like this:
@@ -246,7 +246,7 @@ command-line programs, and will generally only need minor modifications!
 
 ### Add some "logging" statements
 
-It is often useful to have your shell scripts "report" or "log" what is going on.
+It is often useful to have your shell scripts report or "log" what it is doing.
 For instance:
 
 - At what date and time was the script run
@@ -256,12 +256,12 @@ For instance:
 
 This information can help with troubleshooting and record-keeping.
 One thing to keep in mind here is that later,
-when you submit scripts as batch jobs (as you'll learn to do next week),
+when you submit scripts as batch jobs,
 such logging output will not be printed to screen but will end up in text files.
 _Therefore, you can store those text files along with other output files to keep_
-_detailed records about what you did!_
+_detailed records of what you did!_
 
-Let's try adding some logging information to the FastQC script:
+Let's add some code to produce logging information to the FastQC script:
 
 ```bash
 #!/bin/bash
@@ -366,11 +366,11 @@ We will write the loop to do so in an accompanying Markdown document.
 
 ## A "protocol" Markdown file
 
-The abovementioned loop code _could_ be directly typed in the terminal,
-but you need to keep a record of your analysis steps,
-which you will save in a Markdown file.
+The abovementioned loop code _could_ be directly typed in the terminal.
+But it is more convenient and reproducible to put this in a Markdown file,
+so you will keep a record of your analysis steps.
 For small projects, a simple "protocol" could be added to your main `README.md`.
-Let's practice with that by creating and writing a README for the current analysis:
+Let's practice with that by writing a README for the current analysis:
 
 ```bash
 touch README.md
@@ -406,10 +406,10 @@ Loops are another universal element of programming languages,
 and are used to **repeat operations**.
 Here, we'll only cover the most common type of loop: the `for` loop.
 
-A `for` loop _iterates_ over a collection, such as a list of files,
+A `for` loop **iterates** over a collection, such as a list of files,
 and allows you to perform one or more actions for each element in the collection.
 In the example below,
-that "collection" is just a short list of numbers (`1`, `2`, and `3`):
+the collection is just a short list of numbers (`1`, `2`, and `3`):
 
 ```bash
 for a_number in 1 2 3; do
@@ -500,7 +500,7 @@ done
 Modify the loop in the previous example to print the following for each FASTQ
 file (output for 2 files shown):
 
-```bash-out
+```bash-out-solo
 # Running an analysis on ../garrigos-data/fastq/ERR10802863_R1.fastq.gz
 # File size:
 -rw-rw----+ 1 jelmer PAS0471 21M Sep  9 13:46 ../garrigos-data/fastq/ERR10802863_R1.fastq.gz
@@ -575,18 +575,17 @@ Approx 5% complete for ERR10802863_R2.fastq.gz
 
 That produces a lot of output!
 You can hopefully see that this looping approach is quite powerful,
-and can allow you to easily run a script many times.
+allowing you to easily run a script many times.
 
 However, note that this runs the `fastqc.sh` script _sequentially_:
 after it was run for the first FASTQ file, it will run for the second file,
 and so on.
 If these had been full-size FASTQ files,
 it may have still taken hours for this to finish.
-
 So, while you have now learned an elegant way to run a script many times,
-you have not yet learned how to run it simultaneously. 
+you have not yet learned how to run it simultaneously in parallel. 
 Next week, you'll learn about submitting scripts like this as batch jobs,
-so they can be run simultaneously and save you a lot of time.
+so they can be run simultaneously, which saves a lot of time.
 
 ## Recap and next steps
 
@@ -596,8 +595,7 @@ You've also learned how to write and use `for` loops.
 
 Next, you'll learn a few final Unix shell tips and tricks that are especially
 useful in a shell scripting context.
-
-Next week, we'll move on to submitting shell scripts as batch jobs at OSC.
+And next week, we'll move on to submitting shell scripts as batch jobs at OSC.
 
 ::: {.callout-note collapse="true"}
 #### About the "hard-coding" of settings _(Click to expand)_

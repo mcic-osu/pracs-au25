@@ -1,44 +1,18 @@
----
-title: "Untitled"
----
 
 ## Solutions
 
+### Exercise 1
+
+<details><summary>1 - The URL to the container</summary><p>
+
+Currently, the most recent Trim-Galore version is 0.6.10:
+
+```bash-out-solo
+oras://community.wave.seqera.io/library/trim-galore:0.6.10--bc38c9238980c80e
+```
+</p></details>
+
 ### Exercise 2
-
-<details><summary>Hint: See the relevant parts of the TrimGalore help pages _(Click to expand)_</summary>
-<hr style="height:1pt; visibility:hidden;" />
-```bash
-trim_galore --help
-```
-```{.bash-out-solo}
- USAGE:
-trim_galore [options] <filename(s)>
-
---paired                This option performs length trimming of quality/adapter/RRBS trimmed reads for
-                        paired-end files.
-
--o/--output_dir <DIR>   If specified all output will be written to this directory instead of the current
-                        directory. If the directory doesn't exist it will be created for you.
-
--j/--cores INT          Number of cores to be used for trimming [default: 1].
-
---fastqc                Run FastQC in the default mode on the FastQ file once trimming is complete.
-
---fastqc_args "<ARGS>"  Passes extra arguments to FastQC.
-
--a/--adapter <STRING>   Adapter sequence to be trimmed. If not specified explicitly, Trim Galore will
-                        try to auto-detect whether the Illumina universal, Nextera transposase or Illumina
-                        small RNA adapter sequence was used.
-
--q/--quality <INT>      Trim low-quality ends from reads in addition to adapter removal. [...]
-                        Default Phred score: 20.
-
---length <INT>          Discard reads that became shorter than length INT because of either
-                        quality or adapter trimming. A value of '0' effectively disables
-                        this behaviour. Default: 20 bp.
-```
-</details>
 
 <details><summary> The TrimGalore options you were looking for _(Click to expand)_</summary>
 
@@ -48,30 +22,25 @@ trim_galore [options] <filename(s)>
 
 </details>
 
-<details><summary> The TrimGalore shell script _(Click to expand)_</summary>
-
-Save this as e.g. `scripts/trimgalore.sh`:
+<details><summary> A TrimGalore shell script _(Click to expand)_</summary><p>
 
 ```bash
 #!/bin/bash
 set -euo pipefail
 
-# Load TrimGalore
-module load miniconda3/24.1.2-py310
-conda activate /fs/ess/PAS0471/jelmer/conda/trimgalore
+# Constants
+TRIMGALORE_CONTAINER=oras://community.wave.seqera.io/library/trim-galore:0.6.10--bc38c9238980c80e
 
 # Copy the placeholder variables
-R1_in=$1
-outdir=$2
-
-# Infer the R2 FASTQ file name
-R2_in=${R1_in/_R1/_R2}
+R1="$1"
+R2="$2"
+outdir="$3"
 
 # Report
 echo "# Starting script trimgalore.sh"
 date
-echo "# Input R1 FASTQ file:      $R1_in"
-echo "# Input R2 FASTQ file:      $R2_in"
+echo "# Input R1 FASTQ file:      $R1"
+echo "# Input R2 FASTQ file:      $R2"
 echo "# Output dir:               $outdir"
 echo
 
@@ -79,24 +48,28 @@ echo
 mkdir -p "$outdir"
 
 # Run TrimGalore
-trim_galore \
+apptainer exec "$TRIMGALORE_CONTAINER" \
+    trim_galore \
     --paired \
     --fastqc \
     --output_dir "$outdir" \
-    "$R1_in" \
-    "$R2_in"
+    "$R1" \
+    "$R2"
 
 # Report
 echo
+echo "# TrimGalore version:"
+apptainer exec "$TRIMGALORE_CONTAINER" \
+  trim_galore -v
 echo "# Successfully finished script trimgalore.sh"
 date
 ```
-</details>
+</p></details>
 
 <details><summary> Quality and length threshold options & interpretation _(Click to expand)_</summary>
 
 - The option `-q` (short notation) or `--quality` (long notation) can be used
-  to adjust the base quality score threshold, which has the "Phred" unit.
+  to adjust the base quality score threshold, which has the Phred unit we've discussed.
   The default threshold is 20, which corresponds to an estimated 0.01 error rate.
   TrimGalore will trim bases with a lower quality score than this threshold
   from the **ends** of the reads.
@@ -112,22 +85,21 @@ date
 
 </details>
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### Exercise 3
 
 <details><summary> 1 - Run the script _(Click to expand)_</summary>
   
 ```bash
 # Exercise 2
-R1=garrigos-data/fastq/ERR10802863_R1.fastq.gz
-bash scripts/trimgalore.sh "$R1" results/trimgalore
+R1=../garrigos-data/fastq/ERR10802863_R1.fastq.gz
+R2=../garrigos-data/fastq/ERR10802863_R2.fastq.gz
+bash scripts/trimgalore.sh "$R1" "$R2" results/trimgalore
 ```
 ```bash-out
 # Starting script trimgalore.sh
 Thu Mar 28 10:34:24 EDT 2024
-# Input R1 FASTQ file:      garrigos-data/fastq/ERR10802863_R1.fastq.gz
-# Input R2 FASTQ file:      garrigos-data/fastq/ERR10802863_R2.fastq.gz
+# Input R1 FASTQ file:      ../garrigos-data/fastq/ERR10802863_R1.fastq.gz
+# Input R2 FASTQ file:      ../garrigos-data/fastq/ERR10802863_R2.fastq.gz
 # Output dir:               results/trimgalore
 
 Multicore support not enabled. Proceeding with single-core trimming.
@@ -195,28 +167,50 @@ total 42M
   ```bash-out-solo
   Number of sequence pairs removed because at least one read was shorter than the length cutoff (20 bp): 33955 (6.79%)
   ```
-
 </details>
 
-<hr style="height:1pt; visibility:hidden;" />
+<details><summary> 4 - Check the FastQC output HTML file _(Click to expand)_</summary><p>
+
+TBA
+
+</p><details>
 
 ### Exercise 4
 
-<details><summary> Run the script for all samples _(Click to expand)_</summary>
+<details><summary> 1 - Run the script for multiple samples _(Click to expand)_</summary><p>
 
-Add this loop code to your runner script (`run/run_exercises.sh`) and run it:
+Test the loop:
 
 ```bash
-for R1 in garrigos-data/fastq/*_R1.fastq.gz; do
-    bash scripts/trimgalore.sh "$R1" results/trimgalore
+for R1 in ../garrigos-data/fastq/ERR1080286*_R1.fastq.gz; do
+    R2=${R1/_R1/_R2}
+    echo bash scripts/trimgalore.sh "$R1" "$R2" results/trimgalore
+done
+```
+```bash-out
+bash scripts/trimgalore.sh ../garrigos-data/fastq/ERR10802863_R1.fastq.gz ../garrigos-data/fastq/ERR10802863_R2.fastq.gz results/trimgalore
+bash scripts/trimgalore.sh ../garrigos-data/fastq/ERR10802864_R1.fastq.gz ../garrigos-data/fastq/ERR10802864_R2.fastq.gz results/trimgalore
+bash scripts/trimgalore.sh ../garrigos-data/fastq/ERR10802865_R1.fastq.gz ../garrigos-data/fastq/ERR10802865_R2.fastq.gz results/trimgalore
+bash scripts/trimgalore.sh ../garrigos-data/fastq/ERR10802866_R1.fastq.gz ../garrigos-data/fastq/ERR10802866_R2.fastq.gz results/trimgalore
+bash scripts/trimgalore.sh ../garrigos-data/fastq/ERR10802867_R1.fastq.gz ../garrigos-data/fastq/ERR10802867_R2.fastq.gz results/trimgalore
+bash scripts/trimgalore.sh ../garrigos-data/fastq/ERR10802868_R1.fastq.gz ../garrigos-data/fastq/ERR10802868_R2.fastq.gz results/trimgalore
+bash scripts/trimgalore.sh ../garrigos-data/fastq/ERR10802869_R1.fastq.gz ../garrigos-data/fastq/ERR10802869_R2.fastq.gz results/trimgalore
+```
+
+Looks good? Then run the loop:
+
+```bash
+for R1 in ../garrigos-data/fastq/ERR1080286*_R1.fastq.gz; do
+    R2=${R1/_R1/_R2}
+    bash scripts/trimgalore.sh "$R1" "$R2" results/trimgalore
 done
 ```
 ```bash-out
 # (Output not shown, same as earlier but should repeat for each sample)
 ```
-</details>
+</p></details>
 
-<details><summary> Check the output files _(Click to expand)_</summary>
+<details><summary> 2 - Check the output files _(Click to expand)_</summary>
 
 ```bash
 ls -lh results/trimgalore
@@ -245,97 +239,4 @@ total 949M
 -rw-rw----+ 1 jelmer PAS0471 361K Mar 28 11:20 ERR10802865_R1_val_1_fastqc.zip
 [...output truncated...]
 ```
-</details>
-
-### Bonus exercise
-
-<details><summary> Solution _(Click to expand)_</summary>
-
-The full script:
-
-```bash
-#!/bin/bash
-set -euo pipefail
-
-# Load TrimGalore
-module load miniconda3
-source activate /fs/ess/PAS0471/jelmer/conda/trimgalore
-
-# Copy the placeholder variables
-R1_in=$1
-outdir=$2
-
-# Check that the output dir isn't the same as the input dir
-# This is because we will let the output files have the same name as the input files
-indir=$(dirname "$R1_in")
-if [[ "$indir" == "$outdir" ]]; then
-    echo "ERROR: Input dir is the same as the output dir ($outdir)" 
-    exit 1
-fi
-
-# Infer the R2 FASTQ file name
-R2_in=${R1_in/_R1/_R2}
-
-# Report
-echo "# Starting script trimgalore.sh"
-date
-echo "# Input R1 FASTQ file:      $R1_in"
-echo "# Input R2 FASTQ file:      $R2_in"
-echo "# Output dir:               $outdir"
-echo
-
-# Create the output dir
-mkdir -p "$outdir"
-
-# Run TrimGalore
-trim_galore \
-    --paired \
-    --output_dir "$outdir" \
-    --fastqc \
-    "$R1_in" \
-    "$R2_in"
-
-# Rename output files
-echo
-echo "# Renaming the output files:"
-sample_id=$(basename "$R1_in" _R1.fastq.gz)
-R1_out_init="$outdir"/"$sample_id"_R1_val_1.fq.gz
-R2_out_init="$outdir"/"$sample_id"_R2_val_2.fq.gz
-R1_out_final="$outdir"/"$sample_id"_R1.fastq.gz
-R2_out_final="$outdir"/"$sample_id"_R2.fastq.gz
-mv -v "$R1_out_init" "$R1_out_final"
-mv -v "$R2_out_init" "$R2_out_final"
-
-# Report
-echo
-echo "# Done with script trimgalore.sh"
-date
-```
-
-Run the script with a different output dir:
-
-```bash
-R1=garrigos-data/fastq/ERR10802863_R1.fastq.gz
-bash scripts/trimgalore.sh "$R1" results/trimgalore_rename
-```
-
-Let's check the output files to see they were successfully renamed:
-
-```bash
-ls -lh results/trimgalore_rename
-```
-```bash-out
-total 42M
--rw-rw----+ 1 jelmer PAS0471  20M Mar 28 10:40 ERR10802863_R1.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.4K Mar 28 10:39 ERR10802863_R1.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 674K Mar 28 10:40 ERR10802863_R1_val_1_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 349K Mar 28 10:40 ERR10802863_R1_val_1_fastqc.zip
--rw-rw----+ 1 jelmer PAS0471  21M Mar 28 10:40 ERR10802863_R2.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 2.3K Mar 28 10:40 ERR10802863_R2.fastq.gz_trimming_report.txt
--rw-rw----+ 1 jelmer PAS0471 676K Mar 28 10:40 ERR10802863_R2_val_2_fastqc.html
--rw-rw----+ 1 jelmer PAS0471 341K Mar 28 10:40 ERR10802863_R2_val_2_fastqc.zip
-```
-
-Looks good --- though note that we only renamed the FASTQ files, not the other files.
-
 </details>
