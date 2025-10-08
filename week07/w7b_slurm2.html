@@ -1026,17 +1026,30 @@ Pay attention to file sizes
 </section>
 <section id="submit-a-job-for-each-file" class="level3" data-number="3.3">
 <h3 data-number="3.3" class="anchored" data-anchor-id="submit-a-job-for-each-file"><span class="header-section-number">3.3</span> Submit a job for each file</h3>
-<p>Now, let’s loop over all FASTQ files to submit a job for each file:</p>
+<p>Next, you can loop over all FASTQ files to submit a job for each file. Though before you do so, let’s do a “mock-run” – it your preface the command with <code>echo</code>, the command will just be printed instead of executed. That can be really helpful with loops, e.g.&nbsp;to make sure you are looping over the files you want:</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fastq_file <span class="kw">in</span> ../garrigos-data/fastq/<span class="pp">*</span>fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">sbatch</span> scripts/fastqc.sh <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span> results/fastqc</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> sbatch scripts/fastqc.sh <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span> results/fastqc</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>sbatch scripts/fastqc.sh ../garrigos-data/fastq/ERR10802863_R1.fastq.gz results/fastqc
+sbatch scripts/fastqc.sh ../garrigos-data/fastq/ERR10802863_R2.fastq.gz results/fastqc
+sbatch scripts/fastqc.sh ../garrigos-data/fastq/ERR10802864_R1.fastq.gz results/fastqc
+sbatch scripts/fastqc.sh ../garrigos-data/fastq/ERR10802864_R2.fastq.gz results/fastqc
+sbatch scripts/fastqc.sh ../garrigos-data/fastq/ERR10802865_R1.fastq.gz results/fastqc
+sbatch scripts/fastqc.sh ../garrigos-data/fastq/ERR10802865_R2.fastq.gz results/fastqc
+# [...output truncated...]</code></pre>
+<p>That looked as expected, so now you can actually submit the batch jobs:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fastq_file <span class="kw">in</span> ../garrigos-data/fastq/<span class="pp">*</span>fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">sbatch</span> scripts/fastqc.sh <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span> results/fastqc</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Submitted batch job 37615718
 Submitted batch job 37615719
 Submitted batch job 37615720
-Submitted batch job 37615720
+Submitted batch job 37615721
+Submitted batch job 37615722
+Submitted batch job 37615723
 # [...output truncated...]</code></pre>
 <p>All these jobs were submitted in very quick succession, and we got our prompt back. Check the queue:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$USER</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$USER</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Tue Sep 30 06:36:01 2025
              JOBID PARTITION     NAME     USER    STATE       TIME TIME_LIMI  NODES NODELIST(REASON)
           37615718   cpu-exp fastqc.s   jelmer  RUNNING       0:03   1:00:00      1 p0840
@@ -1049,7 +1062,7 @@ Submitted batch job 37615720
           37615725   cpu-exp fastqc.s   jelmer  RUNNING       0:03   1:00:00      1 p0840
 # [...output truncated...]          </code></pre>
 <p>Nice! At least in this case, all jobs started running simultaneously right away! Once all jobs have finished (are no longer listed in <code>squeue</code> output), you should have many Slurm log files:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>results                    slurm-fastqc-37615719.out  slurm-fastqc-37615723.out  slurm-fastqc-37615727.out  slurm-fastqc-37615731.out  slurm-fastqc-37615735.out
 scripts                    slurm-fastqc-37615720.out  slurm-fastqc-37615724.out  slurm-fastqc-37615728.out  slurm-fastqc-37615732.out  slurm-fastqc-37615736.out
 slurm-fastqc-37615717.out  slurm-fastqc-37615721.out  slurm-fastqc-37615725.out  slurm-fastqc-37615729.out  slurm-fastqc-37615733.out  slurm-fastqc-37615737.out
@@ -1057,8 +1070,8 @@ slurm-fastqc-37615718.out  slurm-fastqc-37615722.out  slurm-fastqc-37615726.out 
 <p>You now arguably have too many Slurm log files to go through, so what to do next? Here’s what I would generally recommend:</p>
 <ol type="1">
 <li><p>Take a close look at (at least) one Slurm log file:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> slurm-fastqc-<span class="pp">*</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># [output not shown]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> slurm-fastqc-<span class="pp">*</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># [output not shown]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-simple callout-tip no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -1070,7 +1083,7 @@ slurm-fastqc-37615718.out  slurm-fastqc-37615722.out  slurm-fastqc-37615726.out 
 </div>
 </div></li>
 <li><p>Check the last few lines of all of them:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> slurm-fastqc-<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> slurm-fastqc-<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>==&gt; slurm-fastqc-37615717.out &lt;==
 Approx 85% complete for ERR10802863_R1.fastq.gz
 Approx 90% complete for ERR10802863_R1.fastq.gz
@@ -1097,7 +1110,7 @@ Tue Sep 30 09:36:03 AM EDT 2025
 
 # [...output truncated...] </code></pre></li>
 <li><p>Check for the presence of the FastQC output files:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> results/fastqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> results/fastqc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>total 25M
 -rw-rw----+ 1 jelmer PAS0471 718K Sep 30 06:35 ERR10802863_R1_fastqc.html
 -rw-rw----+ 1 jelmer PAS0471 364K Sep 30 06:35 ERR10802863_R1_fastqc.zip
@@ -1111,8 +1124,8 @@ Tue Sep 30 09:36:03 AM EDT 2025
 # [...output truncated...]</code></pre></li>
 </ol>
 <p>If everything looks good, and you are convinced that all jobs have finished succesfully, all that is left is to clean up the Slurm log files. In this case, it does makes sense to <strong>keep these files</strong> around somewhere, as they contain information about our runs (when, which files, what version, etc.). But we want to move them out of our working dir. It often makes sense to store them in a subdir of the program’s outdir, e.g.:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> results/fastqc/logs</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> slurm-fastqc-<span class="pp">*</span> logs/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> results/fastqc/logs</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> slurm-fastqc-<span class="pp">*</span> logs/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="recap-making-sure-your-jobs-ran-successfully" class="level3" data-number="3.4">
 <h3 data-number="3.4" class="anchored" data-anchor-id="recap-making-sure-your-jobs-ran-successfully"><span class="header-section-number">3.4</span> Recap: Making sure your jobs ran successfully</h3>
@@ -1139,8 +1152,8 @@ Job monitoring tip: See output added to the Slurm log file in real time
 <div class="callout-body-container callout-body">
 <p>Text will be added to the Slurm log file in real time as the running script (or the program ran by the script) outputs it. However, the output printed by commands like <code>cat</code> and <code>less</code> print are static and not updated in real-time.</p>
 <p>Therefore, if you find yourself opening/printing the contents of the Slurm log file again and again to keep track of the job’s progress, then instead <strong>use <code>tail -f</code></strong>, which will “follow” the file and <em>will</em> print new text as it’s added to the Slurm log file:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># See the last lines of the file, with new contents added in real time</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-f</span> slurm-fastqc-37615717.out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># See the last lines of the file, with new contents added in real time</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-f</span> slurm-fastqc-37615717.out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><em>To exit the <code>tail -f</code> livestream, press <kbd>Ctrl</kbd>+<kbd>C</kbd>.</em></p>
 </div>
 </div>
