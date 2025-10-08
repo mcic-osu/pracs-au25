@@ -922,7 +922,7 @@ Get warned when your job is close to its time limit <em>(Click to expand)</em>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-fastqc-%j.out</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>When you have multiple cores at your disposal in a batch job, you should almost always <strong>explicitly tell the program that you’re running about this</strong>. Some programs default to using 1 core while others try to auto-detect the number of cores, but any auto-detection tends to be inappropriate: the program would detect the total number of cores on the OSC node rather than the number that we have reserved.</p>
 <section id="exercise-let-fastqc-use-multiple-cores" class="level4 exercise">
-<h4 class="anchored" data-anchor-id="exercise-let-fastqc-use-multiple-cores">Exercise: Let FastQC use multiple cores</h4>
+<h4 class="anchored" data-anchor-id="exercise-let-fastqc-use-multiple-cores"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Let FastQC use multiple cores</h4>
 <p>Change the FastQC command in the script so that FastQC will use all 4 reserved cores. Run <code>fastqc --help</code> to find the relevant option.</p>
 <details>
 <summary>
@@ -1014,6 +1014,14 @@ Pay attention to file sizes
 <h4 class="anchored" data-anchor-id="clean-up">Clean up</h4>
 <p>Because this was a test-run, and you will now run a loop to analyze each sample, let’s remove the outputs:</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> results/fastqc slurm-fastqc<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="exercise-trigger-a-job-failure-email" class="level4 exercise">
+<h4 class="anchored" data-anchor-id="exercise-trigger-a-job-failure-email"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Trigger a job failure email</h4>
+<ol type="1">
+<li><p>Submit the script <code>scripts/fastqc.sh</code> as a batch job again, but don’t give the script any arguments when you do so.</p></li>
+<li><p>This will make the job fail – wait for a failure email to arrive. (If it doesn’t arrive immediately, check the queue to make sure your job isn’t still pending.)</p></li>
+<li><p>Optional: if you prefer, set a “Rule” in Outlook so the Slurm emails will not go to your Inbox but to a specific folder for such emails.</p></li>
+</ol>
 </section>
 </section>
 <section id="submit-a-job-for-each-file" class="level3" data-number="3.3">

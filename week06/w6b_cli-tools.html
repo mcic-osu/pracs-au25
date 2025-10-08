@@ -729,34 +729,32 @@ A further explanation of <code>for</code> loop syntax
 -rw-rw----+ 1 jelmer PAS0471 22M Sep  9 13:46 ../garrigos-data/fastq/ERR10802863_R2.fastq.gz
 # Number of lines:
 2000000</code></pre>
-<!---
-<hr style="height:1pt; visibility:hidden;" />
-<details><summary>Click for the solution</summary>
-
-```bash
-for fastq_file in ../garrigos-data/fastq/*fastq.gz; do
-    echo "# Running an analysis on $fastq_file"
-    echo "# File size:"
-    ls -lh "$fastq_file"
-    echo "# Number of lines:"
-    zcat "$fastq_file" | wc -l
-    echo
-done
-```
+<hr style="height:1pt; visibility:hidden;">
+<details>
+<summary>
+Click for the solution
+</summary>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fastq_file <span class="kw">in</span> ../garrigos-data/fastq/<span class="pp">*</span>fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"# Running an analysis on </span><span class="va">$fastq_file</span><span class="st">"</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"# File size:"</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ls</span> <span class="at">-lh</span> <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"# Number of lines:"</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">zcat</span> <span class="st">"</span><span class="va">$fastq_file</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
--->
 </section>
 </section>
 <section id="running-a-script-many-times-with-a-loop" class="level2" data-number="6">
 <h2 data-number="6" class="anchored" data-anchor-id="running-a-script-many-times-with-a-loop"><span class="header-section-number">6</span> Running a script many times with a loop</h2>
 <p>You will now loop over all FASTQ files in the <code>../garrigos-data/fastq</code> dir, and run your <code>fastqc.sh</code> script for each file. Add the following to your <code>README.md</code> file, and then run the code inside the code block:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Step 1 - Run FastQC for each FASTQ file:</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fastq <span class="kw">in</span> ../garrigos-data/fastq/<span class="pp">*</span>fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bash</span> scripts/fastqc.sh <span class="st">"</span><span class="va">$fastq</span><span class="st">"</span> results/fastqc</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Step 1 - Run FastQC for each FASTQ file:</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fastq <span class="kw">in</span> ../garrigos-data/fastq/<span class="pp">*</span>fastq.gz<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bash</span> scripts/fastqc.sh <span class="st">"</span><span class="va">$fastq</span><span class="st">"</span> results/fastqc</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code># Starting script fastqc.sh
 Thu Sep 25 13:58:21 EDT 2025
 # Input FASTQ file:   ../garrigos-data/fastq/ERR10802863_R1.fastq.gz
@@ -799,17 +797,17 @@ About the “hard-coding” of settings <em>(Click to expand)</em>
 <p>We’ve been writing shell scripts that accept arguments, instead of including variable things like inputs and outputs in the scripts themselves. The latter method can be referred to as “hard-coding” these items.</p>
 <p>You can also use arguments for <em>settings</em> like bioinformatics program options you may want to vary among different runs of the script, or relatedly, for information about your data like read length. If you don’t hard-code these options in your script but have arguments for them, it is easier to re-use your script in different contexts.</p>
 <p>But there is balance to be struck, and you can also “hobble” your script with a confusing array of arguments. When you do hard-code potentially variable things in your script, you may want to clearly define them <strong>at the top of your script</strong>. For example:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Settings and constants</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="va">MIN_QUAL</span><span class="op">=</span>30</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Another applicable example is when you use an Apptainer container in your script. It can be a good idea to define the URL or path to the container as a variable at the top of your script:</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Settings and constants</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="va">FASTQC_CONTAINER</span><span class="op">=</span>oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="va">MIN_QUAL</span><span class="op">=</span>30</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Another applicable example is when you use an Apptainer container in your script. It can be a good idea to define the URL or path to the container as a variable at the top of your script:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Settings and constants</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="va">FASTQC_CONTAINER</span><span class="op">=</span>oras://community.wave.seqera.io/library/fastqc:0.12.1--104d26ddd9519960</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Such variables can be referred to as “constants”, since they are hard-coded in the script. In shell code, ALL-CAPS is regularly used for them<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
 </div>
 </div>
