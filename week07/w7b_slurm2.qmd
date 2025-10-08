@@ -581,7 +581,7 @@ the program would detect the total number of cores on the OSC node rather than t
 number that we have reserved.
 
 ::: exercise
-#### Exercise: Let FastQC use multiple cores
+#### {{< fa user-edit >}} Exercise: Let FastQC use multiple cores
 
 Change the FastQC command in the script so that FastQC will use all 4 reserved cores.
 Run `fastqc --help` to find the relevant option.
@@ -605,7 +605,6 @@ to include `--threads 4`:
 fastqc --threads 4 --outdir "$outdir" "$fastq"
 ```
 </details>
-
 :::
 
 ### Submit a single test batch job
@@ -736,6 +735,20 @@ let's remove the outputs:
 ```bash
 rm -r results/fastqc slurm-fastqc*
 ```
+
+::: exercise
+#### {{< fa user-edit >}} Exercise: Trigger a job failure email
+
+1. Submit the script `scripts/fastqc.sh` as a batch job again,
+   but don't give the script any arguments when you do so.
+
+2. This will make the job fail -- wait for a failure email to arrive.
+   (If it doesn't arrive immediately,
+   check the queue to make sure your job isn't still pending.)
+
+3. Optional: if you prefer, set a "Rule" in Outlook so the Slurm emails will not
+   go to your Inbox but to a specific folder for such emails.
+:::
 
 ### Submit a job for each file
 
