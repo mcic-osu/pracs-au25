@@ -1,8 +1,8 @@
 ---
-title: "Graded Assignment III: Shell scripts"
-subtitle: "Week 6 graded assignment -- due Monday Oct 6 at 10:00 pm"
+title: "Graded Assignment 3: Software and shell scripts"
+subtitle: "Week 6 graded assignment -- due Sunday Oct 5 at 11:59 pm"
 pagetitle: "GA3"
-date: 2025-09-21
+date: 2025-09-26
 author:
   - name: Jelmer Poelstra
     orcid: 0000-0002-3514-7462
@@ -11,21 +11,18 @@ author:
       - name: CFAES Bioinformatics Core, Ohio State University
         url: https://mcic.osu.edu/bioinformatics
 other-links:
-  - text: "Week 6 overview"
-    icon: book
-    href: w6_overview.html
-  - text: "w6-1: Shell scripting I"
-    icon: bookmarks
-    href: w6a_scripts.html
-  - text: "w6-2: Shell scripting II"
-    icon: bookmarks
-    href: w6b_cli-tools.html
   - text: "Week 6 graded assignment"
     icon: pencil
-    href: w6_ga_shell-scripts.html
-  - text: "Bonus: Advanced shell scripting and looping"
-    icon: book
-    href: ../bonus/shell-scripting.html
+    href: w6_ga.html
+  - text: "w6a: Shell scripting basics"
+    icon: bookmarks
+    href: w6a_scripts.html
+  - text: "w6b: Shell scripting - CLI tools"
+    icon: bookmarks
+    href: w6b_cli-tools.html
+  - text: "w6c: Shell tips and tricks"
+    icon: bookmarks
+    href: w6c_tricks.html
 editor_options: 
   chunk_output_type: console
 bibliography: ../references.bib
@@ -34,233 +31,261 @@ number-sections: false
 
 ------
 
-<br>
-
-::: {.callout-tip}
-#### OVERVIEW
-This graded assignment centers around the material for week 6,
-and you will primarily be practicing your shell scripting skills.
-:::
-
 <hr style="height:1pt; visibility:hidden;" />
+
+## Overview
+
+This graded assignment is worth 10 points and is due on Sunday Oct 5^th^.
+You will practice with shell scripts, shell variables, containers, modules,
+and version control.
 
 ## Directions and grading
 
 ### Submission expectations
 
-The **deadline** is Monday Oct 6^th^ at 10:00 pm.
-You will submit your assignment by tagging the instructor in an Issue in your
-GitHub as per the last step below. 
-
+- **Deadline**: Sunday Sunday Oct 5^th^ at 11:59 pm.
+- **Submission**: You will submit your assignment by tagging the instructor in an
+  Issue in your GitHub as per the last step below. 
+   
 ### Academic integrity
 
-- Use of generative AI Tools (e.g. ChatGPT, Microsoft Copilot, Google Gemini) **is**
-  permitted.
-- Getting help on the assignment is **not** permitted.
-- Collaborating, or completing the assignment with others, is **not** permitted.
-- Copying or reusing previous work is **not** permitted.
-- Open-book research for the assignment **is** permitted.
-- APA Citations and/or formatting for this assignment are **not** required.
+::: callout-important
+### Gen-AI check
+
+For this assignment,
+you are allowed to search the internet but not to use generative AI
+(so you cannot use, e.g., Google AI Mode output either).
+
+If you use commands or code constructs we did not cover in class,
+you must provide the source: webpage or book page, etc.
+You may also argue that you already knew the command in question
+from previous self-study,
+but should then be prepared to answer live questions about it over Zoom.
+If you don't provide a source or otherwise explain your usage of such commands,
+your answer will be considered wrong and not give you any points.
+:::
+
+<hr style="height:1pt; visibility:hidden;" />
+
+|    |  | 
+|--|-------------------------|
+| ![](../img/icons/AI-Permitted_No.png){width="80%"} | Use of generative AI Tools (e.g. ChatGPT, Microsoft Copilot, Google Gemini) is not permitted. |
+| ![](../img/icons/GetHelp_No.png){width="80%"} | Getting help on the assignment is not permitted |
+| ![](../img/icons/Collaborate_No.png){width="80%"} | Collaborating, or completing the assignment with others, is not permitted |
+| ![](../img/icons/CopyPreviousWork_No.png){width="80%"} | Copying or reusing previous work is not permitted |
+| ![](../img/icons/OpenBookResearch_Yes.png){width="80%"} | Open-book research for the assignment is permitted |
+| ![](../img/icons/CitationsRequired_No.png){width="80%"} | APA Citations and/or formatting for this assignment are not required |
+
+: {.striped}
 
 ### Rubric
 
-You can earn a maximum of 8 points for this assignment,
-1-2 points for each of the 6 parts.
+You can earn a total of 10 points across the 6 parts as follows:
 
-::: {.callout-note collapse="true"}
-#### Detailed rubric _(Click here to view)_
-TBA
+:::: columns
+::: {.column width="20%"}
+| Part | Points
+|:------:|:-------:|
+| A    | 1.5   |
+| B    | 2   |
+| C    | 3   |
+| D    | 1   |
+| E    | 1.5   |
+| F    | 1  |
+
+: {.striped}
+
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
+::::
 
 ## Detailed steps
 
-#### Introduction to TrimGalore
+### General
 
-TrimGalore [@krueger2021] is a tool that can trim and filter FASTQ files, removing:
+In the Markdown file with your answers,
+copy the numbered instructions/questions into your document,
+and insert your answers in between.
+_You only need to do this where you think it makes sense:_
+_e.g., it is not needed for questions 1 and 2._
 
-- Any adapter sequences that are present in the reads^[
-  Adapters are always added to DNA/cDNA fragments of interest prior to Illumina sequencing,
-  and the last bases of a read can "read-through" into the adapter if the fragment
-  is shorter than the read length.].
-- Poor-quality bases at the start and end of the reads.
-- Reads that have become very short after the prior two steps.
+The code parts of your answers should be entered in Markdown code blocks,
+and that code's output should also be part of your answer.
+For example:
 
-TrimGalore takes FASTQ files as input, and outputs filtered FASTQ files.
-When you have paired-end reads (as you do here),
-_a single TrimGalore run should include both the R1 and R2 file for one sample_.
+````bash-in-nocolor
+1. List the files in your current working dir.
 
-::: {.callout-note collapse="true"}
-#### More about TrimGalore _(Click to expand)_
-Several largely equivalent tools exist for this kind of FASTQ preprocessing ---
-[Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic) and
-[fastp](https://github.com/OpenGene/fastp) are two other commonly used ones.
-TrimGalore itself is "just" a wrapper around yet another tool called Cutadapt,
-but it is simpler to use.
-Two advantages of TrimGalore are:
+   I used the following command:
+     
+   ```bash
+   ls
+   ```
+     
+   The output was:
+     
+   ```
+   file1.txt   file2.txt   annot.gtf
+   ```
+````
 
-- It will auto-detect the adapters that are present in your reads.
-- It can automatically run FastQC on the trimmed sequences.
-:::
+_However, you don't need to record every Git command you used in your `README.md`._
+_This would be tedious and moreover,_
+_we can check much of your Git history using the repo itself._
 
-### 1. Setting up
+## Part A: Setting up
 
-Start a VS Code session at OSC in the folder `/fs/ess/PAS2880/users/$USER`.
-In the terminal, create a dir for these exercises and navigate there:
+1. Start a VS Code session at OSC in the folder `/fs/ess/PAS2880/users/$USER`.
+   Create a new dir for this assignment, `/fs/ess/PAS2880/users/$USER/GA3`,
+   and switch to that folder in VS Code using the "Open Folder" option.
+   This should be your working dir for the entire assignment.
 
-```bash
-mkdir week06/assignment
-cd week06/assignment
-
-# Also make a scripts subdir:
-mkdir scripts
-```
-
-Below, you'll be creating a couple of shell scripts,
-which you should save in the `scripts` dir you just made,
-and edit in the VS Code editor pane.
-First, create a Markdown document in which you should document what you did
-across all parts of the assignment, and e.g. add the commands to run the scripts:
-
-```bash
-touch README.md
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### 2. A container image for TrimGalore
-
-After running those two lines, check that you can run TrimGalore
-and which version you're working with, as follows:
-
-```bash
-# Note: the command is 'trim_galore' with an underscore
-trim_galore --version
-```
-```{.bash-out}
-            Quality-/Adapter-/RRBS-/Speciality-Trimming
-                    [powered by Cutadapt]
-                        version 0.6.10
-```
-
-Then print the help info --- you'll be using this below!
-
-```bash
-trim_galore --help
-```
-```bash-out
-[output not shown]
-```
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### 3. A script to run TrimGalore
-
-Write a shell script `scripts/trimgalore.sh` that runs TrimGalore on paired end-FASTQ
-files as follows:
-
-- Header lines + TrimGalore version + TBA
-
-- The script should only **run TrimGalore once**, i.e. for one sample (two FASTQ files).
-
-- Your **script should accept and process arguments** that specify the input FASTQ
-  files and the output dir.
-
-- For each of the items below, figure out the relevant TrimGalore option,
-  and use that option:
-  - Tell it that the reads are **paired-end**^[
-    If you don't do this, TrimGalore will process the two FASTQ files independently.].
-  - Set the **output dir**.
-  - Make it **run FastQC** on the trimmed FASTQ files.
-
-- What are the default thresholds for the Phred quality score and read length?
-  Can you describe what these parameters do?
-  _(You don't have to change them here, the defaults will work fine for us.)_
-  
-::: {.callout-warning collapse="true"}
-#### Don't use/adjust TrimGalore's `--cores` option here _(Click to expand)_
-Since you're running the program interactively on your single-core VS Code compute job,
-you only have 1 core at your disposal --- and that's TrimGalore's default.
-Therefore, don't adjust this here.
-Next week, you'll submitting this script as a batch jobs,
-and that will give you the opportunity to use multiple cores.
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-### 4. Run your TrimGalore script once
-
-1. Run your TrimGalore script for the `ERR10802863` sample in `garrigos-data/fastq`.
-
-2. Check if everything went well by reading the ouput that is printed to screen,
-   and by taking a look at TrimGalore's output files.
-   What outputs are you finding?
-   _(If something went wrong, go back to your `trimgalore.sh` script and try to fix it,_
-   _and describe your process in the `README.md`.)_
+2. Inside dir `GA3`, create a `README.md` file and open it in the VS Code editor.
+   Use this file throughout the assigment to add your answers.
    
-3. Take a closer look at the output that TrimGalore printed to screen
-   (note that most of that is also saved in the `*_trimming_report.txt` file in the
-   output dir):
-   - In each file (R1 and R2), in what percentage of reads were adapters detected?
-   - In each file (R1 and R2), what percentage of bases were quality trimmed?
-   - What percentage of reads were removed because they were too short?
+3. Inside dir `GA3`, also create dirs `data`, `scripts` and `results`.
+   This time, we'll make your dir self-contained,
+   like a typical situation for a research project,
+   by copying some data into it:
+   
+   ```bash
+   cp -v ../garrigos-data/fastq/ERR10802863* data/
+   cp -v ../garrigos-data/meta/metadata.tsv data/
+   ```
+   
+4. Initialize a Git repository.
+   Commit to the repo throughout the assignment as you see fit,
+   but at least once for each "Part" of this assignment.
+   Use and commit a `.gitignore` file as you see fit.
 
-<hr style="height:1pt; visibility:hidden;" />
+## Part B: Running two scripts
 
-### 5. Modify the script to rename the output FASTQ files
+Here, you'll try to understand and run two tiny shell scripts.
 
-The TrimGalore output FASTQ files are oddly named,
-ending in `_R1_val_1.fq.gz` and `_R2_val_2.fq.gz` ---
-check the output files from your initial run to see this.
-This is not necessarily a problem, but could trip you up in a next step with these files.
-Therefore, in your TrimGalore script (`scripts/trimgalore.sh`):
+5. Save the script below as `scripts/echo.sh`.
+   Look at the below three commands to run the script,
+   and describe what you expect to be the output and why.
+   Then, test the commands and if any output was not as expected,
+   reconcile the differences.
 
-1. Rename the output files after you run TrimGalore,
-   giving them the same names as the input files.
-2. Add an `if` statement to check that the input dir is not the same as the output dir.
-   If it is, exit the script.
-3. Re-run the script to check that your changes were successful.
+   - The script:
+   
+     ```bash
+     #!/bin/bash
+     set -euo pipefail
+    
+     echo "$1"
+     echo "$2"
+     echo "$3"
+     echo "Finished"
+     ```
+  
+   - The commands:
+  
+     ```bash
+     bash scripts/echo.sh Oct07 Oct08
+     bash scripts/echo.sh Oct07 Oct08 Oct09 Oct10
+     bash scripts/echo.sh Oct07 Oct08 "Oct09 Oct10"
+     ```
 
-<details><summary>Hints _(Click to expand)_</summary>
+6. Save the script below as `scripts/concat.sh`.
+   Run it to concatenate the two FASTQ files you copied to `data/` earlier.
+   _(Input files can remain compressed and therefore, so will the output file be.)_
 
-To do this, you should first extract and store what is basically a sample ID:
-the part of the file name that is shared by the R1 and R2 file.
+   ```bash
+   #!/bin/bash
+   set -euo pipefail
+  
+   cat "$1" "$2" > "$3"
+   ls -lh "$1" "$2" "$3"
+   ```
 
-```bash
-sample_id=$(basename "$R1_in" _R1.fastq.gz)
-```
+## Part C: A shell script that prints a specific line
 
-Based on that ID, you can build up the names of the TrimGalore output files
-as well as the desired final output files. For example:
+You'll write a shell script that accepts arguments, and test whether it works.
 
-```bash
-# The name of the initial ('init') TrimGalore R1 output file will be:
-R1_out_init="$outdir"/"$sample_id"_R1_val_1.fq.gz
-```
+07. Write a shell script `scripts/printline.sh` that accepts two arguments,
+    a file path and a line number,
+    in order to _print_ (not store in a file) the requested line from the specified file.
+    Don't make the script print anything other than the requested line from the file,
+    and make sure to include the discussed best-practice header lines.
 
-To test this, you'll need to derive the input dir from the FASTQ path.
-In this week's second lecture, we saw how to do this.
-Use command substitution (`$(...)` to store the input dir in a variable.
+    _Hint: Figure out a way to combine `head` and `tail` to print one specific line from a file._
+    _If you don't manage to, your script can instead print all lines up until the specified line,_
+    _so you can still move on to the next two steps._
 
-</details>
+08. Test your script twice by making it print two different lines from the
+    `data/metadata.tsv` file you copied above.
+    In one of these tests,
+    redirect the script's output to an appropriately named file in `results`.
+    
+    (_Add the code to run these tests and the one in the next question to your `README.md`._)
+   
+09. Run a final test, but now:
+   
+    - First, store the file name (just `metadata.tsv`) in one variable and the
+      line number you chose in another.
+    - Then, use these two variables as the arguments that you give to the script.
+    - Finally, redirect the script's output to a file in `results` whose name includes
+      both the file name and the line number.
+      But instead of simply typing the literal output file name,
+      use the two variables you created again,
+      now to "build" the output file name programmatically.
+      The output file name should not include any spaces.
 
-<hr style="height:1pt; visibility:hidden;" />
+## Part D: Containers
 
-### 6. Run your TrimGalore script for all samples
+The program "Trim-Galore",
+which you'll use in the next few weeks of the course,
+trims and filters FASTQ files to remove adapters,
+poor quality bases, and short reads.
+Here, you'll find and test-run containers with two different versions of this program.
+ 
+10. Go to <https://seqera.io/containers> and find a container image for the program
+    (default, i.e. latest, version).
+    Back in VS Code, test-run the container with the command `trim_galore -v`.
 
-Write a `for` loop (include this in the README) to run your TrimGalore script for
-all samples in the `garrigos-data/fastq` dir, and run that loop.
-_(Make sure you are running the script once per sample, not per FASTQ file.)_
+11. It turns out that your collaborator has been using an older version of Trim-Galore
+    to trim other FASTQ files in the same project,
+    so you decide that it will be best if you use that same version as well.
+    Find a container for Trim-Galore version 0.5.0 and test-run it with the
+    same command as above.
+    Are the versions printed in both cases as expected?
 
-::: callout-tip
-#### This will take some time (~20 minutes) to run!
-And note that these FASTQ files are _much_ smaller than regular ones.
-You'll hopefully agree that we need to start using more computing power,
-and have the script run simultaneously rather than consecutively for each sample ---
-we can do all of that by submitting the script as batch jobs, as we'll see next week.
+## Part E: Modules and Pandoc
 
-TBA Also talk about output to screen always being saved with batch jobs
-:::
+You'll practice with OSC software modules and the program Pandoc,
+which can render Markdown files to HTML and PDF.
 
-<br>
+12. See if Pandoc is available at OSC prior to loading anything,
+    and if so, which version, by running `pandoc -v`.
+    Then, search the internet to check if that Pandoc version is the most recent one.
+   
+13. Check what other versions of Pandoc are available in OSC Lmod modules,
+    and load the module with the most recent available Pandoc version.
+
+14. Use the below Pandoc command to create a PDF of your `README.md`,
+    and check whether the PDF file is there.
+   
+    ```bash
+    pandoc -o README.pdf README.md
+    ```
+   
+15. To view PDF files in VS Code, you'll first need to install a VS Code extension.
+    Install the extension "_Papyrus PDF Preview_", and take a look at your PDF.
+    Then, download the PDF file to your computer and also take a look at it there.
+
+16. Does everything in the rendered PDF look OK?
+    Or did you make formatting errors, or did anything else not render as expected?
+    If so, update your Markdown file, rerender the PDF, and check again.
+
+## Part F: Publish your repo on Github 
+
+You'll publish your Git repo on GitHub and "hand in" your assignment by creating
+an Issue.
+ 
+17. Create a repository on GitHub, connect it to your local repo,
+    and push your local repo to GitHub.
+   
+18. Create a new issue and tag GitHub user `menukabh`,
+    asking Menuka to take a look at your assignment.

@@ -1,7 +1,7 @@
 ---
-title: "Shell scripting"
+title: "Shell scripting basics"
 subtitle: "Week 6 -- Lecture A"
-pagetitle: "Shell scripting"
+pagetitle: "w6a: Shell scripting"
 date: 2025-09-26
 author:
   - name: Jelmer Poelstra
@@ -17,6 +17,9 @@ other-links:
   - text: "w6b: Shell scripting - CLI tools"
     icon: bookmarks
     href: w6b_cli-tools.html
+  - text: "w6c: Shell tips and tricks"
+    icon: bookmarks
+    href: w6c_tricks.html
   - text: "Week 6 graded assignment"
     icon: pencil
     href: w6_ga.html
@@ -32,11 +35,13 @@ other-links:
 
 #### This week and the next two weeks
 
-This week, you will learn how to write shell scripts and use them to run programs
+This week, you will learn how to write shell scripts to run programs
 with command-line interfaces (CLIs), like various bioinformatics tools.
 
 The end goal is to be able to submit shell scripts as "batch jobs" at OSC,
-which e.g. allows you to run them simultaneously up to hundreds of times!
+which e.g. allows you to run them simultaneously many times!
+This is extremely useful because with omics analysis,
+it's common to have to run the same step for many samples in parallel.
 To get there, you still need to learn about the following topics:
 
 1. The basics of shell scripts _(this session)_
@@ -51,15 +56,14 @@ In this session, we will talk about:
 - Boilerplate shell script header lines: shebang and safe settings
 - Shell variables
 - Command-line arguments to scripts
-- Command substitution to save the output of commands
 
-### Setting up
+### Getting ready
 
 1. At <https://ondemand.osc.edu>,
-   start a VS Code session in your personal dir within `/fs/ess/PAS2880/users/`.
-2. Open a terminal and create and then navigate to a `week06` dir.
-3. **Within the `week06` dir, create a dir `scripts`** (but don't navigate there).
-3. _Optional: Create a new Markdown file for class notes and save it in your `week06` dir._
+   start a VS Code session in `/fs/ess/PAS2880/users/$USER`
+2. Open a terminal and create and then navigate to a `week06` dir
+3. **Within the `week06` dir, create a dir `scripts`** (but don't navigate there)
+3. _Optional: Create a new Markdown file for class notes and save it in your `week06` dir_
 
 ::: callout-note
 #### Some useful VS Code keyboard shortcuts
@@ -97,9 +101,10 @@ are run from the command line.
 In other words, they have a command-line interface (CLI).
 We can run them using command line expressions that are structurally
 _very similar to how we've been using basic Unix shell commands._
+You saw an example of this when we ran FastQC last week.
 
-However, we've been running shell commands in a manner we may call "interactive",
-by typing or pasting them into the shell, and then pressing <kbd>Enter</kbd>.
+However, we've been running shell commands in an "interactive" manner:
+typing or pasting them into the shell and then pressing <kbd>Enter</kbd>.
 But when you run bioinformatics tools,
 it is in most cases a much better idea to **run them via shell scripts**,
 which are plain-text files that contain shell code.
@@ -127,8 +132,8 @@ we can **submit scripts as "batch jobs"** to the compute job scheduling program
 So far, we've mostly used talked about the Unix _shell_ and _shell_ scripts.
 From today onwards, we'll also see the term "Bash".
 Recall the difference we talked about in the Unix shell intro session:
-there are multiple Unix shell language variants and the specific one we've been
-using is the Bash shell (which is by far the most common).
+**there are multiple Unix shell language variants and the specific one we've been**
+**using is the Bash shell** (which is by far the most common).
 Our shell scripts are therefore in the Bash language,
 can be specifically called Bash scripts,
 and can be run with the `bash` command.
@@ -152,7 +157,6 @@ the path should become underlined and you can click on it to open the file.
 Try that with the `printname.sh` script^[
 Alternatively, find the script in the file explorer in the side bar and click
 on it there.].
-
 Once the file is open in your editor pane, type or paste the following inside the script:
 
 ```bash
@@ -160,7 +164,7 @@ echo "This script will print a first and a last name"
 ```
 
 Shell scripts mostly contain the same Unix shell code you have become familiar with.
-As such, the `prinline.sh` file with a single `echo` command
+As such, the `printline.sh` file with a single `echo` command
 _constitutes a functional shell script_!
 
 One way of running the script is by typing `bash` followed by the path to the script:
@@ -253,13 +257,10 @@ The following two default settings of the Bash shell are bad ideas inside script
   But the downstream results from what we at that point might call a
   "zombie script" can still be completely wrong.
 
-::: {.callout-warning}
-##### Accidental file removal with unset variables
-
 The shell's default behavior of ignoring the referencing of unset variables can
 lead to accidental file removal as follows:
 
-- Using a variable, we try to remove some temporary files whose names start with `tmp_`:
+- Using a variable, you try to remove temporary files whose names start with `tmp_`:
 
   ```bash
   # NOTE: DO NOT run this!
@@ -267,7 +268,7 @@ lead to accidental file removal as follows:
   rm "$tmp_prefix"*
   ```
 
-- Using a variable, we try to remove a temporary directory:
+- Using a variable, you try to remove a temporary directory:
 
   ```bash
   # NOTE: DO NOT run this!
@@ -296,16 +297,11 @@ which means that we are referencing a (likely) non-existent variable.
 These kinds of accidents are especially likely to happen inside scripts, 
 where it is common to use variables and to work non-interactively.
 
-Before you get too scared of creating terrible damage, note that at OSC,
-you would not be able to remove any essential files^[
-And more generally, you can't remove or edit files that are not yours unless
-you've explicitly been given permission for this.],
+But before you get too scared of doing terrible damage, note that at OSC,
+you would not be able to remove any essential files
 since you don't have the permissions to do so.
-On your own computer,
-this could be more genuinely dangerous, though even there,
-you would not be able to remove operating system files without specifically
-requesting  "admin" rights.
-:::
+On your own computer, this could be more genuinely dangerous, though even there,
+you would not be able to remove operating system files without requesting "admin" rights.
 
 #### Safer settings
 
@@ -316,7 +312,7 @@ With these settings, **the script terminates** with an appropriate error message
 - `set -e` --- almost any error occurs.
 - `set -o pipefail` --- an error occurs in a shell "pipeline" (e.g., `sort | uniq`).
 
-We can change all of these settings in one line in a script:
+You can change all of these settings in one line in a script:
 
 ```bash
 set -e -u -o pipefail
@@ -392,9 +388,9 @@ but we won't cover that here (Google `$PATH` if you're curious).
 ### Variables
 
 Variables are truly ubiquitous in programming.
-We typically use them for items that:
+They are typically used for items that:
 
-- We refer to repeatedly and/or
+- Are referred to repeatedly and/or
 - Are subject to change.
 
 These tend to be _settings_ like the paths to input and output files,
@@ -447,7 +443,7 @@ Conveniently, you can use variables in lots of contexts,
 _as if you had directly typed their values_:
 
 ```bash
-input_file=data/fastq/sample1_R1.fastq
+input_file=../garrigos-data/fastq/ERR10802863_R1.fastq.gz
 
 ls -lh "$input_file"
 ```
@@ -510,7 +506,7 @@ such as `$inputFile` and `$input_file`:
 I prefer the latter, which is called "snake case".
 
 ::: {.callout-tip collapse="true"}
-#### Case and environment variables
+#### Case and environment variables _(Click to expand)_
 All-uppercase variable names are pretty commonly used ---
 and recall that so-called environment variables such as `$USER` and `$HOME`
 are always in uppercase.
@@ -584,7 +580,10 @@ ls -1
 README_.txt
 ```
 
-<details><summary>Do you understand what happened here? _(Click for the solution)_</summary>
+::: exercise
+{{< fa user-edit >}} **Do you understand what happened here?**
+
+<details><summary>_Click for the solution_</summary>
 We have assigned a variable called `$today`,
 but the shell will instead look for a variable called `$today_final`.
 This is because we have not explicitly indicated where the variable name ends,
@@ -592,10 +591,11 @@ so the shell will include all characters until it hits a character that cannot
 be part of a shell variable name: in this case a period, `.`.
 </details>
 
+:::
+
 Quoting solves this, too:
 
 ```sh
-touch README_"$today"_final.txt
 ls -1
 ```
 ```bash-out
@@ -697,7 +697,6 @@ $today
 
 When you run a script, you can pass arguments to it,
 such as a file to operate on.
-
 This allows you to make **scripts that are flexible** when it comes to inputs,
 outputs, and possibly other settings.
 That way, you don't have to "hard-code" such variable things inside the script,
@@ -740,10 +739,11 @@ bash scripts/printname.sh John Doe            # 2 arguments: strings representin
 In the next section,
 you'll see how you can use these arguments inside your script.
 
-### Placeholder variables
+### Positional parameters
 
 Inside the script, any command-line arguments that you pass to it are
-**automatically available in "placeholder" variables**.
+**automatically available in variables**,
+the so-called "positional parameters".
 Specifically:
 
 - Any first argument will be assigned to the variable **`$1`**
@@ -752,22 +752,23 @@ Specifically:
 
 <hr style="height:1pt; visibility:hidden;" />
 
-<details><summary>{{< fa user-edit >}} In the calls to `fastqc.sh` and `printname.sh` above,
-what are the placeholder variables and their values? _(Click for the solution)_</summary>
+::: exercise
+{{< fa user-edit >}} In the calls to `fastqc.sh` and `printname.sh` above,
+what are these variables and their values?
 
+<details><summary>_Click here for the solution_</summary>
 <hr style="height:1pt; visibility:hidden;" />
 
-- In `bash scripts/fastqc.sh data/sampleA.fastq.gz`, a single argument, `data/sampleA.fastq.gz`,
-  is passed to the script, and will be assigned to `$1`.
+- In `bash scripts/fastqc.sh data/sampleA.fastq.gz`, a single argument,
+  `data/sampleA.fastq.gz`, is passed to the script, and will be assigned to `$1`.
 
 - In `bash scripts/printname.sh John Doe`, two arguments are passed to the script:
   the first one (`John`) will be stored in `$1`, and the second one (`Doe`) in `$2`.
 </details>
-
-<hr style="height:1pt; visibility:hidden;" />
+:::
 
 However, even though they are _made available_,
-these placeholder variables are not "automagically" _used_.
+these variables are not automatically _used_.
 So, unless you include code in the script to _do_ something with these variables,
 nothing happens with them.
 
@@ -798,7 +799,7 @@ First name: John
 Last name: Doe
 ```
 
-:::{.exercise}
+::: exercise
 #### {{< fa user-edit >}} Exercise: Command-line arguments
 
 In each scenario that is described below, think about what might happen.
@@ -817,8 +818,7 @@ Then, run the script as instructed in the scenario to test your prediction.
    ```bash-out
    printname.sh: line 5: $1: unbound variable
    ```
-     
-  </details>
+   </details>
 
 2. After commenting out the line with `set` settings,
    running the script again without passing arguments to it.
@@ -876,18 +876,18 @@ Then, run the script as instructed in the scenario to test your prediction.
   _remove the `#` you inserted in the script in step 2 above to reactive the `set` line._
 :::
 
-### Copying placeholders to variables with descriptive names
+### Copying to variables with descriptive names
 
-While you could use the `$1`-style placeholder variables throughout your script,
-I highly recommend to always copy them to more descriptively named variables ---
+While you could use the `$1`-style variables throughout your script,
+I highly recommend always copying them to more descriptively named variables ---
 for example:
 
 ```bash
 #!/bin/bash
 set -euo pipefail
 
-first_name=$1
-last_name=$2
+first_name="$1"
+last_name="$2"
 
 echo "This script will print a first and a last name"
 echo "First name: $first_name"
@@ -902,10 +902,23 @@ Using descriptively named variables in your scripts has several advantages, such
 {{< fa user-edit >}} _Copy the above code into `printname.sh`, replacing its previous contents._
 
 :::{.callout-note}
-#### Other placeholder variables that are automatically available inside scripts:
+#### Other variables that are automatically available inside scripts:
 
 - **`$#`** contains the _number_ of command-line arguments passed to the script
 - **`$0`** contains the script's file name^[
   Though this does not work when you submit scripts as Slurm batch jobs,
   and we will therefore not use this feature.]
 :::
+
+## Recap and next steps
+
+In this session, you've learned the basics of shell scripts.
+As you've seen, shell scripts mostly consist of "regular" Unix shell code,
+but with some added bells and whistles like:
+
+- Boilerplate shell script header lines: shebang and safe settings
+- Command-line arguments to scripts which are available in variables in the script
+
+In the next lecture,
+you will learn how to run command-line programs with shell scripts,
+and how to write loops to easily run a script many times.
