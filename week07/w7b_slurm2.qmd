@@ -55,7 +55,8 @@ Here, we'll go through the most commonly used `sbatch` options
 (except `--account`, which we covered in the previous lecture).
 As pointed out above, each of these can either be:
 
-- Passed on the command line: `sbatch --account=PAS2880 myscript.sh` _(has precedence over the next)_
+- Passed on the command line: `sbatch --account=PAS2880 myscript.sh`
+  _(has precedence over the next)_
 - Added at the top of the script you're submitting: `#SBATCH --account=PAS2880`.
 
 Also, note that many options have a corresponding long
@@ -752,7 +753,29 @@ rm -r results/fastqc slurm-fastqc*
 
 ### Submit a job for each file
 
-Now, let's loop over all FASTQ files to submit a job for each file: 
+Next, you can loop over all FASTQ files to submit a job for each file.
+Though before you do so, let's do a "mock-run" --
+it your preface the command with `echo`,
+the command will just be printed instead of executed.
+That can be really helpful with loops,
+e.g. to make sure you are looping over the files you want:
+
+```bash
+for fastq_file in ../garrigos-data/fastq/*fastq.gz; do
+    echo sbatch scripts/fastqc.sh "$fastq_file" results/fastqc
+done
+```
+```bash-out
+sbatch scripts/fastqc.sh ../garrigos-data/fastq/ERR10802863_R1.fastq.gz results/fastqc
+sbatch scripts/fastqc.sh ../garrigos-data/fastq/ERR10802863_R2.fastq.gz results/fastqc
+sbatch scripts/fastqc.sh ../garrigos-data/fastq/ERR10802864_R1.fastq.gz results/fastqc
+sbatch scripts/fastqc.sh ../garrigos-data/fastq/ERR10802864_R2.fastq.gz results/fastqc
+sbatch scripts/fastqc.sh ../garrigos-data/fastq/ERR10802865_R1.fastq.gz results/fastqc
+sbatch scripts/fastqc.sh ../garrigos-data/fastq/ERR10802865_R2.fastq.gz results/fastqc
+# [...output truncated...]
+```
+
+That looked as expected, so now you can actually submit the batch jobs: 
 
 ```bash
 for fastq_file in ../garrigos-data/fastq/*fastq.gz; do
@@ -763,7 +786,9 @@ done
 Submitted batch job 37615718
 Submitted batch job 37615719
 Submitted batch job 37615720
-Submitted batch job 37615720
+Submitted batch job 37615721
+Submitted batch job 37615722
+Submitted batch job 37615723
 # [...output truncated...]
 ```
 
