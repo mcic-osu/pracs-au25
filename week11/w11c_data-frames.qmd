@@ -42,8 +42,8 @@ In R, tabular data is stored in a data structure called "**data frame**".
 
 You will learn
 
-- TBA
-- TBA
+- Data frames and different functions to reorganize and modify data frames.
+- Matrix
 
 ### Setting up
 
@@ -105,7 +105,7 @@ by prefacing it with its package name as follows: `stats::filter()`.
 
 ## Reading data
 
-_readr_ is one of the packages that is loaded as part of the core tidyverse,
+_readr_  is one of the packages that is loaded as part of the core tidyverse,
 and has functions for reading and writing tabular data to and from plain-text
 files like CSV and TSV files.
 
@@ -139,7 +139,7 @@ View(meta)
 
 Data frames are another R data structure, like vectors.
 
-They contain tabular data and can be tought of a vectors pasted side-by-side:
+They contain tabular data and can be thought of a vectors pasted side-by-side:
 each column is a vector.
 This means that each column can only contain one data type.
 
@@ -173,6 +173,11 @@ meta$treatment[2]
 ```
 
 ### Matrix
+R-matrix is a two dimensional rectangular data with rows and columns. All the elements of matrix must of be same data type (all numeric, character, logical).
+
+[DESeq2](https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html) package is used for the differential expression analysis of the count data. 
+The input for the **DESeq2** is a matrix of count data, where each row represents a gene and the column represents a different sample. 
+To create a **DESeq2** object, you need the count data of matrix, metadata that matches the samples name in the count data and the experiment design (if present).
 
 ***[TBA - Introduce the matrix data structure - used with DESeq2]***
 
@@ -398,16 +403,18 @@ meta |>
 :::exercise
 #### {{< fa user-edit >}} **Challenge 1** {-}
 
-Use a "pipeline" like above to output a data frame with
-columns ***[TBA]*** only for ***[TBA]***.
+Use a "pipeline" like above to output a data frame with two
+columns (sample_id and treatment) only for cathemerium.
 How many rows does your output data frame have?
 
 <details><summary>Click for the solution</summary>
 ```{r}
-#TBA
+meta |>
+  select(sample_id, treatment) |>
+  filter(treatment == "cathemerium")
 ```
 
-The output data frame has ***[TBA]*** rows.
+The output data frame has 7 rows and 2 columns.
 </details>
 
 :::
@@ -446,7 +453,7 @@ where ties in the first column are broken by a second column (and so on).
 Do this by simply listing the columns in the appropriate order:
 
 ```{r}
-# Sort first by continent, then by country:
+# Sort first by treatment, time, then by sample_id:
 meta |>
   arrange(treatment, time, sample_id)
 ```
@@ -459,11 +466,14 @@ But you haven't seen how you can _change the data_ or _compute derived data_.
 
 ***TBA introduce sub() function***
 
+`sub()` function is used to replace the string or character. 
+The syntax of `sub()` is pattern, replacement, and a vector or a data frame to substitute pattern.
+
 This can be done with the `mutate()` function.
 For example, to shorten sample IDs by removing the shared prefix:
 
 ```{r}
-# Create a new column 'pop_million' by dividing 'pop' by a million:
+# Create a new column 'sample_id_short' by replacing the 'ERR10802' pattern of sample_id with nothing :
 meta |>
   mutate(sample_id_short = sub("ERR10802", "", sample_id))
 ```
@@ -473,7 +483,16 @@ simply "assign back to the same name":
 
 ```{r}
 meta |>
-  mutate(sample_id_short = sub("ERR10802", "", sample_id))
+  mutate(sample_id = sub("ERR10802", "", sample_id))
+```
+
+`substr()` function is used to either extract the character present in the character vector.
+The syntax of `substr()` is the string name of the character vector,
+start position of the sub string, and the end position of the sub string.
+
+```{r}
+meta |>
+  mutate(Treat_three_letters = substr(treatment, 1, 3))
 ```
 
 :::exercise
@@ -518,7 +537,7 @@ it is completely different from the input dataframe,
 
 `summarize()` becomes really powerful in combination with the helper function
 `group_by()` to compute **groupwise** stats.
-For example, to get the mean GDP separately for each continent:
+For example, to get the mean time_num separately for each treatment:
 
 ```{r}
 meta_time |>
@@ -527,14 +546,31 @@ meta_time |>
 ```
 
 `group_by()` implicitly splits a data frame into groups of rows:
-here, one group for observations from each continent.
+here, one group for observations from each treatment.
 After that, operations like in `summarize()` will happen separately for each group,
-which is how we ended up with per-continent means.
+which is how we ended up with per-treatment means.
+
 
 :::exercise
 #### {{< fa user-edit >}} **Challenge 3** {-}
 
-***TBA***
+Use the function discussed above to:
+
+- `select` two columns time and treatment from meta data frame. 
+- `filter` cathemerium. 
+- create a numeric column by stripping hpi/dpi suffix from time. 
+- compute the mean of the new column by grouping the column time.
+
+<details><summary>Click for the solution</summary>
+```{r}
+meta |> 
+  select(time, treatment) |> 
+  filter(treatment =="cathemerium") |> 
+  mutate(new_time=as.numeric(substr(time, 1, 2))) |> 
+  group_by(time) |>
+  summarize(mean_time_dpi=mean(new_time))
+```
+</details>
 :::
 
 ## Writing to files
