@@ -49,15 +49,47 @@ you will learn:
    start a VS Code session in `/fs/ess/PAS2880/users/$USER`
 2. In the terminal, navigate to your `week07` dir
 
+### Testing the Shellcheck extension
+
+1. Create a new script `scripts/shellcheck-test.sh` and open it.
+2. If Shellcheck works, you should immediately see a small red squiggly line
+   on the first line -- and when you hover over that, the following warning:
+
+![](../img/shellcheck-shebang1.png){fig-align="center" width="50%" fig-alt="A screenshot showing a shellcheck warning." .lightbox}
+
+![](../img/shellcheck-shebang2.png){fig-align="center" width="80%" fig-alt="A screenshot showing a shellcheck warning." .lightbox}
+
+3. So, Shellcheck wants you to add a shebang line, and once you do so,
+   the squiggly line disappears:
+   
+![](../img/shellcheck-shebang3.png){fig-align="center" width="65%" fig-alt="A screenshot showing a shellcheck warning." .lightbox}
+
+4. That was one example of a handy Shellcheck tip.
+   Another is when you have assigned a variable, but don't use (reference it):
+
+![](../img/shellcheck-variable1.png){fig-align="center" width="50%" fig-alt="A screenshot showing a shellcheck warning." .lightbox}
+
+![](../img/shellcheck-variable2.png){fig-align="center" width="70%" fig-alt="A screenshot showing a shellcheck warning." .lightbox}
+
+![](../img/shellcheck-variable3.png){fig-align="center" width="50%" fig-alt="A screenshot showing a shellcheck warning." .lightbox}
+
+5. Conversely, when you reference a variable that hasn't been assigned:
+
+![](../img/shellcheck-variable5.png){fig-align="center" width="70%" fig-alt="A screenshot showing a shellcheck warning." .lightbox}
+
+6. These tips can be extremely useful!
+   Also in cases where you e.g. make a typo in a variable name,
+   or renamed a variable but didn't do so consistently.
+
 ## Common Slurm/`sbatch` options
 
 Here, we'll go through the most commonly used `sbatch` options
-(except `--account`, which we covered in the previous lecture).
-As pointed out above, each of these can either be:
+(except `--account`, which was covered in the previous lecture).
+As pointed out above, each of these options can be:
 
-- Passed on the command line: `sbatch --account=PAS2880 myscript.sh`
-  _(has precedence over the next)_
-- Added at the top of the script you're submitting: `#SBATCH --account=PAS2880`.
+- passed on the command line: `sbatch --account=PAS2880 myscript.sh`
+  _(has precedence over the next)_ and/or
+- added at the top of the script you're submitting: `#SBATCH --account=PAS2880`.
 
 Also, note that many options have a corresponding long
 (e.g. `--account=`) and short format (e.g `-A`).
@@ -69,19 +101,21 @@ If you suspect or know that the default time limit of 1 hour may not be enough
 for your job, use the `--time` option to request more time.
 Note that tour job will be **killed** (stopped) as soon as it hits the time limit!
 
-For single-node jobs, up to 168 hours (7 days) can be requested.
-If that's not enough, you can request access to the `longserial` queue
-for jobs of up to 14 days.
+For single-node jobs, up to 168 hours / 7 days can be requested.
+(If that's not enough, you can request access to a separate queue for long
+jobs of up to 14 days, called the `longserial` queue.)
   
-OSC bills you for **the time your job actually used**, not what you reserved.
+OSC bills projects for **the time that jobs actually used**, not what you reserved.
+And recall that batch jobs will stop as soon as the focal script has finished running.
 But before you decide to ask for 168 hours for every job,
 note that jobs that request more time are likely to have to wait longer
 before they start.
 
 :::callout-tip
 ##### The time your reserve is the "**wall time**"
+When you reserve an amount of time with `--time`, this is the "wall time".
 What does wall time mean?
-This is simply the actual amount of time that passes on the ("wall") clock.
+This is simply the actual amount of time that passes on the (wall) clock.
 This term is used to contrast it with "_core hours_",
 which is the number of hours multiplied by the number of cores:
 
@@ -122,7 +156,7 @@ A number of formats can be used to specify the time, including:
 :::
 ::::
 
-For example, requesting 2 hours in the "minute-format":
+For example, requesting 2 hours in the "minute-format" inside a shell script:
 
 ```bash
 #!/bin/bash
@@ -135,7 +169,6 @@ It is common to be uncertain about how much time your job will take
 (i.e., how long it will take for your script to finish).
 Whenever this happens, ask for more, perhaps much more, time than what you
 think/guesstimate you will need.
-
 It is really annoying to have a job run out of time after several hours,
 while the increase in queueing time for jobs that request more time is often
 quite minimal at OSC.
@@ -145,8 +178,8 @@ quite minimal at OSC.
 #### {{< fa user-edit >}} Exercise: exceed the time limit
 
 Modify the `sleep.sh` script to reserve only 1 minute for the job,
-while making the script run for longer than that by increasing the sleeping time
-to at least 100 seconds.
+while making the script run for longer than that by increasing the `sleep` sleeping
+time to at least 100 seconds.
 
 If you succeed in exceeding the time limit, an error message will be printed.
 Where do you think this error message will be printed: to the screen, in the Slurm log
@@ -196,7 +229,7 @@ First, note that Slurm mostly uses the terms "core" and "CPU" interchangeably[^3
 More generally with bioinformatics tools,
 "thread" is also commonly used interchangeably with core/CPU[^4].
 Therefore, for our purposes, you can
-**think of core, CPU, and thread as synonyms** that all refer to the
+**think of "core", "CPU", and "thread" as synonyms** that all refer to the
 same sub-parts/components of a node that you can reserve and use separately.
 
 [^3]: Even though technically, one CPU often contains multiple cores.
@@ -206,15 +239,15 @@ Running a bioinformatics program with multiple threads/cores/CPUs ("multi-thread
 is very common, and this can make the running time of such programs much shorter.
 While the specifics depend on the program,
 using **8-12 cores** is often a sweet spot,
-whereas asking for even more cores can lead to rapidly *diminishing returns*. 
+whereas asking for even more cores can lead to rapidly diminishing returns.
 
-While there are multiple related Slurm options (see the box below),
+While there are multiple relevant Slurm options (see the box below),
 I recommend that you specify the number of threads/cores/CPUs with
-**`--cpus-per-task`** (`-c`).
+the option **`--cpus-per-task`** (`-c`).
 
-Typically, you will also want to inform the program that your script runs 
-about the number of available cores --
-most have an option like `--cores` or `--threads`.
+Typically, inside your shell script,
+you will also want to inform the program that your script runs about the number of
+available cores -- most have an option like `--cores` or `--threads`.
 **You should set this to the same value `n` as the `--cpus-per-task`.**
 An example, where we ask for 8 CPUs/cores/threads:
 
@@ -325,6 +358,18 @@ If you see these or otherwise suspect that your job ran out of memory,
 resubmit it with an increased requested amount of memory.
 :::
 
+::: {.callout-note collapse="true"}
+#### How to request a non-default node type _(Click to expand)_
+To request that a bach job runs on a non-default node type, you should use
+the `--partition` option. For example:
+
+```sh
+#!/bin/bash
+#SBATCH --partition=hugemem
+#SBATCH --mem=900G
+```
+:::
+
 ::: exercise
 #### {{< fa user-edit >}} Exercise: Adjusting cores and memory
 
@@ -333,7 +378,7 @@ as a batch job, in the following two scenarios:
 
 1. The program has an option `--cores`, and you want to set that to 12.
    The program also says you'll need 60 GB of memory.
-   What `#SBATCH` options will you use?
+   Which relevant `#SBATCH` option values will you use?
 
    <!---
    <details><summary>_Click for the solution_</summary>
@@ -355,7 +400,7 @@ as a batch job, in the following two scenarios:
 
 2. The program has an option `--threads`, and you want to set that to 8.
    The program also says you'll need 25 GB of memory.
-   What `#SBATCH` options related to this will you use?
+   Which relevant `#SBATCH` option values will you use?
 
    <!---
    <details><summary>_Click for the solution_</summary>
@@ -517,10 +562,10 @@ we will submit a batch job for each sample/file,
 so that many jobs can run simultaneously^[
 But keep in mind that batch jobs are sometimes queued/waiting for a while,
 especially if you submit large amounts of jobs.].
-So let's practice with submitting a batch job for each FastQC run.
+
+So, let's practice with submitting a batch job for each FastQC run.
 We'll first submit a job for a single file,
 and then loop over all files to submit many jobs.
-
 You should have the FastQC script in `scripts/fastqc.sh` --
 if not, see the box below.
 
@@ -563,7 +608,7 @@ date
 ### Modify the script for usage with Slurm
 
 Next, add Slurm options with the following `#SBATCH` lines in the script --
-note that you'll be asking for 4 cores:
+note that you'll ask for 4 cores:
 
 ```bash
 #!/bin/bash
@@ -611,7 +656,7 @@ fastqc --threads 4 --outdir "$outdir" "$fastq"
 ### Submit a single test batch job
 
 Now, you're ready to submit the script.
-Let's test it for _one sample_ first:
+Let's test it for one sample first:
 
 ```bash
 # We'll assign the FASTQ file to a variable first
@@ -708,7 +753,7 @@ Checking the Slurm log file:
   # [output not shown]
   ```
 
-Check for the presence of the main FastQC output files:
+Finally, check for the presence of the main FastQC output files:
 
 ```bash
 ls -lh results/fastqc
@@ -721,11 +766,12 @@ total 1.1M
 
 ::: callout-tip
 #### Pay attention to file sizes
-It can also be a good idea to pay attention to the file sizes, as shown by `ls -lh`.
+It can also be a good idea to pay attention to the sizes of output files,
+as shown by `ls -lh`.
 Especially if you're not going to open the output files right away,
 this can be yet another clue as to whether the program succeeded. 
 When they fail, some programs programs produce empty or extremely small output
-files -- these should always be a red flag.
+files -- their presence should always be a red flag.
 :::
 
 #### Clean up
@@ -743,7 +789,7 @@ rm -r results/fastqc slurm-fastqc*
 1. Submit the script `scripts/fastqc.sh` as a batch job again,
    but don't give the script any arguments when you do so.
 
-2. This will make the job fail -- wait for a failure email to arrive.
+2. This will make the job fail, so wait for a failure email to arrive.
    (If it doesn't arrive immediately,
    check the queue to make sure your job isn't still pending.)
 
@@ -753,7 +799,7 @@ rm -r results/fastqc slurm-fastqc*
 
 ### Submit a job for each file
 
-Next, you can loop over all FASTQ files to submit a job for each file.
+Next, we'll loop over all FASTQ files to submit a job for each file.
 Though before you do so, let's do a "mock-run" --
 it your preface the command with `echo`,
 the command will just be printed instead of executed.

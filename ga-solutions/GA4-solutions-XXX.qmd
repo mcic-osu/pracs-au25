@@ -1,81 +1,3 @@
----
-title: "Untitled"
----
-
-## Exercise 4: TrimGalore batch jobs in a loop
-
-As a starting point, take your TrimGalore shell script from TBA,
-and save it as `scripts/trimgalore.sh`.
-
-<details><summary>If you don't have it, here's the contents of the starting TrimGalore script _(Click to expand)_</summary>
-
-```bash
-#!/bin/bash
-set -euo pipefail
-
-# Load TrimGalore
-module load miniconda3/24.1.2-py310
-conda activate /fs/ess/PAS0471/jelmer/conda/trimgalore
-
-# Copy the placeholder variables
-R1_in=$1
-outdir=$2
-
-# Infer the R2 FASTQ file name
-R2_in=${R1_in/_R1/_R2}
-
-# Report
-echo "# Starting script trimgalore.sh"
-date
-echo "# Input R1 FASTQ file:      $R1_in"
-echo "# Input R2 FASTQ file:      $R2_in"
-echo "# Output dir:               $outdir"
-echo
-
-# Create the output dir
-mkdir -p "$outdir"
-
-# Run TrimGalore
-trim_galore \
-    --paired \
-    --fastqc \
-    --output_dir "$outdir" \
-    "$R1_in" \
-    "$R2_in"
-
-# Report
-echo
-echo "# Successfully finished script trimgalore.sh"
-date
-```
-
-</details>
-
-2. Add `#SBATCH` options to the top of the TrimGalore shell script to specify:
-   - The account/project
-   - The number of cores (8)
-   - The Slurm log file name
-   - Something to make Slurm email you upon job failure
-
-3. Use the TrimGalore option `--cores` to make it use all 8 reserved cores.
-
-4. Submit the script as a batch job for sample `ERR10802863`,
-   and check that everything went well. Then remove all outputs (Slurm log
-   files and TrimGalore output files) from this test-run.
-
-5. Run TrimGalore for all FASTQ file pairs from the Garrigos et al. data,
-   and check that everything went well.
-
-6. Move the Slurm log files into a dir `logs` in the TrimGalore output dir.
-
-### Exercise 4
-
-Replace the line `conda activate /fs/ess/PAS0471/jelmer/conda/trimgalore` with:
-
-```bash
-conda activate trim-galore-0.6.10
-```
-</details>
 
 <details><summary>2 - `#SBATCH` options</summary>
 ```bash
@@ -106,6 +28,10 @@ To remove the outputs from this test:
 rm slurm-trimgalore*
 rm results/trimgalore/*
 ```
+
+
+- `--two-color` option??
+
 
 </details>
 
@@ -221,3 +147,91 @@ total 42M
 Looks good --- though note that we only renamed the FASTQ files, not the other files.
 
 </details>
+
+
+The full script:
+
+```bash
+#!/bin/bash
+set -euo pipefail
+
+# Load TrimGalore
+module load miniconda3
+source activate /fs/ess/PAS0471/jelmer/conda/trimgalore
+
+# Copy the placeholder variables
+R1_in=$1
+outdir=$2
+
+# Check that the output dir isn't the same as the input dir
+# This is because we will let the output files have the same name as the input files
+indir=$(dirname "$R1_in")
+if [[ "$indir" == "$outdir" ]]; then
+    echo "ERROR: Input dir is the same as the output dir ($outdir)" 
+    exit 1
+fi
+
+# Infer the R2 FASTQ file name
+R2_in=${R1_in/_R1/_R2}
+
+# Report
+echo "# Starting script trimgalore.sh"
+date
+echo "# Input R1 FASTQ file:      $R1_in"
+echo "# Input R2 FASTQ file:      $R2_in"
+echo "# Output dir:               $outdir"
+echo
+
+# Create the output dir
+mkdir -p "$outdir"
+
+# Run TrimGalore
+trim_galore \
+    --paired \
+    --output_dir "$outdir" \
+    --fastqc \
+    "$R1_in" \
+    "$R2_in"
+
+# Rename output files
+echo
+echo "# Renaming the output files:"
+sample_id=$(basename "$R1_in" _R1.fastq.gz)
+R1_out_init="$outdir"/"$sample_id"_R1_val_1.fq.gz
+R2_out_init="$outdir"/"$sample_id"_R2_val_2.fq.gz
+R1_out_final="$outdir"/"$sample_id"_R1.fastq.gz
+R2_out_final="$outdir"/"$sample_id"_R2.fastq.gz
+mv -v "$R1_out_init" "$R1_out_final"
+mv -v "$R2_out_init" "$R2_out_final"
+
+# Report
+echo
+echo "# Done with script trimgalore.sh"
+date
+```
+
+Run the script with a different output dir:
+
+```bash
+R1=garrigos-data/fastq/ERR10802863_R1.fastq.gz
+bash scripts/trimgalore.sh "$R1" results/trimgalore_rename
+```
+
+Let's check the output files to see they were successfully renamed:
+
+```bash
+ls -lh results/trimgalore_rename
+```
+```bash-out
+total 42M
+-rw-rw----+ 1 jelmer PAS0471  20M Mar 28 10:40 ERR10802863_R1.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 2.4K Mar 28 10:39 ERR10802863_R1.fastq.gz_trimming_report.txt
+-rw-rw----+ 1 jelmer PAS0471 674K Mar 28 10:40 ERR10802863_R1_val_1_fastqc.html
+-rw-rw----+ 1 jelmer PAS0471 349K Mar 28 10:40 ERR10802863_R1_val_1_fastqc.zip
+-rw-rw----+ 1 jelmer PAS0471  21M Mar 28 10:40 ERR10802863_R2.fastq.gz
+-rw-rw----+ 1 jelmer PAS0471 2.3K Mar 28 10:40 ERR10802863_R2.fastq.gz_trimming_report.txt
+-rw-rw----+ 1 jelmer PAS0471 676K Mar 28 10:40 ERR10802863_R2_val_2_fastqc.html
+-rw-rw----+ 1 jelmer PAS0471 341K Mar 28 10:40 ERR10802863_R2_val_2_fastqc.zip
+```
+
+Looks good --- though note that we only renamed the FASTQ files, not the other files.

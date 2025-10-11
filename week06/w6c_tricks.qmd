@@ -65,7 +65,7 @@ touch sandbox/file1.txt sandbox/S1_R1.fastq.gz sandbox/S1_R2.fastq.gz
 
   ```bash
   for file in sandbox/*fastq.gz; do
-    echo "I have found file $file"
+      echo "I have found file $file"
   done
   ```
 
@@ -73,15 +73,15 @@ touch sandbox/file1.txt sandbox/S1_R1.fastq.gz sandbox/S1_R2.fastq.gz
 
   ```bash
   for file in sandbox/f*; do
-    echo "$f"
+      echo "$f"
   done
   ```
 :::
 
 ::: {.callout-tip collapse="true"}
-### Why is there `; do` in a `for` loop? _(Click to expand)_
+### Why is there "`; do`" in a `for` loop? _(Click to expand)_
 
-You may find the `; do` at the end of the first line of the `for` loop odd.
+You may find the `; do` at the end of the first line of the `for` loop to be odd.
 What is that all about?
 
 First, a semicolon is a way to enter multiple commands on a single line --
@@ -91,7 +91,7 @@ for example, the line below would first run `ls` and then `echo "Hello"`:
 ls; echo "Hello"
 ```
 
-_(So, it's kind the counterpart of a `\`, which allows you to spread a single command_
+_(So, `;` can be thought of as a counterpart to `\`, which allows you to spread a single command_
 _across multiple lines: with a `;`, you can have multiple commands on a single line.)_
 
 As such, you could also write `for` loops like so...
@@ -103,7 +103,8 @@ do
 done
 ```
 
-...and some people prefer that variant. You can do it either way.
+...and some people prefer that variant.
+You can do it either way, but we will continue to demonstrate the `; do` variant.
 :::
 
 ## Parameter expansion -- and looping over samples
@@ -191,7 +192,6 @@ fastq_R1=../garrigos-data/fastq/ERR10802863_R1.fastq.gz
 fastq_R2=
 ```
 
-<!---
 <details><summary>_Click for the solution_</summary><p>
 Make sure you use `_R1`/`_R2` and not just `R1`/`R2`,
 because the string "R1" also occurs in the sample ID (`ERR1..`)!
@@ -210,7 +210,6 @@ echo "$fastq_R2"
 ../garrigos-data/fastq/ERR10802863_R2.fastq.gz
 ```
 </p></details>
--->
 :::
 
 ### A per-sample loop
@@ -246,7 +245,6 @@ done
   echo trimmer --in1 "$R1" --in2 "$R2" --outdir "$outdir"
   ```
 
-  <!---
   <details><summary>_Click for the solution_</summary>
   ```bash
   #!/bin/bash
@@ -277,12 +275,10 @@ done
   date
   ```
   </details>
-  --->
 
 - Add an entry to your `README.md` file to loop over all R1 FASTQ files and
   run the `trim_mock.sh` script for each sample.
 
-  <!---
   <details><summary>Solution</summary>
   
   ````markdown
@@ -315,7 +311,6 @@ done
   # [...output truncated...]
   ```
   </details>
-  --->
 :::
 
 ### The current protocol Markdown file
