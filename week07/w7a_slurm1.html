@@ -160,13 +160,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week07/w7_overview.html">
  <span class="dropdown-text">Week 7: Slurm batch jobs at OSC</span></a>
   </li>  
-        <li class="dropdown-header">Week 8: Halfway recap [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week08/w8_overview.html">
+ <span class="dropdown-text">Week 8: Catch-up (half-week)</span></a>
+  </li>  
         <li class="dropdown-header">Week 9: Workflow and data management [TBA]</li>
         <li class="dropdown-header">Week 10: Coding with generative AI [TBA]</li>
         <li class="dropdown-header">Week 11: R – basics [TBA]</li>
-        <li class="dropdown-header">Week 12: R – Quarto [TBA]</li>
+        <li class="dropdown-header">Week 12: R – Quarto [TBA] (half-week)</li>
         <li class="dropdown-header">Week 13: R – data visualization [TBA]</li>
-        <li class="dropdown-header">Week 14: R – omics data [TBA]</li>
+        <li class="dropdown-header">Week 14: R – omics data [TBA] (half-week)</li>
         <li class="dropdown-header">Week 15: Nextflow nf-core pipelines [TBA]</li>
     </ul>
   </li>
@@ -185,7 +188,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
         <li>
     <a class="dropdown-item" href="../week07/w7_exercises.html">
- <span class="dropdown-text">Week 7: Slurm batch jobs</span></a>
+ <span class="dropdown-text">Week 7: Shell scripts</span></a>
   </li>  
         <li class="dropdown-header">Week 9: Workflow and data management [TBA]</li>
         <li class="dropdown-header">Week 11: R basics [TBA]</li>
@@ -213,7 +216,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week06/w6_ga.html">
  <span class="dropdown-text">GA 3: Shell scripts and software (Week 6)</span></a>
   </li>  
-        <li class="dropdown-header">GA 4: Slurm batch jobs at OSC (Week 8) [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week08/w8_ga.html">
+ <span class="dropdown-text">GA 4: Slurm batch jobs (Week 8)</span></a>
+  </li>  
         <li class="dropdown-header">GA 5: Coding with generative AI (Week 10) [TBA]</li>
         <li class="dropdown-header">GA 6: Data analysis with R (Week 13) [TBA]</li>
         <li><hr class="dropdown-divider"></li>
@@ -238,11 +244,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Final project</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-final-project">    
-        <li class="dropdown-header">General info [TBA]</li>
-        <li class="dropdown-header">FP 1: Proposal (week 12) [TBA]</li>
-        <li class="dropdown-header">FP 2: Draft (week 14) [TBA]</li>
-        <li class="dropdown-header">FP 3: Oral presentation (week 16) [TBA]</li>
-        <li class="dropdown-header">FP 4: Final submission (week 16) [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../finalproj/FP_info.html">
+ <span class="dropdown-text">General info</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../finalproj/FP1_proposal.html">
+ <span class="dropdown-text">FP 1: Proposal (week 12)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../finalproj/FP2_draft.html">
+ <span class="dropdown-text">FP 2: Draft (week 14)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../finalproj/FP3_present.html">
+ <span class="dropdown-text">FP 3: Oral presentation (week 16)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../finalproj/FP4_submission.html">
+ <span class="dropdown-text">FP 4: Final submission (week 16)</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -666,48 +687,32 @@ Running a script with <code>#SBATCH</code> lines elsewhere
 <li>In terms of output files, what would be different if we instead run the script using <code>bash scripts/sleep.sh</code>?</li>
 </ol>
 <p>Then, test your predictions by running the script.</p>
-<!---
-<details><summary>Click for the solutions</summary>
-
-1. The job will produce 2 files:
-    - `slurm-<job-number>.out`: The Slurm log file, containing output normally printed to screen.
-    - `sleep.txt`: Containing output that was redirected to this file in the script.
-
-2. The those files will contain the following:
-    - `slurm-<job-number>.out`: _I'm awake! Done with script sleep.sh_
-    - `sleep.txt`: _"I will sleep for 30 seconds"_
-
-3. Both files will end up in your current working directory.
-   Slurm log files always go to the directory from which you submitted the job.
-   Slurm jobs also _run_ from the directory from which you submitted your job,
-   and since we redirected the output simply to `sleep.txt`,
-   that file was created in our working directory. 
-
-4. If we had run the script directly, `sleep.txt` would have also been created
-   with the same content, but "_All done!_" would have been printed to screen.
-    
-Run the script and check the outputs:
-
-```bash
-sbatch scripts/sleep.sh
-```
-```bash-out
-Submitted batch job 27935840
-```
-```bash
-cat sleep.txt
-```
-```bash-out
-I will sleep for 30 seconds
-```
-```bash
-cat slurm-27935840.out
-```
-```bash-out
-I'm awake! Successfully finished script sleep.sh
-```
+<details>
+<summary>
+Click for the solutions
+</summary>
+<ol type="1">
+<li><p>The job will produce 2 files:</p>
+<ul>
+<li><code>slurm-&lt;job-number&gt;.out</code>: The Slurm log file, containing output normally printed to screen.</li>
+<li><code>sleep.txt</code>: Containing output that was redirected to this file in the script.</li>
+</ul></li>
+<li><p>The those files will contain the following:</p>
+<ul>
+<li><code>slurm-&lt;job-number&gt;.out</code>: <em>I’m awake! Done with script sleep.sh</em></li>
+<li><code>sleep.txt</code>: <em>“I will sleep for 30 seconds”</em></li>
+</ul></li>
+<li><p>Both files will end up in your current working directory. Slurm log files always go to the directory from which you submitted the job. Slurm jobs also <em>run</em> from the directory from which you submitted your job, and since we redirected the output simply to <code>sleep.txt</code>, that file was created in our working directory.</p></li>
+<li><p>If we had run the script directly, <code>sleep.txt</code> would have also been created with the same content, but “<em>All done!</em>” would have been printed to screen.</p></li>
+</ol>
+<p>Run the script and check the outputs:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/sleep.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>Submitted batch job 27935840</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> sleep.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>I will sleep for 30 seconds</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> slurm-27935840.out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>I'm awake! Successfully finished script sleep.sh</code></pre>
 </details>
--->
 </section>
 </section>
 <section id="checking-a-jobs-status" class="level3" data-number="4.2">
@@ -720,7 +725,7 @@ I'm awake! Successfully finished script sleep.sh
 <section id="the-squeue-command" class="level4">
 <h4 class="anchored" data-anchor-id="the-squeue-command">The <code>squeue</code> command</h4>
 <p>You can check the status of your batch jobs using the <code>squeue</code> Slurm command – try the following:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$USER</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$USER</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Thu Apr 4 15:47:51 2025
         JOBID PARTITION     NAME     USER    STATE       TIME TIME_LIMI  NODES NODELIST(REASON)
      23640814 condo-osu ondemand   jelmer  RUNNING       6:34   2:00:00      1 p0133</code></pre>
@@ -785,22 +790,22 @@ I'm awake! Successfully finished script sleep.sh
 <section id="squeue-example" class="level4">
 <h4 class="anchored" data-anchor-id="squeue-example"><code>squeue</code> example</h4>
 <p>Now, let’s see a batch job in the <code>squeue</code> listing. Start by submitting the <code>sleep.sh</code> script as a batch job:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/sleep.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> scripts/sleep.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Submitted batch job 12431945</code></pre>
 <p>If you’re quick enough, you may be able to catch the job’s <code>STATE</code> as <code>PENDING</code> before it starts:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$USER</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$USER</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Thu Apr 4 15:48:26 2025
          JOBID PARTITION     NAME     USER    STATE       TIME TIME_LIMI  NODES NODELIST(REASON)
       12520046 serial-40 sleep.sh   jelmer  PENDING       0:00   1:00:00      1 (None)
       23640814 condo-osu ondemand   jelmer  RUNNING       7:12   2:00:00      1 p0133</code></pre>
 <p>But soon enough it should read <code>RUNNING</code>:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$USER</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$USER</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Thu Apr 4 15:48:39 2025
          JOBID PARTITION     NAME     USER    STATE       TIME TIME_LIMI  NODES NODELIST(REASON)
       12520046 condo-osu sleep.sh   jelmer  RUNNING       0:12   1:00:00      1 p0133
       23640814 condo-osu ondemand   jelmer  RUNNING       8:15   2:00:00      1 p0133</code></pre>
 <p>The script should finish after 30 seconds (because your command was <code>sleep 30s</code>), after which the job will immediately disappear from the <code>squeue</code> listing, because only pending and running jobs are shown:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$USER</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$USER</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>Mon Aug 21 15:49:26 2025
          JOBID PARTITION     NAME     USER    STATE       TIME TIME_LIMI  NODES NODELIST(REASON)
       23640814 condo-osu ondemand   jelmer  RUNNING       9:02   2:00:00      1 p0133</code></pre>
@@ -815,14 +820,14 @@ I'm awake! Successfully finished script sleep.sh
 <p>And as you saw in the exercise above, this is also the case for the output of our sleepy script:</p>
 <ul>
 <li><p>The output file that the code in the script directly produced:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> sleep.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> sleep.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>I will sleep for 30 seconds</code></pre></li>
 <li><p>The Slurm log file:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> slurm-12520046.out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> slurm-12520046.out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>I'm awake! Done with script sleep.sh</code></pre></li>
 </ul>
 <p>Let’s keep things tidy and remove the script’s outputs:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> slurm<span class="pp">*</span> sleep.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> slurm<span class="pp">*</span> sleep.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -842,12 +847,12 @@ Be careful with deleting Slurm files
 <section id="canceling-jobs" class="level3" data-number="4.3">
 <h3 data-number="4.3" class="anchored" data-anchor-id="canceling-jobs"><span class="header-section-number">4.3</span> Canceling jobs</h3>
 <p>Sometimes, you want to cancel one or more jobs. For example, you may realize you made a mistake in the script or used the wrong input files as arguments. You can cancel jobs that are either pending or running using <code>scancel</code>:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Examples - DON'T run this: the second line would cancel your VS Code job]</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Cancel a specific job:</span></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="ex">scancel</span> 2979968</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Cancel all your running and queued jobs (careful with this!):</span></span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="ex">scancel</span> <span class="at">-u</span> <span class="va">$USER</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [Examples - DON'T run this: the second line would cancel your VS Code job]</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Cancel a specific job:</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="ex">scancel</span> 2979968</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Cancel all your running and queued jobs (careful with this!):</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="ex">scancel</span> <span class="at">-u</span> <span class="va">$USER</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
@@ -863,9 +868,9 @@ Additional job management commands and options <em>(Click to expand)</em>
 <div class="callout-body-container callout-body">
 <ul>
 <li><p>Use <code>squeue</code>’s <code>-t</code> option to restrict the type of jobs you want to show. For example, to only show running and not pending jobs:</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$USER</span> <span class="at">-t</span> RUNNING</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="va">$USER</span> <span class="at">-t</span> RUNNING</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>You can see more details about any running or finished job, including the amount of time it ran for:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="ex">scontrol</span> show job <span class="op">&lt;</span>jobID<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="ex">scontrol</span> show job <span class="op">&lt;</span>jobID<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>UserId=jelmer(33227) GroupId=PAS0471(3773) MCS_label=N/A
 Priority=200005206 Nice=0 Account=PAS2880 QOS=pitzer-default
 JobState=RUNNING Reason=None Dependency=(null)
@@ -878,10 +883,10 @@ SuspendTime=None SecsPreSuspend=0 LastSchedEval=2020-12-14T14:32:47
 Partition=serial-40core AllocNode:Sid=pitzer-login01:57954
 [...]</code></pre></li>
 <li><p>Update directives for a job that has already been submitted (this can only be done <em>before</em> the job has started running):</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="ex">scontrol</span> update job=<span class="op">&lt;</span>jobID<span class="op">&gt;</span> timeLimit=5:00:00</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="ex">scontrol</span> update job=<span class="op">&lt;</span>jobID<span class="op">&gt;</span> timeLimit=5:00:00</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Hold and release a pending (queued) job – this could e.g.&nbsp;be useful when you need to update an input file before the job starts running:</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="ex">scontrol</span> hold <span class="op">&lt;</span>jobID<span class="op">&gt;</span>       <span class="co"># Job won't start running until released</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="ex">scontrol</span> release <span class="op">&lt;</span>jobID<span class="op">&gt;</span>    <span class="co"># Job is free to start</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<div class="sourceCode" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="ex">scontrol</span> hold <span class="op">&lt;</span>jobID<span class="op">&gt;</span>       <span class="co"># Job won't start running until released</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="ex">scontrol</span> release <span class="op">&lt;</span>jobID<span class="op">&gt;</span>    <span class="co"># Job is free to start</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul>
 </div>
 </div>

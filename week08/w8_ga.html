@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jelmer Poelstra">
-<meta name="dcterms.date" content="2025-10-06">
+<meta name="dcterms.date" content="2025-10-11">
 
-<title>GA3 solutions – PRACS-AU25</title>
+<title>GA4 – PRACS-AU25</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -324,21 +324,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#part-a-setting-up" id="toc-part-a-setting-up" class="nav-link active" data-scroll-target="#part-a-setting-up">Part A: Setting up</a></li>
-  <li><a href="#part-b-running-two-scripts" id="toc-part-b-running-two-scripts" class="nav-link" data-scroll-target="#part-b-running-two-scripts">Part B: Running two scripts</a></li>
-  <li><a href="#part-c-a-shell-script-that-prints-a-specific-line" id="toc-part-c-a-shell-script-that-prints-a-specific-line" class="nav-link" data-scroll-target="#part-c-a-shell-script-that-prints-a-specific-line">Part C: A shell script that prints a specific line</a></li>
-  <li><a href="#part-d-containers" id="toc-part-d-containers" class="nav-link" data-scroll-target="#part-d-containers">Part D: Containers</a></li>
-  <li><a href="#part-e-modules-and-pandoc" id="toc-part-e-modules-and-pandoc" class="nav-link" data-scroll-target="#part-e-modules-and-pandoc">Part E: Modules and Pandoc</a></li>
-  <li><a href="#part-f-publish-your-repo-on-github" id="toc-part-f-publish-your-repo-on-github" class="nav-link" data-scroll-target="#part-f-publish-your-repo-on-github">Part F: Publish your repo on Github</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#directions-and-grading" id="toc-directions-and-grading" class="nav-link" data-scroll-target="#directions-and-grading">Directions and grading</a>
+  <ul class="collapse">
+  <li><a href="#submission-expectations" id="toc-submission-expectations" class="nav-link" data-scroll-target="#submission-expectations">Submission expectations</a></li>
+  <li><a href="#academic-integrity" id="toc-academic-integrity" class="nav-link" data-scroll-target="#academic-integrity">Academic integrity</a></li>
+  <li><a href="#rubric" id="toc-rubric" class="nav-link" data-scroll-target="#rubric">Rubric</a></li>
+  </ul></li>
+  <li><a href="#detailed-steps" id="toc-detailed-steps" class="nav-link" data-scroll-target="#detailed-steps">Detailed steps</a>
+  <ul class="collapse">
+  <li><a href="#part-a-setting-up-git" id="toc-part-a-setting-up-git" class="nav-link" data-scroll-target="#part-a-setting-up-git">Part A: Setting up &amp; Git</a></li>
+  <li><a href="#part-b-a-trimgalore-batch-job" id="toc-part-b-a-trimgalore-batch-job" class="nav-link" data-scroll-target="#part-b-a-trimgalore-batch-job">Part B: A TrimGalore batch job</a></li>
+  <li><a href="#bonus-modify-the-script-to-rename-the-output-fastq-files" id="toc-bonus-modify-the-script-to-rename-the-output-fastq-files" class="nav-link" data-scroll-target="#bonus-modify-the-script-to-rename-the-output-fastq-files">Bonus: Modify the script to rename the output FASTQ files</a></li>
+  <li><a href="#part-c-trimgalore-batch-jobs-in-a-loop" id="toc-part-c-trimgalore-batch-jobs-in-a-loop" class="nav-link" data-scroll-target="#part-c-trimgalore-batch-jobs-in-a-loop">Part C: TrimGalore batch jobs in a loop</a></li>
+  <li><a href="#part-d-publish-your-repo-on-github" id="toc-part-d-publish-your-repo-on-github" class="nav-link" data-scroll-target="#part-d-publish-your-repo-on-github">Part D: Publish your repo on Github</a></li>
+  </ul></li>
   </ul>
-</nav>
+<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="../week07/w7a_slurm1.html"><i class="bi bi-bookmarks"></i>w7a: Slurm batch jobs I</a></li><li><a href="../week07/w7b_slurm2.html"><i class="bi bi-bookmarks"></i>w7b: Slurm batch jobs II</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Solutions for Graded Assignment 3</h1>
+<h1 class="title">Graded Assignment 4: Slurm batch jobs</h1>
 </div>
 
 
@@ -364,7 +373,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 6, 2025</p>
+      <p class="date">October 11, 2025</p>
     </div>
   </div>
   
@@ -378,208 +387,195 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <hr>
 <hr style="height:1pt; visibility:hidden;">
-<section id="part-a-setting-up" class="level2">
-<h2 class="anchored" data-anchor-id="part-a-setting-up">Part A: Setting up</h2>
-<ol start="4" type="1">
-<li><p><em>Initialize and use a Git repository throughout the assignment.</em></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize a repo</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># For the first commit, may create a Gitignore file:</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"results/"</span> <span class="op">&gt;</span> .gitignore</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"data/"</span> <span class="op">&gt;&gt;</span> .gitignore</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .gitignore</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add a Gitignore file"</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># After Part B:</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add scripts/<span class="pp">*</span> README.md</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Part B"</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># After Part C:</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add scripts/printline.sh README.md</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Part C"</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># After Part D</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add README.md</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Part D"</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># After part E:</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add README.md</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Part E"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-</ol>
-</section>
-<section id="part-b-running-two-scripts" class="level2">
-<h2 class="anchored" data-anchor-id="part-b-running-two-scripts">Part B: Running two scripts</h2>
-<ol start="5" type="1">
-<li><p><em>Run <code>scripts/echo.sh</code> in 3 ways:</em></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This passes 2 instead of the required 3 arguments to the script, making it fail -</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># note that "Finished" is not printed because the script has stopped by then:</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/echo.sh Oct07 Oct08</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>Oct07
-Oct08
-echo.sh: line 6: $3: unbound variable</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The passes 4 arguments - the 4th argument shouldn't be there,</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># but the script doesn't care and will simply ignore its presence for your purposes:</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/echo.sh Oct07 Oct08 Oct09 Oct10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>Oct07
-Oct08
-Oct09
-Finished</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This correctly passes 3 arguments because "Oct09 Oct10" is quoted and</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># therefore processed as a single argument:</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/echo.sh Oct07 Oct08 <span class="st">"Oct09 Oct10"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>Oct07
-Oct08
-Oct09 Oct10
-Finished</code></pre></li>
-<li><p><em>Run <code>scripts/concat.sh</code> to concatenate the two FASTQ files you copied to <code>data/</code> earlier.</em></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># It may seem like the below is passing 2 arguments only,</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># but 'data/ERR10802863*' will be expanded into 2 arguments!</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/concat.sh data/ERR10802863<span class="pp">*</span> results/ERR10802863.fastq.gz</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternatively, type out the input file names:</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># bash scripts/concat.sh data/ERR10802863_R1.fastq.gz data/ERR10802863_R2.fastq.gz results/ERR10802863.fastq.gz</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>-rw-rw----+ 1 jelmer PAS0471 21M Oct  5 14:32 data/ERR10802863_R1.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 22M Oct  5 14:32 data/ERR10802863_R2.fastq.gz
--rw-rw----+ 1 jelmer PAS0471 42M Oct  5 14:34 results/ERR10802863.fastq.gz</code></pre></li>
-</ol>
-</section>
-<section id="part-c-a-shell-script-that-prints-a-specific-line" class="level2">
-<h2 class="anchored" data-anchor-id="part-c-a-shell-script-that-prints-a-specific-line">Part C: A shell script that prints a specific line</h2>
-<ol start="7" type="1">
-<li><p><em>Write a shell script <code>scripts/printline.sh</code> that accepts two arguments,</em> <em>a file path and a line number,</em> <em>in order to print (not store in a file) the requested line from the specified file.</em></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="va">file</span><span class="op">=</span><span class="st">"</span><span class="va">$1</span><span class="st">"</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="va">line_nr</span><span class="op">=</span><span class="st">"</span><span class="va">$2</span><span class="st">"</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Use 'head' to print up until the desired line, then 'tail' to get the last line:</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> <span class="st">"</span><span class="va">$line_nr</span><span class="st">"</span> <span class="st">"</span><span class="va">$file</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p><em>Test your script twice by making it print two different lines from <code>data/metadata.tsv</code>.</em></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First test - no redirection:</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/printline.sh data/metadata.tsv 4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>ERR10802879     10dpi   cathemerium</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First test - redirection:</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/printline.sh data/metadata.tsv 7 <span class="op">&gt;</span> results/meta_line7.tsv</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># No output will be printed, but you should have created a file:</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> results/meta_line7.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>ERR10802884     10dpi   control</code></pre></li>
-<li><p><em>Run a final test, but use variables:</em></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="va">file_name</span><span class="op">=</span>metadata.tsv</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="va">line_nr</span><span class="op">=</span>2</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/printline.sh data/<span class="st">"</span><span class="va">$file_name</span><span class="st">"</span> <span class="st">"</span><span class="va">$line_nr</span><span class="st">"</span> <span class="op">&gt;</span> results/<span class="st">"</span><span class="va">$file_name</span><span class="st">"</span>_<span class="st">"</span><span class="va">$line_nr</span><span class="st">"</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the output file:</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> results/<span class="st">"</span><span class="va">$file_name</span><span class="st">"</span>_<span class="st">"</span><span class="va">$line_nr</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>-rw-rw----+ 1 jelmer PAS0471 30 Oct  5 14:36 results/metadata.tsv_2</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> results/<span class="st">"</span><span class="va">$file_name</span><span class="st">"</span>_<span class="st">"</span><span class="va">$line_nr</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>ERR10802882     10dpi   cathemerium</code></pre></li>
-</ol>
-</section>
-<section id="part-d-containers" class="level2">
-<h2 class="anchored" data-anchor-id="part-d-containers">Part D: Containers</h2>
-<p>The program “Trim-Galore”, which you’ll use in the next few weeks of the course, trims and filters FASTQ files to remove adapters, poor quality bases, and short reads. Here, you’ll find and test-run containers with two different versions of this program.</p>
-<ol start="10" type="1">
-<li><p><em>Go to <a href="https://seqera.io/containers" class="uri">https://seqera.io/containers</a> and find a container image for the program</em> <em>(default, i.e.&nbsp;latest, version).</em> <em>Back in VS Code, test-run the container with the command <code>trim_galore -v</code>.</em></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/trim-galore:0.6.10--bc38c9238980c80e <span class="dt">\</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    trim_galore <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>INFO:    Downloading oras image
-465.8MiB / 465.8MiB [=============================================================================================================================] 100 % 56.2 MiB/s 0s
-INFO:    gocryptfs not found, will not be able to use gocryptfs
-
-                        Quality-/Adapter-/RRBS-/Speciality-Trimming
-                                [powered by Cutadapt]
-                                  version 0.6.10
-
-                               Last update: 02 02 2023</code></pre></li>
-<li><p><em>Find a container for Trim-Galore version 0.5.0 and test-run it with the</em> <em>same command as above.</em> <em>Are the versions printed in both cases as expected?</em></p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec oras://community.wave.seqera.io/library/trim-galore:0.5.0--16bd677ee493f6cd <span class="dt">\</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    trim_galore <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>INFO:    Downloading oras image
-409.7MiB / 409.7MiB [===================================================================================================================] 100 % 83.7 MiB/s 0s
-INFO:    gocryptfs not found, will not be able to use gocryptfs
-
-                        Quality-/Adapter-/RRBS-/Hard-Trimming
-                                (powered by Cutadapt)
-                                  version 0.5.0
-
-                               Last update: 28 06 2018</code></pre>
-<p>Yes, the versions reported by <code>trim_galore -v</code> in both cases matched what we expected.</p></li>
-</ol>
-</section>
-<section id="part-e-modules-and-pandoc" class="level2">
-<h2 class="anchored" data-anchor-id="part-e-modules-and-pandoc">Part E: Modules and Pandoc</h2>
-<p>You’ll practice with OSC software modules and the program Pandoc, which can render Markdown files to HTML and PDF.</p>
-<ol start="12" type="1">
-<li><p><em>See if Pandoc is available at OSC prior to loading anything,</em> <em>and if so, which version, by running <code>pandoc -v</code>.</em> <em>Then, search the internet to check if that Pandoc version is the most recent one.</em></p>
-<ul>
-<li><p>Yes, it is available without loading anything and as of October 2025 on Pitzer, the default version is <code>2.14.0.3</code>:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pandoc</span> <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>pandoc 2.14.0.3
-Compiled with pandoc-types 1.22.1, texmath 0.12.3.3, skylighting 0.10.5.2,
-citeproc 0.4.0.1, ipynb 0.1.0.1
-User data directory: /users/PAS0471/jelmer/.local/share/pandoc
-Copyright (C) 2006-2021 John MacFarlane. Web:  https://pandoc.org
-This is free software; see the source for copying conditions. There is no
-warranty, not even for merchantability or fitness for a particular purpose.</code></pre></li>
-<li><p>That is <a href="https://pandoc.org/releases.html">not nearly the most recent version</a>, which is 3.8.1 as of October 2025.</p></li>
-</ul></li>
-<li><p><em>Check what other versions of Pandoc are available in OSC Lmod modules,</em> <em>and load the module with the most recent available Pandoc version.</em></p>
-<ul>
-<li><p>Check which versions are available:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> spider pandoc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>--------------------------------------------------------------------------------
-  pandoc:
---------------------------------------------------------------------------------
-    Versions:
-        pandoc/2.19.2
-        pandoc/3.6.4</code></pre></li>
-<li><p>Version <code>3.6.4</code> is the most recent one, so let’s load that:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load pandoc/3.6.4</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pandoc</span> <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>pandoc 3.6.4
-Features: +server +lua
-Scripting engine: Lua 5.4
-User data directory: /users/PAS0471/jelmer/.local/share/pandoc
-Copyright (C) 2006-2024 John MacFarlane. Web: https://pandoc.org
-This is free software; see the source for copying conditions. There is no
-warranty, not even for merchantability or fitness for a particular purpose.</code></pre></li>
-</ul></li>
-<li><p><em>Use Pandoc to create a PDF of your <code>README.md</code>,</em> <em>and check whether the PDF file is there.</em></p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#If all went well, Pandoc did not print anything to screen,</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># but the PDF file should be there:</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>data    README.md   README.pdf    results    scripts</code></pre></li>
-<li><p><em>Install the extension “<em>Papyrus PDF Preview</em>”, and take a look at your PDF.</em> <em>Then, download the PDF file to your computer and also take a look at it there.</em></p>
-<ol type="1">
-<li>Click on the Extensions icon in the narrow side bar to open the Extensions panel in the wide side bar.</li>
-<li>Search for “papyrus” (or similar) and the extension should pop up:</li>
-</ol>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../img/vscode_pdf-extension.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%" alt="A screenshot of the search result for the Papyrus PDF Preview VS Code extension."></p>
-</figure>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>This graded assignment is worth 10 points and is due on Monday Oct 20<sup>th</sup>. You will practice with shell scripts, shell variables, containers, modules, and version control.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<ol start="3" type="1">
-<li>Click “Install”.</li>
-<li>After installation, you should be able to open the PDF file e.g.&nbsp;by simply clicking on it in the VS Code file explorer.</li>
-<li>Right-click on the PDF file in VS Code’s file explorer and select “Download…” to download a file to your computer.</li>
-</ol></li>
+<div class="callout-title-container flex-fill">
+Assumed knowledge
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This assignment assumes that you have done the <a href="../week07/w7_exercises.html">week 7 exercises</a>, which introduced and used TrimGalore. I you didn’t do these already, we strongly recommend you do so before attempting to do this assignment.</p>
+</div>
+</div>
+</section>
+<section id="directions-and-grading" class="level2">
+<h2 class="anchored" data-anchor-id="directions-and-grading">Directions and grading</h2>
+<section id="submission-expectations" class="level3">
+<h3 class="anchored" data-anchor-id="submission-expectations">Submission expectations</h3>
+<ul>
+<li><strong>Deadline</strong>: Monday Oct 20<sup>th</sup> at noon (12:00 pm). <em>(You are being given a bit of extra time because of fall break.)</em></li>
+<li><strong>Submission</strong>: You will submit your assignment by tagging the instructor in an Issue in your GitHub as per the last step below.</li>
+</ul>
+</section>
+<section id="academic-integrity" class="level3">
+<h3 class="anchored" data-anchor-id="academic-integrity">Academic integrity</h3>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Gen-AI check
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For this assignment, you are allowed to search the internet but not to use generative AI (so you cannot use, e.g., Google AI Mode output either).</p>
+<p>If you use commands or code constructs we did not cover in class, you must provide the source: webpage or book page, etc. You may also argue that you already knew the command in question from previous self-study, but should then be prepared to answer live questions about it over Zoom. If you don’t provide a source or otherwise explain your usage of such commands, your answer will be considered wrong and not give you any points.</p>
+</div>
+</div>
+<hr style="height:1pt; visibility:hidden;">
+<table class="table-striped caption-top table">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 92%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><img src="../img/icons/AI-Permitted_No.png" class="img-fluid" style="width:80.0%"></td>
+<td>Use of generative AI Tools (e.g.&nbsp;ChatGPT, Microsoft Copilot, Google Gemini) is not permitted.</td>
+</tr>
+<tr class="even">
+<td><img src="../img/icons/GetHelp_No.png" class="img-fluid" style="width:80.0%"></td>
+<td>Getting help on the assignment is not permitted</td>
+</tr>
+<tr class="odd">
+<td><img src="../img/icons/Collaborate_No.png" class="img-fluid" style="width:80.0%"></td>
+<td>Collaborating, or completing the assignment with others, is not permitted</td>
+</tr>
+<tr class="even">
+<td><img src="../img/icons/CopyPreviousWork_No.png" class="img-fluid" style="width:80.0%"></td>
+<td>Copying or reusing previous work is not permitted</td>
+</tr>
+<tr class="odd">
+<td><img src="../img/icons/OpenBookResearch_Yes.png" class="img-fluid" style="width:80.0%"></td>
+<td>Open-book research for the assignment is permitted</td>
+</tr>
+<tr class="even">
+<td><img src="../img/icons/CitationsRequired_No.png" class="img-fluid" style="width:80.0%"></td>
+<td>APA Citations and/or formatting for this assignment are not required</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="rubric" class="level3">
+<h3 class="anchored" data-anchor-id="rubric">Rubric</h3>
+<p>You can earn a total of 10 points: one point each for questions 6-14 and the Git/GitHub part. The Bonus questions can earn you up to an additional point if you lost points elsewhere in the assignment.</p>
+</section>
+</section>
+<section id="detailed-steps" class="level2">
+<h2 class="anchored" data-anchor-id="detailed-steps">Detailed steps</h2>
+<section id="part-a-setting-up-git" class="level3">
+<h3 class="anchored" data-anchor-id="part-a-setting-up-git">Part A: Setting up &amp; Git</h3>
+<ol type="1">
+<li><p>Start a VS Code session at OSC in the folder <code>/fs/ess/PAS2880/users/$USER</code>. Create a new dir for this assignment, <code>/fs/ess/PAS2880/users/$USER/GA4</code>, and switch to that folder in VS Code using the “Open Folder” option. <em>This should be your working dir for the entire assignment.</em></p></li>
+<li><p>Initialize a Git repository. Commit to the repo throughout the assignment as you see fit, but at least once for each “Part” of this assignment. Use and commit a <code>.gitignore</code> file as appropriate. <em>Tip: Many of you would do well to make sure to recall the feedback you got</em> <em>on your Git repo from the previous assignment!</em></p></li>
+<li><p>Inside dir <code>GA4</code>, create a <code>README.md</code> file and open it in the VS Code editor. Use this file throughout the assigment to add your answers.</p></li>
+<li><p>Inside dir <code>GA4</code>, also create dirs <code>scripts</code> and <code>results</code>. We’ll make your dir self-contained again (like a typical situation for a research project) by copying some data into it:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-rv</span> ../garrigos-data/fastq data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>As a starting script, store the code below in a shell script <code>scripts/trimgalore.sh</code>. This is a script to run TrimGalore, which should be very similar to your final script from last week’s exercises.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Constants</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="va">TRIMGALORE_CONTAINER</span><span class="op">=</span>oras://community.wave.seqera.io/library/trim-galore:0.6.10--bc38c9238980c80e</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the placeholder variables</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="va">R1</span><span class="op">=</span><span class="st">"</span><span class="va">$1</span><span class="st">"</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="va">R2</span><span class="op">=</span><span class="st">"</span><span class="va">$2</span><span class="st">"</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="va">outdir</span><span class="op">=</span><span class="st">"</span><span class="va">$3</span><span class="st">"</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Report</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Starting script trimgalore.sh"</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Input R1 FASTQ file:      </span><span class="va">$R1</span><span class="st">"</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Input R2 FASTQ file:      </span><span class="va">$R2</span><span class="st">"</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Output dir:               </span><span class="va">$outdir</span><span class="st">"</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the output dir</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Run TrimGalore</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$TRIMGALORE_CONTAINER</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    trim_galore <span class="dt">\</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">--paired</span> <span class="dt">\</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">--fastqc</span> <span class="dt">\</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">--output_dir</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$R2</span><span class="st">"</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Report</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# TrimGalore version:"</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$TRIMGALORE_CONTAINER</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  trim_galore <span class="at">-v</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Successfully finished script trimgalore.sh"</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ol>
 </section>
-<section id="part-f-publish-your-repo-on-github" class="level2">
-<h2 class="anchored" data-anchor-id="part-f-publish-your-repo-on-github">Part F: Publish your repo on Github</h2>
-<ol start="17" type="1">
-<li><p><em>Create a repository on GitHub, connect it to your local repo,</em> <em>and push your local repo to GitHub.</em></p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># After creating the repo on the GitHub website, connect it, e.g.:</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add <span class="op">&lt;</span>URL<span class="op">&gt;</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Then push the local repo to the remote:</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<section id="part-b-a-trimgalore-batch-job" class="level3">
+<h3 class="anchored" data-anchor-id="part-b-a-trimgalore-batch-job">Part B: A TrimGalore batch job</h3>
+<p>You’ll start with a TrimGalore script like that from last week’s exercises, which you just created. This time, instead of running the TrimGalore script “directly”, you will submit it as a batch job. In turn, that will allow you to submit many batch jobs at the same time in the next part.</p>
+<ol start="6" type="1">
+<li><p>Add Sbatch options to the top of the TrimGalore shell script to specify:</p>
+<ul>
+<li>The account/project you want to use</li>
+<li>The number of cores you want to reserve: use 8</li>
+<li>The amount of time you want to reserve: use 30 minutes</li>
+<li>The desired file name of Slurm log</li>
+<li>That Slurm should email you upon job failure</li>
+<li>Optional: you can try other options you’d like to test</li>
+</ul></li>
+<li><p>Find the option that tells TrimGalore how many cores it can use and add the relevant line(s) from the TrimGalore help info to your <code>README.md</code>. In the script, change the <code>trim_galore</code> command accordingly to use the available number of cores.</p></li>
+<li><p>To test the script and batch job submission, submit the script as a batch job only for sample <code>ERR10802863</code>.</p></li>
+<li><p>Monitor the job, and when it’s done, check that everything went well (if it didn’t, redo until you get it right). In your <code>README.md</code>, explain your monitoring and checking process. Then, remove all outputs (Slurm log files and TrimGalore output files) produced by this test-run.</p></li>
+<li><p>Illumina sequencing uses colors to distinguish between nucleotides as they are being added during the sequencing-by-synthesis process. However, newer Illumina machines (Nextseq, Novaseq) use a different color chemistry than older ones, and this newer chemistry suffers from an artefact which can produce strings of <code>G</code>s with high quality scores that really should be <code>N</code>s, especially at the end of reverse (R2) reads. In the FastQC outputs for the R2 file that you just produced with TrimGalore (recall that it runs FastQC after trimmming!), do you see any evidence for this problem? Explain.</p></li>
+<li><p>Here, we’ll assume that the data was indeed produced with the newer Illumina color chemistry. Find the relevant option in the TrimGalore help info and add the relevant line(s) from the TrimGalore help info to your <code>README.md</code>. Then, use the TrimGalore option you found, but don’t change the quality score threshold from the default.</p></li>
+<li><p>Rerun TrimGalore with the added color-chemistry option. Check all outputs and confirm that the color-chemistry option made a difference. Again, remove all outputs produced by this test-run.</p></li>
+</ol>
+</section>
+<section id="bonus-modify-the-script-to-rename-the-output-fastq-files" class="level3">
+<h3 class="anchored" data-anchor-id="bonus-modify-the-script-to-rename-the-output-fastq-files">Bonus: Modify the script to rename the output FASTQ files</h3>
+<p><em>If you choose not to do this Bonus part, you can simply move on to Part C.</em></p>
+<p>The TrimGalore output FASTQ files are oddly named, ending in <code>_R1_val_1.fq.gz</code> and <code>_R2_val_2.fq.gz</code> – check the output files from your initial run to see this. This is not <em>necessarily</em> a problem, but could trip you up in a next step with these files.</p>
+<p>Therefore, modify your TrimGalore script to rename the output files after running TrimGalore, giving them the same names as the input files. Then, rerun the script to check that your changes were successful.</p>
+<details>
+<summary>
+Hints <em>(Click to expand)</em>
+</summary>
+<p>To rename the files, you first need to extract and store the part of the file name that is basically a sample ID: that before <code>_R1.fastq.gz</code>/<code>_R1.fastq.gz</code>. To do that, you will need to use “command substition” and the <code>basename</code> command. Those were explained on the “Unix shell tips and tricks” (week 6 - Lecture C) page <a href="../week06/w6c_tricks.html#command-substitution">starting here</a> but we did not cover them together in class.</p>
+<p>Here is a skeleton of the code to extract that part of the file name:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace " ... " with your code.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">sample_id</span><span class="op">=</span><span class="va">$(</span> <span class="ex">...</span> <span class="va">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Based on that ID, you can build up the names of the TrimGalore output files <em>and</em> those of the desired final file names. For example:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The name of the initial ('init') TrimGalore R1 output file will be:</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">R1_out_init</span><span class="op">=</span><span class="st">"</span><span class="va">$outdir</span><span class="st">"</span>/<span class="st">"</span><span class="va">$sample_id</span><span class="st">"</span>_R1_val_1.fq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</section>
+<section id="part-c-trimgalore-batch-jobs-in-a-loop" class="level3">
+<h3 class="anchored" data-anchor-id="part-c-trimgalore-batch-jobs-in-a-loop">Part C: TrimGalore batch jobs in a loop</h3>
+<p>After your test-run, it is time to run TrimGalore on all samples by submitting batch jobs using a loop.</p>
+<ol start="13" type="1">
+<li><p>Write a <code>for</code> loop in your <code>README.md</code> to submit a TrimGalore batch job for each pair of FASTQ files in the <code>data</code> dir.</p></li>
+<li><p>Monitor the jobs and when they are done, check that everything went well (if it didn’t, redo until you get it right). In your <code>README.md</code>, explain your monitoring and checking process. In this case, it is appropriate to keep the Slurm log files: move them into a dir <code>logs</code> within the TrimGalore output dir.</p></li>
+</ol>
+</section>
+<section id="part-d-publish-your-repo-on-github" class="level3">
+<h3 class="anchored" data-anchor-id="part-d-publish-your-repo-on-github">Part D: Publish your repo on Github</h3>
+<p>You’ll publish your Git repo on GitHub and “hand in” your assignment by creating an Issue.</p>
+<ol start="15" type="1">
+<li><p>Create a repository on GitHub, connect it to your local repo, and push your local repo to GitHub.</p></li>
+<li><p>Create a new issue and tag GitHub user <code>menukabh</code>, asking Menuka to take a look at your assignment.</p></li>
 </ol>
 
 
+</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
