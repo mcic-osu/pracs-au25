@@ -14,9 +14,6 @@ other-links:
   - text: "Week 3 overview"
     icon: book
     href: w3_overview.html
-  - text: "Bonus: Unix data tools"
-    icon: book
-    href: ../bonus/shell-data.html
 bibliography: ../references.bib
 editor_options: 
   chunk_output_type: console
@@ -25,18 +22,6 @@ editor_options:
 --------------------------------------------------------------------------------
 
 <br>
-
-:::callout-caution
-#### THIS PAGE IS STILL UNDER CONSTRUCTION
-:::
-
-<br>
-
-## Setting up
-
-TBA
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ## Other shell wildcards
 
@@ -174,7 +159,7 @@ treatment-Df_temp-med  treatment-Kr_temp-med  treatment-Tr_temp-med
 <hr style="height:1pt; visibility:hidden;" />
 
 ::: exercise
-### {{< fa user-edit >}} Exercise: Brace expansion and wildcards {-}
+#### {{< fa user-edit >}} Exercise: Brace expansion and wildcards
 
 1. Move back into `data/fastq/` and remove all (remaining) files in there in one go.
 
@@ -313,11 +298,11 @@ and you may have many dozens of samples.
 
 Manually renaming these one-by-one is tedious as well as extremely error-prone
 and irreproducible.
-So, yhis is a good example of a general task that you can apply your coding skills to.
+So, this is a good example of a general task that you can apply your coding skills to.
 For example, maybe you have a few thousand photos you want to rename in
 a systematic way?
 
-There are many different ways to rename many files in a programmatic way in the shell &ndash;
+There are many different ways to rename many files in a programmatic way in the shell --
 admittedly none as easy as one might have hoped.
 Here, we'll use the `basename` command and a `for` loop.
 `for` loops are a verbose method for tasks like renaming,
@@ -364,18 +349,18 @@ Therefore, let's use a loop.
 
 ### Renaming a single file using variables
 
-To go step-by-step, I will start by showing how you could rename a single
-file like you would when using a loop, which is using _variables_.
+To go step-by-step, you will first see how you could rename a single file
+_inside_ a loop, which is using _variables_.
 You will also make a _separate copy_ of the files in a separate directory,
 just to be safe.
 
-To start with, the original file name will be contained in a variable...
+To start with, say that the original file name is contained in a variable:
 
 ```bash
 oldname=results/alignments/sample01.sam
 ```
 
-...and you can also save the new name in a variable:
+And you can also save the new name in a variable:
 
 ```bash
 newname=results/alignments_bam/$(basename "$oldname" .sam).bam
@@ -456,10 +441,8 @@ done
 # [...output truncated...]
 ```
 
-<hr style="height:1pt; visibility:hidden;" />
-
 :::{.exercise}
-### {{< fa user-edit >}} Exercise: Renaming files with a loop {-}
+#### {{< fa user-edit >}} Exercise: Renaming files with a loop
 
 1. **Create mock "alignment" files**
 
@@ -494,7 +477,7 @@ done
    Move into the dir with BAM files, and use a `for` loop to rename them,
    changing the extension from `.sam` to `.bam`.
    
-   <details><summary>Hints</summary>
+   <details><summary>_Click here for some hints_</summary>
 
    - Loop over the files using globbing (wildcard expansion) directly;
      there is no need to call `ls`.
@@ -504,9 +487,9 @@ done
     - The new extension can simply be pasted behind the file name, like
      `newname="$filename_no_extension"bam` or `newname=$(basename ...)bam`.
    
-    </details>
+   </details>
 
-   <details><summary>Solution</summary>
+   <details><summary>_Click here for the solution_</summary>
   
    ```sh
    for oldname in *.sam; do
@@ -525,7 +508,8 @@ done
    Also, note that:
     
    - You don't need a special construction to paste strings together:
-     you simply type `bam` after what will be the extension-less file name from the `basename` command.
+     you simply type `bam` after what will be the extension-less file name from
+     the `basename` command.
    - I used informative variable names (`oldname` and `newname`), not cryptic ones like `i` and `o`.
   
    </details>
@@ -533,17 +517,18 @@ done
 3. **Copy files with wildcards**  
    
    Still in the dir with your SAM files, create a new dir called `subset`.
-   Then, using a single `cp` command, copy files that satisfy the following conditions into the `subset` dir:
+   Then, using a single `cp` command,
+   copy files that satisfy the following conditions into the `subset` dir:
    
       - The sample ID/number should be 01-19, and
       - The treatment should be A, B, or C.  
    
-   <details><summary>Hints</summary>
+   <details><summary>_Click here for some hints</summary>
    Just like you used multiple consecutive brace expansions above,
    you can use two consecutive wildcard character sets (`[]`) here.
    </details>
 
-   <details><summary>Solution</summary>
+   <details><summary>_Click here for the solution_</summary>
 
    - Create the new dir:
   
@@ -579,17 +564,19 @@ done
    and that you should use the `YYYY-MM-DD` format.
    Use a `for` loop to rename the files.
    
-   <details><summary>Hints</summary>
+   <details><summary>_Click here for some hints_</summary>
   
-   - Use `cut` to extract the three elements of the date (day, month, and year) on three separate lines.
-   - Store the output of these lines in variables using commands substitution, like: `day=$(commands)`.
+   - Use `cut` to extract the three elements of the date (day, month, and year)
+     on three separate lines.
+   - Store the output of these lines in variables using commands substitution, like:
+     `day=$(commands)`.
    - Finally, paste your new file name together like: `newname="$part1"_"$year"` etc.
    - When first writing your commands, it's helpful to be able to experiment easily:
      start by echo-ing a single example file name, as in:
      `echo sample23_C_09-16-2020.sam | cut ...`.
    </details>
 
-   <details><summary>Solution</summary>
+   <details><summary>_Click here for the solution_</summary>
   
    - In the loop, first use `cut` to extract the month, day, and year:
      - Start by extracting the entire date: cut by an `_` and take the third item

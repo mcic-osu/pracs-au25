@@ -1,0 +1,62 @@
+---
+title: "pipelines"
+format: html
+---
+
+
+## Makeshift pipelines with shell scripts and Slurm
+
+### A step up
+
+Second, here are some more bespoke code-based solutions:
+
+#### Command-line options and `if`-statements
+
+These will allow you to flexibly run part of the pipeline
+(and perhaps change settings):
+
+```sh
+trim=$1   # true or false
+map=$2    # true or false
+count=$3  # true or false
+  
+if [[ "$trim" == true ]]; then
+    for R1 in data/fastq/*_R1.fastq.gz; do
+        bash scripts/trim.sh "$R1" results/trim
+    done
+fi
+  
+if [[ "$map" == true ]]; then
+    for R1 in results/trim/*_R1.fastq.gz; do
+        bash scripts/map.sh "$R1" results/map
+    done
+fi
+  
+if [[ "$count" == true ]]; then
+    bash scripts/count.sh results/map results/count_table.txt
+fi
+```
+
+#### Slurm job dependencies
+
+In the example below,
+jobs will only start after their "dependencies" (jobs whose outputs they need)
+have finished:
+  
+```sh
+for R1 in data/fastq/*_R1.fastq.gz; do
+    # Submit the trimming job and store its job number:
+    submit_line=$(sbatch scripts/trim.sh "$R1" results/trim)
+    trim_id=$(echo "$submit_line" | sed 's/Submitted batch job //')
+      
+    # Submit the mapping job with the condition that it only starts when the
+    # trimming job is done, using '--dependency=afterok:':
+    R1_trimmed=results/trim/$(basename "$R1")
+    sbatch --dependency=afterok:$trim_id scripts/map.sh "$R1_trimmed" results/map
+done
+  
+# If you give the mapping and counting jobs the same name with `#SBATCH --job-name=`,
+# then you can use '--dependency=singleton': the counting job will only start
+# when ALL the mapping jobs are done:
+sbatch --dependency=singleton scripts/count.sh results/map results/count_table.txt
+```

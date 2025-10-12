@@ -1,7 +1,7 @@
 ---
 title: "Workflow management"
-subtitle: "Week 9 -- Lecture I"
-pagetitle: "Pipelines"
+subtitle: "Week 9 -- Lecture A"
+pagetitle: "w9a: Workflows"
 date: 2025-10-21
 author:
   - name: Jelmer Poelstra
@@ -13,6 +13,16 @@ author:
 editor_options: 
   chunk_output_type: console
 bibliography: ../references.bib
+other-links:
+  - text: "Week 9 overview"
+    icon: book
+    href: w9_overview.html
+  - text: "w9b: Data management"
+    icon: bookmarks
+    href: w9b_data.html
+  - text: "Week 9 exercises"
+    icon: pencil
+    href: w9_exercises.html
 ---
 
 ----------------------------------------------------------------------------------------------------
@@ -21,10 +31,18 @@ bibliography: ../references.bib
 
 ## Introduction
 
-TBA
+### Learning goals
 
-<hr style="height:1pt; visibility:hidden;" />
+#### This week
 
+#### This session
+
+### Getting ready
+
+1. At <https://ondemand.osc.edu>,
+   start a VS Code session in `/fs/ess/PAS2880/users/$USER`
+2. Create a `week09` dir and navigate there in the terminal
+3. Create a `scripts` dir within `week09`
 
 ## Markdown files with your analysis workflow
 
@@ -34,7 +52,7 @@ Alternatively, you can directly type such commands in the terminal,
 but this is harder to do without making mistakes
 (especially with more complex constructs like loops)
 and reduces reproducibility,
-since you don't keep a good record of what you did.
+since you won't keep a good record of what you did.
 
 So far, these Markdown files have been short,
 and may not have given you a good picture of what this would look like in the context
@@ -61,8 +79,6 @@ For this example, let's have in mind a simple RNA-Seq analysis for 3 samples tha
 - Creates a gene expression count table from the alignments _(for all samples together)_
 
 ![A simple 3-step RNA-Seq analysis, with arrows showing the connections<br>between the steps: the output of one step is the input of the next.<br>The example only has 3 samples, and the first two steps are executed separately<br>for each sample, while the last step is executed once for all samples.](../img/schem-workflow.svg){fig-align="center" width="70%" fig-alt="A diagram of the steps in a simple RNA-Seq analysis." .lightbox}
-
-<hr style="height:1pt; visibility:hidden;" />
 
 Here is an example "protocol-style" Markdown file for this RNA-seq analysis:
 
@@ -143,8 +159,6 @@ sbatch scripts/count.sh results/map "$ref_annotation" results/count_table.txt
 ```
 ````
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ### The rationale behind organizing and running scripts this way
 
 The protocol above submits a shell script one or more times for each of the three steps
@@ -170,9 +184,7 @@ Therefore, if you run all code at once, all batch jobs will be submitted at the 
 this means that later steps will start running before the earlier step has finished,
 i.e. before their input files are available, and will fail.
 
-<hr style="height:1pt; visibility:hidden;" />
-
-### How to further automate this?
+## How to further automate this?
 
 Waiting for each step to finish before submitting the next step is a bit tedious,
 and means the above protocol is not a fully automated pipeline.
@@ -181,7 +193,7 @@ Therefore, you may want to find ways to:
 - Reduce the number of steps and/or
 - Avoid having to wait for each step to finish before moving on to the next
 
-#### Combining scripts to reduce the number of steps
+### Combining scripts to reduce the number of steps
 
 Once you get the hang of writing shell scripts,
 it may be appealing to string a series of programs/steps together in a single script,
@@ -219,7 +231,7 @@ All in all, my recommendation is to keep your shell scripts simple
 _in the sense that they should generally **just run one program**_,
 and not a sequence of programs.
 
-#### Automate batch job submission 
+### Automate batch job submission 
 
 Foremost, you'd need to overcome the problem of simultaneous batch job submission.
 But a decent pipeline **detect failure and then stop**,
@@ -234,23 +246,21 @@ How could you implement all of that?
 
 - **Push the limits of the Bash and Slurm tool set (not recommended)**\
   Use `if` statements, additional script arguments, and Slurm "job dependencies"
-  (see the [optional reading page](../bonus/slurm.html)) ---
+  (see the [optional reading page](../bonus/pipelines.html)) ---
   but this is hard to manage for more complex workflows.
 
-#### A better solution
+### A better solution
 
 Use a formal workflow management system like
 [Snakemake](https://snakemake.readthedocs.io) or [NextFlow](https://www.nextflow.io),
 which can take care of all these details and more for you.
-
-<hr style="height:1pt; visibility:hidden;" />
 
 ## Workflow management systems
 
 Pipeline/workflow tools, often called "workflow management systems" in full,
 provide ways to formally describe and execute pipelines.
 
-#### The need for specialized programs to orchestrate pipelines
+### The need for specialized programs to orchestrate pipelines
 
 _TBA - Explain this is about the bioinformatics/algorithmic stage of analyses._
 
@@ -265,7 +275,7 @@ Two quotes from this article:
 > a pipeline must be able to monitor their progress and exit gracefully if any step fails.
 > And pipelines must be smart enough to work out which tasks need to be re-executed and which do not.
 
-#### Advantages of workflow management systems
+### Advantages of workflow management systems
 
 Advantages of workflow management systems are improved _automation_,
 _flexibility_ (e.g., ease of running with different settings or on different datasets),
@@ -283,7 +293,7 @@ and _scalability_ (ease of scaling up to larger datasets):
   - Run-specific configuration --- samples, directories, settings/parameters.
   - Things specific to the run-time environment (laptop vs. cluster vs. cloud).
 
-#### Nextflow
+### Nextflow
 
 The two most commonly used command-line based options in bioinformatics are
 **Nextflow** and **Snakemake**.
@@ -293,13 +303,7 @@ Unfortunately, their learning curves are steeper than you might expect for a
 tool that "merely" needs to tie your workflow steps together.
 Therefore, we'll spend this week and next week on learning one of them: Nextflow. 
 
-::: callout-note
-#### Nextflow vs. Snakemake (TBA)
-:::
-
-<hr style="height:1pt; visibility:hidden;" />
-
-## nf-core pipelines
+### nf-core pipelines
 
 You don't always have to build your own pipeline.
 Many publicly available pipelines exist,
@@ -321,74 +325,17 @@ The "nf-core" initiative (<https://nf-co.re>, @ewels2020)
 curates a set of best-practice, highly flexible,
 and well-documented pipelines written in Nextflow:
 
-![](../img/nfcore_homepage.png){fig-align="center" width="50%"}
+![](../img/nfcore_homepage.png){fig-align="center" width="50%" .lightbox}
 
 <hr style="height:1pt; visibility:hidden;" />
 
 For many common omics analysis types, nf-core has a pipeline.
 It currently has 58 complete pipelines --- these are the four most popular ones:
 
-![](../img/nfcore_pipelines.png){fig-align="center"}
+![](../img/nfcore_pipelines.png){fig-align="center" width="90%" .lightbox}
 
 Here's a closer look at the most widely used nf-core pipeline,
 the [rnaseq pipeline](https://nf-co.re/rnaseq>),
-which we'll run in [week 15 of the course](../week15/w15_1_nfcore.qmd):
+which we'll run in week 15 of the course:
 
-![](../img/nfcore_rnaseq.png){fig-align="center" width="120%"}
-
-## Makeshift pipelines with shell scripts and Slurm
-
-### A step up
-
-Second, here are some more bespoke code-based solutions:
-
-#### Command-line options and `if`-statements
-
-These will allow you to flexibly run part of the pipeline
-(and perhaps change settings):
-
-```sh
-trim=$1   # true or false
-map=$2    # true or false
-count=$3  # true or false
-  
-if [[ "$trim" == true ]]; then
-    for R1 in data/fastq/*_R1.fastq.gz; do
-        bash scripts/trim.sh "$R1" results/trim
-    done
-fi
-  
-if [[ "$map" == true ]]; then
-    for R1 in results/trim/*_R1.fastq.gz; do
-        bash scripts/map.sh "$R1" results/map
-    done
-fi
-  
-if [[ "$count" == true ]]; then
-    bash scripts/count.sh results/map results/count_table.txt
-fi
-```
-
-#### Slurm job dependencies
-
-In the example below,
-jobs will only start after their "dependencies" (jobs whose outputs they need)
-have finished:
-  
-```sh
-for R1 in data/fastq/*_R1.fastq.gz; do
-    # Submit the trimming job and store its job number:
-    submit_line=$(sbatch scripts/trim.sh "$R1" results/trim)
-    trim_id=$(echo "$submit_line" | sed 's/Submitted batch job //')
-      
-    # Submit the mapping job with the condition that it only starts when the
-    # trimming job is done, using '--dependency=afterok:':
-    R1_trimmed=results/trim/$(basename "$R1")
-    sbatch --dependency=afterok:$trim_id scripts/map.sh "$R1_trimmed" results/map
-done
-  
-# If you give the mapping and counting jobs the same name with `#SBATCH --job-name=`,
-# then you can use '--dependency=singleton': the counting job will only start
-# when ALL the mapping jobs are done:
-sbatch --dependency=singleton scripts/count.sh results/map results/count_table.txt
-```
+![](../img/nfcore_rnaseq.png){fig-align="center" width="90%" .lightbox}
