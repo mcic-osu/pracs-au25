@@ -19,12 +19,6 @@ bibliography: ../references.bib
 
 <br>
 
-:::callout-caution
-#### THIS PAGE IS STILL UNDER CONSTRUCTION
-:::
-
-<br>
-
 
 ## Introduction
 
@@ -60,8 +54,6 @@ Take a look at what's there:
 ls
 ```
 
-<br>
-
 ### BED files (`.bed`)
 
 Often just contains **genomic coordinates** in 3 columns:
@@ -76,8 +68,6 @@ chr1    32      47
 chr3    11      28
 chr1    40      49
 ```
-
-<br>
 
 ## Viewing data files
 
@@ -106,6 +96,7 @@ less "$mus".gtf
 | <kbd>/</kbd>`<pattern>` <br> <kbd>?</kbd>`<pattern>` | Search forward/backward: next type keyword to search for
 | <kbd>n</kbd> / <kbd>N</kbd>     | Go to next/previous search match
 
+::: exercise
 #### <i class="fa fa-user-edit"></i> Your turn: `less`
 
 1. Open a FASTQ file with `less`:
@@ -119,8 +110,7 @@ less "$mus".gtf
    Move to the next match and the next.
 
 5. Exit.
-
-<br>
+:::
 
 ### Substituting characters using `tr`
 
@@ -174,8 +164,6 @@ a b c d
 ```
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
 ::: exercise
 #### {{< fa user-edit >}} Exercise: Redirecting `tr` output
 
@@ -191,8 +179,6 @@ cat Pacifici2013_data.csv | tr ";" "\t" > ../sandbox/Pacifici2013_data.tsv
 ```
 </details>
 :::
-
-<br>
 
 ## Regular expressions
 
@@ -245,8 +231,6 @@ Furthermore, recall that:
   - Wildcards match *file names*; matches are expanded directly by the shell.
   - Regular expressions match any input for the command.
 
-<br>
-
 ## More `grep` to find text
 
 - `grep` always allows partial matching (cf. file globbing):
@@ -290,7 +274,7 @@ Furthermore, recall that:
   #> ENSMUSG00000062497      Olfr1411
   ```
   
-  *(Note that we need `-E` for extended regex for the **`|`** to work.)*
+  *(Note that you need `-E` for extended regex for the `|` to work.)*
   
 ### Other options
 
@@ -385,6 +369,8 @@ This is needed to successfully match a tab character with `\t`.
   #> ...
   ```
 
+::: exercise
+
 ### <i class="fa fa-user-edit"></i> Your turn: `grep`
 
 1. **Count the number of genomic features in `Mus_musculus.GRCm38.75_chr1.gtf`
@@ -416,50 +402,11 @@ This is needed to successfully match a tab character with `\t`.
   grep -c "lincRNA.*exon" $mus.gtf
   #> 408
   ```
-   
-## `sort` and `sort | uniq -c`
+:::
 
-### Count tables with `sort | uniq -c`
+## More `uniq` and `sort`
 
-- Using `uniq -c` on sorted data, we get a count for each unique occurrence:
-
-  ```bash
-  cat letters.txt
-  #> A
-  #> A
-  #> B
-  #> C
-  #> B
-  #> C
-  #> C
-  #> C
-  
-  sort letters.txt | uniq -c
-  #> 2 A
-  #> 2 B
-  #> 4 C
-  ```
-
-- The `sort | uniq -c` combination is very useful --
-  e.g. the following will print counts for each type of annotated element
-  ("feature") in a genome:
-  
-  ```bash
-  grep -v "^#" "$mus".gtf | cut -f3 | sort | uniq -c
-  #> 25901 CDS
-  #> 36128 exon
-  #> 2027 gene
-  #> ...
-  ```
-
-- Next, we can sort these counts in order from most frequent to least:
-
-  ```bash
-  grep -v "^#" "$mus".gtf | cut -f3 | sort | uniq -c | sort -rn
-  #> 36128 exon
-  #> 25901 CDS
-  #> 7588 UTR
-  ```
+### Two more `uniq` examples
 
 - Or count combinations *across columns* -- here, "features" by "strand":
   
@@ -471,24 +418,11 @@ This is needed to successfully match a tab character with `\t`.
   #> 17994 exon    -
   ```
 
-- Final example: count numbers of different features *for a particular gene*:
-  
+- Another useful `uniq` option is `-d` to check for duplicate lines:
+
   ```bash
-  grep "ENSMUSG00000033793" "$mus".gtf | cut -f3 | sort | uniq -c
-  #> 13 CDS
-  #> 14 exon
-  #> 1 gene
+  uniq -d mm_gene_names.txt | wc -l  # 0 if no duplicates
   ```
-
-::: callout-tip
-Another useful `uniq` option is `-d` to check for duplicate lines:
-
-```bash
-uniq -d mm_gene_names.txt | wc -l  # 0 if no duplicates
-```
-:::
-
-<br>
 
 ### More `sort`
 
@@ -517,8 +451,6 @@ uniq -d mm_gene_names.txt | wc -l  # 0 if no duplicates
 ####  The `-g` flag will properly sort scientific number notation like 10e-2.
 :::
 
-<br>
-
 ## `column` for tabular file viewing
 
 - Tab-delimited files can look messy in the terminal or text editors:
@@ -538,8 +470,6 @@ uniq -d mm_gene_names.txt | wc -l  # 0 if no duplicates
   ```bash
   column -s "," -t "$mus"_bed.csv | head -n 3
   ```
-
-<br>
 
 ## `join` to merge tabular data files
 
@@ -585,8 +515,6 @@ use the `-a` option.
   $
   ```
 
-<br>
-
 ## Command exit statuses and making use of them
 
 If we need to check whether a file is sorted in a script before sorting it,  
@@ -624,8 +552,6 @@ An additional trick we used here is to redirect the standard
 output to `/dev/null`,
 which won't write anything and will simply avoid the output being printed.
 :::
-
-<br>
 
 ## `awk` for advanced (tabular) data processing
 
@@ -770,6 +696,7 @@ lines matching the pattern (condition) are printed in full.**
 | `a` <code>&#124;</code><code>&#124;</code> `b` | logical or: `a` **or** `b`
 | `!a`        | not a (logical negation)
 
+::: exercise
 ### <i class="fa fa-user-edit"></i> Your turn: `awk`
 
 The following exercises use `example.bed`.
@@ -800,6 +727,7 @@ The following exercises use `example.bed`.
   ```bash
   awk '$3 == 28 { print $1, $3 - $2 }' example.bed
   ```
+:::
 
 ### Filtering and combining expressions
 
@@ -836,7 +764,7 @@ Summary of `awk` so far:
 > - *For filtering data using rules that can combine regular expressions and arithmetic*
 > - *Reformatting the columns of data using arithmetic*
 
-### `awk`: Actions before and after record processing
+### Actions before and after record processing
 
 - The `BEGIN` and `END` patterns can be used to specify actions before and
   after record processing. Here, we:
@@ -860,7 +788,7 @@ The `+=` operator is shorthand for adding to a variable:
 `x += 1` means `x = x + 1`. It is used in many languages.
 :::
 
-### `awk` special variables and keywords
+### Species `awk` variables and keywords
 
 | keyword/<br>variable  | meaning    |
 |----------|------------|
@@ -911,8 +839,6 @@ The `+=` operator is shorthand for adding to a variable:
   awk -F "\t" '!/^#/ {print NF; exit}' Mus_musculus.GRCm38.75_chr1.gtf
   #> 9
   ```
-
-<br>
 
 ## sed for advanced editing
 
@@ -1021,6 +947,7 @@ echo "chr1:431-874" | tr ":-" "\t"
 ```
 :::
 
+::: exercise
 ### <i class="fa fa-user-edit"></i> Your turn: `sed`
 
 Make the following replacements in `Mus_musculus.GRCm38.75_chr1_genes.txt`
@@ -1058,6 +985,7 @@ For 1. and 2., don't write to new files: check your result by piping into `head`
   sed -e 's/ENSMUS/GALGAL/' -e 's/\t/_/' "$mus"_genes.txt \
         > genes_fixed.txt
   ```
+:::
 
 ### Backreferences in regular expressions
 
@@ -1221,8 +1149,6 @@ echo "chr1:28427874-28425431" | \
   sed -E 's/transcript_id "([^"]+)".*/\1/' greedy_example.txt
   # ENSMUST00000160944
   ```
-
-<br>
 
 ## Process substitution and subshells
 
