@@ -237,7 +237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">UA 3: GitHub account setup (week 4)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../week09/w9_ua_ssh.html">
+    <a class="dropdown-item" href="../week09/w9_ua_ssh.qmd">
  <span class="dropdown-text">UA 4: Local VS Code installation (week 9)</span></a>
   </li>  
         <li class="dropdown-header">UA 5: Post-course survey (week 16) [TBA]</li>
@@ -356,6 +356,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#command-substitution" id="toc-command-substitution" class="nav-link" data-scroll-target="#command-substitution"><span class="header-section-number">3</span> Command substitution</a></li>
   <li><a href="#basename-and-dirname-to-extract-parts-of-paths" id="toc-basename-and-dirname-to-extract-parts-of-paths" class="nav-link" data-scroll-target="#basename-and-dirname-to-extract-parts-of-paths"><span class="header-section-number">4</span> <code>basename</code> and <code>dirname</code> to extract parts of paths</a></li>
   <li><a href="#keyboard-shortcuts" id="toc-keyboard-shortcuts" class="nav-link" data-scroll-target="#keyboard-shortcuts"><span class="header-section-number">5</span> Keyboard shortcuts</a></li>
+  <li><a href="#renaming-files-with-loops" id="toc-renaming-files-with-loops" class="nav-link" data-scroll-target="#renaming-files-with-loops"><span class="header-section-number">6</span> Renaming files with loops</a>
+  <ul class="collapse">
+  <li><a href="#create-a-set-of-dummy-files-to-work-with" id="toc-create-a-set-of-dummy-files-to-work-with" class="nav-link" data-scroll-target="#create-a-set-of-dummy-files-to-work-with"><span class="header-section-number">6.1</span> Create a set of dummy files to work with</a></li>
+  <li><a href="#rename-a-single-file-using-variables" id="toc-rename-a-single-file-using-variables" class="nav-link" data-scroll-target="#rename-a-single-file-using-variables"><span class="header-section-number">6.2</span> Rename a single file using variables</a></li>
+  <li><a href="#loop-over-all-files" id="toc-loop-over-all-files" class="nav-link" data-scroll-target="#loop-over-all-files"><span class="header-section-number">6.3</span> Loop over all files</a></li>
+  </ul></li>
   </ul>
 <div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w6_overview.html"><i class="bi bi-book"></i>Week 6 overview</a></li><li><a href="w6a_scripts.html"><i class="bi bi-bookmarks"></i>w6a: Shell scripting basics</a></li><li><a href="w6b_cli-tools.html"><i class="bi bi-bookmarks"></i>w6b: Shell scripting - CLI tools</a></li><li><a href="w6_ga.html"><i class="bi bi-pencil"></i>Week 6 graded assignment</a></li></ul></div></nav>
     </div>
@@ -799,9 +805,88 @@ Or insert the command substitution on the fly
 <h4 class="anchored" data-anchor-id="exercise-test-these-keyboard-shortcuts"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Test these keyboard shortcuts</h4>
 <p>Type multiple words in the terminal and then test the above keyboard shortcuts one by one.</p>
 </section>
+</section>
+<section id="renaming-files-with-loops" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="renaming-files-with-loops"><span class="header-section-number">6</span> Renaming files with loops</h2>
+<blockquote class="blockquote">
+<p><span style="color:#969696"><em>This was added on Oct 12</em></span></p>
+</blockquote>
+<p>Sometimes, you need to rename many files in a systematic/repetitive way. This is relatively common with omics data files, as you will often have separate files for each sample, and you may have many dozens of samples.</p>
+<p>Manually renaming these one-by-one is tedious as well as error-prone and irreproducible. There are many different ways to rename many files in a programmatic way in the shell – admittedly none as easy as one might have hoped. Here, we’ll use the <code>basename</code> command and a <code>for</code> loop.</p>
+<section id="create-a-set-of-dummy-files-to-work-with" class="level3" data-number="6.1">
+<h3 data-number="6.1" class="anchored" data-anchor-id="create-a-set-of-dummy-files-to-work-with"><span class="header-section-number">6.1</span> Create a set of dummy files to work with</h3>
+<p>Start with creating some dummy files that represent alignments (the results of aligning reads in FASTQ files to a reference genome, stored in <code>.sam</code> or <code>.bam</code> files)<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> sandbox</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> sandbox/sample{01..50}.sam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Check the names of the files you created and how many there are:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> sandbox</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>sandbox/sample01.sam
+sandbox/sample02.sam
+sandbox/sample03.sam
+sandbox/sample04.sam
+# [...output truncated...]</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> sandbox/<span class="pp">*</span>sam <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>50</code></pre>
+<p>Now, say that you noticed these files somehow ended up with the wrong file extension: they are saved as <code>.sam</code> (SAM files) but are really <code>.bam</code> (BAM files). You’ll have to rename them before moving on the next step in your analysis.</p>
+</section>
+<section id="rename-a-single-file-using-variables" class="level3" data-number="6.2">
+<h3 data-number="6.2" class="anchored" data-anchor-id="rename-a-single-file-using-variables"><span class="header-section-number">6.2</span> Rename a single file using variables</h3>
+<p>We will start with seeing how you could rename a single file <em>inside</em> a loop, which is using <em>variables</em> – since you’d loop over the original files, each file path would be in a variable like so:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="va">old_path</span><span class="op">=</span>sandbox/sample01.sam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next, you can build the new file path and then also save that in a variable:</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the filename without the extension using command substitution:</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="va">file_id</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$old_path</span><span class="st">"</span> .sam<span class="va">)</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Next, create the new file path</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="va">new_path</span><span class="op">=</span>sandbox/<span class="st">"</span><span class="va">$file_id</span><span class="st">"</span>.bam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Or in one step:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="va">new_path</span><span class="op">=</span>sandbox/<span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$old_path</span><span class="st">"</span> .sam<span class="va">)</span>.bam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>And using these variables, the <code>mv</code> command to do the renaming would be:</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Don't run this - we'll do this in a loop next</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> <span class="at">-v</span> <span class="st">"</span><span class="va">$old_path</span><span class="st">"</span> <span class="st">"</span><span class="va">$new_path</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="loop-over-all-files" class="level3" data-number="6.3">
+<h3 data-number="6.3" class="anchored" data-anchor-id="loop-over-all-files"><span class="header-section-number">6.3</span> Loop over all files</h3>
+<p>Now, we’ll loop over all files and add the renaming code inside the loop. Before actually renaming, let’s use the trick with <code>echo</code> to just print the command instead of executing it. That is useful in contexts like this, so you can check what you’re doing is correct, given that your command has variables:</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> old_path <span class="kw">in</span> sandbox/<span class="pp">*</span>.sam<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Build the new file path:</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">file_id</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$old_path</span><span class="st">"</span> .sam<span class="va">)</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">new_path</span><span class="op">=</span>sandbox/<span class="st">"</span><span class="va">$file_id</span><span class="st">"</span>.bam</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Rename the file:</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> mv <span class="at">-v</span> <span class="st">"</span><span class="va">$old_path</span><span class="st">"</span> <span class="st">"</span><span class="va">$new_path</span><span class="st">"</span></span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>mv -v sandbox/sample01.sam sandbox/sample01.bam
+mv -v sandbox/sample02.sam sandbox/sample02.bam
+mv -v sandbox/sample03.sam sandbox/sample03.bam
+mv -v sandbox/sample04.sam sandbox/sample04.bam
+# [...output truncated...]</code></pre>
+<p>Finally, actually do the renaming copies by removing <code>echo</code>:</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> old_path <span class="kw">in</span> <span class="pp">*</span>.fastq<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Build the new file path:</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">file_id</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$old_path</span><span class="st">"</span> .sam<span class="va">)</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">new_path</span><span class="op">=</span>sandbox/<span class="st">"</span><span class="va">$file_id</span><span class="st">"</span>.bam</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Rename the file:</span></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mv</span> <span class="at">-v</span> <span class="st">"</span><span class="va">$old_path</span><span class="st">"</span> <span class="st">"</span><span class="va">$new_path</span><span class="st">"</span></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>‘sandbox/sample01.sam’ -&gt; ‘sandbox/sample01.bam’
+‘sandbox/sample02.sam’ -&gt; ‘sandbox/sample02.bam’
+‘sandbox/sample03.sam’ -&gt; ‘sandbox/sample03.bam’
+‘sandbox/sample04.sam’ -&gt; ‘sandbox/sample04.bam’
+# [...output truncated...]</code></pre>
 <p><br></p>
 
 
+</section>
 </section>
 
 
@@ -810,6 +895,7 @@ Or insert the command substitution on the fly
 <ol>
 <li id="fn1"><p>But in some cases, e.g., just <code>_1</code> / <code>_2</code>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p> As opposed to the code tucked away in each individual script, like <code>fastqc.sh</code>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p> With a <code>{01..50}</code> construct that is called brace expansion to create 50 files at once<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
