@@ -82,7 +82,7 @@ your answer will be considered wrong and not give you any points.
 
 You can earn a total of 10 points:
 one point each for questions 6-14 and the Git/GitHub part.
-The Bonus questions can earn you up to an additional point
+The Bonus question can earn you up to an additional point
 if you lost points elsewhere in the assignment.
 
 ## Detailed steps
@@ -98,11 +98,11 @@ if you lost points elsewhere in the assignment.
    Commit to the repo throughout the assignment as you see fit,
    but at least once for each "Part" of this assignment.
    Use and commit a `.gitignore` file as appropriate.
-   _Tip: Many of you would do well to make sure to recall the feedback you got_
-   _on your Git repo from the previous assignment!_
+   _(Tip: Many of you would do well to recall the feedback you got_
+   _on your Git repo from the previous assignment!)_
    
 3. Inside dir `GA4`, create a `README.md` file and open it in the VS Code editor.
-   Use this file throughout the assigment to add your answers.
+   Use this file throughout the assigment to add your answers where appropriate.
    
 4. Inside dir `GA4`, also create dirs `scripts` and `results`.
    We'll make your dir self-contained again
@@ -110,6 +110,7 @@ if you lost points elsewhere in the assignment.
    by copying some data into it:
    
    ```bash
+   # (This command will work as intended if you *don't* have a data dir yet) 
    cp -rv ../garrigos-data/fastq data
    ```
    
@@ -160,24 +161,26 @@ if you lost points elsewhere in the assignment.
 
 ### Part B: A TrimGalore batch job
 
-You'll start with a TrimGalore script like that from last week's exercises,
-which you just created.
-This time, instead of running the TrimGalore script "directly",
+You'll start with the TrimGalore script you just created, which should be much
+like that from last week's exercises.
+But this time, instead of running the TrimGalore script "directly" with `bash`,
 you will submit it as a batch job.
-In turn, that will allow you to submit many batch jobs at the
-same time in the next part.
+Then, in the next section,
+you will submit many batch jobs at the same time: one for each sample.
 
 06. Add Sbatch options to the top of the TrimGalore shell script to specify:
    
     - The account/project you want to use
     - The number of cores you want to reserve: use 8
     - The amount of time you want to reserve: use 30 minutes
-    - The desired file name of Slurm log 
+    - The desired file name of Slurm log file
     - That Slurm should email you upon job failure
-    - Optional: you can try other options you'd like to test
+    - _Optional: you can try other Sbatch options you'd like to test_
 
-07. Find the option that tells TrimGalore how many cores it can use and add the
-    relevant line(s) from the TrimGalore help info to your `README.md`.
+07. By printing and scanning through the TrimGalore help info once again
+    (see last week's exercises),
+    find the TrimGalore option that specifies how many cores it can use --
+    add the relevant line(s) from the TrimGalore help info to your `README.md`.
     In the script, change the `trim_galore` command accordingly to use the available
     number of cores.
 
@@ -192,24 +195,27 @@ same time in the next part.
 
 10. Illumina sequencing uses colors to distinguish between nucleotides
     as they are being added during the sequencing-by-synthesis process.
-    However, newer Illumina machines (Nextseq, Novaseq) use a different color
+    However, newer Illumina machines (Nextseq and Novaseq) use a different color
     chemistry than older ones, and this newer chemistry suffers from an artefact
-    which can produce strings of `G`s with high quality scores that really should
-    be `N`s, especially at the end of reverse (R2) reads.
+    that can erroneously produce strings of `G`s ("poly-G") with high quality scores.
+    Those `G`s should really be `N`s instead,
+    and occur especially at the end of reverse (R2) reads.
+    
     In the FastQC outputs for the R2 file that you just produced with TrimGalore
     (recall that it runs FastQC after trimmming!),
     do you see any evidence for this problem? Explain.
 
-11. Here, we'll assume that the data was indeed produced with the newer Illumina
+11. We'll assume that the data was indeed produced with the newer Illumina
     color chemistry.
-    Find the relevant option in the TrimGalore help info and add the relevant
-    line(s) from the TrimGalore help info to your `README.md`.
+    In the TrimGalore help info, find the relevant TrimGalore option to deal with
+    the poly-G probelm,
+    and again add the relevant line(s) from the help info to your `README.md`.
     Then, use the TrimGalore option you found,
     but don't change the quality score threshold from the default.
 
 12. Rerun TrimGalore with the added color-chemistry option.
-    Check all outputs and confirm that the color-chemistry option made a difference.
-    Again, remove all outputs produced by this test-run.
+    Check all outputs and confirm that usage of this option made a difference.
+    Then, remove all outputs produced by this test-run again.
 
 ### Bonus: Modify the script to rename the output FASTQ files
 
@@ -263,9 +269,9 @@ After your test-run, it is time to run TrimGalore on all samples by submitting
 batch jobs using a loop.
 
 13. Write a `for` loop in your `README.md` to submit a TrimGalore batch job for
-    each pair of FASTQ files in the `data` dir.
+    each pair of FASTQ files that you have in your `data` dir.
 
-14. Monitor the jobs and when they are done, check that everything went well
+14. Monitor the batch jobs and when they are done, check that everything went well
     (if it didn't, redo until you get it right).
     In your `README.md`, explain your monitoring and checking process.
     In this case, it is appropriate to keep the Slurm log files:
@@ -279,5 +285,5 @@ an Issue.
 15. Create a repository on GitHub, connect it to your local repo,
     and push your local repo to GitHub.
    
-16. Create a new issue and tag GitHub user `menukabh`,
-    asking Menuka to take a look at your assignment.
+16. Create a new issue and tag GitHub users `menukabh` and `jelmerp`,
+    asking us to take a look at your assignment.
