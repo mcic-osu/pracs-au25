@@ -73,6 +73,7 @@ At OSC, you can do so after loading the R module.
 However, we'll use R with a fancy editor (or "IDE", Integrated Development Environment)
 called [RStudio](https://www.rstudio.com/products/rstudio/download/#download),
 which makes working with it much more pleasant!
+You can download **RStudio** in your local computer.
 
 Like with VS Code, we can run a version of RStudio ("RStudio Server") within our
 browsers by starting an Interactive App through OSC OnDemand.
@@ -102,7 +103,7 @@ so asking for 4 cores will get you 16 GB RAM.
 
 ## Orienting to RStudio (basic layout)
 
-When you first open RStudio, you will be greeted by three panels,
+When you first open RStudio, you will be greeted by four panels,
 each of which have multiple tabs:
 
 - **Top left:** The pane where you write script and save for future use
@@ -127,6 +128,9 @@ each of which have multiple tabs:
 :::
 
 ## R basics
+There are multiple things we can do in R: data manipulation, data visualization, 
+statistical analysis, machine learning and many more. Here, we will first learn to use 
+R as calculator.
 
 ### R as calculator
 
@@ -263,10 +267,6 @@ To do almost anything in R, you will use "**functions**",
 which are the equivalent of Unix commands.
 
 
-```{r}
-print(x = "Hello world")
-```
-
 ```r
 getwd()
 ```
@@ -277,21 +277,27 @@ getwd()
 ```r
 setwd("/fs/ess/PAS2880/users")
 ```
+**we need to quote `/fs/ess/PAS2880/users` because anything that is not quoted in R has to be object**
+
 ```r
 list.files()
 ```
-
+```{r}
+print("Hello world")
+```
 ```r
 dir.create("week11")
 ```
 
 ```{r}
-head(x = iris)
+head(iris)
 ```
 
 You can recognize function calls by the parentheses.
 Inside those parentheses, you can provide **arguments** to a function. Arguments are the actual
 values you provided to run a function().
+
+**Arguments that are not object has to be in quotes**
 
 In R, you can choose to name the **arguments** in a function or just use their **position**, Named argument and positional argument.
 You can assign the values to argument, using the equal to sign '='. When you assign values to the arguments, the the order does not matter, R will know exactly which value goes
@@ -359,9 +365,10 @@ A few examples:
 ```{r}
 # Assign the value 250 the object 'length_cm'
 length_cm <- 250
-
+length_cm
 # Assign the value 2.54 to the object 'conversion'
 conversion <- 2.54
+conversion
 ```
 
 In the shell, we've been calling these _variables_,
