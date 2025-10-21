@@ -35,6 +35,11 @@ other-links:
 
 #### This week
 
+This week, we'll cover two distinct topics:
+
+- Workflow management (_this session_)
+- Data management and sharing (_next session_)
+
 #### This session
 
 - What a Markdown protocol of your workflow can look like
@@ -49,8 +54,6 @@ other-links:
 
 1. At <https://ondemand.osc.edu>,
    start a VS Code session in `/fs/ess/PAS2880/users/$USER`
-2. Create a `week09` dir and navigate there in the terminal
-3. Create a `scripts` dir within `week09`
 
 ## Structuring your analysis workflow
 
@@ -64,8 +67,8 @@ you will have a "**workflow**" that you need to structure
 properly and reproducibly.
 
 In the past few weeks, we have focused on writing code to complete individual
-steps of an omics (RNA-Seq) data processing workflow.
-This week, we'll start by zooming out to look at the bigger picture:
+steps of such workflows.
+Now, we'll zoom out to look at the bigger picture:
 how do you organize and run your workflows as a whole?
 
 Once again, let's look at this RNA-Seq analysis workflow you've seen before,
@@ -245,16 +248,18 @@ with both the second and third steps using the output of an earlier step as thei
 ### How about automation?
 
 The above protocol is not an automated pipeline because for most steps,
-you have to wait with running it until the previous step has finished.
+you can't run them until the previous step has finished.
 You may therefore consider trying to improve automation,
 which you can do with two main approaches:
 
-1. With more advanced Bash and Slurm constructs 
+1. With more advanced Bash and Slurm code 
 2. With "workflow management systems" like Nextflow _(recommended but takes some learning)_
 
-In this course, we will cover neither approach in detail,
+In this course, we will cover neither approach in detail^[
+We did initially plan to cover Nextflow, as you may have noticed,
+but decided to cut this part to allow for more time for the remaining topics.],
 but the rest of this lecture serves to at least make you aware of the possibilities.
-This is a more advanced topic that I would recommend only to those of you who are planning
+This is a more advanced topic that I would recommend to those of you planning
 to work with omics (especially genomics and transcriptomics) data a lot.
 
 ## Improving automation with Bash and Slurm
@@ -277,19 +282,21 @@ because sample-wise steps would run consecutively across samples instead of
 simultaneously.
 
 A more reasonable approach would be to write
-**scripts that only run one sample but as many steps as possible** for that sample.
+**scripts that only process one sample but include as many steps as possible**
+for that sample.
+
 However, this has downsides too,
 some of which can be overcome with a further increase in script complexity.
-
-For example, what if only the steps starting somewhere in the middle of your
-workflow need be redone (e.g. because you want to change some settings).
-Rerunning your script would mean rerunning everything, which could be a big waste of time.
+For example, what if you need to redo only the steps from the middle of your
+workflow onwards (e.g. because you want to change some settings there).
+Rerunning your all-inclusive script would mean rerunning all steps,
+which could be a big waste of time.
 You could overcome this by including clauses in your script to only rerun certain
-steps -- see the [Appendix](#appendix).
+steps -- see the [Appendix](#appendix-automation-with-bash-and-slurm).
 
-But at that point, the increased amount of time spent on writing your scripts
-and the general burden of having to maintain more complicated scripts may not
-be worth the time saved with increased automation.
+At that point, though, the increased amount of time spent on writing your scripts
+and the general burden of having to maintain more complicated scripts
+_may not be worth the time you save with increased automation_.
 All in all, I personally prefer to write shell scripts that just run one program
 and for one sample, where appropriate.
 
@@ -299,10 +306,13 @@ There are ways to automate Slurm batch job submission so you don't have to wait
 for each step to finish before moving on to the next.
 Specifically, you can specify so-called Slurm "job dependencies" that only allow
 a job to to actually start once one or more other jobs have (sucessfully) finished
-running. For an example, see the [Appendix](#appendix).
+running.
+For an example, see the [Appendix](#appendix-automation-with-bash-and-slurm).
 
 However, similar to the approach with longer shell scripts,
-the added complexity comes with its own costs and may in the end not pay off.
+the added complexity comes with its own costs,
+and may only be able to improve automation somewhat.
+Therefore, it may in the end not pay off.
 
 ## Automation with workflow management systems
 
@@ -320,7 +330,8 @@ A quote from this article, @perkel2019:
 > And pipelines must be smart enough to work out which tasks need to be re-executed and which do not.
 
 The two most commonly used command-line based options in bioinformatics are
-**Nextflow** and **Snakemake**.
+**[Nextflow](https://www.nextflow.io/)** (@ditommaso2017)
+and **[Snakemake](https://snakemake.github.io/)** (@molder_sustainable_2025).
 Both are small "domain-specific" languages (DSLs) that are an extension of a
 more general language: Python for Snakemake, and Groovy/Java for Nextflow.
 
@@ -346,6 +357,11 @@ and scalability (ease of scaling up to larger datasets):
 The main disadvantage is that they have a somewhat steep learning curve and pipelines
 are more complicated to write than you might expect for a tool that "merely"
 ties your workflow steps together.
+
+But overall, my recommendation with respect to workflow management is to either:
+
+- Accept that you're workflow isn't automated, and use Markdown protocols like the one above
+- Go all-in and use a workflow tool (I recommend Nextflow, specifically)
 
 ## Pre-existing pipelines
 
@@ -390,11 +406,12 @@ which we'll run in week 15 of the course:
 
 -----
 
-## Appendix
+## Appendix: automation with Bash and Slurm
 
 ### `if`-statements
 
-These will allow you to flexibly run part of a script:
+`if`-statements will allow you to flexibly run part of a script,
+for example:
 
 ```sh
 trim=$1   # true or false
@@ -418,9 +435,24 @@ if [[ "$count" == true ]]; then
 fi
 ```
 
-### Command-line options
+To learn more about `if` statements,
+see [this section](../bonus/shell-scripting.html#conditionals)
+of the bonus page on shell scripting.
 
-TBA
+### Script options
+
+If your script has a whole bunch of options to specify which steps should be run,
+it will become tedious and error prone to work with the regular "positional arguments".
+Instead, you should then consider writing your script such that it can accept
+options too, e.g.:
+
+```bash
+bash myscripts.sh --skip_count --skip_map $fastq $outdir
+```
+
+To learn how to do this,
+see [this section](../bonus/shell-scripting.html#shell-script-options-vs.-arguments)
+of the bonus page on shell scripting.
 
 ### Slurm job dependencies
 
@@ -445,3 +477,5 @@ done
 # when ALL the mapping jobs are done:
 sbatch --dependency=singleton scripts/count.sh results/map results/count_table.txt
 ```
+
+<br>

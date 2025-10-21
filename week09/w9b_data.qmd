@@ -30,12 +30,6 @@ editor_options:
 
 <br>
 
-::: callout-warning
-## This page is still under construction!
-:::
-
-<br>
-
 ## Introduction
 
 ### Learning goals
@@ -49,54 +43,88 @@ editor_options:
 
 1. At <https://ondemand.osc.edu>,
    start a VS Code session in `/fs/ess/PAS2880/users/$USER`
-2. Navigate to your `week09` dir in the terminal
 
-## Managing and sharing data: an overview
+## Raw data management
 
-Your raw FASTQ data is extremely invaluable as it contains the result
-of your experiment and was produced by an expensive sequencing process.
-Even after you've produced "clean versions" of these files after quality and adapter
-trimming, or after you have generated your final gene count tables,
-you'll always want to keep these files around.
-For example,
-these are the foremost files you need to **make publicly available** 
-when you publish your results
-(they are typically deposited at the **[NCBI's SRA](https://www.ncbi.nlm.nih.gov/sra)**),
-they ensure that your results can be reproduced by yourself and others,
-and they allow for a modified re-analysis of the data after e.g. new methods or
-relevant data become available.
+In general, any type of raw data from your research is extremely valuable.
+There are the results of your experiment,
+and may have been labor-intensive and expensive to produce.
 
-You should therefore keep at least one copy of your FASTQ files in a Project dir
-(as opposed to a Scratch dir) at OSC --
-recall that these dirs are being backed up daily by OSC!
-You'll also want to keep at least one copy of the data outside of OSC.
+In the examples in this course, raw data has been in the form of FASTQ files.
+More generally with (epi)genomics and transcriptomics projects,
+your main piece of raw data will be a set of sequence files,
+most commonly in FASTQ format.
+However, similar principles apply with other types of data/files.
 
-- Keeping back-ups of raw data
-- Project versus scratch dirs (and avoid your Home dir for research projects)
+### Key recommendations
 
-### Sharing your data, results, and code
+- **Never delete your raw data.**
+  It doesn't matter if you "finished" your downstream analyses,
+  or produced processed FASTQ files that you personally find more useful:
+  your ground truth will always be the raw data.
+  These ensure that your results can be reproduced by yourself and others,
+  and they allow for a modified re-analysis of the data after e.g. new methods
+  or relevant data become available.
 
-- Raw sequences to NCBI (SRA)
-- Some results can also go to NCBI, e.g. genome assemblies and annotations, GEO
+- **Keep multiple copies of your raw data.**
+  You should always keep two or more copies of your raw data,
+  ideally in at least two different physical locations.
+  So, even if your data mainly lives on OSC, also keep a copy elsewhere.
+  And on OSC, you should never only store files in a scratch dir,
+  since these dirs are periodically deleted.
+  
+- **Share your raw data publicly after publication.**
+  Most journals and funding agencies nowadays require that
+  research data is made publicly available after publication of the results.
+  While this is somewhat of a novelty for some types of data,
+  sequencing data has long been expected to be shared publicly.
+
+- Also:
+  - Keep track of data provenance and metadata
+    - When and from where was the data obtained/received?
+    - What metadata exists for each sample?
+  - Use standard and preferably plain-text file formats
+  - To avoid accidents,
+    consider making your data read-only with file permissions _([covered below](#file-permissions))_
+  - After downloading or when sharing key data,
+    consider using "checksums" to check that files were transferred entirely
+    _([bonus material](../bonus/data.qmd))_
+
+### Details about sharing data and other files
+
+  > By the end of 2025, all federally-funded research must make articles and data publicly available immediately upon journal publication with no waiting periods allowed. 
+ >
+ > --- [Federal Research Policy Guide](https://research.osu.edu/federal-research-policy-guide-public-access-requirements)
+     from OSU's [Enterprise for Research, Innovation and Knowledge](https://erik.osu.edu/)
+     
+#### Raw data
+
+- Raw sequences from high-throughput sequencing, such as FASTQ files,
+  must be uploaded to NCBI's
+  [Sequence Read Archive (SRA)](https://www.ncbi.nlm.nih.gov/sra)
+
+#### Results and code
+
+- _Some_ results should also be uploaded to NCBI,
+  such as genome assemblies and annotations, GEO
 - Other results to e.g. Dryad / Zenodo
-- Scripts via GitHub
+- Code via GitHub
 
-::: callout-note
-### Data Management Plans (DMPs)
+::: {.callout-note collapse="true"}
+### Data Management Plans _(Click to expand)_
 
-Data Management Plans are becoming ...
-
-> By the end of 2025, all federally-funded research must make articles and data publicly available immediately upon journal publication with no waiting periods allowed. Data management plans are required before getting funding and sharing costs must be included in budgets.
-
--- Email from OSU Erik on 2025-09-19
+Data Management Plans (DMPs), which specify how you are planning to manage and share
+your data, have recently also become required by major funding agencies:
 
 >  A DMP is currently required for all competitive grant programs of the United States Department of Agriculture and the National Science Foundation.
+>
+> --- @grünwald2024
 
--- Grunwald et al. 2024 (<https://apsjournals-apsnet-org.proxy.lib.ohio-state.edu/doi/full/10.1094/PHYTO-12-23-0483-IA>)
+Here are the specific guidelines for these agencies:
 
-<https://www.nifa.usda.gov/grants/lifecycle/pre-award/data-management-plans>
+- [USDA NIFA guidelines](https://www.nifa.usda.gov/grants/lifecycle/pre-award/data-management-plans)
+- [NSF guidelines](https://www.nsf.gov/funding/data-management-plan)
 
-<https://www.nsf.gov/funding/data-management-plan>
 :::
 
 ## File transfer to and from OSC
@@ -105,24 +133,26 @@ Data Management Plans are becoming ...
 
 You can't keep files synced between OSC and your local computer
 in a fully automatic way like with Dropbox or OneDrive --
-and you may not want to either because of the amount of data on OSC.
+and because of the amount of data on OSC, you may not want to either.
 Instead, here is a good strategy:
 
 - Keep the files that you have under version control (code, etc.) synced via
-  Git and GitHub.
-- Periodically sync all or a selection of files with the data transfer methods
-  discussed below.
+  Git/GitHub.
+- Periodically sync all or a selection of other files with the data transfer
+  methods discussed below.
   
-Data syncing is especially salient if you do analyses both at OSC and on your
-local computer.
-To reduce this friction, I would recommend that for projects for which you need
-OSC, you try to do all your work there.
-When that's the case, it is even OK
-to keep separate sets of files at either location for a given project.
-For example, you may only have the manuscript and related files on your local computer,
+Data syncing is especially salient when for a given project,
+you do analyses both at OSC and on your local computer.
+To reduce this friction,
+I recommend that for projects for which you need OSC,
+you instead try to do _all_ your work there.
+When you do so,
+it is even OK to keep separate sets of files at OSC and your local computer --
+for example,
+you may only keep the manuscript and related files on your local computer,
 and everything else at OSC.
 
-### Overview of options
+### Overview of transfer options
 
 In week 1, you learned that you can upload and download files from OSC
 in the OnDemand Files menu.
@@ -138,58 +168,74 @@ Here is a table with methods to transfer files between your computer and OSC:
 
 : {.striped .hover}
 
-### FileZilla
+### FileZilla: a GUI-based SFTP client
 
 Here, we'll go over what is probably overall the most convenient and versatile
 way to transfer files to and from OSC,
 since it works for transfers of any size, and is easy and quick:
 **file transfer with a GUI-based SFTP client**.
-There are a number of such programs, but I chose to show you **FileZilla** because
-it works on all operating systems^[
+There are several such programs,
+but I chose to show you **FileZilla** because it works on all operating systems^[
 And has a more intuitive user interface than CyberDuck,
 another very commonly used program that works both on Mac and Windows.].
 
-Let's give that a go:
-
-1. Go to the [FileZilla download page](https://filezilla-project.org/download.php?type=client) ---
+1. **Install and open FileZilla**\
+   Go to the [FileZilla download page](https://filezilla-project.org/download.php?type=client) ---
    it should automatically display a big green download button for your operating system:
-   click that and install and open the program.
+   click that, then install the program, and open it.
   
-2. To connect to OSC, find the Site Manager:
+2. **Connect to OSC**\
+   To connect FileZilla to OSC, find the **Site Manager**:
    click `File` in the top menu bar and then `Site Manager`^[
    There is a also an icon in the far top-left to access this menu.
-   Additionally, there is a "Quickconnect" bar but I've not managed to connect to
-   OSC with that.].
-   In the Site Manager:
-   - _Protocol_: select "SFTP - SSH File Transfer Protocol".
-   - _Host_: type `sftp.osc.edu` (and you can leave the Port box empty).
-   - _Logon Type_: Make sure "Normal" is selected.
-   - _User_: Type your OSC username.
-   - _Password_: Type or copy your OSC password.
-   - Click the "Connect" button at the bottom to connect to OSC.
+   Additionally, there is a "Quickconnect" bar,
+   but I've not managed to connect to OSC with that.].
+   In the Site Manager, enter/select the following:
+   - _Protocol_: "SFTP - SSH File Transfer Protocol"
+   - _Host_: `sftp.osc.edu` (leave the Port box empty)
+   - _Logon Type_: Make sure "Normal" is selected
+   - _User_: Type your OSC username
+   - _Password_: Enter your OSC password
+   - Click the "**Connect**" button at the bottom to connect to OSC
 
 ![](../img/filezilla_connect.png){fig-align="center" width="60%" fig-alt="A screenshot of the connection setup dialog box on FileZilla" .lightbox}
 
-3. Once connected, your main screen is split with a local file explorer
+3. **The connection interface**\
+   Once connected, your main screen is split with a local file explorer
    on the left, and a remote file explorer on the right:
   
 ![](../img/split_screen.png){fig-align="center" width="90%" fig-alt="A screenshot of the split screen view showing local and remote on FileZilla" .lightbox}
 
-4. Transferring dirs and files in either direction is as simple as dragging and
+4. **Changing directories**\
+   You can change directories in either file explorer.
+   At OSC, your default location is your Home dir within `/users/`,
+   but you can type a path in the top bar to e.g. go to `/fs/ess/PAS2880` --
+   and from there you can further click your way to your personal dir there.
+  
+![](../img/filezilla_proj-dir.png){fig-align="center" width="70%" fig-alt="A screenshot of FileZilla showing how to change the remote dir." .lightbox}
+
+4. **Transferring files**\
+   Transferring dirs and files in either direction is as simple as dragging and
    dropping them to the other side!
-   Do a test ... TBA
-  
-Your default location at OSC is your home dir in `/users/`, but you can type
-a path in the top bar to e.g. go to `/fs/ess/PAS2880/users`:
-  
-![](../img/proj_dir.png){fig-align="center" width="70%" fig-alt="A screenshot of FileZilla showing how to change the remote dir." .lightbox}
+   
+::: exercise
+#### {{< fa user-edit >}} Exercise: File transfer with FileZilla
+
+Try to download some files from `/fs/ess/PAS2880/users/$USER` to your local computer,
+and vice versa.
+:::
 
 ## Downloading files at the command line
 
 When you need to get large files from public repositories like NCBI
 (e.g. reference genome files, raw reads from the SRA),
-I would recommend not to download these to your own computer and then transfer
-them to OSC, but to download them directly to OSC using commands.
+I would recommend to avoid downloading these to your own computer and then transferring
+them to OSC,
+but instead to **download them directly to OSC using commands**.
+Not only is this quicker once you know how to,
+it is also much more reproducible:
+In your Markdown documentation files,
+you can store the exact commands used to obtain the data.
 
 ### `wget`
 
@@ -204,14 +250,21 @@ wget <URL>
 As an example, say that you want to download the reference genome FASTA
 file for _Culex pipiens_,
 the focal species of the @garrigós2025 RNA-Seq data set we've been working with.
+We actually need to do this because the `garrigos-data` repo contains only
+the GTF annotation file, and not the assembly file,
+which wasn't included due to its large size.
+
 The files for that genome can be found at this
-[NCBI FTP webpage](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/).
+[NCBI FTP webpage](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/):
+
+![](../img/ncbi-ftp-dir.png){fig-align="center" width="95%" fig-alt="A browser screenshot of the NCBI FTP dir for the Culex pipiens genome" .lightbox}
 
 You can right-click on any of the files there and then click "Copy Link Address"
-(or something similar, depending on your browser).
-Go ahead and copy the URL to the assembly FASTA (`.fna.gz`) file.
-Then type `wget` and <kbd>Space</kbd> in your terminal, and paste the URL,
-resulting in the following command:
+(or similar, depending on your browser).
+
+1. Go ahead and copy the URL to the assembly FASTA (`.fna.gz`) file.
+2. Type `wget` and <kbd>Space</kbd> in your terminal, and paste the URL,
+   then execute the command:
 
 ```bash
 wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
@@ -229,23 +282,53 @@ Saving to: ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’
 2025-04-13 13:33:20 (51.7 MB/s) - ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’ saved [172895917/172895917]
 ```
 
-Let's list the downloaded file:
+3. List the downloaded file:
 
-```bash
-ls -lh
-```
-```bash-out
--rw-r--r--  1 jelmer PAS0471 165M Aug  5  2022 GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
-```
+   ```bash
+   ls -lh
+   ```
+   ```bash-out
+   -rw-r--r--  1 jelmer PAS0471 165M Aug  5  2022 GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
+   ```
 
-***TBA - Move the file somewhere or use the `-P` option***
+4. Move it to your `garrigos-data` dir:
 
+   ```bash
+   mv -v GCA_016801865.2_TS_CPP_V2_genomic.fna.gz garrigos-data/ref
+   ```
+
+5. Create a new README file...
+
+   ```bash
+   touch garrigos-data/ref/README.md
+   ```
+   
+   ...and in it, add a note about how you obtained the file:
+   
+   ````markdown
+   Downloaded reference genome FASTA from NCBI on 2025-10-23 with:
+   
+   ```bash
+   wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
+   ```
+   ````
+   
 <hr style="height:1pt; visibility:hidden;" />
 
 ::: callout-tip
-#### Another commonly used downloading command is `curl`
-`wget` and `curl` have similar functionality,
-so you don't really need to learn to use both of them.
+#### Additional notes
+
+- You can use `wget`s `-P` option to directly download to a different dir,
+  for example:
+
+  ```bash
+  URL=https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
+  wget -P data/ref "$URL"
+  ```
+
+- Another commonly used downloading command is `curl`.
+  `wget` and `curl` have similar functionality,
+  so you don't really need to learn both.
 :::
 
 ::: callout-note
@@ -279,9 +362,9 @@ Being able to view and modify file permissions is useful when you:
 
 There are three different file permissions that can be independently controlled:
 
-- **Read** permissions allow you to read and copy files/dirs
-- **Write** permissions allow you to move, rename, modify, overwrite, or delete
-- **Execute** permissions allow you to directly execute a file (see the box below)
+1. **Read** permissions allow you to read and copy files/dirs
+2. **Write** permissions allow you to move, rename, modify, overwrite, or delete
+3. **Execute** permissions allow you to directly execute a file (see the box below)
 
 While it is possible to set permissions for individual users,
 they are most easily and commonly set for three different user categories:
@@ -292,15 +375,20 @@ they are most easily and commonly set for three different user categories:
   e.g., after you have copied someone else's FASTQ files,
   you are the owner of these copies.
 - **Group** ---
-  At OSC, the group category is at the OSC Project level.
+  At OSC, the group category is at the OSC Project level
 - **Other** --- Any other user 
 
->   When you create a file in the PAS2880 project dir,
-  its "group" will include all members of the OSC project PAS2880.
+::: {.callout-tip appearance="simple"}
+When you create a file in the PAS2880 project dir,
+its "**group**" will include all members of the OSC project PAS2880.
+:::
 
 ::: callout-note
 #### Executing a file?
-TBA
+Executing a file means running it as a program/command.
+For example, when we run the FastQC program with the command `fastqc`,
+we are really executing a binary (executable) file somewhere on the system.
+Similarly, self-written shell scripts can be executed if they have execute permissions set.
 :::
   
 ### Viewing file permissions
@@ -308,6 +396,20 @@ TBA
 To show file permissions,
 use **`ls`**  with the **`-l`** (*long* format) option that we've seen before,
 which should show you something like this:
+
+```bash
+ls -lh garrigos-data
+```
+```bash-out
+total 2.5K
+drwxrwx---+ 2 jelmer PAS0471 4.0K Sep  9 13:46 fastq
+drwxrwx---+ 2 jelmer PAS0471 4.0K Sep  9 13:46 meta
+-rw-rw----+ 1 jelmer PAS0471 2.3K Sep  9 13:46 README.md
+drwxrwx---+ 2 jelmer PAS0471 4.0K Sep  9 13:46 ref
+drwxrwx---+ 2 jelmer PAS0471 4.0K Sep 16 13:26 sandbox
+```
+
+With annotations:
 
 ![](../img/long-ls2.png){fig-align="center" width="80%" fig-alt="A screenshot of the long-format ls output that includes info about file permissions." .lightbox}
 
@@ -431,50 +533,6 @@ chmod 744 file.txt
 
 :::
 
-### Making your data read-only
-
-So, if you want to make your raw data (here: the files in the `data/fastq` dir)
-read-only, you can use:
-
-- Set only read permissions for everyone:
-
-  ```bash
-  chmod a=r data/fastq/*
-  ```
-
-- Take away write permissions for yourself (no-one else should have it by default):
-
-  ```bash
-  chmod u-w data/fastq/*
-  ```
-
-After running one or both of the above commands, let's check the permissions:
-  
-```sh
-ls -l data/fastq
-```
-```bash-out
-total 0
--r--r--r--+ 1 jelmer PAS0471 0 Mar  7 13:41 sample001_R1.fastq
--r--r--r--+ 1 jelmer PAS0471 0 Mar  7 13:41 sample001_R2.fastq
--r--r--r--+ 1 jelmer PAS0471 0 Mar  7 13:41 sample002_R1.fastq
--r--r--r--+ 1 jelmer PAS0471 0 Mar  7 13:41 sample002_R2.fastq
-# [...output truncated...]
-```
-
-What happens when we try to remove write-protected files?
-
-```sh
-rm data/fastq/*fastq
-```
-```bash-out
-rm: remove write-protected regular empty file ‘data/fastq/sample001_R1.fastq’?
-```
-
-You'll be prompted for every file!
-If you answer `y` (yes), you can still remove them.
-(But note that people other than the file's owners cannot override file permissions;
-only if they are system administrators.)
 
 ::: callout-warning
 #### Read/execute permissions for directories
@@ -490,6 +548,52 @@ use an `X` (**uppercase x**):
 ```sh
 chmod -R a+X my-dir
 ```
+:::
+
+### Making your data read-only
+
+So, if you want to make your raw data (here: the files in the `data/fastq` dir)
+read-only, you can use:
+
+- Set only read permissions for everyone:
+
+  ```bash
+  chmod a=r garrigos-data/fastq/*
+  ```
+
+- Take away write permissions for yourself (no-one else should have it by default):
+
+  ```bash
+  chmod u-w garrigos-data/fastq/*
+  ```
+
+After running one or both of the above commands, let's check the permissions:
+  
+```sh
+ls -l garrigos-data/fastq/
+```
+```bash-out
+total 0
+TBA
+# [...output truncated...]
+```
+
+What happens when you try to remove write-protected files?
+
+```sh
+rm garrigos-data/fastq/
+```
+```bash-out
+rm: remove write-protected regular empty file ‘garrigos-data/fastq/ERR10802863_R1.fastq.gz’?
+```
+
+You'll be prompted for every file!
+If you answer `y` (yes), you can still remove them.
+(But note that people other than the file's owners cannot override file permissions;
+only if they are system administrators.)
+
+::: callout-warning
+TBA - Note about `rm -f`?
 :::
 
 <br>
