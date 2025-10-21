@@ -1,67 +1,80 @@
+<details>
 
-<details><summary>2 - `#SBATCH` options</summary>
-```bash
+<summary>2 - `#SBATCH` options</summary>
+
+``` bash
 #SBATCH --account=PAS2880
 #SBATCH --cpus-per-task=8
 #SBATCH --output=slurm-trimgalore-%j.out
 #SBATCH --mail-type=FAIL
 ```
+
 </details>
-   
-<details><summary>3 - Make TrimGalore use the reserved 8 cores</summary>
+
+<details>
+
+<summary>3 - Make TrimGalore use the reserved 8 cores</summary>
+
 Simply add `--cores 8` to your TrimGalore command.
+
 </details>
 
-<details><summary>4 - Submit the script once, then clean up</summary>
+<details>
 
-```bash
+<summary>4 - Submit the script once, then clean up</summary>
+
+``` bash
 fastq_file=../../garrigos-data/fastq/ERR10802863_R1.fastq.gz
 sbatch scripts/trimgalore.sh "$fastq_file" results/trimgalore
 ```
 
-To check that everything went well, look at the Slurm log files and the TrimGalore
-output files in `results/trimgalore`.
+To check that everything went well, look at the Slurm log files and the TrimGalore output files in `results/trimgalore`.
 
 To remove the outputs from this test:
 
-```bash
+``` bash
 rm slurm-trimgalore*
 rm results/trimgalore/*
 ```
 
-
-- `--two-color` option??
-
+-   `--two-color` option??
 
 </details>
 
-<details><summary>5 - Submit the script for all samples</summary>
-```bash
+<details>
+
+<summary>5 - Submit the script for all samples</summary>
+
+``` bash
 for fastq_R1 in ../../garrigos-data/fastq/*R1.fastq.gz; do
    sbatch scripts/trimgalore.sh "$fastq_R1" results/trimgalore
 done
 ```
 
-To check that everything went well, check your email and look at the TrimGalore
-output files in `results/trimgalore`.
-You can also run `tail slurm-trimgalore*` to check the last lines of each Slurm
-log file.
+To check that everything went well, check your email and look at the TrimGalore output files in `results/trimgalore`. You can also run `tail slurm-trimgalore*` to check the last lines of each Slurm log file.
+
 </details>
 
-<details><summary>6 - Move the Slurm log files</summary>
-```bash
+<details>
+
+<summary>6 - Move the Slurm log files</summary>
+
+``` bash
 mkdir results/trimgalore/logs
 mv slurm-trimgalore* results/trimgalore/logs
 ```
+
 </details>
 
 ### Renaming the output files
 
-<details><summary> Solution _(Click to expand)_</summary>
+<details>
+
+<summary>Solution *(Click to expand)*</summary>
 
 The full script:
 
-```bash
+``` bash
 #!/bin/bash
 set -euo pipefail
 
@@ -122,17 +135,18 @@ date
 
 Run the script with a different output dir:
 
-```bash
+``` bash
 R1=garrigos-data/fastq/ERR10802863_R1.fastq.gz
 bash scripts/trimgalore.sh "$R1" results/trimgalore_rename
 ```
 
 Let's check the output files to see they were successfully renamed:
 
-```bash
+``` bash
 ls -lh results/trimgalore_rename
 ```
-```bash-out
+
+``` bash-out
 total 42M
 -rw-rw----+ 1 jelmer PAS0471  20M Mar 28 10:40 ERR10802863_R1.fastq.gz
 -rw-rw----+ 1 jelmer PAS0471 2.4K Mar 28 10:39 ERR10802863_R1.fastq.gz_trimming_report.txt
@@ -148,10 +162,9 @@ Looks good --- though note that we only renamed the FASTQ files, not the other f
 
 </details>
 
-
 The full script:
 
-```bash
+``` bash
 #!/bin/bash
 set -euo pipefail
 
@@ -212,17 +225,18 @@ date
 
 Run the script with a different output dir:
 
-```bash
+``` bash
 R1=garrigos-data/fastq/ERR10802863_R1.fastq.gz
 bash scripts/trimgalore.sh "$R1" results/trimgalore_rename
 ```
 
 Let's check the output files to see they were successfully renamed:
 
-```bash
+``` bash
 ls -lh results/trimgalore_rename
 ```
-```bash-out
+
+``` bash-out
 total 42M
 -rw-rw----+ 1 jelmer PAS0471  20M Mar 28 10:40 ERR10802863_R1.fastq.gz
 -rw-rw----+ 1 jelmer PAS0471 2.4K Mar 28 10:39 ERR10802863_R1.fastq.gz_trimming_report.txt
