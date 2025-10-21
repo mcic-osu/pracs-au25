@@ -322,6 +322,14 @@ div.csl-indent {
  <span class="dropdown-text">Software management with Conda</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="../bonus/shell-scripting.html">
+ <span class="dropdown-text">Advanced shell scripting</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../bonus/data.html">
+ <span class="dropdown-text">Additional data management notes</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="../bonus/ssh.html">
  <span class="dropdown-text">SSH connections</span></a>
   </li>  
@@ -375,15 +383,16 @@ div.csl-indent {
   <li><a href="#learning-goals" id="toc-learning-goals" class="nav-link" data-scroll-target="#learning-goals"><span class="header-section-number">1.1</span> Learning goals</a></li>
   <li><a href="#getting-ready" id="toc-getting-ready" class="nav-link" data-scroll-target="#getting-ready"><span class="header-section-number">1.2</span> Getting ready</a></li>
   </ul></li>
-  <li><a href="#managing-and-sharing-data-an-overview" id="toc-managing-and-sharing-data-an-overview" class="nav-link" data-scroll-target="#managing-and-sharing-data-an-overview"><span class="header-section-number">2</span> Managing and sharing data: an overview</a>
+  <li><a href="#raw-data-management" id="toc-raw-data-management" class="nav-link" data-scroll-target="#raw-data-management"><span class="header-section-number">2</span> Raw data management</a>
   <ul class="collapse">
-  <li><a href="#sharing-your-data-results-and-code" id="toc-sharing-your-data-results-and-code" class="nav-link" data-scroll-target="#sharing-your-data-results-and-code"><span class="header-section-number">2.1</span> Sharing your data, results, and code</a></li>
+  <li><a href="#key-recommendations" id="toc-key-recommendations" class="nav-link" data-scroll-target="#key-recommendations"><span class="header-section-number">2.1</span> Key recommendations</a></li>
+  <li><a href="#details-about-sharing-data-and-other-files" id="toc-details-about-sharing-data-and-other-files" class="nav-link" data-scroll-target="#details-about-sharing-data-and-other-files"><span class="header-section-number">2.2</span> Details about sharing data and other files</a></li>
   </ul></li>
   <li><a href="#file-transfer-to-and-from-osc" id="toc-file-transfer-to-and-from-osc" class="nav-link" data-scroll-target="#file-transfer-to-and-from-osc"><span class="header-section-number">3</span> File transfer to and from OSC</a>
   <ul class="collapse">
   <li><a href="#should-i-keep-my-osc-and-local-directories-synced-and-how" id="toc-should-i-keep-my-osc-and-local-directories-synced-and-how" class="nav-link" data-scroll-target="#should-i-keep-my-osc-and-local-directories-synced-and-how"><span class="header-section-number">3.1</span> Should I keep my OSC and local directories synced and how?</a></li>
-  <li><a href="#overview-of-options" id="toc-overview-of-options" class="nav-link" data-scroll-target="#overview-of-options"><span class="header-section-number">3.2</span> Overview of options</a></li>
-  <li><a href="#filezilla" id="toc-filezilla" class="nav-link" data-scroll-target="#filezilla"><span class="header-section-number">3.3</span> FileZilla</a></li>
+  <li><a href="#overview-of-transfer-options" id="toc-overview-of-transfer-options" class="nav-link" data-scroll-target="#overview-of-transfer-options"><span class="header-section-number">3.2</span> Overview of transfer options</a></li>
+  <li><a href="#filezilla-a-gui-based-sftp-client" id="toc-filezilla-a-gui-based-sftp-client" class="nav-link" data-scroll-target="#filezilla-a-gui-based-sftp-client"><span class="header-section-number">3.3</span> FileZilla: a GUI-based SFTP client</a></li>
   </ul></li>
   <li><a href="#downloading-files-at-the-command-line" id="toc-downloading-files-at-the-command-line" class="nav-link" data-scroll-target="#downloading-files-at-the-command-line"><span class="header-section-number">4</span> Downloading files at the command line</a>
   <ul class="collapse">
@@ -445,20 +454,6 @@ div.csl-indent {
 
 <hr>
 <p><br></p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-This page is still under construction!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-
-</div>
-</div>
-<p><br></p>
 <section id="introduction" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
 <section id="learning-goals" class="level3" data-number="1.1">
@@ -474,64 +469,92 @@ This page is still under construction!
 <h3 data-number="1.2" class="anchored" data-anchor-id="getting-ready"><span class="header-section-number">1.2</span> Getting ready</h3>
 <ol type="1">
 <li>At <a href="https://ondemand.osc.edu" class="uri">https://ondemand.osc.edu</a>, start a VS Code session in <code>/fs/ess/PAS2880/users/$USER</code></li>
-<li>Navigate to your <code>week09</code> dir in the terminal</li>
 </ol>
 </section>
 </section>
-<section id="managing-and-sharing-data-an-overview" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="managing-and-sharing-data-an-overview"><span class="header-section-number">2</span> Managing and sharing data: an overview</h2>
-<p>Your raw FASTQ data is extremely invaluable as it contains the result of your experiment and was produced by an expensive sequencing process. Even after you’ve produced “clean versions” of these files after quality and adapter trimming, or after you have generated your final gene count tables, you’ll always want to keep these files around. For example, these are the foremost files you need to <strong>make publicly available</strong> when you publish your results (they are typically deposited at the <strong><a href="https://www.ncbi.nlm.nih.gov/sra">NCBI’s SRA</a></strong>), they ensure that your results can be reproduced by yourself and others, and they allow for a modified re-analysis of the data after e.g.&nbsp;new methods or relevant data become available.</p>
-<p>You should therefore keep at least one copy of your FASTQ files in a Project dir (as opposed to a Scratch dir) at OSC – recall that these dirs are being backed up daily by OSC! You’ll also want to keep at least one copy of the data outside of OSC.</p>
+<section id="raw-data-management" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="raw-data-management"><span class="header-section-number">2</span> Raw data management</h2>
+<p>In general, any type of raw data from your research is extremely valuable. There are the results of your experiment, and may have been labor-intensive and expensive to produce.</p>
+<p>In the examples in this course, raw data has been in the form of FASTQ files. More generally with (epi)genomics and transcriptomics projects, your main piece of raw data will be a set of sequence files, most commonly in FASTQ format. However, similar principles apply with other types of data/files.</p>
+<section id="key-recommendations" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="key-recommendations"><span class="header-section-number">2.1</span> Key recommendations</h3>
 <ul>
-<li>Keeping back-ups of raw data</li>
-<li>Project versus scratch dirs (and avoid your Home dir for research projects)</li>
+<li><p><strong>Never delete your raw data.</strong> It doesn’t matter if you “finished” your downstream analyses, or produced processed FASTQ files that you personally find more useful: your ground truth will always be the raw data. These ensure that your results can be reproduced by yourself and others, and they allow for a modified re-analysis of the data after e.g.&nbsp;new methods or relevant data become available.</p></li>
+<li><p><strong>Keep multiple copies of your raw data.</strong> You should always keep two or more copies of your raw data, ideally in at least two different physical locations. So, even if your data mainly lives on OSC, also keep a copy elsewhere. And on OSC, you should never only store files in a scratch dir, since these dirs are periodically deleted.</p></li>
+<li><p><strong>Share your raw data publicly after publication.</strong> Most journals and funding agencies nowadays require that research data is made publicly available after publication of the results. While this is somewhat of a novelty for some types of data, sequencing data has long been expected to be shared publicly.</p></li>
+<li><p>Also:</p>
+<ul>
+<li>Keep track of data provenance and metadata
+<ul>
+<li>When and from where was the data obtained/received?</li>
+<li>What metadata exists for each sample?</li>
+</ul></li>
+<li>Use standard and preferably plain-text file formats</li>
+<li>To avoid accidents, consider making your data read-only with file permissions <em>(<a href="#file-permissions">covered below</a>)</em></li>
+<li>After downloading or when sharing key data, consider using “checksums” to check that files were transferred entirely <em>(<a href="../bonus/data.html">bonus material</a>)</em></li>
+</ul></li>
 </ul>
-<section id="sharing-your-data-results-and-code" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="sharing-your-data-results-and-code"><span class="header-section-number">2.1</span> Sharing your data, results, and code</h3>
+</section>
+<section id="details-about-sharing-data-and-other-files" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="details-about-sharing-data-and-other-files"><span class="header-section-number">2.2</span> Details about sharing data and other files</h3>
+<blockquote class="blockquote">
+<p>By the end of 2025, all federally-funded research must make articles and data publicly available immediately upon journal publication with no waiting periods allowed.</p>
+<p>— <a href="https://research.osu.edu/federal-research-policy-guide-public-access-requirements">Federal Research Policy Guide</a> from OSU’s <a href="https://erik.osu.edu/">Enterprise for Research, Innovation and Knowledge</a></p>
+</blockquote>
+<section id="raw-data" class="level4">
+<h4 class="anchored" data-anchor-id="raw-data">Raw data</h4>
 <ul>
-<li>Raw sequences to NCBI (SRA)</li>
-<li>Some results can also go to NCBI, e.g.&nbsp;genome assemblies and annotations, GEO</li>
+<li>Raw sequences from high-throughput sequencing, such as FASTQ files, must be uploaded to NCBI’s <a href="https://www.ncbi.nlm.nih.gov/sra">Sequence Read Archive (SRA)</a></li>
+</ul>
+</section>
+<section id="results-and-code" class="level4">
+<h4 class="anchored" data-anchor-id="results-and-code">Results and code</h4>
+<ul>
+<li><em>Some</em> results should also be uploaded to NCBI, such as genome assemblies and annotations, GEO</li>
 <li>Other results to e.g.&nbsp;Dryad / Zenodo</li>
-<li>Scripts via GitHub</li>
+<li>Code via GitHub</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Data Management Plans (DMPs)
+Data Management Plans <em>(Click to expand)</em>
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Data Management Plans are becoming …</p>
-<blockquote class="blockquote">
-<p>By the end of 2025, all federally-funded research must make articles and data publicly available immediately upon journal publication with no waiting periods allowed. Data management plans are required before getting funding and sharing costs must be included in budgets.</p>
-</blockquote>
-<p>– Email from OSU Erik on 2025-09-19</p>
+<p>Data Management Plans (DMPs), which specify how you are planning to manage and share your data, have recently also become required by major funding agencies:</p>
 <blockquote class="blockquote">
 <p>A DMP is currently required for all competitive grant programs of the United States Department of Agriculture and the National Science Foundation.</p>
+<p>— <span class="citation" data-cites="grünwald2024">Grünwald et al. (<a href="#ref-grünwald2024" role="doc-biblioref">2024</a>)</span></p>
 </blockquote>
-<p>– Grunwald et al.&nbsp;2024 (<a href="https://apsjournals-apsnet-org.proxy.lib.ohio-state.edu/doi/full/10.1094/PHYTO-12-23-0483-IA" class="uri">https://apsjournals-apsnet-org.proxy.lib.ohio-state.edu/doi/full/10.1094/PHYTO-12-23-0483-IA</a>)</p>
-<p><a href="https://www.nifa.usda.gov/grants/lifecycle/pre-award/data-management-plans" class="uri">https://www.nifa.usda.gov/grants/lifecycle/pre-award/data-management-plans</a></p>
-<p><a href="https://www.nsf.gov/funding/data-management-plan" class="uri">https://www.nsf.gov/funding/data-management-plan</a></p>
+<p>Here are the specific guidelines for these agencies:</p>
+<ul>
+<li><a href="https://www.nifa.usda.gov/grants/lifecycle/pre-award/data-management-plans">USDA NIFA guidelines</a></li>
+<li><a href="https://www.nsf.gov/funding/data-management-plan">NSF guidelines</a></li>
+</ul>
 </div>
 </div>
+</div>
+</section>
 </section>
 </section>
 <section id="file-transfer-to-and-from-osc" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="file-transfer-to-and-from-osc"><span class="header-section-number">3</span> File transfer to and from OSC</h2>
 <section id="should-i-keep-my-osc-and-local-directories-synced-and-how" class="level3" data-number="3.1">
 <h3 data-number="3.1" class="anchored" data-anchor-id="should-i-keep-my-osc-and-local-directories-synced-and-how"><span class="header-section-number">3.1</span> Should I keep my OSC and local directories synced and how?</h3>
-<p>You can’t keep files synced between OSC and your local computer in a fully automatic way like with Dropbox or OneDrive – and you may not want to either because of the amount of data on OSC. Instead, here is a good strategy:</p>
+<p>You can’t keep files synced between OSC and your local computer in a fully automatic way like with Dropbox or OneDrive – and because of the amount of data on OSC, you may not want to either. Instead, here is a good strategy:</p>
 <ul>
-<li>Keep the files that you have under version control (code, etc.) synced via Git and GitHub.</li>
-<li>Periodically sync all or a selection of files with the data transfer methods discussed below.</li>
+<li>Keep the files that you have under version control (code, etc.) synced via Git/GitHub.</li>
+<li>Periodically sync all or a selection of other files with the data transfer methods discussed below.</li>
 </ul>
-<p>Data syncing is especially salient if you do analyses both at OSC and on your local computer. To reduce this friction, I would recommend that for projects for which you need OSC, you try to do all your work there. When that’s the case, it is even OK to keep separate sets of files at either location for a given project. For example, you may only have the manuscript and related files on your local computer, and everything else at OSC.</p>
+<p>Data syncing is especially salient when for a given project, you do analyses both at OSC and on your local computer. To reduce this friction, I recommend that for projects for which you need OSC, you instead try to do <em>all</em> your work there. When you do so, it is even OK to keep separate sets of files at OSC and your local computer – for example, you may only keep the manuscript and related files on your local computer, and everything else at OSC.</p>
 </section>
-<section id="overview-of-options" class="level3" data-number="3.2">
-<h3 data-number="3.2" class="anchored" data-anchor-id="overview-of-options"><span class="header-section-number">3.2</span> Overview of options</h3>
+<section id="overview-of-transfer-options" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="overview-of-transfer-options"><span class="header-section-number">3.2</span> Overview of transfer options</h3>
 <p>In week 1, you learned that you can upload and download files from OSC in the OnDemand Files menu. However, that method is only suitable for relatively small transfers. Here is a table with methods to transfer files between your computer and OSC:</p>
 <table class="table-striped table-hover caption-top table">
 <colgroup>
@@ -582,20 +605,21 @@ Data Management Plans (DMPs)
 </tbody>
 </table>
 </section>
-<section id="filezilla" class="level3" data-number="3.3">
-<h3 data-number="3.3" class="anchored" data-anchor-id="filezilla"><span class="header-section-number">3.3</span> FileZilla</h3>
-<p>Here, we’ll go over what is probably overall the most convenient and versatile way to transfer files to and from OSC, since it works for transfers of any size, and is easy and quick: <strong>file transfer with a GUI-based SFTP client</strong>. There are a number of such programs, but I chose to show you <strong>FileZilla</strong> because it works on all operating systems<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
-<p>Let’s give that a go:</p>
+<section id="filezilla-a-gui-based-sftp-client" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="filezilla-a-gui-based-sftp-client"><span class="header-section-number">3.3</span> FileZilla: a GUI-based SFTP client</h3>
+<p>Here, we’ll go over what is probably overall the most convenient and versatile way to transfer files to and from OSC, since it works for transfers of any size, and is easy and quick: <strong>file transfer with a GUI-based SFTP client</strong>. There are several such programs, but I chose to show you <strong>FileZilla</strong> because it works on all operating systems<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 <ol type="1">
-<li><p>Go to the <a href="https://filezilla-project.org/download.php?type=client">FileZilla download page</a> — it should automatically display a big green download button for your operating system: click that and install and open the program.</p></li>
-<li><p>To connect to OSC, find the Site Manager: click <code>File</code> in the top menu bar and then <code>Site Manager</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. In the Site Manager:</p>
+<li><p><strong>Install and open FileZilla</strong><br>
+Go to the <a href="https://filezilla-project.org/download.php?type=client">FileZilla download page</a> — it should automatically display a big green download button for your operating system: click that, then install the program, and open it.</p></li>
+<li><p><strong>Connect to OSC</strong><br>
+To connect FileZilla to OSC, find the <strong>Site Manager</strong>: click <code>File</code> in the top menu bar and then <code>Site Manager</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. In the Site Manager, enter/select the following:</p>
 <ul>
-<li><em>Protocol</em>: select “SFTP - SSH File Transfer Protocol”.</li>
-<li><em>Host</em>: type <code>sftp.osc.edu</code> (and you can leave the Port box empty).</li>
-<li><em>Logon Type</em>: Make sure “Normal” is selected.</li>
-<li><em>User</em>: Type your OSC username.</li>
-<li><em>Password</em>: Type or copy your OSC password.</li>
-<li>Click the “Connect” button at the bottom to connect to OSC.</li>
+<li><em>Protocol</em>: “SFTP - SSH File Transfer Protocol”</li>
+<li><em>Host</em>: <code>sftp.osc.edu</code> (leave the Port box empty)</li>
+<li><em>Logon Type</em>: Make sure “Normal” is selected</li>
+<li><em>User</em>: Type your OSC username</li>
+<li><em>Password</em>: Enter your OSC password</li>
+<li>Click the “<strong>Connect</strong>” button at the bottom to connect to OSC</li>
 </ul></li>
 </ol>
 <div class="quarto-figure quarto-figure-center">
@@ -604,7 +628,8 @@ Data Management Plans (DMPs)
 </figure>
 </div>
 <ol start="3" type="1">
-<li>Once connected, your main screen is split with a local file explorer on the left, and a remote file explorer on the right:</li>
+<li><strong>The connection interface</strong><br>
+Once connected, your main screen is split with a local file explorer on the left, and a remote file explorer on the right:</li>
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -612,26 +637,44 @@ Data Management Plans (DMPs)
 </figure>
 </div>
 <ol start="4" type="1">
-<li>Transferring dirs and files in either direction is as simple as dragging and dropping them to the other side! Do a test … TBA</li>
+<li><strong>Changing directories</strong><br>
+You can change directories in either file explorer. At OSC, your default location is your Home dir within <code>/users/</code>, but you can type a path in the top bar to e.g.&nbsp;go to <code>/fs/ess/PAS2880</code> – and from there you can further click your way to your personal dir there.</li>
 </ol>
-<p>Your default location at OSC is your home dir in <code>/users/</code>, but you can type a path in the top bar to e.g.&nbsp;go to <code>/fs/ess/PAS2880/users</code>:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../img/proj_dir.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="../img/proj_dir.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="A screenshot of FileZilla showing how to change the remote dir."></a></p>
+<p><a href="../img/filezilla_proj-dir.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="../img/filezilla_proj-dir.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="A screenshot of FileZilla showing how to change the remote dir."></a></p>
 </figure>
 </div>
+<ol start="4" type="1">
+<li><strong>Transferring files</strong><br>
+Transferring dirs and files in either direction is as simple as dragging and dropping them to the other side!</li>
+</ol>
+<section id="exercise-file-transfer-with-filezilla" class="level4 exercise">
+<h4 class="anchored" data-anchor-id="exercise-file-transfer-with-filezilla"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: File transfer with FileZilla</h4>
+<p>Try to download some files from <code>/fs/ess/PAS2880/users/$USER</code> to your local computer, and vice versa.</p>
+</section>
 </section>
 </section>
 <section id="downloading-files-at-the-command-line" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="downloading-files-at-the-command-line"><span class="header-section-number">4</span> Downloading files at the command line</h2>
-<p>When you need to get large files from public repositories like NCBI (e.g.&nbsp;reference genome files, raw reads from the SRA), I would recommend not to download these to your own computer and then transfer them to OSC, but to download them directly to OSC using commands.</p>
+<p>When you need to get large files from public repositories like NCBI (e.g.&nbsp;reference genome files, raw reads from the SRA), I would recommend to avoid downloading these to your own computer and then transferring them to OSC, but instead to <strong>download them directly to OSC using commands</strong>. Not only is this quicker once you know how to, it is also much more reproducible: In your Markdown documentation files, you can store the exact commands used to obtain the data.</p>
 <section id="wget" class="level3" data-number="4.1">
 <h3 data-number="4.1" class="anchored" data-anchor-id="wget"><span class="header-section-number">4.1</span> <code>wget</code></h3>
 <p>You can download files a URL using the <code>wget</code> command. It has many options, but basic usage is quite simple:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This will download the file at the URL to your current working dir</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="op">&lt;</span>URL<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>As an example, say that you want to download the reference genome FASTA file for <em>Culex pipiens</em>, the focal species of the <span class="citation" data-cites="garrigós2025">Garrigós et al. (<a href="#ref-garrigós2025" role="doc-biblioref">2025</a>)</span> RNA-Seq data set we’ve been working with. The files for that genome can be found at this <a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/">NCBI FTP webpage</a>.</p>
-<p>You can right-click on any of the files there and then click “Copy Link Address” (or something similar, depending on your browser). Go ahead and copy the URL to the assembly FASTA (<code>.fna.gz</code>) file. Then type <code>wget</code> and <kbd>Space</kbd> in your terminal, and paste the URL, resulting in the following command:</p>
+<p>As an example, say that you want to download the reference genome FASTA file for <em>Culex pipiens</em>, the focal species of the <span class="citation" data-cites="garrigós2025">Garrigós et al. (<a href="#ref-garrigós2025" role="doc-biblioref">2025</a>)</span> RNA-Seq data set we’ve been working with. We actually need to do this because the <code>garrigos-data</code> repo contains only the GTF annotation file, and not the assembly file, which wasn’t included due to its large size.</p>
+<p>The files for that genome can be found at this <a href="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/">NCBI FTP webpage</a>:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/ncbi-ftp-dir.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="../img/ncbi-ftp-dir.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:95.0%" alt="A browser screenshot of the NCBI FTP dir for the Culex pipiens genome"></a></p>
+</figure>
+</div>
+<p>You can right-click on any of the files there and then click “Copy Link Address” (or similar, depending on your browser).</p>
+<ol type="1">
+<li>Go ahead and copy the URL to the assembly FASTA (<code>.fna.gz</code>) file.</li>
+<li>Type <code>wget</code> and <kbd>Space</kbd> in your terminal, and paste the URL, then execute the command:</li>
+</ol>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>--2025-04-13 13:33:16--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
 Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.12, 130.14.250.11, 2607:f220:41e:250::12, ...
@@ -643,10 +686,21 @@ Saving to: ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’
 100%[=====================================================================================================================&gt;] 172,895,917 51.7MB/s   in 3.2s   
 
 2025-04-13 13:33:20 (51.7 MB/s) - ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’ saved [172895917/172895917]</code></pre>
-<p>Let’s list the downloaded file:</p>
+<ol start="3" type="1">
+<li><p>List the downloaded file:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>-rw-r--r--  1 jelmer PAS0471 165M Aug  5  2022 GCA_016801865.2_TS_CPP_V2_genomic.fna.gz</code></pre>
-<p><strong><em>TBA - Move the file somewhere or use the <code>-P</code> option</em></strong></p>
+<pre class="bash-out"><code>-rw-r--r--  1 jelmer PAS0471 165M Aug  5  2022 GCA_016801865.2_TS_CPP_V2_genomic.fna.gz</code></pre></li>
+<li><p>Move it to your <code>garrigos-data</code> dir:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> <span class="at">-v</span> GCA_016801865.2_TS_CPP_V2_genomic.fna.gz garrigos-data/ref</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Create a new README file…</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> garrigos-data/ref/README.md</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>…and in it, add a note about how you obtained the file:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="an">Downloaded reference genome FASTA from NCBI on 2025-10-23 with:</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
 <hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -654,11 +708,16 @@ Saving to: ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Another commonly used downloading command is <code>curl</code>
+Additional notes
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><code>wget</code> and <code>curl</code> have similar functionality, so you don’t really need to learn to use both of them.</p>
+<ul>
+<li><p>You can use <code>wget</code>s <code>-P</code> option to directly download to a different dir, for example:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="va">URL</span><span class="op">=</span>https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="at">-P</span> data/ref <span class="st">"</span><span class="va">$URL</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Another commonly used downloading command is <code>curl</code>. <code>wget</code> and <code>curl</code> have similar functionality, so you don’t really need to learn both.</p></li>
+</ul>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -689,20 +748,27 @@ Other genomic downloads
 <li>Need to share files with other users at OSC</li>
 </ul>
 <p>There are three different file permissions that can be independently controlled:</p>
-<ul>
+<ol type="1">
 <li><strong>Read</strong> permissions allow you to read and copy files/dirs</li>
 <li><strong>Write</strong> permissions allow you to move, rename, modify, overwrite, or delete</li>
 <li><strong>Execute</strong> permissions allow you to directly execute a file (see the box below)</li>
-</ul>
+</ol>
 <p>While it is possible to set permissions for individual users, they are most easily and commonly set for three different user categories:</p>
 <ul>
 <li><strong>Owner (or “user”)</strong> — By default, this the person that created the file or dir. This includes cases where this person merely copied or downloaded files: e.g., after you have copied someone else’s FASTQ files, you are the owner of these copies.</li>
-<li><strong>Group</strong> — At OSC, the group category is at the OSC Project level.</li>
+<li><strong>Group</strong> — At OSC, the group category is at the OSC Project level</li>
 <li><strong>Other</strong> — Any other user</li>
 </ul>
-<blockquote class="blockquote">
-<p>When you create a file in the PAS2880 project dir, its “group” will include all members of the OSC project PAS2880.</p>
-</blockquote>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>When you create a file in the PAS2880 project dir, its “<strong>group</strong>” will include all members of the OSC project PAS2880.</p>
+</div>
+</div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -713,22 +779,30 @@ Executing a file?
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>TBA</p>
+<p>Executing a file means running it as a program/command. For example, when we run the FastQC program with the command <code>fastqc</code>, we are really executing a binary (executable) file somewhere on the system. Similarly, self-written shell scripts can be executed if they have execute permissions set.</p>
 </div>
 </div>
 </section>
 <section id="viewing-file-permissions" class="level3" data-number="5.2">
 <h3 data-number="5.2" class="anchored" data-anchor-id="viewing-file-permissions"><span class="header-section-number">5.2</span> Viewing file permissions</h3>
 <p>To show file permissions, use <strong><code>ls</code></strong> with the <strong><code>-l</code></strong> (<em>long</em> format) option that we’ve seen before, which should show you something like this:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> garrigos-data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>total 2.5K
+drwxrwx---+ 2 jelmer PAS0471 4.0K Sep  9 13:46 fastq
+drwxrwx---+ 2 jelmer PAS0471 4.0K Sep  9 13:46 meta
+-rw-rw----+ 1 jelmer PAS0471 2.3K Sep  9 13:46 README.md
+drwxrwx---+ 2 jelmer PAS0471 4.0K Sep  9 13:46 ref
+drwxrwx---+ 2 jelmer PAS0471 4.0K Sep 16 13:26 sandbox</code></pre>
+<p>With annotations:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../img/long-ls2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="../img/long-ls2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="A screenshot of the long-format ls output that includes info about file permissions."></a></p>
+<p><a href="../img/long-ls2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="../img/long-ls2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="A screenshot of the long-format ls output that includes info about file permissions."></a></p>
 </figure>
 </div>
 <p>Here is an overview of the file permission notation in <code>ls -l</code> output:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../img/permissions.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="../img/permissions.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:40.0%" alt="A diagram showing the different file permissions that can be set."></a></p>
+<p><a href="../img/permissions.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="../img/permissions.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:40.0%" alt="A diagram showing the different file permissions that can be set."></a></p>
 </figure>
 </div>
 <p>In the two lines above:</p>
@@ -740,36 +814,36 @@ Executing a file?
 <section id="changing-file-permissions" class="level3" data-number="5.3">
 <h3 data-number="5.3" class="anchored" data-anchor-id="changing-file-permissions"><span class="header-section-number">5.3</span> Changing file permissions</h3>
 <p>Let’s create a file to play around with file permissions:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a test file</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> testfile.txt</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the default permissions</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a test file</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> testfile.txt</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the default permissions</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>-rw-rw----+ 1 jelmer PAS2880 0 Mar  7 13:36 testfile.txt</code></pre>
 <p>To change a file’s permissions, you can use the <code>chmod</code> command. This uses <code>=</code> (set permission to), <code>+</code> (add permission), and <code>-</code> (remove permission). For example:</p>
 <ul>
 <li><p>To add read (<code>r</code>) permissions for all (<code>a</code>):</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chmod &lt;who&gt;+&lt;permission-to-add&gt;:</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a+r testfile.txt</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chmod &lt;who&gt;+&lt;permission-to-add&gt;:</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a+r testfile.txt</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>-rw-rw-r--+ 1 jelmer PAS0471 0 Mar  7 13:40 testfile.txt</code></pre></li>
 <li><p>To set read + write + execute (<code>rwx</code>) permissions for all (<code>a</code>):</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chmod &lt;who&gt;=&lt;permission-to-set&gt;`:</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a=rwx testfile.txt</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chmod &lt;who&gt;=&lt;permission-to-set&gt;`:</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a=rwx testfile.txt</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>-rwxrwxrwx+ 1 jelmer PAS2880 0 Mar  7 13:36 testfile.txt</code></pre></li>
 <li><p>To remove write (<code>w</code>) permissions for others (<code>o</code>):</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chmod &lt;who&gt;-&lt;permission-to-remove&gt;:</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> o-w testfile.txt</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chmod &lt;who&gt;-&lt;permission-to-remove&gt;:</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> o-w testfile.txt</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre class="bash-out"><code>-rwxrwxr-x+ 1 jelmer PAS2880 0 Mar  7 13:36 testfile.txt</code></pre></li>
 </ul>
 <hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -778,7 +852,7 @@ An alternative method: changing file permissions with numbers <em>(Click to expa
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><code>chmod</code> alternatively accepts a series of 3 numbers (for user, group, and others, respectively) to set permissions, where each permission is “worth” the following number of points:</p>
 <div class="columns">
@@ -837,34 +911,12 @@ An alternative method: changing file permissions with numbers <em>(Click to expa
 </div>
 </div>
 <p>For example, to set read + write + execute permissions for all:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 777 testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 777 testfile.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To set read + write + execute permissions for yourself, and only read permission for the group and others:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 744 file.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 744 file.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="making-your-data-read-only" class="level3" data-number="5.4">
-<h3 data-number="5.4" class="anchored" data-anchor-id="making-your-data-read-only"><span class="header-section-number">5.4</span> Making your data read-only</h3>
-<p>So, if you want to make your raw data (here: the files in the <code>data/fastq</code> dir) read-only, you can use:</p>
-<ul>
-<li><p>Set only read permissions for everyone:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a=r data/fastq/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p>Take away write permissions for yourself (no-one else should have it by default):</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u-w data/fastq/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-</ul>
-<p>After running one or both of the above commands, let’s check the permissions:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> data/fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>total 0
--r--r--r--+ 1 jelmer PAS0471 0 Mar  7 13:41 sample001_R1.fastq
--r--r--r--+ 1 jelmer PAS0471 0 Mar  7 13:41 sample001_R2.fastq
--r--r--r--+ 1 jelmer PAS0471 0 Mar  7 13:41 sample002_R1.fastq
--r--r--r--+ 1 jelmer PAS0471 0 Mar  7 13:41 sample002_R2.fastq
-# [...output truncated...]</code></pre>
-<p>What happens when we try to remove write-protected files?</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> data/fastq/<span class="pp">*</span>fastq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="bash-out"><code>rm: remove write-protected regular empty file ‘data/fastq/sample001_R1.fastq’?</code></pre>
-<p>You’ll be prompted for every file! If you answer <code>y</code> (yes), you can still remove them. (But note that people other than the file’s owners cannot override file permissions; only if they are system administrators.)</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -880,6 +932,38 @@ Read/execute permissions for directories
 <div class="sourceCode" id="cb22"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> <span class="at">-R</span> a+X my-dir</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
+</section>
+<section id="making-your-data-read-only" class="level3" data-number="5.4">
+<h3 data-number="5.4" class="anchored" data-anchor-id="making-your-data-read-only"><span class="header-section-number">5.4</span> Making your data read-only</h3>
+<p>So, if you want to make your raw data (here: the files in the <code>data/fastq</code> dir) read-only, you can use:</p>
+<ul>
+<li><p>Set only read permissions for everyone:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> a=r garrigos-data/fastq/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Take away write permissions for yourself (no-one else should have it by default):</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u-w garrigos-data/fastq/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+<p>After running one or both of the above commands, let’s check the permissions:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> garrigos-data/fastq/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>total 0
+TBA
+# [...output truncated...]</code></pre>
+<p>What happens when you try to remove write-protected files?</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> garrigos-data/fastq/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="bash-out"><code>rm: remove write-protected regular empty file ‘garrigos-data/fastq/ERR10802863_R1.fastq.gz’?</code></pre>
+<p>You’ll be prompted for every file! If you answer <code>y</code> (yes), you can still remove them. (But note that people other than the file’s owners cannot override file permissions; only if they are system administrators.)</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>TBA - Note about <code>rm -f</code>?</p>
+</div>
+</div>
 <p><br></p>
 
 
@@ -892,11 +976,14 @@ Read/execute permissions for directories
 <div id="ref-garrigós2025" class="csl-entry" role="listitem">
 Garrigós, Marta, Guillem Ylla, Josué Martínez-de la Puente, Jordi Figuerola, and María José Ruiz-López. 2025. <span>“Two Avian <em>Plasmodium</em> Species Trigger Different Transcriptional Responses on Their Vector <em>Culex <span>p</span>ipiens</em>.”</span> <em>Molecular Ecology</em> 34 (15): e17240. <a href="https://doi.org/10.1111/mec.17240">https://doi.org/10.1111/mec.17240</a>.
 </div>
+<div id="ref-grünwald2024" class="csl-entry" role="listitem">
+Grünwald, Niklaus J., Clive H. Bock, Jeff H. Chang, Alessandra Alves De Souza, Emerson M. Del Ponte, Lindsey J. du Toit, Anne E. Dorrance, et al. 2024. <span>“Open Access and Reproducibility in Plant Pathology Research: Guidelines and Best Practices.”</span> <em>Phytopathology®</em> 114 (5): 910–16. <a href="https://doi.org/10.1094/PHYTO-12-23-0483-IA">https://doi.org/10.1094/PHYTO-12-23-0483-IA</a>.
+</div>
 </div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
 <li id="fn1"><p> And has a more intuitive user interface than CyberDuck, another very commonly used program that works both on Mac and Windows.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p> There is a also an icon in the far top-left to access this menu. Additionally, there is a “Quickconnect” bar but I’ve not managed to connect to OSC with that.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p> There is a also an icon in the far top-left to access this menu. Additionally, there is a “Quickconnect” bar, but I’ve not managed to connect to OSC with that.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
