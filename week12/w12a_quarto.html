@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -120,55 +155,110 @@ THIS PAGE IS STILL UNDER CONSTRUCTION
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <section id="overview" class="level3">
 <h3 class="anchored" data-anchor-id="overview">Overview</h3>
-<p>This session introduces <a href="https://quarto.org/">Quarto</a> and helps to get started with Quarto.</p>
+<p>This session introduces basics of <a href="https://quarto.org/">Quarto</a> - its components such as YAML (YAML Ain’t Markup Language) header, code chunks and text. We will talk about the advantages of using Quarto. We will also learn how create and render Quarto document to html document.</p>
 </section>
 <section id="learning-goals" class="level3">
 <h3 class="anchored" data-anchor-id="learning-goals">Learning goals</h3>
 <p>In this session, you will learn:</p>
 <ul>
 <li>Basics of Quarto (syntax and formats)</li>
+<li>How to create and render a Quarto document in RStudio</li>
+<li>Components of Quarto such as YAML header, code chunks and text</li>
 </ul>
-<p>Quarto is the next-generation version of R Markdown that allows to combine prose, code, results. Quarto is not limited to single programming language but is available in R, Python, Julia and Observable. Here, we will learn to use it in RStudio.</p>
-<p>Quarto documents are reproducible and support different output formats such as PDFs, Word files, presentations.</p>
+<p>Quarto is the next-generation version of R Markdown that allows to combine prose, code, results. Quarto is not limited to single programming language but is available in R, Python, Julia and Observable. Here, we will focus to use Quarto in RStudio.</p>
+<p>Quarto documents are reproducible and support different output formats such as PDFs, Word files, presentations. It is a next generation R Markdown that is built on Pandoc.</p>
 <p><strong>Advantages of using Quarto:</strong></p>
 <ol type="1">
 <li>Communicate with your collaborator: It includes code, results and steps</li>
-<li>Supports multiformat outputs such as HTML, PDF, Markdow, websites and more</li>
+<li>Supports multi-format outputs such as HTML, PDF, Markdown, websites and more</li>
 <li>Reproducibility of research</li>
 </ol>
+<p><strong>Note: Quarto is a command-line interface tool but not R package. Therefore, you do not need to install it separately. Rstudio has integrated Quarto to work with R.</strong></p>
 </section>
 <section id="open-a-new-quarto-document-in-rstudio" class="level3">
 <h3 class="anchored" data-anchor-id="open-a-new-quarto-document-in-rstudio">Open a new Quarto document in Rstudio</h3>
 <p>Quarto file is a plain text file with <code>.qmd</code> extension. To create a new Quarto document: File &gt; New File &gt; Quarto Document <img src="../img/quarto_file_open.png" class="img-fluid quarto-figure quarto-figure-center" style="width:100.0%"> This will open a new window with several options. We can select the Quarto outputs such as Documents, Presentation, interactive in different formats. For example, for documents, we can pick HTML, PDF or Word format. We can even choose Engine Knitr or Jupyter.</p>
-<p><img src="../img/new_quarto_doc.png" class="img-fluid quarto-figure quarto-figure-center" style="width:60.0%"> This will create an new unamed <code>Untitled.qmd</code> file. Lets rename it, by going to File, Save As and name of the file</p>
+<p><img src="../img/new_quarto_doc.png" class="img-fluid quarto-figure quarto-figure-center" style="width:60.0%"> This will create an new unamed <code>Untitled.qmd</code> file. Lets rename it, by going to <code>File</code>, <code>Save As</code> and <code>name of the file</code></p>
 </section>
 </section>
 <section id="render-a-quarto-document" class="level2">
 <h2 class="anchored" data-anchor-id="render-a-quarto-document">Render a Quarto document</h2>
-<p>Rendering a Quarto document help to convert the .qmd document to the requested format. The Quarto document(.qmd) is first processed using the knitr and then converted to the final format using pandoc. <img src="../img/render.png" class="img-fluid quarto-figure quarto-figure-center" style="width:80.0%"></p>
+<p>Rendering a Quarto document converts the .qmd document to the requested format (html/pdf or any other frmat). During rendering, Quarto document(.qmd) is first processed using the knitr and then converted to the final format using pandoc. While rendering, all the code chunks are executed and the output is embedded in the final document with the text. However, if there are any codes that produces error, your document will not be rendered. To render a Quarto document, click on the <code>Render</code> button. <img src="../img/render.png" class="img-fluid quarto-figure quarto-figure-center" style="width:80.0%"></p>
 <section id="components-of-quarto" class="level3">
 <h3 class="anchored" data-anchor-id="components-of-quarto">Components of Quarto:</h3>
 <ol type="1">
-<li>The YAML header(—)</li>
-<li>Code chunk (```{r})</li>
-<li>Text</li>
+<li>The YAML header surrounded by (<code>---</code>)</li>
+<li>Code chunk surrounded by (```{r})</li>
+<li>Text- explanation of results</li>
 </ol>
 </section>
-<section id="yaml-header" class="level3">
-<h3 class="anchored" data-anchor-id="yaml-header">YAML header</h3>
-<p>The header for the Quarto document is written in YAML language. It allows to specify themes, formats, executable option etc. Additionally, It consists of series of metadata such as title, author and editor. <img src="../img/yaml_header.png" class="img-fluid quarto-figure quarto-figure-center" style="width:80.0%"></p>
-<p>Some of the additional contents of the YAML header can be found <a href="https://quarto.org/docs/output-formats/html-basics.html">here</a></p>
 </section>
+<section id="yaml-header" class="level2">
+<h2 class="anchored" data-anchor-id="yaml-header">YAML header</h2>
+<p>The header for the Quarto document is written in YAML language. It allows to specify themes, formats, executable options and many more. Additionally, it consists of series of metadata such as title, author date etc. You can think of YAML header as the settings of the Quarto document on how to process and present your document. <img src="../img/yaml_header.png" class="img-fluid quarto-figure quarto-figure-center" style="width:80.0%"></p>
+<p>Some of the additional contents of the YAML header can be found <a href="https://quarto.org/docs/output-formats/html-basics.html">here</a></p>
 </section>
 <section id="code-chunks" class="level2">
 <h2 class="anchored" data-anchor-id="code-chunks">Code chunks</h2>
-<p>Code chunks is a section whetre you can write the code and execute it. It is enclosed in a three backticks followed by <code>r</code>.</p>
-<p>Code chunks can be added in three different ways:</p>
+<p>Code chunks is a section where you can write the code and execute it. It is enclosed in a three back ticks followed by <code>r</code>. You can write multiple line of codes inside the code chunks.</p>
+<p>Code chunks can be added in three different ways in RStudio:</p>
 <ol type="1">
 <li>Keyboard commands: <code>Ctrl-Alt-I</code> (Windows) or <code>Cmd-Option-I</code> (Mac)</li>
-<li>Clicking the insert button <img src="../img/insert_code_chunk.png" class="img-fluid quarto-figure quarto-figure-center" style="width:40.0%"></li>
-<li>Typing it manually</li>
+<li>Clicking the insert button <img src="../img/insert_code_chunk.png" class="img-fluid quarto-figure quarto-figure-center" style="width:50.0%"></li>
+<li>Typing it manually - <code>{r} and end it with</code></li>
 </ol>
+<ul>
+<li>You can include the comment inside the code chunk using the <code>#</code> symbol.</li>
+<li>Triangle sign with a line below execute all the code chunks before the current chunk.</li>
+<li>Triangle sign facing towards right/play button runs the current chunk.</li>
+</ul>
+</section>
+<section id="chunk-options" class="level2">
+<h2 class="anchored" data-anchor-id="chunk-options">Chunk options</h2>
+<p>Several options can be added to the header of code chunk to customize the output of code. For instance,<code>echo: false</code> to hide the code, <code>message: false</code> to hide the messages or warnings, <code>fig-show=hide</code> to hide the figures and many more. More options can be found [here] (https://quarto.org/docs/computations/execution-options.html). Chunk options can be either written directly inside the curly braces (similar to the R Markdown) or by using #|(YAML syntax) before the code chunk where each #| line sets one option.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6</code></pre>
+</div>
+</div>
+</section>
+<section id="chunk-labels" class="level2">
+<h2 class="anchored" data-anchor-id="chunk-labels">Chunk labels:</h2>
+<p>Labeled code chunks can be useful due to several reasons: 1. It helps to refer the chunk in other places such as cross-referencing. 2. You can set up a network of certain chunks not to rerun to avoid the computational time.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span> <span class="sc">*</span> <span class="dv">6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 30</code></pre>
+</div>
+</div>
+</section>
+<section id="run-the-code-chunk" class="level2">
+<h2 class="anchored" data-anchor-id="run-the-code-chunk">Run the code chunk:</h2>
+<ol type="1">
+<li>Click the green play button</li>
+<li>Keyboard shortcut: <code>Ctrl-Shift-Enter</code> (Windows) or <code>Cmd-Shift-Enter</code> (Mac)</li>
+<li>Place the cursor inside the chunk and press <code>Ctrl-Enter</code> (Windows) or <code>Cmd-Enter</code> (Mac)</li>
+</ol>
+<p>Visualize output: You can visualize output either in the separate window or viewer pan. Type gear icon next to the Render would help to change the setting.</p>
+<p>To produce the output, 1. click on the Render button at the top of the script editor. 2. Press <code>Ctrl-Shift-K</code> (Windows) or <code>Cmd-Shift-K</code> (Mac) to render the document. 3. Use command quarto::quarto_render(“filename.qmd”) in the console.</p>
+<p>Visual editor:</p>
+<p>Source editor: Example 1:</p>
+<p><strong>Inline code- The R code can be directly added in the text using single back ticks followed by <code>r</code> such as 4 which will produce 4 in the output document.</strong></p>
+</section>
+<section id="global-option" class="level2">
+<h2 class="anchored" data-anchor-id="global-option">Global option</h2>
+<p>You can change the default option of the chunk. Suppose you want to show just the figures and table without showing the command that produces it. You can do it in the Quarto YAML header under execute, by adding the following global option:<code>execute: echo :false</code>.</p>
 </section>
 
 </main>

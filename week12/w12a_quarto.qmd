@@ -19,98 +19,192 @@ other-links:
   - text: "Week 12 overview"
     icon: book
     href: w12_overview.html
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 <br>
 
-:::callout-caution
+::: callout-caution
 #### THIS PAGE IS STILL UNDER CONSTRUCTION
 
-- Use these as inspiration:
-  - <https://osu-codeclub.github.io/posts/S10E01_reprod_01/>
-  - <https://osu-codeclub.github.io/posts/S10E02_reprod_02/>
-  - <https://biodash.github.io/codeclub/07_rmarkdown/>
+-   Use these as inspiration:
+    -   <https://osu-codeclub.github.io/posts/S10E01_reprod_01/>
+    -   <https://osu-codeclub.github.io/posts/S10E02_reprod_02/>
+    -   <https://biodash.github.io/codeclub/07_rmarkdown/>
 :::
 
 ## Introduction
 
-### Overview 
-This session introduces [Quarto](https://quarto.org/) and helps to get started with Quarto.
+### Overview
 
+This session introduces basics of [Quarto](https://quarto.org/) - its three components
+YAML (YAML Ain't Markup Language) header, code chunks and text. 
+We will talk about the advantages of using Quarto. We will also learn to create
+Quarto document, use several options to display/hide codes and 
+figures and render Quarto document to html document. 
 
 ### Learning goals
+
 In this session, you will learn:
 
 - Basics of Quarto (syntax and formats)
+- How to create and render a Quarto document in RStudio
+- Components of Quarto such as YAML header, code chunks and text
 
-Quarto is the next-generation version of R Markdown that allows to combine prose, code, 
-results. Quarto is not limited to single programming language but is available in R, Python, 
-Julia and Observable. Here, we will learn to use it in RStudio.
+Quarto is the next-generation version of R Markdown that allows to
+combine prose, code, results. Quarto is not limited to single
+programming language but is available in R, Python, Julia and
+Observable. Here, we will focus to use Quarto in RStudio.
 
-Quarto documents are reproducible and support different output formats 
-such as PDFs, Word files, presentations.
+Quarto documents are reproducible and support different output formats
+such as PDFs, Word files, presentations. It is a next generation R
+Markdown that is built on Pandoc.
 
 **Advantages of using Quarto:**
 
-1. Communicate with your collaborator: It includes code, results and steps
-2. Supports multiformat outputs such as HTML, PDF, Markdow, websites and more
-2. Reproducibility of research
+1.  Communicate with your collaborator: It includes code, results and
+    steps
+2.  Supports multi-format outputs such as HTML, PDF, Markdown, websites
+    and more
+3.  Reproducibility of research
+
+**Note: Quarto is a command-line interface tool but not R package. Therefore, you do not need to install it separately. Rstudio has integrated Quarto to work with R.**
 
 ### Open a new Quarto document in Rstudio
-Quarto file is a plain text file with `.qmd` extension. To create a new Quarto document:
-File > New File > Quarto Document
-![](../img/quarto_file_open.png){width="100%" fig-align="center"}
-This will open a new window with several options. We can select the Quarto outputs such as 
-Documents, Presentation, interactive in different formats. For example, for documents,
-we can pick HTML, PDF or Word format. We can even choose Engine Knitr or Jupyter.
 
-![](../img/new_quarto_doc.png){width="60%" fig-align="center"}
-This will create an new unamed `Untitled.qmd` file. Lets rename it, by going to File, Save As and name of the file
+Quarto file is a plain text file with `.qmd` extension. To create a new
+Quarto document: File \> New File \> Quarto Document
+![](../img/quarto_file_open.png){width="100%" fig-align="center"} This
+will open a new window with several options. We can select the Quarto
+outputs such as Documents, Presentation, interactive in different
+formats. For example, for documents, we can pick HTML, PDF or Word
+format. We can even choose Engine Knitr or Jupyter.
 
-
+![](../img/new_quarto_doc.png){width="60%" fig-align="center"} This will
+create an new unamed `Untitled.qmd` file. Lets rename it, by going to
+`File`, `Save As` and `name of the file`
 
 ## Render a Quarto document
-Rendering a Quarto document help to convert the .qmd document to the requested format. 
-The Quarto document(.qmd) is first processed using the knitr and then converted to the final format using 
-pandoc.
+
+Rendering a Quarto document converts the .qmd document to the
+requested format (html/pdf or any other frmat). During rendering, Quarto document(.qmd) 
+is first processed using the knitr and then converted to the final format using pandoc. 
+While rendering, all the code chunks are executed and the output is
+embedded in the final document with the text. However, if there are 
+any codes that produces error, your document will not be rendered.
+To render a Quarto document, click on the `Render` button.
 ![](../img/render.png){width="80%" fig-align="center"}
 
 ### Components of Quarto:
-1. The YAML header(---)
-2. Code chunk (```{r})
-3. Text
+1.  The YAML header surrounded by (`---`)
+2.  Code chunk surrounded by (\`\`\`{r})
+3.  Text- explanation of results
 
+## YAML header
 
-### YAML header
-The header for the Quarto document is written in YAML language. It allows to specify themes,
-formats, executable option etc. Additionally, It consists of series of metadata such as
-title, author and editor.
+The header for the Quarto document is written in YAML language. It
+allows to specify themes, formats, executable options and many more. Additionally,
+it consists of series of metadata such as title, author date etc. 
+You can think of YAML header as the settings of the Quarto document on how to process
+and present your document. It is surrounded by (`---`), at the top of the Quarto document.
+A simple example of YAML header is shown below:
 ![](../img/yaml_header.png){width="80%" fig-align="center"}
+We can add some additional contents to the YAML header such as authors, date, theme
+![](../img/yaml_header_1.png){width="40%" fig-align="center"}
 
 Some of the additional contents of the YAML header can be found
 [here](https://quarto.org/docs/output-formats/html-basics.html)
 
-
 ## Code chunks
-Code chunks is a section whetre you can write the code and execute it. 
-It is enclosed in a three backticks followed by `r`.
 
-Code chunks can be added in three different ways:
+Code chunks is a section where you can write the code and execute it. It
+is enclosed in a three back ticks followed by `r`. You can write multiple
+line of codes inside the code chunks.
 
-1. Keyboard commands: `Ctrl-Alt-I` (Windows) or `Cmd-Option-I` (Mac)
-2. Clicking the insert button
-![](../img/insert_code_chunk.png){width="40%" fig-align="center"}
-3. Typing it manually
+Code chunks can be added in three different ways in RStudio:
+
+1.  Keyboard commands: `Ctrl-Alt-I` (Windows) or `Cmd-Option-I` (Mac)
+2.  Typing it manually - ```{r} and end it with ```
+3.  Clicking the insert button
+    ![](../img/insert_code_chunk.png){width="50%" fig-align="center"}
+
+
+- You can include the comment inside the code chunk using the `#` symbol.
+- Triangle sign with a line below execute all the code chunks before the current chunk.
+- Triangle sign facing towards right/play button runs the current chunk.
+
+## Chunk options
+
+Several options can be added to the header of code chunk to customize the output of code. 
+For instance,`echo: false` to hide the code, `message: false` to hide the messages or warnings, `fig-show=hide` to hide the figures
+and many more. More options can be found [here] (https://quarto.org/docs/computations/execution-options.html).
+Chunk options can be either written directly inside the curly braces 
+(similar to the R Markdown) or by using #|(YAML syntax) before the code chunk where each #| line sets one option.
+
+```{r echo=TRUE}
+# Example code chunk
+2*2
+```
+
 ```{r}
+#| echo: true
+2*3
+```
 
+## Chunk labels 
+Labeled code chunks can be useful due to several reasons:
+1. It helps to refer the chunk in other places such as cross-referencing.
+2. You can set up a network of certain chunks not to rerun to avoid the computational time.
+
+```{r}
+#| label: my-first-chunk
+2 + 3
+```
+
+```{r}
+#| label: my-second-chunk
+5 * 6
 ```
 
 
-Example 1:
+## Run the code chunk:
+1.  Click the green play button
+2.  Keyboard shortcut: `Ctrl-Shift-Enter` (Windows) or `Cmd-Shift-Enter`
+    (Mac)
+3.  Place the cursor inside the chunk and press `Ctrl-Enter` (Windows)
+    or `Cmd-Enter` (Mac)
+
+Visualize output: You can visualize output either in the separate window or viewer pan. Type gear icon next to the Render would help to change the setting.
+
+To produce the output, 1. click on the Render button at the top of the
+script editor. 2. Press `Ctrl-Shift-K` (Windows) or `Cmd-Shift-K` (Mac)
+to render the document. 3. Use command
+quarto::quarto_render("filename.qmd") in the console.
+
+Visual editor:
+
+Source editor: Example 1:
+
+**Inline code- The R code can be directly added in the text using single back ticks followed by `r` such as `r 2+2` which will produce `r 2+2` in the output document.**
+
+
+## Global option
+You can change the default option of the chunk.
+Suppose you want to show just the figures and table without showing the command that 
+produces it. You can do it in the Quarto YAML header under execute, by adding the following 
+global option:`execute: echo :false`.
 
 
 
 
 
+
+
+
+
+
+## Practice
