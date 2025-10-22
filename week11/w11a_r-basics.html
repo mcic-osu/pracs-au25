@@ -154,8 +154,7 @@ div.csl-indent {
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <section id="overview-and-learning-goals-of-the-courses-r-material" class="level3">
 <h3 class="anchored" data-anchor-id="overview-and-learning-goals-of-the-courses-r-material">Overview and learning goals of the course’s R material</h3>
-<p>This is the first of a series of four weeks that will focus on the R language.</p>
-<p>Besides being a great all-round tool for data analysis and visualization, the R language is probably the best environment for the “downstream” analysis of omics data, with an excellent array of packages for e.g.:</p>
+<p>This is the first of a series of four weeks that will focus on the R language. Besides being a great all-round tool for data analysis and visualization, the R language is probably the best environment for the “downstream” analysis of omics data, with an excellent array of packages for e.g.:</p>
 <ul>
 <li>Metabarcoding analysis</li>
 <li>RNA-Seq analysis</li>
@@ -166,7 +165,7 @@ div.csl-indent {
 <ul>
 <li>The basics of R (<strong>this lecture</strong>)</li>
 <li>How data is stored in R, using e.g.&nbsp;vectors and different data types (<strong>next lecture</strong>)</li>
-<li>How to use combine R and Markdown with Quarto to produce beautiful, reproducible documents (week 12)</li>
+<li>How to use Quarto to produce beautiful, reproducible documents (week 12)</li>
 <li>How to visualize data in R with the ggplot2 package (week 13)</li>
 <li>About the ecosystem of packages for omics data analysis (week 13/14)</li>
 <li>By means of example, how to analyze the RNA-Seq count data you have produced using the <span class="citation" data-cites="garrigós2025">Garrigós et al. (<a href="#ref-garrigós2025" role="doc-biblioref">2025</a>)</span> dataset.</li>
@@ -434,6 +433,7 @@ Adding comments to your code
 </div>
 </div>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"week11"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now, we will look at the <code>head()</code> function, which shows the first six rows of a data frame or matrix. We will use it to visualize the data sets present in R.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(iris)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -447,8 +447,8 @@ Adding comments to your code
 </div>
 </div>
 <p>You can recognize function calls by the parentheses. Inside those parentheses, you can provide <strong>arguments</strong> to a function. Arguments are the actual values you provided to run a function().</p>
-<p><strong>Arguments that are not object has to be in quotes</strong></p>
-<p>In R, you can choose to name the <strong>arguments</strong> in a function or just use their <strong>position</strong>, Named argument and positional argument. You can assign the values to argument, using the equal to sign ‘=’. When you assign values to the arguments, the the order does not matter, R will know exactly which value goes where. For example, in <code>head(n = 6, x = iris)</code>, the argument <strong><em>x</em></strong> is explicitly named so the function will run successfully. However, you can also write <code>head(iris)</code>, and it gives the same output because R knows the first argument of head() is <strong><em>x</em></strong>. <code>head(6, iris)</code> will not produce any output because the arguments are called by position but are in wrong order.</p>
+<p><strong>Arguments that are not object has to be in quotes in R</strong></p>
+<p>In R, you can choose to name the <strong>arguments</strong> in a function or just use their <strong>position</strong>, Named argument and positional argument. You can assign the values to argument, using the equal to sign <code>=</code>. When you assign values to the arguments, the the order does not matter, R will know exactly which value goes where. For example, in <code>head(n = 6, x = iris)</code>, the argument <strong><em>x</em></strong> is explicitly named so the function will run successfully. However, you can also write <code>head(iris)</code>, and it gives the same output because R knows the first argument of head() is <strong><em>x</em></strong>. <code>head(6, iris)</code> will not produce any output because the arguments are called by position but are in wrong order.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="at">n=</span><span class="dv">6</span>, <span class="at">x =</span> iris)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -545,11 +545,11 @@ Adding comments to your code
 <h3 class="anchored" data-anchor-id="r-help-help-and">R Help: <code>help()</code> and <code>?</code></h3>
 <p>The <code>help()</code> function and <code>?</code> help operator in R offer access to documentation pages for R functions, data sets, and other objects. They provide access to both packages in the standard R distribution and contributed packages.</p>
 <p>For example:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>?install.packages</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>?list.files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The output should be shown in the Viewer tab of the bottom left RStudio panel, and look something like this:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/help.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></p>
+<p><img src="../img/help_list_files.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></p>
 </figure>
 </div>
 </section>
