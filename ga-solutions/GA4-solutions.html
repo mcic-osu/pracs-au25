@@ -360,6 +360,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#bonus-modify-the-script-to-rename-the-output-fastq-files" id="toc-bonus-modify-the-script-to-rename-the-output-fastq-files" class="nav-link" data-scroll-target="#bonus-modify-the-script-to-rename-the-output-fastq-files">Bonus: Modify the script to rename the output FASTQ files</a></li>
   <li><a href="#part-c-trimgalore-batch-jobs-in-a-loop" id="toc-part-c-trimgalore-batch-jobs-in-a-loop" class="nav-link" data-scroll-target="#part-c-trimgalore-batch-jobs-in-a-loop">Part C: TrimGalore batch jobs in a loop</a></li>
   <li><a href="#part-d-publish-your-repo-on-github" id="toc-part-d-publish-your-repo-on-github" class="nav-link" data-scroll-target="#part-d-publish-your-repo-on-github">Part D: Publish your repo on Github</a></li>
+  <li><a href="#the-final-trimgalore-script-including-bonus-question" id="toc-the-final-trimgalore-script-including-bonus-question" class="nav-link" data-scroll-target="#the-final-trimgalore-script-including-bonus-question">The final TrimGalore script (including Bonus question)</a></li>
   </ul>
 <div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="../week08/w8_overview.html"><i class="bi bi-book"></i>Week 8 overview</a></li><li><a href="../week08/w8_ga.html"><i class="bi bi-pencil"></i>Graded Assignment 4</a></li></ul></div></nav>
     </div>
@@ -532,6 +533,7 @@ Cutadapt version: 4.9
 </ul></li>
 <li><p><em>In the FastQC outputs for the trimmed R2 file, do you see any evidence for</em> <em>the “poly-G problem”?</em></p>
 <ul>
+<li><p>See the FastQC output HTML <a href="../ga-solutions/ERR10802863_R2_val_2_fastqc.html">here</a></p></li>
 <li><p>Yes, in the “Overrepresented sequences” section, a sequence only containing <code>G</code>s is listed:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -626,6 +628,67 @@ Cutadapt version: 4.9
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Then push the local repo to the remote:</span></span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ol>
+</section>
+<section id="the-final-trimgalore-script-including-bonus-question" class="level2">
+<h2 class="anchored" data-anchor-id="the-final-trimgalore-script-including-bonus-question">The final TrimGalore script (including Bonus question)</h2>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --account=PAS2880</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=8</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=30</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=slurm-trimgalore-%j.out</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mail-type=FAIL</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Constants</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="va">TRIMGALORE_CONTAINER</span><span class="op">=</span>oras://community.wave.seqera.io/library/trim-galore:0.6.10--bc38c9238980c80e</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the placeholder variables</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="va">R1</span><span class="op">=</span><span class="st">"</span><span class="va">$1</span><span class="st">"</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="va">R2</span><span class="op">=</span><span class="st">"</span><span class="va">$2</span><span class="st">"</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="va">outdir</span><span class="op">=</span><span class="st">"</span><span class="va">$3</span><span class="st">"</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Report</span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Starting script trimgalore.sh"</span></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Input R1 FASTQ file:      </span><span class="va">$R1</span><span class="st">"</span></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Input R2 FASTQ file:      </span><span class="va">$R2</span><span class="st">"</span></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Output dir:               </span><span class="va">$outdir</span><span class="st">"</span></span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the output dir</span></span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span></span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Run TrimGalore</span></span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$TRIMGALORE_CONTAINER</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>    trim_galore <span class="dt">\</span></span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">--2colour</span> 20 <span class="dt">\</span></span>
+<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">--cores</span> 8 <span class="dt">\</span></span>
+<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">--paired</span> <span class="dt">\</span></span>
+<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">--fastqc</span> <span class="dt">\</span></span>
+<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">--output_dir</span> <span class="st">"</span><span class="va">$outdir</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="va">$R2</span><span class="st">"</span></span>
+<span id="cb29-38"><a href="#cb29-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-39"><a href="#cb29-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Build the output file names:</span></span>
+<span id="cb29-40"><a href="#cb29-40" aria-hidden="true" tabindex="-1"></a><span class="va">sample_id</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$R1</span><span class="st">"</span> _R1.fastq.gz<span class="va">)</span></span>
+<span id="cb29-41"><a href="#cb29-41" aria-hidden="true" tabindex="-1"></a><span class="va">R1_out_init</span><span class="op">=</span><span class="st">"</span><span class="va">$outdir</span><span class="st">"</span>/<span class="st">"</span><span class="va">$sample_id</span><span class="st">"</span>_R1_val_1.fq.gz</span>
+<span id="cb29-42"><a href="#cb29-42" aria-hidden="true" tabindex="-1"></a><span class="va">R2_out_init</span><span class="op">=</span><span class="st">"</span><span class="va">$outdir</span><span class="st">"</span>/<span class="st">"</span><span class="va">$sample_id</span><span class="st">"</span>_R2_val_2.fq.gz</span>
+<span id="cb29-43"><a href="#cb29-43" aria-hidden="true" tabindex="-1"></a><span class="va">R1_out_final</span><span class="op">=</span><span class="st">"</span><span class="va">$outdir</span><span class="st">"</span>/<span class="st">"</span><span class="va">$sample_id</span><span class="st">"</span>_R1.fastq.gz</span>
+<span id="cb29-44"><a href="#cb29-44" aria-hidden="true" tabindex="-1"></a><span class="va">R2_out_final</span><span class="op">=</span><span class="st">"</span><span class="va">$outdir</span><span class="st">"</span>/<span class="st">"</span><span class="va">$sample_id</span><span class="st">"</span>_R2.fastq.gz</span>
+<span id="cb29-45"><a href="#cb29-45" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-46"><a href="#cb29-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename the output files:</span></span>
+<span id="cb29-47"><a href="#cb29-47" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
+<span id="cb29-48"><a href="#cb29-48" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Renaming the output files:"</span></span>
+<span id="cb29-49"><a href="#cb29-49" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> <span class="at">-v</span> <span class="st">"</span><span class="va">$R1_out_init</span><span class="st">"</span> <span class="st">"</span><span class="va">$R1_out_final</span><span class="st">"</span></span>
+<span id="cb29-50"><a href="#cb29-50" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> <span class="at">-v</span> <span class="st">"</span><span class="va">$R2_out_init</span><span class="st">"</span> <span class="st">"</span><span class="va">$R2_out_final</span><span class="st">"</span></span>
+<span id="cb29-51"><a href="#cb29-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-52"><a href="#cb29-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Report</span></span>
+<span id="cb29-53"><a href="#cb29-53" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span></span>
+<span id="cb29-54"><a href="#cb29-54" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# TrimGalore version:"</span></span>
+<span id="cb29-55"><a href="#cb29-55" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec <span class="st">"</span><span class="va">$TRIMGALORE_CONTAINER</span><span class="st">"</span> <span class="dt">\</span></span>
+<span id="cb29-56"><a href="#cb29-56" aria-hidden="true" tabindex="-1"></a>    trim_galore <span class="at">-v</span></span>
+<span id="cb29-57"><a href="#cb29-57" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Successfully finished script trimgalore.sh"</span></span>
+<span id="cb29-58"><a href="#cb29-58" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
