@@ -102,18 +102,18 @@ However, similar principles apply with other types of data/files.
 - Raw sequences from high-throughput sequencing, such as FASTQ files,
   must be uploaded to NCBI's
   [Sequence Read Archive (SRA)](https://www.ncbi.nlm.nih.gov/sra)
-- _Some_ results should also be uploaded to NCBI,
+- Some results should also be uploaded to NCBI,
   such as genome assemblies and annotations, and gene expression count tables
   (Geno Expression Omnibus, [GEO](https://www.ncbi.nlm.nih.gov/geo/))
-- Other results but also other kinds of data can (and is increasingly required to)
-  be shared via repositories like [Dryad](https://datadryad.org/) and
-  [Zenodo](https://zenodo.org/).
+- (Other) results and data can, and are increasingly required to upon publication,
+  be shared via general data repositories like [Dryad](https://datadryad.org/)
+  and [Zenodo](https://zenodo.org/)
 - Code can be shared via GitHub (or similar platforms like GitLab and Bitbucket),
   ideally with a permanent Digital Object Identifier (DOI) via
-  [Zenodo's GitHub integration](https://guides.github.com/activities/citable-code/).
+  [Zenodo's GitHub integration](https://guides.github.com/activities/citable-code/) ^[
   Journals may in some cases require code to be shared via the abovementioned
   general repositories like Dryad as well,
-  where they (or especially their documentation) are subject to manual quality control.
+  where they (or especially their documentation) are subject to manual quality control.]
 
 ::: {.callout-note collapse="true"}
 ### Data Management Plans _(Click to expand)_
@@ -125,10 +125,8 @@ your data, have recently also become required by major funding agencies:
 >
 > --- @grünwald2024
 
-Here are the specific guidelines for these agencies:
-
-- [USDA NIFA guidelines](https://www.nifa.usda.gov/grants/lifecycle/pre-award/data-management-plans)
-- [NSF guidelines](https://www.nsf.gov/funding/data-management-plan)
+Here are specific guidelines for [USDA NIFA ](https://www.nifa.usda.gov/grants/lifecycle/pre-award/data-management-plans)
+and [NSF](https://www.nsf.gov/funding/data-management-plan) grants.
 :::
 
 ::: {.callout-tip appearance="simple"}
@@ -143,25 +141,24 @@ For more and OSU-specific information about data management and sharing,
 ### Should I keep my OSC and local directories synced and how?
 
 You can't keep files synced between OSC and your local computer
-in a fully automatic way like with Dropbox or OneDrive --
-and because of the amount of data on OSC, you may not want to either.
-Instead, here is a good strategy:
+in a fully automatic way like with OneDrive or Dropbox.
+And because the amount of data on OSC is typically very large,
+you may not want to either. Instead, here is a good strategy:
 
-- Keep the files that you have under version control (code, etc.) synced via
-  Git/GitHub.
+- Keep the files you have under version control (code, etc.) synced via Git/GitHub
 - Periodically sync all or a selection of other files with the data transfer
-  methods discussed below.
+  methods discussed below
   
-Data syncing is especially salient when for a given project,
-you do analyses both at OSC and on your local computer.
+Data syncing is especially important when you do analyses both at OSC and on
+your local computer for a given project. 
 To reduce this friction,
 I recommend that for projects for which you need OSC,
 you instead try to do _all_ your work there.
-When you do so,
-it is even OK to keep separate sets of files at OSC and your local computer --
-for example,
-you may only keep the manuscript and related files on your local computer,
-and everything else at OSC.
+When you do that,
+it even works to keep entirely separate sets of files at OSC and your local computer
+-- for example,
+you may keep only the manuscript and related files on your local computer
+(and/or OneDrive/Teams), and everything else at OSC.
 
 ### Overview of transfer options
 
@@ -185,10 +182,11 @@ Here, we'll go over what is probably overall the most convenient and versatile
 way to transfer files to and from OSC,
 since it works for transfers of any size, and is easy and quick:
 **file transfer with a GUI-based SFTP client**.
-There are several such programs,
-but I chose to show you **FileZilla** because it works on all operating systems^[
-And has a more intuitive user interface than CyberDuck,
+There are several such programs, but I can recommend FileZilla ^[
+E.g. because it works on all operating systems and has a more intuitive user
+interface than CyberDuck,
 another very commonly used program that works both on Mac and Windows.].
+Let's give that a try!
 
 1. **Install and open FileZilla**\
    Go to the [FileZilla download page](https://filezilla-project.org/download.php?type=client) ---
@@ -240,18 +238,17 @@ and vice versa.
 
 When you need to get large files from public repositories like NCBI
 (e.g. reference genome files, raw reads from the SRA),
-I would recommend to avoid downloading these to your own computer and then transferring
-them to OSC,
-but instead to **download them directly to OSC using commands**.
+I would recommend to **download them directly to OSC using commands**
+(instead of downloading to your own computer and then transferring to OSC).
 Not only is this quicker once you know how to,
 it is also much more reproducible:
-In your Markdown documentation files,
+in your Markdown documentation files,
 you can store the exact commands used to obtain the data.
 
 ### `wget`
 
-You can download files a URL using the `wget` command.
-It has many options, but basic usage is quite simple:
+You can download files from a URL using the `wget` command.
+It has _many_ options, but basic usage is quite simple:
 
 ```bash
 # This will download the file at the URL to your current working dir
@@ -261,51 +258,52 @@ wget <URL>
 As an example, say that you want to download the reference genome FASTA
 file for _Culex pipiens_,
 the focal species of the @garrigós2025 RNA-Seq data set we've been working with.
-We actually need to do this because the `garrigos-data` repo contains only
+We actually do need to do this because my `garrigos-data` repo contains only
 the GTF annotation file, and not the assembly file,
 which wasn't included due to its large size.
 
 The files for that genome can be found at this
-[NCBI FTP webpage](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/):
+[NCBI FTP webpage](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/801/865/GCF_016801865.2_TS_CPP_V2/):
 
-![](../img/ncbi-ftp-dir.png){fig-align="center" width="95%" fig-alt="A browser screenshot of the NCBI FTP dir for the Culex pipiens genome" .lightbox}
+![](../img/ncbi-ftp-dir.png){fig-align="center" width="85%" fig-alt="A browser screenshot of the NCBI FTP dir for the Culex pipiens genome" .lightbox}
 
 You can right-click on any of the files there and then click "Copy Link Address"
 (or similar, depending on your browser).
 
 1. Go ahead and copy the URL to the assembly FASTA (`.fna.gz`) file.
-2. Type `wget` and <kbd>Space</kbd> in your terminal, and paste the URL,
-   then execute the command:
+2. Type `wget` and <kbd>Space</kbd> in your terminal, paste the URL,
+   and execute the command:
 
-```bash
-wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
-```
-```bash-out
---2025-04-13 13:33:16--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
-Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.12, 130.14.250.11, 2607:f220:41e:250::12, ...
-Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.12|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 172895917 (165M) [application/x-gzip]
-Saving to: ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’
+    ```bash
+    wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/801/865/GCF_016801865.2_TS_CPP_V2/GCF_016801865.2_TS_CPP_V2_genomic.fna.gz
+    ```
+    ```bash-out
+    --2025-10-23 10:19:04--  https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/801/865/GCF_016801865.2_TS_CPP_V2/GCF_016801865.2_TS_CPP_V2_genomic.fna.gz
+    Resolving ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)... 130.14.250.13, 130.14.250.10, 130.14.250.7, ...
+    Connecting to ftp.ncbi.nlm.nih.gov (ftp.ncbi.nlm.nih.gov)|130.14.250.13|:443... connected.
+    HTTP request sent, awaiting response... 200 OK
+    Length: 172904433 (165M) [application/x-gzip]
+    Saving to: ‘GCF_016801865.2_TS_CPP_V2_genomic.fna.gz’
+    
+    GCF_016801865.2_TS_CPP_V2_genomic.fna.gz           100%[===============================================================================================================>] 164.89M  28.5MB/s    in 7.2s    
+    
+    2025-10-23 10:19:12 (23.0 MB/s) - ‘GCF_016801865.2_TS_CPP_V2_genomic.fna.gz’ saved [172904433/172904433]
+    ```
 
-100%[=====================================================================================================================>] 172,895,917 51.7MB/s   in 3.2s   
-
-2025-04-13 13:33:20 (51.7 MB/s) - ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’ saved [172895917/172895917]
-```
-
-3. List the downloaded file:
+3. As you saw, `wget` is quite chatty and prints a bunch of logging and progress 
+   to the screen. If that all looked good, list the downloaded file:
 
    ```bash
    ls -lh
    ```
    ```bash-out
-   -rw-r--r--  1 jelmer PAS0471 165M Aug  5  2022 GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
+   -rw-rw----+ 1 jelmer PAS0471 165M Dec 22  2022 GCF_016801865.2_TS_CPP_V2_genomic.fna.gz
    ```
 
 4. Move it to your `garrigos-data` dir:
 
    ```bash
-   mv -v GCA_016801865.2_TS_CPP_V2_genomic.fna.gz garrigos-data/ref
+   mv -v GCF_016801865.2_TS_CPP_V2_genomic.fna.gz garrigos-data/ref
    ```
 
 5. Create a new README file...
@@ -320,36 +318,36 @@ Saving to: ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’
    Downloaded reference genome FASTA from NCBI on 2025-10-23 with:
    
    ```bash
-   wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
+   wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/801/865/GCF_016801865.2_TS_CPP_V2/GCF_016801865.2_TS_CPP_V2_genomic.fna.gz
    ```
    ````
    
 <hr style="height:1pt; visibility:hidden;" />
 
-::: callout-tip
-#### Additional notes
+::: callout-note
+#### Additional download command notes
 
 - You can use `wget`s `-P` option to directly download to a different dir,
   for example:
 
   ```bash
-  URL=https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/016/801/865/GCA_016801865.2_TS_CPP_V2/GCA_016801865.2_TS_CPP_V2_genomic.fna.gz
-  wget -P data/ref "$URL"
+  # This would download the file into a dir 'data/ref':
+  wget -P data/ref <URL>
   ```
 
-- Another commonly used downloading command is `curl`.
-  `wget` and `curl` have similar functionality,
-  so you don't really need to learn both.
+- Another commonly used downloading command is `curl` --
+  both have similar functionality, so you don't really need to learn both.
+  But you may see examples with `curl` elsewhere.
 :::
 
-::: callout-note
-#### Other genomic downloads
+::: callout-tip
+#### Tips for other kinds of genomics downloads 
 
 - For reference genome downloads,
   NCBI also has a relatively new and very useful portal called **"datasets"**
-  [that also includes a CLI tools of the same name](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/reference-docs/command-line/datasets).
-  This is especially useful if you want to download multiple or many genomes ---
-  for example, you can download all available genomes of a certain (say, bacterial)
+  [that also includes a CLI tool with the same name](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/reference-docs/command-line/datasets).
+  This tool is very useful if you want to download multiple or many genomes --
+  for example, it allows you to download all available genomes of say a certain 
   genus with a single command.
 
 - For downloads from the Sequence Read Archive (SRA),
@@ -358,6 +356,32 @@ Saving to: ‘GCA_016801865.2_TS_CPP_V2_genomic.fna.gz’
   and [dl-fastq](https://github.com/rpetit3/fastq-dl).
   Also handy is the simple [SRA explorer website](https://sra-explorer.info),
   where you can enter an NCBI accession number and it will give you download links.
+:::
+
+::: {.callout-tip collapse="true"}
+#### How to find a reference genome and its files for any species _(Click to expand)_
+
+1. Go to the genome part of NCBI's datasets portal <https://www.ncbi.nlm.nih.gov/datasets/genome/>
+2. Type in the name of a species (or other taxonomic level)
+
+![](../img/ncbi-datasets-search.png){fig-align="center" width="95%" fig-alt="A screenshot of the NCBI datasets website" .lightbox}
+
+3. Select an appropriate taxonomic match within the search box, and press Enter.
+   You will get a list of available genomes:
+
+![](../img/ncbi-datasets-result.png){fig-align="center" width="95%" fig-alt="A screenshot of the NCBI datasets website" .lightbox}  
+   
+4. All else being equal (e.g. the appropriate subspecies), it is generally a good
+   idea to pick the "Reference" genome which is highlighted with a green checkmark,
+   i.e. `TS_CPP_V2` in the screenshot above.
+   Click on the name of the desired genome, and you will see a page like this:
+
+![](../img/ncbi-datasets-genome-page.png){fig-align="center" width="85%" fig-alt="A screenshot of the NCBI datasets website" .lightbox}  
+
+5. There are multiple ways of downloading, but the FTP page we downloaded from
+   can be accessed by clicking the "FTP" button shown in the screenshot above.
+   
+<hr style="height:1pt; visibility:hidden;" />
 :::
 
 ## File permissions
@@ -373,21 +397,21 @@ Being able to view and modify file permissions is useful when you:
 
 There are three different file permissions that can be independently controlled:
 
-1. **Read** permissions allow you to read and copy files/dirs
-2. **Write** permissions allow you to move, rename, modify, overwrite, or delete
-3. **Execute** permissions allow you to directly execute a file (see the box below)
+1. **Read** (`r`) permissions allow you to read and copy files/dirs
+2. **Write** (`w`) permissions allow you to move, rename, modify, overwrite, or delete
+3. **Execute** (`x`) permissions allow you to directly execute a file (see the box below)
 
 While it is possible to set permissions for individual users,
 they are most easily and commonly set for three different user categories:
 
-- **Owner (or "user")** ---
+- **Owner (or "user")** (`u`) ---
   By default, this the person that created the file or dir.
   This includes cases where this person merely copied or downloaded files:
   e.g., after you have copied someone else's FASTQ files,
   you are the owner of these copies.
-- **Group** ---
+- **Group** (`g`) ---
   At OSC, the group category is at the OSC Project level
-- **Other** --- Any other user 
+- **Other** (`o`) --- Any other user 
 
 ::: callout-note
 #### Executing a file?
@@ -434,11 +458,11 @@ Here is an overview of the file permission notation in `ls -l` output:
 
 In the two lines above:
 
-- **`rwxrwxr-x` means:** read, write, and execute permissions are set for the owner
+- `rwxrwxr-x` means: read, write, and execute permissions are set for the owner
   (first `rwx`) and the group (second `rwx`),
-  and read and execute **but not** write permissions for others (`r-x` at the end).
+  and read and execute _but not_ write permissions for others (`r-x` at the end).
 
-- **`rw-rw-r--` means:** read and write _but not_ execute permissions are set
+- `rw-rw-r--` means: read and write _but not_ execute permissions are set
   for both the owner (first `rw-`) and the group (second `rw-`),
   and only read permissions for others (`r--` at the end).
 
@@ -491,15 +515,16 @@ There are two main ways to use this command, one of which uses symbols as follow
 
 - `+` : add a permission
 - `-` : remove a permission
-- `=` : set a permission to (regardless of its previous status)
+- `=` : set a permission to
 
-These are used with both the kind of permission and the user category --
-for example:
+These are used with both the kind of permission (`r` / `w` / `x`)
+and the user category (`a` / `u` / `g` / `o`).
+For example, `a+r` means that for `a`ll, you add (`+`) `r`ead permissions.
+Let's see some commands:
 
 - To add read (`r`) permissions for all (`a`):
 
   ```bash
-  # chmod <who>+<permission-to-add>:
   chmod a+r testfile.txt
   
   ls -l testfile.txt
@@ -511,7 +536,6 @@ for example:
 - To set read + write + execute (`rwx`) permissions for all (`a`):
 
   ```bash
-  # chmod <who>=<permission-to-set>`:
   chmod a=rwx testfile.txt
   
   ls -l testfile.txt
@@ -522,7 +546,7 @@ for example:
 
   ::: {.callout-tip appearance="simple"}
   Because the file is now "executable", 
-  it should show up in **[green]{style="color:green"}** in your terminal.
+  its name should display in **[green]{style="color:green"}** in your terminal.
   :::
 
 - To remove write (`w`) permissions for others (`o`):
@@ -660,8 +684,8 @@ If you answer `y` (yes), you can still remove them.
 But note that people other than the file's owners cannot override file permissions
 (unless they are system administrators).
 
-::: callout-note
-#### Force-remove
+::: callout-tip
+#### Force-remove with `rm -f`
 
 Instead of interactively approving the removal of each write-protected file,
 you can also use the `-f` (force) option with `rm`.
