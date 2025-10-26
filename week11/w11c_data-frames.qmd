@@ -22,6 +22,12 @@ other-links:
   - text: "w11a: Intro to R and RStudio"
     icon: bookmarks
     href: w11a_r-basics.html
+  - text: "w11b: R data structures and data types"
+    icon: bookmarks
+    href: w11b_data.html
+  - text: "Week 11 exercises"
+    icon: pencil
+    href: w11_exercises.html
 execute:
   eval: true
 ---
@@ -40,17 +46,20 @@ i.e., data with rows and columns like you are familiar with from Excel
 spreadsheets and so on.
 In R, tabular data is stored in a data structure called "**data frame**".
 
-You will learn
+In this lecture, you will learn:
 
-- Data frames and different functions to reorganize and modify data frames.
-- Matrix
+- Data frames and different functions to reorganize and modify data frames
+- Briefly about the similar matrix data structure
 
 ### Setting up
 
 1. At <https://ondemand.osc.edu>,
-   start an RStudio session like in the previous lecture  [Starting an RStudio Server session at OSC](../week11/w11a_r-basics.html#Working-directory-and-RStudio-Projects).
-2. Switch to your `week11` RStudio Project [Working directory and RStudio Projects](../week11/w11a_r-basics.html#Working-directory-and-RStudio-Projects).
-3. Open a new R Script and save it as week_11_script.R in your `week11` folder [R scripts](../week11/w11a_r-basics.html#R-scripts).
+   start an RStudio session like in the previous lecture 
+   ([Starting an RStudio Server session at OSC](../week11/w11a_r-basics.html#Working-directory-and-RStudio-Projects))
+2. Switch to your `week11` RStudio Project created in previous lecture
+  ([Working directory and RStudio Projects](../week11/w11a_r-basics.html#Working-directory-and-RStudio-Projects))
+3. Open a new R Script and save it as `week11c.R` in your `week11` folder
+   ([R scripts](../week11/w11a_r-basics.html#R-scripts))
 
 ## The tidyverse
 
@@ -76,7 +85,7 @@ is also covered by base R functions, but it is better suited for quick and
 easy data manipulation.
 
 ::: {.callout-tip collapse="true"}
-### Function name conflicts
+### Function name conflicts _(Click to expand)_
 
 When you loaded the tidyverse, the output included a  "Conflicts" section that
 may have seemed ominous:
@@ -173,12 +182,26 @@ This kind of operation will return a vector -- and can be indexed as well:
 meta$treatment[2]
 ```
 
-### Matrix
-R-matrix is a two dimensional rectangular data with rows and columns. All the elements of matrix must of be same data type (all numeric, character, logical).
+## Matrices
 
-[DESeq2](https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html) package is used for the differential expression analysis of the count data. 
-The input for the **DESeq2** is a matrix of count data, where each row represents a gene and the column represents a different sample. 
-To create a **DESeq2** object, you need the count data of matrix, metadata that matches the samples name in the count data and the experiment design (if present).
+The matrix data structure in R is similar to a dataframe:
+it is also rectangular with rows and columns.
+But it differs in that all the elements in a matrix must of be same data type:
+all numeric, character, or logical.
+
+Most commonly, matrices consist of only _numerical_ data.
+Of course, column labels can then still be provided with column names,
+but what about rows?
+
+**TBA EXPLAIN ROWNAMES AND HOW THESE CAN BE USED**
+_(But also mention that with dataframes, rownames are not commonly used for IDs.)_
+
+Generally, matrices are not nearly as common as data frames,
+but we are introducing them here because they are used in a number of omics-data
+related pacakges.
+For example, the package
+[DESeq2](https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html),
+which we'll later use for differential expression analysis of our RNA-Seq count data. 
 
 ## The _dplyr_ package
 
@@ -213,7 +236,7 @@ Above, the first argument was the data frame,
 whereas the other arguments were the (unquoted!) names of columns to be included
 in the output data frame^[
 Based on what you learned in the previous session,
-it may seem strange that the column names should not be quoted.<br><br>
+it may seem strange that the column names should not be quoted.
 One way to make sense of this is that the columns can be thought of as (vector)
 objects, whose names are the column names.].
 
@@ -318,7 +341,7 @@ But it would be preferred to make RStudio insert the `|>` pipe symbol:
 3. Click `OK` at the bottom of the options dialog box to apply the change and
    close the box.  
 
-![](./img/pipe-shortcut.png){fig-align="center"}
+![](../img/pipe-shortcut.png){fig-align="center"}
 :::
 
 ## `filter()` to pick rows (observations)
@@ -399,11 +422,11 @@ meta |>
   rename(sample = sample_id)
 ```
 
-:::exercise
-#### {{< fa user-edit >}} **Challenge 1** {-}
+::: exercise
+#### {{< fa user-edit >}} Exercise: Pipes
 
 Use a "pipeline" like above to output a data frame with two
-columns (sample_id and treatment) only for cathemerium.
+columns (`sample_id` and `treatment`) only for the _cathemerium_ treatment.
 How many rows does your output data frame have?
 
 <details><summary>Click for the solution</summary>
@@ -425,19 +448,17 @@ it changes the order of rows based on the values in one or more columns^[
 It will always rearrange the order of rows as a whole,
 never just of individual columns since that would scramble the data.
 ].
+Among other things, sorting can help you find observations with the smallest or
+largest values for a certain column.
 
-`meta` is currently first sorted by `time` and then by `treatment`,
+The `meta` dataframe is currently first sorted by `time` and then by `treatment`,
 whereas `sample_id`s within these groups are not sorted.
-
 You may, for example, want to sort by `sample_id` instead:
 
 ```{r}
 meta |>
   arrange(sample_id)
 ```
-
-Sorting can help you find observations with the smallest or largest values
-for a certain column ... ***TBA***
 
 Default sorting is alphabetically and, for numbers, from small to large.
 To sort in reverse order, use the `desc()` (descending) helper function:
@@ -463,45 +484,71 @@ So far, we've focused on functions that subset and reorganize data frames
 (and you've seen how to modify column names).
 But you haven't seen how you can _change the data_ or _compute derived data_.
 
+You can do this with the `mutate()` function.
+For a first example, let's go back to the `iris` dataframe:
 
-`sub()` function is used to replace the string or character. 
-The syntax of `sub()` is pattern, replacement, and a vector or a data frame to substitute pattern.
+```{r}
+head(iris)
+```
 
-This can be done with the `mutate()` function.
+Let's say you wanted to compute the ration of sepal length to with for each
+observation -- you can do so as follows with `mutate()`:
+
+```{r}
+iris |>
+  mutate(sepal_ratio = Sepal.Length / Sepal.Width) |>
+  head()
+```
+
+::: callout-tip
+#### Regular data frames vs. tibbles
+TBA
+:::
+
+For an example with our `meta` dataframe, we'll use the `sub()` function,
+which can do a character-based search-and-replace.
+It takes three arguments: the pattern to search for, what to replace the pattern
+with, and the subject vector.
 For example, to shorten sample IDs by removing the shared prefix:
 
 ```{r}
 # Create a new column 'sample_id_short' by replacing the 'ERR10802' pattern of sample_id with nothing :
 meta |>
-  mutate(sample_id_short = sub("ERR10802", "", sample_id))
+  mutate(
+    sample_id_short = sub(pattern = "ERR10802", replacement = "", x = sample_id)
+    )
 ```
 
+The above examples _added_ a new column to the dataframe.
 To _modify_ an existing column rather than adding a new one,
 simply "assign back to the same name":
 
 ```{r}
 meta |>
-  mutate(sample_id = sub("ERR10802", "", sample_id))
-```
-
-`substr()` function is used to either extract the character present in the character vector.
-The syntax of `substr()` is the string name of the character vector,
-start position of the sub string, and the end position of the sub string.
-
-```{r}
-meta |>
-  mutate(Treat_three_letters = substr(treatment, 1, 3))
+  mutate(
+    sample_id = sub(pattern = "ERR10802", replacement = "", x = sample_id)
+  )
 ```
 
 :::exercise
-#### {{< fa user-edit >}} **Challenge 2** {-}
+#### {{< fa user-edit >}} Exercise: `mutate()`
 
-Use `mutate()` to:
+Another very useful function is `substr()`, short for _substring_,
+which can extract parts of a character vector by position:
+say, you can ask it to only keep the first three characters.
+It includes arguments for the desired `start` and `end` positions of the substring:
+
+```{r}
+meta |>
+  mutate(treatment_short = substr(x = treatment, start = 1, stop = 3))
+```
+
+Use `mutate()` with `substr()` to:
 
 - Create a numeric `time_num` column, stripping the `hpi`/`dpi` suffix from `time`.
-- Create a column `time_unit` column, keeping only the `hpi`/`dpi` suffix from `time`.
+- Create a column `time_unit`, keeping only the `hpi`/`dpi` suffix from `time`.
 
-Save the resulting data frame as `meta_time` (we will use it after this!)
+Save the resulting data frame as `meta_time` (we will use it after this!).
 
 <details><summary>Click for the solution</summary>
 
@@ -521,7 +568,7 @@ meta_time
 
 The final function _dplyr_ function we'll cover is `summarize()`,
 which computes **summaries of your data across rows**.
-For example, to calculate the mean GDP across the entire dataset (all rows):
+For example, to calculate the mean time across the entire dataset (all rows):
 
 ```{r}
 # The syntax is similar to 'mutate': <new-column> = <operation>
@@ -548,27 +595,11 @@ here, one group for observations from each treatment.
 After that, operations like in `summarize()` will happen separately for each group,
 which is how we ended up with per-treatment means.
 
-
 :::exercise
-#### {{< fa user-edit >}} **Challenge 3** {-}
+#### {{< fa user-edit >}} Exercise: `summarize()`
 
-Use the function discussed above to:
+**TBA -- I'd suggest to do an exercise with `iris` instead**
 
-- `select` two columns time and treatment from meta data frame. 
-- `filter` cathemerium. 
-- create a numeric column by stripping hpi/dpi suffix from time. 
-- compute the mean of the new column by grouping the column time.
-
-<details><summary>Click for the solution</summary>
-```{r}
-meta |> 
-  select(time, treatment) |> 
-  filter(treatment =="cathemerium") |> 
-  mutate(new_time=as.numeric(substr(time, 1, 2))) |> 
-  group_by(time) |>
-  summarize(mean_time_dpi=mean(new_time))
-```
-</details>
 :::
 
 ## Writing to files
@@ -593,19 +624,23 @@ which will open it in the editor panel.
 Of course, you could also find it in your computer's file browser and open it
 in different ways.
 
+## Recap and looking forward
+
+TBA
+
+
 ::: callout-note
 ### Learn more
 
 Regarding data wrangling specifically,
 here are two particularly useful additional skills to learn:
 
-- Pivoting/reshaping ---
-  moving between 'wide' and 'long' data formats with `pivot_wider()` and
-  `pivot_longer()`. This is covered in
-  [episode 13 of the focal Carpentries lesson](https://swcarpentry.github.io/r-novice-gapminder/instructor/13-tidyr.html).
+- Pivoting/reshaping --- moving between 'wide' and 'long' data formats
+  with `pivot_wider()` and `pivot_longer()`. This is covered in
+  [chapter 5 of R for Data Science](https://r4ds.hadley.nz/data-tidy.html#sec-pivoting).
 
 - Joining/merging ---
   combining multiple dataframes based on one or more shared columns.
   This can be done with _dplyr_'s `join_*()` functions --
-  see for example [this chapter in R for Data Science](https://r4ds.hadley.nz/joins.html).
+  see for example [chapter 19 of R for Data Science](https://r4ds.hadley.nz/joins.html).
 :::
