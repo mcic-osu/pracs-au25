@@ -3,119 +3,158 @@ title: "Week 11 Exercises: R Basics"
 pagetitle: "Week 11 Exercises"
 date: 2025-11-03
 author:
-  - name: Jelmer Poelstra
-    orcid: 0000-0002-3514-7462
-    email: poelstra.1@osu.edu
+  - name: Menuka Bhandari
+    #orcid: 0000-0002-3514-7462
+    email: bhandari.72@osu.edu
     affiliation: 
       - name: CFAES Bioinformatics Core, Ohio State University
         url: https://mcic.osu.edu/bioinformatics
+  - name: Jelmer Poelstra
+    orcid: 0000-0002-3514-7462
+    email: poelstra.1@osu.edu
+other-links:
+  - text: "Week 11 overview"
+    icon: book
+    href: w11_overview.html
+  - text: "w11a: Intro to R and RStudio"
+    icon: bookmarks
+    href: w11a_r-basics.html
+  - text: "w11b: R data structures and data types"
+    icon: bookmarks
+    href: w11b_data.html
+  - text: "w11c: Tabular data in R"
+    icon: bookmarks
+    href: w11c_data-frames.html
 editor_options: 
   chunk_output_type: console
 ---
 
 --------------------------------------------------------------------------------
 
-<br>
-
-:::callout-caution
-#### THIS PAGE IS STILL UNDER CONSTRUCTION
-:::
-
 <hr style="height:1pt; visibility:hidden;" />
 
 ## Setting up
 
-1. At <https://ondemand.osc.edu>, start a new
-   RStudio session  [Starting an RStudio Server session at OSC](../week11/w11a_r-basics.html#starting-an-rstudio-server-session-at-osc).
-2. Create a dir `week11/exercises` using function `dir.create("exercise")`
-  **and navigate there** -- this should be your working dir for this exercise.
-3.Open a new R script in RStudio:
-   `File` -> `New File` -> `R Script` and save the R script as 
-   `w11_exercises.R` in your working dir.
-4. You will write your answers to the exercises below in this R script.
+- At <https://ondemand.osc.edu>, start a new RStudio session
+  ([Starting an RStudio Server session at OSC](../week11/w11a_r-basics.html#starting-an-rstudio-server-session-at-osc))
 
-## Exercise 1: Create variables and perfrom Airthmatic operation
-1. Assign value 5 to the variable week11, and 10 to variable week12.
+- Switch to your `week11` RStudio Project
+  ([Working directory and RStudio Projects](../week11/w11a_r-basics.html#Working-directory-and-RStudio-Projects))
+  
+- Open a new R script in RStudio:
+  `File` -> `New File` -> `R Script` and save the R script as 
+  `w11_exercises.R` (inside `week11`).
+   You will write your answers to the exercises below in this R script.
 
-2. Add the values of week11 and week12 and assign the result to to new variable `total_weeks`. Similarly, multiply the values of week11 and week12 and assign the result to new variable `multiply`.
+## Part A: Create variables and perfrom arithmetic operations
 
+1. Assign the value `5` to the variable `week11`, and `10` to the variable `week12`.
+   Print these variables to the console.
 
-## Exercise 2: Create vectors and name its elements
-3. Create a vector `v1` that contains the numbers 1 to 5 and extract third element. Likewise, create another variable `v2` with numbers 6 to 10. Check the structure of `v1` and `v2`.
+2. Add the values of `week11` and `week12` and assign the result to to a new variable `total_weeks`.
+   Similarly, multiply the values of `week11` and `week12` and assign the result
+   to a new variable `multiplied_weeks`.
+   Print these variables to the console.
+
+## Part B: Create vectors and name its elements
+
+3. Create a vector `v1` that contains the numbers 1 through 5.
+   Then, extract the third element of `v1`, printing it to the console.
+   Likewise, create another variable `v2` with numbers 6 to 10.
+   Check what data types `v1` and `v2` contain.
 
 4. Change the name of the third element of `v1` to "Midweek" and print `v1`.
-Check the structure of `v1` after changing third element to `Midweek`. Try to change
-the `v1` to numeric and see what happens.
+   Check the data type of `v1` after changing third element to `Midweek`.
+   Try to change the `v1` to `numeric` and see what happens.
 
-#### Note: After replacing a numeric element with a string, the entire vector becomes a character vector. And when you try to convert it back to numeric, R will return `NA` for the non-numeric elements.
+5. Create a vector `v3` that combines `v1` and `v2`.
+   Extract the third, fourth and fifth element of `v3` and assign it to `v4`.
+   Print `v4` to the console.
 
-5. Create a vector `v3` that combines `v1` and `v2`. Extract the third, fourth and fifth element of `v3` and assign it to `v4`
+## Part C: Install and load new packages in R
 
+6. Install the package `palmerpenguins` and load the package in R.
+   We will use this package in `week13` for data visualization.
 
-## Exercise 3: Install and load new packages in R
-6. Install the package `palmerpenguins` and load the package in R. We will use this package
-in `week13` for data visualization.
+## Part D: Working with dataframes
 
+7. Look for help for `data.frame` function and create a data frame called `df1`
+   using the vectors `v1` and `v2` you created earlier.
 
-## Exercise 4: Working with dataframes
-7. Look for help for `data.frame` function and create a data frame called `df1` using vectors
-`v1` and `v2` created in exercise 2. 
+8. Last week we worked with the `iris` data frame,
+   which is one of the data sets that comes with R.
+   For this exercise, we will use the `mtcars` data frame, which similarly comes with R.
+   Start by storing `mtcars` in a new object called `my_cars`,
+   then view the first 6 rows of `my_cars`.
 
-
-    Last week we worked with the `iris` data sets which is present in the base R. For this     
-    exercise, we will use mtcars data sets which is also available in base R.
-8. Save the mtcars data set as a new object called `my_cars`.
-
-9. Check the structure of the `my_cars` data frame. Structure of data shows the 
-datatypes of different variables in the data frame.
-Compute the mean of the `mpg` variable of `my_cars` data frame.
-
+9. Check the structure of the `my_cars` data frame.
+   Structure of data shows the datatypes of different variables in the data frame.
+   Compute the mean of the `mpg` variable of `my_cars` data frame.
 
 10. Show the first 6 rows of the `my_cars` data frame. 
-Select columns `mpg`, `cyl`, and `hp` from the `my_cars` data frame and display the first 6 rows.
-  
-#### Note: You need to load `tidyverse` package to use the select function.
+    Select columns `mpg`, `cyl`, and `hp` from the `my_cars` data frame and display the first 6 rows.
 
-11. Select two columns`mpg` and cylinder (`cyl`) of `my_cars` data frame with `mpg` 
-greater than 10 and `cyl` equal to 6. Change the cyl variable/column name to cylinders.
-Assign the object to a `new_dataframe`.
-  
-12. Save the new_data frame as a csv file called `my_cars_filtered.csv` in your working directory.
+    ::: {.callout-tip appearance="simple"}
+    Remember to load the _tidyverse_ package before using the `select()` function.
+    :::
 
+11. Write a single "pipeline" that manipulates `my_cars` by:
+    - Selecting columns `mpg` (miles per gallon) and `cyl` (number of cylinders)
+    - Only keeping rows with `mpg` greater than 10 and `cyl` equal to 6.
+    - Renaming the `cyl` column to `cylinders`
+    - Assigning the resulting data frame to an object called `my_cars_filtered`
+  
+12. Save the new_data frame as a CSV file called `my_cars_filtered.csv` in your working directory.
+    In the RStudio "Files" pane,
+    check that the file is there and click on it to view it in the editor pane.
 
 ## Solutions
 
-### Exercise 1: Create variables and perfrom Airthmatic operation
+### Part A: Create variables and perform arithmetic operations
 
 <details><summary>**1.** Assign values to variables</summary>
 
-```r
+```{r}
 week11 <- 5
+week11
+
 week12 <- 10
-
+week12
 ```
 </details>
-<details><summary>**2.** Arithmetic operation</summary>
 
-```r
+<details><summary>**2.** Arithmetic operations</summary>
+
+```{r}
 total_weeks <- week11 + week12
-multiply <- week11 * week12
+total_weeks
 
-```
-### Exercise 2: Create and name a vector
-<details><summary>**3.** Create vectors and extract its elements</summary>
-
-```r
-v1 <- 1:5
-v2 <- 6:10
-v1<-c(1,2,3,4,5)
-v1[3]
-typeof(v1)
+multiplied_weeks <- week11 * week12
+multiplied_weeks
 ```
 </details>
+
+### Part B: Create and name a vector
+
+<details><summary>**3.** Create vectors and extract elements</summary>
+
+```{r}
+v1 <- 1:5
+v1[3]
+
+v2 <- 6:10
+
+typeof(v1)
+typeof(v2)
+```
+</details>
+
 <details><summary>**4.** Change vectors </summary>
 
-```r
+**After replacing a numeric element with a string, the entire vector becomes a character vector**
+**And when you try to convert it back to numeric, R will return `NA` for the non-numeric elements:**
+   
+```{r}
 v1[3] <- "Midweek"
 v1
 typeof(v1)
@@ -125,71 +164,79 @@ as.numeric(v1)
 
 <details><summary>**5.** Combine vectors </summary>
 
-```r
+```{r}
 v3 <- c(v1, v2)
 v4 <- v3[3:5]
+v4
 ```
 
-## Exercise 3: Install and load new packages in R
-<details><summary>**6.** Install package in R </summary>
+### Part C: Install and load new packages in R
 
-```r
+<details><summary>**6.** Install and load a package </summary>
+
+```{r, eval=FALSE}
 install.packages("palmerpenguins")
 library(palmerpenguins)
 ```
 
-## Exercise 4: Working with dataframes
-<details><summary>**7.** Create data frame R </summary>
+### Part D: Working with dataframes
 
-```r
+<details><summary>**7.** Create a data frame </summary>
+
+```{r}
 ?data.frame
+
 df1 <- data.frame(v1, v2)
+df1
 ```
 </details>
+
 <details><summary>**8.** Create object </summary>
 
-```r
+```{r}
 my_cars <- mtcars
+
+head(my_cars)
 ```
+
 </details>
+
 <details><summary>**9.** Structure of data frame </summary>
 
-```r
+```{r}
 typeof(my_cars)
+
 mean(my_cars$mpg)
 ```
 </details>
+
 <details><summary>**10.** Data manipulation </summary>
 
-```r
+```{r}
 head(my_cars)
-library(tidyverse)
-select(.data = my_cars, mpg, cyl, hp) |> 
-  head()
-```
-</details>
-<details><summary>**11.** Data manipulation </summary>
 
-```r
-head(my_cars)
 library(tidyverse)
-select(.data = my_cars, mpg, cyl, hp) |> 
+
+my_cars |>
+  select(mpg, cyl, hp) |> 
   head()
 ```
 </details>
 
-<details><summary>**12.** Data manipulation and assign data to new object </summary>
+<details><summary>**11.** Data manipulation and assign data to new object </summary>
 
-```r
-new_dataframe<- my_cars  |> 
+```{r}
+my_cars_filtered.csv <- my_cars |> 
   select(mpg, cyl) |>
   filter(mpg > 10, cyl == 6 ) |>
-  rename (cylinders = cyl)
+  rename(cylinders = cyl)
+
+my_cars_filtered.csv
 ```
 </details>
+
 <details><summary>**13.** Save data in your working directory </summary>
 
-```r
-write.csv(new_dataframe, "my_cars_filtered.csv", row.names = TRUE)
+```{r, eval=FALSE}
+write_csv(my_cars_filtered.csv, "my_cars_filtered.csv")
 ```
-

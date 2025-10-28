@@ -19,6 +19,9 @@ other-links:
   - text: "Week 12 overview"
     icon: book
     href: w12_overview.html
+  - text: "Graded Assignment 5"
+    icon: pencil
+    href: w8_ga.html
 editor: 
   markdown: 
     wrap: 72
@@ -28,24 +31,15 @@ editor:
 
 <br>
 
-::: callout-caution
-#### THIS PAGE IS STILL UNDER CONSTRUCTION
-
--   Use these as inspiration:
-    -   <https://osu-codeclub.github.io/posts/S10E01_reprod_01/>
-    -   <https://osu-codeclub.github.io/posts/S10E02_reprod_02/>
-    -   <https://biodash.github.io/codeclub/07_rmarkdown/>
-:::
-
 ## Introduction
 
 ### Overview
 
-This session introduces basics of [Quarto](https://quarto.org/) - its
-three components **YAML (YAML Ain't Markup Language) header**, **code
-chunks** and **text**. We will learn to create Quarto document, use
-several options to display/hide codes and figures and render Quarto
-document to html document.
+This session introduces the basics of [Quarto](https://quarto.org/) -
+its three components **YAML header**, **code chunks** and **text**. You
+will learn to create Quarto documents, use several options to
+display/hide codes and figures, and render your Quarto source document
+to an output HTML document.
 
 ### Learning goals
 
@@ -58,13 +52,17 @@ In this session, you will learn:
 
 ## Quarto
 
-Quarto is the next-generation version of R Markdown that allows to
-combine prose, code, results. Quarto is not limited to single
-programming language but is available in R, Python, Julia and
-Observable. Here, we will focus to use Quarto in RStudio.
+Quarto is an extenstion of Markdown that allows to combine prose, code,
+and results[^1]. Quarto is not limited to a single programming language
+but can run R, Python, Julia and Observable code. Here, we will focus on
+using Quarto in RStudio with R.
+
+[^1]: It is the next-generation version of R Markdown, in case you have
+    heard of that.
 
 Quarto documents are reproducible and support different output formats
-such as PDFs, Microsoft Word files, presentations and many more.
+such as PDFs, Microsoft Word files, slide decks (presentations) and many
+more.
 
 **Advantages of using Quarto:**
 
@@ -74,38 +72,64 @@ such as PDFs, Microsoft Word files, presentations and many more.
     and more
 3.  Reproducibility of research
 
-**Note: Quarto is a command-line interface tool but not R package.
-Therefore, you do not need to install it separately. Rstudio has
-integrated Quarto to work with R.** **However, there is an R package
-`quarto` that allows to call Quarto from R console.**
+::: {.callout-tip appearance="simple"}
+Quarto is integrated into RStudio and you don't need to install a
+package or anything else for basic usage.
+:::
 
-```{r}
-#| echo: true
-#| eval: false
-# Install Quarto R package
-install.packages("quarto")
-```
+### Open a new Quarto document in Rstudio
 
-### Open new Quarto document in Rstudio
+A Quarto file is a plain text file with a `.qmd` extension. To create a
+new Quarto document: `File` \> `New File` \> `Quarto Document`
 
-Quarto file is a plain text file with `.qmd` extension. To create a new
-Quarto document: `File` \> `New File` \> `Quarto Document`
-![](../img/quarto_file_open.png){width="100%" fig-align="center"}
+![](../img/quarto_file_open.png){width="70%" fig-align="center"}
 
 This will open a new window with several options. We can select the
 Quarto outputs such as Documents, Presentation, interactive in different
 formats. For example, for documents, we can pick HTML, PDF or Word
-format. We can even choose Engine Knitr or Jupyter.
+format. Here, we will select `Document` and `HTML` format.
 
-![](../img/new_quarto_doc.png){width="60%" fig-align="center"} This will
-create an new unamed `Untitled.qmd` file. Lets rename it, by going to
-`File`, `Save As` and `name of the file`.
+![](../img/new_quarto_doc.png){width="60%" fig-align="center"}
 
-## Components of Quarto:
+This will create an new unamed `Untitled.qmd` file. Let's rename it, by
+going to `File`, `Save As` and then save it as `quarto_intro.qmd`.
+
+## Rendering Quarto documents
+
+Rendering a Quarto document converts the `.qmd` document to the
+requested format **(html/pdf or any other format)**. During rendering,
+Quarto document (`.qmd`) is first processed using **knitr**, which
+executes code in the documents and produces a pain Markdown file, and
+then converted to the final format using **pandoc**.
+
+So, while rendering, all code chunks are executed and their output is
+embedded in the final document along with the text. **However, if there
+are any codes that produces error, your document will not be rendered.**
+
+To render a Quarto document, click on the `Render` button:
+
+![](../img/render.png){width="80%" fig-align="center"}
+
+You can also use a keyboard shortcut to render: `Ctrl-Shift-K` (Windows)
+or `Cmd-Shift-K` (Mac).
+
+There is an option to render automatically when you save. I would not
+personally prefer to click it because if you are doing some
+computationally intensive task, it will keep rendering.
+
+**View the output document:** You can view the output either in a
+separate window, or in the Viewer pane. The gear icon next to the
+Render button can be used to change output viewing settings.
+
+## Components of Quarto documents
+
+A Quarto document has the following three main components:
 
 1.  The YAML header surrounded by (`---`)
 2.  Code chunk surrounded by (\`\`\`{r})
-3.  Text- explanation of results
+3.  Regular text with Markdown formatting
+
+We'll go over these one-by-one now.
 
 ### YAML header
 
@@ -113,42 +137,88 @@ The header for the Quarto document is written in **YAML language**. It
 allows to specify themes, formats, executable options and many more.
 Additionally, it consists of series of metadata such as title, author
 date etc. You can think of YAML header as the settings of the Quarto
-document on how to process and present your document. It is surrounded
-by (`---`), at the top of the Quarto document. A simple example of YAML
-header is shown below: ![](../img/yaml_header.png){width="80%"
-fig-align="center"}
+document on how to process and present your document.
+
+It is surrounded by (`---`), at the top of the Quarto document. A simple
+example of YAML header is shown below:
+
+![](../img/yaml_header.png){width="80%" fig-align="center"}
 
 We can add some additional contents to the YAML header such as authors,
-date, table of content and set the theme
+date, table of content and set the theme:
+
 ![](../img/yaml_header_1.png){width="40%" fig-align="center"}
 
-Some of the additional contents of the YAML header can be found
-[here](https://quarto.org/docs/output-formats/html-basics.html)
+
+
+Some of the additional options for the YAML header can be found
+[here](https://quarto.org/docs/output-formats/html-basics.html).
+
+#### Project level YAML
+YAML header can be specified at the project level in a file named. `_quarto.yml` in the root 
+directory of your project. This file can be used to set default options for all Quarto documents 
+in the project. More information about project level YAML can be found 
+[here](https://quarto.org/docs/projects/project-configuration.html).
+
+
+#### Document level YAML
+Document level YAML is specified at the beginning of each Quarto document. This YAML header can override the project level YAML settings for that specific document.
+
+
+##### YAML mapping
+The YAML header starts and ends with three hyphens (`---`). 
+Each key-value pair should be on a new line, with a colon (`:`) followed by a space 
+separating the key and value. If a value is a nested mapping, indent the nested pairs—typically using two spaces per level. 
+Keys are case-sensitive, and values can be strings, numbers, booleans, lists, or nested lists. 
+Strings with special characters should be enclosed in quotes.
+
+##### YAML Sequences
+A key sets of ordered variables can be specified a YAML sequences in two different ways:
+1. Inline syntax: Comma-separated values enclosed in square brackets (`[ ]`).
+2. Block syntax: Each item on a new line, preceded by a hyphen (`-`).
+![](../img/inline_syntax_quarto.png){width="50%" fig-align="center"}
+
+
+##### Quotes
+In YAML, strings do not require quotes. However, strings can be enclosed in single (`' '`) or double 
+(`" "`) quotes to handle special characters, spaces, or to preserve formatting.
+- Single quotes (`' '`) treat the content literally
+- Double quotes (`" "`) allow for escape characters in them
+
+
+::: exercise
+#### {{< fa user-edit >}} Exercise: Change the YAML header
+
+***TBA***
+
+-   E.g. author, etc
+-   Change the `theme`: provide a link to the different options
+:::
 
 ### Code chunks
 
-**Code chunks** is a section to write and execute the code. It is
-enclosed in a three back ticks followed by `r`. You can write multiple
-line of codes inside the code chunks.
+**Code chunks** are where you write (R) code that can be executed. These
+are very similar to the code blocks you are already used to in plain
+Markdown files, except that to "enable executability", you enclose the
+language indicator (`r`) in curly braces (`{r}`):
+
 ![](../img/code_chunk.png){width="80%" fig-align="center"}
 
-**Code chunks can be added in three different ways in RStudio**
+::: {.callout-tip appearance="minimal"}
+Without these curly braces, these blocks behave just like code block in
+plain Markdown: they show code formatting, but are not executed.
+:::
 
-1.  Keyboard commands: `Ctrl-Alt-I` (Windows) or `Cmd-Option-I` (Mac)
+**Code chunks can be added in three different ways in RStudio:**
+
+1.  Keyboard shortcuts: `Ctrl-Alt-I` (Windows) or `Cmd-Option-I` (Mac)
 
 2.  Typing it manually \`\`\``{r}` followed by three back ticks \`\`\`
     at the end of the chunk
 
-3.  Clicking the insert button in the toolbar and select R
+3.  Clicking the insert button in the toolbar and select R:
 
     ![](../img/insert_code_chunk.png){width="50%" fig-align="center"}
-
--   We can include comment inside the code chunk using the `#` symbol
-    (**similar to bash**).
--   Triangle sign with a line below execute all the code chunks before
-    the current chunk.
--   Triangle sign facing towards right (similar to play button) runs the
-    current chunk.
 
 #### Chunk options
 
@@ -186,11 +256,15 @@ of code. Some of the commonly used chunk options are:
 
 -   `fig-show=hide` to hide the figures
 
-More chunk options can be found \[here\]
-(https://quarto.org/docs/computations/execution-options.html/). Chunk
-options can be either written directly inside the `curly braces`
-(similar to the R Markdown) or by using `#| (YAML syntax)` before the
-code chunk where each `#|` line sets one option.
+***TBA - This is a very long list -- I would start with a few options
+and demonstrate*** ***those, and then at the end present a list with
+additional options***
+
+More chunk options can be found
+[here](https://quarto.org/docs/computations/execution-options.html/).
+Chunk options can be either written directly inside the `curly braces`
+or by using `#| (YAML syntax)` before the code chunk where each `#|`
+line sets one option:
 
 ```{r echo=TRUE}
 # Example code chunk
@@ -202,7 +276,17 @@ code chunk where each `#|` line sets one option.
 2*3
 ```
 
-#### Chunk labels
+### Global vs. chunk-specific options
+
+***TBA - Expand on this and clarify the paragraph below***
+
+You can change the default option of the chunk. Suppose you want to show
+just the figures and table without showing the command that produces it.
+You can do it in the Quarto YAML header under execute, by adding the
+following global option:`execute: echo :false`.
+
+::: callout-note
+##### Chunk labels
 
 Chunks can be labelled in Quarto using `#| label: chunk-name` before the
 code chunk. The chunk name should be unique and cannot contain spaces.
@@ -223,8 +307,11 @@ code chunk. The chunk name should be unique and cannot contain spaces.
 #| label: my-second-chunk
 5 * 6
 ```
+:::
 
-#### Run the code chunk:
+#### Running the code chunk
+
+There are several different options to run individual code chunks:
 
 1.  Click the green play button
 2.  Keyboard shortcut: `Ctrl-Shift-Enter` (Windows) or `Cmd-Shift-Enter`
@@ -232,13 +319,31 @@ code chunk. The chunk name should be unique and cannot contain spaces.
 3.  Place the cursor inside the chunk and press `Ctrl-Enter` (Windows)
     or `Cmd-Enter` (Mac)
 
+Additional notes:
+
+-   Just like in regular R code, you can include comments inside the
+    code chunk using the `#` symbol.
+-   Triangle sign with a line below execute all the code chunks before
+    the current chunk.
+-   Triangle sign facing towards right (similar to play button) runs the
+    current chunk.
+
+***TBA - Add screenshot highlighting the triangle signs - and show this
+in action in class***
+
+::: exercise
+#### {{< fa user-edit >}} Exercise: TBA
+
+***TBA***
+:::
+
 ### Markdown text
 
-The default text for the Quarto is Markdown, unlike R, where everything
-is considered code until commented out by `#`. Therefore, you can
-directly write the text outside the code chunks. Quarto text syntax is
-based on Pandoc Markdown which is similar to original Markdown syntax we
-discussed in
+The "default text" in Quarto documents is Markdown, unlike in R scripts,
+where everything is considered code until commented out by `#`.
+Therefore, you can directly write regular text outside the code chunks.
+Quarto text syntax is based on Pandoc Markdown which is similar to
+original Markdown syntax we discussed in
 [Week02](https://mcic-osu.github.io/pracs-au25/week02/w2b_vscode-markdown.html)
 
 #### Headings
@@ -254,58 +359,23 @@ Source editor: Example 1:
 back ticks followed by `r` such as `r 2+2` which will produce `r 2+2` in
 the output document.**
 
-### Render a Quarto document
-
-Rendering a Quarto document converts the `.qmd` document to the
-requested format **(html/pdf or any other format)**. During rendering,
-Quarto document(`.qmd`) is first processed using the **knitr** and then
-converted to the final format using **pandoc**. While rendering, all the
-code chunks are executed and the output is embedded in the final
-document with the text. **However, if there are any codes that produces
-error, your document will not be rendered.** To render a Quarto
-document, click on the `Render` button.
-![](../img/render.png){width="80%" fig-align="center"}
-
-**Other options to render Quarto document:**
-
--   Press `Ctrl-Shift-K` (Windows) or `Cmd-Shift-K` (Mac) to render the
-    document.
--   Use command `quarto::quarto_render("filename.qmd")` in the console.
-
-```{r}
-#| echo: true
-#| eval: false
-quarto::quarto_render("first_quarto_document.qmd")
-```
-
-There is an option to render automatically when you save. I would not
-personally prefer to click it because if you are doing some
-computationally intensive task, it will keep rendering.
-
-**Visualize output:** You can visualize output either in the separate
-window or viewer pan. The gear icon next to the Render would help to
-change the setting of output visualization.
-
-## Global option
-
-You can change the default option of the chunk. Suppose you want to show
-just the figures and table without showing the command that produces it.
-You can do it in the Quarto YAML header under execute, by adding the
-following global option:`execute: echo :false`.
+***TBA - Since they are used to Markdown, I would start by not using the
+Visual editor.*** ***But this could be a good place to introduce the
+visual editor***
 
 ## Practice
 
-1. Create a PDF by saving the Quarto(.qmd) file you created to save your
-script.
-2. Add the following to the YAML header of your Quarto document:
-   - Author name
-   - Date
-   - Table of contents
-   - Theme
-3. Load the package `palmerpenguins` installed in `week11` exercise and save the 
-`penguins` data in a object called penguin_data.
-4. Create a scatter plot of `flipper_length_mm` (x-axis) and
-`body_mass_g` (y-axis) colored by `species` using `ggplot2` package.
-5. Customize the figure by adding figure caption, changing the figure
-dimensions (height and width) and aligning it to the center.
-6. Add a text section explaining the figure you created above.
+1.  Create a PDF by saving the Quarto(.qmd) file you created to save
+    your script.
+2.  Add the following to the YAML header of your Quarto document:
+    -   Author name
+    -   Date
+    -   Table of contents
+    -   Theme
+3.  Load the package `palmerpenguins` installed in `week11` exercise and
+    save the `penguins` data in a object called penguin_data.
+4.  Create a scatter plot of `flipper_length_mm` (x-axis) and
+    `body_mass_g` (y-axis) colored by `species` using `ggplot2` package.
+5.  Customize the figure by adding figure caption, changing the figure
+    dimensions (height and width) and aligning it to the center.
+6.  Add a text section explaining the figure you created above.
