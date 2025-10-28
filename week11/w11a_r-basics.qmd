@@ -19,6 +19,9 @@ other-links:
   - text: "Week 11 overview"
     icon: book
     href: w11_overview.html
+  - text: "w11a: Intro to R and RStudio"
+    icon: bookmarks
+    href: w11a_r-basics.html
   - text: "w11b: R data structures and data types"
     icon: bookmarks
     href: w11b_data.html
@@ -34,7 +37,7 @@ bibliography: ../references.bib
 
 ### Overview and learning goals of the course's R material
 
-This is the first of a series of four weeks that will focus on the R language.
+This is the first of four-weeks series that will focus on the R language.
 Besides being a great all-round tool for data analysis and visualization,
 the R language is probably the best environment for the "downstream" analysis
 of omics data, with an excellent array of packages for e.g.:
@@ -60,22 +63,21 @@ In this lecture, you will learn:
 
 - The RStudio layout and the functions of the different panes and tabs
 - The basics of interacting with R by using R as a calculator
-- Defining a variable/object in R, and assigning values/data to them
+- Defining a variables/objects in R, and assigning values/data to them
 - Calling R functions
 - Installing and loading R packages
 - Getting help in R
 
 ## Starting an RStudio Server session at OSC
 
-You can use R with a "console" that can simply be run inside the terminal.
-And you can install it locally on your own computer.
-At OSC, you can do so after loading the R module.
-However, we'll use R with a fancy editor (or "IDE", Integrated Development Environment)
+You can use R with a "console" that runs directly inside the terminal.
+At OSC, you can R inside terminal after loading the R module.
+However, we will use R with a fancy editor (or "IDE", Integrated Development Environment)
 called [RStudio](https://www.rstudio.com/products/rstudio/download/#download),
 which makes working with it much more pleasant!
-You can download **RStudio** in your local computer.
+You can also download **RStudio** to your local computer.
 
-Like with VS Code, we can run a version of RStudio ("RStudio Server") within our
+Similar to VS Code, we can run a version of RStudio ("RStudio Server") within our
 browsers by starting an Interactive App through OSC OnDemand.
 
 1. Log in to OSC’s OnDemand portal at <https://ondemand.osc.edu>
@@ -128,14 +130,14 @@ each of which have multiple tabs:
 :::
 
 ## R basics
-There are multiple things we can do in R: data manipulation, data visualization, 
-statistical analysis, machine learning and many more. Here, we will first learn to use 
-R as calculator.
+R can be used for many tasks: data manipulation, data visualization, 
+statistical analysis, machine learning and many more. Here, we will start by learning to use 
+R as a calculator.
 
 ### R as calculator
 
 To get used to typing and executing R code,
-we'll simply use R as a calculator --
+we will simply use R as a calculator --
 type `5 + 5` in the console and press <kbd>Enter</kbd>:
 
 ```{r}
@@ -143,8 +145,8 @@ type `5 + 5` in the console and press <kbd>Enter</kbd>:
 ```
 
 R will print the result of the calculation, `10`.
-The result is prefaced by `[1]`, which is simply an index/count of outputs,
-which can be helpful when multiple/many numbers or other elements are printed.
+The result is prefaced by `[1]`, which is simply an index/count of output,
+which can be helpful when multiple numbers and elements are printed.
 
 Some additional calculation examples:
 
@@ -188,13 +190,14 @@ From highest to lowest precedence:
 -   Subtract: `-`
 :::
 
+
 ### The R prompt
 
-The `>` sign in your console is the R prompt, which indicates that R is ready
+The `>` sign in your console is the R prompt, indicating that that R is ready
 for you to type something.
-In other words, this is equivalent to the `$` Bash prompt that you're used to.
+In other words, this is equivalent to the `$` Bash prompt that you are used to.
 
-Also just like in the Unix shell, when you are not seeing the `>` prompt,
+Also just like in Unix shell, when you are not seeing the `>` prompt,
 R is either **busy** (because you asked it to do a longer-running computation)
 or **waiting** for you to complete an incomplete command.
 
@@ -221,7 +224,7 @@ you can use `#` signs to comment your code, both inline and on separate lines:
 
 ```{r}
 # This line is entirely ignored by R
-10 / 5  # This line contains code but everythig after the '#' is ignored
+10 / 5  # This line contains code but everything after the '#' is ignored
 ```
 :::
 
@@ -261,6 +264,28 @@ Here are the most common comparison operators in R:
 
 : {.striped .hover}
 
+::: exercise
+#### Exercise: R as a calculator
+
+1. Find the natural log, log to the base 10, log to the base 2, 
+square root and the natural antilog of 20.
+
+   <details><summary>*Click to see a solution*</summary>
+
+   - To print log of 20 in different bases and square root and natural antilog of 20:
+     
+   ```{r}
+   log(20)        # Natural log
+   log10(20)     # Log to the base 10
+   log2(20)      # Log to the base 2
+   sqrt(20)      # Square root
+   exp(20)       # Natural antilog
+   
+   ```
+  </details>
+  
+:::
+
 ### Functions in R
 
 To do almost anything in R, you will use "**functions**",
@@ -294,16 +319,16 @@ We will use it to visualize the data sets present in R.
 head(iris)
 ```
 
-You can recognize function calls by the parentheses.
+You can recognize function calls by parentheses.
 Inside those parentheses, you can provide **arguments** to a function. Arguments are the actual
 values you provided to run a function().
 
-**Arguments that are not object has to be in quotes in R**
+**Arguments that are not object have to be in quotes in R**
 
 In R, you can choose to name the **arguments** in a function or just use their **position**, Named argument and positional argument.
-You can assign the values to argument, using the equal to sign `=`. When you assign values to the arguments, the the order does not matter, R will know exactly which value goes
+You can assign the values to argument, using the equal to sign `=`. When you assign values to the arguments, the order does not matter, R will know exactly which value goes
 where. For example, in `head(n = 6, x = iris)`, the argument ***x*** is explicitly named so the function will run successfully. However, you can also write `head(iris)`, and it gives the same output because R knows the first argument of
-head() is ***x***.  `head(6, iris)` will not produce any output because the arguments are called by position but are in wrong order.
+head() is ***x***.  `head(6, iris)` will not produce any output because the arguments are called by position but are in the wrong order.
 
 ```{r}
 head(n=6, x = iris)
@@ -350,8 +375,7 @@ For example:
 ?list.files
 ```
 
-The output should be shown in the Viewer tab of the bottom left RStudio panel,
-and look something like this:
+The output should appear in the Viewer tab of the bottom-left panel in RStudio and should look something like this:
 
 ![](../img/help_list_files.png){width="75%" fig-align="center"}
 
@@ -374,18 +398,18 @@ conversion
 
 In the shell, we've been calling these _variables_,
 and that terminology is also used for R objects like the above ones.
-However, R objects can take on many forms (we'll talk about _data structures_ in a bit),
+However, R objects can take on many forms (we will talk about _data structures_ in a bit),
 including more complicated things like tables.
 That's why the general term object is used here.
 
 To see the contents of an object, you can use the `print()` function as the
-equivaluent of `echo` in the Unix shell:
+equivalent of `echo` in the Unix shell:
 
 ```{r}
 print(length_cm)
 ```
 
-However, in R you can actually also omit `print()` and simply type an object's name:
+However, in R you can also omit `print()` and simply type an object's name:
 
 ```{r}
 length_cm
@@ -415,11 +439,64 @@ Some pointers on object names:
   - Capitalization: `wingspanInch` or `WingspanInch` (“camel case”)
 
 - You will make things easier for yourself by naming objects in a consistent way,
-  for instance by always sticking to your favorite case style like “snake case.”
+  for instance, by always sticking to your favorite case style like “snake case.”
 
 - Object names can contain but cannot start with a number: `x2` is valid but `2x` is not.
 
 - Make object names descriptive yet not too long — this is not always easy!
+
+::: exercise
+#### Exercise: Assigning objects in R
+
+1. Write the R code to assign the value 20 to the name num_1 and 15 to num_2.
+
+   <details><summary>*Click to see a solution*</summary>
+     
+   ```{r}
+   num_1 <- 20
+   num_2 <- 15
+   ```
+  </details>
+  
+2. What is sum of num_1 and num_2?
+
+   <details><summary>*Click to see a solution*</summary>
+     
+   ```{r}
+   num_1 + num_2
+   ```
+  </details>
+  
+3. Assign the result of num_1 minus num_2 to a new object called difference. What is the value of difference?
+
+   <details><summary>*Click to see a solution*</summary>
+     
+   ```{r}
+   difference <- num_1 - num_2
+   difference
+   ```
+  </details>
+  
+4. Which of the following is a valid object name in R?
+
+   a) 2nd_value  
+   b) value_2  
+   c) total value  
+   d) TotalValue  
+
+   <details><summary>*Click to see a solution*</summary>
+     
+   The valid object names are:  
+   
+   b) value_2  
+   
+   d) TotalValue  
+   
+   Object names cannot start with a number and cannot contain spaces (so a and c options are invalid).
+   
+  </details>
+  
+:::
 
 ## R packages
 
@@ -452,8 +529,8 @@ library(tidyverse)
 ```
 
 In RStudio server at OSC,
-packages will by default be installed into a standard location in your Home dir,
-so they can be accessed through time and regardless of what your working dir is,
+packages will by default be installed into a standard location in your Home directory,
+so they can be accessed through time and regardless of what your working directory is,
 or what OSC project you are using^[And this works equivalently on your own computer.].
 
 However, package installation is done separately for:
