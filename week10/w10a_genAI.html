@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jelmer Poelstra">
-<meta name="dcterms.date" content="2025-10-13">
+<meta name="dcterms.date" content="2025-10-28">
 
-<title>GenAI – PRACS-AU25</title>
+<title>w10a: GenAI I – PRACS-AU25</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -44,6 +64,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/bootstrap/bootstrap-2249f211b4ff13c2f7c9e38a36b3bb61.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -136,7 +159,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../week10/w10_overview.html">
- <span class="dropdown-text">Week 10: Coding with generative AI</span></a>
+ <span class="dropdown-text">Week 10: Using generative AI</span></a>
   </li>  
         <li class="dropdown-header">Week 11: R – basics [TBA]</li>
         <li class="dropdown-header">Week 12: R – Quarto [TBA] (half-week)</li>
@@ -327,34 +350,75 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a>
+  <ul class="collapse">
+  <li><a href="#learning-goals" id="toc-learning-goals" class="nav-link" data-scroll-target="#learning-goals"><span class="header-section-number">1.1</span> Learning goals</a></li>
+  </ul></li>
+  <li><a href="#generative-ai-background" id="toc-generative-ai-background" class="nav-link" data-scroll-target="#generative-ai-background"><span class="header-section-number">2</span> Generative AI background</a>
+  <ul class="collapse">
+  <li><a href="#ai-in-bioinformatics-and-biology" id="toc-ai-in-bioinformatics-and-biology" class="nav-link" data-scroll-target="#ai-in-bioinformatics-and-biology"><span class="header-section-number">2.1</span> AI in bioinformatics and biology</a></li>
+  <li><a href="#generative-ai" id="toc-generative-ai" class="nav-link" data-scroll-target="#generative-ai"><span class="header-section-number">2.2</span> Generative AI</a></li>
+  <li><a href="#phd-level-intelligence" id="toc-phd-level-intelligence" class="nav-link" data-scroll-target="#phd-level-intelligence"><span class="header-section-number">2.3</span> PhD-level intelligence?</a></li>
+  </ul></li>
+  <li><a href="#ohio-state-genai-adoption" id="toc-ohio-state-genai-adoption" class="nav-link" data-scroll-target="#ohio-state-genai-adoption"><span class="header-section-number">3</span> Ohio State genAI adoption</a></li>
+  <li><a href="#where-to-ask-questions-to-genai" id="toc-where-to-ask-questions-to-genai" class="nav-link" data-scroll-target="#where-to-ask-questions-to-genai"><span class="header-section-number">4</span> Where to ask questions to genAI</a>
+  <ul class="collapse">
+  <li><a href="#browser-based-chat-with-ohio-state-approved-genai-tools" id="toc-browser-based-chat-with-ohio-state-approved-genai-tools" class="nav-link" data-scroll-target="#browser-based-chat-with-ohio-state-approved-genai-tools"><span class="header-section-number">4.1</span> Browser-based chat with Ohio State approved genAI tools</a></li>
+  <li><a href="#inside-ides" id="toc-inside-ides" class="nav-link" data-scroll-target="#inside-ides"><span class="header-section-number">4.2</span> Inside IDEs</a></li>
+  </ul></li>
+  <li><a href="#applications-in-bioinformatics-and-omics-data-analysis" id="toc-applications-in-bioinformatics-and-omics-data-analysis" class="nav-link" data-scroll-target="#applications-in-bioinformatics-and-omics-data-analysis"><span class="header-section-number">5</span> Applications in bioinformatics and omics data analysis</a>
+  <ul class="collapse">
+  <li><a href="#not-coding" id="toc-not-coding" class="nav-link" data-scroll-target="#not-coding"><span class="header-section-number">5.1</span> Not coding</a></li>
+  <li><a href="#generating-code" id="toc-generating-code" class="nav-link" data-scroll-target="#generating-code"><span class="header-section-number">5.2</span> Generating code</a></li>
+  <li><a href="#code-related" id="toc-code-related" class="nav-link" data-scroll-target="#code-related"><span class="header-section-number">5.3</span> Code-related</a></li>
+  </ul></li>
+  <li><a href="#initial-examples-with-microsoft-copilot" id="toc-initial-examples-with-microsoft-copilot" class="nav-link" data-scroll-target="#initial-examples-with-microsoft-copilot"><span class="header-section-number">6</span> Initial examples with Microsoft Copilot</a>
+  <ul class="collapse">
+  <li><a href="#signing-in" id="toc-signing-in" class="nav-link" data-scroll-target="#signing-in"><span class="header-section-number">6.1</span> Signing in</a></li>
+  <li><a href="#example-prompts" id="toc-example-prompts" class="nav-link" data-scroll-target="#example-prompts"><span class="header-section-number">6.2</span> Example prompts</a></li>
+  <li><a href="#example-prompts-with-custom-file-uploads" id="toc-example-prompts-with-custom-file-uploads" class="nav-link" data-scroll-target="#example-prompts-with-custom-file-uploads"><span class="header-section-number">6.3</span> Example prompts with custom file uploads</a></li>
+  </ul></li>
+  <li><a href="#tips-and-pitfalls" id="toc-tips-and-pitfalls" class="nav-link" data-scroll-target="#tips-and-pitfalls"><span class="header-section-number">7</span> Tips and pitfalls</a>
+  <ul class="collapse">
+  <li><a href="#advice-on-writing-effective-prompts" id="toc-advice-on-writing-effective-prompts" class="nav-link" data-scroll-target="#advice-on-writing-effective-prompts"><span class="header-section-number">7.1</span> Advice on writing effective prompts</a></li>
+  <li><a href="#pitfalls" id="toc-pitfalls" class="nav-link" data-scroll-target="#pitfalls"><span class="header-section-number">7.2</span> Pitfalls</a></li>
+  </ul></li>
   </ul>
-</nav>
+<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w10_overview.html"><i class="bi bi-book"></i>Week 10 overview</a></li><li><a href="w10b_copilot.html"><i class="bi bi-bookmarks"></i>w10b: GenAI with GitHub Copilot</a></li><li><a href="w10_ga.html"><i class="bi bi-pencil"></i>Week 10 graded assignment</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Using generative AI when coding</h1>
-<p class="subtitle lead">Week 8 Lecture</p>
+<h1 class="title">Using generative AI when coding and beyond</h1>
+<p class="subtitle lead">Week 10 - lecture A</p>
 </div>
 
 
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Jelmer Poelstra <a href="mailto:poelstra.1@osu.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> <a href="https://orcid.org/0000-0002-3514-7462" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="https://mcic.osu.edu/bioinformatics">
+            CFAES Bioinformatics Core, Ohio State University
+            </a>
+          </p>
+      </div>
+  </div>
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Jelmer Poelstra </p>
-          </div>
-  </div>
-    
+      
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 13, 2025</p>
+      <p class="date">October 28, 2025</p>
     </div>
   </div>
   
@@ -368,14 +432,390 @@ ul.task-list li input[type="checkbox"] {
 
 <hr>
 <p><br></p>
-<section id="overview" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="overview">Overview</h3>
-<p><br></p>
+<section id="introduction" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
+<section id="learning-goals" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="learning-goals"><span class="header-section-number">1.1</span> Learning goals</h3>
+<p>This week, you will learn about using generative AI (genAI) tools to help you with tasks in omics data analysis, especially coding talks.</p>
+<p>In this lecture, you wil learn:</p>
+<ul>
+<li>Basic background of generative AI (genAI) and large language models (LLMs)</li>
+<li>What GenAI applications exist in bioinformatics and omics data analysis</li>
+<li>About Ohio State’s genAI adoption and approved tools</li>
+<li>What options you have for using genAI tools, including for coding</li>
+<li>Example prompts and outputs relevant to this course</li>
+<li>Tips and pitfalls when using genAI tools, especially for coding</li>
+</ul>
+<p>And in this week’s second lecture, you will learn how to:</p>
+<ul>
+<li>Use your local VS Code installation at OSC</li>
+<li>Enable and configure GitHub Copilot within VS Code</li>
+<li>Use GitHub Copilot within VS Code to help you with coding tasks</li>
+</ul>
+</section>
+</section>
+<section id="generative-ai-background" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="generative-ai-background"><span class="header-section-number">2</span> Generative AI background</h2>
+<section id="ai-in-bioinformatics-and-biology" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="ai-in-bioinformatics-and-biology"><span class="header-section-number">2.1</span> AI in bioinformatics and biology</h3>
+<p>While conventional machine learning (ML) approaches have been used for decades in bioinformatics and biology more broadly, two kinds of more complicated AI have been developed and applied more recently:</p>
+<ul>
+<li><strong>Deep learning / Neural nets</strong> have become commonly used in the past 10+ years
+<ul>
+<li>DeepMind’s AlphaFold – 3D protein structure prediction from sequence</li>
+<li>DeepVariant – variant calling from sequencing data</li>
+<li>Applications in image analysis, e.g.&nbsp;microscopy or histology images</li>
+</ul>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Also numerous applications outside of bioinformatics. Example in plant pathology – <span class="citation" data-cites="zhang2022">Zhang et al. (<a href="#ref-zhang2022" role="doc-biblioref">2022</a>)</span>: <em>Assessing the efficacy of machine learning techniques to characterize soybean defoliation from unmanned aerial vehicles</em></p>
+</div>
+</div>
+</div></li>
+<li><strong>Generative AI</strong></li>
+</ul>
+</section>
+<section id="generative-ai" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="generative-ai"><span class="header-section-number">2.2</span> Generative AI</h3>
+<p>Generative AI refers to a class of artificial intelligence models designed to create new content, such as text, images, music, or code. This has become extremely prominent since ChatGPT’s launch in 2022.</p>
+<p><strong>Large Language Models (LLMs)</strong> are a subset of generative AI that try to understand and can generate human language. They are trained on vast amounts of text data and can perform a variety of language-related tasks, including code writing.</p>
+<p>The “P” in ChatGPT stands for “<strong>pre-trained</strong>”, meaning the model only knows about the data that it was trained on. However, some genAI models are also able to search the web, like openAI’s Deep Research. The usage of information outside of the training data is called “<em>Retrieval Augmented Generation</em>” (RAG), which also includes simpler cases where you upload a file and ask questions about it.</p>
+<blockquote class="blockquote">
+<p>In simple terms, LLMs such as ChatGPT aim to predict the next part of a word or phrase based on a user-provided text prompt.</p>
+<p>— <span class="citation" data-cites="cooper2024">Cooper et al. (<a href="#ref-cooper2024" role="doc-biblioref">2024</a>)</span>: <em>Harnessing large language models for coding, teaching and inclusion to empower research in ecology and evolution</em></p>
+</blockquote>
+<p><strong>However</strong>, it’s important to realize that LLMs don’t just go word-by-word: those kind of purely “sequential” models have been around for a long time and have long been present in Google when you type in your search phrase. LLMs use more complex architectures, such as <strong>“transformers”</strong>, which allow them to consider the broader context of the input text (the T in ChatGPT stands for “transformer”).</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Want to learn a bit more background about genAI?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://www.youtube.com/watch?v=LPZh9BOjkQs">Large language models explained briefly (8 minute video)</a></li>
+<li><a href="https://ai.osu.edu/faculty-staff-students/learn-use-ai">“Learn to use AI” page by Ohio State University</a></li>
+<li><a href="https://blog.stephenturner.us/p/free-ai-courses-google">Overview of some free brief courses on AI by Google</a></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="phd-level-intelligence" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="phd-level-intelligence"><span class="header-section-number">2.3</span> PhD-level intelligence?</h3>
+<p>The latest models that have come out this year have been claimed to have “PhD-level intelligence”. However, even though these models are incredibly powerful and useful, something to keep in mind when using them (see also <a href="#tips-and-pitfalls">Tips and pitfalls</a> below) is that they can still fail spectacularly on “kindergarten-level” tasks:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/ai-alphabet.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="../img/ai-alphabet.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%" alt="An AI-generated image illustrating the alphabet"></a></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="ohio-state-genai-adoption" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="ohio-state-genai-adoption"><span class="header-section-number">3</span> Ohio State genAI adoption</h2>
+<p>Ohio State University is one of several universities that have gone all-in on generative AI adoption in education.</p>
+<blockquote class="blockquote">
+<p>Ohio State is leading a bold, groundbreaking initiative to integrate artificial intelligence into the undergraduate educational experience. The initiative will ensure that every Ohio State student, beginning with the class of 2029, will graduate being AI fluent — fluent in their field of study, and fluent in the application of AI in that field.</p>
+<p>— <a href="https://oaa.osu.edu/ai-fluency" class="uri">https://oaa.osu.edu/ai-fluency</a></p>
+</blockquote>
+<p>This includes mandatory courses for first-year undergraduates in the use of genAI.</p>
+<p><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <span style="color:purple"><em>What have you noticed of this?</em></span></p>
+<hr style="height:1pt; visibility:hidden;">
+<hr>
+<p>Last week, an interesting <a href="https://www.nature.com/articles/d41586-025-03340-w%3E">News Feature about genAI adoption at universities</a> (<span class="citation" data-cites="pearson2025">Pearson (<a href="#ref-pearson2025" role="doc-biblioref">2025</a>)</span>) was published in Nature:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/nature-news-ai.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="../img/nature-news-ai.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="A screenshot of a Nature article"></a></p>
+</figure>
+</div>
+<p>Some quotes and a graph from this article:</p>
+<blockquote class="blockquote">
+<p>At Ohio State University in Columbus, students this year will take compulsory AI classes as part of an initiative to ensure that all of them are ‘AI fluent’ by the time they graduate.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>But many education specialists are deeply concerned about the explosion of AI on campuses: they fear that AI tools are impeding learning because they’re so new that teachers and students are struggling to use them well. Faculty members also worry that students are using AI to short-cut their way through assignments and tests, and some research hints that offloading mental work in this way can stifle independent, critical thought.</p>
+</blockquote>
+<hr style="height:1pt; visibility:hidden;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/nature-news-ai-fig.webp" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="../img/nature-news-ai-fig.webp" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%" alt="A screenshot of a Nature article"></a></p>
+</figure>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note everyone agrees this is a good thing
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>These kinds of initiatives are not without controversy, as the second quote above illustrates. For a comprehensive critique, see the following paper that was also mentioned in the Nature article: <span class="citation" data-cites="guest2025">Guest et al. (<a href="#ref-guest2025" role="doc-biblioref">2025</a>)</span>: <em>Against the Uncritical Adoption of ‘AI’ Technologies in Academia</em></p>
+</div>
+</div>
+<p><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <span style="color:purple"><em>What do you think?</em></span></p>
+</section>
+<section id="where-to-ask-questions-to-genai" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="where-to-ask-questions-to-genai"><span class="header-section-number">4</span> Where to ask questions to genAI</h2>
+<section id="browser-based-chat-with-ohio-state-approved-genai-tools" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="browser-based-chat-with-ohio-state-approved-genai-tools"><span class="header-section-number">4.1</span> Browser-based chat with Ohio State approved genAI tools</h3>
+<p>Ohio State currently has two main approved generative AI tools. This is important to know and use for two reasons:</p>
+<ul>
+<li>You are able to use (more advanced models) without usage limits</li>
+<li>You are complying with Ohio State’s data privacy and security policies. When you are logged using your OSU account, the data you provide to the AI tools is handled according to Ohio State’s policies. Therefore, you are to provide it with research data that you otherwise would not be allowed to share with third-party services.</li>
+</ul>
+<p>These two tools are:</p>
+<ul>
+<li>Microsoft Copilot</li>
+<li>Google Gemini (since August 2025)</li>
+</ul>
+<p><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <span style="color:purple"><em>Do you use these or do you prefer ChatGPT or something else?</em></span></p>
+</section>
+<section id="inside-ides" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="inside-ides"><span class="header-section-number">4.2</span> Inside IDEs</h3>
+<p>However, for coding tasks, it is often more convenient to use genAI directly inside your IDE, such as VS Code or RStudio.</p>
+<p>Within IDEs, there can be two main modes of interaction, as we’ll see:</p>
+<ul>
+<li>In-IDE chat</li>
+<li>In-line autocomplete</li>
+</ul>
+<p>Benefits of IDE-based assistance:</p>
+<ul>
+<li>Automatic context awareness of your files</li>
+<li>Less need to copy-paste code snippets</li>
+<li>Easier to test and iterate</li>
+</ul>
+<hr style="height:1pt; visibility:hidden;">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+“Local” genAI models?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>All the abovementioned options are cloud-based services that require an internet connection and send each request to the AI service provider’s servers. Because these models aren’t open source, they can’t be run “locally” on your own computer or on OSC.</p>
+<p>However, open-source LLMs that you can run locally do exist, such as DeepSeek (see <span class="citation" data-cites="gibney2025">Gibney (<a href="#ref-gibney2025" role="doc-biblioref">2025</a>)</span>) and Ollama, but they are currently much less powerful than the big cloud-based models. This may change in the future.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="applications-in-bioinformatics-and-omics-data-analysis" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="applications-in-bioinformatics-and-omics-data-analysis"><span class="header-section-number">5</span> Applications in bioinformatics and omics data analysis</h2>
+<section id="not-coding" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="not-coding"><span class="header-section-number">5.1</span> Not coding</h3>
+<ul>
+<li>Explain concepts and methods</li>
+<li>Searching for programs that can accomplish certain tasks</li>
+<li>Explain results/outputs that you got</li>
+</ul>
+</section>
+<section id="generating-code" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="generating-code"><span class="header-section-number">5.2</span> Generating code</h3>
+<ul>
+<li>This one should be obvious – we can ask it to write code for us when we don’t know how to do something</li>
+</ul>
+</section>
+<section id="code-related" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="code-related"><span class="header-section-number">5.3</span> Code-related</h3>
+<ul>
+<li>Code explanation and documentation</li>
+<li>Debugging code</li>
+<li>Optimising code</li>
+<li>Turning code into a piece of software or “package”</li>
+<li>Translating code between languages</li>
+<li>Explaining error messages</li>
+</ul>
+<p><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> <span style="color:purple"><em>How have you been using genAI in this area?</em></span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+More ideas and tips in this week’s reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="citation" data-cites="lubiana2023">Lubiana et al. (<a href="#ref-lubiana2023" role="doc-biblioref">2023</a>)</span> – <em>Ten quick tips for harnessing the power of ChatGPT in computational biology</em></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Other relevant papers <em>(Click to expand)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="citation" data-cites="piccolo2023">Piccolo et al. (<a href="#ref-piccolo2023" role="doc-biblioref">2023</a>)</span>: <a href="https://arxiv.org/abs/2303.13528">Many bioinformatics programming tasks can be automated with ChatGPT</a></li>
+<li><span class="citation" data-cites="alam2025">Alam and Roy (<a href="#ref-alam2025" role="doc-biblioref">2025</a>)</span>: <a href="https://arxiv.org/abs/2507.20122">From Prompt to Pipeline: Large Language Models for Scientific Workflow Development in Bioinformatics</a></li>
+<li><span class="citation" data-cites="awan2025">Awan, Oveisi, and Karimi (<a href="#ref-awan2025" role="doc-biblioref">2025</a>)</span>: <a href="https://www.nature.com/articles/s41576-025-00889-0">Prompt-based bioinformatics: a new interface for multi-omics analysis</a></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="initial-examples-with-microsoft-copilot" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="initial-examples-with-microsoft-copilot"><span class="header-section-number">6</span> Initial examples with Microsoft Copilot</h2>
+<section id="signing-in" class="level3" data-number="6.1">
+<h3 data-number="6.1" class="anchored" data-anchor-id="signing-in"><span class="header-section-number">6.1</span> Signing in</h3>
+<ul>
+<li>Go to <a href="https://m365.cloud.microsoft/chat" class="uri">https://m365.cloud.microsoft/chat</a> <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+<li>Click “Sign in” and sign in with your Ohio State account by using your Ohio State email address</li>
+<li>Click on the “Try GPT-5” button to switch from Quick Response mode to GPT-5 mode, which is more powerful and suitable for coding tasks</li>
+</ul>
+</section>
+<section id="example-prompts" class="level3" data-number="6.2">
+<h3 data-number="6.2" class="anchored" data-anchor-id="example-prompts"><span class="header-section-number">6.2</span> Example prompts</h3>
+<ul>
+<li><p><em>“You’re a quiz master who asks basic questions about the Unix shell.</em> <em>Make a fun game show and start asking questions!“</em></p></li>
+<li><p><em>“Explain the <code>grep</code> command by turning it into a song lyric (without using real copyrighted lyrics).</em> <em>Make it fun and memorable.”</em></p></li>
+<li><p><em>“Count the number of reads in a FASTQ file”</em></p></li>
+<li><p><em>“Write a Bash script that counts the number of lines in a FASTQ file”</em></p></li>
+<li><p><em>“How can I tell the program TrimGalore that my reads use Illumina two-color chemistry?”</em></p>
+<details>
+<summary>
+<p><em>Click to see the response I got</em></p>
+</summary>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/ms-copilot_trimgalore-response1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="../img/ms-copilot_trimgalore-response1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="A screenshot of a ChatGPT response about TrimGalore"></a></p>
+</figure>
+</div>
+</details></li>
+<li><p><em>“Explain the most important options to TrimGalore”</em></p>
+<details>
+<summary>
+<p><em>Click to see the response I got</em></p>
+</summary>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/letter-count-unconventional.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="../img/letter-count-unconventional.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="A screenshot of a ChatGPT response about TrimGalore"></a></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/letter-count-blueberry.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="../img/letter-count-blueberry.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="A screenshot of a ChatGPT response about TrimGalore"></a></p>
+</figure>
+</div>
+</details></li>
+<li><p><em>“Explain how to write a <code>for</code> loop in the Unix shell and how it works”</em></p></li>
+<li><p><em>“What does the following command do?”</em> <code>gunzip -v garrigos-data/ref/*</code></p></li>
+<li><p><em>“How many n’s are in the word unconventional?”</em> and <em>“How many b’s are in the in blueberry?”</em></p>
+<details>
+<summary>
+<p><em>Click to see the responses I got</em></p>
+</summary>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../img/ms-copilot_trimgalore-response2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="../img/ms-copilot_trimgalore-response2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="A screenshot of a ChatGPT response about TrimGalore"></a></p>
+</figure>
+</div>
+</details></li>
+</ul>
+</section>
+<section id="example-prompts-with-custom-file-uploads" class="level3" data-number="6.3">
+<h3 data-number="6.3" class="anchored" data-anchor-id="example-prompts-with-custom-file-uploads"><span class="header-section-number">6.3</span> Example prompts with custom file uploads</h3>
+<ul>
+<li>Upload a FastQC file and ask it to summarize the file</li>
+<li>Upload a Markdown document and ask it to convert it Word</li>
+<li>Upload a Word document and ask it to convert to Markdown</li>
+</ul>
+</section>
+</section>
+<section id="tips-and-pitfalls" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="tips-and-pitfalls"><span class="header-section-number">7</span> Tips and pitfalls</h2>
+<section id="advice-on-writing-effective-prompts" class="level3" data-number="7.1">
+<h3 data-number="7.1" class="anchored" data-anchor-id="advice-on-writing-effective-prompts"><span class="header-section-number">7.1</span> Advice on writing effective prompts</h3>
+<ul>
+<li><p>TRACI (Task, Role, Audience, Create, Intent)</p></li>
+<li><p>Or:</p>
+<ul>
+<li>Context - Who you are, what you’re working on, what the AI needs to know</li>
+<li>Task - What specifically you want the AI to do</li>
+<li>Format - How you want the output structured</li>
+<li>Constraints - Any limitations, requirements, or things to avoid</li>
+<li>Examples - Sample inputs/outputs if helpful</li>
+</ul></li>
+<li><p>“Prompt enhancers”:</p>
+<ul>
+<li>“Explain with examples” or “explain as if I’m a high school student”</li>
+<li>“Please ask me clarifying questions”</li>
+<li>“Tell me when you’re unsure about something”</li>
+<li>Verify: “Show me the specific quotes from the papers that support each of these conclusions”</li>
+</ul></li>
+<li><p>Be specific and detailed, e.g.&nbsp;about formats and programs</p></li>
+<li><p>For bigger problems, break it down into smaller ones</p></li>
+</ul>
+</section>
+<section id="pitfalls" class="level3" data-number="7.2">
+<h3 data-number="7.2" class="anchored" data-anchor-id="pitfalls"><span class="header-section-number">7.2</span> Pitfalls</h3>
+<ul>
+<li><p>AI hallucinations</p>
+<ul>
+<li>It doesn’t run code it suggests and may even misstate the expected output</li>
+<li>May come up with functions/commands or columns that don’t exist</li>
+</ul></li>
+<li><p>“0-to-90% problem”</p></li>
+<li><p>“Jagged frontier”</p></li>
+</ul>
+
 
 
 </section>
+</section>
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-alam2025" class="csl-entry" role="listitem">
+Alam, Khairul, and Banani Roy. 2025. <span>“From Prompt to Pipeline: Large Language Models for Scientific Workflow Development in Bioinformatics,”</span> August. <a href="https://doi.org/10.48550/arXiv.2507.20122">https://doi.org/10.48550/arXiv.2507.20122</a>.
+</div>
+<div id="ref-awan2025" class="csl-entry" role="listitem">
+Awan, Ali R., Mehrdad Oveisi, and Mohammad M. Karimi. 2025. <span>“Prompt-Based Bioinformatics: A New Interface for Multi-Omics Analysis.”</span> <em>Nature Reviews Genetics</em>, August, 1–2. <a href="https://doi.org/10.1038/s41576-025-00889-0">https://doi.org/10.1038/s41576-025-00889-0</a>.
+</div>
+<div id="ref-cooper2024" class="csl-entry" role="listitem">
+Cooper, Natalie, Adam T. Clark, Nicolas Lecomte, Huijie Qiao, and Aaron M. Ellison. 2024. <span>“Harnessing Large Language Models for Coding, Teaching and Inclusion to Empower Research in Ecology and Evolution.”</span> <em>Methods in Ecology and Evolution</em> 15 (10): 1757–63. <a href="https://doi.org/10.1111/2041-210X.14325">https://doi.org/10.1111/2041-210X.14325</a>.
+</div>
+<div id="ref-gibney2025" class="csl-entry" role="listitem">
+Gibney, Elizabeth. 2025. <span>“Scientists Flock to DeepSeek: How They<span>’</span>re Using the Blockbuster AI Model.”</span> <em>Nature</em>, January. <a href="https://doi.org/10.1038/d41586-025-00275-0">https://doi.org/10.1038/d41586-025-00275-0</a>.
+</div>
+<div id="ref-guest2025" class="csl-entry" role="listitem">
+Guest, Olivia, Marcela Suarez, Barbara Müller, Edwin van Meerkerk, Arnoud Oude Groote Beverborg, Ronald de Haan, Andrea Reyes Elizondo, et al. 2025. <span>“Against the Uncritical Adoption of ’AI’ Technologies in Academia,”</span> September. <a href="https://doi.org/10.5281/zenodo.17065099">https://doi.org/10.5281/zenodo.17065099</a>.
+</div>
+<div id="ref-lubiana2023" class="csl-entry" role="listitem">
+Lubiana, Tiago, Rafael Lopes, Pedro Medeiros, Juan Carlo Silva, Andre Nicolau Aquime Goncalves, Vinicius Maracaja-Coutinho, and Helder I. Nakaya. 2023. <span>“Ten Quick Tips for Harnessing the Power of ChatGPT in Computational Biology.”</span> <em>PLOS Computational Biology</em> 19 (8): e1011319. <a href="https://doi.org/10.1371/journal.pcbi.1011319">https://doi.org/10.1371/journal.pcbi.1011319</a>.
+</div>
+<div id="ref-pearson2025" class="csl-entry" role="listitem">
+Pearson, Helen. 2025. <span>“Universities Are Embracing AI: Will Students Get Smarter or Stop Thinking?”</span> <em>Nature</em> 646 (8086): 788–91. <a href="https://doi.org/10.1038/d41586-025-03340-w">https://doi.org/10.1038/d41586-025-03340-w</a>.
+</div>
+<div id="ref-piccolo2023" class="csl-entry" role="listitem">
+Piccolo, Stephen R., Paul Denny, Andrew Luxton-Reilly, Samuel Payne, and Perry G. Ridge. 2023. <span>“Many Bioinformatics Programming Tasks Can Be Automated with ChatGPT.”</span> <em>PLOS Computational Biology</em> 19 (9): e1011511. <a href="https://doi.org/10.1371/journal.pcbi.1011511">https://doi.org/10.1371/journal.pcbi.1011511</a>.
+</div>
+<div id="ref-zhang2022" class="csl-entry" role="listitem">
+Zhang, Zichen, Sami Khanal, Amy Raudenbush, Kelley Tilmon, and Christopher Stewart. 2022. <span>“Assessing the Efficacy of Machine Learning Techniques to Characterize Soybean Defoliation from Unmanned Aerial Vehicles.”</span> <em>Computers and Electronics in Agriculture</em> 193 (February): 106682. <a href="https://doi.org/10.1016/j.compag.2021.106682">https://doi.org/10.1016/j.compag.2021.106682</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p> You can also go to <a href="https://copilot.microsoft.com" class="uri">https://copilot.microsoft.com</a> but the login process is a bit longer.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -814,6 +1254,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 
