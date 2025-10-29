@@ -79,8 +79,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-4f350803082bf803bca38a546d411131.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
-<link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -173,7 +173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
         <li>
     <a class="dropdown-item" href="../week10/w10_overview.html">
- <span class="dropdown-text">Week 10: Coding with generative AI</span></a>
+ <span class="dropdown-text">Week 10: Using generative AI</span></a>
   </li>  
         <li class="dropdown-header">Week 11: R – basics [TBA]</li>
         <li class="dropdown-header">Week 12: R – Quarto [TBA] (half-week)</li>
@@ -598,14 +598,15 @@ chr (3): sample_id, time, treatment
 </section>
 <section id="matrices" class="level2" data-number="5">
 <h2 data-number="5" class="anchored" data-anchor-id="matrices"><span class="header-section-number">5</span> Matrices</h2>
-<p>The matrix data structure in R is similar to a dataframe: it is also rectangular with rows and columns. But it differs in that all the elements in a matrix must of be same data type: all numeric, character, or logical.</p>
-<p>Most commonly, matrices consist of only <em>numerical</em> data. Of course, column labels can then still be provided with column names, but what about rows?</p>
-<p><strong>TBA EXPLAIN ROWNAMES AND HOW THESE CAN BE USED</strong> <em>(But also mention that with dataframes, rownames are not commonly used for IDs.)</em></p>
-<p>Generally, matrices are not nearly as common as data frames, but we are introducing them here because they are used in a number of omics-data related pacakges. For example, the package <a href="https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2</a>, which we’ll later use for differential expression analysis of our RNA-Seq count data.</p>
+<p>The matrix data structure in R is similar to a data frame: it is also rectangular with rows and columns. But it differs in that all the elements in a matrix must of be same data type: all numeric, character, or logical. This restriction applies only to the contents of the matrix which is the actual numbers inside the rectangular data area. However, rownames and colnames are not part of the matrix’s main data content. They are attributes attached to the matrix object.</p>
+<p>Most commonly, matrices consist of only <em>numerical</em> data.</p>
+<p>Of course, column labels can then still be provided with column names, but what about rows?</p>
+<p>Rownames are typically used for feature IDs (e.g., genes) in Matrix and column names represent sample_ID. These rownames are important for RNAseq data analysis package <code>DESeq2</code> because the software uses rownames to match genes across the count matrix and associated metadata. While data frames in R also allow rownames, they are less commonly used for storing identifiers like gene names. Instead, genes names are usually stored as a separate column for clarity in data frame.</p>
+<p>Generally, matrices are not nearly as common as data frames, but we are introducing them here because they are used in a number of omics-data related packages. For example, the package <a href="https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2</a>, which we’ll later use for differential expression analysis of our RNA-Seq count data.</p>
 </section>
 <section id="the-dplyr-package" class="level2" data-number="6">
 <h2 data-number="6" class="anchored" data-anchor-id="the-dplyr-package"><span class="header-section-number">6</span> The <em>dplyr</em> package</h2>
-<p>The <a href="https://cran.r-project.org/package=dplyr"><em>dplyr</em></a> package provides very useful functions for <strong>manipulating data in data frames</strong> (“data wrangling”). This type of data processing is often essential before you can move on to say, data visualization (week 13) or statistical data analysis (week 15).</p>
+<p>The <a href="https://cran.r-project.org/package=dplyr"><em>dplyr</em></a> package provides very useful functions for <strong>manipulating data in data frames</strong> (“data wrangling”). This type of data processing is often essential before you can move on to say, data visualization (<strong>week 13</strong>) or statistical data analysis (<strong>week 15</strong>).</p>
 <p>In this session, we’ll cover the most commonly used <em>dplyr</em> functions:</p>
 <ul>
 <li><code>select()</code> to pick columns (variables)</li>
@@ -797,7 +798,7 @@ Using the pipe keyboard shortcut
 </section>
 <section id="filter-based-on-one-condition" class="level3" data-number="10.2">
 <h3 data-number="10.2" class="anchored" data-anchor-id="filter-based-on-one-condition"><span class="header-section-number">10.2</span> Filter based on one condition</h3>
-<p>This first <code>filter()</code> example outputs only rows for which the life expectancy exceeds 80 years (remember, each row represents a country in a given year):</p>
+<p>This first <code>filter()</code> example outputs only rows with the sampling time point 10dpi (remember, each row of time variable represents a sample at a given time point):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>meta <span class="sc">|&gt;</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time <span class="sc">==</span> <span class="st">"10dpi"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -824,7 +825,7 @@ Using the pipe keyboard shortcut
 <i class="fa-solid fa-user-edit" aria-label="user-edit"></i> How many rows were output? <em>(Click to see the answer)</em>
 </summary>
 <p>
-21 rows were output, as shown in the first line above: <code>21 x 6</code> (rows x columns)
+21 rows were output, as shown in the first line above: <code>12 x 3</code> (rows x columns)
 </p>
 </details>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -843,7 +844,7 @@ Remember to use <em>two</em> equals signs <code>==</code> to test for equality!
 </section>
 <section id="filter-based-on-multiple-conditions" class="level3" data-number="10.3">
 <h3 data-number="10.3" class="anchored" data-anchor-id="filter-based-on-multiple-conditions"><span class="header-section-number">10.3</span> Filter based on multiple conditions</h3>
-<p>It’s also possible to filter based on multiple conditions. For example, you may want to see <strong><em>[TBA]</em></strong>:</p>
+<p>It’s also possible to filter based on multiple conditions. For example, you may want to see control samples collected at 10dpi excluding <code>ERR10802882</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>meta <span class="sc">|&gt;</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time <span class="sc">==</span> <span class="st">"10dpi"</span>, treatment <span class="sc">==</span> <span class="st">"control"</span>, sample_id <span class="sc">!=</span> <span class="st">"ERR10802882"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -860,7 +861,7 @@ Remember to use <em>two</em> equals signs <code>==</code> to test for equality!
 <p>Like above, by default, multiple conditions are combined using a Boolean <strong><em>AND</em></strong>. In other words, in a given row, <em>each</em> condition must be met to output the row.</p>
 <p>If you want to combine conditions using a Boolean <strong><em>OR</em></strong>, where only one of the conditions needs to be met, use a <code>|</code> between the conditions:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep rows with a high life expectancy and/or a high GDP:</span></span>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep rows with a control samples collected at 10dpi:</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>meta <span class="sc">|&gt;</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(time <span class="sc">==</span> <span class="st">"10dpi"</span> <span class="sc">|</span> treatment <span class="sc">==</span> <span class="st">"control"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1049,7 +1050,9 @@ Regular data frames vs.&nbsp;tibbles
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>TBA</p>
+<p>Both data frames and tibbles are used in R to store tabular data containing rows and columns, often with mixed data types (character, integer, double etc).</p>
+<p>Data frames : Introduced in base R, available without loading any package. Often convert character data into factors automatically (though this can be disabled with stringsAsFactors = FALSE). Print all rows and columns by default, which can be overwhelming for large datasets. When subsetting, R may simplify results unexpectedly (e.g., returning a vector instead of a data frame).</p>
+<p>Tibbles : Tibbles are data frames, but they tweak some older behaviors to make life a little easier. Introduced in the tidyverse (specifically, the tibble package), and are part of the tidyverse ecosystem. Do not automatically convert strings to factors — everything stays as you enter it. Print in a more readable way, showing only the first 10 rows and all columns that fit on the screen. When subsetting, tibbles always return another tibble, preserving the data frame structure (unless you explicitly ask for it).</p>
 </div>
 </div>
 <p>For an example with our <code>meta</code> dataframe, we’ll use the <code>sub()</code> function, which can do a character-based search-and-replace. It takes three arguments: the pattern to search for, what to replace the pattern with, and the subject vector. For example, to shorten sample IDs by removing the shared prefix:</p>
@@ -1190,24 +1193,73 @@ Click for the solution
 </div>
 </div>
 <p><code>group_by()</code> implicitly splits a data frame into groups of rows: here, one group for observations from each treatment. After that, operations like in <code>summarize()</code> will happen separately for each group, which is how we ended up with per-treatment means.</p>
+<p>Before doing the exercise for <code>summarize()</code>, we will learn about the new function <code>str()</code> to understand the internal structure of your dataset/object. The argument for the <code>str()</code> is the name of the object you want to explore.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(iris)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code>'data.frame':   150 obs. of  5 variables:
+ $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+ $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+ $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+ $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+ $ Species     : Factor w/ 3 levels "setosa","versicolor",..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+</div>
+</div>
+<p>For a output of iris dataset above shows:</p>
+<ul>
+<li>The object has a class of dataframe</li>
+<li>The total number of 150 observations and 5 variables</li>
+<li>A full list of the variables names (e.g.&nbsp;Sepal.Length, Sepal.Width, etc)</li>
+<li>The data type of each variable (e.g.&nbsp;num, factor)</li>
+</ul>
 <section id="exercise-summarize" class="level4 exercise">
 <h4 class="anchored" data-anchor-id="exercise-summarize"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: <code>summarize()</code></h4>
-<p><strong>TBA – I’d suggest to do an exercise with <code>iris</code> instead</strong></p>
+<ol type="1">
+<li>Use the iris dataset to summarize the average petal length and width for each species.</li>
+</ol>
+<details>
+<summary>
+<em>Click to see a solution</em>
+</summary>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>iris_summary <span class="ot">&lt;-</span> iris <span class="sc">%&gt;%</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">%&gt;%</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_petal_length =</span> <span class="fu">mean</span>(Petal.Length),</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_petal_width =</span> <span class="fu">mean</span>(Petal.Width)</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>iris_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 3 × 3
+  Species    avg_petal_length avg_petal_width
+  &lt;fct&gt;                 &lt;dbl&gt;           &lt;dbl&gt;
+1 setosa                 1.46           0.246
+2 versicolor             4.26           1.33 
+3 virginica              5.55           2.03 </code></pre>
+</div>
+</div>
+</details>
 </section>
 </section>
 <section id="writing-to-files" class="level2" data-number="14">
 <h2 data-number="14" class="anchored" data-anchor-id="writing-to-files"><span class="header-section-number">14</span> Writing to files</h2>
 <p>To write a data frame to a TSV file, you can use the <code>write_tsv()</code> function, with argument <code>x</code> for the R object and argument <code>file</code> for the file path:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># TBA - probably change the path</span></span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_tsv</span>(<span class="at">x =</span> meta_time, <span class="at">file =</span> <span class="st">"metadata_ed.tsv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># You can save in the present working directory </span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_tsv</span>(<span class="at">x =</span> meta_time, <span class="at">file =</span> <span class="st">"metadata_ed.tsv"</span>)</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Change the path if you want to save it in different directory</span></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write_tsv</span>(<span class="at">x =</span> meta_time, <span class="at">file =</span> <span class="st">"results/metadata_ed.tsv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Because we simply provided a file name, the file will have been written in your R working directory<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
 <p>If you want to take a look at the file you just created, you can find it in RStudio’s <strong>Files</strong> tab and click on it, which will open it in the editor panel. Of course, you could also find it in your computer’s file browser and open it in different ways.</p>
 </section>
 <section id="recap-and-looking-forward" class="level2" data-number="15">
 <h2 data-number="15" class="anchored" data-anchor-id="recap-and-looking-forward"><span class="header-section-number">15</span> Recap and looking forward</h2>
-<p>TBA</p>
+<ul>
+<li>Different columns of Data frame can contain different types of data, but in a matrix all the elements are of same data type.</li>
+<li>Several functions of dplyr package in R provides a powerful way to manipulate large datasets.</li>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
