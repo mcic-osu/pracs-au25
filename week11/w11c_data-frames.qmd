@@ -184,21 +184,32 @@ meta$treatment[2]
 
 ## Matrices
 
-The matrix data structure in R is similar to a dataframe:
+The matrix data structure in R is similar to a data frame:
 it is also rectangular with rows and columns.
 But it differs in that all the elements in a matrix must of be same data type:
 all numeric, character, or logical.
+This restriction applies only to the contents of the matrix which is
+the actual numbers inside the rectangular data area.
+However, rownames and colnames are not part of the matrix’s main data content.
+They are attributes attached to the matrix object.
+
 
 Most commonly, matrices consist of only _numerical_ data.
+
 Of course, column labels can then still be provided with column names,
 but what about rows?
 
-**TBA EXPLAIN ROWNAMES AND HOW THESE CAN BE USED**
-_(But also mention that with dataframes, rownames are not commonly used for IDs.)_
+Rownames are typically used for feature IDs (e.g., genes) in Matrix and column names represent sample_ID.
+These rownames are important for RNAseq data analysis package `DESeq2` because the 
+software uses rownames to match genes across the count matrix and associated metadata.
+While data frames in R also allow rownames, they are less commonly used for 
+storing identifiers like gene names.
+Instead, genes names are usually stored as a separate column for clarity in data frame.
+
 
 Generally, matrices are not nearly as common as data frames,
 but we are introducing them here because they are used in a number of omics-data
-related pacakges.
+related packages.
 For example, the package
 [DESeq2](https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html),
 which we'll later use for differential expression analysis of our RNA-Seq count data. 
@@ -208,7 +219,7 @@ which we'll later use for differential expression analysis of our RNA-Seq count 
 The [_dplyr_](https://cran.r-project.org/package=dplyr) package provides very
 useful functions for **manipulating data in data frames** ("data wrangling").
 This type of data processing is often essential before you can move on to say,
-data visualization (week 13) or statistical data analysis (week 15).
+data visualization (**week 13**) or statistical data analysis (**week 15**).
 
 In this session, we'll cover the most commonly used _dplyr_ functions:
 
@@ -367,9 +378,8 @@ meta <- meta |> select(sample_id, time)
 
 ### Filter based on one condition
 
-This first `filter()` example outputs only rows for which the
-life expectancy exceeds 80 years
-(remember, each row represents a country in a given year):
+This first `filter()` example outputs only rows with the sampling time point 10dpi
+(remember, each row of time variable represents a sample at a given time point):
 
 ```{r}
 meta |>
@@ -378,7 +388,7 @@ meta |>
 
 <details><summary>{{< fa user-edit >}} How many rows were output? _(Click to see the answer)_</summary>
 <p>
-21 rows were output, as shown in the first line above: `21 x 6` (rows x columns)
+21 rows were output, as shown in the first line above: `12 x 3` (rows x columns)
 </p>
 </details>
 
@@ -389,7 +399,7 @@ meta |>
 ### Filter based on multiple conditions
 
 It's also possible to filter based on multiple conditions.
-For example, you may want to see ***[TBA]***:
+For example, you may want to see control samples collected at 10dpi excluding `ERR10802882`:
 
 ```{r}
 meta |>
@@ -404,7 +414,7 @@ where only one of the conditions needs to be met,
 use a `|` between the conditions:
 
 ```{r}
-# Keep rows with a high life expectancy and/or a high GDP:
+# Keep rows with a control samples collected at 10dpi:
 meta |>
   filter(time == "10dpi" | treatment == "control")
 ```
@@ -502,7 +512,23 @@ iris |>
 
 ::: callout-tip
 #### Regular data frames vs. tibbles
-TBA
+Both data frames and tibbles are used in R to store tabular data containing rows and columns, 
+often with mixed data types (character, integer, double etc).
+
+Data frames : Introduced in base R, available without loading any package. Often convert character data into 
+factors automatically (though this can be disabled with stringsAsFactors = FALSE). Print all rows and columns 
+by default, which can be overwhelming for large datasets. When subsetting, R may simplify results unexpectedly 
+(e.g., returning a vector instead of a data frame).
+
+
+
+Tibbles : Tibbles are data frames, but they tweak some older behaviors to make life a little easier.
+Introduced in the tidyverse (specifically, the tibble package), and are part of the tidyverse ecosystem.
+Do not automatically convert strings to factors — everything stays as you enter it. Print in a more readable way, 
+showing only the first 10 rows and all columns that fit on the screen.
+When subsetting, tibbles always return another tibble, preserving the data frame structure 
+(unless you explicitly ask   for it).
+
 :::
 
 For an example with our `meta` dataframe, we'll use the `sub()` function,
@@ -595,12 +621,41 @@ here, one group for observations from each treatment.
 After that, operations like in `summarize()` will happen separately for each group,
 which is how we ended up with per-treatment means.
 
+Before doing the exercise for `summarize()`, we will learn about the new function `str()` 
+to understand the internal structure of your dataset/object. The argument for the `str()` is the name of the object you want to explore.
+
+
+```{r}
+str(iris)
+```
+For a output of iris dataset above shows:
+
+- The object has a class of dataframe
+- The total number of 150 observations and 5 variables
+- A full list of the variables names (e.g. Sepal.Length, Sepal.Width, etc)
+- The data type of each variable (e.g. num, factor)
+
+
 :::exercise
 #### {{< fa user-edit >}} Exercise: `summarize()`
+1. Use the iris dataset to summarize the average petal length and width for each species.
 
-**TBA -- I'd suggest to do an exercise with `iris` instead**
+<details><summary>*Click to see a solution*</summary>
+
+```{r}
+iris_summary <- iris %>%
+  group_by(Species) %>%
+  summarize(
+    avg_petal_length = mean(Petal.Length),
+    avg_petal_width = mean(Petal.Width)
+  )
+iris_summary
+```
+
+</details>
 
 :::
+
 
 ## Writing to files
 
@@ -608,9 +663,12 @@ To write a data frame to a TSV file,
 you can use the `write_tsv()` function,
 with argument `x` for the R object and argument `file` for the file path:
 
-```{r}
-# TBA - probably change the path
+```{r eval=FALSE}
+# You can save in the present working directory 
 write_tsv(x = meta_time, file = "metadata_ed.tsv")
+
+# Change the path if you want to save it in different directory
+write_tsv(x = meta_time, file = "results/metadata_ed.tsv")
 ```
 
 Because we simply provided a file name, the file will have been written in your
@@ -626,7 +684,9 @@ in different ways.
 
 ## Recap and looking forward
 
-TBA
+- Different columns of Data frame can contain different types of data, but in a matrix all the 
+  elements are of same data type.
+- Several functions of dplyr package in R provides a powerful way to manipulate large datasets.
 
 
 ::: callout-note
