@@ -52,10 +52,10 @@ In this session, you will learn:
 
 ## Quarto
 
-Quarto is an extenstion of Markdown that allows to combine prose, code,
+Quarto is an extension of Markdown that allows to combine prose, code,
 and results[^1]. Quarto is not limited to a single programming language
 but can run R, Python, Julia and Observable code. Here, we will focus on
-using Quarto in RStudio with R.
+using **Quarto in RStudio with R**.
 
 [^1]: It is the next-generation version of R Markdown, in case you have
     heard of that.
@@ -89,7 +89,7 @@ Quarto outputs such as Documents, Presentation, interactive in different
 formats. For example, for documents, we can pick HTML, PDF or Word
 format. Here, we will select `Document` and `HTML` format.
 
-![](../img/new_quarto_doc.png){width="60%" fig-align="center"}
+![](../img/new_quarto_doc.png){width="50%" fig-align="center"}
 
 This will create an new unamed `Untitled.qmd` file. Let's rename it, by
 going to `File`, `Save As` and then save it as `quarto_intro.qmd`.
@@ -99,8 +99,8 @@ going to `File`, `Save As` and then save it as `quarto_intro.qmd`.
 Rendering a Quarto document converts the `.qmd` document to the
 requested format **(html/pdf or any other format)**. During rendering,
 Quarto document (`.qmd`) is first processed using **knitr**, which
-executes code in the documents and produces a pain Markdown file, and
-then converted to the final format using **pandoc**.
+executes code in the documents and produces a plain Markdown file, and
+then convert to the final format using **pandoc**.
 
 So, while rendering, all code chunks are executed and their output is
 embedded in the final document along with the text. **However, if there
@@ -108,7 +108,7 @@ are any codes that produces error, your document will not be rendered.**
 
 To render a Quarto document, click on the `Render` button:
 
-![](../img/render.png){width="80%" fig-align="center"}
+![](../img/render.png){width="50%" fig-align="center"}
 
 You can also use a keyboard shortcut to render: `Ctrl-Shift-K` (Windows)
 or `Cmd-Shift-K` (Mac).
@@ -118,8 +118,8 @@ personally prefer to click it because if you are doing some
 computationally intensive task, it will keep rendering.
 
 **View the output document:** You can view the output either in a
-separate window, or in the Viewer pane. The gear icon next to the
-Render button can be used to change output viewing settings.
+separate window, or in the Viewer pane. The gear icon next to the Render
+button can be used to change output viewing settings.
 
 ## Components of Quarto documents
 
@@ -135,64 +135,100 @@ We'll go over these one-by-one now.
 
 The header for the Quarto document is written in **YAML language**. It
 allows to specify themes, formats, executable options and many more.
-Additionally, it consists of series of metadata such as title, author
+Additionally, it consists of series of metadata such as title, author,
 date etc. You can think of YAML header as the settings of the Quarto
 document on how to process and present your document.
 
 It is surrounded by (`---`), at the top of the Quarto document. A simple
 example of YAML header is shown below:
 
-![](../img/yaml_header.png){width="80%" fig-align="center"}
+![](../img/yaml_header.png){width="50%" fig-align="center"}
 
 We can add some additional contents to the YAML header such as authors,
 date, table of content and set the theme:
 
-![](../img/yaml_header_1.png){width="40%" fig-align="center"}
-
-
+![](../img/yaml_header_1.png){width="50%" fig-align="center"}
 
 Some of the additional options for the YAML header can be found
 [here](https://quarto.org/docs/output-formats/html-basics.html).
 
-#### Project level YAML
-YAML header can be specified at the project level in a file named. `_quarto.yml` in the root 
-directory of your project. This file can be used to set default options for all Quarto documents 
-in the project. More information about project level YAML can be found 
-[here](https://quarto.org/docs/projects/project-configuration.html).
+::: callout-tip
+-   Project level YAML YAML header can be specified at the project level
+    in a file named. `_quarto.yml` in the root directory of your
+    project. This file can be used to set default options for all Quarto
+    documents in the project. More information about project level YAML
+    can be found
+    [here](https://quarto.org/docs/projects/project-configuration.html).
 
+-   Document level YAML YAML header can be specified at the document
+    level at the top of each Quarto document. This file can be used to
+    set options specific to that document.
+:::
 
-#### Document level YAML
-Document level YAML is specified at the beginning of each Quarto document. This YAML header can override the project level YAML settings for that specific document.
+#### YAML mapping
 
+The YAML header starts and ends with three hyphens (`---`). Each
+key-value pair should be on a new line, with a colon (`:`) followed by a
+space separating the key and value. If a value is a nested mapping,
+indent the nested pairs typically using two spaces per level. Keys are
+case-sensitive, and values can be strings, numbers, booleans, lists, or
+nested lists. Strings with special characters should be enclosed in
+quotes.
 
-##### YAML mapping
-The YAML header starts and ends with three hyphens (`---`). 
-Each key-value pair should be on a new line, with a colon (`:`) followed by a space 
-separating the key and value. If a value is a nested mapping, indent the nested pairs—typically using two spaces per level. 
-Keys are case-sensitive, and values can be strings, numbers, booleans, lists, or nested lists. 
-Strings with special characters should be enclosed in quotes.
+#### YAML Sequences
 
-##### YAML Sequences
-A key sets of ordered variables can be specified a YAML sequences in two different ways:
-1. Inline syntax: Comma-separated values enclosed in square brackets (`[ ]`).
-2. Block syntax: Each item on a new line, preceded by a hyphen (`-`).
+A key sets of ordered variables can be specified a YAML sequences in two
+different ways:
+
+1.  Inline syntax: Comma-separated values enclosed in square brackets
+    (`[ ]`).
+2.  Block syntax: Each item on a new line, preceded by a hyphen (`-`).
+
 ![](../img/inline_syntax_quarto.png){width="50%" fig-align="center"}
 
-
 ##### Quotes
-In YAML, strings do not require quotes. However, strings can be enclosed in single (`' '`) or double 
-(`" "`) quotes to handle special characters, spaces, or to preserve formatting.
-- Single quotes (`' '`) treat the content literally
-- Double quotes (`" "`) allow for escape characters in them
 
+In YAML, strings without special characters do not require quotes. In
+the above examples, **although I kept the quotes around the title and
+author names, it is not necessary**. However, quotes are necessary when
+string contains special characters (e.g. #, :, etc.).
+
+::: callout-tip
+The hash symbol (#) indicates the start of a comment, which is ended by
+the end of the line. Colon is used in YAML headers to assign values to
+keys.
+:::
 
 ::: exercise
-#### {{< fa user-edit >}} Exercise: Change the YAML header
+#### {{< fa user-edit >}} Exercise:
 
-***TBA***
+Change the YAML header of your Quarto document to include the
+following: 
+- Title, subtitle, Author 
+- Add `date`: use the format
+`YYYY-MM-DD` 
+- Change the `theme` to `darkly`: Different themes are
+found [here](https://quarto.org/docs/output-formats/html-themes.html)
 
--   E.g. author, etc
--   Change the `theme`: provide a link to the different options
+<details>
+
+<summary>Click for the solution</summary>
+
+```{r eval=FALSE}
+---
+title: " R : Quarto"
+subtitle: "Week 12"
+author: 
+  - Menuka Bhandari
+date: today
+date-format: "YYYY-MM-DD"
+format: 
+   html:
+     theme: darkly
+---
+```
+
+</details>
 :::
 
 ### Code chunks
@@ -203,6 +239,8 @@ Markdown files, except that to "enable executability", you enclose the
 language indicator (`r`) in curly braces (`{r}`):
 
 ![](../img/code_chunk.png){width="80%" fig-align="center"}
+
+https://mcic-osu.github.io/pracs-au25/img/quarto_file_open.png
 
 ::: {.callout-tip appearance="minimal"}
 Without these curly braces, these blocks behave just like code block in
@@ -223,7 +261,10 @@ plain Markdown: they show code formatting, but are not executed.
 #### Chunk options
 
 Several options can be added to your code chunk to customize the output
-of code. Some of the commonly used chunk options are:
+of code. Chunk options can be either written directly inside the
+`curly braces` or by using `#| (YAML syntax)` before the code chunk
+where each `#|` line sets one option: Some of the commonly used chunk
+options are:
 
 -   `echo: FALSE` runs your code chunk, displays output, but does not
     display code in your final doc (this is useful if you want to show a
@@ -234,6 +275,8 @@ of code. Some of the commonly used chunk options are:
 
 -   `include: FALSE` runs your code but does not display the code or its
     output in your final doc
+
+Some of the additional options are available below:
 
 -   `message: FALSE` prevents messages from showing up in your final doc
 
@@ -256,15 +299,8 @@ of code. Some of the commonly used chunk options are:
 
 -   `fig-show=hide` to hide the figures
 
-***TBA - This is a very long list -- I would start with a few options
-and demonstrate*** ***those, and then at the end present a list with
-additional options***
-
 More chunk options can be found
 [here](https://quarto.org/docs/computations/execution-options.html/).
-Chunk options can be either written directly inside the `curly braces`
-or by using `#| (YAML syntax)` before the code chunk where each `#|`
-line sets one option:
 
 ```{r echo=TRUE}
 # Example code chunk
@@ -278,12 +314,12 @@ line sets one option:
 
 ### Global vs. chunk-specific options
 
-***TBA - Expand on this and clarify the paragraph below***
-
-You can change the default option of the chunk. Suppose you want to show
-just the figures and table without showing the command that produces it.
-You can do it in the Quarto YAML header under execute, by adding the
-following global option:`execute: echo :false`.
+If the default code chunk settings don’t fit your needs, you can change
+them for the whole document in the YAML section under `execute:`. For
+example, if you don’t want to show your R code to your readers, you can
+set `echo: false` which hides all code by default. If you later want to
+show the code for a specific chunk, you can turn it back on just for
+that chunk using `echo: true`.
 
 ::: callout-note
 ##### Chunk labels
@@ -328,13 +364,32 @@ Additional notes:
 -   Triangle sign facing towards right (similar to play button) runs the
     current chunk.
 
-***TBA - Add screenshot highlighting the triangle signs - and show this
-in action in class***
+![](../img/quarto_triangle_option.png){width="25%" fig-align="center"}
 
 ::: exercise
-#### {{< fa user-edit >}} Exercise: TBA
+#### {{< fa user-edit >}} Exercise
 
-***TBA***
+Add the code chunks in the Quarto document to do the following:
+1. Install and load the `tidyverse` package. Use the chunk option to hide the warnings
+    and messages while loading the package.
+2. In the second chunk install and load package `ggplot2`
+3. Read the documentation of `ggplot2` and Create a simple scatter plot 
+  using the `mtcars` dataset with `wt` on x-axis and `mpg` on y-axis.
+  
+<details>
+
+<summary>Click for the solution</summary>
+
+```{r}
+#| warning: false
+library(tidyverse)
+
+library(ggplot2)
+ggplot(mtcars, aes(wt, mpg)) +
+  geom_point()
+```
+
+</details>
 :::
 
 ### Markdown text
@@ -351,17 +406,30 @@ original Markdown syntax we discussed in
 Headings are created by using `#` followed by a space and the heading.
 Quarto supports six levels of headings.
 
-Visual editor:
-
-Source editor: Example 1:
-
 **Inline code- The R code can be directly added in the text using single
 back ticks followed by `r` such as `r 2+2` which will produce `r 2+2` in
 the output document.**
 
-***TBA - Since they are used to Markdown, I would start by not using the
-Visual editor.*** ***But this could be a good place to introduce the
-visual editor***
+#### Source editor vs. Visual editor
+
+**Source editor**
+The source editor in RStudio is is the default text editor for
+editing Quarto documents (.qmd files).  You type everything yourself - the text, 
+the code chunks, and the YAML settings. It gives you full control but requires knowing some 
+Markdown and Quarto syntax. 
+It’s good for users who like to see and control the exact code behind the document.
+
+**Visual Editor**
+The Quarto visual editor within RStudio provides a What
+You See Is What You Mean (WYSIWYM) interface for authoring Quarto
+documents (.qmd files). The visual editor is easier to use for the users with Microsoft Word 
+or Google Docs background. 
+You can format text, add images, and see how your document will look as you write. 
+It’s great for beginners or anyone who prefers a simple, visual writing style.
+
+You can switch between the visual editor and source editor by clicking
+on the `Visual` and `Source` buttons at the top right corner of the
+RStudio window.
 
 ## Practice
 
