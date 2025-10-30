@@ -214,7 +214,10 @@ Change the YAML header of your Quarto document to include the following:
 
 <summary>Click for the solution</summary>
 
-```{r eval=FALSE}
+
+::: {.cell}
+
+```{.r .cell-code}
 ---
 title: " R : Quarto"
 subtitle: "Week 12"
@@ -227,6 +230,8 @@ format:
      theme: darkly
 ---
 ```
+:::
+
 
 </details>
 :::
@@ -286,15 +291,42 @@ options are:
 More chunk options can be found
 [here](https://quarto.org/docs/computations/execution-options.html/).
 
-```{r echo=TRUE}
+
+::: {.cell}
+
+```{.r .cell-code}
 # Example code chunk
 2*2
 ```
 
-```{r}
-#| echo: true
+::: {.cell-output .cell-output-stdout}
+
+``` regular-r-output
+[1] 4
+```
+
+
+:::
+:::
+
+
+
+::: {.cell}
+
+```{.r .cell-code}
 2*3
 ```
+
+::: {.cell-output .cell-output-stdout}
+
+``` regular-r-output
+[1] 6
+```
+
+
+:::
+:::
+
 
 #### Global vs. chunk-specific options
 
@@ -318,15 +350,41 @@ code chunk. The chunk name should be unique and cannot contain spaces.
 -   You can set up a network of certain chunks not to rerun to avoid the
     computational time.
 
-```{r}
-#| label: my-first-chunk
+
+::: {.cell}
+
+```{.r .cell-code}
 2 + 3
 ```
 
-```{r}
-#| label: my-second-chunk
+::: {.cell-output .cell-output-stdout}
+
+``` regular-r-output
+[1] 5
+```
+
+
+:::
+:::
+
+
+
+::: {.cell}
+
+```{.r .cell-code}
 5 * 6
 ```
+
+::: {.cell-output .cell-output-stdout}
+
+``` regular-r-output
+[1] 30
+```
+
+
+:::
+:::
+
 :::
 
 #### Running the code chunk
@@ -365,14 +423,22 @@ Add the code chunks in the Quarto document to do the following:
 
 <summary>Click for the solution</summary>
 
-```{r}
-#| warning: false
+
+::: {.cell}
+
+```{.r .cell-code}
 library(tidyverse)
 
 library(ggplot2)
 ggplot(mtcars, aes(wt, mpg)) +
   geom_point()
 ```
+
+::: {.cell-output-display}
+![](w12a_quarto_files/figure-html/unnamed-chunk-4-1.png){width=672}
+:::
+:::
+
 
 </details>
 :::
@@ -392,8 +458,8 @@ Headings are created by using `#` followed by a space and the heading.
 Quarto supports six levels of headings.
 
 **Inline code- The R code can be directly added in the text using single
-back ticks followed by \`r\` such as `r 2+2` which will produce
-`` `r 2+2` `` in the output document.**
+back ticks followed by \`r\` such as 4 which will produce
+`` 4 `` in the output document.**
 
 ## Source editor vs. Visual editor
 
@@ -431,3 +497,4 @@ RStudio window.
 5.  Customize the figure by adding figure caption, changing the figure
     dimensions (height and width) and aligning it to the center.
 6.  Add a text section explaining the figure you created above.
+
