@@ -80,8 +80,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-9cf5d5ad5d245d23957a6e6542550312.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
-<link href="../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -180,7 +180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
         <li>
     <a class="dropdown-item" href="../week11/w11_overview.html">
- <span class="dropdown-text">Week 11: Introduction to R</span></a>
+ <span class="dropdown-text">Week 11: R basics</span></a>
   </li>  
         <li class="dropdown-header">Week 12: R – Quarto [TBA] (half-week)</li>
         <li class="dropdown-header">Week 13: R – data visualization [TBA]</li>
@@ -387,10 +387,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#yaml-header" id="toc-yaml-header" class="nav-link" data-scroll-target="#yaml-header"><span class="header-section-number">4.1</span> YAML header</a></li>
   <li><a href="#code-chunks" id="toc-code-chunks" class="nav-link" data-scroll-target="#code-chunks"><span class="header-section-number">4.2</span> Code chunks</a></li>
-  <li><a href="#global-vs.-chunk-specific-options" id="toc-global-vs.-chunk-specific-options" class="nav-link" data-scroll-target="#global-vs.-chunk-specific-options"><span class="header-section-number">4.3</span> Global vs.&nbsp;chunk-specific options</a></li>
-  <li><a href="#markdown-text" id="toc-markdown-text" class="nav-link" data-scroll-target="#markdown-text"><span class="header-section-number">4.4</span> Markdown text</a></li>
+  <li><a href="#markdown-text" id="toc-markdown-text" class="nav-link" data-scroll-target="#markdown-text"><span class="header-section-number">4.3</span> Markdown text</a></li>
   </ul></li>
-  <li><a href="#practice" id="toc-practice" class="nav-link" data-scroll-target="#practice"><span class="header-section-number">5</span> Practice</a></li>
+  <li><a href="#source-editor-vs.-visual-editor" id="toc-source-editor-vs.-visual-editor" class="nav-link" data-scroll-target="#source-editor-vs.-visual-editor"><span class="header-section-number">5</span> Source editor vs.&nbsp;Visual editor</a></li>
+  <li><a href="#practice" id="toc-practice" class="nav-link" data-scroll-target="#practice"><span class="header-section-number">6</span> Practice</a></li>
   </ul>
 <div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w12_overview.html"><i class="bi bi-book"></i>Week 12 overview</a></li><li><a href="w8_ga.html"><i class="bi bi-pencil"></i>Graded Assignment 5</a></li></ul></div></nav>
     </div>
@@ -463,7 +463,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="quarto" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="quarto"><span class="header-section-number">2</span> Quarto</h2>
-<p>Quarto is an extenstion of Markdown that allows to combine prose, code, and results<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Quarto is not limited to a single programming language but can run R, Python, Julia and Observable code. Here, we will focus on using Quarto in RStudio with R.</p>
+<p>Quarto is an extension of Markdown that allows to combine prose, code, and results<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Quarto is not limited to a single programming language but can run R, Python, Julia and Observable code. Here, we will focus on using <strong>Quarto in RStudio with R</strong>.</p>
 <p>Quarto documents are reproducible and support different output formats such as PDFs, Microsoft Word files, slide decks (presentations) and many more.</p>
 <p><strong>Advantages of using Quarto:</strong></p>
 <ol type="1">
@@ -492,7 +492,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This will open a new window with several options. We can select the Quarto outputs such as Documents, Presentation, interactive in different formats. For example, for documents, we can pick HTML, PDF or Word format. Here, we will select <code>Document</code> and <code>HTML</code> format.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/new_quarto_doc.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+<p><img src="../img/new_quarto_doc.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
 </figure>
 </div>
 <p>This will create an new unamed <code>Untitled.qmd</code> file. Let’s rename it, by going to <code>File</code>, <code>Save As</code> and then save it as <code>quarto_intro.qmd</code>.</p>
@@ -500,12 +500,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="rendering-quarto-documents" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="rendering-quarto-documents"><span class="header-section-number">3</span> Rendering Quarto documents</h2>
-<p>Rendering a Quarto document converts the <code>.qmd</code> document to the requested format <strong>(html/pdf or any other format)</strong>. During rendering, Quarto document (<code>.qmd</code>) is first processed using <strong>knitr</strong>, which executes code in the documents and produces a pain Markdown file, and then converted to the final format using <strong>pandoc</strong>.</p>
+<p>Rendering a Quarto document converts the <code>.qmd</code> document to the requested format <strong>(html/pdf or any other format)</strong>. During rendering, Quarto document (<code>.qmd</code>) is first processed using <strong>knitr</strong>, which executes code in the documents and produces a plain Markdown file, and then convert to the final format using <strong>pandoc</strong>.</p>
 <p>So, while rendering, all code chunks are executed and their output is embedded in the final document along with the text. <strong>However, if there are any codes that produces error, your document will not be rendered.</strong></p>
 <p>To render a Quarto document, click on the <code>Render</code> button:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/render.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+<p><img src="../img/render.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
 </figure>
 </div>
 <p>You can also use a keyboard shortcut to render: <code>Ctrl-Shift-K</code> (Windows) or <code>Cmd-Shift-K</code> (Mac).</p>
@@ -523,47 +523,96 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We’ll go over these one-by-one now.</p>
 <section id="yaml-header" class="level3" data-number="4.1">
 <h3 data-number="4.1" class="anchored" data-anchor-id="yaml-header"><span class="header-section-number">4.1</span> YAML header</h3>
-<p>The header for the Quarto document is written in <strong>YAML language</strong>. It allows to specify themes, formats, executable options and many more. Additionally, it consists of series of metadata such as title, author date etc. You can think of YAML header as the settings of the Quarto document on how to process and present your document.</p>
+<p>The header for the Quarto document is written in <strong>YAML language</strong>. It allows to specify themes, formats, executable options and many more. Additionally, it consists of series of metadata such as title, author, date etc. You can think of YAML header as the settings of the Quarto document on how to process and present your document.</p>
 <p>It is surrounded by (<code>---</code>), at the top of the Quarto document. A simple example of YAML header is shown below:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/yaml_header.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+<p><img src="../img/yaml_header.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
 </figure>
 </div>
 <p>We can add some additional contents to the YAML header such as authors, date, table of content and set the theme:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../img/yaml_header_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:40.0%"></p>
+<p><img src="../img/yaml_header_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
 </figure>
 </div>
 <p>Some of the additional options for the YAML header can be found <a href="https://quarto.org/docs/output-formats/html-basics.html">here</a>.</p>
-<section id="project-level-yaml" class="level4">
-<h4 class="anchored" data-anchor-id="project-level-yaml">Project level YAML</h4>
-<p>YAML header can be specified at the project level in a file named. <code>_quarto.yml</code> in the root directory of your project. This file can be used to set default options for all Quarto documents in the project. More information about project level YAML can be found <a href="https://quarto.org/docs/projects/project-configuration.html">here</a>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>Project level YAML: YAML header can be specified at the project level in a file named. <code>_quarto.yml</code> in the root directory of your project. This file can be used to set default options for all Quarto documents in the project. More information about project level YAML can be found <a href="https://quarto.org/docs/projects/project-configuration.html">here</a>.</p></li>
+<li><p>Document level YAML: YAML header can be specified at the document level at the top of each Quarto document. This file can be used to set options specific to that document.</p></li>
+</ul>
+</div>
+</div>
+<section id="yaml-mapping" class="level4">
+<h4 class="anchored" data-anchor-id="yaml-mapping">YAML mapping</h4>
+<p>The YAML header starts and ends with three hyphens (<code>---</code>). Each key-value pair should be on a new line, with a colon (<code>:</code>) followed by a space separating the key and value. If a value is a nested mapping, indent the nested pairs typically using two spaces per level. Keys are case-sensitive, and values can be strings, numbers, booleans, lists, or nested lists. Strings with special characters should be enclosed in quotes.</p>
 </section>
-<section id="document-level-yaml" class="level4">
-<h4 class="anchored" data-anchor-id="document-level-yaml">Document level YAML</h4>
-<p>Document level YAML is specified at the beginning of each Quarto document. This YAML header can override the project level YAML settings for that specific document.</p>
-<section id="yaml-mapping" class="level5">
-<h5 class="anchored" data-anchor-id="yaml-mapping">YAML mapping</h5>
-<p>The YAML header starts and ends with three hyphens (<code>---</code>). Each key-value pair should be on a new line, with a colon (<code>:</code>) followed by a space separating the key and value. If a value is a nested mapping, indent the nested pairs—typically using two spaces per level. Keys are case-sensitive, and values can be strings, numbers, booleans, lists, or nested lists. Strings with special characters should be enclosed in quotes.</p>
-</section>
-<section id="yaml-sequences" class="level5">
-<h5 class="anchored" data-anchor-id="yaml-sequences">YAML Sequences</h5>
-<p>A key sets of ordered variables can be specified a YAML sequences in two different ways: 1. Inline syntax: Comma-separated values enclosed in square brackets (<code>[ ]</code>). 2. Block syntax: Each item on a new line, preceded by a hyphen (<code>-</code>). <img src="../img/inline_syntax_quarto.png" class="img-fluid quarto-figure quarto-figure-center" style="width:50.0%"></p>
-</section>
+<section id="yaml-sequences" class="level4">
+<h4 class="anchored" data-anchor-id="yaml-sequences">YAML Sequences</h4>
+<p>A key sets of ordered variables can be specified in YAML sequences in two different ways:</p>
+<ol type="1">
+<li>Inline syntax: Comma-separated values enclosed in square brackets (<code>[ ]</code>).</li>
+<li>Block syntax: Each item on a new line, preceded by a hyphen (<code>-</code>). <strong>We saw example of block syntax this in the above fig</strong></li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/inline_syntax_quarto.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
+</figure>
+</div>
 <section id="quotes" class="level5">
 <h5 class="anchored" data-anchor-id="quotes">Quotes</h5>
-<p>In YAML, strings do not require quotes. However, strings can be enclosed in single (<code>' '</code>) or double (<code>" "</code>) quotes to handle special characters, spaces, or to preserve formatting. - Single quotes (<code>' '</code>) treat the content literally - Double quotes (<code>" "</code>) allow for escape characters in them</p>
+<p>In YAML, strings without special characters do not require quotes. In the above examples, <strong>although I kept the quotes around the title and author names, it is not necessary</strong>. However, quotes are necessary when string contains special characters (e.g.&nbsp;#, :, etc.).</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The hash symbol (#) indicates the start of a comment, which is ended by the end of the line. Colon is used in YAML headers to assign values to keys.</p>
+</div>
+</div>
 </section>
 </section>
-<section id="exercise-change-the-yaml-header" class="level4 exercise">
-<h4 class="anchored" data-anchor-id="exercise-change-the-yaml-header"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: Change the YAML header</h4>
-<p><strong><em>TBA</em></strong></p>
+<section id="exercise" class="level4 exercise">
+<h4 class="anchored" data-anchor-id="exercise"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise:</h4>
+<p>Change the YAML header of your Quarto document to include the following:</p>
 <ul>
-<li>E.g. author, etc</li>
-<li>Change the <code>theme</code>: provide a link to the different options</li>
+<li>Title, subtitle, Author</li>
+<li>Add <code>date</code>: use the format <code>YYYY-MM-DD</code></li>
+<li>Change the <code>theme</code> to <code>darkly</code>: Different themes are found <a href="https://quarto.org/docs/output-formats/html-themes.html">here</a></li>
 </ul>
+<details>
+<summary>
+Click for the solution
+</summary>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>title<span class="sc">:</span> <span class="st">" R : Quarto"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>subtitle<span class="sc">:</span> <span class="st">"Week 12"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>author<span class="sc">:</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span> Menuka Bhandari</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>date<span class="sc">:</span> today</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>date<span class="sc">-</span>format<span class="sc">:</span> <span class="st">"YYYY-MM-DD"</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>format<span class="sc">:</span> </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>   html<span class="sc">:</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>     theme<span class="sc">:</span> darkly</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</details>
 </section>
 </section>
 <section id="code-chunks" class="level3" data-number="4.2">
@@ -597,11 +646,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <section id="chunk-options" class="level4">
 <h4 class="anchored" data-anchor-id="chunk-options">Chunk options</h4>
-<p>Several options can be added to your code chunk to customize the output of code. Some of the commonly used chunk options are:</p>
+<p>Several options can be added to your code chunk to customize the output of code. Chunk options can be either written directly inside the <code>curly braces</code> or by using <code>#| (YAML syntax)</code> before the code chunk where each <code>#|</code> line sets one option. Some of the commonly used chunk options are:</p>
 <ul>
 <li><p><code>echo: FALSE</code> runs your code chunk, displays output, but does not display code in your final doc (this is useful if you want to show a figure but not the code used to create it)</p></li>
 <li><p><code>eval: FALSE</code> does not run your code, but does display it in your final doc</p></li>
 <li><p><code>include: FALSE</code> runs your code but does not display the code or its output in your final doc</p></li>
+</ul>
+<p><strong>Additional chunk options are available below:</strong></p>
+<ul>
 <li><p><code>message: FALSE</code> prevents messages from showing up in your final doc</p></li>
 <li><p><code>warning: FALSE</code> prevents earnings from showing up in your final doc</p></li>
 <li><p><code>fig.height: X</code> and <code>fig.width: Y</code> will allow you to specify the dimensions of your figures (in inches)</p></li>
@@ -611,27 +663,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><code>cache: TRUE</code> will cache results, meaning if you have a chunk that takes a long time to run, if you haven’t changed anything and you knit again, the code won’t run again but access the cache.</p></li>
 <li><p><code>fig-show=hide</code> to hide the figures</p></li>
 </ul>
-<p><strong><em>TBA - This is a very long list – I would start with a few options and demonstrate</em></strong> <strong><em>those, and then at the end present a list with additional options</em></strong></p>
-<p>More chunk options can be found <a href="https://quarto.org/docs/computations/execution-options.html/">here</a>. Chunk options can be either written directly inside the <code>curly braces</code> or by using <code>#| (YAML syntax)</code> before the code chunk where each <code>#|</code> line sets one option:</p>
+<p>More chunk options can be found <a href="https://quarto.org/docs/computations/execution-options.html/">here</a>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example code chunk</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example code chunk</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="regular-r-output"><code>[1] 4</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="dv">3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="dv">3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="regular-r-output"><code>[1] 6</code></pre>
 </div>
 </div>
 </section>
-</section>
-<section id="global-vs.-chunk-specific-options" class="level3" data-number="4.3">
-<h3 data-number="4.3" class="anchored" data-anchor-id="global-vs.-chunk-specific-options"><span class="header-section-number">4.3</span> Global vs.&nbsp;chunk-specific options</h3>
-<p><strong><em>TBA - Expand on this and clarify the paragraph below</em></strong></p>
-<p>You can change the default option of the chunk. Suppose you want to show just the figures and table without showing the command that produces it. You can do it in the Quarto YAML header under execute, by adding the following global option:<code>execute: echo :false</code>.</p>
+<section id="global-vs.-chunk-specific-options" class="level4">
+<h4 class="anchored" data-anchor-id="global-vs.-chunk-specific-options">Global vs.&nbsp;chunk-specific options</h4>
+<p>If the default code chunk settings don’t fit your needs, you can change them for the whole document in the YAML section under <code>execute:</code>. For example, if you don’t want to show your R code to your readers, you can set <code>echo: false</code> which hides all code by default. If you later want to show the code for a specific chunk, you can turn it back on just for that chunk using <code>echo: true</code>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -649,19 +698,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>You can set up a network of certain chunks not to rerun to avoid the computational time.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="regular-r-output"><code>[1] 5</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span> <span class="sc">*</span> <span class="dv">6</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span> <span class="sc">*</span> <span class="dv">6</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="regular-r-output"><code>[1] 30</code></pre>
 </div>
 </div>
 </div>
 </div>
+</section>
 <section id="running-the-code-chunk" class="level4">
 <h4 class="anchored" data-anchor-id="running-the-code-chunk">Running the code chunk</h4>
 <p>There are several different options to run individual code chunks:</p>
@@ -676,28 +726,59 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Triangle sign with a line below execute all the code chunks before the current chunk.</li>
 <li>Triangle sign facing towards right (similar to play button) runs the current chunk.</li>
 </ul>
-<p><strong><em>TBA - Add screenshot highlighting the triangle signs - and show this in action in class</em></strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/quarto_triangle_option.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:25.0%"></p>
+</figure>
+</div>
 </section>
-<section id="exercise-tba" class="level4 exercise">
-<h4 class="anchored" data-anchor-id="exercise-tba"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise: TBA</h4>
-<p><strong><em>TBA</em></strong></p>
+<section id="exercise-1" class="level4 exercise">
+<h4 class="anchored" data-anchor-id="exercise-1"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise</h4>
+<p>Add the code chunks in the Quarto document to do the following:</p>
+<ol type="1">
+<li>Install and load the <code>tidyverse</code> package. Use the chunk option to hide the warnings and messages while loading the package.</li>
+<li>In the second chunk install and load package <code>ggplot2</code></li>
+<li>Read the documentation of <code>ggplot2</code> and create a simple scatter plot using the <code>mtcars</code> dataset with <code>wt</code> on x-axis and <code>mpg</code> on y-axis.</li>
+</ol>
+<details>
+<summary>
+Click for the solution
+</summary>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(wt, mpg)) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="w12a_quarto_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</details>
 </section>
 </section>
-<section id="markdown-text" class="level3" data-number="4.4">
-<h3 data-number="4.4" class="anchored" data-anchor-id="markdown-text"><span class="header-section-number">4.4</span> Markdown text</h3>
+<section id="markdown-text" class="level3" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="markdown-text"><span class="header-section-number">4.3</span> Markdown text</h3>
 <p>The “default text” in Quarto documents is Markdown, unlike in R scripts, where everything is considered code until commented out by <code>#</code>. Therefore, you can directly write regular text outside the code chunks. Quarto text syntax is based on Pandoc Markdown which is similar to original Markdown syntax we discussed in <a href="https://mcic-osu.github.io/pracs-au25/week02/w2b_vscode-markdown.html">Week02</a></p>
 <section id="headings" class="level4">
 <h4 class="anchored" data-anchor-id="headings">Headings</h4>
 <p>Headings are created by using <code>#</code> followed by a space and the heading. Quarto supports six levels of headings.</p>
-<p>Visual editor:</p>
-<p>Source editor: Example 1:</p>
-<p><strong>Inline code- The R code can be directly added in the text using single back ticks followed by <code>r</code> such as 4 which will produce 4 in the output document.</strong></p>
-<p><strong><em>TBA - Since they are used to Markdown, I would start by not using the Visual editor.</em></strong> <strong><em>But this could be a good place to introduce the visual editor</em></strong></p>
+<p><strong>Inline code- The R code can be directly added in the text using single back ticks followed by `r` such as 4 which will produce <code>4</code> in the output document.</strong></p>
 </section>
 </section>
 </section>
-<section id="practice" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="practice"><span class="header-section-number">5</span> Practice</h2>
+<section id="source-editor-vs.-visual-editor" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="source-editor-vs.-visual-editor"><span class="header-section-number">5</span> Source editor vs.&nbsp;Visual editor</h2>
+<p><strong>Source editor</strong> The source editor in RStudio is is the default text editor for editing Quarto documents (.qmd files). You type everything yourself - the text, the code chunks, and the YAML settings. It gives you full control but requires knowing some Markdown and Quarto syntax. It’s good for users who like to see and control the exact code behind the document.</p>
+<p><strong>Visual Editor</strong> The Quarto visual editor within RStudio provides a What You See Is What You Mean (WYSIWYM) interface for authoring Quarto documents (.qmd files). The visual editor is easier to use for the users with Microsoft Word or Google Docs background. You can format text, add images, and see how your document will look as you write. It’s great for beginners or anyone who prefers a simple, visual writing style.</p>
+<p>You can switch between the visual editor and source editor by clicking on the <code>Visual</code> and <code>Source</code> buttons at the top right corner of the RStudio window.</p>
+</section>
+<section id="practice" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="practice"><span class="header-section-number">6</span> Practice</h2>
 <ol type="1">
 <li>Create a PDF by saving the Quarto(.qmd) file you created to save your script.</li>
 <li>Add the following to the YAML header of your Quarto document:
