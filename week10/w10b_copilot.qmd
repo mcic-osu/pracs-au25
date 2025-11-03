@@ -92,7 +92,7 @@ for example. But on the bright side, you can now:
 - Easily have multiple windows open at the same time
 - Use the most recent version of VS Code
 - Use all extensions
-- Reap the benefits of no longer operating within a browser tab
+- Reap the benefits of not operating within a browser tab
   (more screen space, no keyboard shortcut conflicts, etc.)
 
 ## Getting set up with IDE-integrated AI
@@ -138,6 +138,13 @@ But in the meantime, because of that:
    Open the Extensions sidebar, search for "Copilot" and then install:
    - "_GitHub Copilot_" (by GitHub)
    - "_GitHub Copilot Chat_" (by GitHub)
+
+![_The GitHub Copilot extensions you should install_](../img/copilot-extensions.png){fig-align="center" width="40%" fig-alt="A screenshot of VS Code" .lightbox}
+
+4. Click on the Copilot icon in the bottom right again,
+   and make sure to check all boxes at the bottom, e.g.:
+   
+![_Make sure to check all the boxes at the bottom.<br>The 'Markdown' box is shown in this case because we have a Markdown file open._](../img/copilot-checkboxes.png){fig-align="center" width="35%" fig-alt="A screenshot of VS Code" .lightbox}   
 
 ## GitHub Copilot inline suggestions
 
@@ -187,14 +194,34 @@ does it seem have given a correct suggestion?
 # Print a count table of all feature types in the GTF file
 
 # Count the number of genes on the + versus the - strand
+
+# How many genes have a description?
 ```
 
-***TBA***
+::: callout-tip
+#### Iterating questions and inline chat
+When you are not happy with Copilot's suggestion,
+you can delete the answer, modify your prompt line, and press <kbd>Enter</kbd> again.
+However, if you want to explicitly request a change to the current suggestion,
+you can also use the inline chat functionality by selecting the code and pressing
+<kbd>⌘</kbd>+<kbd>I</kbd> (Mac) / <kbd>Ctrl</kbd>+<kbd>I</kbd> (Windows).
 
-In-line chat with <kbd>⌘</kbd>+<kbd>I</kbd>.
-(You can also do this in the Terminal!)
+For example, I didn't get a good answer to the last prompt above:
 
-***TBA***
+![](../img/copilot-inline-1.png){fig-align="center" width="80%" fig-alt="A screenshot showing how to hover over Copilot suggestions." .lightbox}
+
+So I pressed the <kbd>⌘</kbd>+<kbd>I</kbd> and reported the failure:
+
+![](../img/copilot-inline-2.png){fig-align="center" width="80%" fig-alt="A screenshot showing how to hover over Copilot suggestions." .lightbox}
+
+Copilot then came up with a fix, which I could accept:
+
+![](../img/copilot-inline-3.png){fig-align="center" width="80%" fig-alt="A screenshot showing how to hover over Copilot suggestions." .lightbox}
+
+Running the modified line did give the correct answer:
+
+![](../img/copilot-inline-4.png){fig-align="center" width="80%" fig-alt="A screenshot showing how to hover over Copilot suggestions." .lightbox}
+:::
 
 ::: callout-note
 # More complicated bonus prompts
@@ -521,7 +548,44 @@ This is similar to the program Salmon which was indicated in our workflow diagra
 
 ## Appendix
 
-### Custom "background" instructions
+### Google Gemini VS Code extension
+
+If you run out of GitHub Copilot suggestions included with your free plan,
+you can also try the Gemini Code Assist extension for VS Code,
+which uses Google's Gemini LLMs.
+This appears to have an unlimited free tier!
+I haven't explored it much, but it seems to have similar functionality to GitHub Copilot,
+with inline suggestions and a chat window.
+
+1. Search for the "Gemini Code Assist" VS Code extension and install it:
+
+![](../img/gemini-extension-install.png){fig-align="center" width="40%" fig-alt="A screenshot showing the icon to open the GitHub Copilot chat." .lightbox}
+
+2. Click the striked-through "AI star" icon in the thin bar way in the bottom to
+   open the Gemini sidebar:
+
+![](../img/gemini-star.png){fig-align="center" width="40%" fig-alt="A screenshot showing the icon to open the GitHub Copilot chat." .lightbox}
+
+3. Click "Sign in":
+
+![](../img/gemini-signin.png){fig-align="center" width="40%" fig-alt="A screenshot showing the icon to open the GitHub Copilot chat." .lightbox}
+
+4. Click "Open" to allow Code to open the external website
+
+5. In the new web browser tab that pops up,
+   log in with your **personal** Google account
+
+6. If it worked, you should see the following in your browser:
+
+![](../img/gemini-auth.png){fig-align="center" width="40%" fig-alt="A screenshot showing the icon to open the GitHub Copilot chat." .lightbox}
+
+You should now be all set to use Gemini Code Assist in VS Code!
+You can ask questions in the chat window or get inline code suggestions
+in similar ways to GitHub Copilot.
+
+![](../img/gemini-chat.png){fig-align="center" width="36%" fig-alt="A screenshot showing the icon to open the GitHub Copilot chat." .lightbox}
+
+### Copilot custom "background" instructions
 
 It is possible to provide custom instructions to GitHub Copilot that will guide
 its behavior across all your questions.
@@ -543,10 +607,10 @@ For more info, see
 [these VS Code docs](https://code.visualstudio.com/docs/copilot/getting-started#_create-custom-instructions)
 :::
 
-### Advanced chat usage with "slash commands" and more
+### Copilot advanced chat usage with "slash commands" and more
 
-As the chat window shows in ghost text, you can use keyboard shortcuts to
-activate certain options:
+As the chat window shows in ghost text,
+you can use keyboard shortcuts to activate certain options:
 
 - Context (files) with `#`:
   - `#file` to attach a relevant file
@@ -559,12 +623,6 @@ activate certain options:
 - Extensions with `@`:
   - e.g. `@workspace`
   
-***TBA ADDITIONAL EXPLANATION***
-  
-### Google Gemini VS Code extension
-
-**TBA**
-
 ### Further resources
 
 - [Best practices for using GitHub Copilot](https://docs.github.com/en/copilot/get-started/best-practices) (GitHub docs)
