@@ -182,7 +182,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week11/w11_overview.html">
  <span class="dropdown-text">Week 11: R basics</span></a>
   </li>  
-        <li class="dropdown-header">Week 12: R – Quarto [TBA] (half-week)</li>
+        <li>
+    <a class="dropdown-item" href="../week12/w12_overview.html">
+ <span class="dropdown-text">Week 12: R + Markdown with Quarto</span></a>
+  </li>  
         <li class="dropdown-header">Week 13: R – data visualization [TBA]</li>
         <li class="dropdown-header">Week 14: R – omics data [TBA] (half-week)</li>
         <li class="dropdown-header">Week 15: Nextflow nf-core pipelines [TBA]</li>
@@ -213,7 +216,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../week11/w11_exercises.html">
  <span class="dropdown-text">Week 11: R basics</span></a>
   </li>  
-        <li class="dropdown-header">Week 12: Quarto [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week12/w12_exercises.html">
+ <span class="dropdown-text">Week 12: Quarto</span></a>
+  </li>  
         <li class="dropdown-header">Week 14: R for omics data [TBA]</li>
         <li class="dropdown-header">Week 15: nf-core pipelines [TBA]</li>
         <li><hr class="dropdown-divider"></li>
@@ -391,7 +397,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#source-editor-vs.-visual-editor" id="toc-source-editor-vs.-visual-editor" class="nav-link" data-scroll-target="#source-editor-vs.-visual-editor"><span class="header-section-number">5</span> Source editor vs.&nbsp;Visual editor</a></li>
   </ul>
-<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w12_overview.html"><i class="bi bi-book"></i>Week 12 overview</a></li><li><a href="w8_ga.html"><i class="bi bi-pencil"></i>Graded Assignment 5</a></li></ul></div></nav>
+<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w12_overview.html"><i class="bi bi-book"></i>Week 12 overview</a></li><li><a href="w12_exercises.html"><i class="bi bi-pencil"></i>Week 12 exercises</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -456,7 +462,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>Basics of <strong>Quarto (syntax and formats)</strong></li>
 <li>How to create and render a Quarto document in RStudio</li>
-<li>Understand three components of Quarto ; YAML header, code chunks and text</li>
+<li>Understand three components of Quarto ; <strong>YAML header, code chunks and text</strong></li>
 </ul>
 </section>
 </section>
@@ -489,7 +495,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="../img/quarto_file_open.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
 </figure>
 </div>
-<p>This will open a new window with several options. We can select the Quarto outputs such as Documents, Presentation, interactive in different formats. For example, for documents, we can pick HTML, PDF or Word format. Here, we will select <code>Document</code> and <code>HTML</code> format.</p>
+<p>This will open a new window with several options. We can select the Quarto outputs such as Documents, Presentation, interactive in different formats. For example, for documents, we can pick HTML, PDF or Word format. Here, we will select <code>Document</code> and <code>HTML</code> format. HTML is the most useful format in Quarto.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../img/new_quarto_doc.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
@@ -530,7 +536,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="../img/yaml_header.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
 </figure>
 </div>
-<p>We can add some additional contents to the YAML header such as authors, date, table of content and set the theme:</p>
+<p>We can add some additional contents to the YAML header such as authors, date, table of content and set the theme. Themes in Quarto are built on Bootstrap 5. Theme changes the visual appearance of document such as font type, color, size, code block style etc of the document. There are <a href="https://quarto.org/docs/output-formats/html-themes.html">25</a> in-built themes available for HTML in Quarto. You can even customize existing themes or create entirely new theme through <a href="https://quarto.org/docs/output-formats/html-themes-more.html"><strong>Sass</strong></a></p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../img/yaml_header_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
@@ -551,42 +557,9 @@ Tip
 <li><p>Project level YAML: YAML header can be specified at the project level in a file named. <code>_quarto.yml</code> in the root directory of your project. This file can be used to set default options for all Quarto documents in the project. More information about project level YAML can be found <a href="https://quarto.org/docs/projects/project-configuration.html">here</a>.</p></li>
 <li><p>Document level YAML: YAML header can be specified at the document level at the top of each Quarto document. This file can be used to set options specific to that document.</p></li>
 </ul>
+<p>There are different <a href="https://quarto.org/docs/reference/dates.html">date</a> formats available in Quarto.</p>
 </div>
 </div>
-<section id="yaml-mapping" class="level4">
-<h4 class="anchored" data-anchor-id="yaml-mapping">YAML mapping</h4>
-<p>The YAML header starts and ends with three hyphens (<code>---</code>). Each key-value pair should be on a new line, with a colon (<code>:</code>) followed by a space separating the key and value. If a value is a nested mapping, indent the nested pairs typically using two spaces per level. Keys are case-sensitive, and values can be strings, numbers, booleans, lists, or nested lists. Strings with special characters should be enclosed in quotes.</p>
-</section>
-<section id="yaml-sequences" class="level4">
-<h4 class="anchored" data-anchor-id="yaml-sequences">YAML Sequences</h4>
-<p>A key sets of ordered variables can be specified in YAML sequences in two different ways:</p>
-<ol type="1">
-<li>Inline syntax: Comma-separated values enclosed in square brackets (<code>[ ]</code>).</li>
-<li>Block syntax: Each item on a new line, preceded by a hyphen (<code>-</code>). <strong>We saw example of block syntax this in the above fig</strong></li>
-</ol>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../img/inline_syntax_quarto.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
-</figure>
-</div>
-<section id="quotes" class="level5">
-<h5 class="anchored" data-anchor-id="quotes">Quotes</h5>
-<p>In YAML, strings without special characters do not require quotes. In the above examples, <strong>although I kept the quotes around the title and author names, it is not necessary</strong>. However, quotes are necessary when string contains special characters (e.g.&nbsp;#, :, etc.).</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The hash symbol (#) indicates the start of a comment, which is ended by the end of the line. Colon is used in YAML headers to assign values to keys.</p>
-</div>
-</div>
-</section>
-</section>
 <section id="exercise" class="level4 exercise">
 <h4 class="anchored" data-anchor-id="exercise"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise:</h4>
 <p>Change the YAML header of your Quarto document to include the following:</p>
@@ -613,6 +586,45 @@ Click for the solution
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </details>
+</section>
+<section id="yaml-mapping" class="level4">
+<h4 class="anchored" data-anchor-id="yaml-mapping">YAML mapping</h4>
+<p>The YAML header starts and ends with three hyphens (<code>---</code>). Each key-value pair should be on a new line, with a colon (<code>:</code>) followed by a space separating the key and value. If a value is a nested mapping, indent the nested pairs typically using two spaces per level. Keys are case-sensitive, and values can be strings, numbers, booleans, lists, or nested lists.</p>
+</section>
+<section id="self-contained-html-file" class="level4">
+<h4 class="anchored" data-anchor-id="self-contained-html-file">Self contained HTML file</h4>
+<p>HTML documents typically include a number of external dependencies (e.g., images, CSS stylesheets). By default, Quarto stores these dependencies in a separate folder within the same directory as your .qmd file. If you download or move only the rendered HTML file, the figures and other resources may not appear correctly. To generate a single, self-contained HTML file with all resources embedded, set <strong>embed-resources: true in your YAML header</strong>. This ensures that the final HTML output contains all necessary dependencies within the file itself.</p>
+</section>
+<section id="yaml-sequences" class="level4">
+<h4 class="anchored" data-anchor-id="yaml-sequences">YAML Sequences</h4>
+<p>A key sets of ordered variables can be specified in YAML sequences in two different ways:</p>
+<ol type="1">
+<li>Inline syntax: Comma-separated values enclosed in square brackets (<code>[ ]</code>).</li>
+<li>Block syntax: Each item on a new line, preceded by a hyphen (<code>-</code>). <strong>We saw example of block syntax in the above fig</strong></li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/inline_syntax_quarto.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
+</figure>
+</div>
+<p>In the above figure, we can see that <code>html:</code>, <code>theme: cosmo</code> and <code>toc: true</code> are nested under <code>fotmat:</code> key. Nesting in Quarto denotes the hierarchical relationship between options. You use nesting when you want to specify options that belong to a particular key. In this example, both theme and toc apply specifically to the HTML output. <strong>Different options are nested under their parent key using two spaces for indentation.</strong></p>
+<section id="quotes" class="level5">
+<h5 class="anchored" data-anchor-id="quotes">Quotes</h5>
+<p>In YAML, strings without special characters do not require quotes. In the above examples, <strong>although I kept the quotes around the title and author names, it is not necessary</strong>. However, quotes are necessary when string contains special characters (e.g.&nbsp;#, :, etc). In general, I prefer to use quotes even for strings with spaces to avoid potential errors.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The hash symbol (#) indicates the start of a comment, which is ended by the end of the line. Colon is used in YAML headers to assign values to keys.</p>
+</div>
+</div>
+</section>
 </section>
 </section>
 <section id="code-chunks" class="level3" data-number="4.2">
@@ -662,7 +674,7 @@ Click for the solution
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=TRUE}</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Example code chunk</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="dv">2</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="dv">2</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="regular-r-output"><code>[1] 4</code></pre>
@@ -671,7 +683,7 @@ Click for the solution
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: true</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="dv">3</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="dv">3</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="regular-r-output"><code>[1] 6</code></pre>
@@ -742,20 +754,71 @@ Click for the solution
 <h4 class="anchored" data-anchor-id="exercise-1"><i class="fa-solid fa-user-edit" aria-label="user-edit"></i> Exercise</h4>
 <p>Add the code chunks in the Quarto document to do the following:</p>
 <ol type="1">
-<li>Install and load the <code>tidyverse</code> package. Use the chunk option to hide the warnings and messages while loading the package.</li>
-<li>In the second chunk install and load package <code>ggplot2</code></li>
-<li>Read the documentation of <code>ggplot2</code> and create a simple scatter plot using the <code>mtcars</code> dataset with <code>wt</code> on x-axis and <code>mpg</code> on y-axis.</li>
+<li>Load the <code>tidyverse</code> package. Use a chunk option to hide warnings and messages while loading the package.</li>
+<li>Read the documentation of <code>dplyr</code> package of <code>tidyverse</code> using the <code>?</code> operator.</li>
+<li>Use the <code>diamonds</code> dataset for this exercise.</li>
+<li>View the <code>diamonds</code> dataset using <code>View</code> function. Check the number of rows and column in the<br>
+<code>diamonds</code> dataset. Select the first 5 columns, filter carat that is greater than 0.23 and change the name of color variable to colors</li>
+<li>Create a scatter plot using the <code>ggplot2</code> package with carat in <code>x-axis</code> and depth in <code>y-axis</code>. Download the file after rendering and observe what happens when your HTML document is not self-contained.</li>
+<li>Make your HTML document self-contained, render it, download and check the updated HTML file.</li>
 </ol>
 <details>
 <summary>
 Click for the solution
 </summary>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(wt, mpg)) <span class="sc">+</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Add this in YAML `embed-resources: true`</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre class="regular-r-output"><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.2
+✔ ggplot2   3.5.2     ✔ tibble    3.3.0
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.1.0     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(diamonds)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code>tibble [53,940 × 10] (S3: tbl_df/tbl/data.frame)
+ $ carat  : num [1:53940] 0.23 0.21 0.23 0.29 0.31 0.24 0.24 0.26 0.22 0.23 ...
+ $ cut    : Ord.factor w/ 5 levels "Fair"&lt;"Good"&lt;..: 5 4 2 4 2 3 3 3 1 3 ...
+ $ color  : Ord.factor w/ 7 levels "D"&lt;"E"&lt;"F"&lt;"G"&lt;..: 2 2 2 6 7 7 6 5 2 5 ...
+ $ clarity: Ord.factor w/ 8 levels "I1"&lt;"SI2"&lt;"SI1"&lt;..: 2 3 5 4 2 6 7 3 4 5 ...
+ $ depth  : num [1:53940] 61.5 59.8 56.9 62.4 63.3 62.8 62.3 61.9 65.1 59.4 ...
+ $ table  : num [1:53940] 55 61 65 58 58 57 57 55 61 61 ...
+ $ price  : int [1:53940] 326 326 327 334 335 336 336 337 337 338 ...
+ $ x      : num [1:53940] 3.95 3.89 4.05 4.2 4.34 3.94 3.95 4.07 3.87 4 ...
+ $ y      : num [1:53940] 3.98 3.84 4.07 4.23 4.35 3.96 3.98 4.11 3.78 4.05 ...
+ $ z      : num [1:53940] 2.43 2.31 2.31 2.63 2.75 2.48 2.47 2.53 2.49 2.39 ...</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(carat <span class="sc">&gt;</span> <span class="fl">0.23</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">colors =</span> color)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre class="regular-r-output"><code># A tibble: 53,621 × 4
+   carat cut       colors clarity
+   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt;  &lt;ord&gt;  
+ 1  0.29 Premium   I      VS2    
+ 2  0.31 Good      J      SI2    
+ 3  0.24 Very Good J      VVS2   
+ 4  0.24 Very Good I      VVS1   
+ 5  0.26 Very Good H      SI1    
+ 6  0.3  Good      J      SI1    
+ 7  0.31 Ideal     J      SI2    
+ 8  0.32 Premium   E      I1     
+ 9  0.3  Ideal     I      SI2    
+10  0.3  Good      J      SI1    
+# ℹ 53,611 more rows</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>diamonds  <span class="sc">|&gt;</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(carat, depth)) <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -773,7 +836,12 @@ Click for the solution
 <section id="headings" class="level4">
 <h4 class="anchored" data-anchor-id="headings">Headings</h4>
 <p>Headings are created by using <code>#</code> followed by a space and the heading. Quarto supports six levels of headings.</p>
-<p><strong>Inline code- The R code can be directly added in the text using single back ticks followed by `r` such as 4 which will produce <code>4</code> in the output document.</strong></p>
+<p><strong>Inline code- The R code can be directly added in the text using single back ticks followed by `r`</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/in_line_code.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:25.0%"></p>
+</figure>
+</div>
 </section>
 </section>
 </section>

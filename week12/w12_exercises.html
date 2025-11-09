@@ -22,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -146,7 +181,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../week11/w11_overview.html">
  <span class="dropdown-text">Week 11: R basics</span></a>
   </li>  
-        <li class="dropdown-header">Week 12: R – Quarto [TBA] (half-week)</li>
+        <li>
+    <a class="dropdown-item" href="../week12/w12_overview.html">
+ <span class="dropdown-text">Week 12: R + Markdown with Quarto</span></a>
+  </li>  
         <li class="dropdown-header">Week 13: R – data visualization [TBA]</li>
         <li class="dropdown-header">Week 14: R – omics data [TBA] (half-week)</li>
         <li class="dropdown-header">Week 15: Nextflow nf-core pipelines [TBA]</li>
@@ -177,7 +215,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../week11/w11_exercises.html">
  <span class="dropdown-text">Week 11: R basics</span></a>
   </li>  
-        <li class="dropdown-header">Week 12: Quarto [TBA]</li>
+        <li>
+    <a class="dropdown-item" href="../week12/w12_exercises.html">
+ <span class="dropdown-text">Week 12: Quarto</span></a>
+  </li>  
         <li class="dropdown-header">Week 14: R for omics data [TBA]</li>
         <li class="dropdown-header">Week 15: nf-core pipelines [TBA]</li>
         <li><hr class="dropdown-divider"></li>
@@ -338,7 +379,17 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#setting-up" id="toc-setting-up" class="nav-link active" data-scroll-target="#setting-up"><span class="header-section-number">1</span> Setting up</a></li>
-  <li><a href="#exercise" id="toc-exercise" class="nav-link" data-scroll-target="#exercise"><span class="header-section-number">2</span> Exercise</a></li>
+  <li><a href="#exercise" id="toc-exercise" class="nav-link" data-scroll-target="#exercise"><span class="header-section-number">2</span> Exercise</a>
+  <ul class="collapse">
+  <li><a href="#yaml-header" id="toc-yaml-header" class="nav-link" data-scroll-target="#yaml-header"><span class="header-section-number">2.1</span> YAML header</a></li>
+  <li><a href="#code-chunks" id="toc-code-chunks" class="nav-link" data-scroll-target="#code-chunks"><span class="header-section-number">2.2</span> Code Chunks</a></li>
+  <li><a href="#text" id="toc-text" class="nav-link" data-scroll-target="#text"><span class="header-section-number">2.3</span> Text</a></li>
+  </ul></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions"><span class="header-section-number">3</span> Solutions</a>
+  <ul class="collapse">
+  <li><a href="#yaml-header-1" id="toc-yaml-header-1" class="nav-link" data-scroll-target="#yaml-header-1"><span class="header-section-number">3.1</span> YAML header</a></li>
+  <li><a href="#code-chunks-1" id="toc-code-chunks-1" class="nav-link" data-scroll-target="#code-chunks-1"><span class="header-section-number">3.2</span> Code chunks</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -391,29 +442,170 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="1" class="anchored" data-anchor-id="setting-up"><span class="header-section-number">1</span> Setting up</h2>
 <ul>
 <li><p>At <a href="https://ondemand.osc.edu" class="uri">https://ondemand.osc.edu</a>, start a new RStudio session (<a href="../week11/w11a_r-basics.html#starting-an-rstudio-server-session-at-osc">Starting an RStudio Server session at OSC</a>).</p></li>
-<li><p>Switch to your <code>week11</code> RStudio Project (<a href="../week11/w11a_r-basics.html#Working-directory-and-RStudio-Projects">Working directory and RStudio Projects</a>)</p></li>
+<li><p>Switch to your RStudio Project (<a href="../week11/w11a_r-basics.html#Working-directory-and-RStudio-Projects">Working directory and RStudio Projects</a>)</p></li>
 <li><p>Create a new directory <code>week12</code> in your home directory using function <code>dir.create("week12")</code></p></li>
-<li><p>Open a new <code>Quarto file</code> in RStudio: <code>File</code> -&gt; <code>New File</code> -&gt; <code>Quarto Documents</code> and save the file as <code>w12_exercises.qmd</code> (inside <code>week12</code>). You will write your answers to the questions below in this Quarto file</p></li>
+<li><p>Open a new <code>Quarto file</code> in RStudio: <code>File</code> -&gt; <code>New File</code> -&gt; <code>Quarto Documents</code> and save the file as <code>w12_exercises.qmd</code> (inside <code>week12</code> directory). You will write your answers to the questions below in this Quarto file</p></li>
 </ul>
 </section>
 <section id="exercise" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="exercise"><span class="header-section-number">2</span> Exercise</h2>
+<section id="yaml-header" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="yaml-header"><span class="header-section-number">2.1</span> YAML header</h3>
 <ol type="1">
-<li><p>Create a PDF by saving the Quarto(.qmd) file you created to save your script.</p></li>
-<li><p>Add the following to the YAML header of your Quarto document:</p>
+<li><p>Save your Quarto (.qmd) file that contains your script in HTML format.</p></li>
+<li><p>Add the following key–value pairs to the YAML header of your Quarto document:</p></li>
+</ol>
 <ul>
 <li>Author name</li>
 <li>Date</li>
 <li>Table of contents</li>
-<li>Theme</li>
-</ul></li>
-<li><p>Load the package <code>palmerpenguins</code> installed in <code>week11</code> exercise and save the <code>penguins</code> data in a object called penguin_data.</p></li>
-<li><p>Create a scatter plot of <code>flipper_length_mm</code> (x-axis) and <code>body_mass_g</code> (y-axis) colored by <code>species</code> using <code>ggplot2</code> package.</p></li>
-<li><p>Customize the figure by adding figure caption, changing the figure dimensions (height and width) and aligning it to the center.</p></li>
-<li><p>Add a text section explaining the figure you created above.</p></li>
+</ul>
+<ol start="3" type="1">
+<li>Create nested format options in the YAML header using <code>format:</code> <code>html:</code> and set the <code>theme to cyborg</code>.</li>
 </ol>
+</section>
+<section id="code-chunks" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="code-chunks"><span class="header-section-number">2.2</span> Code Chunks</h3>
+<ol start="4" type="1">
+<li><p>Install the <code>palmerpenguins</code> package in the Console, and load the package in a code chunk of your Quarto document. Save the penguins dataset in an object called <code>penguin_data</code>.</p></li>
+<li><p>Open the second code chunk, select the columns <code>flipper_length_mm</code>, <code>island</code> , <code>year</code> and save them as <code>new_penguins</code> object. Add a code chunk option to hide the code in the rendered file.</p></li>
+<li><p>Use <code>penguin_data</code> to create a scatter plot with the <code>ggplot2</code> package of <code>tidyverse</code>. Set <code>flipper_length_mm</code> as the <strong>x-axis</strong> and <code>body_mass_g</code> as the <strong>y-axis</strong>. Refer to the <code>ggplot2</code> documentation to understand the syntax of scatter plot. We will discuss <code>ggplot</code> in <code>Week 13</code>.</p></li>
+<li><p>Customize your figure by:</p></li>
+</ol>
+<ul>
+<li>Adding a figure caption</li>
+<li>Changing the figure dimensions (height and width)</li>
+<li>Aligning the figure to the center using chunk options</li>
+</ul>
+<ol start="8" type="1">
+<li><p>Render your document, download the output, and verify that it includes the scatter plot.</p></li>
+<li><p>If document does not contain scatter plot, add the appropriate option in the YAML header to include figures in the HTML output.</p></li>
+<li><p>Render the document again and confirm that the scatter plot is now included.</p></li>
+</ol>
+</section>
+<section id="text" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="text"><span class="header-section-number">2.3</span> Text</h3>
+<ol start="11" type="1">
+<li><p>Add headers of different levels above your code chunks.</p></li>
+<li><p>Write a short text section describing the scatter plot you created in question 9.</p></li>
+</ol>
+</section>
+</section>
+<section id="solutions" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="solutions"><span class="header-section-number">3</span> Solutions</h2>
+<section id="yaml-header-1" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="yaml-header-1"><span class="header-section-number">3.1</span> YAML header</h3>
+<details>
+<summary>
+<strong>1-3.</strong> YAML header
+</summary>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">##The solution of these questions are provided in the exercise of week12 lecture.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</details>
+</section>
+<section id="code-chunks-1" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="code-chunks-1"><span class="header-section-number">3.2</span> Code chunks</h3>
+<details>
+<summary>
+<strong>4.</strong> install <code>palmerpenguins</code> package and save object
+</summary>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre class="regular-r-output"><code>
+Attaching package: 'palmerpenguins'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre class="regular-r-output"><code>The following objects are masked from 'package:datasets':
+
+    penguins, penguins_raw</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>penguin_data <span class="ot">&lt;-</span> penguins</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</details>
+<details>
+<summary>
+<strong>5.</strong> Select columns
+</summary>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## First load tidyverse to use select function</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre class="regular-r-output"><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.2
+✔ ggplot2   3.5.2     ✔ tibble    3.3.0
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.1.0     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>new_penguins <span class="ot">&lt;-</span> penguin_data <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>( flipper_length_mm, island , year)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</details>
+<details>
+<summary>
+<strong>6.</strong> Scatter plot
+</summary>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>penguin_data <span class="sc">|&gt;</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(flipper_length_mm, body_mass_g)) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre class="warning-r-output"><code>Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="w12_exercises_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</details>
+<details>
+<summary>
+<strong>7.</strong> Customize your plot
+</summary>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Scatter plot of palmerpenguins datasets"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 5</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 4</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-align: center</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>penguin_data <span class="sc">|&gt;</span> </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(flipper_length_mm, body_mass_g)) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre class="warning-r-output"><code>Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="w12_exercises_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption>Scatter plot of palmerpenguins datasets</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</details>
+<details>
+<summary>
+<strong>8.</strong> Include your plot in HTML
+</summary>
+<p><strong><code>embed-resources: true</code> in your YAML header to make your document self-contained</strong></p>
+</details>
 
 
+</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
