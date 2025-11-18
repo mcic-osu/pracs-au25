@@ -394,7 +394,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#install-bioconductor-packages" id="toc-install-bioconductor-packages" class="nav-link" data-scroll-target="#install-bioconductor-packages"><span class="header-section-number">4</span> Install Bioconductor packages</a>
   <ul class="collapse">
   <li><a href="#install-biocmanager" id="toc-install-biocmanager" class="nav-link" data-scroll-target="#install-biocmanager"><span class="header-section-number">4.1</span> Install BiocManager</a></li>
-  <li><a href="#install-a-bioconductor-package" id="toc-install-a-bioconductor-package" class="nav-link" data-scroll-target="#install-a-bioconductor-package"><span class="header-section-number">4.2</span> Install a Bioconductor package</a></li>
+  <li><a href="#install-bioconductor-package-using-biocmanager" id="toc-install-bioconductor-package-using-biocmanager" class="nav-link" data-scroll-target="#install-bioconductor-package-using-biocmanager"><span class="header-section-number">4.2</span> Install Bioconductor package using BiocManager</a></li>
   <li><a href="#load-the-packages" id="toc-load-the-packages" class="nav-link" data-scroll-target="#load-the-packages"><span class="header-section-number">4.3</span> Load the packages</a></li>
   </ul></li>
   <li><a href="#what-type-of-packages-are-available-in-bioconducter" id="toc-what-type-of-packages-are-available-in-bioconducter" class="nav-link" data-scroll-target="#what-type-of-packages-are-available-in-bioconducter"><span class="header-section-number">5</span> What type of packages are available in Bioconducter?</a></li>
@@ -457,12 +457,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><br></p>
 <section id="introduction" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
-<p>R packages are available in many places. In our previous lecture, we learnt to install R packages through CRAN using <code>install.packages()</code> function. In this lecture, we will learn about <a href="https://bioconductor.org/">Bioconductor</a>, a specialized repository for <strong>bioinformatics packages in R</strong> that focuses on analysis of high-throughput genomic data. initially developed for the analysis of microarray data. Bioconductor packages are used to analyze a wide range of omics data types such as bulk and single-cell RNA-seq, Chip seq, copy number analysis, micro array methylation and classic expression analysis, flow cytometry, and many other domains. One of the key requirement of Bioconductor packages is to have high level documentation, and workflows. The packages available in Bioconducter are provided <a href="https://bioconductor.org/packages/release/BiocViews.html#___Software">here</a>.</p>
+<p>R packages are available in many places. In our previous lecture, we learnt to install R packages through CRAN using <code>install.packages()</code> function. However, not all packages are available in CRAN. In this lecture, we will learn about <a href="https://bioconductor.org/">Bioconductor</a>, a specialized repository for <strong>bioinformatics packages in R</strong> that focuses on analysis of high-throughput genomic data. Bioconductor was initially developed for the analysis of microarray data. Now, its packages are used to analyze a wide range of omics data types such as bulk and single-cell RNA-seq, Chip seq, copy number analysis, micro array methylation and classic expression analysis, flow cytometry, and many other domains. One of the key requirement of Bioconductor packages is to have high level documentation, and workflows. The packages available in Bioconducter are provided <a href="https://bioconductor.org/packages/release/BiocViews.html#___Software">here</a>.</p>
 <section id="overview-learning-goals" class="level3" data-number="1.1">
 <h3 data-number="1.1" class="anchored" data-anchor-id="overview-learning-goals"><span class="header-section-number">1.1</span> Overview &amp; learning goals</h3>
 <p>In this lecture, you will learn :</p>
 <ul>
-<li>Basics of Bioconductor</li>
+<li>Different packages available in Bioconductor</li>
 <li>How to install and load Bioconductor packages</li>
 <li>Use DECIPHER package to align the genomic sequences</li>
 </ul>
@@ -505,16 +505,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We need to install BiocManager through which we can install Bioconductor packages. The command to install BiocManager is provided below:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Check if it has worked by printing the version</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">version</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="install-a-bioconductor-package" class="level3" data-number="4.2">
-<h3 data-number="4.2" class="anchored" data-anchor-id="install-a-bioconductor-package"><span class="header-section-number">4.2</span> Install a Bioconductor package</h3>
-<p>Once the BiocManager is installed, use the following command to install few packages of Bioconductor e.g., GenomicRanges, DECIPHER</p>
+<section id="install-bioconductor-package-using-biocmanager" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="install-bioconductor-package-using-biocmanager"><span class="header-section-number">4.2</span> Install Bioconductor package using BiocManager</h3>
+<p>Once the BiocManager is installed, use the following command to install few packages of Bioconductor e.g., GenomicRanges, DECIPHER There are 2,361 software packages available in the Bioconductor. You can know more about the packages by searching <a href="https://bioconductor.org/packages/release/BiocViews.html#___Software">here</a></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Install packages</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"GenomicRanges"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"DECIPHER"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Installing packages
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Packages with many dependencies might take time to install.</p>
+</div>
 </div>
 </section>
 <section id="load-the-packages" class="level3" data-number="4.3">
@@ -557,8 +572,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="example-packages" class="level2" data-number="6">
 <h2 data-number="6" class="anchored" data-anchor-id="example-packages"><span class="header-section-number">6</span> Example packages</h2>
 <ul>
-<li><p>Biostrings : Read, write, search, and manipulate DNA, RNA, or amino acid sequences</p></li>
-<li><p>DECIPHER :</p></li>
+<li><strong>Biostrings</strong> : Read, write, search, and manipulate DNA, RNA, or amino acid sequences</li>
+<li><strong>DECIPHER</strong> :</li>
+</ul>
+<p>DECPIHER package can be used to perfomed various tasks which comes under five categories:</p>
+<ul>
 <li><p>Sequence databases: import, maintain, view, and export a massive number of sequences.</p></li>
 <li><p>Sequence alignment: accurately align thousands of DNA, RNA, or amino acid sequences. Quickly find and align the syntenic regions of multiple genomes.</p></li>
 <li><p>Oligo design: test oligos in silico, or create new primer and probe sequences optimized for a variety of objectives.</p></li>
