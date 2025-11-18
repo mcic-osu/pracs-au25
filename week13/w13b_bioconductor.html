@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -347,20 +382,25 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
-  <li><a href="#install-bioconductor-packages" id="toc-install-bioconductor-packages" class="nav-link" data-scroll-target="#install-bioconductor-packages"><span class="header-section-number">2</span> Install Bioconductor packages</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a>
   <ul class="collapse">
-  <li><a href="#install-biocmanager-through-which-we-can-install-bioconductor-packages" id="toc-install-biocmanager-through-which-we-can-install-bioconductor-packages" class="nav-link" data-scroll-target="#install-biocmanager-through-which-we-can-install-bioconductor-packages"><span class="header-section-number">2.1</span> install BiocManager through which we can install Bioconductor packages</a></li>
-  <li><a href="#install-a-bioconductor-package-e.g.-genomicranges" id="toc-install-a-bioconductor-package-e.g.-genomicranges" class="nav-link" data-scroll-target="#install-a-bioconductor-package-e.g.-genomicranges"><span class="header-section-number">2.2</span> install a Bioconductor package, e.g., GenomicRanges</a></li>
-  <li><a href="#load-the-decipher-package" id="toc-load-the-decipher-package" class="nav-link" data-scroll-target="#load-the-decipher-package"><span class="header-section-number">2.3</span> Load the DECIPHER package</a></li>
+  <li><a href="#overview-learning-goals" id="toc-overview-learning-goals" class="nav-link" data-scroll-target="#overview-learning-goals"><span class="header-section-number">1.1</span> Overview &amp; learning goals</a></li>
   </ul></li>
-  <li><a href="#what-type-of-packages-are-available-in-bioconducter" id="toc-what-type-of-packages-are-available-in-bioconducter" class="nav-link" data-scroll-target="#what-type-of-packages-are-available-in-bioconducter"><span class="header-section-number">3</span> What type of packages are available in Bioconducter?</a>
+  <li><a href="#set-up-and-data-preparation" id="toc-set-up-and-data-preparation" class="nav-link" data-scroll-target="#set-up-and-data-preparation"><span class="header-section-number">2</span> Set up and Data preparation</a>
   <ul class="collapse">
-  <li><a href="#setting-up" id="toc-setting-up" class="nav-link" data-scroll-target="#setting-up"><span class="header-section-number">3.1</span> Setting up</a></li>
+  <li><a href="#open-a-new-quarto-document-in-rstudio" id="toc-open-a-new-quarto-document-in-rstudio" class="nav-link" data-scroll-target="#open-a-new-quarto-document-in-rstudio"><span class="header-section-number">2.1</span> Open a new Quarto document in Rstudio</a></li>
   </ul></li>
-  <li><a href="#example-packages" id="toc-example-packages" class="nav-link" data-scroll-target="#example-packages"><span class="header-section-number">4</span> Example packages</a></li>
-  <li><a href="#bioconductor-objects-can-be-complex" id="toc-bioconductor-objects-can-be-complex" class="nav-link" data-scroll-target="#bioconductor-objects-can-be-complex"><span class="header-section-number">5</span> Bioconductor objects can be complex</a></li>
-  <li><a href="#we-will-work-on-the-bioconducter-packager-deseq2-in-the-next-lecture" id="toc-we-will-work-on-the-bioconducter-packager-deseq2-in-the-next-lecture" class="nav-link" data-scroll-target="#we-will-work-on-the-bioconducter-packager-deseq2-in-the-next-lecture"><span class="header-section-number">6</span> WE will work on the Bioconducter packager DESEQ2 in the next lecture</a></li>
+  <li><a href="#packages-available-in-biocondctor" id="toc-packages-available-in-biocondctor" class="nav-link" data-scroll-target="#packages-available-in-biocondctor"><span class="header-section-number">3</span> Packages available in Biocondctor</a></li>
+  <li><a href="#install-bioconductor-packages" id="toc-install-bioconductor-packages" class="nav-link" data-scroll-target="#install-bioconductor-packages"><span class="header-section-number">4</span> Install Bioconductor packages</a>
+  <ul class="collapse">
+  <li><a href="#install-biocmanager" id="toc-install-biocmanager" class="nav-link" data-scroll-target="#install-biocmanager"><span class="header-section-number">4.1</span> Install BiocManager</a></li>
+  <li><a href="#install-a-bioconductor-package" id="toc-install-a-bioconductor-package" class="nav-link" data-scroll-target="#install-a-bioconductor-package"><span class="header-section-number">4.2</span> Install a Bioconductor package</a></li>
+  <li><a href="#load-the-packages" id="toc-load-the-packages" class="nav-link" data-scroll-target="#load-the-packages"><span class="header-section-number">4.3</span> Load the packages</a></li>
+  </ul></li>
+  <li><a href="#what-type-of-packages-are-available-in-bioconducter" id="toc-what-type-of-packages-are-available-in-bioconducter" class="nav-link" data-scroll-target="#what-type-of-packages-are-available-in-bioconducter"><span class="header-section-number">5</span> What type of packages are available in Bioconducter?</a></li>
+  <li><a href="#example-packages" id="toc-example-packages" class="nav-link" data-scroll-target="#example-packages"><span class="header-section-number">6</span> Example packages</a></li>
+  <li><a href="#bioconductor-objects-can-be-complex" id="toc-bioconductor-objects-can-be-complex" class="nav-link" data-scroll-target="#bioconductor-objects-can-be-complex"><span class="header-section-number">7</span> Bioconductor objects can be complex</a></li>
+  <li><a href="#we-will-work-on-the-bioconducter-packager-deseq2-in-the-next-lecture" id="toc-we-will-work-on-the-bioconducter-packager-deseq2-in-the-next-lecture" class="nav-link" data-scroll-target="#we-will-work-on-the-bioconducter-packager-deseq2-in-the-next-lecture"><span class="header-section-number">8</span> We will work on the Bioconducter packager DESEQ2 in the next lecture</a></li>
   </ul>
 <div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w13_overview.html"><i class="bi bi-book"></i>Week 13 overview</a></li><li><a href="w13b_bioconductor.html"><i class="bi bi-bookmarks"></i>w13b: Bioconductor: R for omics data</a></li></ul></div></nav>
     </div>
@@ -417,32 +457,74 @@ ul.task-list li input[type="checkbox"] {
 <p><br></p>
 <section id="introduction" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
-<p>R packages are available in many places. In our previous lecture, we learnt to install R packages through CRAN using <code>install.packages()</code> function. In this lecture, we will learn about <a href="https://bioconductor.org/">Bioconductor</a>, a specialized repository for <strong>bioinformatics packages in R</strong> that focuses on analysis of high-throughput genomic data. Initially developed for the analysis of microarray data, Bioconductor packages are used to analyze a wide range of omics data types such as bulk and single-cell RNA-seq, ChIP seq, copy number analysis, microarray methylation and classic expression analysis, flow cytometry, and many other domains. One of the key requirement of Bioconductor packages is to have high level documentation, and workflows. The packages available in Bioconducter are provided <a href="https://bioconductor.org/packages/release/BiocViews.html#___Software">here</a>.</p>
-<p>There are 4 different types of software packages available in Bioconducter: 1. Software packages for the analysis and comprehension of high-throughput genomic data. 2. Annotation data packages that provide mappings between different biological identifiers and genomic coordinates. 3. Experiment data packages that contain example datasets for testing and demonstrating analysis methods. 4. Workflows and vignettes that provide step-by-step guides for common bioinformatics analyses.</p>
-<p>BioConductor delivers releases where a set of packages is published at once and intended for compatibility only with a certain version of R. This is in contrast to CRAN where packages are added continuously with no reference to particular versions of R.</p>
+<p>R packages are available in many places. In our previous lecture, we learnt to install R packages through CRAN using <code>install.packages()</code> function. In this lecture, we will learn about <a href="https://bioconductor.org/">Bioconductor</a>, a specialized repository for <strong>bioinformatics packages in R</strong> that focuses on analysis of high-throughput genomic data. initially developed for the analysis of microarray data. Bioconductor packages are used to analyze a wide range of omics data types such as bulk and single-cell RNA-seq, Chip seq, copy number analysis, micro array methylation and classic expression analysis, flow cytometry, and many other domains. One of the key requirement of Bioconductor packages is to have high level documentation, and workflows. The packages available in Bioconducter are provided <a href="https://bioconductor.org/packages/release/BiocViews.html#___Software">here</a>.</p>
+<section id="overview-learning-goals" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="overview-learning-goals"><span class="header-section-number">1.1</span> Overview &amp; learning goals</h3>
+<p>In this lecture, you will learn :</p>
+<ul>
+<li>Basics of Bioconductor</li>
+<li>How to install and load Bioconductor packages</li>
+<li>Use DECIPHER package to align the genomic sequences</li>
+</ul>
+<p>Specifically, you will learn:</p>
+<ul>
+<li>Install package using <code>BiocManager::install()</code> function</li>
+<li>Align the genomic seqeunces</li>
+</ul>
+</section>
+</section>
+<section id="set-up-and-data-preparation" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="set-up-and-data-preparation"><span class="header-section-number">2</span> Set up and Data preparation</h2>
+<section id="open-a-new-quarto-document-in-rstudio" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="open-a-new-quarto-document-in-rstudio"><span class="header-section-number">2.1</span> Open a new Quarto document in Rstudio</h3>
+<p>Open a new Quarto file <code>File</code> &gt; <code>New File</code> &gt; <code>Quarto Document</code> and save it inside the <code>week13</code> directory as <code>week13b_bioconductor</code>.</p>
+</section>
+</section>
+<section id="packages-available-in-biocondctor" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="packages-available-in-biocondctor"><span class="header-section-number">3</span> Packages available in Biocondctor</h2>
+<p>There are 4 different types of software packages available in Bioconductor:</p>
+<ol type="1">
+<li><p>Software packages for the analysis and comprehension of high-throughput genomic data.</p></li>
+<li><p>Annotation data packages that provide mappings between different biological identifiers and genomic coordinates.</p></li>
+<li><p>Experiment data packages that contain example data sets for testing and demonstrating analysis methods.</p></li>
+<li><p>Workflows and vignettes that provide step-by-step guides for common bioinformatics analyses.</p></li>
+</ol>
+<p>BioConductor delivers releases where a set of packages is published at once and intended for compatibility only with a certain version of R. This is in contrast to CRAN where packages are added continuously with no reference to particular versions of R. Bioconducter page provide guidance on package acquisition, create the documents that are computable and better software engineering.</p>
 <p>Bioconductor Help</p>
 <ol type="1">
 <li><p>Bioconductor Packages</p></li>
 <li><p>biocViews</p></li>
 <li><p>Bioconductor Forums</p></li>
 </ol>
-<p>Bioconducter page provide guidance on package acquisition, create the documents that are computable and better software engineering.</p>
 </section>
-<section id="install-bioconductor-packages" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="install-bioconductor-packages"><span class="header-section-number">2</span> Install Bioconductor packages</h2>
+<section id="install-bioconductor-packages" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="install-bioconductor-packages"><span class="header-section-number">4</span> Install Bioconductor packages</h2>
 <p>Similar to CRAN, Bioconductor packages needs to be installed once. However, packages are installed slightly differently in Bioconductor. To install Bioconductor packages, you first need to install the <code>BiocManager</code> package from CRAN (if you haven’t already done so). You can then use <code>BiocManager::install()</code> to install specific Bioconductor packages.</p>
-<section id="install-biocmanager-through-which-we-can-install-bioconductor-packages" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="install-biocmanager-through-which-we-can-install-bioconductor-packages"><span class="header-section-number">2.1</span> install BiocManager through which we can install Bioconductor packages</h3>
-<p>if (!requireNamespace(“BiocManager”, quietly = TRUE)) install.packages(“BiocManager”)</p>
+<section id="install-biocmanager" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="install-biocmanager"><span class="header-section-number">4.1</span> Install BiocManager</h3>
+<p>We need to install BiocManager through which we can install Bioconductor packages. The command to install BiocManager is provided below:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
-<section id="install-a-bioconductor-package-e.g.-genomicranges" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="install-a-bioconductor-package-e.g.-genomicranges"><span class="header-section-number">2.2</span> install a Bioconductor package, e.g., GenomicRanges</h3>
-<p>BiocManager::install(“DECIPHER”)</p>
+<section id="install-a-bioconductor-package" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="install-a-bioconductor-package"><span class="header-section-number">4.2</span> Install a Bioconductor package</h3>
+<p>Once the BiocManager is installed, use the following command to install few packages of Bioconductor e.g., GenomicRanges, DECIPHER</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Install packages</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"GenomicRanges"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"DECIPHER"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
-<section id="load-the-decipher-package" class="level3" data-number="2.3">
-<h3 data-number="2.3" class="anchored" data-anchor-id="load-the-decipher-package"><span class="header-section-number">2.3</span> Load the DECIPHER package</h3>
-<p>library(DECIPHER)</p>
-<p>BiocManager::install(update = TRUE, ask = FALSE)</p>
+<section id="load-the-packages" class="level3" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="load-the-packages"><span class="header-section-number">4.3</span> Load the packages</h3>
+<p>You should be an expert now in loading the packages in R since we have loaded so many packages since <code>week11</code>. Use the <code>library()</code> function to load the Bioconductor package in a similar way as CRAN packages.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Load the DECIPHER package</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DECIPHER)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>##BiocManager::install(update = TRUE, ask = FALSE)</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -453,15 +535,15 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Packages can become available on CRAN after being available in Bioconductor and viceversa. what is the reason for it <code>vcfR</code> package was first available in</p>
+<p>Packages can become available on CRAN after being available in Bioconductor and vice versa. what is the reason for it <code>vcfR</code> package was first available in</p>
 </div>
 </div>
 <p>This lecture, we will introduce you to Bioconductor, a powerful open-source software project that provides tools for the analysis and comprehension of high-throughput genomic data.</p>
 <p>Bioconductor is a source project and repository for bioinformatics packages in the R programming language. Since its start in 2001, Bioconductor package has grown to include more than 2000 packages contributed by a diverse community of researchers worldwide. The latest release of Bioconductor (version 3.22, released in October 2025) is compatible with R version 4.5.0.</p>
 </section>
 </section>
-<section id="what-type-of-packages-are-available-in-bioconducter" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="what-type-of-packages-are-available-in-bioconducter"><span class="header-section-number">3</span> What type of packages are available in Bioconducter?</h2>
+<section id="what-type-of-packages-are-available-in-bioconducter" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="what-type-of-packages-are-available-in-bioconducter"><span class="header-section-number">5</span> What type of packages are available in Bioconducter?</h2>
 <p>Bioconductor hosts a wide variety of packages that cater to different aspects of bioinformatics and computational biology.</p>
 <p>Some of the main types of packages available in Bioconductor include:</p>
 <ol type="1">
@@ -470,33 +552,29 @@ ul.task-list li input[type="checkbox"] {
 <li>Experiment data packages that contain example datasets for testing and demonstrating analysis methods.</li>
 <li>Workflows and vignettes that provide step-by-step guides for common bioinformatics analyses.</li>
 </ol>
-<p>Bioconductor</p>
-<p>Package is extension of CRAN R packages and provides specialized data structures and functions for handling biological data types such as DNA sequences, gene expression data, and genomic annotations. Bioconducter was started to write the high level documentation, create the documents that are computable and better software engineering. Biocondcuter page provide guidance on package acquisition, methods of learning, approach to use and development.</p>
 <p>BiocViews: task view for package discovery BiocViews is a controlled vocabulary for describing the content and functionality of Bioconductor packages. ### Overview &amp; learning goals</p>
-<p>In this lecture, you will learn … - Commonly used packages for understanding the structure of biological data - How to install and load Bioconductor packages</p>
-<p>Specifically, you will learn:</p>
+</section>
+<section id="example-packages" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="example-packages"><span class="header-section-number">6</span> Example packages</h2>
 <ul>
-<li>TBA</li>
-<li>TBA</li>
+<li><p>Biostrings : Read, write, search, and manipulate DNA, RNA, or amino acid sequences</p></li>
+<li><p>DECIPHER :</p></li>
+<li><p>Sequence databases: import, maintain, view, and export a massive number of sequences.</p></li>
+<li><p>Sequence alignment: accurately align thousands of DNA, RNA, or amino acid sequences. Quickly find and align the syntenic regions of multiple genomes.</p></li>
+<li><p>Oligo design: test oligos in silico, or create new primer and probe sequences optimized for a variety of objectives.</p></li>
+<li><p>Manipulate sequences: trim low quality regions, correct frameshifts, reorient nucleotides, determine consensus, or digest with restriction enzymes.</p></li>
+<li><p>Analyze sequences: find chimeras, classify into a taxonomy of organisms or functions, detect repeats, predict secondary structure, create phylogenetic trees, and reconstruct ancestral states.</p></li>
+<li><p>Gene finding: predict coding and non-coding genes in a genome, extract them from the genome, and export them to a file.</p></li>
 </ul>
-<section id="setting-up" class="level3" data-number="3.1">
-<h3 data-number="3.1" class="anchored" data-anchor-id="setting-up"><span class="header-section-number">3.1</span> Setting up</h3>
-<ol type="1">
-<li>At <a href="https://ondemand.osc.edu" class="uri">https://ondemand.osc.edu</a>, start an RStudio session like in the previous lecture <em>LINK TBA</em></li>
-<li>Switch to your <code>week11</code> RStudio Project … TBA</li>
-<li>Open a new R Script and save it as … TBA</li>
-</ol>
+<p>Here, we will use a <code>DECIPHER</code> package for the alignment of the sequences. <code>DECIPHER</code> can align thousand of seqeunces in a very short time and maintain the accuracy</p>
+<p>which MSA can show several things: - Is the regions conserved?</p>
+<p>As the number of genomes for the alignment increases, the computational time increases as well. It is a challenge to improve the performance when the number of sequences are added.</p>
 </section>
+<section id="bioconductor-objects-can-be-complex" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="bioconductor-objects-can-be-complex"><span class="header-section-number">7</span> Bioconductor objects can be complex</h2>
 </section>
-<section id="example-packages" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="example-packages"><span class="header-section-number">4</span> Example packages</h2>
-<p>Maybe view an alignment with <code>DECIPHER</code>?</p>
-</section>
-<section id="bioconductor-objects-can-be-complex" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="bioconductor-objects-can-be-complex"><span class="header-section-number">5</span> Bioconductor objects can be complex</h2>
-</section>
-<section id="we-will-work-on-the-bioconducter-packager-deseq2-in-the-next-lecture" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="we-will-work-on-the-bioconducter-packager-deseq2-in-the-next-lecture"><span class="header-section-number">6</span> WE will work on the Bioconducter packager DESEQ2 in the next lecture</h2>
+<section id="we-will-work-on-the-bioconducter-packager-deseq2-in-the-next-lecture" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="we-will-work-on-the-bioconducter-packager-deseq2-in-the-next-lecture"><span class="header-section-number">8</span> We will work on the Bioconducter packager DESEQ2 in the next lecture</h2>
 
 
 </section>
