@@ -34,23 +34,50 @@ execute:
 R packages are available in many places. In our previous lecture, we learnt to install R packages through CRAN using `install.packages()` function.
 In this lecture, we will learn about [Bioconductor](https://bioconductor.org/), a specialized repository
 for **bioinformatics packages in R** that focuses on analysis of high-throughput genomic data. 
-Initially developed for the analysis of microarray data, Bioconductor packages 
-are used to analyze
-a wide range of omics data types such as bulk and single-cell RNA-seq, ChIP seq, copy number analysis, 
-microarray methylation and 
+initially developed for the analysis of microarray data.  Bioconductor packages 
+are used to analyze a wide range of omics data types such as bulk and single-cell RNA-seq, Chip seq, copy number analysis, micro array methylation and 
 classic expression analysis,  flow cytometry, and many other domains. 
 One of the key requirement of Bioconductor packages is to have high level documentation,
 and workflows. The packages available in Bioconducter are provided [here](https://bioconductor.org/packages/release/BiocViews.html#___Software).
 
-There are 4 different types of software packages available in Bioconducter:
+
+### Overview & learning goals
+
+In this lecture, you will learn : 
+
+- Basics of Bioconductor
+- How to install and load Bioconductor packages
+- Use DECIPHER package to align the genomic sequences
+
+Specifically, you will learn:
+
+- Install package using `BiocManager::install()` function
+- Align the genomic seqeunces
+
+## Set up and Data preparation
+
+### Open a new Quarto document in Rstudio
+
+Open a new Quarto file `File` \> `New File` \> `Quarto Document` and save it inside the `week13` directory as 
+`week13b_bioconductor`.
+
+## Packages available in Biocondctor
+
+There are 4 different types of software packages available in Bioconductor:
+
 1. Software packages for the analysis and comprehension of high-throughput genomic data.
+
 2. Annotation data packages that provide mappings between different biological identifiers and genomic coordinates.
-3. Experiment data packages that contain example datasets for testing and demonstrating analysis methods.
+
+3. Experiment data packages that contain example data sets for testing and demonstrating analysis methods.
+
 4. Workflows and vignettes that provide step-by-step guides for common bioinformatics analyses.
 
 BioConductor delivers releases where a set of packages is published at once and intended for 
 compatibility only with a certain version of R. This is in contrast to CRAN where 
 packages are added continuously with no reference to particular versions of R.
+Bioconducter page provide guidance on package acquisition,
+create the documents that are computable and better software engineering.
 
 Bioconductor Help
 
@@ -61,8 +88,7 @@ Bioconductor Help
 3. Bioconductor Forums
 
 
-Bioconducter page provide guidance on package acquisition,
-create the documents that are computable and better software engineering.
+
 
 ## Install Bioconductor packages
 
@@ -71,22 +97,41 @@ To install Bioconductor packages, you first need to install the `BiocManager` pa
 CRAN (if you haven't already done so). You can then use `BiocManager::install()` to install
 specific Bioconductor packages.
 
-### install BiocManager through which we can install Bioconductor packages
+### Install BiocManager 
+
+We need to install BiocManager through which we can install Bioconductor packages. The command to install BiocManager is provided below:
+```{r eval=FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-    
-### install a Bioconductor package, e.g., GenomicRanges
-BiocManager::install("DECIPHER")
 
+```
+
+
+### Install a Bioconductor package
+Once the BiocManager is installed, use the following command to install few packages of Bioconductor
+e.g., GenomicRanges, DECIPHER
+
+```{r eval=FALSE}
+## Install packages
+BiocManager::install("GenomicRanges")
+BiocManager::install("DECIPHER")
+```
+
+### Load the packages
+You should be an expert now in loading the packages in R since we have loaded so many packages since `week11`.
+Use the `library()` function to load the Bioconductor package in a similar way as CRAN packages.
+```{r}
 ### Load the DECIPHER package
 library(DECIPHER)
+```
 
-BiocManager::install(update = TRUE, ask = FALSE)
+
+##BiocManager::install(update = TRUE, ask = FALSE)
 
 ::: {.callout-tip}
 ## Package movement from CRAN and Bioconductor
 
-Packages can become available on CRAN after being available in Bioconductor and viceversa.
+Packages can become available on CRAN after being available in Bioconductor and vice versa.
 what is the reason for it
 `vcfR` package was first available in 
 :::
@@ -111,42 +156,41 @@ Some of the main types of packages available in Bioconductor include:
 4. Workflows and vignettes that provide step-by-step guides for common bioinformatics analyses.
 
 
-Bioconductor
-
-Package is extension of CRAN R packages and provides specialized data structures 
-and functions for handling biological data types such as DNA sequences, gene expression data, and genomic annotations.
-Bioconducter was started to write the high level documentation,
-create the documents that are computable and better software engineering.
-Biocondcuter page provide guidance on package acquisition,
-methods of learning, approach to use and development.
 
 BiocViews: task view for package discovery
 BiocViews is a controlled vocabulary for describing the content and functionality of Bioconductor packages.
 ### Overview & learning goals
 
-In this lecture, you will learn ...
-- Commonly used packages for understanding the structure of biological data
-- How to install and load Bioconductor packages
-
-Specifically, you will learn:
-
-- TBA
-- TBA
-
-### Setting up
-
-1. At <https://ondemand.osc.edu>,
-   start an RStudio session like in the previous lecture _LINK TBA_
-2. Switch to your `week11` RStudio Project ... TBA
-3. Open a new R Script and save it as ... TBA
-
-
-
 ## Example packages
+- Biostrings : Read, write, search, and manipulate DNA, RNA, or amino acid sequences
+- DECIPHER : 
+ 
+- Sequence databases: import, maintain, view, and export a massive number of sequences.
 
-Maybe view an alignment with `DECIPHER`?
+- Sequence alignment: accurately align thousands of DNA, RNA, or amino acid sequences. Quickly find and
+align the syntenic regions of multiple genomes.
+
+- Oligo design: test oligos in silico, or create new primer and probe sequences optimized for a variety of objectives.
+
+- Manipulate sequences: trim low quality regions, correct frameshifts, reorient nucleotides, determine 
+consensus, or digest with restriction enzymes.
+
+- Analyze sequences: find chimeras, classify into a taxonomy of organisms or functions, detect repeats, predict secondary structure, create phylogenetic trees, and reconstruct ancestral states.
+
+- Gene finding: predict coding and non-coding genes in a genome, extract them from the genome, and export
+them to a file.
+
+
+Here, we will use a `DECIPHER` package for the alignment of the sequences. `DECIPHER` can align thousand of seqeunces in a very short time and maintain the accuracy
+
+which 
+MSA can show several things: 
+- Is the regions conserved?
+
+As the number of genomes for the alignment increases, the computational time increases as well.
+It is a challenge to improve the performance when the number of sequences are added. 
 
 ## Bioconductor objects can be complex
 
 
-## WE will work on the Bioconducter packager DESEQ2 in the next lecture
+## We will work on the Bioconducter packager DESEQ2 in the next lecture
