@@ -31,10 +31,10 @@ execute:
 <br>
 
 ## Introduction
-R packages are available in many places. In our previous lecture, we learnt to install R packages through CRAN using `install.packages()` function.
+R packages are available in many places. In our previous lecture, we learnt to install R packages through CRAN using `install.packages()` function. However, not all packages are available in CRAN.
 In this lecture, we will learn about [Bioconductor](https://bioconductor.org/), a specialized repository
 for **bioinformatics packages in R** that focuses on analysis of high-throughput genomic data. 
-initially developed for the analysis of microarray data.  Bioconductor packages 
+Bioconductor was initially developed for the analysis of microarray data.  Now, its packages 
 are used to analyze a wide range of omics data types such as bulk and single-cell RNA-seq, Chip seq, copy number analysis, micro array methylation and 
 classic expression analysis,  flow cytometry, and many other domains. 
 One of the key requirement of Bioconductor packages is to have high level documentation,
@@ -45,7 +45,7 @@ and workflows. The packages available in Bioconducter are provided [here](https:
 
 In this lecture, you will learn : 
 
-- Basics of Bioconductor
+- Different packages available in Bioconductor
 - How to install and load Bioconductor packages
 - Use DECIPHER package to align the genomic sequences
 
@@ -87,9 +87,6 @@ Bioconductor Help
 
 3. Bioconductor Forums
 
-
-
-
 ## Install Bioconductor packages
 
 Similar to CRAN, Bioconductor packages needs to be installed once.  However, packages are installed slightly differently in Bioconductor.
@@ -103,19 +100,29 @@ We need to install BiocManager through which we can install Bioconductor package
 ```{r eval=FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
+## Check if it has worked by printing the version
+BiocManager::version()
 
 ```
 
 
-### Install a Bioconductor package
+### Install Bioconductor package using BiocManager
 Once the BiocManager is installed, use the following command to install few packages of Bioconductor
 e.g., GenomicRanges, DECIPHER
+There are 2,361 software packages available in the Bioconductor. You can know more about the packages by 
+searching [here](https://bioconductor.org/packages/release/BiocViews.html#___Software)
 
 ```{r eval=FALSE}
 ## Install packages
 BiocManager::install("GenomicRanges")
 BiocManager::install("DECIPHER")
 ```
+
+::: {.callout-tip}
+## Installing packages
+Packages with many dependencies might take time to install.
+:::
+
 
 ### Load the packages
 You should be an expert now in loading the packages in R since we have loaded so many packages since `week11`.
@@ -162,9 +169,11 @@ BiocViews is a controlled vocabulary for describing the content and functionalit
 ### Overview & learning goals
 
 ## Example packages
-- Biostrings : Read, write, search, and manipulate DNA, RNA, or amino acid sequences
-- DECIPHER : 
+- **Biostrings** : Read, write, search, and manipulate DNA, RNA, or amino acid sequences
+- **DECIPHER** : 
  
+DECPIHER package can be used to perfomed various tasks which comes under five categories:
+
 - Sequence databases: import, maintain, view, and export a massive number of sequences.
 
 - Sequence alignment: accurately align thousands of DNA, RNA, or amino acid sequences. Quickly find and

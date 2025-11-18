@@ -41,20 +41,20 @@ never expected to see.” — John Tukey
 
 Data visualization is a critical step in data analysis to communicate
 our findings. Visual representation of data helps us to see
-the hidden patterns, and trends that we cannot usually see easily in a raw data . In this
+the hidden patterns, and trends that we cannot usually see easily in raw data . In this
 lecture, we will learn how to create pretty, informative and publication
 ready plots using the [ggplot2](https://ggplot2.tidyverse.org/) package
 in R. `ggplot2` is a powerful and flexible package in R based on the
 **Grammar of Graphics**. `ggplot2` aims to create grammatical rules for
-the development of graphics. Learning the graphics will help you to
+the development of graphics. Learning graphics will help you to
 create multi-layered graphics.
 
 `ggplot2` creates plots layer by layer. You can keep on adding
 annotations to graphs to build complex visualizations step by step. To
 create a plot in `ggplot2`, you pass your data as first argument, add then add layer of
 coordinates, and geometric objects (geoms) to
-represent the data points and so on. You can add as much as layers you want in the
-ggplot making the plot fully customizable.
+represent the data points and so on. You can add as many layers as you want in the
+`ggplot` making the plot fully customizable.
 
 ### Overview & learning goals
 
@@ -93,11 +93,11 @@ manipulation (**we learnt in week11**), `tidyr` for data tidying and more. By lo
 `tidyverse`, you gain access to all of those packages. Therefore, I
 would recommend all of you to install the whole `tidyverse` package
 instead of `ggplot2` alone. For the visualization, we will use
-`palmerpenguins` datasets, which contains data on penguin species, their
+`palmerpenguins` data sets, which contains data on penguin species, their
 physical measurements, and other attributes. 
 
 ::: {.callout-note}
-It is good practice to always install package directly in R console. Otherwise, everytime you render 
+It is good practice to always install package directly in R console. Otherwise, every time you render 
 Quarto document, packages will be installed. Run the following code in
 your R console to install the packages needed for data visualization
 from Comprehensive R Archive Network (CRAN).
@@ -119,7 +119,7 @@ package using **library()** every time you start a new R session.
 :::
 
 Let's load the penguin data set, look at the data and its structure.
-`data` function loads the sacrificed data sets and list of other available data sets.
+`data` function loads the specified data sets and list of other available data sets.
 
 ```{r eval=FALSE}
 data("penguins")
@@ -128,8 +128,8 @@ str(penguins)
 ```
 
 ::: {.callout-note}
-# Penguin data sets : It consists body meaurement data of 3 species of penguins collected from 3 islands in the Palmer 
-Archipelago, Antarctica. The dataset contains 8 variables and 344 observations.
+# Penguin data sets : It consists of body measurement data of 3 species of penguins collected from 3 islands 
+in the Palmer, Archipelago, Antarctica. The data set contains 8 variables and 344 observations.
  
 -   species (factor) : Species of penguin (Adelie, Chinstrap, Gentoo)
 -   island (factor): Island where the penguin was found (Biscoe, Dream,
@@ -141,6 +141,10 @@ Archipelago, Antarctica. The dataset contains 8 variables and 344 observations.
 -   body_mass_g (int): Body mass of the penguin in grams
 -   sex (factor): Sex of penguins
 -   year (int): Year of data collection
+
+To find what data sets are available in a specific R package, you can use the function 
+**data(package = "palmerpenguins")** in R.
+
 :::
 
 ## Creating a ggplot
@@ -148,7 +152,7 @@ Archipelago, Antarctica. The dataset contains 8 variables and 344 observations.
 To create a plot using `ggplot2`, we will use the function `ggplot()`.
 [ggplot2 cheat
 sheet](https://rstudio.github.io/cheatsheets/data-visualization.pdf)
-from RStudio provides a overview of the different types of plots that
+from RStudio provides an overview of the different types of plots that
 can be created using the `ggplot2` package. Use the `help(?)` we learnt on
 `week11` to read about `ggplot()` function.
 
@@ -162,11 +166,11 @@ Components of `ggplot()` :
 
 1. `Our data`: The data frame containing the
 variables to be plotted. In this case, we will use the `penguins`
-dataset from the `palmerpenguins` package. 
-2. `Mapping`: Aesthetic mappings defines how variables in the data are 
+data set from the `palmerpenguins` package. 
+2. `Mapping`: Aesthetic mapping defines how variables in the data are 
 mapped to visual properties of the plot, such as x and y axes, 
 colors, shapes, and sizes.
-3. `Geometry (geom)`: It add layers to represent our data such as
+3. `Geometry (geom)`: It adds layers to represent our data such as
 scatter plots, bar plots, box plots, etc.
 
 #### A plotting framework
@@ -208,8 +212,8 @@ penguins |>
 Although we have defined x - axis and y - axis in this plot, we do not see the plot because we have not added
 any geometric objects or we have not told how to represent the data frame to our plot.
 Next, we will add geometric objects (**geoms**) to represent our data. There are multiple **geoms** available
-such as `geom_point : scatter plot`, `geom_bar : bar graphs`,  `geom_boxplot : box plots` and many more available [here](https://rstudio.github.io/cheatsheets/data-visualization.pdf).
-Each geom function will have its own arguments to customize the plot. We have a continuous values in both x and y axis. Therefore, we will create a scatter plot to visualize the relationship between `bill_length_mm` and `bill_depth_mm`. To create the scatter plot, we will add `geom_point()` layer to the plot using the `+` operator.
+such as `geom_point : scatter plot`, `geom_bar : bar graphs`, `geom_boxplot : box plots` and many more available [here](https://rstudio.github.io/cheatsheets/data-visualization.pdf).
+Each geom function will have its own arguments to customize the plot. We have continuous values in both x and y axis. Therefore, we will create a scatter plot to visualize the relationship between `bill_length_mm` and `bill_depth_mm`. To create the scatter plot, we will add `geom_point()` layer to the plot using the `+` operator.
 
 ## Scatter plot
 
@@ -222,9 +226,9 @@ penguins |>
 
 Finally, we can see the scatter plot. But we want to add third layer to our plot.
 For example, we would like to color the points by `species` of penguins. One way to do it would be
-by coloring penguins by `species`. To change the color by species, we need to map the `species` variable to color
+by coloring penguins by `species`. To change color by species, we need to map the `species` variable to color
 inside the `aes()` function.
-**When categorical variable is mapped to color, unique colors are assigned to each categories automatically by ggplot2. And the legend will be added to show the category that corresponds to each color.**
+**When categorical variable is mapped to color, unique colors are assigned to each category automatically by ggplot2. And the legend will be added to show the category that corresponds to each color.**
 
 ```{r}
 penguins |>  
@@ -234,12 +238,12 @@ penguins |>
 ```
 
 Now, we can see that each point is colored by the corresponding species of penguins. 
-Again, we want to map the fourth variable `island`. Lets map `island` to different shapes
+Again, we want to map the fourth variable `island`. Let's map `island` to different shapes
 of the plot.
 
 ::: exercise
 #### {{< fa user-edit >}} Exercise-1:
-- What do you think will happen if you keep the `color = sepcies` outside of `aes()`. 
+- What do you think will happen if you keep the `color = species` outside of `aes()`. 
 
 <details>
 
@@ -269,7 +273,7 @@ penguins |>
   geom_point()
 ```
 
-[Here](https://ggplot2.tidyverse.org/articles/ggplot2-specs.html) are several other aesthetic mapping 
+[Here](https://ggplot2.tidyverse.org/articles/ggplot2-specs.html) are several other aesthetic mappings 
 options available  in `ggplot2`
 
 </details>
@@ -284,7 +288,7 @@ We can set the aesthetic outside the `aes()` function to do it. **To map variabl
 ::: exercise
 #### {{< fa user-edit >}} Exercise-2:
 
-1. Can you think how to color all the points to red color in the above graph?
+1. Can you think how to color all the points red color in the above graph?
 
 <details>
 
@@ -340,10 +344,10 @@ penguins |>
   geom_smooth(method = "lm")
 ```
 
-The order of the color will corresponds to the order of species in the legend. If you are unsure which color
+The order of the color will correspond to the order of species in the legend. If you are unsure which color
 to use for your plot, use the `colors()` to explore various available colors.
 
-What if you have 10 treatments that you want to color? It requires lot of typing. R have several functions
+What if you have 10 treatments that you want to color? It requires lot of typing. R has several functions
 with wide range of **color palettes**. Let's explore `RcolorBrewer` package that has several color palettes.
 . To use the `RcolorBrewer` package, first install it and load the package.
 
@@ -371,7 +375,7 @@ In the above plot if we want to add title **Scatter plot of bill length vs bill 
 penguins |>  
   ggplot(aes(x =  bill_length_mm, 
                      y = bill_depth_mm)) +
-  geom_point(aes(color = species))+
+  geom_point(aes(color = species)) +
   geom_smooth(method = "lm")+
   labs(title = "Scatter plot of bill length vs bill depth",
        x = "Bill length (mm)",
@@ -386,8 +390,8 @@ We will first start by using preset theme. [There](https://ggplot2.tidyverse.org
 penguins |>  
   ggplot(aes(x =  bill_length_mm, 
                      y = bill_depth_mm)) +
-  geom_point(aes(color = species))+
-  geom_smooth(method = "lm")+
+  geom_point(aes(color = species)) +
+  geom_smooth(method = "lm") +
   labs(title = "Scatter plot of bill length vs bill depth",
        x = "Bill length (mm)",
        y = "Bill depth (mm)") +
@@ -400,8 +404,8 @@ the text size of the plot title, axis and legend position using the command belo
 penguins |>  
   ggplot(aes(x =  bill_length_mm, 
                      y = bill_depth_mm)) +
-  geom_point(aes(color = species))+
-  geom_smooth(method = "lm")+
+  geom_point(aes(color = species)) +
+  geom_smooth(method = "lm") +
   labs(title = "Scatter plot of bill length vs bill depth",
        x = "Bill length (mm)",
        y = "Bill depth (mm)") +
@@ -416,8 +420,8 @@ We have tried to create `scatter plot` so far using `geom_point`. However, there
 
 ## Other Geometrical objects
 ### Bar plot 
-It is one of the commonly used plot type.
-It can be used to visualize relationship between the categorical variable and numerical variable such as mean or counts per group. 
+It is one of the commonly used plot types.
+It can be used to visualize relationship between the categorical variable and numerical variable such as mean  as well as counts per group. 
 First, we will use bar graph to plot the mean of our data set. 
 Let's compute the mean first manually to plot the data. In `week12` we learnt to group variable/s by `group_by` function. Use the same concept here to calculate the body mass of the penguins for each island.
 
@@ -447,10 +451,10 @@ penguins |>
 
 
 ### Box plot
-We use box plot to visualize the relationship of numerical and categorical variable. We can 
+We use box plot to visualize the relationship of numerical and categorical variables. We can 
 see the distribution of data. Let's say we want to create a box plot to visualize the distribution of `body_mass_g` across different `island` of penguins.
 ```{r}
-penguins %>% 
+penguins |> 
   ggplot(aes(x =  island, 
              y = body_mass_g)) +
   geom_boxplot()
@@ -466,7 +470,7 @@ penguins %>%
 <summary>Click for the solution</summary>
 
 ```{r}
-penguins %>% 
+penguins |> 
   ggplot(aes(x =  island, 
              y = body_mass_g)) +
   geom_boxplot() +
@@ -482,7 +486,7 @@ penguins %>%
 <summary>Click for the solution</summary>
 
 ```{r}
-penguins %>% 
+penguins |> 
   ggplot(aes(x =  island, 
              y = body_mass_g)) +
   geom_boxplot() +
@@ -498,7 +502,7 @@ different types of plots that can be created using the `ggplot2`.
 
 
 ## Multi-panel figures-faceting
-When you map too many variables in  a single plot, your plot looks cluttered. One way to work around this 
+When you map too many variables in a single plot, your plot looks cluttered. One way to work around this 
 problem is to facet the plot. Faceting allowing to create multiple panels based on the values of a 
 categorical variable. It is useful to create separate sub-plots for each category of a variable to find the 
 trends, patterns present in the data. You can use the `facet_wrap()` or `facet_grid()` functions to create faceted plots.
@@ -508,10 +512,10 @@ panels wrapped into a rectangular layout.
 
 - `facet_grid()` : Use this function to facet by one or two categorical variables. It allows you to lay out your facets in a grid, one for rows and one for columns. 
 
-Lets say, in the last box plot, we want to facet box plot by species:
+Let's say, in the last box plot, we want to facet box plot by species:
 
 ```{r}
-penguins %>% 
+penguins |>  
   ggplot(aes(x =  island, 
              y = body_mass_g)) +
   geom_boxplot()+
@@ -520,7 +524,7 @@ penguins %>%
 
 If we want to facet by species and the sex of penguins, use the following code
 ```{r}
-penguins %>% 
+penguins |>  
   ggplot(aes(x =  island, 
              y = body_mass_g)) +
   geom_boxplot()+
