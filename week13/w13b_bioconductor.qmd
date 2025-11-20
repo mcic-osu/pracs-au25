@@ -116,12 +116,12 @@ specific Bioconductor packages.
 
 We need to install BiocManager through which we can install Bioconductor packages. The command to install BiocManager is provided below:
 ```{r eval=FALSE}
-## Install BiocManager only if it was not installed before
+# Install BiocManager only if it was not installed before
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-## Install BiocManager
+# Install BiocManager
 install.packages("BiocManager")
-## Check BiocManager version
+# Check BiocManager version
 BiocManager::version()
 ```
 
@@ -131,7 +131,7 @@ Bioconductor which we will use later for the sequnce manipulation and sequence a
 **There are 2,361 software packages available in the Bioconductor.** 
 
 ```{r eval=FALSE}
-## Install packages
+# Install packages
 BiocManager::install("DECIPHER")
 ```
 
@@ -140,7 +140,7 @@ BiocManager::install("DECIPHER")
 You should be an expert now in loading the packages in R since we have loaded so many packages since `week11`.
 Use the `library()` function to load the Bioconductor package in a similar way as CRAN packages.
 ```{r}
-## Load the DECIPHER package
+# Load the DECIPHER package
 library(DECIPHER)
 ```
 
@@ -151,7 +151,7 @@ It includes a **complete list of all functions in the package, syntax for each f
 **package’s built-in datasets.**
 
 ```{r}
-## View the inbuilt datasets of DECIPHER
+# View the inbuilt datasets of DECIPHER
 data(package = "DECIPHER")
 data("BLOSUM")
 str(BLOSUM)
@@ -297,9 +297,9 @@ Let's read our own fastq file using the `Biostring` package
 file_path <- "garrigos-data/fastq/ERR10802863_R1.fastq.gz"
 # Read the FASTQ file as a DNAStringSet object
 dna_sequences <- readDNAStringSet(filepath = file_path, format = "fastq")
-## Extract first 5 sequences
+# Extract first 5 sequences
 dna_sequences[1:5]
-## Extract first 10 sequences and assign it to object
+# Extract first 10 sequences and assign it to object
 top_ten_seq <- dna_sequences[1:10]  
 # Write to a new FASTA file
 writeXStringSet(x = top_ten_seq, filepath = "top10_sequences.fasta", format = "fasta")
@@ -331,11 +331,11 @@ secondary structure, create phylogenetic trees, and reconstruct ancestral states
 them to a file.
 
 ```{r}
-## For quick reference to the DECIPHER package help pages
+# For quick reference to the DECIPHER package help pages
 ?DECIPHER
-## To view detailed tutorials and step-by-step documentation (vignettes)
+# To view detailed tutorials and step-by-step documentation (vignettes)
 browseVignettes("DECIPHER")
-## Opens up web page showing all available vignettes for the DECIPHER package installed on your system.
+# Opens up web page showing all available vignettes for the DECIPHER package installed on your system.
 ```
 
 Here, we will use a `DECIPHER` package for the alignment of the sequences. As the number of genomes for the 
@@ -348,13 +348,13 @@ Multiple Sequence Alignment can show several things:
 - Is there insertion or deletion?
 
 ```{r eval=FALSE}
-## Align the sequences
+# Align the sequences
 aligned <- AlignSeqs(top_ten_seq)
-## View the alignment in your console
+# View the alignment in your console
 aligned
 # Opens an interactive viewer in your browser
 BrowseSeqs(aligned)
-## Write aligned object to a FASTA
+# Write aligned object to a FASTA
 writeXStringSet(aligned, filepath = "aligned_sequences.fasta", format = "fasta")
 ```
 
