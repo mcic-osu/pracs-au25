@@ -396,11 +396,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#install-biocmanager" id="toc-install-biocmanager" class="nav-link" data-scroll-target="#install-biocmanager"><span class="header-section-number">4.1</span> Install BiocManager</a></li>
   <li><a href="#install-bioconductor-package-using-biocmanager" id="toc-install-bioconductor-package-using-biocmanager" class="nav-link" data-scroll-target="#install-bioconductor-package-using-biocmanager"><span class="header-section-number">4.2</span> Install Bioconductor package using BiocManager</a></li>
   <li><a href="#load-the-packages" id="toc-load-the-packages" class="nav-link" data-scroll-target="#load-the-packages"><span class="header-section-number">4.3</span> Load the packages</a></li>
+  <li><a href="#find-the-package-of-interest--biocviews" id="toc-find-the-package-of-interest--biocviews" class="nav-link" data-scroll-target="#find-the-package-of-interest--biocviews"><span class="header-section-number">4.4</span> Find the package of interest- biocViews</a></li>
   </ul></li>
-  <li><a href="#what-type-of-packages-are-available-in-bioconducter" id="toc-what-type-of-packages-are-available-in-bioconducter" class="nav-link" data-scroll-target="#what-type-of-packages-are-available-in-bioconducter"><span class="header-section-number">5</span> What type of packages are available in Bioconducter?</a></li>
-  <li><a href="#example-packages" id="toc-example-packages" class="nav-link" data-scroll-target="#example-packages"><span class="header-section-number">6</span> Example packages</a></li>
-  <li><a href="#bioconductor-objects-can-be-complex" id="toc-bioconductor-objects-can-be-complex" class="nav-link" data-scroll-target="#bioconductor-objects-can-be-complex"><span class="header-section-number">7</span> Bioconductor objects can be complex</a></li>
-  <li><a href="#we-will-work-on-the-bioconducter-packager-deseq2-in-the-next-lecture" id="toc-we-will-work-on-the-bioconducter-packager-deseq2-in-the-next-lecture" class="nav-link" data-scroll-target="#we-will-work-on-the-bioconducter-packager-deseq2-in-the-next-lecture"><span class="header-section-number">8</span> We will work on the Bioconducter packager DESEQ2 in the next lecture</a></li>
+  <li><a href="#bioconductor-objects-can-be-complex" id="toc-bioconductor-objects-can-be-complex" class="nav-link" data-scroll-target="#bioconductor-objects-can-be-complex"><span class="header-section-number">5</span> Bioconductor objects can be complex</a></li>
+  <li><a href="#bioconductor-packages-examples" id="toc-bioconductor-packages-examples" class="nav-link" data-scroll-target="#bioconductor-packages-examples"><span class="header-section-number">6</span> Bioconductor packages examples</a>
+  <ul class="collapse">
+  <li><a href="#biostrings" id="toc-biostrings" class="nav-link" data-scroll-target="#biostrings"><span class="header-section-number">6.1</span> <strong>Biostrings</strong></a></li>
+  <li><a href="#decipher" id="toc-decipher" class="nav-link" data-scroll-target="#decipher"><span class="header-section-number">6.2</span> <strong>DECIPHER</strong></a></li>
+  </ul></li>
+  <li><a href="#recap-and-next-steps" id="toc-recap-and-next-steps" class="nav-link" data-scroll-target="#recap-and-next-steps"><span class="header-section-number">7</span> Recap and next steps</a></li>
   </ul>
 <div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="w13_overview.html"><i class="bi bi-book"></i>Week 13 overview</a></li><li><a href="w13b_bioconductor.html"><i class="bi bi-bookmarks"></i>w13b: Bioconductor: R for omics data</a></li></ul></div></nav>
     </div>
@@ -457,19 +461,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><br></p>
 <section id="introduction" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
-<p>R packages are available in many places. In our previous lecture, we learnt to install R packages through CRAN using <code>install.packages()</code> function. However, not all packages are available in CRAN. In this lecture, we will learn about <a href="https://bioconductor.org/">Bioconductor</a>, a specialized repository for <strong>bioinformatics packages in R</strong> that focuses on analysis of high-throughput genomic data. Bioconductor was initially developed for the analysis of microarray data. Now, its packages are used to analyze a wide range of omics data types such as bulk and single-cell RNA-seq, Chip seq, copy number analysis, micro array methylation and classic expression analysis, flow cytometry, and many other domains. One of the key requirement of Bioconductor packages is to have high level documentation, and workflows. The packages available in Bioconducter are provided <a href="https://bioconductor.org/packages/release/BiocViews.html#___Software">here</a>.</p>
+<p>R packages are available in many places. In our previous lectures, we learnt to install R packages through CRAN using <code>install.packages()</code> function. However, not all packages are available in CRAN. In this lecture, we will learn about <a href="https://bioconductor.org/">Bioconductor</a>, a specialized repository for <strong>bioinformatics packages in R</strong> that focuses on analysis of high-throughput genomic data. Bioconductor was initially developed for the analysis of microarray data. Now, its packages are used to analyze a wide range of omics data types such as bulk and single-cell RNA-seq, Chip seq, copy number analysis, micro array methylation flow cytometry, and many other domains. <strong>One of the key requirement of Bioconductor packages is to have high level documentation,and workflows</strong>. The packages available in Bioconducter are provided <a href="https://bioconductor.org/packages/release/BiocViews.html#___Software">here</a>.</p>
 <section id="overview-learning-goals" class="level3" data-number="1.1">
 <h3 data-number="1.1" class="anchored" data-anchor-id="overview-learning-goals"><span class="header-section-number">1.1</span> Overview &amp; learning goals</h3>
 <p>In this lecture, you will learn :</p>
 <ul>
-<li>Different packages available in Bioconductor</li>
-<li>How to install and load Bioconductor packages</li>
-<li>Use DECIPHER package to align the genomic sequences</li>
+<li>Different packages available in <code>Bioconductor</code></li>
+<li>How to <strong>install Bioconductor packages</strong></li>
+<li>Data structure of Bioconductor</li>
+<li>Use <code>DECIPHER</code> package to manipulate DNA sequences and align the genomic sequences</li>
 </ul>
 <p>Specifically, you will learn:</p>
 <ul>
 <li>Install package using <code>BiocManager::install()</code> function</li>
-<li>Align the genomic seqeunces</li>
+<li>Align the genomic sequences</li>
 </ul>
 </section>
 </section>
@@ -477,25 +482,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="2" class="anchored" data-anchor-id="set-up-and-data-preparation"><span class="header-section-number">2</span> Set up and Data preparation</h2>
 <section id="open-a-new-quarto-document-in-rstudio" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="open-a-new-quarto-document-in-rstudio"><span class="header-section-number">2.1</span> Open a new Quarto document in Rstudio</h3>
-<p>Open a new Quarto file <code>File</code> &gt; <code>New File</code> &gt; <code>Quarto Document</code> and save it inside the <code>week13</code> directory as <code>week13b_bioconductor</code>.</p>
+<p>Open a new Quarto file <code>File</code> &gt; <code>New File</code> &gt; <code>Quarto Document</code> and save it inside the <code>week13</code> directory that we created on Tuesday as <code>week13b_bioconductor</code>.</p>
 </section>
 </section>
 <section id="packages-available-in-biocondctor" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="packages-available-in-biocondctor"><span class="header-section-number">3</span> Packages available in Biocondctor</h2>
-<p>There are 4 different types of software packages available in Bioconductor:</p>
+<p>There are 4 different types of packages available in Bioconductor:</p>
 <ol type="1">
-<li><p>Software packages for the analysis and comprehension of high-throughput genomic data.</p></li>
-<li><p>Annotation data packages that provide mappings between different biological identifiers and genomic coordinates.</p></li>
-<li><p>Experiment data packages that contain example data sets for testing and demonstrating analysis methods.</p></li>
-<li><p>Workflows and vignettes that provide step-by-step guides for common bioinformatics analyses.</p></li>
+<li><p><strong>Software packages (2361)</strong> : further divided into two categories <strong>infrastructure and methodological packages</strong>. Infrastructure packages define how the biological data are stored and accessed. For example, <code>Biostrings</code>: tools for manipulating DNA and RNA sequences. They do not perform the analysis themselves but provide standardized data structures that other packages can use. Methodological packages provide tools and methods to analyze or process the data. For instance, <code>DECIPHER</code>: sequence analysis and manipulation, <code>Deseq2</code>: differential expression analysis are Methodological packages.</p></li>
+<li><p><strong>Annotation data packages (928) </strong>: these are self-contained databases that store genomic annotations (e.g., gene identifiers, biological pathways). They act like reference libraries for biological data. Instead of manually downloading gene IDs or pathway information from external sources, these packages provide ready-to-use annotation data directly in R.For example, <code>OrgDb</code> packages are <strong>species-specific annotation databases</strong> in Bioconductor. The package <strong>org.Hs.eg.db (for humans)</strong> maps different types of gene identifiers (e.g., Entrez IDs, gene symbols) and links them to biological pathways and Gene Ontology (GO) terms.</p></li>
+<li><p><strong>Experiment data packages (435)</strong> : contains example datasets mainly used by developers.</p></li>
+<li><p><strong>Workflows (29)</strong> : provide step-by-step guides for common bioinformatics analyses. They do not add new code or functions but demonstrate how to use multiple Bioconductor packages together. For instance, <strong>rnaseqGene - RNA-seq workflow package</strong> shows how to go from raw FASTQ files, alignment, differential expression analysis, visualization, using several packages together.</p></li>
 </ol>
-<p>BioConductor delivers releases where a set of packages is published at once and intended for compatibility only with a certain version of R. This is in contrast to CRAN where packages are added continuously with no reference to particular versions of R. Bioconducter page provide guidance on package acquisition, create the documents that are computable and better software engineering.</p>
-<p>Bioconductor Help</p>
-<ol type="1">
-<li><p>Bioconductor Packages</p></li>
-<li><p>biocViews</p></li>
-<li><p>Bioconductor Forums</p></li>
-</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Bioconductor releases a new version every 6 months. Each Bioconductor version is linked to a specific version of R. This is different from CRAN, where packages are added continuously without reference to specific R versions. The Bioconductor website provides guidance on installing packages, creating reproducible documents, and promoting better software engineering practices. <strong>The latest version of Bioconductor is 3.22 (released on October 30, 2025), which is is compatible with R 4.5.</strong></p>
+<ul>
+<li><p>Bioconductor’s installation function will look up your version of R and give you the appropriate versions of Bioconductor packages.</p></li>
+<li><p>If you want the latest version of Bioconductor, you need to use the latest version of R - Michael Love</p></li>
+</ul>
+</div>
+</div>
 </section>
 <section id="install-bioconductor-packages" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="install-bioconductor-packages"><span class="header-section-number">4</span> Install Bioconductor packages</h2>
@@ -504,42 +519,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="4.1" class="anchored" data-anchor-id="install-biocmanager"><span class="header-section-number">4.1</span> Install BiocManager</h3>
 <p>We need to install BiocManager through which we can install Bioconductor packages. The command to install BiocManager is provided below:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Check if it has worked by printing the version</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">version</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Install BiocManager only if it was not installed before</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Install BiocManager</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Check BiocManager version</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">version</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="install-bioconductor-package-using-biocmanager" class="level3" data-number="4.2">
 <h3 data-number="4.2" class="anchored" data-anchor-id="install-bioconductor-package-using-biocmanager"><span class="header-section-number">4.2</span> Install Bioconductor package using BiocManager</h3>
-<p>Once the BiocManager is installed, use the following command to install few packages of Bioconductor e.g., GenomicRanges, DECIPHER There are 2,361 software packages available in the Bioconductor. You can know more about the packages by searching <a href="https://bioconductor.org/packages/release/BiocViews.html#___Software">here</a></p>
+<p>Once the BiocManager is installed, use the following command to install <code>DECIPHER</code> package of Bioconductor which we will use later for the sequnce manipulation and sequence alignment. <strong>There are 2,361 software packages available in the Bioconductor.</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Install packages</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"GenomicRanges"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"DECIPHER"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Installing packages
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Packages with many dependencies might take time to install.</p>
-</div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"DECIPHER"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="load-the-packages" class="level3" data-number="4.3">
 <h3 data-number="4.3" class="anchored" data-anchor-id="load-the-packages"><span class="header-section-number">4.3</span> Load the packages</h3>
 <p>You should be an expert now in loading the packages in R since we have loaded so many packages since <code>week11</code>. Use the <code>library()</code> function to load the Bioconductor package in a similar way as CRAN packages.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Load the DECIPHER package</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Load the DECIPHER package</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DECIPHER)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>##BiocManager::install(update = TRUE, ask = FALSE)</p>
+<p>Every package in Bioconductor has a reference manual. The reference manual for DECIPHER can be found <a href="https://bioconductor.org/packages/release/bioc/manuals/DECIPHER/man/DECIPHER.pdf">here</a>. It includes a <strong>complete list of all functions in the package, syntax for each function,</strong> <strong>descriptions of arguments, available options and the examples that can be run using the </strong> <strong>package’s built-in datasets.</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## View the inbuilt datasets of DECIPHER</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="at">package =</span> <span class="st">"DECIPHER"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"BLOSUM"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(BLOSUM)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -550,49 +560,158 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Packages can become available on CRAN after being available in Bioconductor and vice versa. what is the reason for it <code>vcfR</code> package was first available in</p>
+<p>Packages can become available on CRAN after being available in Bioconductor. <code>vcfR</code> package, which allows easy manipulation and visualization of variant call format (VCF) data, was first available only in Bioconductor. Later, the package evolved to be self-contained, not requiring Bioconductor classes, making CRAN a better fit for broader use. <strong>BiocManager::install() will also install packages from CRAN. It acts as a wrapper for install.packages()</strong></p>
 </div>
 </div>
-<p>This lecture, we will introduce you to Bioconductor, a powerful open-source software project that provides tools for the analysis and comprehension of high-throughput genomic data.</p>
-<p>Bioconductor is a source project and repository for bioinformatics packages in the R programming language. Since its start in 2001, Bioconductor package has grown to include more than 2000 packages contributed by a diverse community of researchers worldwide. The latest release of Bioconductor (version 3.22, released in October 2025) is compatible with R version 4.5.0.</p>
+</section>
+<section id="find-the-package-of-interest--biocviews" class="level3" data-number="4.4">
+<h3 data-number="4.4" class="anchored" data-anchor-id="find-the-package-of-interest--biocviews"><span class="header-section-number">4.4</span> Find the package of interest- biocViews</h3>
+<p>Bioconductor uses biocViews to organize and classify packages, so, that we can find packages easily on the Bioconductor website. biocViews includes a controlled vocabulary to categorize Bioconductor packages. Package authors choose the tags when they submit their package. Tags are later reviewed and refined by Bioconductor maintainers. You can know more about the packages by searching <a href="https://bioconductor.org/packages/release/BiocViews.html#___Software">here</a> For example, if you search for “RNASeq” on Bioconductor, you will find all packages tagged with that term.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/biocviews.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+<p><strong>Rank</strong> column usually indicates the popularity or relevance of the package within Bioconductor, based on download statistics, usage in workflows, community interest. <code>edgeR</code> and <code>DESeq2</code> are two most commonly used package for the differential expression analysis of RNA-seq dataset. They are ranked 23 and 25, respectively, meaning both packages are among the most downloaded in the Bioconductor project, with <code>edgeR</code> having a slightly more popularity.</p>
 </section>
 </section>
-<section id="what-type-of-packages-are-available-in-bioconducter" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="what-type-of-packages-are-available-in-bioconducter"><span class="header-section-number">5</span> What type of packages are available in Bioconducter?</h2>
-<p>Bioconductor hosts a wide variety of packages that cater to different aspects of bioinformatics and computational biology.</p>
-<p>Some of the main types of packages available in Bioconductor include:</p>
-<ol type="1">
-<li>Software packages for the analysis and comprehension of high-throughput genomic data.</li>
-<li>Annotation data packages that provide mappings between different biological identifiers and genomic coordinates.</li>
-<li>Experiment data packages that contain example datasets for testing and demonstrating analysis methods.</li>
-<li>Workflows and vignettes that provide step-by-step guides for common bioinformatics analyses.</li>
-</ol>
-<p>BiocViews: task view for package discovery BiocViews is a controlled vocabulary for describing the content and functionality of Bioconductor packages. ### Overview &amp; learning goals</p>
-</section>
-<section id="example-packages" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="example-packages"><span class="header-section-number">6</span> Example packages</h2>
+<section id="bioconductor-objects-can-be-complex" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="bioconductor-objects-can-be-complex"><span class="header-section-number">5</span> Bioconductor objects can be complex</h2>
+<p>We discussed in <code>week11</code> that anything in R is an object. <strong>Objects in Bioconductor are more complex than vector or matrix.</strong> Bioconductor does not contain single data structure. They contain multiple attributes (e.g., sequence data, metadata, annotations). They are specialized <strong>S4 objects</strong> designed to store biological data efficiently and with metadata. Each object comes with methods—specific functions to access information inside the object, run analyses, and visualize data. Accessor functions (e.g., length(), width(), metadata()) are needed to retrieve specific information from an object</p>
+<p><strong>Some examples of Bioconductor objects</strong></p>
 <ul>
-<li><strong>Biostrings</strong> : Read, write, search, and manipulate DNA, RNA, or amino acid sequences</li>
-<li><strong>DECIPHER</strong> :</li>
+<li><p><code>Biostrings objects (DNA, RNA, AA sequences)</code> : Used for manipulating sequence strings efficiently</p></li>
+<li><p><code>SummarizedExperiment (SE)</code>: Used in RNA-seq analysis (We will discuss about it in more detail in <strong>week14</strong>)</p></li>
 </ul>
-<p>DECPIHER package can be used to perfomed various tasks which comes under five categories:</p>
+<p>An SE object consists of three main components:</p>
+<ol type="1">
+<li><p>assays : A matrix (or list of matrices) of experimental data. Rows represents genomic features (e.g., genes), and columns represents samples. You generate this data from the sequencing machine.</p></li>
+<li><p>colData : A table of metadata about the samples (columns). Example: sample IDs, conditions, batch info. You generate this from your experiment.</p></li>
+<li><p>rowData (or rowRanges) :A table of metadata about the features (rows). Example: gene IDs, genomic coordinates, annotations. You generate this data from Ensembel or any other databases.</p></li>
+</ol>
 <ul>
-<li><p>Sequence databases: import, maintain, view, and export a massive number of sequences.</p></li>
+<li><code>Phylogenetic Tree Objects</code>: From DECIPHER or ape package.</li>
+</ul>
+</section>
+<section id="bioconductor-packages-examples" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="bioconductor-packages-examples"><span class="header-section-number">6</span> Bioconductor packages examples</h2>
+<section id="biostrings" class="level3" data-number="6.1">
+<h3 data-number="6.1" class="anchored" data-anchor-id="biostrings"><span class="header-section-number">6.1</span> <strong>Biostrings</strong></h3>
+<p>It is a core package of <strong>DECIPHER</strong>. When you install <code>DECIPHER</code>, Bioconductor will automatically install <code>Biostrings</code> and any other required dependencies if they are not already present. <strong>Biostrings</strong> is used to read, write, search, and manipulate DNA, RNA, or amino acid sequences in which sequences are stored in <code>XStringSet</code> objects. Amino acid sequences are stored in the class AAStringSet, nucleotide sequences are stored in the class DNAStringSet or RNAStringSet. reference manual of Biotsring can be found <a href="https://bioconductor.org/packages/release/bioc/manuals/Biostrings/man/Biostrings.pdf">here</a></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using standard R to create a character vector of sequences</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>sequences <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"AAATCGA"</span>, <span class="st">"ATACAACAT"</span>, <span class="st">"TTGCCA"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the sequences</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>sequences</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the number of sequences</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(sequences)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the number of characters in each sequence</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">nchar</span>(sequences)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the 1st and 3rd sequences</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>sequences[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)]</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Try to get the reverse complement</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">reverseComplement</span>(sequences)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Base R can store sequences as simple character strings and perform basic operations like length and indexing. However, it does not understand biological meaning. Therefore, operations like reverse complement will fail.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Biostrings package, if you have loaded DECIPHER before</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Biostrings)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert sequences into a DNAStringSet object</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>dna <span class="ot">&lt;-</span> <span class="fu">DNAStringSet</span>(sequences)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the DNAStringSet</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>dna</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the number of sequences</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(dna)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the number of characters in each sequence</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">nchar</span>(dna)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the 1st and 3rd sequences</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>dna[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)]</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute reverse complements (works because Biostrings understands DNA)</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="fu">reverseComplement</span>(dna)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The <code>Biostrings</code> package provides specialized classes like <code>DNAStringSet</code> that understand biological sequences. This allows us to perform biologically meaningful operations easily.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are three different object system in R: S3 , S4 and Reference classes. Object becomes S3 by assigning class. S3 object system is simple but powerful. Since, Bioconductor uses <strong>S4 object-oriented programming in R</strong>, we will focus more in S4 class. S4 classes have a formal structure, and three important components are:</p>
+<ul>
+<li><p>Name: The name of the class (e.g., DNAStringSet, XStringSet). It tells you what type of object you are working with. Use <code>class()</code> to check the class name of an object.</p></li>
+<li><p>Slots: These are named compartments inside the object that store data. Each slot holds specific information (e.g., sequences, metadata). Use <code>slotNames()</code> to list all slots in an object.</p></li>
+<li><p>Contains: This shows inheritance which is a parent classes the current class extends. For example, DNAStringSet contains XStringSet, meaning it inherits its behavior and adds DNA-specific features.</p></li>
+</ul>
+<p>Understanding the class structure the class structure helps you inspect and manipulate data correctly.</p>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the class of the object</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dna)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># List all slots in the object</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">slotNames</span>(dna)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the class definition (slots, inheritance)</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">getClass</span>(<span class="st">"DNAStringSet"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the internal structure of the object</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(dna)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Let’s read our own fastq file using the <code>Biostring</code> package</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Path to your FASTQ.gz file</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="st">"garrigos-data/fastq/ERR10802863_R1.fastq.gz"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the FASTQ file as a DNAStringSet object</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>dna_sequences <span class="ot">&lt;-</span> <span class="fu">readDNAStringSet</span>(<span class="at">filepath =</span> file_path, <span class="at">format =</span> <span class="st">"fastq"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Extract first 5 sequences</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>dna_sequences[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Extract first 10 sequences and assign it to object</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>top_ten_seq <span class="ot">&lt;-</span> dna_sequences[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]  </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Write to a new FASTA file</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">writeXStringSet</span>(<span class="at">x =</span> top_ten_seq, <span class="at">filepath =</span> <span class="st">"top10_sequences.fasta"</span>, <span class="at">format =</span> <span class="st">"fasta"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="decipher" class="level3" data-number="6.2">
+<h3 data-number="6.2" class="anchored" data-anchor-id="decipher"><span class="header-section-number">6.2</span> <strong>DECIPHER</strong></h3>
+<p>DECIPHER is an R/Bioconductor package that provides tools for working with biological sequences. It is designed to help researchers curate, analyze, and manipulate sequence data efficiently. The package supports a wide range of tasks:</p>
+<ul>
+<li><p>Sequence databases: Import, maintain, view, and export very large collections of sequences. Instead of loading all sequences into memory at once (which would require a huge amount of RAM), DECIPHER uses databases to store and manage them. This approach makes it possible to analyze millions of sequences without overwhelming system resources.</p></li>
 <li><p>Sequence alignment: accurately align thousands of DNA, RNA, or amino acid sequences. Quickly find and align the syntenic regions of multiple genomes.</p></li>
 <li><p>Oligo design: test oligos in silico, or create new primer and probe sequences optimized for a variety of objectives.</p></li>
 <li><p>Manipulate sequences: trim low quality regions, correct frameshifts, reorient nucleotides, determine consensus, or digest with restriction enzymes.</p></li>
 <li><p>Analyze sequences: find chimeras, classify into a taxonomy of organisms or functions, detect repeats, predict secondary structure, create phylogenetic trees, and reconstruct ancestral states.</p></li>
 <li><p>Gene finding: predict coding and non-coding genes in a genome, extract them from the genome, and export them to a file.</p></li>
 </ul>
-<p>Here, we will use a <code>DECIPHER</code> package for the alignment of the sequences. <code>DECIPHER</code> can align thousand of seqeunces in a very short time and maintain the accuracy</p>
-<p>which MSA can show several things: - Is the regions conserved?</p>
-<p>As the number of genomes for the alignment increases, the computational time increases as well. It is a challenge to improve the performance when the number of sequences are added.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## For quick reference to the DECIPHER package help pages</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>?DECIPHER</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="do">## To view detailed tutorials and step-by-step documentation (vignettes)</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">browseVignettes</span>(<span class="st">"DECIPHER"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Opens up web page showing all available vignettes for the DECIPHER package installed on your system.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Here, we will use a <code>DECIPHER</code> package for the alignment of the sequences. As the number of genomes for the alignment increases, the computational time increases as well. It is a challenge to improve the performance when the number of sequences are added. However, <code>DECIPHER</code> can align 100 of sequences together accurately in a short time.</p>
+<p>Multiple Sequence Alignment can show several things: - Is the regions conserved (syntenic regions) - Is there insertion or deletion?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Align the sequences</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>aligned <span class="ot">&lt;-</span> <span class="fu">AlignSeqs</span>(top_ten_seq)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="do">## View the alignment in your console</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>aligned</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Opens an interactive viewer in your browser</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">BrowseSeqs</span>(aligned)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Write aligned object to a FASTA</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">writeXStringSet</span>(aligned, <span class="at">filepath =</span> <span class="st">"aligned_sequences.fasta"</span>, <span class="at">format =</span> <span class="st">"fasta"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
-<section id="bioconductor-objects-can-be-complex" class="level2" data-number="7">
-<h2 data-number="7" class="anchored" data-anchor-id="bioconductor-objects-can-be-complex"><span class="header-section-number">7</span> Bioconductor objects can be complex</h2>
 </section>
-<section id="we-will-work-on-the-bioconducter-packager-deseq2-in-the-next-lecture" class="level2" data-number="8">
-<h2 data-number="8" class="anchored" data-anchor-id="we-will-work-on-the-bioconducter-packager-deseq2-in-the-next-lecture"><span class="header-section-number">8</span> We will work on the Bioconducter packager DESEQ2 in the next lecture</h2>
+<section id="recap-and-next-steps" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="recap-and-next-steps"><span class="header-section-number">7</span> Recap and next steps</h2>
+<ul>
+<li>Bioconductor and its packages</li>
+<li><code>Install packages</code> in Bioconductor</li>
+<li>Manipulate and align sequence using <code>DECIPHER</code></li>
+</ul>
 
 
 </section>
