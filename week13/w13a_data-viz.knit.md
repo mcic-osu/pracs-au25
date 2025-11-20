@@ -103,15 +103,60 @@ your R console to install the packages needed for data visualization
 from Comprehensive R Archive Network (CRAN).
 :::
 
-```{r, eval=FALSE}
+
+::: {.cell}
+
+```{.r .cell-code}
 install.packages("tidyverse")
 install.packages("palmerpenguins")
 ```
+:::
 
-```{r}
+
+
+::: {.cell}
+
+```{.r .cell-code}
 library(tidyverse)
+```
+
+::: {.cell-output .cell-output-stderr}
+
+``` regular-r-output
+── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.2
+✔ ggplot2   3.5.2     ✔ tibble    3.3.0
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.1.0     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+```
+
+
+:::
+
+```{.r .cell-code}
 library(palmerpenguins)
 ```
+
+::: {.cell-output .cell-output-stderr}
+
+``` regular-r-output
+
+Attaching package: 'palmerpenguins'
+
+The following objects are masked from 'package:datasets':
+
+    penguins, penguins_raw
+```
+
+
+:::
+:::
+
 
 ::: callout-note
 You only need to install a package once. However, you need to load the
@@ -121,11 +166,16 @@ package using **library()** every time you start a new R session.
 Let's load the penguin data set, look at the data and its structure.
 `data` function loads the specified data sets and list of other available data sets.
 
-```{r eval=FALSE}
+
+::: {.cell}
+
+```{.r .cell-code}
 data("penguins")
 View(penguins)
 str(penguins)
 ```
+:::
+
 
 ::: {.callout-note}
 # Penguin data sets : It consists of body measurement data of 3 species of penguins collected from 3 islands 
@@ -182,13 +232,29 @@ several layers to our plot and clarify it.
 Your data frame is the first argument of `ggplot`. You can provide data in two ways: 
 separately providing the data and piping it with the ggplot function `penguins |>  ggplot()` or inside the ggplot function `ggplot(data = penguins)` 
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 ## Two ways of passing first argument in ggplot
 ggplot(data = penguins)
+```
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-4-1.png){width=672}
+:::
+
+```{.r .cell-code}
 ## We will use this style throughout the lecture
 penguins |> 
   ggplot()
 ```
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-4-2.png){width=672}
+:::
+:::
+
 
 We have a blank plot because we have not provided any information on
 what to plot. In the above code, we just specified the data frame we want to use.
@@ -203,11 +269,20 @@ The x and y argument of `aes()` function defines the variables to be plotted in
 x - axis and y - axis respectively. Here, let's say we would like to create a scatter plot with 
 **bill_length_mm** in x - axis and **bill_depth_mm** in y - axis.
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |>  
   ggplot(aes(x =  bill_length_mm, 
                      y = bill_depth_mm))
 ```
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-5-1.png){width=672}
+:::
+:::
+
 
 Although we have defined x - axis and y - axis in this plot, we do not see the plot because we have not added
 any geometric objects or we have not told how to represent the data frame to our plot.
@@ -217,12 +292,31 @@ Each geom function will have its own arguments to customize the plot. We have co
 
 ## Scatter plot
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |>  
   ggplot(aes(x =  bill_length_mm, 
                      y = bill_depth_mm)) +
   geom_point()
 ```
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-6-1.png){width=672}
+:::
+:::
+
 
 Finally, we can see the scatter plot. But we want to add third layer to our plot.
 For example, we would like to color the points by `species` of penguins. One way to do it would be
@@ -230,12 +324,31 @@ by coloring penguins by `species`. To change color by species, we need to map th
 inside the `aes()` function.
 **When categorical variable is mapped to color, unique colors are assigned to each category automatically by ggplot2. And the legend will be added to show the category that corresponds to each color.**
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |>  
   ggplot(aes(x =  bill_length_mm, 
                      y = bill_depth_mm, color = species)) +
   geom_point()
 ```
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-7-1.png){width=672}
+:::
+:::
+
 
 Now, we can see that each point is colored by the corresponding species of penguins. 
 Again, we want to map the fourth variable `island`. Let's map `island` to different shapes
@@ -249,12 +362,31 @@ of the plot.
 
 <summary>Click for the solution</summary>
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |>  
   ggplot(aes(x =  bill_length_mm, 
                      y = bill_depth_mm), color = species) +
   geom_point()
 ```
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-8-1.png){width=672}
+:::
+:::
+
 
 Anything outside `aes()` is considered as fixed setting. Therefore, all the points are colored black (default color). Legends will not be provided because we are not mapping variables to anything.
 
@@ -266,12 +398,31 @@ Anything outside `aes()` is considered as fixed setting. Therefore, all the poin
 
 <summary>Click for the solution</summary>
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |>  
   ggplot(aes(x =  bill_length_mm, 
                      y = bill_depth_mm, color = species, shape = island)) +
   geom_point()
 ```
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-9-1.png){width=672}
+:::
+:::
+
 
 [Here](https://ggplot2.tidyverse.org/articles/ggplot2-specs.html) are several other aesthetic mappings 
 options available  in `ggplot2`
@@ -294,13 +445,32 @@ We can set the aesthetic outside the `aes()` function to do it. **To map variabl
 
 <summary>Click for the solution</summary>
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 ## you can set `color = "red" outside the `aes()` function inside the `geom_point()` function.
 penguins |> 
   ggplot(aes(x =  bill_length_mm, 
                      y = bill_depth_mm )) +
   geom_point(color = "red")
 ```
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-10-1.png){width=672}
+:::
+:::
+
 
 </details>
 :::
@@ -310,7 +480,10 @@ In the above examples, we mapped aesthetics to certain variable `color = species
 `ggplot()` at the **global level**. Hence, the same mapping aesthetics will be passed down to other geom 
 layers. However, each geom layer can have its own aesthetic mapping at **local level**.
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |> 
   ggplot(aes(x =  bill_length_mm, 
                      y = bill_depth_mm, color = species)) +
@@ -318,24 +491,100 @@ penguins |>
   geom_smooth(method = "lm")
 ```
 
+::: {.cell-output .cell-output-stderr}
+
+``` regular-r-output
+`geom_smooth()` using formula = 'y ~ x'
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_smooth()`).
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-11-1.png){width=672}
+:::
+:::
+
+
 In the above code, we mapped `color = species` at the global level inside the `ggplot()` function, so
 both `geom_point()` and `geom_smooth()` layers have the same mapping colors for the points and line.
 
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |> 
   ggplot(aes(x =  bill_length_mm, 
                      y = bill_depth_mm)) +
   geom_point(aes(color = species)) +
   geom_smooth(method = "lm")
 ```
+
+::: {.cell-output .cell-output-stderr}
+
+``` regular-r-output
+`geom_smooth()` using formula = 'y ~ x'
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_smooth()`).
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-12-1.png){width=672}
+:::
+:::
+
 In the above code, we mapped `color = species` at the local level inside the `geom_point()` function.
 Therefore, only the points are colored by species while the line is in default color (blue).
 
 ### Manually changing the colors
 In the above codes, we used the default colors of ggplot. However, `ggplot` allows us to change the colors manually. We can set the exact colors of the plot using function `scale_color_manual`.
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |> 
   ggplot(aes(x =  bill_length_mm, 
                      y = bill_depth_mm)) +
@@ -343,6 +592,41 @@ penguins |>
   scale_color_manual(values = c("grey55", "orange", "skyblue")) +
   geom_smooth(method = "lm")
 ```
+
+::: {.cell-output .cell-output-stderr}
+
+``` regular-r-output
+`geom_smooth()` using formula = 'y ~ x'
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_smooth()`).
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-13-1.png){width=672}
+:::
+:::
+
 
 The order of the color will correspond to the order of species in the legend. If you are unsure which color
 to use for your plot, use the `colors()` to explore various available colors.
@@ -355,7 +639,10 @@ with wide range of **color palettes**. Let's explore `RcolorBrewer` package that
 
 Let's pick `Pastel1` color palette for our scatter plot which needs to be used with the function `scale_color_brewer()`
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 library(RColorBrewer)
 penguins |> 
   ggplot(aes(x =  bill_length_mm, 
@@ -363,15 +650,52 @@ penguins |>
   geom_point(aes(color = species)) +
   scale_color_brewer(palette = "Pastel1") +
   geom_smooth(method = "lm")
-
 ```
+
+::: {.cell-output .cell-output-stderr}
+
+``` regular-r-output
+`geom_smooth()` using formula = 'y ~ x'
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_smooth()`).
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-14-1.png){width=672}
+:::
+:::
+
 
 
 ### Adding titles and labels
 Let's say we want to change the title and the axis labels of our plot. We can do it using the `labs()` function. Most of the arguments of `labs()` function are self-explanatory. For instance,
 `title` adds title to the plot, `x` and `y` add labels to x - axis and y - axis respectively.
 In the above plot if we want to add title **Scatter plot of bill length vs bill depth**  and change the axis labels of x-axis to **Bill length (mm)** and y-axis to **Bill depth (mm)**:
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |>  
   ggplot(aes(x =  bill_length_mm, 
                      y = bill_depth_mm)) +
@@ -382,11 +706,49 @@ penguins |>
        y = "Bill depth (mm)")
 ```
 
+::: {.cell-output .cell-output-stderr}
+
+``` regular-r-output
+`geom_smooth()` using formula = 'y ~ x'
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_smooth()`).
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-15-1.png){width=672}
+:::
+:::
+
+
 ### Adjusting themes
 There are two ways to adjust **themes** in ggplot2. You can either customize individual theme elements using the `theme()` function or apply a pre-defined theme to your plot using `theme_*()`.
 
 We will first start by using preset theme. [There](https://ggplot2.tidyverse.org/reference/ggtheme.html) are several pre-defined themes available in ggplot2 such as `theme_minimal()`, `theme_classic()`, `theme_bw()`, `theme_light()` etc. Here we will apply the `theme_bw()` to our previous plot:
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |>  
   ggplot(aes(x =  bill_length_mm, 
                      y = bill_depth_mm)) +
@@ -398,9 +760,47 @@ penguins |>
   theme_bw()
 ```
 
+::: {.cell-output .cell-output-stderr}
+
+``` regular-r-output
+`geom_smooth()` using formula = 'y ~ x'
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_smooth()`).
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-16-1.png){width=672}
+:::
+:::
+
+
 Now, we can change the individual theme elements using the `theme()` function. For example, we will change
 the text size of the plot title, axis and legend position using the command below:
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |>  
   ggplot(aes(x =  bill_length_mm, 
                      y = bill_depth_mm)) +
@@ -416,6 +816,41 @@ penguins |>
     legend.position = "top")
 ```
 
+::: {.cell-output .cell-output-stderr}
+
+``` regular-r-output
+`geom_smooth()` using formula = 'y ~ x'
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_smooth()`).
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-17-1.png){width=672}
+:::
+:::
+
+
 We have tried to create `scatter plot` so far using `geom_point`. However, there are different `geoms` available to create different type of plot in `ggplot`
 
 ## Other Geometrical objects
@@ -425,40 +860,81 @@ It can be used to visualize relationship between the categorical variable and nu
 First, we will use bar graph to plot the mean of our data set. 
 Let's compute the mean first manually to plot the data. In `week12` we learnt to group variable/s by `group_by` function. Use the same concept here to calculate the body mass of the penguins for each island.
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 ## Before plotting, compute the mean
 mean <- penguins |> 
   group_by(island) |> 
   summarize(mean_body_mass = mean(body_mass_g, 
                                   na.rm = TRUE)) # remove missing values
-    
 ```
+:::
 
 
-```{r}
+
+
+::: {.cell}
+
+```{.r .cell-code}
 mean |> 
   ggplot(aes(x = island, y = mean_body_mass)) +
   geom_col()
 ```
 
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-19-1.png){width=672}
+:::
+:::
+
+
 
 We can also use the bar graph to plot the counts per group instead of mean.
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |> 
   ggplot(aes(x = island)) +
   geom_bar()
 ```
 
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-20-1.png){width=672}
+:::
+:::
+
+
 
 ### Box plot
 We use box plot to visualize the relationship of numerical and categorical variables. We can 
 see the distribution of data. Let's say we want to create a box plot to visualize the distribution of `body_mass_g` across different `island` of penguins.
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |> 
   ggplot(aes(x =  island, 
              y = body_mass_g)) +
   geom_boxplot()
 ```
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_boxplot()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-21-1.png){width=672}
+:::
+:::
+
 
 ::: exercise
 #### {{< fa user-edit >}} Exercise-3:
@@ -469,13 +945,42 @@ penguins |>
 
 <summary>Click for the solution</summary>
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |> 
   ggplot(aes(x =  island, 
              y = body_mass_g)) +
   geom_boxplot() +
   geom_jitter()
 ```
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_boxplot()`).
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-22-1.png){width=672}
+:::
+:::
+
 
 </details>
 
@@ -485,13 +990,42 @@ penguins |>
 
 <summary>Click for the solution</summary>
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |> 
   ggplot(aes(x =  island, 
              y = body_mass_g)) +
   geom_boxplot() +
   geom_jitter(aes(color = species))
 ```
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_boxplot()`).
+```
+
+
+:::
+
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-23-1.png){width=672}
+:::
+:::
+
 </details>
 :::
 
@@ -514,7 +1048,10 @@ panels wrapped into a rectangular layout.
 
 Let's say, in the last box plot, we want to facet box plot by species:
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |>  
   ggplot(aes(x =  island, 
              y = body_mass_g)) +
@@ -522,8 +1059,27 @@ penguins |>
   facet_wrap(vars(species))
 ```
 
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_boxplot()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-24-1.png){width=672}
+:::
+:::
+
+
 If we want to facet by species and the sex of penguins, use the following code
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 penguins |>  
   ggplot(aes(x =  island, 
              y = body_mass_g)) +
@@ -531,13 +1087,32 @@ penguins |>
   facet_grid(rows = vars(sex), cols = vars(species))
 ```
 
+::: {.cell-output .cell-output-stderr}
+
+``` warning-r-output
+Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_boxplot()`).
+```
+
+
+:::
+
+::: {.cell-output-display}
+![](w13a_data-viz_files/figure-html/unnamed-chunk-25-1.png){width=672}
+:::
+:::
+
+
 ## Exporting the plots
 You can save the plots in different formats such as PNG, JPEG, PDF, etc. either manually or by using the 
 [ggsave](https://ggplot2.tidyverse.org/reference/ggsave.html) function. To export plot manually,
 use the `Export` button in the `Plots` of the `output pane`. You can choose the file format, 
 size, but you are limited in other parameters when you export file manually. `ggsave()` provides more flexibility to save the plots. 
 
-```{r eval=FALSE}
+
+::: {.cell}
+
+```{.r .cell-code}
 ggsave(filename = "results/boxplot.png", # file path and name
        plot = box_plot_body_mass_and_island,  # what to save
        width = 18, 
@@ -545,6 +1120,8 @@ ggsave(filename = "results/boxplot.png", # file path and name
        dpi = 300, # dots per inch,  ie resolution
        units = "cm") # units for width and height
 ```
+:::
+
 
 ## Recap and next steps
 - Basic syntax of `ggplot2`
