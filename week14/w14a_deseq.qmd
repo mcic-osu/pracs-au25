@@ -28,12 +28,6 @@ other-links:
 
 --------------------------------------------------------------------------------
 
-```{r, eval=FALSE}
-if (!require("BiocManager")) install.packages("BiocManager")
-if (!require("DESeq2")) BiocManager::install("DESeq2")
-if (!require("EnhancedVolcano")) BiocManager::install("EnhancedVolcano")
-if (!require("pheatmap")) install.packages("pheatmap")
-```
 
 <br>
 
@@ -41,9 +35,8 @@ if (!require("pheatmap")) install.packages("pheatmap")
 
 ### Overview & learning goals
 
-After running steps like read pre-processing, alignment, and quantification using the
-nf-core rnaseq workflow, or another method like running separate programs (Jelmer taught)
-, you will have a **gene count table**.
+After running steps like read pre-processing, alignment, and quantification using the separate programs (like 
+Jelmer taught) or using a nf-core rnaseq workflow, you will have a **gene count table**.
 Today, with that gene count table, you will:
 
 - Create an R object that also incorporates the metadata
@@ -62,6 +55,14 @@ Today, with that gene count table, you will:
 `Quarto Document` and save it inside the `week14` directory.
 
 ## Install and load R packages
+
+```{r, eval=FALSE}
+if (!require("BiocManager")) install.packages("BiocManager")
+if (!require("DESeq2")) BiocManager::install("DESeq2")
+if (!require("EnhancedVolcano")) BiocManager::install("EnhancedVolcano")
+if (!require("pheatmap")) install.packages("pheatmap")
+```
+
 ```{r warning: FALSE}
 library(tidyverse)          # Misc. data manipulation and plotting
 library(pheatmap)           # Heatmap plot
@@ -93,7 +94,7 @@ metadata_file <- here::here("data/metadata.tsv")
 
 ## Create a DESeq2 object
 
-Like in the *Culex* paper whose data we are working with,
+Like in the *Culex* [paper]([https://pmc.ncbi.nlm.nih.gov/articles/PMC12288828/) whose data we are working with,
 we will perform a Principal
 Component Analysis (PCA) and a Differential Expression (DE) analysis using the popular
 **DESeq2** package
