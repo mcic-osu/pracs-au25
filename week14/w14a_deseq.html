@@ -479,18 +479,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <hr>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"BiocManager"</span>)) <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"DESeq2"</span>)) BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"DESeq2"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"EnhancedVolcano"</span>)) BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"EnhancedVolcano"</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"pheatmap"</span>)) <span class="fu">install.packages</span>(<span class="st">"pheatmap"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <p><br></p>
 <section id="introduction" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
 <section id="overview-learning-goals" class="level3" data-number="1.1">
 <h3 data-number="1.1" class="anchored" data-anchor-id="overview-learning-goals"><span class="header-section-number">1.1</span> Overview &amp; learning goals</h3>
-<p>After running steps like read pre-processing, alignment, and quantification using the nf-core rnaseq workflow, or another method like running separate programs (Jelmer taught) , you will have a <strong>gene count table</strong>. Today, with that gene count table, you will:</p>
+<p>After running steps like read pre-processing, alignment, and quantification using the separate programs (like Jelmer taught) or using a nf-core rnaseq workflow, you will have a <strong>gene count table</strong>. Today, with that gene count table, you will:</p>
 <ul>
 <li>Create an R object that also incorporates the metadata</li>
 <li>Perform exploratory data analysis including a PCA</li>
@@ -509,6 +503,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="install-and-load-r-packages" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="install-and-load-r-packages"><span class="header-section-number">2</span> Install and load R packages</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"BiocManager"</span>)) <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"DESeq2"</span>)) BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"DESeq2"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"EnhancedVolcano"</span>)) BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"EnhancedVolcano"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"pheatmap"</span>)) <span class="fu">install.packages</span>(<span class="st">"pheatmap"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)          <span class="co"># Misc. data manipulation and plotting</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
@@ -699,7 +699,7 @@ The following objects are masked from 'package:matrixStats':
 </section>
 <section id="create-a-deseq2-object" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="create-a-deseq2-object"><span class="header-section-number">3</span> Create a DESeq2 object</h2>
-<p>Like in the <em>Culex</em> paper whose data we are working with, we will perform a Principal Component Analysis (PCA) and a Differential Expression (DE) analysis using the popular <strong>DESeq2</strong> package (<a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8">paper</a>, <a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">website</a>).</p>
+<p>Like in the <em>Culex</em> <a href="[https://pmc.ncbi.nlm.nih.gov/articles/PMC12288828/">paper</a> whose data we are working with, we will perform a Principal Component Analysis (PCA) and a Differential Expression (DE) analysis using the popular <strong>DESeq2</strong> package (<a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8">paper</a>, <a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">website</a>).</p>
 <p>The DESeq2 package has its own “object type” (a specific R format type) and before we can do anything else, we need to create a DESeq2 object from three components:</p>
 <ol type="1">
 <li><strong>Metadata</strong><br>
