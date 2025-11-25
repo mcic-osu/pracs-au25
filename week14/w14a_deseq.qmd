@@ -1,6 +1,6 @@
 ---
 title: "RNA-Seq count data analysis in R"
-subtitle: "Exploratory and differential expression analysis<br>_Week 14 lecture_"
+subtitle: "Week 14 -- lecture A"
 pagetitle: "w14a: RNA-Seq"
 date: 2025-11-22
 author:
@@ -15,20 +15,20 @@ author:
     email: poelstra.1@osu.edu
 editor_options: 
   chunk_output_type: console
+execute:
+  eval: true
 other-links:
   - text: "Week 14 overview"
     icon: book
     href: w14_overview.html
-  - text: "Week 14 exercises"
+  - text: "Week 14 Exercise"
     icon: pencil
     href: w14_exercises.html
-execute:
-  eval: true
 ---
 
 --------------------------------------------------------------------------------
 
-```{r, echo=FALSE, include=FALSE}
+```{r, eval=FALSE}
 if (!require("BiocManager")) install.packages("BiocManager")
 if (!require("DESeq2")) BiocManager::install("DESeq2")
 if (!require("EnhancedVolcano")) BiocManager::install("EnhancedVolcano")
@@ -42,7 +42,8 @@ if (!require("pheatmap")) install.packages("pheatmap")
 ### Overview & learning goals
 
 After running steps like read pre-processing, alignment, and quantification using the
-nf-core rnaseq workflow, or another method, you will have a **gene count table**.
+nf-core rnaseq workflow, or another method like running separate programs (Jelmer taught)
+, you will have a **gene count table**.
 Today, with that gene count table, you will:
 
 - Create an R object that also incorporates the metadata
@@ -53,20 +54,22 @@ Today, with that gene count table, you will:
 ### Setting up
 
 1. At <https://ondemand.osc.edu>,
-   start an RStudio session like in the previous lecture _LINK TBA_
-2. Switch to your `week11` RStudio Project ... TBA
-3. Open a new R Script and save it as ... TBA
+   start an RStudio session like in the previous lecture 
+   ([Starting an RStudio Server session at OSC](../week11/w11a_r-basics.html#Working-directory-and-RStudio-Projects)) and open your RStudio Project
+   
+  2. Open a new folder for `week14` by clicking the `New Folder` icon in the `Output` pane
+  3. Create a new Quarto document by  clicking `File` \> `New File` \>
+`Quarto Document` and save it inside the `week14` directory.
 
 ## Install and load R packages
-
-_TBA - installing part_
-
-```{r}
+```{r warning: FALSE}
 library(tidyverse)          # Misc. data manipulation and plotting
 library(pheatmap)           # Heatmap plot
 library(EnhancedVolcano)    # Volcano plot
 library(DESeq2)             # Differential expression analysis
+library(here)               # File referencing
 ```
+
 
 ### Set the input file paths
 
@@ -78,10 +81,8 @@ For the differential expression analysis, we have the following input files:
   Produced by the [nf-core rnaseq workflow](https://nf-co.re/rnaseq)
 
 ```{r, eval=FALSE}
-# NOTE: here I am providing the path to my gene count table,
-#       but if you ran the workflow to completion, you can use your own.
 # We'll save the paths to our input files for later use
-count_table_file <- "/fs/ess/PAS2880/jelmer/TBA/results/salmon.merged.gene_counts_length_scaled.tsv"
+count_table_file <- "/fs/ess/PAS2880/users/menuka/salmon.merged.gene_counts_length_scaled.tsv"
 metadata_file <- "../garrigos-data/meta/metadata.tsv"
 ```
 
@@ -228,6 +229,16 @@ of our count matrix?
 
 ```{r}
 dim(count_mat)
+```
+
+How many rows and columns are present in count_mat? What is the mean of rows in count_mat? Show the top six results.
+```{r}
+# sum of rows in matrix
+head(rowSums(count_mat))
+# sum of columns in matrix
+head(colSums(count_mat))
+# mean of rows in matrix
+head(rowMeans(count_mat))
 ```
 
 How many genes have total (= across all samples) counts that are non-zero?
@@ -960,7 +971,6 @@ saveRDS(dds, dds_file)
 ```
 
 ## In Closing
-
 Today, you have performed several steps in the analysis of gene counts that result from a
 typical RNA-seq workflow. Specifically, you have:
 
