@@ -44,9 +44,8 @@ Specifically, you will learn:
 - How these pipelines can be run with a single command,
   while they submit jobs to the Slurm scheduler at OSC.
 - The difference between general Nextflow options and pipeline-specific options
-  when running such a pipeline.
-- How to set up inputs and outputs for such a pipeline,
-  including the distinction between a final output dir and a "work dir".
+- How to set up inputs and outputs,
+  including the distinction between a final output dir and a "work dir"
 - How to monitor pipeline progress
 - How to restart a pipeline run using the `-resume` option
 - How to find and interpret the output files produced by the pipeline
@@ -77,24 +76,24 @@ have over DIY pipelines based on e.g. shell scripts.
 While you can use Nextflow to build your own workflows from scratch,
 we will here cover how to run an existing, community-developed Nextflow pipeline.
 
+I think this is well worth covering for a few reasons:
+
+- Pipelines are available for many types of omics data analysis,
+  so you may well be able to use one for your own research
+- Running such a pipeline is a bit different and more involved than running a
+  typical piece of bioinformatics software.
+  But when you know how to run one nf-core pipeline,
+  it will be relatively straightforward to run others as well.
+
 Recall from week 9 that the ["nf-core" initiative](https://nf-co.re/) (@ewels2020)
 has many pipelines available for various omics data analysis types,
 with the following most popular pipelines: 
 
 ![The 6 most popular nf-core pipelines as of Oct 19, 2025](../img/nfcore_pipelines_2025-10-19.png){fig-align="center" width="95%" .lightbox}
 
-If your research involves standard types of omics data analysis,
-you can likely use such a pipeline, which may save a lot of time and effort.
-Moreover, these pipelines are often well tested and maintained,
-so you can be sure that you are following best practices.
-
 Today, we will learn how to run a Nextflow/nf-core pipeline by running the
 [nf-core _rnaseq_](https://nf-co.re/rnaseq) pipeline on the @garrigós2025 RNA-Seq
 data set that we've been using throughout the course.
-I think this is well worth covering because running such a pipeline is a bit
-different and more involved than running a typical piece of bioinformatics software.
-Additionally, when you know how to run one nf-core pipeline,
-it will be relatively straightforward to run others as well.
 
 ### The nf-core _rnaseq_ pipeline
 
@@ -171,7 +170,7 @@ Here are some key aspects of running the nf-core _rnaseq_ pipeline
   we are better off also **submitting the main process as a batch job**,
   because this process can run for many hours.
 
-- Nextflow **distinguishes between a final output dir and a "work dir"**.
+- Nextflow **distinguishes between a final output dir and a "work dir" (`work`)**.
   All jobs will run and produce outputs in various sub-dirs of the _work dir_.
   After each process, only a selection of output files are copied from the work dir
   to the final output dir^[
@@ -224,38 +223,42 @@ Finally, check that Nextflow can be run by printing the version with `nextflow -
 
 <details><summary>Solution _(Click to expand)_</summary>
 
-- Find the available modules:
+- Find the available module(s):
 
-```bash
-module avail nextflow
-```
-```bash-out
---------------------------------------------------------------------------------
-  nextflow:
---------------------------------------------------------------------------------
-     Versions:
-        nextflow/24.10.4
-        nextflow/25.04.6
+  ```bash
+  module avail nextflow
+  ```
+  ```bash-out
+  --------------------------------------------------------------------------------
+    nextflow:
+  --------------------------------------------------------------------------------
+       Versions:
+          nextflow/24.10.4
+          nextflow/25.04.6
+  
+  --------------------------------------------------------------------------------
+    For detailed information about a specific "nextflow" package (including how to load the modules) use the module's full name.
+    Note that names that have a trailing (E) are extensions provided by other modules.
+    For example:
+  
+       $ module spider nextflow/25.04.6
+  ------------------------------------------------------------------------------
+  ```
 
---------------------------------------------------------------------------------
-  For detailed information about a specific "nextflow" package (including how to load the modules) use the module's full name.
-  Note that names that have a trailing (E) are extensions provided by other modules.
-  For example:
+- So, the most recent version is `nextflow/25.04.6` -- load it:
 
-     $ module spider nextflow/25.04.6
---------------------------------------------------------------------------------
-```
+  ```bash
+  module load nextflow/25.04.6
+  ```
+  
+- Check that Nextflow works by printing its version:
 
-- So, the most recent version is `nextflow/25.04.6`.
-  Load it and check the version:
-
-```bash
-module load nextflow/25.04.6
-nextflow -v
-```
-```bash-out
-nextflow version 25.04.6.5954
-```
+  ```bash
+  nextflow -v
+  ```
+  ```bash-out
+  nextflow version 25.04.6.5954
+  ```
 </details>
 :::
 
@@ -263,8 +266,8 @@ nextflow version 25.04.6.5954
 
 All nf-core pipelines can be test-run with a small test data set that is included
 with the pipeline.
-Let's perform such a test-run,
-also to become familiar with some basic syntax of the Nextflow command:
+Let's perform such a test-run to become familiar with the command syntax and
+the pipeline's progress log and outputs.
 
 ```bash
 mkdir testrun
@@ -281,8 +284,8 @@ nextflow run nf-core/rnaseq \
 Explanation of the command above:
 
 - The `nextflow` command has several subcommands,
-  and we use `run` to run a pipeline
-- We specify the pipeline to run as an argument to `nextflow run`, here:
+  and we use the `run` subcommand to run a pipeline
+- The pipeline to run is the argument to `nextflow run`, here:
   `nf-core/rnaseq`^[
   If we had wanted to run the _sarek_ pipeline, for example,
   we would use `nf-core/sarek` instead.]
@@ -293,7 +296,6 @@ Explanation of the command above:
   - `singularity` tells the pipeline to run software via Singularity containers
 - The `--outdir` option specifies the final output dir for the pipeline.
   
-
 <details><summary>{{< fa user-edit >}} In the above command, which are general Nextflow vs. pipeline-specific options? _(Click for the answer)_</summary>
 
 Recall that general Nextflow options have a single dash (`-`),
@@ -308,8 +310,8 @@ If you haven't done so already,
 execute the above `nextflow run` command to start the test run.
 Since you are running this directly in the terminal,
 logging output (standard out and standard error) will be printed to the screen.
-Here is the first bit of expected output --
-as you can see, all the inputs from the test dataset will be downloaded from GitHub:
+Here is the first bit of expected output
+(as you can see, all the inputs from the test dataset will be downloaded from GitHub):
 
 ```bash-out-solo
 Nextflow 25.10.2 is available - Please consider updating your version to it
@@ -353,15 +355,17 @@ Below is some of the output regarding the processes that the pipeline spawns, wh
 - Each `process >` line indicates a specific process (_step in the pipeline_) that is being run.
   - For some of these, it says `5 of 5` way on the right,
     which indicates that for this process,
-    multiple jobs are being run in parallel (e.g., one per sample).
-  - Other processes have `1 of 1`,
-    indicating that only a single job is run (e.g., for preparing the reference genome).
-  - In my example, one line says `retries: 2`,
-    indicating that this job failed twice but was retried and eventually succeeded.
+    multiple jobs are being run in parallel
+    (typically one per sample, and this is true for the majority of processes)
+  - Other processes have `1 of 1`, indicating that only a single job is run
+    (e.g., for preparing the reference genome)
+  - In my example output below, one line says `retries: 2`,
+    indicating that this job failed twice but was retried and eventually succeeded
   - The hexadecimal string at the start of each line (e.g., `[d2/97278b]`)
     is a unique identifier for (one of) that process' jobs.
     We'll get back to this later, as that string also identifies 
-    the `work` sub-dir where this job's files are stored^[
+    the location where this job is run and its input and output files are stored
+    within the `work` dir^[
     Note that when the same process is run multiple times in parallel,
     each instance will have a different hexadecimal code, but not all instances
     are shown -- this will be different when we run the pipeline on our data with
@@ -381,8 +385,8 @@ executor >  local (216)
 [07/5a941c] process > NFCORE_RNASEQ:PREPARE_GENOME:GTF_FILTER (genome.fasta)                                                             [100%] 1 of 1 ✔
 ```
 
-Here is some output related to the downloading of Singularity containers --
-by default these are downloaded to a `singularity` subdir of the `work` dir:
+Here is some output related to the downloading of Singularity containers
+(by default these are downloaded to a `singularity` subdir of the `work` dir):
 
 ```bash-out-solo
 Pulling Singularity image https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/52/52ccce28d2ab928ab862e25aae26314d69c8e38bd41ca9431c67ef05221348aa/data [cache /fs/ess/PAS2880/users/jelmer/week15/testrun/work/singularity/community-cr-prod.seqera.io-docker-registry-v2-blobs-sha256-52-52ccce28d2ab928ab862e25aae26314d69c8e38bd41ca9431c67ef05221348aa-data.img]
@@ -421,10 +425,9 @@ bbsplit  custom  fastqc  fq_lint  multiqc  pipeline_info  salmon  star_salmon  t
 ```
 
 We'll explore those outputs more for the run on the @garrigós2025 data.
-There is also a dir called `work` --
-by default, the location of Nextflow's "work dir" is `work` within your current
-working dir
-(from which you execute the `nextflow` command):
+The `work` dir is in this case in its default location, which is you current
+working dir (i.e, the dir from which you execute the `nextflow` command) --
+let's list its contents:
 
 ```bash
 ls work
@@ -443,14 +446,14 @@ it ran in (every individual job runs in its own dir).
 This can be handy for troubleshooting,
 or even just to take a closer look at what exactly the pipeline is running.
 
-I will take a look at the files for the last process, MultiQC,
-which had the following printed in the log when it finished:
+Say we want to look at the files for the last process, MultiQC,
+which had the following printed in the log:
 
 ```bash-out-solo
 [fb/68d030] process > NFCORE_RNASEQ:RNASEQ:MULTIQC (1) [100%] 1 of 1 ✔
 ```
 
-So, let's check the files in relevant dir in the work dir --
+We can check the files in that dir as follows --
 we'll use the `-a` option to `ls` so hidden files are also listed,
 some of which are of interest:
 
@@ -550,7 +553,7 @@ If we'd changed an input file, only the processes affected by that change
 
 ## Preparation for the run
 
-For the pipeline run with our real data, we need to start with some prep:
+For the pipeline run with the @garrigós2025 data, we need to start with some prep:
 
 1. Create a "**sample sheet**" to tell the pipeline about our input FASTQ files
 2. Create a small "**config file**" so Nextflow knows how to submit Slurm batch
@@ -646,19 +649,77 @@ head -n 5 metadata/nfc-samplesheet.csv
 ```
 ```bash-out
 sample,fastq_1,fastq_2,strandedness
-ERR10802863,../../garrigos-data/fastq/ERR10802863_R1.fastq.gz,../../garrigos-data/fastq/ERR10802863_R2.fastq.gz,forward
-ERR10802864,../../garrigos-data/fastq/ERR10802864_R1.fastq.gz,../../garrigos-data/fastq/ERR10802864_R2.fastq.gz,forward
-ERR10802865,../../garrigos-data/fastq/ERR10802865_R1.fastq.gz,../../garrigos-data/fastq/ERR10802865_R2.fastq.gz,forward
-ERR10802866,../../garrigos-data/fastq/ERR10802866_R1.fastq.gz,../../garrigos-data/fastq/ERR10802866_R2.fastq.gz,forward
+ERR10802863,../garrigos-data/fastq/ERR10802863_R1.fastq.gz,../garrigos-data/fastq/ERR10802863_R2.fastq.gz,forward
+ERR10802864,../garrigos-data/fastq/ERR10802864_R1.fastq.gz,../garrigos-data/fastq/ERR10802864_R2.fastq.gz,forward
+ERR10802865,../garrigos-data/fastq/ERR10802865_R1.fastq.gz,../garrigos-data/fastq/ERR10802865_R2.fastq.gz,forward
+ERR10802866,../garrigos-data/fastq/ERR10802866_R1.fastq.gz,../garrigos-data/fastq/ERR10802866_R2.fastq.gz,forward
 ```
+
+::: {.callout-note collapse="true"}
+#### Creating the sample sheet with shell commands instead _(Click to expand)_
+
+Many nf-core pipelines require similar sample sheets,
+and there isn't always a helper script available.
+While you could also fairly easily create such a file manually in a text editor,
+that would be tedious and error-prone for many samples.
+
+Therefore, it may also be useful to know how to create such a file with shell commands.
+While this goes some way beyond the shell commands we have previously covered
+in this course, here is one way to do that:
+
+```bash
+# A) Define the file name and create the header line
+echo "sample,fastq_1,fastq_2,strandedness" > metadata/nfc-samplesheet.csv
+  
+# B) Add a row for each sample based on the file names
+ls ../garrigos-data/fastq/*fastq.gz |
+    paste -d, - - |
+    sed -E 's/$/,forward/' |
+    sed -E 's@.*/(.*)_R1@\1,&@' >> metadata/nfc-samplesheet.csv
+```
+
+Here is an explanation of the last command:
+
+- The `ls` command will spit out a list of all FASTQ files that includes the dir name.
+
+- `paste - -` will paste that FASTQ files side-by-side in two columns ---
+  because there are 2 FASTQ files per sample, and they are automatically correctly
+  ordered due to their file names, this will create one row per sample with the
+  R1 and R2 FASTQ files next to each other.
+  The `-d,` option to `paste` will use a comma instead of a Tab to delimit columns.
+
+- The first `sed` command `'s/$/,forward/'` will simply add `,forward`
+  at the end (`$`) of each line to indicate the strandedness.
+
+- The second `sed` command, `'s@.*/(.*)_R1@\1,&@'`:
+  - Adds the sample ID column by copying that part from the R1 FASTQ file name
+  - Requires `E` because it uses "extended" regular expressions
+  - This uses `s@<search>@replace@` with `@` instead of `/`, because there is a `/` in our search pattern
+  - In the search pattern (`.*/(.*)_R1`), the sample ID is captured with `(.*)`
+  - In the replace section (`\1,&`), the captured sample ID is "recalled" with `\1`,
+    then a comma is added, and finally the _full_ matched search pattern
+    (i.e., the path to the R1 file) with `&`.
+
+- The output is _appended_ (`>>`) to the samplesheet because we need to keep the
+  header line that was already in it.
+:::
 
 ### Create a configuration file
 
-To tell the pipeline how to submit Slurm batch jobs for us,
+One of the strengths of Nextflow/nf-core pipelines is that they can be run
+on a wide variety of compute infrastructures,
+from a laptop to HPC clusters and cloud computing.
+Our test-run used the simplest scenario, running everything "locally" on a single node.
+However, for our real data run,
+we want to have the pipeline submit Slurm batch jobs so it will effciently
+run in parallel across multiple nodes.
+
+To tell the pipeline to submit Slurm batch jobs for us,
 we have to use a [configuration (config) file](https://www.nextflow.io/docs/latest/config.html).
 There are multiple ways of storing this file and telling Nextflow about it,
 but we'll simply create a file `nextflow.config` in the dir from which we submit the
-`nextflow run` command: Nextflow will automatically detect and process such a file.
+`nextflow run` command:
+Nextflow will automatically detect and process such a file.
 
 - Create the config file:
 
@@ -666,11 +727,12 @@ but we'll simply create a file `nextflow.config` in the dir from which we submit
   touch nextflow.config
   ```
 
-- Open the newly created `nextflow.config` file in the VS Code editor
-  and paste the following into it --
-  we'll keep this file as simple as possible,
-  specifying only our "executor" program (Slurm) and the OSC project to be used
-  for Slurm job submissions:
+- Since the pipeline has many good default settings for (Slurm) batch jobs,
+  we can keep this config file very simple,
+  specifying only our "executor" program (Slurm)
+  and the OSC project to be used for Slurm job submissions.
+  Open the newly created `nextflow.config` file in the VS Code editor
+  and paste the following into it:
 
   ```bash-out-solo
   process.executor='slurm'
@@ -680,13 +742,17 @@ but we'll simply create a file `nextflow.config` in the dir from which we submit
 ## Write a shell script to run the pipeline
 
 As mentioned above, for this larger pipeline run,
-we will submit the `nextflow run` command as a Slurm batch job via a shell script.
+we will also submit the `nextflow run` command _itself_ as a Slurm batch job via
+a shell script.
+(So, there are two "layers" of batch jobs: the main pipeline process for which
+we submit a batch job ourself, and the individual jobs that Nextflow spawns.)
 Let's go through the key parts of this shell script.
 
 ### Processing arguments passed to the script
 
 As we've often done with shell scripts to run bioinformatics tools,
-the inputs and outputs will be passed as arguments to the shell script:
+we'll keep the shell script flexible by having it accepts arguments that represent
+the inputs and outputs of the pipeline:
 
 - Input 1: The sample sheet
 - Input 2: The FASTA reference genome assembly file
@@ -717,18 +783,18 @@ nextflow run nf-core/rnaseq \
     -r 3.22.0 \
     -profile singularity \
     -resume \
-    -work-dir "$workdir" \
     -ansi-log false \
+    -work-dir "$workdir" \
 ```
 
 - Like in the test run above, our command starts with `nextflow run` followed
   by the pipeline name and version
-- The `-profile` will now simply be `singularity`
+- The `-profile` will now simply be `singularity` (i.e. omitting `test`)
 - It's a good idea to by default use the `-resume` option,
   even if this option won't make any difference when we run the pipeline for the first time^[
   Nextflow will even give a warning along these lines, but this is not a problem.]
 - We set the `-work-dir` to a dir within our project's scratch space
-- We use the `-ansi-log false` option to change the logging format from what we
+- The `-ansi-log false` option changes the logging format from what we
   saw in the test-run to a more basic format that works much better with Slurm log files^[
   In this format, there is a separate line for each job rather than grouping jobs
   by process.].
@@ -736,16 +802,16 @@ nextflow run nf-core/rnaseq \
 Next, we'll add the **pipeline-specific options**,
 starting with several _required_ options
 (see the [pipeline's documentation](https://nf-co.re/rnaseq/3.14.0/docs/usage)),
-which represent the inputs and outputs discussed above:
+which represent the inputs and outputs discussed above -- the paths to:
 
-- **`--input`**: The path to the "sample sheet"
-- **`--fasta`**: The path to the reference genome assembly FASTA file
-- **`--gtf`**: The path to the reference genome annotation GTF file
-- **`--outdir`**: The path to the output dir
+- **`--input`**: the "sample sheet"
+- **`--fasta`**: the reference genome assembly FASTA file
+- **`--gtf`**: the reference genome annotation GTF file
+- **`--outdir`**: the output dir
 
 This pipeline has different options for e.g. alignment and quantification.
 We will stick close to the defaults,
-which includes alignment with `STAR` and quantification with `Salmon`,
+which includes read alignment with `STAR` and gene-level quantification with `Salmon`,
 with one exception:
 we want to remove reads that originate from ribosomal RNA
 (this removal step is skipped by default).
@@ -760,15 +826,15 @@ Take a look at the
 2. Try to find the option to turn on removal of rRNA with SortMeRNA.
 
 <details><summary> _Click for the solution_ </summary>
-The option we want is **`--remove_ribo_rna`**.
+
+The option you want is **`--remove_ribo_rna`**.
+
 </details>
 :::
 
-<hr style="height:1pt; visibility:hidden;" />
-
 #### The final command
 
-With all above-mentioned options, our final `nextflow run` command is:
+With all above-mentioned options, the final `nextflow run` command is:
 
 ```bash
 # [Partial shell script code, don't copy or run]
@@ -776,8 +842,8 @@ nextflow run nf-core/rnaseq \
     -r 3.22.0 \
     -profile singularity \
     -resume \
-    -work-dir "$workdir" \
     -ansi-log false \
+    -work-dir "$workdir" \
     --input "$samplesheet" \
     --fasta "$fasta" \
     --gtf "$gtf" \
@@ -882,9 +948,13 @@ export NXF_SINGULARITY_CACHEDIR=/fs/scratch/PAS2880/containers
 
 ## Run the pipeline
 
+Now that the shell script is ready,
+you can run the pipeline on the @garrigós2025 data!
+You will add the code to do so the `README.md` file we created above.
+
 ### Define variables to pass the the shell script
 
-Next, we will define variables with the arguments needed to run the script:
+First, define variables with the arguments needed to run the script:
 
 ```bash
 # [Paste this into README.md and then run it in the terminal]
@@ -898,7 +968,7 @@ fasta=../garrigos-data/ref/GCF_016801865.2_TS_CPP_V2_genomic.fna
 gtf=../garrigos-data/ref/GCF_016801865.2.gtf
 ```
 
-Run the above lines in your terminal to define the variables,
+Run the above lines in your terminal,
 then check that the input files are present at the specified paths:
 
 ```bash
@@ -942,8 +1012,8 @@ Sun Nov 30 08:45:15 2025
 In the example output above, the only running job is the one we directly submitted,
 i.e. the main Nextflow process.
 
-You might catch the pipeline when there are many more running jobs --
-below all the jobs with (partial) name `nf-NFCOR` are jobs submitted by Nextflow:
+If you try `squeue` again later, you should see Nextflow-submitted jobs --
+below, all the jobs with (partial) name `nf-NFCOR` are jobs submitted by Nextflow:
 
 ```bash
 squeue -u $USER -l
@@ -990,7 +1060,7 @@ You can also keep an eye on the pipeline's progress, and see if there are any er
 by checking the Slurm log file -- the top of the file should look like this:
 
 ```bash
-# (We need the -R option to display colors properly)
+# (We need the -R option to 'less' to display colors properly)
 less -R slurm-nfc_rnaseq*
 ```
 ```bash-out
@@ -1098,12 +1168,12 @@ Sun Nov 30 08:57:49 AM EST 2025
 ```
 
 ::: exercise
-#### {{< fa user-edit >}} Exercise: check a `work` dir
+#### {{< fa user-edit >}} Exercise: check the contents of a `work` dir
 Let's practice checking out a Nextflow `work` dir.
 As mentioned before, this can be useful for debugging failed jobs,
 or simply to better understand what the pipeline is running.
 
-Move into the `work` dir for the `SALMON_QUANT` job for sample `ERR10802867`.
+First, move into the `work` dir for the `SALMON_QUANT` job for sample `ERR10802867`.
 
 <details><summary> _Click for the solution_ </summary>
   
@@ -1129,8 +1199,8 @@ Move into the `work` dir for the `SALMON_QUANT` job for sample `ERR10802867`.
   ```
 </details>
   
-Take a look at the files that are present in this dir,
-then open and skim through the `.command.log` file which is Salmon's log file.
+Then, take a look at the files in this dir,
+and open and skim through Salmon's log in the `.command.log` file.
    
 <details><summary> _Click for the solution_ </summary>
   
@@ -1183,16 +1253,35 @@ then open and skim through the `.command.log` file which is Salmon's log file.
 
 ::: exercise
 #### {{< fa user-edit >}} Exercise: rerun the pipeline
-Remove the folder with the final outputs and resubmit the script.
+Remove the entire folder with the final outputs and resubmit the script.
 What do you expect to happen?
 
 <details><summary> _Click for the solution_ </summary>
 
-First off, the only potential reason that any processed need to be rerun is that
+```bash
+# Remove the folder
+rm -r results/nfc-rnaseq
+
+# Resubmit the script in the same way as before
+sbatch scripts/nfc-rnaseq.sh "$samplesheet" "$fasta" "$gtf" "$outdir" "$workdir"
+```
+
+First off, recall that we used the `-resume` option when running the pipeline.
+This means that Nextflow will check which processes have already been run
+(by checking the contents of the `work` dir),
+and will only rerun those processes for which the outputs are missing.
+
+In this case, since we only removed the final output dir,
+the only potential reason that any processes need to be rerun is that
 the outputs have been removed.
 Luckily, because all the outputs are also present in the `work` dir
 (which wasn't removed), all that Nextflow needs to do is (re)copy the final outputs
 from the `work` dir to the final output dir.
+
+Therefore, the pipeline should finish very quickly this time,
+and you should see lots of `cached` messages in the Slurm log file,
+indicating that the outputs were already present in the `work` dir.
+
 </details>
 :::
 
@@ -1227,8 +1316,8 @@ The two most important outputs are:
   
 - The **gene count table**
   (`<outdir>/star_salmon/salmon.merged.gene_counts_length_scaled.tsv`):
-  This is what you use for downstream analysis such as differential expression
-  analysis -- which you already did last week!
+  This is used for downstream analysis such as differential expression analysis --
+  which you already did last week!
 
 ### The MultiQC report
 
@@ -1237,7 +1326,7 @@ download the file
 (find it in the VS Code file browser on the left,
 right-click on it, and select `Download...`) and then open it on your own computer
 (alternatively, open the
-**[copy of the MultiQC report on this website](../img/multiqc_report_nfc-rnaseq.html)**
+**[copy of the MultiQC report on this website](../img/multiqc_report_nfc-rnaseq.html)**).
 There's a lot of information in the report, so we'll just highlight a few things here.
 
 The **General Statistics** table (the first section) is useful but also a bit tricky --
@@ -1245,16 +1334,13 @@ some notes:
 
 - Most of the table's content is also present in later graphs,
   but the table allows for comparisons across metrics.
-
 - The `%rRNA` (% of reads identified as rRNA and removed by SortMeRNA)
   can only be found in this table.
-  
-- Many columns are present and it can be usefult to click **"Configure Columns"**
+- Many columns are shown and it can be useful to click **"Configure Columns"**
   and subset the table to only the columns you care about.
   In particular, it's best to _hide the columns with statistics from Samtools_,
   which can be confusing if not downright misleading: in the "Configure Columns"
   dialog box, uncheck all boxes for stats with Samtools in their name.
-  
 - Unfortunately, there are multiple rows per sample
   (4 when the default columns are shown), in part because some stats are
   for R1 and R2 files separately, while others are for each sample as a whole.
@@ -1280,22 +1366,12 @@ e.g. separately showing UTRs.].
 The **STAR** > **Alignment Scores** plot shows, for each sample,
 the percentage of reads that was mapped.
 Note that "Mapped to multiple loci" reads _are_ also included in the final counts,
-and that "Unmapped: too short" merely means unmapped, really, and not that the
-reads were too short.
+and that "Unmapped: too short" really means unmapped rather than that the reads
+were too short^[It says "too short" because the aligned part of the read was too short].
 
 ![This is a pretty good result, with 80-90% of reads mapped.](../img/multiqc_star.png){fig-align="center" width="90%"}
 
 <hr style="height:1pt; visibility:hidden;" />
-
-The **Qualimap** > **Gene Coverage Profile** plot shows average read-depth across
-the length of genes/transcripts (averaged across all genes),
-which helps to assess the amount of RNA degradation.
-For poly-A selected libraries, RNA molecules "begin" at the 3' end
-(right-hand side of the graph), so the more degradation there is,
-the more you expect a higher read-depth towards the 3' end relative to that at the 5' end.
-(Though note that sharp decreases at the _very_ end on each side are expected.)
-
-![There depth at ~20% (near the 5' end) is clearly lower than at ~80% (near the 3' end),<br>indicating some RNA degradation.](../img/multiqc_gene-coverage.png){fig-align="center" width="85%"}
 
 The **RSeqQC** > **Infer experiment** (library strandedness) plot. 
 If your library is:
@@ -1306,11 +1382,24 @@ If your library is:
 
 ![This libary is clearly forward-stranded, as we indicated in our sample sheet.](../img/multiqc_strandedness.png){fig-align="center" width="85%"}
 
+Finally, the section **nf-core/rnaseq Software Versions** way at the bottom
+lists the version of all programs used by the pipeline!
+
+::: {.callout-tip collapse="true"}
+#### Two more plots from the MultiQC report _(Click to expand)_
+
+The **Qualimap** > **Gene Coverage Profile** plot shows average read-depth across
+the length of genes/transcripts (averaged across all genes),
+which helps to assess the amount of RNA degradation.
+For poly-A selected libraries, RNA molecules "begin" at the 3' end
+(right-hand side of the graph), so the more degradation there is,
+the more you expect a higher read-depth towards the 3' end relative to that at the 5' end.
+
+![Here, the read depth at ~20% (near the 5' end) is clearly lower than at ~80% (near the 3' end), indicating some RNA degradation. Note that the sharp decreases at the _very_ end on each side are expected and do not indicate RNA degradation.](../img/multiqc_gene-coverage.png){fig-align="center" width="85%"}
+
 The **STAR_SALMON DESeq2 PCA** plot is from a Principal Component Analysis (PCA)
 run on the final gene count table,
 showing overall patterns of gene expression similarity among samples.
 
 ![The samples form two distinct groups along PC1.](../img/multiqc_pca.png){fig-align="center" width="80%"}
-
-Finally, the section **nf-core/rnaseq Software Versions** way at the bottom
-lists the version of all programs used by the pipeline!
+:::
