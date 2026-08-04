@@ -7,11 +7,11 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-1092c56c6cadf2eb47b1bc8063ab382a.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-aced932c6eb97d642153b8e218288f9f.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.6.40">
+  <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Jelmer Poelstra">
   <meta name="dcterms.date" content="2025-09-05">
@@ -22,10 +22,16 @@
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -34,8 +40,9 @@
       vertical-align: middle;
     }
     /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -46,7 +53,7 @@
     }
     @media print {
     pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
     }
     pre.numberSource code
       { counter-reset: source-line 0; }
@@ -101,7 +108,6 @@
     div.csl-bib-body { }
     div.csl-entry {
       clear: both;
-      margin-bottom: 0em;
     }
     .hanging-indent div.csl-entry {
       margin-left:2em;
@@ -118,7 +124,7 @@
     div.csl-indent {
       margin-left: 2em;
     }  </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-fb88a47fb37db585264132e6c4198fc7.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-b9721d91b523d0f33f8fb346625b84ea.css">
   <link rel="stylesheet" href="../slides.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -225,7 +231,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Jelmer Poelstra 
+Jelmer Poelstra
 </div>
         <p class="quarto-title-affiliation">
             CFAES Bioinformatics Core, OSU
@@ -282,10 +288,10 @@ A <strong>(genome) annotation</strong> format: table with information such as co
 <h2>FASTA files</h2>
 <p>FASTA files contain one or more DNA or amino acid sequences, with no limits on the number of sequences or the sequence lengths.</p>
 <p>The following example FASTA file contains two entries:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a></a><span class="op">&gt;</span>unique_sequence_ID <span class="ex">Optional</span> description</span>
-<span id="cb1-2"><a></a><span class="ex">ATTCATTAAAGCAGTTTATTGGCTTAATGTACATCAGTGAAATCATAAATGCTAAAAA</span></span>
-<span id="cb1-3"><a></a><span class="op">&gt;</span>unique_sequence_ID2</span>
-<span id="cb1-4"><a></a><span class="ex">ATTCATTAAAGCAGTTTATTGGCTTAATGTACATCAGTGAAATCATAAATGCTAAATG</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a aria-label="1"></a><span class="op">&gt;</span>unique_sequence_ID <span class="ex">Optional</span> description</span>
+<span id="cb1-2"><a aria-label="2"></a><span class="ex">ATTCATTAAAGCAGTTTATTGGCTTAATGTACATCAGTGAAATCATAAATGCTAAAAA</span></span>
+<span id="cb1-3"><a aria-label="3"></a><span class="op">&gt;</span>unique_sequence_ID2</span>
+<span id="cb1-4"><a aria-label="4"></a><span class="ex">ATTCATTAAAGCAGTTTATTGGCTTAATGTACATCAGTGAAATCATAAATGCTAAATG</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <hr style="height:1pt; visibility:hidden;">
 <p>Each entry contains a <strong>header</strong> and the <strong>sequence</strong> itself, where:</p>
@@ -465,11 +471,11 @@ Reads are normally “demultiplexed” into separate files for each sample.</p><
 </ul>
 <div class="fragment">
 <p>Therefore, having paired-end FASTQ files for 2 samples usually looks something like this:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a></a><span class="co"># (The FASTQ file extension is most often '.fastq' but sometimes '.fq')</span></span>
-<span id="cb2-2"><a></a><span class="ex">sample1_R1.fastq</span></span>
-<span id="cb2-3"><a></a><span class="ex">sample1_R2.fastq</span></span>
-<span id="cb2-4"><a></a><span class="ex">sample2_R1.fastq</span></span>
-<span id="cb2-5"><a></a><span class="ex">sample2_R2.fastq</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a aria-label="1"></a><span class="co"># (The FASTQ file extension is most often '.fastq' but sometimes '.fq')</span></span>
+<span id="cb2-2"><a aria-label="2"></a><span class="ex">sample1_R1.fastq</span></span>
+<span id="cb2-3"><a aria-label="3"></a><span class="ex">sample1_R2.fastq</span></span>
+<span id="cb2-4"><a aria-label="4"></a><span class="ex">sample2_R1.fastq</span></span>
+<span id="cb2-5"><a aria-label="5"></a><span class="ex">sample2_R2.fastq</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="gtfgff-files" class="slide level2">
@@ -481,11 +487,11 @@ Reads are normally “demultiplexed” into separate files for each sample.</p><
 </ul>
 <div class="fragment">
 <p>After a metadata header, the tabular part looks like this (column names added for clarity):</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a></a><span class="co">#seqname      source  feature     start   end     score  strand  frame    attributes</span></span>
-<span id="cb3-2"><a></a><span class="ex">NC_068937.1</span>   Gnomon  gene        2046    110808  .       +       .       gene_id <span class="st">"LOC120427725"</span><span class="kw">;</span> <span class="ex">transcript_id</span> <span class="st">""</span><span class="kw">;</span> <span class="ex">db_xref</span> <span class="st">"GeneID:120427725"</span><span class="kw">;</span> <span class="ex">description</span> <span class="st">"homeotic protein deformed"</span><span class="kw">;</span> <span class="ex">gbkey</span> <span class="st">"Gene"</span><span class="kw">;</span> <span class="ex">gene</span> <span class="st">"LOC120427725"</span><span class="kw">;</span> <span class="ex">gene_biotype</span> <span class="st">"protein_coding"</span><span class="kw">;</span> </span>
-<span id="cb3-3"><a></a><span class="ex">NC_068937.1</span>   Gnomon  transcript  2046    110808  .       +       .       gene_id <span class="st">"LOC120427725"</span><span class="kw">;</span> <span class="ex">transcript_id</span> <span class="st">"XM_052707445.1"</span><span class="kw">;</span> <span class="ex">db_xref</span> <span class="st">"GeneID:120427725"</span><span class="kw">;</span> <span class="ex">gbkey</span> <span class="st">"mRNA"</span><span class="kw">;</span> <span class="ex">gene</span> <span class="st">"LOC120427725"</span><span class="kw">;</span> <span class="ex">model_evidence</span> <span class="st">"Supporting evidence includes similarity to: 25 Proteins"</span><span class="kw">;</span> <span class="ex">product</span> <span class="st">"homeotic protein deformed, transcript variant X3"</span><span class="kw">;</span> <span class="ex">transcript_biotype</span> <span class="st">"mRNA"</span><span class="kw">;</span> </span>
-<span id="cb3-4"><a></a><span class="ex">NC_068937.1</span>   Gnomon  exon        2046    2531    .       +       .       gene_id <span class="st">"LOC120427725"</span><span class="kw">;</span> <span class="ex">transcript_id</span> <span class="st">"XM_052707445.1"</span><span class="kw">;</span> <span class="ex">db_xref</span> <span class="st">"GeneID:120427725"</span><span class="kw">;</span> <span class="ex">gene</span> <span class="st">"LOC120427725"</span><span class="kw">;</span> <span class="ex">model_evidence</span> <span class="st">"Supporting evidence includes similarity to: 25 Proteins"</span><span class="kw">;</span> <span class="ex">product</span> <span class="st">"homeotic protein deformed, transcript variant X3"</span><span class="kw">;</span> <span class="ex">transcript_biotype</span> <span class="st">"mRNA"</span><span class="kw">;</span> <span class="ex">exon_number</span> <span class="st">"1"</span><span class="kw">;</span> </span>
-<span id="cb3-5"><a></a><span class="ex">NC_068937.1</span>   Gnomon  exon        52113   52136   .       +       .       gene_id <span class="st">"LOC120427725"</span><span class="kw">;</span> <span class="ex">transcript_id</span> <span class="st">"XM_052707445.1"</span><span class="kw">;</span> <span class="ex">db_xref</span> <span class="st">"GeneID:120427725"</span><span class="kw">;</span> <span class="ex">gene</span> <span class="st">"LOC120427725"</span><span class="kw">;</span> <span class="ex">model_evidence</span> <span class="st">"Supporting evidence includes similarity to: 25 Proteins"</span><span class="kw">;</span> <span class="ex">product</span> <span class="st">"homeotic protein deformed, transcript variant X3"</span><span class="kw">;</span> <span class="ex">transcript_biotype</span> <span class="st">"mRNA"</span><span class="kw">;</span> <span class="ex">exon_number</span> <span class="st">"2"</span><span class="kw">;</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a aria-label="1"></a><span class="co">#seqname      source  feature     start   end     score  strand  frame    attributes</span></span>
+<span id="cb3-2"><a aria-label="2"></a><span class="ex">NC_068937.1</span>   Gnomon  gene        2046    110808  .       +       .       gene_id <span class="st">"LOC120427725"</span><span class="kw">;</span> <span class="ex">transcript_id</span> <span class="st">""</span><span class="kw">;</span> <span class="ex">db_xref</span> <span class="st">"GeneID:120427725"</span><span class="kw">;</span> <span class="ex">description</span> <span class="st">"homeotic protein deformed"</span><span class="kw">;</span> <span class="ex">gbkey</span> <span class="st">"Gene"</span><span class="kw">;</span> <span class="ex">gene</span> <span class="st">"LOC120427725"</span><span class="kw">;</span> <span class="ex">gene_biotype</span> <span class="st">"protein_coding"</span><span class="kw">;</span> </span>
+<span id="cb3-3"><a aria-label="3"></a><span class="ex">NC_068937.1</span>   Gnomon  transcript  2046    110808  .       +       .       gene_id <span class="st">"LOC120427725"</span><span class="kw">;</span> <span class="ex">transcript_id</span> <span class="st">"XM_052707445.1"</span><span class="kw">;</span> <span class="ex">db_xref</span> <span class="st">"GeneID:120427725"</span><span class="kw">;</span> <span class="ex">gbkey</span> <span class="st">"mRNA"</span><span class="kw">;</span> <span class="ex">gene</span> <span class="st">"LOC120427725"</span><span class="kw">;</span> <span class="ex">model_evidence</span> <span class="st">"Supporting evidence includes similarity to: 25 Proteins"</span><span class="kw">;</span> <span class="ex">product</span> <span class="st">"homeotic protein deformed, transcript variant X3"</span><span class="kw">;</span> <span class="ex">transcript_biotype</span> <span class="st">"mRNA"</span><span class="kw">;</span> </span>
+<span id="cb3-4"><a aria-label="4"></a><span class="ex">NC_068937.1</span>   Gnomon  exon        2046    2531    .       +       .       gene_id <span class="st">"LOC120427725"</span><span class="kw">;</span> <span class="ex">transcript_id</span> <span class="st">"XM_052707445.1"</span><span class="kw">;</span> <span class="ex">db_xref</span> <span class="st">"GeneID:120427725"</span><span class="kw">;</span> <span class="ex">gene</span> <span class="st">"LOC120427725"</span><span class="kw">;</span> <span class="ex">model_evidence</span> <span class="st">"Supporting evidence includes similarity to: 25 Proteins"</span><span class="kw">;</span> <span class="ex">product</span> <span class="st">"homeotic protein deformed, transcript variant X3"</span><span class="kw">;</span> <span class="ex">transcript_biotype</span> <span class="st">"mRNA"</span><span class="kw">;</span> <span class="ex">exon_number</span> <span class="st">"1"</span><span class="kw">;</span> </span>
+<span id="cb3-5"><a aria-label="5"></a><span class="ex">NC_068937.1</span>   Gnomon  exon        52113   52136   .       +       .       gene_id <span class="st">"LOC120427725"</span><span class="kw">;</span> <span class="ex">transcript_id</span> <span class="st">"XM_052707445.1"</span><span class="kw">;</span> <span class="ex">db_xref</span> <span class="st">"GeneID:120427725"</span><span class="kw">;</span> <span class="ex">gene</span> <span class="st">"LOC120427725"</span><span class="kw">;</span> <span class="ex">model_evidence</span> <span class="st">"Supporting evidence includes similarity to: 25 Proteins"</span><span class="kw">;</span> <span class="ex">product</span> <span class="st">"homeotic protein deformed, transcript variant X3"</span><span class="kw">;</span> <span class="ex">transcript_biotype</span> <span class="st">"mRNA"</span><span class="kw">;</span> <span class="ex">exon_number</span> <span class="st">"2"</span><span class="kw">;</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <hr style="height:1pt; visibility:hidden;">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -615,9 +621,9 @@ Reads are normally “demultiplexed” into separate files for each sample.</p><
 <h2>References</h2>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-garrigós2025" class="csl-entry" role="listitem">
-Garrigós, Marta, Guillem Ylla, Josué Martínez-de la Puente, Jordi Figuerola, and María José Ruiz-López. 2025. <span>“Two Avian <em>Plasmodium</em> Species Trigger Different Transcriptional Responses on Their Vector <em>Culex <span>p</span>ipiens</em>.”</span> <em>Molecular Ecology</em> 34 (15): e17240. <a href="https://doi.org/10.1111/mec.17240">https://doi.org/10.1111/mec.17240</a>.
+Garrigós, Marta, Guillem Ylla, Josué Martínez-de la Puente, Jordi Figuerola, and María José Ruiz-López. 2025. <span>“Two Avian <em>Plasmodium</em> Species Trigger Different Transcriptional Responses on Their Vector <em>Culex <span class="nocase">p</span>ipiens</em>.”</span> <em>Molecular Ecology</em> 34 (15): e17240. <a href="https://doi.org/10.1111/mec.17240">https://doi.org/10.1111/mec.17240</a>.
 </div>
 </div>
 </section></section>
@@ -625,7 +631,7 @@ Garrigós, Marta, Guillem Ylla, Josué Martínez-de la Puente, Jordi Figuerola, 
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="../img/CFAES-Horiz-RGBHEX.svg" class="slide-logo"></p>
 <div class="footer footer-default">
-<p><a href="https://mcic-osu.github.io/pracs-au25">~ PRACS-AU25 ~</a></p>
+<p><a href="https://cfaes-bioinfo.github.io/pracs-au25/">~ PRACS-AU25 ~</a></p>
 </div>
 </div></div>
 
@@ -813,7 +819,7 @@ Garrigós, Marta, Guillem Ylla, Josué Martínez-de la Puente, Jordi Figuerola, 
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -840,190 +846,173 @@ Garrigós, Marta, Guillem Ylla, Josué Martínez-de la Puente, Jordi Figuerola, 
       });
     </script>
     <script id="quarto-html-after-body" type="application/javascript">
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-      const toggleBodyColorMode = (bsSheetEl) => {
-        const mode = bsSheetEl.getAttribute("data-mode");
-        const bodyEl = window.document.querySelector("body");
-        if (mode === "dark") {
-          bodyEl.classList.add("quarto-dark");
-          bodyEl.classList.remove("quarto-light");
-        } else {
-          bodyEl.classList.add("quarto-light");
-          bodyEl.classList.remove("quarto-dark");
-        }
-      }
-      const toggleBodyColorPrimary = () => {
-        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-        if (bsSheetEl) {
-          toggleBodyColorMode(bsSheetEl);
-        }
-      }
-      toggleBodyColorPrimary();  
-      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-      tabsets.forEach(function(tabset) {
-        const tabby = new Tabby('#' + tabset.id);
-      });
-      const isCodeAnnotation = (el) => {
-        for (const clz of el.classList) {
-          if (clz.startsWith('code-annotation-')) {                     
-            return true;
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
           }
+          return false;
         }
-        return false;
-      }
-      const onCopySuccess = function(e) {
-        // button target
-        const button = e.trigger;
-        // don't keep focus
-        button.blur();
-        // flash "checked"
-        button.classList.add('code-copy-button-checked');
-        var currentTitle = button.getAttribute("title");
-        button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
-        setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
           }
-          button.setAttribute("title", currentTitle);
-          button.classList.remove('code-copy-button-checked');
-        }, 1000);
-        // clear code selection
-        e.clearSelection();
-      }
-      const getTextToCopy = function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
           for (const childEl of codeEl.children) {
             if (isCodeAnnotation(childEl)) {
               childEl.remove();
             }
           }
           return codeEl.innerText;
-      }
-      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-        text: getTextToCopy
-      });
-      clipboard.on('success', onCopySuccess);
-      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-          text: getTextToCopy,
-          container: window.document.getElementById('quarto-embedded-source-code-modal')
-        });
-        clipboardModal.on('success', onCopySuccess);
-      }
-        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-        var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp("https:\/\/mcic-osu\.github\.io\/pracs-au25");
-        var isInternal = (href) => {
-            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
         }
-        // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-        for (var i=0; i<links.length; i++) {
-          const link = links[i];
-          if (!isInternal(link.href)) {
-            // undo the damage that might have been done by quarto-nav.js in the case of
-            // links that we want to consider external
-            if (link.dataset.originalHref !== undefined) {
-              link.href = link.dataset.originalHref;
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("https:\/\/cfaes-bioinfo\.github\.io\/pracs-au25\/");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
             }
           }
-        }
-      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-        const config = {
-          allowHTML: true,
-          maxWidth: 500,
-          delay: 100,
-          arrow: false,
-          appendTo: function(el) {
-              return el.closest('section.slide') || el.parentElement;
-          },
-          interactive: true,
-          interactiveBorder: 10,
-          theme: 'light-border',
-          placement: 'bottom-start',
-        };
-        if (contentFn) {
-          config.content = contentFn;
-        }
-        if (onTriggerFn) {
-          config.onTrigger = onTriggerFn;
-        }
-        if (onUntriggerFn) {
-          config.onUntrigger = onUntriggerFn;
-        }
-          config['offset'] = [0,0];
-          config['maxWidth'] = 700;
-        window.tippy(el, config); 
-      }
-      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-      for (var i=0; i<noterefs.length; i++) {
-        const ref = noterefs[i];
-        tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-          try { href = new URL(href).hash; } catch {}
-          const id = href.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          if (note) {
-            return note.innerHTML;
-          } else {
-            return "";
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
           }
-        });
-      }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
           }
-        } else {
-          return undefined;
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
         }
-      };
-      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-      for (var i=0; i<bibliorefs.length; i++) {
-        const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
-              }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
           });
         }
-      }
-    });
-    </script>
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
     <script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
     (function() {
       let previousOnload = window.onload;
